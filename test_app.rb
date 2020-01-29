@@ -15,7 +15,6 @@ def use_test_app!(packageRoot)
     # Copy/link Xcode project files
     FileUtils.mkdir_p(dst_xcodeproj)
     FileUtils.cp(File.join(src_xcodeproj, 'project.pbxproj'), dst_xcodeproj)
-    FileUtils.ln_sf(File.join(src_xcodeproj, 'project.xcworkspace'), dst_xcodeproj)
     FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
 
     # Link source files
@@ -66,8 +65,6 @@ def use_test_app!(packageRoot)
     pod 'DoubleConversion', :podspec => 'node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
     pod 'glog', :podspec => 'node_modules/react-native/third-party-podspecs/glog.podspec'
     pod 'Folly', :podspec => 'node_modules/react-native/third-party-podspecs/Folly.podspec'
-
-    pod 'ReactTestApp', :path => Pathname.new(__dir__).relative_path_from(packageRoot).to_s
 
     yield 'app'
 
