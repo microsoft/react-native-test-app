@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "react-native-test-app",
+  "license": "MIT",
+  "author": {
+    "name": "Microsoft Open Source",
+    "email": "microsoftopensource@users.noreply.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/react-native-test-app"
+  },
+  "version": "0.0.1",
+  "description": "react-native-test-app provides a test app for all supported platforms as a package",
+  "homepage": "https://github.com/microsoft/react-native-test-app",
+  "dependencies": {
+    "@react-native-community/cli": "^2.6.0",
+    "@react-native-community/cli-platform-android": "^2.6.0",
+    "@react-native-community/cli-platform-ios": "^2.4.1",
+    "react": "~16.8.6",
+    "react-native": "0.60.5"
+  }
+}
