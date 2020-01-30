@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		191280D323AB79E900BD40AD /* FeatureDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 191280D223AB79E900BD40AD /* FeatureDetails.m */; };
-		1914199A234B2DD800D856AE /* RCTRedBoxWindow+UIScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 19141999234B2DD800D856AE /* RCTRedBoxWindow+UIScene.m */; };
+		1914199A234B2DD800D856AE /* RCTDevSupport+UIScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */; };
 		1954558423A1961400F6B3F4 /* FeatureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1954558323A1961400F6B3F4 /* FeatureLoader.swift */; };
 		196C7215232F1788006556ED /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C7214232F1788006556ED /* ReactInstance.swift */; };
 		196C724123319A85006556ED /* QRCodeReaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C724023319A85006556ED /* QRCodeReaderDelegate.swift */; };
@@ -44,7 +44,7 @@
 
 /* Begin PBXFileReference section */
 		191280D223AB79E900BD40AD /* FeatureDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeatureDetails.m; sourceTree = "<group>"; };
-		19141999234B2DD800D856AE /* RCTRedBoxWindow+UIScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTRedBoxWindow+UIScene.m"; sourceTree = "<group>"; };
+		19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTDevSupport+UIScene.m"; sourceTree = "<group>"; };
 		1954558323A1961400F6B3F4 /* FeatureLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureLoader.swift; sourceTree = "<group>"; };
 		196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		196C7214232F1788006556ED /* ReactInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactInstance.swift; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 				1954558323A1961400F6B3F4 /* FeatureLoader.swift */,
 				196C724023319A85006556ED /* QRCodeReaderDelegate.swift */,
 				196C7214232F1788006556ED /* ReactInstance.swift */,
-				19141999234B2DD800D856AE /* RCTRedBoxWindow+UIScene.m */,
+				19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */,
 				196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */,
 				19ECD0DB232ED427003D8557 /* Assets.xcassets */,
 				19ECD0E0232ED427003D8557 /* LaunchScreen.storyboard */,
@@ -431,7 +431,7 @@
 				191280D323AB79E900BD40AD /* FeatureDetails.m in Sources */,
 				19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */,
 				1954558423A1961400F6B3F4 /* FeatureLoader.swift in Sources */,
-				1914199A234B2DD800D856AE /* RCTRedBoxWindow+UIScene.m in Sources */,
+				1914199A234B2DD800D856AE /* RCTDevSupport+UIScene.m in Sources */,
 				196C724123319A85006556ED /* QRCodeReaderDelegate.swift in Sources */,
 				19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */,
 				19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */,

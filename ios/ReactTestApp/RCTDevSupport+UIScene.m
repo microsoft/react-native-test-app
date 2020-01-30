@@ -6,6 +6,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <React/RCTDevLoadingView.h>
 #import <React/RCTJSStackFrame.h>
 #import <React/RCTUtils.h>
 #import <React/RCTVersion.h>
@@ -35,6 +36,8 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }
+
+// MARK: - RCTRedBoxWindow
 
 @protocol RCTRedBoxWindowActionDelegate;
 
@@ -79,6 +82,47 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
                          animated:NO
                        completion:nil];
         [self rta_showErrorMessage:message withStack:stack isUpdate:isUpdate];
+    }
+}
+
+@end
+
+// MARK: - RCTDevLoadingView
+
+@implementation RCTDevLoadingView (UISceneSupport)
+
++ (void)initialize
+{
+    if ([self class] != [RCTDevLoadingView class])
+    {
+        return;
+    }
+
+    if (@available(iOS 13.0, *))
+    {
+        swizzleSelector([self class],
+                        @selector(showMessage:color:backgroundColor:),
+                        @selector(rta_showMessage:color:backgroundColor:));
+    }
+}
+
+- (void)rta_showMessage:(NSString *)message
+                  color:(UIColor *)color
+        backgroundColor:(UIColor *)backgroundColor
+{
+    [self rta_showMessage:message color:color backgroundColor:backgroundColor];
+    if (@available(iOS 13.0, *))
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          Ivar _window = class_getInstanceVariable([self class], [@"_window" UTF8String]);
+          id window = object_getIvar(self, _window);
+          if ([window isKindOfClass:[UIWindow class]])
+          {
+              UIWindowScene *scene =
+                  (UIWindowScene *)UIApplication.sharedApplication.connectedScenes.anyObject;
+              [window setWindowScene:scene];
+          }
+        });
     }
 }
 
