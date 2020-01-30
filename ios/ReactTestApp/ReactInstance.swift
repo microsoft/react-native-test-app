@@ -77,10 +77,19 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
     }
 
     func initReact(onDidInitialize: @escaping ([RTAFeatureDetails]) -> Void) {
-        bridge?.invalidate()
-        bridge = RCTBridge(delegate: self, launchOptions: nil)
         if let bridge = bridge {
+            if remoteBundleURL == nil {
+                // When loading the embedded bundle, we must disable remote
+                // debugging to prevent the bridge from getting stuck in
+                // -[RCTWebSocketExecutor executeApplicationScript:sourceURL:onComplete:]
+                RCTDevSettings().isDebuggingRemotely = false
+            }
+            bridge.reload()
+        } else if let bridge = RCTBridge(delegate: self, launchOptions: nil) {
+            self.bridge = bridge
             featureLoader.loadAll(bridge: bridge, onDidInitialize: onDidInitialize)
+        } else {
+            assertionFailure("Failed to instantiate RCTBridge")
         }
     }
 
