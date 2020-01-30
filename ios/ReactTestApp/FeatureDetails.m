@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import <ReactTestApp/RTAFeatureDetails.h>
+#import <ReactTestApp-DevSupport/RTAFeatureDetails.h>
 
 NSString *const RTAFeatureSceneDidOpenURLNotification = @"RTAFeatureSceneDidOpenURLNotification";

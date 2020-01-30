@@ -19,4 +19,4 @@
 #import <React/RCTLog.h>
 #endif
 
-#import <ReactTestApp/RTAFeatureDetails.h>
+#import <ReactTestApp-DevSupport/RTAFeatureDetails.h>
