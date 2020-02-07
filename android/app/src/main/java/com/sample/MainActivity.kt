@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
             .addPackages(PackageList(application).packages)
             .addPackages(TestAppPackageList().packages)
             .setUseDeveloperSupport(BuildConfig.DEBUG)
-            .setCurrentActivity(this@MainActivity)
+            .setCurrentActivity(this)
             .setBundleAssetName("index.android.bundle")
             .setJSMainModulePath("index")
             .setApplication(application)
