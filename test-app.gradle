@@ -1,0 +1,180 @@
+import org.gradle.initialization.DefaultSettings
+
+def generatedFileName = "TestAppPackageList.java"
+def generatedFilePackage = "com.facebook.react"
+def generatedFileContentsTemplate = """
+package $generatedFilePackage;
+
+import com.facebook.react.ReactPackage;
+import java.util.Arrays;
+import java.util.ArrayList;
+
+{{ packageImports }}
+
+public class TestAppPackageList { 
+  public ArrayList<ReactPackage> getPackages() {
+    return new ArrayList<>(Arrays.<ReactPackage>asList(
+      {{ packageClassInstances }}
+    ));
+  }
+}
+"""
+
+class TestAppPlugin implements Plugin<PluginAware> {
+    private String generatedFileName;
+    private String generatedFilePackage;
+    private String generatedFileContentsTemplate;
+    
+    private String packageName;
+    private ArrayList<HashMap<String, String>> packages = new ArrayList<>();
+    
+    TestAppPlugin(
+        String generatedFileName, 
+        String generatedFilePackage, 
+        String generatedFileContentsTemplate
+    ) {
+        this.generatedFileName = generatedFileName;
+        this.generatedFilePackage = generatedFilePackage;
+        this.generatedFileContentsTemplate = generatedFileContentsTemplate;
+    }
+
+    @Override
+    void apply(PluginAware target) {
+        if (target instanceof Settings) {
+            applyToSettings((Settings) target)
+        } else if (target instanceof Project) {
+            applyToProject((Project) target)
+        }
+    }
+
+    private static void applyToSettings(Settings settings) {
+        settings.include(":app")
+        settings.project(":app")
+                .projectDir = new File("../../test-app/app")
+    }
+
+    private void applyToProject(Project project) {
+        def appProject = project.project(":app")
+
+        // TODO: support configurations other than implementation
+        def appDependencies = appProject.getConfigurations()
+                .getByName("implementation")
+                .getDependencies()
+
+        def dependency = appProject.getDependencies()
+                .create(project)
+
+        appDependencies.add(dependency)        
+
+        packageName = getPackageName(project)
+        packages = getPackages(project)
+    }
+
+    private String getPackageName(Project project) {
+        def projectDir = project.projectDir.absolutePath
+        
+        def files = new FileNameFinder()
+            .getFileNames(projectDir, "**/AndroidManifest.xml", 
+                "node_modules/** **/build/** **/debug/** Examples/** examples/**")
+        def manifestFile = files.first()
+        def manifest = (new XmlParser()).parse(manifestFile)        
+
+        return manifest.attribute("package")
+    }
+
+    private ArrayList<HashMap<String, String>> getPackages(Project project) {
+        def projectDir = project.projectDir.absolutePath
+
+        def javaFiles = new FileNameFinder()
+            .getFileNames(projectDir, "**/*.java")
+        def kotlinFiles = new FileNameFinder()
+            .getFileNames(projectDir, "**/*.kt")
+        
+        def sourceFiles = new ArrayList<>()
+        sourceFiles.addAll(kotlinFiles)
+        sourceFiles.addAll(javaFiles)
+
+        def pattern = ~/class\s+(\w+[^(\s]*)[\s\w():]*(\s+implements\s+|:)[\s\w():,]*[^{]*ReactPackage/       
+        
+        ArrayList<HashMap<String, String>> packages = new ArrayList<>(); 
+
+        sourceFiles.forEach { path -> 
+            def matcher = pattern.matcher(new File(path).text)
+            if (matcher.find()) {
+                def packageClassName = matcher.group(1);                
+                def packageImportPath = "import ${packageName}.${packageClassName};"              
+                def packageInstance = "new ${packageClassName}()"
+
+                HashMap config = new HashMap<String, String>()
+                config.put("packageInstance", packageInstance)  
+                config.put("packageImportPath", packageImportPath)
+
+                packages.add(config);
+            }        
+        }
+
+        return packages
+    }
+
+    /**
+    * Code-gen a java file with all the detected ReactNativePackage instances automatically added
+    *
+    * @param outputDir    
+    */
+    void generatePackagesFile(File outputDir) {
+        String packageImports = ""
+        String packageClassInstances = ""
+
+        if (packages.size() > 0) {
+            packageImports = "import ${packageName}.BuildConfig;\nimport ${packageName}.R;\n\n"
+            packageImports = packageImports + packages.collect { "${it.packageImportPath}" }.join('\n')
+            packageClassInstances = packages.collect { it.packageInstance }.join(",\n      ")
+        }
+
+        String generatedFileContents = generatedFileContentsTemplate
+            .replace("{{ packageImports }}", packageImports)
+            .replace("{{ packageClassInstances }}", packageClassInstances)
+
+        outputDir.mkdirs()
+        final FileTreeBuilder treeBuilder = new FileTreeBuilder(outputDir)
+        treeBuilder.file(generatedFileName).newWriter().withWriter { w ->
+            w << generatedFileContents
+        }
+    }
+}
+
+def plugin = new TestAppPlugin(
+    generatedFileName, 
+    generatedFilePackage, 
+    generatedFileContentsTemplate
+)
+
+ext.applyTestAppSettings = { DefaultSettings defaultSettings -> 
+    plugin.apply(defaultSettings) 
+}
+
+// TODO: make codegen smarter to merge PackageList and TestAppPackageList files
+ext.applyTestAppModule = { Project project -> 
+    plugin.apply(project)     
+
+    def generatedSrcDir = new File(buildDir, "generated/rncli/src/main/java")
+    def generatedCodeDir = new File(generatedSrcDir, generatedFilePackage.replace('.', '/'))
+
+    task generateTestAppPackageList {
+        doLast {            
+            plugin.generatePackagesFile(generatedCodeDir)
+        }
+    }
+
+    preBuild.dependsOn generateTestAppPackageList
+
+    android {
+        sourceSets {
+            main {
+                java {
+                    srcDirs += generatedSrcDir
+                }
+            }
+        }
+    }
+}
