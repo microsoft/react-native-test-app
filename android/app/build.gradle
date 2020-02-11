@@ -1,0 +1,38 @@
+import java.nio.file.Paths
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+def buildscriptDir = buildscript.sourceFile.getParent()    
+apply from: "$buildscriptDir/../../test-app-util.gradle"
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.sample"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+
+def hermesEnginePath = findNodeModulePath("hermes-engine")
+def hermesPath = "$hermesEnginePath/android"
+
+dependencies {
+    debugImplementation files("$hermesPath/hermes-debug.aar")
+    releaseImplementation files("$hermesPath/hermes-release.aar")
+
+    implementation "com.facebook.react:react-native:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"    
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.core:core-ktx:1.0.2'    
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}

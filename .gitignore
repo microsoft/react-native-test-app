@@ -105,3 +105,13 @@ dist
 
 # Xcode user data
 xcuserdata/
+
+# Android/IntelliJ
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+# OSX
+.DS_Store
