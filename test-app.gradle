@@ -40,7 +40,7 @@ class TestAppPlugin {
 
     void apply(Settings settings) {
         def projectDir = settings.findNodeModulePath(
-            settings.rootDir, "react-native-test-app")
+            "react-native-test-app")
 
         settings.include(":app")
         settings.project(":app")
