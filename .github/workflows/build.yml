@@ -1,0 +1,23 @@
+name: build
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+jobs:
+  iOS:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install
+      run: |
+        yarn
+        pod install
+      working-directory: example
+    - name: Build
+      run: |
+        set -eo pipefail
+        yarn build:ios
+        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -arch arm64 CODE_SIGNING_ALLOWED=NO | xcpretty
+      working-directory: example

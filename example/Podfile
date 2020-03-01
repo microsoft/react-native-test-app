@@ -1,0 +1,12 @@
+require_relative 'node_modules/react-native-test-app/test_app.rb'
+
+workspace 'Example.xcworkspace'
+
+use_test_app!(__dir__) do |target|
+  case target
+  when 'app'
+    pod 'Example-dev', :path => '.'
+  when 'tests'
+  when 'uitests'
+  end
+end

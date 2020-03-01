@@ -1,0 +1,17 @@
+{
+  "name": "example",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6",
+    "react-native": "^0.60.6"
+  },
+  "devDependencies": {
+    "mkdirp": "^0.5.1",
+    "react-native": "0.60.6",
+    "react-native-test-app": "../"
+  }
+}
