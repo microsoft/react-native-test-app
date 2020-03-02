@@ -10,7 +10,9 @@
     "react-native": "^0.60.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
     "mkdirp": "^0.5.1",
+    "react": "16.8.6",
     "react-native": "0.60.6",
     "react-native-test-app": "../"
   }
