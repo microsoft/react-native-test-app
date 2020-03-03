@@ -12,7 +12,10 @@
 #import <React/RCTDevSettings.h>
 #import <React/RCTEventEmitter.h>
 #import <React/RCTLog.h>
+#import <React/RCTRootView.h>
 #import <React/RCTUtils.h>
 #import <React/RCTVersion.h>
 
-#import <ReactTestApp-DevSupport/RTAFeatureDetails.h>
+#import <ReactTestApp-DevSupport/ReactTestApp-DevSupport.h>
+
+#import "UIViewController+ReactTestApp.h"

@@ -1,4 +1,9 @@
 {
   "name": "Example",
-  "displayName": "Example"
+  "displayName": "Example",
+  "components": {
+    "Example": {
+      "displayName": "App"
+    }
+  }
 }
