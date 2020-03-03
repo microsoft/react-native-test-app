@@ -100,12 +100,26 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
             return remoteBundleURL
         }
 
-        let bundle = Bundle(for: type(of: self))
-        return bundle.url(
-            forResource: "index.mobile",
-            withExtension: "jsbundle",
-            subdirectory: nil
-        )
+        let possibleEntryFiles = [
+            "index.ios",
+            "main.ios",
+            "index.mobile",
+            "main.mobile",
+            "index.native",
+            "main.native",
+            "index",
+            "main",
+        ]
+        let jsBundleURL = possibleEntryFiles
+            .lazy
+            .map({
+                Bundle.main.url(
+                    forResource: $0,
+                    withExtension: "jsbundle"
+                )
+            })
+            .first(where: { $0 != nil })
+        return jsBundleURL ?? ReactInstance.jsBundleURL()
     }
 
     func extraModules(for bridge: RCTBridge!) -> [RCTBridgeModule] {
