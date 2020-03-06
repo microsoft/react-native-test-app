@@ -46,11 +46,10 @@ final class ContentViewController: UITableViewController {
         super.viewDidLoad()
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.reactInstance.initReact { features in
-                let items: [NavigationLink] = features
-                    .lazy
-                    .filter { !$0.name.isEmpty }
-                    .map { feature in (feature.name, { self?.navigate(to: feature) }) }
+            self?.reactInstance.initReact { components in
+                let items: [NavigationLink] = components.map { (name, component) in
+                    (component.displayName ?? name, { self?.navigate(to: component, name: name) })
+                }
                 DispatchQueue.main.async {
                     guard let strongSelf = self else {
                         return
@@ -133,13 +132,25 @@ final class ContentViewController: UITableViewController {
         #endif
     }
 
-    private func navigate(to feature: RTAFeatureDetails) {
+    private func navigate(to component: Component, name: String) {
         guard let bridge = reactInstance.bridge,
               let navigationController = navigationController else {
             return
         }
 
-        let viewController = feature.viewController(with: bridge)
+        let viewController: UIViewController = {
+            if let viewController = RTAViewControllerFromString(name, bridge) {
+                return viewController
+            }
+
+            let viewController = UIViewController(nibName: nil, bundle: nil)
+            viewController.view = RCTRootView(
+                bridge: bridge,
+                moduleName: name,
+                initialProperties: component.initialProperties
+            )
+            return viewController
+        }()
         navigationController.pushViewController(viewController, animated: true)
     }
 

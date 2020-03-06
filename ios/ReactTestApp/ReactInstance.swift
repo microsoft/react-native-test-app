@@ -27,8 +27,6 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
         }
     }
 
-    private var featureLoader: FeatureLoader = FeatureLoader()
-
     override init() {
         #if DEBUG
         remoteBundleURL = ReactInstance.jsBundleURL()
@@ -76,7 +74,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
         assert(forTestingPurposesOnly)
     }
 
-    func initReact(onDidInitialize: @escaping ([RTAFeatureDetails]) -> Void) {
+    func initReact(onDidInitialize: @escaping ([String: Component]) -> Void) {
         if let bridge = bridge {
             if remoteBundleURL == nil {
                 // When loading the embedded bundle, we must disable remote
@@ -87,7 +85,16 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
             bridge.reload()
         } else if let bridge = RCTBridge(delegate: self, launchOptions: nil) {
             self.bridge = bridge
-            featureLoader.loadAll(bridge: bridge, onDidInitialize: onDidInitialize)
+
+            NotificationCenter.default.post(
+                name: .ReactTestAppDidInitialize,
+                object: bridge
+            )
+
+            guard let manifest = Manifest.readFile() else {
+                return
+            }
+            onDidInitialize(manifest.components)
         } else {
             assertionFailure("Failed to instantiate RCTBridge")
         }

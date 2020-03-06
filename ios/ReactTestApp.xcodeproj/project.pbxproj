@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		191280D323AB79E900BD40AD /* FeatureDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 191280D223AB79E900BD40AD /* FeatureDetails.m */; };
 		1914199A234B2DD800D856AE /* RCTDevSupport+UIScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */; };
-		1954558423A1961400F6B3F4 /* FeatureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1954558323A1961400F6B3F4 /* FeatureLoader.swift */; };
+		192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192DD200240FCAF5004E9CEB /* Manifest.swift */; };
 		196C7215232F1788006556ED /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C7214232F1788006556ED /* ReactInstance.swift */; };
 		196C724123319A85006556ED /* QRCodeReaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C724023319A85006556ED /* QRCodeReaderDelegate.swift */; };
+		1988284524105BEC005057FF /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */; };
 		19D67B4023673735002EF540 /* ReactNativePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D67B3F23673735002EF540 /* ReactNativePerformanceTests.swift */; };
 		19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D5232ED425003D8557 /* AppDelegate.swift */; };
 		19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D7232ED425003D8557 /* SceneDelegate.swift */; };
@@ -43,13 +43,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		191280D223AB79E900BD40AD /* FeatureDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeatureDetails.m; sourceTree = "<group>"; };
 		19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTDevSupport+UIScene.m"; sourceTree = "<group>"; };
-		1954558323A1961400F6B3F4 /* FeatureLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureLoader.swift; sourceTree = "<group>"; };
+		192DD200240FCAF5004E9CEB /* Manifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manifest.swift; sourceTree = "<group>"; };
 		196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		196C7214232F1788006556ED /* ReactInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactInstance.swift; sourceTree = "<group>"; };
 		196C7216232F6CD9006556ED /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
 		196C724023319A85006556ED /* QRCodeReaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeReaderDelegate.swift; sourceTree = "<group>"; };
+		1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
+		1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
 		19D67B3F23673735002EF540 /* ReactNativePerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativePerformanceTests.swift; sourceTree = "<group>"; };
 		19ECD0D2232ED425003D8557 /* ReactTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19ECD0D5232ED425003D8557 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -131,11 +132,12 @@
 				19ECD0D5232ED425003D8557 /* AppDelegate.swift */,
 				19ECD0D7232ED425003D8557 /* SceneDelegate.swift */,
 				19ECD0D9232ED425003D8557 /* ContentView.swift */,
-				191280D223AB79E900BD40AD /* FeatureDetails.m */,
-				1954558323A1961400F6B3F4 /* FeatureLoader.swift */,
+				192DD200240FCAF5004E9CEB /* Manifest.swift */,
 				196C724023319A85006556ED /* QRCodeReaderDelegate.swift */,
 				196C7214232F1788006556ED /* ReactInstance.swift */,
 				19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */,
+				1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */,
+				1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */,
 				196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */,
 				19ECD0DB232ED427003D8557 /* Assets.xcassets */,
 				19ECD0E0232ED427003D8557 /* LaunchScreen.storyboard */,
@@ -428,14 +430,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				191280D323AB79E900BD40AD /* FeatureDetails.m in Sources */,
 				19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */,
-				1954558423A1961400F6B3F4 /* FeatureLoader.swift in Sources */,
-				1914199A234B2DD800D856AE /* RCTDevSupport+UIScene.m in Sources */,
-				196C724123319A85006556ED /* QRCodeReaderDelegate.swift in Sources */,
-				19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */,
 				19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */,
+				192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */,
+				196C724123319A85006556ED /* QRCodeReaderDelegate.swift in Sources */,
+				1914199A234B2DD800D856AE /* RCTDevSupport+UIScene.m in Sources */,
 				196C7215232F1788006556ED /* ReactInstance.swift in Sources */,
+				19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */,
+				1988284524105BEC005057FF /* UIViewController+ReactTestApp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

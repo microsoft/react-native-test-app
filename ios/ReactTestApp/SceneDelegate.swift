@@ -63,9 +63,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        NotificationCenter.default.post(name: .RTAFeatureSceneDidOpenURL, object: [
-            "scene": scene,
-            "URLContexts": URLContexts,
-        ])
+        NotificationCenter.default.post(
+            name: .ReactTestAppSceneDidOpenURL,
+            object: [
+                "scene": scene,
+                "URLContexts": URLContexts,
+            ]
+        )
     }
 }
