@@ -1,14 +1,16 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
 
 #import "UIViewController+ReactTestApp.h"
 
-NSNotificationName const ReactTestAppDidInitializeNotification = @"ReactTestAppDidInitializeNotification";
-NSNotificationName const ReactTestAppSceneDidOpenURLNotification = @"ReactTestAppSceneDidOpenURLNotification";
+NSNotificationName const ReactTestAppDidInitializeNotification =
+    @"ReactTestAppDidInitializeNotification";
+NSNotificationName const ReactTestAppSceneDidOpenURLNotification =
+    @"ReactTestAppSceneDidOpenURLNotification";
 
 @protocol RTAViewController <NSObject>
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
