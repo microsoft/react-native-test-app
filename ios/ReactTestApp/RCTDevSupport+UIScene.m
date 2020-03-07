@@ -1,17 +1,18 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <objc/runtime.h>
+
 #import <React/RCTDevLoadingView.h>
 #import <React/RCTJSStackFrame.h>
 #import <React/RCTUtils.h>
 #import <React/RCTVersion.h>
-#import <UIKit/UIKit.h>
-#import <objc/runtime.h>
 
 #if DEBUG
 
@@ -24,15 +25,13 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
                                         originalSelector,
                                         method_getImplementation(swizzledMethod),
                                         method_getTypeEncoding(swizzledMethod));
-    if (didAddMethod)
-    {
+    if (didAddMethod) {
         class_replaceMethod(class,
                             swizzledSelector,
                             method_getImplementation(originalMethod),
                             method_getTypeEncoding(originalMethod));
     }
-    else
-    {
+    else {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }
@@ -74,8 +73,7 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
                    withStack:(NSArray<RCTJSStackFrame *> *)stack
                     isUpdate:(BOOL)isUpdate
 {
-    if (!self.isKeyWindow)
-    {
+    if (!self.isKeyWindow) {
         self.rootViewController.view.backgroundColor = UIColor.blackColor;
         [RCTSharedApplication().delegate.window.rootViewController
             presentViewController:self.rootViewController
@@ -93,13 +91,11 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
 
 + (void)initialize
 {
-    if ([self class] != [RCTDevLoadingView class])
-    {
+    if ([self class] != [RCTDevLoadingView class]) {
         return;
     }
 
-    if (@available(iOS 13.0, *))
-    {
+    if (@available(iOS 13.0, *)) {
         swizzleSelector([self class],
                         @selector(showMessage:color:backgroundColor:),
                         @selector(rta_showMessage:color:backgroundColor:));
@@ -111,13 +107,11 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
         backgroundColor:(UIColor *)backgroundColor
 {
     [self rta_showMessage:message color:color backgroundColor:backgroundColor];
-    if (@available(iOS 13.0, *))
-    {
+    if (@available(iOS 13.0, *)) {
         dispatch_async(dispatch_get_main_queue(), ^{
           Ivar _window = class_getInstanceVariable([self class], [@"_window" UTF8String]);
           id window = object_getIvar(self, _window);
-          if ([window isKindOfClass:[UIWindow class]])
-          {
+          if ([window isKindOfClass:[UIWindow class]]) {
               UIWindowScene *scene =
                   (UIWindowScene *)UIApplication.sharedApplication.connectedScenes.anyObject;
               [window setWindowScene:scene];

@@ -13,6 +13,9 @@
   "version": "0.0.4",
   "description": "react-native-test-app provides a test app for all supported platforms as a package",
   "homepage": "https://github.com/microsoft/react-native-test-app",
+  "scripts": {
+    "format:c": "clang-format -i $(git ls-files '*.h' '*.m' '*.mm')"
+  },
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@babel/runtime": "^7.0.0",

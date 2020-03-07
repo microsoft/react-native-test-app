@@ -1,9 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
 
 import UIKit
 import QRCodeReader
@@ -18,6 +18,8 @@ private struct SectionData {
 final class ContentViewController: UITableViewController {
     private let reactInstance: ReactInstance
     private var sections: [SectionData]
+
+    // swiftlint:disable:next weak_delegate
     private lazy var qrCodeReaderDelegate = QRCodeReaderDelegate()
 
     public init() {
@@ -102,15 +104,13 @@ final class ContentViewController: UITableViewController {
     private func itemWithRemoteJSBundle() -> (String, () -> Void) {
         #if targetEnvironment(simulator)
         return (
-            "Load From Dev Server",
-            { [weak self] in
+            "Load From Dev Server", { [weak self] in
                 self?.reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
             }
         )
         #else
         return (
-            "Scan QR Code",
-            { [weak self] in
+            "Scan QR Code", { [weak self] in
                 guard let strongSelf = self else {
                     return
                 }

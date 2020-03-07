@@ -1,11 +1,10 @@
 require 'json'
 
 package = JSON.parse(File.read(File.join('..', 'package.json')))
-version = package['version']
 
 Pod::Spec.new do |s|
   s.name      = 'Example-dev'
-  s.version   = version
+  s.version   = package['version']
   s.author    = { package['author']['name'] => package['author']['email'] }
   s.license   = package['license']
   s.homepage  = package['homepage']
