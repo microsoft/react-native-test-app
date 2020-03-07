@@ -7,21 +7,25 @@
 
 import Foundation
 
-struct Component: Decodable {
+struct Component: Codable {
     let displayName: String?
     let initialProperties: [String: String]?
 }
 
-struct Manifest: Decodable {
+struct Manifest: Codable {
     let name: String
     let displayName: String
     let components: [String: Component]
 
-    static func readFile() -> Manifest? {
+    static func fromFile() -> Manifest? {
         guard let manifestURL = Bundle.main.url(forResource: "app", withExtension: "json", subdirectory: "assets"),
               let data = try? Data(contentsOf: manifestURL, options: .uncached) else {
             return nil
         }
+        return from(data: data)
+    }
+
+    static func from(data: Data) -> Manifest? {
         return try? JSONDecoder().decode(self, from: data)
     }
 }

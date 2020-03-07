@@ -1,7 +1,9 @@
 PODS:
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Example-dev (0.0.2):
+  - Example-dev (0.0.4):
+    - React
+  - Example-Tests (0.0.4):
     - React
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -82,14 +84,14 @@ PODS:
     - React-Core (= 0.60.6)
   - React-RCTWebSocket (0.60.6):
     - React-Core (= 0.60.6)
-  - ReactTestApp-DevSupport (0.0.2):
-    - React
+  - ReactTestApp-DevSupport (0.0.4)
   - SwiftLint (0.39.1)
   - yoga (0.60.6.React)
 
 DEPENDENCIES:
   - DoubleConversion (from `node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Example-dev (from `.`)
+  - Example-Tests (from `.`)
   - Folly (from `node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `node_modules/react-native/third-party-podspecs/glog.podspec`)
   - QRCodeReader.swift
@@ -124,6 +126,8 @@ EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
   Example-dev:
+    :path: "."
+  Example-Tests:
     :path: "."
   Folly:
     :podspec: node_modules/react-native/third-party-podspecs/Folly.podspec
@@ -171,7 +175,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  Example-dev: 5ee702401faf9194f35c0dea006ae01c3fd788fb
+  Example-dev: 671a30b61ca00c75363c12b33c3e02a76f0ce7cc
+  Example-Tests: 25caeb33c2a613595303e520bb87825315f2cad1
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
@@ -192,10 +197,10 @@ SPEC CHECKSUMS:
   React-RCTText: d91537e29e38dc69cf09cbca0875cf5dc7402da6
   React-RCTVibration: 7655d72dfb919dd6d8e135ca108a5a2bd9fcd7b4
   React-RCTWebSocket: 7cd2c8d0f8ddd680dc76404defba7ab1f56b83af
-  ReactTestApp-DevSupport: f83d36f6406f41141094072ef362172389478b67
+  ReactTestApp-DevSupport: 92a89c66c797f342e631955e4f3c67e0ae1d2690
   SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
   yoga: 5079887aa3e4c62142d6bcee493022643ee4d730
 
-PODFILE CHECKSUM: 11de47e952b0c3d5343fc7ec84df6af04662bb33
+PODFILE CHECKSUM: 2c18a794b851558285a7b9d4b58af74310b53fdf
 
 COCOAPODS: 1.8.4

@@ -1,3 +1,5 @@
+**/xcuserdata/
+*.tgz
 .clang-format
 .gitattributes
 .github/
