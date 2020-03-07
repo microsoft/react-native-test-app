@@ -1,0 +1,21 @@
+* @tido64
+
+# Android
+*.gradle  @ArazAbishov @sweggersen
+android/  @ArazAbishov @sweggersen
+
+# iOS
+*.podspec     @tido64
+*.rb          @tido64
+Podfile       @tido64
+Podfile.lock  @tido64
+ios/          @tido64
+
+# macOS
+
+# Windows
+
+# Miscellaneous
+/CODE_OF_CONDUCT.md  @microsoftopensource
+/LICENSE             @microsoftopensource
+/SECURITY.md         @microsoftopensource
