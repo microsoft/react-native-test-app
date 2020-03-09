@@ -12,7 +12,6 @@
 		196C7215232F1788006556ED /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C7214232F1788006556ED /* ReactInstance.swift */; };
 		196C724123319A85006556ED /* QRCodeReaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C724023319A85006556ED /* QRCodeReaderDelegate.swift */; };
 		1988284524105BEC005057FF /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */; };
-		19D67B4023673735002EF540 /* ReactNativePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D67B3F23673735002EF540 /* ReactNativePerformanceTests.swift */; };
 		19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D5232ED425003D8557 /* AppDelegate.swift */; };
 		19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D7232ED425003D8557 /* SceneDelegate.swift */; };
 		19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D9232ED425003D8557 /* ContentView.swift */; };
@@ -51,7 +50,6 @@
 		196C724023319A85006556ED /* QRCodeReaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeReaderDelegate.swift; sourceTree = "<group>"; };
 		1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
 		1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
-		19D67B3F23673735002EF540 /* ReactNativePerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativePerformanceTests.swift; sourceTree = "<group>"; };
 		19ECD0D2232ED425003D8557 /* ReactTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19ECD0D5232ED425003D8557 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		19ECD0D7232ED425003D8557 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -151,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				19ECD0EC232ED428003D8557 /* ReactTestAppTests.swift */,
-				19D67B3F23673735002EF540 /* ReactNativePerformanceTests.swift */,
 				19ECD0EE232ED428003D8557 /* Info.plist */,
 			);
 			path = ReactTestAppTests;
@@ -446,7 +443,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				19ECD0ED232ED428003D8557 /* ReactTestAppTests.swift in Sources */,
-				19D67B4023673735002EF540 /* ReactNativePerformanceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

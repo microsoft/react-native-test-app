@@ -91,7 +91,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
                 object: bridge
             )
 
-            guard let manifest = Manifest.readFile() else {
+            guard let manifest = Manifest.fromFile() else {
                 return
             }
             onDidInitialize(manifest.components)

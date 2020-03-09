@@ -1,0 +1,9 @@
+*.xcworkspace/
+.DS_Store
+.gradle/
+.idea/
+Pods/
+build/
+dist/
+local.properties
+node_modules/

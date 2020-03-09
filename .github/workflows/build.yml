@@ -13,11 +13,16 @@ jobs:
     - name: Install
       run: |
         yarn
-        pod install
       working-directory: example
     - name: Build
       run: |
         set -eo pipefail
         yarn build:ios
-        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -arch arm64 CODE_SIGNING_ALLOWED=NO | xcpretty
+        pod install
+        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" CODE_SIGNING_ALLOWED=NO build-for-testing | xcpretty
+      working-directory: example
+    - name: Test
+      run: |
+        set -eo pipefail
+        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" -skip-testing:ReactTestAppTests/ReactNativePerformanceTests CODE_SIGNING_ALLOWED=NO test-without-building | xcpretty
       working-directory: example
