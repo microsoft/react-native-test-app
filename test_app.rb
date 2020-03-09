@@ -1,15 +1,27 @@
+#
 # Copyright (c) Microsoft Corporation. All rights reserved.
 #
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
+#
 
-def use_test_app!(packageRoot)
+def autolink_script_path()
+  package_path = resolve_module('@react-native-community/cli-platform-ios')
+  return File.join(package_path, 'native_modules')
+end
+
+def resolve_module(request)
+  script = "console.log(path.dirname(require.resolve('#{request}/package.json')));"
+  return Pod::Executable.execute_command('node', ['-e', script], true).strip
+end
+
+def use_test_app!(package_root)
   platform :ios, '12.0'
 
   xcodeproj = 'ReactTestApp.xcodeproj'
-  if packageRoot != __dir__
-    src_xcodeproj = File.join(__dir__, "ios", xcodeproj)
-    destination = File.join(packageRoot, "node_modules", ".generated")
+  if package_root != __dir__
+    src_xcodeproj = File.join(__dir__, 'ios', xcodeproj)
+    destination = File.join(package_root, 'node_modules', '.generated')
     dst_xcodeproj = File.join(destination, xcodeproj)
 
     # Copy/link Xcode project files
@@ -19,7 +31,7 @@ def use_test_app!(packageRoot)
 
     # Link source files
     ['ReactTestApp', 'ReactTestAppTests', 'ReactTestAppUITests'].each do |file|
-      FileUtils.ln_sf(File.join(__dir__, "ios", file), destination)
+      FileUtils.ln_sf(File.join(__dir__, 'ios', file), destination)
     end
 
     project dst_xcodeproj
@@ -35,36 +47,40 @@ def use_test_app!(packageRoot)
     project xcodeproj
   end
 
-  require_relative File.join(packageRoot, 'node_modules/@react-native-community/cli-platform-ios/native_modules')
+  require_relative autolink_script_path
+
+  react_native = Pathname.new(resolve_module 'react-native')
+    .relative_path_from(Pathname.new(package_root))
+    .to_s
 
   target 'ReactTestApp' do
     pod 'QRCodeReader.swift'
     pod 'SwiftLint'
 
     # React Native
-    pod 'React', :path => 'node_modules/react-native'
-    pod 'React-Core', :path => 'node_modules/react-native/React', :inhibit_warnings => true
-    pod 'React-DevSupport', :path => 'node_modules/react-native/React'
-    pod 'React-RCTActionSheet', :path => 'node_modules/react-native/Libraries/ActionSheetIOS'
-    pod 'React-RCTAnimation', :path => 'node_modules/react-native/Libraries/NativeAnimation'
-    pod 'React-RCTBlob', :path => 'node_modules/react-native/Libraries/Blob'
-    pod 'React-RCTImage', :path => 'node_modules/react-native/Libraries/Image'
-    pod 'React-RCTLinking', :path => 'node_modules/react-native/Libraries/LinkingIOS'
-    pod 'React-RCTNetwork', :path => 'node_modules/react-native/Libraries/Network'
-    pod 'React-RCTSettings', :path => 'node_modules/react-native/Libraries/Settings'
-    pod 'React-RCTText', :path => 'node_modules/react-native/Libraries/Text', :inhibit_warnings => true
-    pod 'React-RCTVibration', :path => 'node_modules/react-native/Libraries/Vibration'
-    pod 'React-RCTWebSocket', :path => 'node_modules/react-native/Libraries/WebSocket'
+    pod 'React', :path => react_native
+    pod 'React-Core', :path => "#{react_native}/React", :inhibit_warnings => true
+    pod 'React-DevSupport', :path => "#{react_native}/React"
+    pod 'React-RCTActionSheet', :path => "#{react_native}/Libraries/ActionSheetIOS"
+    pod 'React-RCTAnimation', :path => "#{react_native}/Libraries/NativeAnimation"
+    pod 'React-RCTBlob', :path => "#{react_native}/Libraries/Blob"
+    pod 'React-RCTImage', :path => "#{react_native}/Libraries/Image"
+    pod 'React-RCTLinking', :path => "#{react_native}/Libraries/LinkingIOS"
+    pod 'React-RCTNetwork', :path => "#{react_native}/Libraries/Network"
+    pod 'React-RCTSettings', :path => "#{react_native}/Libraries/Settings"
+    pod 'React-RCTText', :path => "#{react_native}/Libraries/Text", :inhibit_warnings => true
+    pod 'React-RCTVibration', :path => "#{react_native}/Libraries/Vibration"
+    pod 'React-RCTWebSocket', :path => "#{react_native}/Libraries/WebSocket"
 
-    pod 'React-cxxreact', :path => 'node_modules/react-native/ReactCommon/cxxreact', :inhibit_warnings => true
-    pod 'React-jsi', :path => 'node_modules/react-native/ReactCommon/jsi'
-    pod 'React-jsiexecutor', :path => 'node_modules/react-native/ReactCommon/jsiexecutor'
-    pod 'React-jsinspector', :path => 'node_modules/react-native/ReactCommon/jsinspector'
-    pod 'yoga', :path => 'node_modules/react-native/ReactCommon/yoga'
+    pod 'React-cxxreact', :path => "#{react_native}/ReactCommon/cxxreact", :inhibit_warnings => true
+    pod 'React-jsi', :path => "#{react_native}/ReactCommon/jsi"
+    pod 'React-jsiexecutor', :path => "#{react_native}/ReactCommon/jsiexecutor"
+    pod 'React-jsinspector', :path => "#{react_native}/ReactCommon/jsinspector"
+    pod 'yoga', :path => "#{react_native}/ReactCommon/yoga"
 
-    pod 'DoubleConversion', :podspec => 'node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-    pod 'glog', :podspec => 'node_modules/react-native/third-party-podspecs/glog.podspec'
-    pod 'Folly', :podspec => 'node_modules/react-native/third-party-podspecs/Folly.podspec'
+    pod 'DoubleConversion', :podspec => "#{react_native}/third-party-podspecs/DoubleConversion.podspec"
+    pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
+    pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
 
     yield 'app'
 
