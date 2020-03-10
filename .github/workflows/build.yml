@@ -19,10 +19,10 @@ jobs:
         set -eo pipefail
         yarn build:ios
         pod install
-        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" CODE_SIGNING_ALLOWED=NO build-for-testing | xcpretty
+        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO build-for-testing | xcpretty
       working-directory: example
     - name: Test
       run: |
         set -eo pipefail
-        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" -skip-testing:ReactTestAppTests/ReactNativePerformanceTests CODE_SIGNING_ALLOWED=NO test-without-building | xcpretty
+        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" -skip-testing:ReactTestAppTests/ReactNativePerformanceTests CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO test-without-building | xcpretty
       working-directory: example
