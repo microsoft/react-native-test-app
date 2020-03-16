@@ -20,12 +20,13 @@ Open a terminal and navigate to your clone of this repository:
 ```bash
 cd react-native-test-app
 
-# This step only needs to be done once. It is stored in
+# This step only needs to be done once, before we can install the
+# Example app's dependencies. It is stored in
 # `~/.config/yarn/link/react-native-test-app`. You can run `unlink`
 # if you need to remove it later.
 yarn link
 
-# Install Example app's dependencies
+# Install Example app's dependencies.
 cd example
 yarn
 ```
@@ -37,15 +38,15 @@ TODO: https://github.com/microsoft/react-native-test-app/projects/1#card-3233190
 ## iOS
 
 ```bash
-# Bundle the JS first so CocoaPods can find the assets
+# Bundle the JS first so CocoaPods can find the assets.
 yarn build:ios
 pod install
 
 # Now we use the link we created earlier. This step needs to be run
-# _after_ `pod install` because CocoaPods won't resolve symlinks
+# _after_ `pod install` because CocoaPods won't resolve symlinks.
 yarn link "react-native-test-app"
 
-# Finally, open the Xcode workspace
+# Finally, open the Xcode workspace.
 open Example.xcworkspace
 ```
 
