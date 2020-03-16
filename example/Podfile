@@ -5,7 +5,7 @@ workspace 'Example.xcworkspace'
 use_test_app!(__dir__) do |target|
   case target
   when 'app'
-    pod 'Example-dev', :path => '.'
+    # This is no longer needed to pull in resources at least
   when 'tests'
     pod 'Example-Tests', :path => '.'
   when 'uitests'

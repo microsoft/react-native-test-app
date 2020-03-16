@@ -5,5 +5,10 @@
     "Example": {
       "displayName": "App"
     }
-  }
+  },
+  "resources": [
+    "dist/assets",
+    "dist/main.jsbundle",
+    "app.json"
+  ]
 }
