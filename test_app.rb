@@ -7,15 +7,15 @@
 
 def autolink_script_path()
   package_path = resolve_module('@react-native-community/cli-platform-ios')
-  return File.join(package_path, 'native_modules')
+  File.join(package_path, 'native_modules')
 end
 
 def resolve_module(request)
   script = "console.log(path.dirname(require.resolve('#{request}/package.json')));"
-  return Pod::Executable.execute_command('node', ['-e', script], true).strip
+  Pod::Executable.execute_command('node', ['-e', script], true).strip
 end
 
-def use_test_app!(package_root)
+def use_test_app!(package_root, extra_pods = {})
   platform :ios, '12.0'
 
   xcodeproj = 'ReactTestApp.xcodeproj'
@@ -49,7 +49,7 @@ def use_test_app!(package_root)
 
   require_relative autolink_script_path
 
-  react_native = Pathname.new(resolve_module 'react-native')
+  react_native = Pathname.new(resolve_module('react-native'))
     .relative_path_from(Pathname.new(package_root))
     .to_s
 
@@ -82,16 +82,22 @@ def use_test_app!(package_root)
     pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
     pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
 
-    yield 'app'
+    unless extra_pods[:add_app_pods].nil?
+      extra_pods[:add_app_pods].call()
+    end
 
     target 'ReactTestAppTests' do
       inherit! :search_paths
-      yield 'tests'
+      unless extra_pods[:add_test_pods].nil?
+        extra_pods[:add_test_pods].call()
+      end
     end
 
     target 'ReactTestAppUITests' do
       inherit! :search_paths
-      yield 'uitests'
+      unless extra_pods[:add_uitest_pods].nil?
+        extra_pods[:add_uitest_pods].call()
+      end
     end
 
     use_native_modules! '.'
