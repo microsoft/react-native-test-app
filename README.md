@@ -29,6 +29,10 @@ yarn link
 # Install Example app's dependencies.
 cd example
 yarn
+
+# Now we use the link we created earlier. This step needs to be run
+# _after_ `yarn install` otherwise it will be overwritten.
+yarn link "react-native-test-app"
 ```
 
 ## Android
@@ -41,10 +45,6 @@ TODO: https://github.com/microsoft/react-native-test-app/projects/1#card-3233190
 # Bundle the JS first so CocoaPods can find the assets.
 yarn build:ios
 pod install
-
-# Now we use the link we created earlier. This step needs to be run
-# _after_ `pod install` because CocoaPods won't resolve symlinks.
-yarn link "react-native-test-app"
 
 # Finally, open the Xcode workspace.
 open Example.xcworkspace
