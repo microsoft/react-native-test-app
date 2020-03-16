@@ -2,12 +2,12 @@ require_relative 'node_modules/react-native-test-app/test_app.rb'
 
 workspace 'Example.xcworkspace'
 
-add_app_pods = Proc.new {
-  pod 'Example-dev', :path => '.'
-}
+use_test_app!(__dir__) do |target|
+  target.app do
+    pod 'Example-dev', :path => '.'
+  end
 
-add_test_pods = Proc.new {
-  pod 'Example-Tests', :path => '.'
-}
-
-use_test_app!(__dir__, :add_app_pods => add_app_pods, :add_test_pods => add_test_pods)
+  target.tests do
+    pod 'Example-Tests', :path => '.'
+  end
+end

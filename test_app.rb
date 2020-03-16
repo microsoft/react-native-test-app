@@ -15,7 +15,7 @@ def resolve_module(request)
   Pod::Executable.execute_command('node', ['-e', script], true).strip
 end
 
-def use_test_app!(package_root, extra_pods = {})
+def use_test_app!(package_root)
   platform :ios, '12.0'
 
   xcodeproj = 'ReactTestApp.xcodeproj'
@@ -82,24 +82,32 @@ def use_test_app!(package_root, extra_pods = {})
     pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
     pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
 
-    unless extra_pods[:add_app_pods].nil?
-      extra_pods[:add_app_pods].call()
-    end
-
-    target 'ReactTestAppTests' do
-      inherit! :search_paths
-      unless extra_pods[:add_test_pods].nil?
-        extra_pods[:add_test_pods].call()
-      end
-    end
-
-    target 'ReactTestAppUITests' do
-      inherit! :search_paths
-      unless extra_pods[:add_uitest_pods].nil?
-        extra_pods[:add_uitest_pods].call()
-      end
-    end
+    yield ReactTestAppTargets.new(self) if block_given?
 
     use_native_modules! '.'
+  end
+end
+
+class ReactTestAppTargets
+  def initialize(podfile)
+    @podfile = podfile
+  end
+
+  def app
+    yield if block_given?
+  end
+
+  def tests
+    @podfile.target 'ReactTestAppTests' do
+      @podfile.inherit! :search_paths
+      yield if block_given?
+    end
+  end
+
+  def ui_tests
+    @podfile.target 'ReactTestAppUITests' do
+      @podfile.inherit! :search_paths
+      yield if block_given?
+    end
   end
 end
