@@ -108,8 +108,9 @@ def use_test_app!(package_root)
     pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
     pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
 
-    resources_pod_path = resources_pod(package_root)
-    pod 'ReactTestApp-Resources', :path => resources_pod_path unless resources_pod_path.nil?
+    if resources_pod_path = resources_pod(package_root)
+      pod 'ReactTestApp-Resources', :path => resources_pod_path
+    end
 
     yield ReactTestAppTargets.new(self) if block_given?
 
