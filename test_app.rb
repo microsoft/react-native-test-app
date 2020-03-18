@@ -47,7 +47,7 @@ def use_test_app!(package_root)
   xcodeproj = 'ReactTestApp.xcodeproj'
   if package_root != __dir__
     src_xcodeproj = File.join(__dir__, 'ios', xcodeproj)
-    destination = File.join(package_root, 'node_modules', '.generated')
+    destination = File.join(resolve_module('react-native-test-app'), '..', '.generated')
     dst_xcodeproj = File.join(destination, xcodeproj)
 
     # Copy/link Xcode project files

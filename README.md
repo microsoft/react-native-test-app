@@ -9,6 +9,31 @@ The package is still a bit cumbersome to consume, and requires manually writing
 some of the configuration. We are currently working on making it easier, and
 will write documentation when it becomes ready.
 
+# Quick Start
+
+Install `react-native-test-app` and `plop`. We will use Plop to generate the
+test app:
+
+```bash
+yarn add react-native-test-app --dev
+yarn add plop --dev
+yarn plop --plopfile node_modules/react-native-test-app/plopfile.js --dest sample
+```
+
+`--dest` tells Plop where to generate the files. In this example, it will
+generate files under `sample` folder. Choose the appropriate place to store your
+test app, then answer a couple of questions:
+
+```console
+? What is the name of your test app? Sample
+? Which platforms do you need test apps for? (Use arrow keys)
+❯ All
+  Android
+  iOS
+  macOS
+  Windows
+```
+
 # Set up the Development Environment
 
 We'll be using the Example app for all development of the React Native Test App.
