@@ -15,6 +15,32 @@ def resolve_module(request)
   Pod::Executable.execute_command('node', ['-e', script], true).strip
 end
 
+def resources_pod(package_root, current_dir = package_root)
+  return if File.expand_path(current_dir) == '/'
+
+  app_manifest = File.join(current_dir, 'app.json')
+  return resources_pod(package_root, File.join(current_dir, '..')) if !File.exist?(app_manifest)
+
+  resources = JSON.parse(File.read(app_manifest))['resources']
+  return if !resources.instance_of? Array or resources.empty?
+
+  spec = {
+    'name' => 'ReactTestApp-Resources',
+    'version' => '1.0.0-dev',
+    'summary' => 'Resources for ReactTestApp',
+    'homepage' => 'https://github.com/microsoft/react-native-test-app',
+    'license' => 'Unlicense',
+    'authors' => '@microsoft/react-native-test-app',
+    'source' => { 'git' => 'https://github.com/microsoft/react-native-test-app.git' },
+    'resources' => resources
+  }
+
+  podspec_path = File.join(current_dir, 'ReactTestApp-Resources.podspec.json')
+  File.write(podspec_path, spec.to_json())
+  at_exit { File.delete(podspec_path) }
+  Pathname.new(current_dir).relative_path_from(package_root).to_s()
+end
+
 def use_test_app!(package_root)
   platform :ios, '12.0'
 
@@ -81,6 +107,10 @@ def use_test_app!(package_root)
     pod 'DoubleConversion', :podspec => "#{react_native}/third-party-podspecs/DoubleConversion.podspec"
     pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
     pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
+
+    if resources_pod_path = resources_pod(package_root)
+      pod 'ReactTestApp-Resources', :path => resources_pod_path
+    end
 
     yield ReactTestAppTargets.new(self) if block_given?
 

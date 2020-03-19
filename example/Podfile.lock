@@ -1,8 +1,6 @@
 PODS:
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Example-dev (0.0.4):
-    - React
   - Example-Tests (0.0.4):
     - React
   - Folly (2018.10.22.00):
@@ -85,12 +83,12 @@ PODS:
   - React-RCTWebSocket (0.60.6):
     - React-Core (= 0.60.6)
   - ReactTestApp-DevSupport (0.0.4)
+  - ReactTestApp-Resources (1.0.0-dev)
   - SwiftLint (0.39.1)
   - yoga (0.60.6.React)
 
 DEPENDENCIES:
   - DoubleConversion (from `node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - Example-dev (from `.`)
   - Example-Tests (from `.`)
   - Folly (from `node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -113,6 +111,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `node_modules/react-native/Libraries/WebSocket`)
   - ReactTestApp-DevSupport (from `./..`)
+  - ReactTestApp-Resources (from `.`)
   - SwiftLint
   - yoga (from `node_modules/react-native/ReactCommon/yoga`)
 
@@ -125,8 +124,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
-  Example-dev:
-    :path: "."
   Example-Tests:
     :path: "."
   Folly:
@@ -169,13 +166,14 @@ EXTERNAL SOURCES:
     :path: node_modules/react-native/Libraries/WebSocket
   ReactTestApp-DevSupport:
     :path: "./.."
+  ReactTestApp-Resources:
+    :path: "."
   yoga:
     :path: node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  Example-dev: 671a30b61ca00c75363c12b33c3e02a76f0ce7cc
   Example-Tests: 25caeb33c2a613595303e520bb87825315f2cad1
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
@@ -198,9 +196,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: 7655d72dfb919dd6d8e135ca108a5a2bd9fcd7b4
   React-RCTWebSocket: 7cd2c8d0f8ddd680dc76404defba7ab1f56b83af
   ReactTestApp-DevSupport: 92a89c66c797f342e631955e4f3c67e0ae1d2690
+  ReactTestApp-Resources: 18abf3923397be7cd4eb2e247e954dcbf5b687e6
   SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
   yoga: 5079887aa3e4c62142d6bcee493022643ee4d730
 
-PODFILE CHECKSUM: 85a755427665fbfcea1470614e0c2fc5f1d45553
+PODFILE CHECKSUM: 0aa832921b7f3f2eb406b9c1dd66a2089b899e07
 
 COCOAPODS: 1.8.4
