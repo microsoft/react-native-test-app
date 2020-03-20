@@ -27,11 +27,11 @@ test app, then answer a couple of questions:
 ```console
 ? What is the name of your test app? Sample
 ? Which platforms do you need test apps for? (Use arrow keys)
-❯ All
-  Android
-  iOS
-  macOS
-  Windows
+❯ all
+  android
+  ios
+  macos
+  windows
 ```
 
 # Set up the Development Environment

@@ -19,7 +19,7 @@ jobs:
         set -eo pipefail
         yarn build:ios
         pod install
-        ../scripts/xcodebuild-ios.sh Example.xcworkspace
+        ../scripts/xcodebuild-ios.sh Example.xcworkspace build-for-testing
       working-directory: example
     - name: Test
       run: |

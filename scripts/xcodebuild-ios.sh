@@ -2,7 +2,7 @@
 set -eo pipefail
 
 workspace=$1
-action=${2:-build-for-testing}
+action=$2
 device_name=${3:-'iPhone 11'}
 
 device=$(instruments -s devices 2> /dev/null | grep "${device_name} (")
