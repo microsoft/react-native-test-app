@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache"
+    "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache", 
+    "build:android": "mkdirp dist && mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.jsbundle --assets-dest dist/res --reset-cache"
   },
   "peerDependencies": {
     "react": "^16.8.6",
@@ -13,7 +14,7 @@
     "@babel/core": "^7.0.0",
     "mkdirp": "^0.5.1",
     "react": "16.8.6",
-    "react-native": "0.60.6",
+    "react-native": "0.61.5",
     "react-native-test-app": "../"
   }
 }

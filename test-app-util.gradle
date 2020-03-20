@@ -21,8 +21,8 @@ import java.nio.file.Paths
 * The search begins at the given base directory (a File object). The returned
 * path is a string.
 */
-ext.findNodeModulePath = { packageName ->
-    def basePath = rootDir.toPath().normalize()
+ext.findNodeModulePath = { baseDir, packageName ->
+    def basePath = baseDir.toPath().normalize()
 
     // Node's module resolution algorithm searches up to the root directory,
     // after which the base path will be null

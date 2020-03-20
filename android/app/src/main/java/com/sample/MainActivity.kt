@@ -1,77 +1,82 @@
 package com.sample
 
 import android.os.Bundle
-import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.react.PackageList
-import com.facebook.react.ReactInstanceManager
-import com.facebook.react.ReactRootView
-import com.facebook.react.TestAppPackageList
-import com.facebook.react.common.LifecycleState
-import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
-import com.facebook.soloader.SoLoader
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.squareup.moshi.Moshi
 
-class MainActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
-    private lateinit var reactRootView: ReactRootView
-    private lateinit var reactInstanceManager: ReactInstanceManager
+class MainActivity : AppCompatActivity() {
+
+    data class ComponentViewModel(val name: String, val displayName: String)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        SoLoader.init(this, false)
+        val moshi = Moshi.Builder().build()
+        val manifestAdapter = ManifestJsonAdapter(moshi)
 
-        reactRootView = ReactRootView(this)
-        setContentView(reactRootView)
+        val appJson = resources.openRawResource(R.raw.app)
+            .bufferedReader()
+            .use { it.readText() }
 
-        reactInstanceManager = ReactInstanceManager.builder()
-            .setInitialLifecycleState(LifecycleState.BEFORE_RESUME)
-            .addPackages(PackageList(application).packages)
-            .addPackages(TestAppPackageList().packages)
-            .setUseDeveloperSupport(BuildConfig.DEBUG)
-            .setCurrentActivity(this)
-            .setBundleAssetName("index.android.bundle")
-            .setJSMainModulePath("index")
-            .setApplication(application)
-            .build()
+        val manifest = manifestAdapter.fromJson(appJson)!!
 
-        reactRootView.startReactApplication(
-            reactInstanceManager, "TestComponent", null
-        )
-    }
-
-    override fun invokeDefaultOnBackPressed() {
-        onBackPressed()
-    }
-
-    override fun onBackPressed() {
-        reactInstanceManager.onBackPressed()
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            reactInstanceManager.showDevOptionsDialog()
-            return true
+        val components = manifest.components.map {
+            ComponentViewModel(it.key, it.value.displayName)
         }
-        return super.onKeyUp(keyCode, event)
+
+        supportActionBar?.title = manifest.displayName
+
+        findViewById<RecyclerView>(R.id.recyclerview).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = ComponentAdapter(LayoutInflater.from(context), components)
+
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
     }
 
+    private inner class ComponentAdapter(
+        private val layoutInflater: LayoutInflater,
+        private val components: List<ComponentViewModel>
+    ) : Adapter<ComponentAdapter.ComponentViewHolder>() {
 
-    override fun onPause() {
-        super.onPause()
+        override fun getItemCount() = components.size
 
-        reactInstanceManager.onHostPause(this)
-    }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
+            return ComponentViewHolder(
+                layoutInflater.inflate(
+                    R.layout.recyclerview_item_component, parent, false
+                ) as TextView
+            )
+        }
 
-    override fun onResume() {
-        super.onResume()
+        override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) {
+            holder.bindTo(components[position])
+        }
 
-        reactInstanceManager.onHostResume(this, this)
-    }
+        inner class ComponentViewHolder(private val view: TextView) : ViewHolder(view) {
+            init {
+                view.setOnClickListener {
+                    val component = components[adapterPosition]
+                    val activity = this@MainActivity
 
-    override fun onDestroy() {
-        super.onDestroy()
+                    activity.startActivity(
+                        ComponentActivity.newIntent(activity, component.name)
+                    )
+                }
+            }
 
-        reactInstanceManager.onHostDestroy(this)
-        reactRootView.unmountReactApplication()
+            fun bindTo(component: ComponentViewModel) {
+                view.text = component.displayName
+            }
+        }
     }
 }
