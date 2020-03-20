@@ -19,10 +19,35 @@ jobs:
         set -eo pipefail
         yarn build:ios
         pod install
-        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO build-for-testing | xcpretty
+        ../scripts/xcodebuild-ios.sh Example.xcworkspace build-for-testing
       working-directory: example
     - name: Test
       run: |
-        set -eo pipefail
-        xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" -skip-testing:ReactTestAppTests/ReactNativePerformanceTests CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO test-without-building | xcpretty
+        ../scripts/xcodebuild-ios.sh Example.xcworkspace test-without-building
       working-directory: example
+  iOS-template:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install
+      run: scripts/install-test-template.sh all
+    - name: Build
+      run: |
+        set -eo pipefail
+        pod install --project-directory=ios
+        ../scripts/xcodebuild-ios.sh ios/TemplateExample.xcworkspace build
+      working-directory: template-example
+  iOS-template-exclusive:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install
+      run: scripts/install-test-template.sh ios
+    - name: Build
+      run: |
+        set -eo pipefail
+        pod install
+        ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
+      working-directory: template-example
