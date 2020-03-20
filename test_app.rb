@@ -15,11 +15,11 @@ def resolve_module(request)
   Pod::Executable.execute_command('node', ['-e', script], true).strip
 end
 
-def resources_pod(package_root, current_dir = package_root)
+def resources_pod(project_root, current_dir = project_root)
   return if File.expand_path(current_dir) == '/'
 
   app_manifest = File.join(current_dir, 'app.json')
-  return resources_pod(package_root, File.join(current_dir, '..')) if !File.exist?(app_manifest)
+  return resources_pod(project_root, File.join(current_dir, '..')) if !File.exist?(app_manifest)
 
   resources = JSON.parse(File.read(app_manifest))['resources']
   return if !resources.instance_of? Array or resources.empty?
@@ -36,16 +36,33 @@ def resources_pod(package_root, current_dir = package_root)
   }
 
   podspec_path = File.join(current_dir, 'ReactTestApp-Resources.podspec.json')
-  File.write(podspec_path, spec.to_json())
+  File.write(podspec_path, spec.to_json)
   at_exit { File.delete(podspec_path) }
-  Pathname.new(current_dir).relative_path_from(package_root).to_s()
+  Pathname.new(current_dir).relative_path_from(project_root).to_s
 end
 
-def use_test_app!(package_root)
+def use_react_native!(project_root)
+  react_native = Pathname.new(resolve_module('react-native'))
+
+  package_json = JSON.parse(File.read(File.join(react_native.to_s, 'package.json')))
+  version = package_json['version'].match(/(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/)
+
+  if version[:major] == "0" && version[:minor] == "60"
+    require_relative('ios/use_react_native-0.60')
+  elsif version[:major] == "0" && version[:minor] == "61"
+    require_relative('ios/use_react_native-0.61')
+  else
+    throw "Unsupported React Native version: #{version[0]}"
+  end
+
+  include_react_native!(react_native.relative_path_from(Pathname.new(project_root)).to_s)
+end
+
+def use_test_app!(project_root)
   platform :ios, '12.0'
 
   xcodeproj = 'ReactTestApp.xcodeproj'
-  if package_root != __dir__
+  if project_root != __dir__
     src_xcodeproj = File.join(__dir__, 'ios', xcodeproj)
     destination = File.join(resolve_module('react-native-test-app'), '..', '.generated')
     dst_xcodeproj = File.join(destination, xcodeproj)
@@ -73,42 +90,15 @@ def use_test_app!(package_root)
     project xcodeproj
   end
 
-  require_relative autolink_script_path
-
-  react_native = Pathname.new(resolve_module('react-native'))
-    .relative_path_from(Pathname.new(package_root))
-    .to_s
+  require_relative(autolink_script_path)
 
   target 'ReactTestApp' do
     pod 'QRCodeReader.swift'
     pod 'SwiftLint'
 
-    # React Native
-    pod 'React', :path => react_native
-    pod 'React-Core', :path => "#{react_native}/React", :inhibit_warnings => true
-    pod 'React-DevSupport', :path => "#{react_native}/React"
-    pod 'React-RCTActionSheet', :path => "#{react_native}/Libraries/ActionSheetIOS"
-    pod 'React-RCTAnimation', :path => "#{react_native}/Libraries/NativeAnimation"
-    pod 'React-RCTBlob', :path => "#{react_native}/Libraries/Blob"
-    pod 'React-RCTImage', :path => "#{react_native}/Libraries/Image"
-    pod 'React-RCTLinking', :path => "#{react_native}/Libraries/LinkingIOS"
-    pod 'React-RCTNetwork', :path => "#{react_native}/Libraries/Network"
-    pod 'React-RCTSettings', :path => "#{react_native}/Libraries/Settings"
-    pod 'React-RCTText', :path => "#{react_native}/Libraries/Text", :inhibit_warnings => true
-    pod 'React-RCTVibration', :path => "#{react_native}/Libraries/Vibration"
-    pod 'React-RCTWebSocket', :path => "#{react_native}/Libraries/WebSocket"
+    use_react_native!(project_root)
 
-    pod 'React-cxxreact', :path => "#{react_native}/ReactCommon/cxxreact", :inhibit_warnings => true
-    pod 'React-jsi', :path => "#{react_native}/ReactCommon/jsi"
-    pod 'React-jsiexecutor', :path => "#{react_native}/ReactCommon/jsiexecutor"
-    pod 'React-jsinspector', :path => "#{react_native}/ReactCommon/jsinspector"
-    pod 'yoga', :path => "#{react_native}/ReactCommon/yoga"
-
-    pod 'DoubleConversion', :podspec => "#{react_native}/third-party-podspecs/DoubleConversion.podspec"
-    pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
-    pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
-
-    if resources_pod_path = resources_pod(package_root)
+    if resources_pod_path = resources_pod(project_root)
       pod 'ReactTestApp-Resources', :path => resources_pod_path
     end
 
