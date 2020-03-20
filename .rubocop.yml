@@ -1,0 +1,36 @@
+AllCops:
+  Exclude:
+    - '**/node_modules/**/*'
+  TargetRubyVersion: 2.3
+
+Layout/LineLength:
+  Max: 100
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - !ruby/regexp /-\d+\.\d+\.rb$/
+    - '**/*.podspec'
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true

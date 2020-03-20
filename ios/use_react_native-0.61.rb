@@ -4,6 +4,7 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 #
+# rubocop:disable Layout/LineLength
 
 def include_react_native!(react_native)
   pod 'FBLazyVector', :path => "#{react_native}/Libraries/FBLazyVector"
@@ -37,3 +38,5 @@ def include_react_native!(react_native)
   pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
   pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
 end
+
+# rubocop:enable Layout/LineLength

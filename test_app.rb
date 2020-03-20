@@ -5,7 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-def autolink_script_path()
+def autolink_script_path
   package_path = resolve_module('@react-native-community/cli-platform-ios')
   File.join(package_path, 'native_modules')
 end
@@ -19,10 +19,10 @@ def resources_pod(project_root, current_dir = project_root)
   return if File.expand_path(current_dir) == '/'
 
   app_manifest = File.join(current_dir, 'app.json')
-  return resources_pod(project_root, File.join(current_dir, '..')) if !File.exist?(app_manifest)
+  return resources_pod(project_root, File.join(current_dir, '..')) unless File.exist?(app_manifest)
 
   resources = JSON.parse(File.read(app_manifest))['resources']
-  return if !resources.instance_of? Array or resources.empty?
+  return if !resources.instance_of?(Array) || resources.empty?
 
   spec = {
     'name' => 'ReactTestApp-Resources',
@@ -47,9 +47,9 @@ def use_react_native!(project_root)
   package_json = JSON.parse(File.read(File.join(react_native.to_s, 'package.json')))
   version = package_json['version'].match(/(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/)
 
-  if version[:major] == "0" && version[:minor] == "60"
+  if version[:major] == '0' && version[:minor] == '60'
     require_relative('ios/use_react_native-0.60')
-  elsif version[:major] == "0" && version[:minor] == "61"
+  elsif version[:major] == '0' && version[:minor] == '61'
     require_relative('ios/use_react_native-0.61')
   else
     throw "Unsupported React Native version: #{version[0]}"
@@ -73,13 +73,13 @@ def use_test_app!(project_root)
     FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
 
     # Link source files
-    ['ReactTestApp', 'ReactTestAppTests', 'ReactTestAppUITests'].each do |file|
+    %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
       FileUtils.ln_sf(File.join(__dir__, 'ios', file), destination)
     end
 
     project dst_xcodeproj
 
-    post_install do |installer|
+    post_install do
       puts ''
       puts 'NOTE'
       puts "  `#{xcodeproj}` was sourced from `react-native-test-app`"
@@ -98,7 +98,7 @@ def use_test_app!(project_root)
 
     use_react_native!(project_root)
 
-    if resources_pod_path = resources_pod(project_root)
+    if (resources_pod_path = resources_pod(project_root))
       pod 'ReactTestApp-Resources', :path => resources_pod_path
     end
 
