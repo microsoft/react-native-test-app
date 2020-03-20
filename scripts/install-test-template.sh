@@ -1,8 +1,10 @@
 #!/bin/bash
 set -eo pipefail
 
+platform=$1
+
 yarn
-yarn plop --dest template-example TemplateExample ${1:-All}
+yarn plop --dest template-example TemplateExample $platform
 rm -rf node_modules
 
 pushd template-example 1> /dev/null
