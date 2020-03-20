@@ -6,7 +6,7 @@
  *
  * @typedef {{
  *   name: string;
- *   platforms: "All" | "Android" | "iOS" | "macOS" | "Windows";
+ *   platforms: "all" | "android" | "ios" | "macos" | "windows";
  * }} InputData
  */
 
@@ -26,7 +26,7 @@ module.exports = plop => {
         type: "list",
         name: "platforms",
         message: "Which platforms do you need test apps for?",
-        choices: ["All", "Android", "iOS", "macOS", "Windows"]
+        choices: ["all", "android", "ios", "macos", "windows"]
       }
     ],
     actions: (/** @type {InputData} */ { name, platforms }) => {
@@ -110,8 +110,8 @@ module.exports = plop => {
         }
       ];
 
-      const exclusive = platforms !== "All";
-      if (!exclusive || platforms === "iOS") {
+      const exclusive = platforms !== "all";
+      if (!exclusive || platforms === "ios") {
         const prefix = exclusive ? "" : "ios/";
         actions.push({
           type: "add",

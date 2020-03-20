@@ -26,3 +26,29 @@ jobs:
         set -eo pipefail
         xcodebuild -workspace Example.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" -skip-testing:ReactTestAppTests/ReactNativePerformanceTests CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO test-without-building | xcpretty
       working-directory: example
+  iOS-template:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install
+      run: scripts/install-test-template.sh all
+    - name: Build
+      run: |
+        set -eo pipefail
+        pod install --project-directory=ios
+        xcodebuild -workspace ios/TemplateExample.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO build-for-testing | xcpretty
+      working-directory: template-example
+  iOS-template-exclusive:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install
+      run: scripts/install-test-template.sh ios
+    - name: Build
+      run: |
+        set -eo pipefail
+        pod install
+        xcodebuild -workspace TemplateExample.xcworkspace -scheme ReactTestApp -destination "$(../scripts/xcodebuild-destination.sh)" CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO build-for-testing | xcpretty
+      working-directory: template-example
