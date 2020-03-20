@@ -32,10 +32,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Install
-      run: |
-        set -eo pipefail
-        yarn
-        scripts/install-test-template.sh all
+      run: scripts/install-test-template.sh all
     - name: Build
       run: |
         set -eo pipefail
@@ -48,10 +45,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Install
-      run: |
-        set -eo pipefail
-        yarn
-        scripts/install-test-template.sh ios
+      run: scripts/install-test-template.sh ios
     - name: Build
       run: |
         set -eo pipefail
