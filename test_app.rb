@@ -5,6 +5,9 @@
 # LICENSE file in the root directory of this source tree.
 #
 
+require('json')
+require('pathname')
+
 def autolink_script_path
   package_path = resolve_module('@react-native-community/cli-platform-ios')
   File.join(package_path, 'native_modules')
@@ -37,7 +40,7 @@ def resources_pod(project_root, current_dir = project_root)
 
   podspec_path = File.join(current_dir, 'ReactTestApp-Resources.podspec.json')
   File.write(podspec_path, spec.to_json)
-  at_exit { File.delete(podspec_path) }
+  at_exit { File.delete(podspec_path) if File.exist?(podspec_path) }
   Pathname.new(current_dir).relative_path_from(project_root).to_s
 end
 

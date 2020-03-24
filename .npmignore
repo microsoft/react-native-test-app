@@ -3,5 +3,9 @@
 .clang-format
 .gitattributes
 .github/
+.rubocop.yml
 .swiftlint.yml
+Gemfile
 example/
+scripts/
+test/

@@ -1,0 +1,9 @@
+{
+  "name": "TestFixture",
+  "displayName": "TestFixture",
+  "components": {
+    "TestFixture": {
+      "displayName": "Test"
+    }
+  }
+}
