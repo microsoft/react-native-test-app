@@ -2,33 +2,31 @@ package com.sample
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.squareup.moshi.Moshi
+import com.sample.manifest.ManifestProvider
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    data class ComponentViewModel(val name: String, val displayName: String)
+    @Inject
+    lateinit var manifestProvider: ManifestProvider
+
+    private val listener = { component: ComponentViewModel ->
+        startActivity(ComponentActivity.newIntent(this, component.name))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val moshi = Moshi.Builder().build()
-        val manifestAdapter = ManifestJsonAdapter(moshi)
-
-        val appJson = resources.openRawResource(R.raw.app)
-            .bufferedReader()
-            .use { it.readText() }
-
-        val manifest = manifestAdapter.fromJson(appJson)!!
-
+        val manifest = manifestProvider.manifest
+            ?: throw IllegalStateException("app.json is not provided or TestApp is mis-configured")
         val components = manifest.components.map {
             ComponentViewModel(it.key, it.value.displayName)
         }
@@ -37,46 +35,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<RecyclerView>(R.id.recyclerview).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = ComponentAdapter(LayoutInflater.from(context), components)
+            adapter = ComponentListAdapter(LayoutInflater.from(context), components, listener)
 
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        }
-    }
-
-    private inner class ComponentAdapter(
-        private val layoutInflater: LayoutInflater,
-        private val components: List<ComponentViewModel>
-    ) : Adapter<ComponentAdapter.ComponentViewHolder>() {
-
-        override fun getItemCount() = components.size
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
-            return ComponentViewHolder(
-                layoutInflater.inflate(
-                    R.layout.recyclerview_item_component, parent, false
-                ) as TextView
-            )
-        }
-
-        override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) {
-            holder.bindTo(components[position])
-        }
-
-        inner class ComponentViewHolder(private val view: TextView) : ViewHolder(view) {
-            init {
-                view.setOnClickListener {
-                    val component = components[adapterPosition]
-                    val activity = this@MainActivity
-
-                    activity.startActivity(
-                        ComponentActivity.newIntent(activity, component.name)
-                    )
-                }
-            }
-
-            fun bindTo(component: ComponentViewModel) {
-                view.text = component.displayName
-            }
         }
     }
 }

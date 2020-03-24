@@ -1,7 +1,7 @@
 import org.gradle.initialization.DefaultSettings
 
 private static void apply(Settings settings) {
-    def projectDir = settings.findNodeModulePath(settings.rootDir, "react-native-test-app")
+    def projectDir = settings.findNodeModulesPath(settings.rootDir, "react-native-test-app")
 
     settings.include(":app")
     settings.project(":app")
@@ -10,15 +10,15 @@ private static void apply(Settings settings) {
 
 def scriptDir = buildscript.sourceFile.getParent()
 
-apply from: "$scriptDir/test-app-util.gradle"
-apply from: "$scriptDir/test-app-native-modules.gradle"
+apply from: "$scriptDir/android/test-app-util.gradle"
+apply from: "$scriptDir/android/test-app-native-modules.gradle"
 
 ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
     apply(defaultSettings)
     applyNativeModulesSettingsGradle(defaultSettings)
 }
 
-ext.applyTestAppModule = { Project project, String packageName -> 
+ext.applyTestAppModule = { Project project, String packageName ->
     applyNativeModulesAppBuildGradle(project, packageName)
 
     def generatedAssetsDir = file("${buildDir}/generated/rncli/src/main/assets/")
