@@ -24,7 +24,7 @@
     "@react-native-community/cli-platform-ios": "^2.4.1",
     "metro-react-native-babel-preset": "0.54.1",
     "react": "16.8.6",
-    "react-native": "0.61.5"
+    "react-native": "0.60.6"
   },
   "devDependencies": {
     "plop": "^2.6.0",

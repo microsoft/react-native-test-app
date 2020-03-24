@@ -74,6 +74,11 @@ class ReactNativeModules {
     private ArrayList<HashMap<String, String>> reactNativeModules
 
     private static String LOG_PREFIX = ":ReactNative:"
+    private static String REACT_NATIVE_CLI_BIN = "node_modules${File.separator}" +
+            "@react-native-community${File.separator}" +
+            "cli${File.separator}" +
+            "build${File.separator}" +
+            "index.js"
 
     ReactNativeModules(Logger logger, String jsAppDir) {
         this.logger = logger
@@ -190,11 +195,15 @@ class ReactNativeModules {
          *
          * @todo: `fastlane` has been reported to not work too.
          */
-        def cliResolveScript = "console.log(require('react-native/cli').bin);"
-        String[] nodeCommand = ["node", "-e", cliResolveScript]
-        def cliPath = this.getCommandOutput(nodeCommand)
 
-        String[] reactNativeConfigCommand = ["node", cliPath, "config"]
+        /**
+         * @todo: use commands below to resolve CLI path when upgrading to react-native v0.61.5
+         *  def cliResolveScript = "console.log(require('react-native/cli').bin);"
+         *  String[] nodeCommand = ["node", "-e", cliResolveScript]
+         *  def cliPath = this.getCommandOutput(nodeCommand)
+         */
+
+        String[] reactNativeConfigCommand = ["node", REACT_NATIVE_CLI_BIN, "config"]
         def reactNativeConfigOutput = this.getCommandOutput(reactNativeConfigCommand)
 
         def json
