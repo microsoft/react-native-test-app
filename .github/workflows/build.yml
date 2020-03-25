@@ -92,6 +92,7 @@ jobs:
     - name: Build
       run: |        
         yarn build:android
+        dir
         gradlew.bat clean build check test
       working-directory: example
   
