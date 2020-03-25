@@ -69,10 +69,9 @@ jobs:
         yarn
       working-directory: example
     - name: Build
+      shell: cmd
       run: |        
-        yarn build:android
-        dir
-        TYPE gradlew.bat
+        yarn build:android        
         gradlew.bat clean build check test --info
       working-directory: example
   
