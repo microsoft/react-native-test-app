@@ -36,16 +36,15 @@ class TestTestApp < Minitest::Test
       File.join(__dir__, 'fixtures', 'with_resources'),
       File.join(__dir__, 'fixtures', 'with_resources', 'ios')
     ].each do |project_root|
-      podspec_path = resources_pod(project_root)
-      manifest_path = app_manifest_path(project_root, podspec_path)
-      manifest = JSON.parse(File.read(manifest_path))
+      begin
+        podspec_path = resources_pod(project_root)
+        manifest_path = app_manifest_path(project_root, podspec_path)
+        manifest = JSON.parse(File.read(manifest_path))
 
-      assert_equal(2, manifest['resources'].length)
-      assert_equal('dist/assets', manifest['resources'][0])
-      assert_equal('dist/main.jsbundle', manifest['resources'][1])
-
-  ensure
-      File.delete(manifest_path)
+        assert_equal(%w[dist/assets dist/main.jsbundle], manifest['resources'].sort)
+      ensure
+        File.delete(manifest_path)
+      end
     end
   end
 end
