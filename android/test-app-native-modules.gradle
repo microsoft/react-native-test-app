@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+// TODO: https://github.com/microsoft/react-native-test-app/issues/31
+
 import groovy.json.JsonSlurper
 import org.gradle.initialization.DefaultSettings
 
