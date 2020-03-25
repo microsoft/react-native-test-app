@@ -74,6 +74,11 @@ jobs:
         yarn build:android        
         gradlew.bat clean build check test --info
       working-directory: example
+    - name: Build android
+      shell: cmd
+      run: |                  
+        gradlew.bat clean build check test --info
+      working-directory: example
   
   # Android:
   #   runs-on: macos-latest
