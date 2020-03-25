@@ -51,10 +51,8 @@ jobs:
         pod install
         ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
       working-directory: template-example
-
   Android:
     runs-on: macos-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -62,21 +60,15 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Set up sdkmanager
+      uses: malinskiy/action-android/install-sdk@release/0.0.5
     - name: Install
       run: |
         yarn
       working-directory: example
-    - name: Build JS code
+    - name: Build
       run: |
         set -eo pipefail
         yarn build:android
+        sh gradlew clean build check test
       working-directory: example
-    - name: Set up sdkmanager
-      uses: malinskiy/action-android/install-sdk@release/0.0.5
-    - name: Build      
-      uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5      
-      with:
-        cmd: cd example && pwd && sh gradlew clean build check connectedCheck
-        tag: default
-        abi: x86
-        api: 26      
