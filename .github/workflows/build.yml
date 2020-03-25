@@ -76,7 +76,7 @@ jobs:
     - name: Build      
       uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5      
       with:
-        cmd: cd example && sh gradlew clean build check connectedCheck
+        cmd: cd example && pwd && sh gradlew clean build check connectedCheck
         tag: default
         abi: x86
         api: 26      
