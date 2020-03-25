@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val manifest = manifestProvider.manifest
-            ?: throw IllegalStateException("app.json is not provided or TestApp is mis-configured")
+            ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
         val components = manifest.components.map {
             ComponentViewModel(it.key, it.value.displayName)
         }
