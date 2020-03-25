@@ -1,11 +1,40 @@
-import java.nio.file.Paths
+buildscript {
+    ext.kotlinVersion = "1.3.70"
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+    def buildscriptDir = buildscript.sourceFile.getParent()
+    apply from: "$buildscriptDir/../test-app-util.gradle"
 
-def buildscriptDir = buildscript.sourceFile.getParent()    
-apply from: "$buildscriptDir/../../test-app-util.gradle"
+    repositories {
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "com.android.tools.build:gradle:3.6.1"
+    }
+}
+
+repositories {
+    maven {
+        url("${findNodeModulesPath(rootDir, "react-native")}/android")
+    }
+
+    jcenter()
+    google()
+}
+
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
+
+def testAppDir = file("$projectDir/../../")
+
+apply from: file("${testAppDir}/test-app.gradle")
+applyTestAppModule(project, "com.sample")
+
+project.ext.react = [enableHermes: true]
 
 android {
     compileSdkVersion 29
@@ -19,20 +48,43 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    packagingOptions {
+        pickFirst "lib/armeabi-v7a/libc++_shared.so"
+        pickFirst "lib/arm64-v8a/libc++_shared.so"
+        pickFirst "lib/x86_64/libc++_shared.so"
+        pickFirst "lib/x86/libc++_shared.so"
+    }
 }
 
-def hermesEnginePath = findNodeModulePath("hermes-engine")
+// TODO: switch back to using path below when running on react-native v0.61.5
+//  def hermesEnginePath = findNodeModulesPath(projectDir, "hermes-engine")
+def hermesEnginePath = findNodeModulesPath(projectDir, "hermesvm")
 def hermesPath = "$hermesEnginePath/android"
 
 dependencies {
-    debugImplementation files("$hermesPath/hermes-debug.aar")
+    implementation "com.google.dagger:dagger:2.27"
+    implementation "com.google.dagger:dagger-android:2.27"
+    implementation "com.google.dagger:dagger-android-support:2.27"
+
+    kapt("com.google.dagger:dagger-compiler:2.27")
+    kapt("com.google.dagger:dagger-android-processor:2.27")
+
     releaseImplementation files("$hermesPath/hermes-release.aar")
+    debugImplementation files("$hermesPath/hermes-debug.aar")
 
     implementation "com.facebook.react:react-native:+"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"    
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.2'    
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
+
+    testImplementation "junit:junit:4.13"
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
 }

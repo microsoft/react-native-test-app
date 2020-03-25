@@ -54,3 +54,35 @@ jobs:
         pod install
         ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
       working-directory: template-example
+  Android:
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]      
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8    
+    - name: Set up Node
+      uses: actions/setup-node@v1
+      with:
+        # node has a bug where it crashes compiling a regular 
+        # expression of react-native cli. Using a specific 
+        # node version helps to workaround this problem: 
+        # https://github.com/facebook/react-native/issues/26598
+        node-version: 12.9.1
+    - name: Install
+      run: |
+        yarn
+      working-directory: example
+    - name: Build
+      shell: bash
+      run: |
+        set -eo pipefail
+        yarn build:android
+        ./gradlew clean build check test
+      working-directory: example    
+  

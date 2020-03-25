@@ -3437,7 +3437,7 @@ react-is@^16.8.1, react-is@^16.8.4:
   integrity sha512-GFMtL0vHkiBv9HluwNZTggSn/sCyEt9n02aM0dSAjGGyqyNlAyftYm4phPxdvCigG15JreC5biwxCgTAJZ7yAA==
 
 react-native-test-app@../:
-  version "0.0.4"
+  version "0.0.5"
   dependencies:
     "@babel/core" "^7.0.0"
     "@babel/runtime" "^7.0.0"

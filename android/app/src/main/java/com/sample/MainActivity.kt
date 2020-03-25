@@ -1,77 +1,43 @@
 package com.sample
 
 import android.os.Bundle
-import android.view.KeyEvent
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.react.PackageList
-import com.facebook.react.ReactInstanceManager
-import com.facebook.react.ReactRootView
-import com.facebook.react.TestAppPackageList
-import com.facebook.react.common.LifecycleState
-import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
-import com.facebook.soloader.SoLoader
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.sample.manifest.ManifestProvider
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
-    private lateinit var reactRootView: ReactRootView
-    private lateinit var reactInstanceManager: ReactInstanceManager
+class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var manifestProvider: ManifestProvider
+
+    private val listener = { component: ComponentViewModel ->
+        startActivity(ComponentActivity.newIntent(this, component.name))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        SoLoader.init(this, false)
-
-        reactRootView = ReactRootView(this)
-        setContentView(reactRootView)
-
-        reactInstanceManager = ReactInstanceManager.builder()
-            .setInitialLifecycleState(LifecycleState.BEFORE_RESUME)
-            .addPackages(PackageList(application).packages)
-            .addPackages(TestAppPackageList().packages)
-            .setUseDeveloperSupport(BuildConfig.DEBUG)
-            .setCurrentActivity(this)
-            .setBundleAssetName("index.android.bundle")
-            .setJSMainModulePath("index")
-            .setApplication(application)
-            .build()
-
-        reactRootView.startReactApplication(
-            reactInstanceManager, "TestComponent", null
-        )
-    }
-
-    override fun invokeDefaultOnBackPressed() {
-        onBackPressed()
-    }
-
-    override fun onBackPressed() {
-        reactInstanceManager.onBackPressed()
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            reactInstanceManager.showDevOptionsDialog()
-            return true
+        val manifest = manifestProvider.manifest
+            ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
+        val components = manifest.components.map {
+            ComponentViewModel(it.key, it.value.displayName)
         }
-        return super.onKeyUp(keyCode, event)
-    }
 
+        supportActionBar?.title = manifest.displayName
 
-    override fun onPause() {
-        super.onPause()
+        findViewById<RecyclerView>(R.id.recyclerview).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = ComponentListAdapter(LayoutInflater.from(context), components, listener)
 
-        reactInstanceManager.onHostPause(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        reactInstanceManager.onHostResume(this, this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        reactInstanceManager.onHostDestroy(this)
-        reactRootView.unmountReactApplication()
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
     }
 }
