@@ -4,7 +4,7 @@ on:
     branches:
     - master
   pull_request:
-jobs:  
+jobs:
   iOS:
     runs-on: macos-latest
     steps:
@@ -82,6 +82,10 @@ jobs:
     - name: Set up Node
       uses: actions/setup-node@v1
       with:
+        # node has a bug where it crashes compiling a regular 
+        # expression of react-native cli. Using a specific 
+        # node version helps to workaround this problem: 
+        # https://github.com/facebook/react-native/issues/26598
         node-version: '12.9.1'  
     - name: Install
       run: |
