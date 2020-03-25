@@ -51,8 +51,29 @@ jobs:
         pod install
         ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
       working-directory: template-example
-  Android:
-    runs-on: macos-latest
+  # Android:
+  #   runs-on: macos-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #   - name: Set up JDK 1.8
+  #     uses: actions/setup-java@v1
+  #     with:
+  #       java-version: 1.8    
+  #   - name: Install
+  #     run: |
+  #       yarn
+  #     working-directory: example
+  #   - name: Build
+  #     run: |
+  #       set -eo pipefail
+  #       yarn build:android
+  #       sh gradlew clean build check test
+  #     working-directory: example
+
+  # temporary
+  Android-windows:
+    runs-on: windows-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -65,8 +86,8 @@ jobs:
         yarn
       working-directory: example
     - name: Build
-      run: |
-        set -eo pipefail
+      run: |        
         yarn build:android
-        sh gradlew clean build check test
+        gradlew.bat clean build check test
       working-directory: example
+  
