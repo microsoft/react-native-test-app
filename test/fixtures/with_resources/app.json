@@ -1,0 +1,13 @@
+{
+  "name": "TestFixture",
+  "displayName": "TestFixture",
+  "components": {
+    "TestFixture": {
+      "displayName": "Test"
+    }
+  },
+  "resources": [
+    "dist/assets",
+    "dist/main.jsbundle"
+  ]
+}
