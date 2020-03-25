@@ -92,11 +92,10 @@ jobs:
         yarn
       working-directory: example
     - name: Build
-      shell: cmd
-      run: yarn build:android                
-      working-directory: example
-    - name: Build android
-      shell: cmd
-      run: gradlew.bat clean build check test        
-      working-directory: example
+      shell: bash
+      run: |
+        set -eo pipefail
+        yarn build:android
+        sh gradlew clean build check test
+      working-directory: example    
   
