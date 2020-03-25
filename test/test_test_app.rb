@@ -44,6 +44,7 @@ class TestTestApp < Minitest::Test
       assert_equal('dist/assets', manifest['resources'][0])
       assert_equal('dist/main.jsbundle', manifest['resources'][1])
 
+  ensure
       File.delete(manifest_path)
     end
   end
