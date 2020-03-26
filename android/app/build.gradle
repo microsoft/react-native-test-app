@@ -57,9 +57,7 @@ android {
     }
 }
 
-// TODO: switch back to using path below when running on react-native v0.61.5
-//  def hermesEnginePath = findNodeModulesPath(projectDir, "hermes-engine")
-def hermesEnginePath = findNodeModulesPath(projectDir, "hermesvm")
+def hermesEnginePath = findNodeModulesPath(projectDir, "hermes-engine") ?: findNodeModulesPath(projectDir, "hermesvm")
 def hermesPath = "$hermesEnginePath/android"
 
 dependencies {
