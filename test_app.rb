@@ -13,16 +13,30 @@ def autolink_script_path
   File.join(package_path, 'native_modules')
 end
 
+def find_file(file_name, project_root, current_dir = project_root)
+  return if File.expand_path(current_dir) == '/'
+
+  path = File.join(current_dir, file_name)
+  return path if File.exist?(path)
+
+  find_file(file_name, project_root, File.join(current_dir, '..'))
+end
+
+def nearest_node_modules(project_root)
+  path = find_file('node_modules', project_root)
+  raise "Could not find 'node_modules'" if path.nil?
+
+  path
+end
+
 def resolve_module(request)
   script = "console.log(path.dirname(require.resolve('#{request}/package.json')));"
   Pod::Executable.execute_command('node', ['-e', script], true).strip
 end
 
-def resources_pod(project_root, current_dir = project_root)
-  return if File.expand_path(current_dir) == '/'
-
-  app_manifest = File.join(current_dir, 'app.json')
-  return resources_pod(project_root, File.join(current_dir, '..')) unless File.exist?(app_manifest)
+def resources_pod(project_root)
+  app_manifest = find_file('app.json', project_root)
+  return if app_manifest.nil?
 
   resources = JSON.parse(File.read(app_manifest))['resources']
   return if !resources.instance_of?(Array) || resources.empty?
@@ -38,10 +52,11 @@ def resources_pod(project_root, current_dir = project_root)
     'resources' => resources
   }
 
-  podspec_path = File.join(current_dir, 'ReactTestApp-Resources.podspec.json')
+  app_dir = File.dirname(app_manifest)
+  podspec_path = File.join(app_dir, 'ReactTestApp-Resources.podspec.json')
   File.write(podspec_path, spec.to_json)
   at_exit { File.delete(podspec_path) if File.exist?(podspec_path) }
-  Pathname.new(current_dir).relative_path_from(project_root).to_s
+  Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
 def use_react_native!(project_root)
@@ -67,7 +82,7 @@ def use_test_app!(project_root)
   xcodeproj = 'ReactTestApp.xcodeproj'
   if project_root != __dir__
     src_xcodeproj = File.join(__dir__, 'ios', xcodeproj)
-    destination = File.join(resolve_module('react-native-test-app'), '..', '.generated')
+    destination = File.join(nearest_node_modules(project_root), '.generated')
     dst_xcodeproj = File.join(destination, xcodeproj)
 
     # Copy/link Xcode project files
