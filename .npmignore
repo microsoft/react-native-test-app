@@ -5,7 +5,7 @@
 .github/
 .rubocop.yml
 .swiftlint.yml
-Gemfile
+Gemfile*
 example/
 scripts/
 test/

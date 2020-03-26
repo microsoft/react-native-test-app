@@ -12,7 +12,9 @@ jobs:
       uses: actions/checkout@v2
     - name: minitest
       run: |
-        ruby -Ilib:test test/test_test_app.rb
+        bundle install
+        bundle exec rubocop
+        bundle exec ruby -Ilib:test test/test_test_app.rb
     - name: Install
       run: |
         yarn
