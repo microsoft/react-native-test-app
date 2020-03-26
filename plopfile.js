@@ -11,7 +11,7 @@
  */
 
 /** @type {(plop: import('plop').NodePlopAPI) => void} */
-module.exports = plop => {
+module.exports = (plop) => {
   plop.setGenerator("app", {
     description: "ReactTestApp configuration",
     prompts: [
@@ -19,15 +19,15 @@ module.exports = plop => {
         type: "input",
         name: "name",
         message: "What is the name of your test app?",
-        validate: name => Boolean(name.trim()),
-        transformer: name => name.replace(/[^-\w]/g, "")
+        validate: (name) => Boolean(name.trim()),
+        transformer: (name) => name.replace(/[^-\w]/g, ""),
       },
       {
         type: "list",
         name: "platforms",
         message: "Which platforms do you need test apps for?",
-        choices: ["all", "android", "ios", "macos", "windows"]
-      }
+        choices: ["all", "android", "ios", "macos", "windows"],
+      },
     ],
     actions: (/** @type {InputData} */ { name, platforms }) => {
       const path = require("path");
@@ -38,7 +38,7 @@ module.exports = plop => {
         {
           type: "add",
           path: ".watchmanconfig",
-          templateFile: path.join(templateDir, "_watchmanconfig")
+          templateFile: path.join(templateDir, "_watchmanconfig"),
         },
         {
           type: "add",
@@ -49,38 +49,42 @@ module.exports = plop => {
               displayName: name,
               components: {
                 [name]: {
-                  displayName: name
-                }
+                  displayName: name,
+                },
               },
-              resources: ["assets", "main.jsbundle"]
+              resources: ["assets", "main.jsbundle"],
             },
             undefined,
             2
-          )
+          ),
         },
         {
           type: "add",
           path: "babel.config.js",
-          templateFile: require.resolve("react-native/template/babel.config.js")
+          templateFile: require.resolve(
+            "react-native/template/babel.config.js"
+          ),
         },
         {
           type: "add",
           path: "index.js",
-          templateFile: require.resolve("react-native/template/index.js")
+          templateFile: require.resolve("react-native/template/index.js"),
         },
         {
           type: "add",
           path: "metro.config.js",
-          templateFile: require.resolve("react-native/template/metro.config.js")
+          templateFile: require.resolve(
+            "react-native/template/metro.config.js"
+          ),
         },
         {
           type: "add",
           path: "package.json",
           templateFile: require.resolve("react-native/template/package.json"),
-          transform: template => {
+          transform: (template) => {
             const {
               name: testAppPackageName,
-              version: testAppPackageVersion
+              version: testAppPackageVersion,
             } = require("./package.json");
             const packageJson = JSON.parse(template);
             const devDependencies = {
@@ -90,7 +94,7 @@ module.exports = plop => {
               "@react-native-community/cli": "^4.3.0",
               "@react-native-community/cli-platform-android": "^4.3.0",
               "@react-native-community/cli-platform-ios": "^4.3.0",
-              "@react-native-community/eslint-config": "^0.0.5"
+              "@react-native-community/eslint-config": "^0.0.5",
             };
             return JSON.stringify(
               {
@@ -101,16 +105,77 @@ module.exports = plop => {
                   .reduce(
                     (deps, key) => ({ ...deps, [key]: devDependencies[key] }),
                     {}
-                  )
+                  ),
               },
               undefined,
               2
             );
-          }
-        }
+          },
+        },
       ];
 
       const exclusive = platforms !== "all";
+
+      if (!exclusive || platforms === "android") {
+        const prefix = exclusive ? "" : "android/";
+        const androidTemplateDir = path.join(templateDir, "android");
+        actions.push({
+          type: "add",
+          path: `${prefix}gradle/wrapper/gradle-wrapper.jar`,
+          templateFile: path.join(
+            androidTemplateDir,
+            "gradle",
+            "wrapper",
+            "gradle-wrapper.jar"
+          ),
+        });
+        actions.push({
+          type: "add",
+          path: `${prefix}gradle/wrapper/gradle-wrapper.properties`,
+          templateFile: path.join(
+            androidTemplateDir,
+            "gradle",
+            "wrapper",
+            "gradle-wrapper.properties"
+          ),
+          transform: (template) => template.replace(/5\.4\.1/, '5.6.4')
+        });
+        actions.push({
+          type: "add",
+          path: `${prefix}gradle.properties`,
+          templateFile: path.join(androidTemplateDir, "gradle.properties"),
+          transform: (template) =>
+            [
+              template,
+              "# Assets that are expected to be copied to the test app.",
+              "testApp.bundle=dist/main.jsbundle",
+              "testApp.resources=dist/res",
+              "",
+            ].join("\n"),
+        });
+        actions.push({
+          type: "add",
+          path: `${prefix}gradlew`,
+          templateFile: path.join(androidTemplateDir, "gradlew"),
+        });
+        actions.push({
+          type: "add",
+          path: `${prefix}gradlew.bat`,
+          templateFile: path.join(androidTemplateDir, "gradlew.bat"),
+        });
+        actions.push({
+          type: "add",
+          path: `${prefix}settings.gradle`,
+          template: [
+            "rootProject.name='example'",
+            "",
+            'apply from: file("${rootDir}/node_modules/react-native-test-app/test-app.gradle")',
+            "applyTestAppSettings(settings)",
+            "",
+          ].join("\n"),
+        });
+      }
+
       if (!exclusive || platforms === "ios") {
         const prefix = exclusive ? "" : "ios/";
         actions.push({
@@ -124,8 +189,8 @@ module.exports = plop => {
             "workspace '{{name}}.xcworkspace'",
             "",
             "use_test_app!(__dir__)",
-            ""
-          ].join("\n")
+            "",
+          ].join("\n"),
         });
         actions.push({
           type: "add",
@@ -138,12 +203,12 @@ module.exports = plop => {
             "    }",
             "  }",
             "};",
-            ""
-          ].join("\n")
+            "",
+          ].join("\n"),
         });
       }
 
       return actions;
-    }
+    },
   });
 };
