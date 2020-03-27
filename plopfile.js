@@ -52,7 +52,11 @@ module.exports = (plop) => {
                   displayName: name,
                 },
               },
-              resources: ["assets", "main.jsbundle"],
+              resources: [
+                "dist/res",
+                "dist/assets",
+                "dist/main.jsbundle"
+              ],
             },
             undefined,
             2
@@ -144,14 +148,6 @@ module.exports = (plop) => {
           type: "add",
           path: `${prefix}gradle.properties`,
           templateFile: path.join(androidTemplateDir, "gradle.properties"),
-          transform: (template) =>
-            [
-              template,
-              "# Assets that are expected to be copied to the test app.",
-              "testApp.bundle=dist/main.jsbundle",
-              "testApp.resources=dist/res",
-              "",
-            ].join("\n"),
         });
         actions.push({
           type: "add",
