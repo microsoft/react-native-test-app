@@ -1,3 +1,4 @@
+import groovy.json.JsonSlurper
 import org.gradle.initialization.DefaultSettings
 
 private static void apply(Settings settings) {
@@ -21,29 +22,54 @@ ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
 ext.applyTestAppModule = { Project project, String packageName ->
     applyNativeModulesAppBuildGradle(project, packageName)
 
+    def manifestFile = file("$rootDir/app.json")
+    def manifest = new JsonSlurper().parseText(manifestFile.text)
+
+    def resources = manifest["resources"]
+
+    def androidResources = null
+    if (resources instanceof List) {
+        androidResources = resources
+    } else if (resources.containsKey("android")) {
+        androidResources = resources["android"]
+    } else {
+        throw new IllegalArgumentException("The \"resources\" property of the app.json has " +
+            "to be either a list of paths, or must contain a nested list with the \"android\" key")
+    }
+
+    def androidResourceFiles = androidResources
+        .collect { file("$rootDir/$it") }
+
+    def androidResDir = androidResourceFiles
+        .find { it.isDirectory() && it.path.endsWith("res") }
+
+    androidResourceFiles.remove(androidResDir)
+
     def generatedAssetsDir = file("${buildDir}/generated/rncli/src/main/assets/")
     generatedAssetsDir.mkdirs()
 
     def generatedResDir = file("${buildDir}/generated/rncli/src/main/res/")
     generatedResDir.mkdirs()
 
-    task copyBundle(type: Copy) {
-        def bundlePath = project.getProperties()
-                .get("testApp.bundle")
+    task copyAssets(type: Copy) {
+        androidResourceFiles.each {
+            from it
+        }
 
-        from "${rootDir}/${bundlePath}"
         into generatedAssetsDir
     }
 
     task copyResources(type: Copy) {
-        def resourcesPath = project.getProperties()
-                .get("testApp.resources")
+        if (androidResDir == null) {
+            throw new IllegalArgumentException(
+                "The res path for android must be present")
+        }
 
-        from "${rootDir}/${resourcesPath}"
+        from androidResDir
         into generatedResDir
     }
 
-    preBuild.dependsOn(copyBundle)
+    preBuild.dependsOn(copyAssets)
     preBuild.dependsOn(copyResources)
 
     android {

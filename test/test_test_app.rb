@@ -24,17 +24,31 @@ class TestTestApp < Minitest::Test
     project_root = File.join(__dir__, 'fixtures', 'without_resources', 'ios')
     assert_nil(resources_pod(project_root))
 
+    project_root = File.join(__dir__, 'fixtures', 'without_ios_resources')
+    assert_nil(resources_pod(project_root))
+
+    project_root = File.join(__dir__, 'fixtures', 'without_ios_resources', 'ios')
+    assert_nil(resources_pod(project_root))
+
     project_root = File.join(__dir__, 'fixtures', 'with_resources')
     assert_equal('.', resources_pod(project_root))
 
     project_root = File.join(__dir__, 'fixtures', 'with_resources', 'ios')
+    assert_equal('..', resources_pod(project_root))
+
+    project_root = File.join(__dir__, 'fixtures', 'with_ios_resources')
+    assert_equal('.', resources_pod(project_root))
+
+    project_root = File.join(__dir__, 'fixtures', 'with_ios_resources', 'ios')
     assert_equal('..', resources_pod(project_root))
   end
 
   def test_resources_pod_writes_podspec
     [
       File.join(__dir__, 'fixtures', 'with_resources'),
-      File.join(__dir__, 'fixtures', 'with_resources', 'ios')
+      File.join(__dir__, 'fixtures', 'with_resources', 'ios'),
+      File.join(__dir__, 'fixtures', 'with_ios_resources'),
+      File.join(__dir__, 'fixtures', 'with_ios_resources', 'ios')
     ].each do |project_root|
       begin
         podspec_path = resources_pod(project_root)

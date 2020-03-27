@@ -38,7 +38,7 @@ def resources_pod(project_root)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
-  resources = JSON.parse(File.read(app_manifest))['resources']
+  resources = resolve_resources(JSON.parse(File.read(app_manifest)))
   return if !resources.instance_of?(Array) || resources.empty?
 
   spec = {
@@ -57,6 +57,13 @@ def resources_pod(project_root)
   File.write(podspec_path, spec.to_json)
   at_exit { File.delete(podspec_path) if File.exist?(podspec_path) }
   Pathname.new(app_dir).relative_path_from(project_root).to_s
+end
+
+def resolve_resources(manifest)
+  resources = manifest['resources']
+  return if !resources || resources.empty?
+
+  resources.instance_of?(Array) ? resources : resources['ios']
 end
 
 def use_react_native!(project_root)
