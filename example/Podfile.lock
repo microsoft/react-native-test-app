@@ -110,7 +110,7 @@ DEPENDENCIES:
   - React-RCTText (from `node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `node_modules/react-native/Libraries/WebSocket`)
-  - ReactTestApp-DevSupport (from `./node_modules/react-native-test-app`)
+  - ReactTestApp-DevSupport (from `./..`)
   - ReactTestApp-Resources (from `.`)
   - SwiftLint
   - yoga (from `node_modules/react-native/ReactCommon/yoga`)
@@ -165,7 +165,7 @@ EXTERNAL SOURCES:
   React-RCTWebSocket:
     :path: node_modules/react-native/Libraries/WebSocket
   ReactTestApp-DevSupport:
-    :path: "./node_modules/react-native-test-app"
+    :path: "./.."
   ReactTestApp-Resources:
     :path: "."
   yoga:
