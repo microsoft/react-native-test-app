@@ -41,7 +41,7 @@ ext.applyTestAppModule = { Project project, String packageName ->
         .collect { file("$rootDir/$it") }
 
     def androidResDir = androidResourceFiles
-        .find { it.isDirectory() && it.path.endsWith("res") }
+        .find { it.isDirectory() && it.name == "res" }
 
     androidResourceFiles.remove(androidResDir)
 
