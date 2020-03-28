@@ -42,6 +42,11 @@ module.exports = (plop) => {
         },
         {
           type: "add",
+          path: "App.js",
+          templateFile: require.resolve("react-native/template/App.js"),
+        },
+        {
+          type: "add",
           path: "app.json",
           template: JSON.stringify(
             {
@@ -94,6 +99,7 @@ module.exports = (plop) => {
             const devDependencies = {
               ...packageJson.devDependencies,
               [testAppPackageName]: testAppPackageVersion,
+              mkdirp: "^1.0.0",
               // TODO(tido64): Remove these when https://github.com/microsoft/react-native-test-app/pull/17 is merged
               "@react-native-community/cli": "^4.3.0",
               "@react-native-community/cli-platform-android": "^4.3.0",
@@ -104,6 +110,13 @@ module.exports = (plop) => {
               {
                 ...packageJson,
                 name,
+                scripts: {
+                  "build:android":
+                    "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.jsbundle --assets-dest dist/res --reset-cache",
+                  "build:ios":
+                    "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache",
+                  ...packageJson.scripts,
+                },
                 devDependencies: Object.keys(devDependencies)
                   .sort()
                   .reduce(
@@ -142,7 +155,7 @@ module.exports = (plop) => {
             "wrapper",
             "gradle-wrapper.properties"
           ),
-          transform: (template) => template.replace(/5\.4\.1/, '5.6.4')
+          transform: (template) => template.replace(/5\.4\.1/, "5.6.4"),
         });
         actions.push({
           type: "add",

@@ -40,6 +40,7 @@ jobs:
     - name: Build
       run: |
         set -eo pipefail
+        yarn build:ios
         pod install --project-directory=ios
         ../scripts/xcodebuild-ios.sh ios/TemplateExample.xcworkspace build
       working-directory: template-example
@@ -53,6 +54,7 @@ jobs:
     - name: Build
       run: |
         set -eo pipefail
+        yarn build:ios
         pod install
         ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
       working-directory: template-example
@@ -113,9 +115,7 @@ jobs:
     - name: Build
       run: |
         set -eo pipefail
-        mkdir -p dist/res/raw
-        cp app.json dist/res/raw/
-        touch dist/main.jsbundle
+        yarn build:android
         ./gradlew clean build check test
       shell: bash
       working-directory: template-example
