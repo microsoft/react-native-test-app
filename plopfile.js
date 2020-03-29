@@ -178,7 +178,7 @@ module.exports = (plop) => {
           template: [
             "rootProject.name='example'",
             "",
-            'apply from: file("${rootDir}/node_modules/react-native-test-app/test-app.gradle")',
+            `apply from: file("${exclusive ? "" : "../"}node_modules/react-native-test-app/test-app.gradle")`,
             "applyTestAppSettings(settings)",
             "",
           ].join("\n"),

@@ -1,5 +1,19 @@
 import java.nio.file.Paths
 
+ext.findFile = { fileName ->
+    def currentDir = file(rootDir)
+    while (currentDir != null) {
+        def file = Paths.get(currentDir.toString(), fileName).toFile()
+        if (file.exists()) {
+            return file
+        }
+
+        currentDir = currentDir.getParent()
+    }
+
+    return null
+}
+
 /**
  * Finds the path of the installed npm package with the given name using Node's
  * module resolution algorithm, which searches "node_modules" directories up to
