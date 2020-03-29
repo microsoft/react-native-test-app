@@ -13,42 +13,34 @@ def app_manifest_path(project_root, podspec_path)
   File.join(project_root, podspec_path, 'ReactTestApp-Resources.podspec.json')
 end
 
+def fixture_path(*args)
+  Pathname.new(__dir__).join('fixtures', *args)
+end
+
 class TestTestApp < Minitest::Test
   def test_resources_pod_returns_spec_path
-    assert_nil(resources_pod('/'))
-    assert_nil(resources_pod('.'))
+    assert_nil(resources_pod(Pathname.new('/')))
+    assert_nil(resources_pod(Pathname.new('.')))
 
-    project_root = File.join(__dir__, 'fixtures', 'without_resources')
-    assert_nil(resources_pod(project_root))
+    assert_nil(resources_pod(fixture_path('without_resources')))
+    assert_nil(resources_pod(fixture_path('without_resources', 'ios')))
 
-    project_root = File.join(__dir__, 'fixtures', 'without_resources', 'ios')
-    assert_nil(resources_pod(project_root))
+    assert_nil(resources_pod(fixture_path('without_ios_resources')))
+    assert_nil(resources_pod(fixture_path('without_ios_resources', 'ios')))
 
-    project_root = File.join(__dir__, 'fixtures', 'without_ios_resources')
-    assert_nil(resources_pod(project_root))
+    assert_equal('.', resources_pod(fixture_path('with_resources')))
+    assert_equal('..', resources_pod(fixture_path('with_resources', 'ios')))
 
-    project_root = File.join(__dir__, 'fixtures', 'without_ios_resources', 'ios')
-    assert_nil(resources_pod(project_root))
-
-    project_root = File.join(__dir__, 'fixtures', 'with_resources')
-    assert_equal('.', resources_pod(project_root))
-
-    project_root = File.join(__dir__, 'fixtures', 'with_resources', 'ios')
-    assert_equal('..', resources_pod(project_root))
-
-    project_root = File.join(__dir__, 'fixtures', 'with_ios_resources')
-    assert_equal('.', resources_pod(project_root))
-
-    project_root = File.join(__dir__, 'fixtures', 'with_ios_resources', 'ios')
-    assert_equal('..', resources_pod(project_root))
+    assert_equal('.', resources_pod(fixture_path('with_ios_resources')))
+    assert_equal('..', resources_pod(fixture_path('with_ios_resources', 'ios')))
   end
 
   def test_resources_pod_writes_podspec
     [
-      File.join(__dir__, 'fixtures', 'with_resources'),
-      File.join(__dir__, 'fixtures', 'with_resources', 'ios'),
-      File.join(__dir__, 'fixtures', 'with_ios_resources'),
-      File.join(__dir__, 'fixtures', 'with_ios_resources', 'ios')
+      fixture_path('with_resources'),
+      fixture_path('with_resources', 'ios'),
+      fixture_path('with_ios_resources'),
+      fixture_path('with_ios_resources', 'ios')
     ].each do |project_root|
       begin
         podspec_path = resources_pod(project_root)
