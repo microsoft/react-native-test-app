@@ -13,13 +13,13 @@ def autolink_script_path
   File.join(package_path, 'native_modules')
 end
 
-def find_file(file_name, project_root, current_dir = project_root)
-  return if File.expand_path(current_dir) == '/'
+def find_file(file_name, current_dir)
+  return if current_dir.expand_path.to_s == '/'
 
-  path = File.join(current_dir, file_name)
+  path = current_dir + file_name
   return path if File.exist?(path)
 
-  find_file(file_name, project_root, File.join(current_dir, '..'))
+  find_file(file_name, current_dir.parent)
 end
 
 def nearest_node_modules(project_root)
@@ -32,6 +32,13 @@ end
 def resolve_module(request)
   script = "console.log(path.dirname(require.resolve('#{request}/package.json')));"
   Pod::Executable.execute_command('node', ['-e', script], true).strip
+end
+
+def resolve_resources(manifest)
+  resources = manifest['resources']
+  return if !resources || resources.empty?
+
+  resources.instance_of?(Array) ? resources : resources['ios']
 end
 
 def resources_pod(project_root)
@@ -59,13 +66,6 @@ def resources_pod(project_root)
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
-def resolve_resources(manifest)
-  resources = manifest['resources']
-  return if !resources || resources.empty?
-
-  resources.instance_of?(Array) ? resources : resources['ios']
-end
-
 def use_react_native!(project_root)
   react_native = Pathname.new(resolve_module('react-native'))
 
@@ -80,42 +80,32 @@ def use_react_native!(project_root)
     throw "Unsupported React Native version: #{version[0]}"
   end
 
-  include_react_native!(react_native.relative_path_from(Pathname.new(project_root)).to_s)
+  include_react_native!(react_native.relative_path_from(project_root).to_s)
 end
 
 def use_test_app!(project_root)
-  platform :ios, '12.0'
-
   xcodeproj = 'ReactTestApp.xcodeproj'
-  if project_root != __dir__
-    src_xcodeproj = File.join(__dir__, 'ios', xcodeproj)
-    destination = File.join(nearest_node_modules(project_root), '.generated')
-    dst_xcodeproj = File.join(destination, xcodeproj)
 
-    # Copy/link Xcode project files
-    FileUtils.mkdir_p(dst_xcodeproj)
-    FileUtils.cp(File.join(src_xcodeproj, 'project.pbxproj'), dst_xcodeproj)
-    FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
+  project_root = Pathname.new(project_root) unless project_root.is_a?(Pathname)
+  src_xcodeproj = File.join(__dir__, 'ios', xcodeproj)
+  destination = File.join(nearest_node_modules(project_root), '.generated')
+  dst_xcodeproj = File.join(destination, xcodeproj)
 
-    # Link source files
-    %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
-      FileUtils.ln_sf(File.join(__dir__, 'ios', file), destination)
-    end
+  # Copy/link Xcode project files
+  FileUtils.mkdir_p(dst_xcodeproj)
+  FileUtils.cp(File.join(src_xcodeproj, 'project.pbxproj'), dst_xcodeproj)
+  FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
 
-    project dst_xcodeproj
-
-    post_install do
-      puts ''
-      puts 'NOTE'
-      puts "  `#{xcodeproj}` was sourced from `react-native-test-app`"
-      puts '  All modifications will be overwritten next time you run `pod install`'
-      puts ''
-    end
-  else
-    project xcodeproj
+  # Link source files
+  %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
+    FileUtils.ln_sf(File.join(__dir__, 'ios', file), destination)
   end
 
   require_relative(autolink_script_path)
+
+  platform :ios, '12.0'
+
+  project dst_xcodeproj
 
   target 'ReactTestApp' do
     pod 'QRCodeReader.swift'
@@ -130,6 +120,14 @@ def use_test_app!(project_root)
     yield ReactTestAppTargets.new(self) if block_given?
 
     use_native_modules! '.'
+  end
+
+  post_install do
+    puts ''
+    puts 'NOTE'
+    puts "  `#{xcodeproj}` was sourced from `react-native-test-app`"
+    puts '  All modifications will be overwritten next time you run `pod install`'
+    puts ''
   end
 end
 
