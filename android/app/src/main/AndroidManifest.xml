@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ComponentActivity" />
+        <activity android:name=".component.ComponentActivity" />
+        <activity android:name=".component.NativeComponentActivity" />
     </application>
 
 </manifest>

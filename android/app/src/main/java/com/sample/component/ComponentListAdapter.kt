@@ -1,9 +1,10 @@
-package com.sample
+package com.sample.component
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.sample.R
 
 class ComponentListAdapter(
     private val layoutInflater: LayoutInflater,

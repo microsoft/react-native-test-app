@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.facebook.react.ReactNativeHost
 import com.sample.MainActivity
+import com.sample.component.NativeComponentActivity
 import com.sample.react.TestAppReactNativeHost
 import dagger.Binds
 import dagger.Module
@@ -21,4 +22,8 @@ abstract class TestAppBindings {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun contributeMainActivityInjector(): MainActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun contributeNativeComponentActivityInjector(): NativeComponentActivity
 }
