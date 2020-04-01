@@ -12,4 +12,4 @@ data class Manifest(
 )
 
 @JsonClass(generateAdapter = true)
-data class Component(val displayName: String)
+data class Component(val displayName: String?)

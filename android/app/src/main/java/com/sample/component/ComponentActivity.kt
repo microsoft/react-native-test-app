@@ -30,12 +30,9 @@ class ComponentActivity : ReactActivity() {
         super.onCreate(savedInstanceState)
         SoLoader.init(this, false)
 
-        val componentDisplayName = intent.extras?.getString(COMPONENT_DISPLAY_NAME, null)
-            ?: throw IllegalArgumentException("Component display name has to be provided.")
         val componentName = intent.extras?.getString(COMPONENT_NAME, null)
             ?: throw IllegalArgumentException("Class name has to be provided.")
-
-        title = componentDisplayName
+        title = intent.extras?.getString(COMPONENT_DISPLAY_NAME, componentName)
 
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

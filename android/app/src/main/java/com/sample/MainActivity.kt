@@ -35,7 +35,7 @@ class MainActivity : ReactActivity() {
         val manifest = manifestProvider.manifest
             ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
         val components = manifest.components.map {
-            ComponentViewModel(it.key, it.value.displayName)
+            ComponentViewModel(it.key, it.value.displayName ?: it.key)
         }
 
         supportActionBar?.title = manifest.displayName
