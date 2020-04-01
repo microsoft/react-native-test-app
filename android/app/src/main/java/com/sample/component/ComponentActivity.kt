@@ -30,12 +30,12 @@ class ComponentActivity : ReactActivity() {
         super.onCreate(savedInstanceState)
         SoLoader.init(this, false)
 
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val componentName = intent.extras?.getString(COMPONENT_NAME, null)
             ?: throw IllegalArgumentException("Class name has to be provided.")
         title = intent.extras?.getString(COMPONENT_DISPLAY_NAME, componentName)
-
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         findClass(componentName)?.let {
             val fragmentClass = it as Class<Fragment>
