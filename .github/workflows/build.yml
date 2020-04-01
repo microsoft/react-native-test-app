@@ -78,6 +78,13 @@ jobs:
         # Node version helps to workaround this problem:
         # https://github.com/facebook/react-native/issues/26598
         node-version: 12.9.1
+    - name: Cache Gradle
+      uses: actions/cache@v1
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
     - name: Install
       run: |
         yarn
@@ -109,6 +116,13 @@ jobs:
         # Node version helps to workaround this problem:
         # https://github.com/facebook/react-native/issues/26598
         node-version: 12.9.1
+    - name: Cache Gradle
+      uses: actions/cache@v1
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
     - name: Install
       run: scripts/install-test-template.sh all
       shell: bash
@@ -140,6 +154,13 @@ jobs:
         # Node version helps to workaround this problem:
         # https://github.com/facebook/react-native/issues/26598
         node-version: 12.9.1
+    - name: Cache Gradle
+      uses: actions/cache@v1
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
     - name: Install
       run: scripts/install-test-template.sh android
       shell: bash
