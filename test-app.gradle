@@ -61,10 +61,17 @@ ext.applyTestAppModule = { Project project, String packageName ->
 
     task copyResources(type: Copy) {
         if (androidResDir == null) {
+<<<<<<< HEAD
             // If no resources are present in the path specified in the manifest, 
             // the plugin has to fallback to copying at least the manifest itself 
             // for the test-app to function. The resources, in this case, can be 
             // served through the dev server. 
+=======
+            // If no resources are present in the path specified in the manifest,
+            // the plugin has to fallback to copying at least the manifest itself
+            // for the test-app to function. The resources, in this case, can be
+            // served through the dev server.
+>>>>>>> ed5fc7bd6b9081431661a68d10782daf45ec1709
 
             def generatedRawDir = file("$generatedResDir/raw")
             generatedRawDir.mkdirs()
@@ -74,7 +81,11 @@ ext.applyTestAppModule = { Project project, String packageName ->
         } else {
             from androidResDir
             into generatedResDir
+<<<<<<< HEAD
         }        
+=======
+        }
+>>>>>>> ed5fc7bd6b9081431661a68d10782daf45ec1709
     }
 
     preBuild.dependsOn(copyAssets)
