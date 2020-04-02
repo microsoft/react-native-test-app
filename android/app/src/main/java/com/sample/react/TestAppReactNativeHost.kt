@@ -13,9 +13,10 @@ class TestAppReactNativeHost @Inject constructor(
     private val reactBundleNameProvider: ReactBundleNameProvider
 ) : ReactNativeHost(application) {
 
-    override fun getBundleAssetName() = reactBundleNameProvider.bundleName
+    override fun getBundleAssetName() =
+        reactBundleNameProvider.bundleName ?: super.getBundleAssetName()
 
-    override fun getUseDeveloperSupport() = bundleAssetName != null
+    override fun getUseDeveloperSupport() = reactBundleNameProvider.bundleName == null
 
     override fun getPackages(): List<ReactPackage> = PackageList(application).packages
 }

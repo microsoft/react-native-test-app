@@ -22,7 +22,7 @@ ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
 ext.applyTestAppModule = { Project project, String packageName ->
     applyNativeModulesAppBuildGradle(project, packageName)
 
-    def manifestFile = findFile("app.json")
+    def manifestFile = file("$rootDir/app.json")
     def manifest = new JsonSlurper().parseText(manifestFile.text)
 
     def resources = manifest["resources"]
@@ -37,9 +37,8 @@ ext.applyTestAppModule = { Project project, String packageName ->
             "to be either a list of paths, or must contain a nested list with the \"android\" key")
     }
 
-    def projectRoot = manifestFile.getParent()
     def androidResourceFiles = androidResources
-        .collect { file("$projectRoot/$it") }
+        .collect { file("$rootDir/$it") }
 
     def androidResDir = androidResourceFiles
         .find { it.isDirectory() && it.name == "res" }
@@ -62,12 +61,20 @@ ext.applyTestAppModule = { Project project, String packageName ->
 
     task copyResources(type: Copy) {
         if (androidResDir == null) {
-            throw new IllegalArgumentException(
-                "The res path for android must be present")
-        }
+            // If no resources are present in the path specified in the manifest, 
+            // the plugin has to fallback to copying at least the manifest itself 
+            // for the test-app to function. The resources, in this case, can be 
+            // served through the dev server. 
 
-        from androidResDir
-        into generatedResDir
+            def generatedRawDir = file("$generatedResDir/raw")
+            generatedRawDir.mkdirs()
+
+            from manifestFile
+            into generatedRawDir
+        } else {
+            from androidResDir
+            into generatedResDir
+        }        
     }
 
     preBuild.dependsOn(copyAssets)
