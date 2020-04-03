@@ -74,6 +74,12 @@ class ComponentActivity : ReactActivity() {
         return super.getSystemService(name)
     }
 
+    // TODO: https://github.com/microsoft/react-native-test-app/issues/51
+    override fun onBackPressed() {
+        super.invokeDefaultOnBackPressed()
+    }
+
+    // TODO: https://github.com/microsoft/react-native-test-app/issues/51
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
