@@ -88,32 +88,32 @@ PODS:
   - yoga (0.60.6.React)
 
 DEPENDENCIES:
-  - DoubleConversion (from `node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - Example-Tests (from `.`)
-  - Folly (from `node_modules/react-native/third-party-podspecs/Folly.podspec`)
-  - glog (from `node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Example-Tests (from `..`)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - QRCodeReader.swift
-  - React (from `node_modules/react-native`)
-  - React-Core (from `node_modules/react-native/React`)
-  - React-cxxreact (from `node_modules/react-native/ReactCommon/cxxreact`)
-  - React-DevSupport (from `node_modules/react-native/React`)
-  - React-jsi (from `node_modules/react-native/ReactCommon/jsi`)
-  - React-jsiexecutor (from `node_modules/react-native/ReactCommon/jsiexecutor`)
-  - React-jsinspector (from `node_modules/react-native/ReactCommon/jsinspector`)
-  - React-RCTActionSheet (from `node_modules/react-native/Libraries/ActionSheetIOS`)
-  - React-RCTAnimation (from `node_modules/react-native/Libraries/NativeAnimation`)
-  - React-RCTBlob (from `node_modules/react-native/Libraries/Blob`)
-  - React-RCTImage (from `node_modules/react-native/Libraries/Image`)
-  - React-RCTLinking (from `node_modules/react-native/Libraries/LinkingIOS`)
-  - React-RCTNetwork (from `node_modules/react-native/Libraries/Network`)
-  - React-RCTSettings (from `node_modules/react-native/Libraries/Settings`)
-  - React-RCTText (from `node_modules/react-native/Libraries/Text`)
-  - React-RCTVibration (from `node_modules/react-native/Libraries/Vibration`)
-  - React-RCTWebSocket (from `node_modules/react-native/Libraries/WebSocket`)
-  - ReactTestApp-DevSupport (from `./..`)
-  - ReactTestApp-Resources (from `.`)
+  - React (from `../node_modules/react-native`)
+  - React-Core (from `../node_modules/react-native/React`)
+  - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
+  - React-DevSupport (from `../node_modules/react-native/React`)
+  - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
+  - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
+  - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
+  - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
+  - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
+  - React-RCTImage (from `../node_modules/react-native/Libraries/Image`)
+  - React-RCTLinking (from `../node_modules/react-native/Libraries/LinkingIOS`)
+  - React-RCTNetwork (from `../node_modules/react-native/Libraries/Network`)
+  - React-RCTSettings (from `../node_modules/react-native/Libraries/Settings`)
+  - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
+  - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
+  - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
+  - ReactTestApp-DevSupport (from `../..`)
+  - ReactTestApp-Resources (from `..`)
   - SwiftLint
-  - yoga (from `node_modules/react-native/ReactCommon/yoga`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
@@ -123,53 +123,53 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   DoubleConversion:
-    :podspec: node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Example-Tests:
-    :path: "."
+    :path: ".."
   Folly:
-    :podspec: node_modules/react-native/third-party-podspecs/Folly.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
-    :podspec: node_modules/react-native/third-party-podspecs/glog.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
-    :path: node_modules/react-native
+    :path: "../node_modules/react-native"
   React-Core:
-    :path: node_modules/react-native/React
+    :path: "../node_modules/react-native/React"
   React-cxxreact:
-    :path: node_modules/react-native/ReactCommon/cxxreact
+    :path: "../node_modules/react-native/ReactCommon/cxxreact"
   React-DevSupport:
-    :path: node_modules/react-native/React
+    :path: "../node_modules/react-native/React"
   React-jsi:
-    :path: node_modules/react-native/ReactCommon/jsi
+    :path: "../node_modules/react-native/ReactCommon/jsi"
   React-jsiexecutor:
-    :path: node_modules/react-native/ReactCommon/jsiexecutor
+    :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
-    :path: node_modules/react-native/ReactCommon/jsinspector
+    :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-RCTActionSheet:
-    :path: node_modules/react-native/Libraries/ActionSheetIOS
+    :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
-    :path: node_modules/react-native/Libraries/NativeAnimation
+    :path: "../node_modules/react-native/Libraries/NativeAnimation"
   React-RCTBlob:
-    :path: node_modules/react-native/Libraries/Blob
+    :path: "../node_modules/react-native/Libraries/Blob"
   React-RCTImage:
-    :path: node_modules/react-native/Libraries/Image
+    :path: "../node_modules/react-native/Libraries/Image"
   React-RCTLinking:
-    :path: node_modules/react-native/Libraries/LinkingIOS
+    :path: "../node_modules/react-native/Libraries/LinkingIOS"
   React-RCTNetwork:
-    :path: node_modules/react-native/Libraries/Network
+    :path: "../node_modules/react-native/Libraries/Network"
   React-RCTSettings:
-    :path: node_modules/react-native/Libraries/Settings
+    :path: "../node_modules/react-native/Libraries/Settings"
   React-RCTText:
-    :path: node_modules/react-native/Libraries/Text
+    :path: "../node_modules/react-native/Libraries/Text"
   React-RCTVibration:
-    :path: node_modules/react-native/Libraries/Vibration
+    :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
-    :path: node_modules/react-native/Libraries/WebSocket
+    :path: "../node_modules/react-native/Libraries/WebSocket"
   ReactTestApp-DevSupport:
-    :path: "./.."
+    :path: "../.."
   ReactTestApp-Resources:
-    :path: "."
+    :path: ".."
   yoga:
-    :path: node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -200,6 +200,6 @@ SPEC CHECKSUMS:
   SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
   yoga: 5079887aa3e4c62142d6bcee493022643ee4d730
 
-PODFILE CHECKSUM: 0aa832921b7f3f2eb406b9c1dd66a2089b899e07
+PODFILE CHECKSUM: 33e312c7b359d1c03ac828397a6d5e43a793a61d
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1
