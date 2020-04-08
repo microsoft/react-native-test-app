@@ -23,12 +23,12 @@ jobs:
       run: |
         set -eo pipefail
         yarn build:ios
-        pod install
-        ../scripts/xcodebuild-ios.sh Example.xcworkspace build-for-testing
+        pod install --project-directory=ios
+        ../scripts/xcodebuild-ios.sh ios/Example.xcworkspace build-for-testing
       working-directory: example
     - name: Test
       run: |
-        ../scripts/xcodebuild-ios.sh Example.xcworkspace test-without-building
+        ../scripts/xcodebuild-ios.sh ios/Example.xcworkspace test-without-building
       working-directory: example
   iOS-template:
     runs-on: macos-latest
@@ -87,6 +87,7 @@ jobs:
       run: |
         set -eo pipefail
         yarn build:android
+        pushd android 1> /dev/null
         ./gradlew clean build check test
       working-directory: example
   Android-template:

@@ -9,7 +9,7 @@ const blacklist = require('metro-config/src/defaults/blacklist');
 
 module.exports = {
   resolver: {
-    blacklistRE: blacklist([/node_modules\/react-native-test-app\/example\/node_modules\/react-native\/.*/])
+    blacklistRE: blacklist([/node_modules\/.*\/node_modules\/react-native\/.*/])
   },
   transformer: {
     getTransformOptions: async () => ({
