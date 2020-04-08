@@ -57,11 +57,7 @@ module.exports = (plop) => {
                   displayName: name,
                 },
               },
-              resources: [
-                "dist/res",
-                "dist/assets",
-                "dist/main.jsbundle"
-              ],
+              resources: ["dist/assets", "dist/main.jsbundle", "dist/res"],
             },
             undefined,
             2
@@ -178,7 +174,9 @@ module.exports = (plop) => {
           template: [
             "rootProject.name='example'",
             "",
-            `apply from: file("${exclusive ? "" : "../"}node_modules/react-native-test-app/test-app.gradle")`,
+            `apply from: file("${
+              exclusive ? "" : "../"
+            }node_modules/react-native-test-app/test-app.gradle")`,
             "applyTestAppSettings(settings)",
             "",
           ].join("\n"),

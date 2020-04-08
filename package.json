@@ -14,7 +14,9 @@
   "description": "react-native-test-app provides a test app for all supported platforms as a package",
   "homepage": "https://github.com/microsoft/react-native-test-app",
   "scripts": {
-    "format:c": "clang-format -i $(git ls-files '*.h' '*.m' '*.mm')"
+    "format:c": "clang-format -i $(git ls-files '*.h' '*.m' '*.mm')",
+    "format:js": "prettier --write $(git ls-files '*.js')",
+    "lint:js": "eslint $(git ls-files '*.js')"
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
@@ -27,7 +29,8 @@
     "react-native": "0.60.6"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
     "plop": "^2.6.0",
-    "prettier": "2.0.2"
+    "prettier": "2.0.4"
   }
 }

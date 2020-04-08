@@ -1,7 +1,7 @@
 module.exports = {
   project: {
     ios: {
-      project: 'ios/ReactTestApp-Dummy.xcodeproj'
-    }
-  }
+      project: "ios/ReactTestApp-Dummy.xcodeproj",
+    },
+  },
 };
