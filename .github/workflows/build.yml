@@ -10,17 +10,21 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: CocoaPods
+      run: |
+        bundle install
+        echo "::add-matcher::.github/rubocop.json"
+        bundle exec rubocop
+        echo "::remove-matcher owner=rubocop::"
+        echo "::add-matcher::.github/minitest.json"
+        bundle exec ruby -Ilib:test test/test_test_app.rb
+        echo "::remove-matcher owner=minitest::"
     - name: JavaScript
       run: |
         yarn
         echo "::add-matcher::.github/eslint-stylish.json"
         yarn lint:js
         echo "::remove-matcher owner=eslint-stylish::"
-    - name: Ruby
-      run: |
-        bundle install
-        bundle exec rubocop
-        bundle exec ruby -Ilib:test test/test_test_app.rb
   iOS:
     runs-on: macos-latest
     steps:

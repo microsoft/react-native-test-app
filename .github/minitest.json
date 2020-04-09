@@ -1,0 +1,19 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "minitest",
+      "pattern": [
+        {
+          "regexp": "^.*?\\[(.*?):(\\d+)\\]:$",
+          "file": 1,
+          "line": 2
+        },
+        {
+          "regexp": "^\\s*((?:Expected|Actual).*)$",
+          "message": 1,
+          "loop": true
+        }
+      ]
+    }
+  ]
+}
