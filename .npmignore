@@ -1,6 +1,7 @@
 **/xcuserdata/
 *.tgz
 .clang-format
+.eslintrc.json
 .gitattributes
 .github/
 .rubocop.yml
