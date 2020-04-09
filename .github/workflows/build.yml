@@ -5,16 +5,27 @@ on:
     - master
   pull_request:
 jobs:
+  Lint-Test:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: JavaScript
+      run: |
+        yarn
+        echo "::add-matcher::.github/eslint-stylish.json"
+        yarn lint:js
+        echo "::remove-matcher owner=eslint-stylish::"
+    - name: Ruby
+      run: |
+        bundle install
+        bundle exec rubocop
+        bundle exec ruby -Ilib:test test/test_test_app.rb
   iOS:
     runs-on: macos-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: minitest
-      run: |
-        bundle install
-        bundle exec rubocop
-        bundle exec ruby -Ilib:test test/test_test_app.rb
     - name: Install
       run: |
         yarn
@@ -70,7 +81,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Set up Node
+    - name: Set up Node.js
       uses: actions/setup-node@v1
       with:
         # Node has a bug where it crashes compiling a regular
@@ -102,7 +113,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Set up Node
+    - name: Set up Node.js
       uses: actions/setup-node@v1
       with:
         # Node has a bug where it crashes compiling a regular
