@@ -5,7 +5,9 @@
 .github/
 .rubocop.yml
 .swiftlint.yml
+Brewfile*
 Gemfile*
+android/app/build/
 example/
 scripts/
 test/
