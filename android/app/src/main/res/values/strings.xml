@@ -6,4 +6,5 @@
     <string name="load_from_dev_server">Load from dev server</string>
     <string name="content_description_show_dev_options">Show dev options</string>
     <string name="show_dev_options">Show dev options</string>
+    <string name="runtime_info">React Native v%1$d.%2$d.%3$d\n(%4$s)</string>
 </resources>

@@ -2,10 +2,12 @@ package com.sample
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
+import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.google.android.material.appbar.MaterialToolbar
 import com.sample.component.ComponentActivity
 import com.sample.component.ComponentListAdapter
@@ -33,11 +35,6 @@ class MainActivity : ReactActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val reactNativeHost = reactNativeHost
-        if (reactNativeHost is TestAppReactNativeHost) {
-            reactNativeHost.currentActivity = this
-        }
 
         val manifest = manifestProvider.manifest
                 ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
@@ -73,12 +70,21 @@ class MainActivity : ReactActivity() {
 
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+
+        findViewById<TextView>(R.id.runtime_info).apply {
+            text = resources.getString(
+                    R.string.runtime_info,
+                    ReactNativeVersion.VERSION["major"] as Int,
+                    ReactNativeVersion.VERSION["minor"] as Int,
+                    ReactNativeVersion.VERSION["patch"] as Int,
+                    reactInstanceManager.jsExecutorName)
+        }
     }
 
     private fun reload(toolbar: MaterialToolbar, useEmbeddedBundle: Boolean) {
         val reactNativeHost = reactNativeHost
         if (reactNativeHost is TestAppReactNativeHost) {
-            reactNativeHost.reload(useEmbeddedBundle)
+            reactNativeHost.reload(this, useEmbeddedBundle)
         }
 
         toolbar.menu.findItem(R.id.show_dev_options)?.apply {
