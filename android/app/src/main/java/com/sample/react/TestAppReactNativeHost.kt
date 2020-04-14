@@ -16,7 +16,7 @@ class TestAppReactNativeHost @Inject constructor(
 ) : ReactNativeHost(application) {
 
     var currentActivity: ReactActivity? = null
-    var useEmbeddedBundle: Boolean = true
+    private var useEmbeddedBundle: Boolean = true
 
     fun reload(useEmbeddedBundle: Boolean) {
         if (hasInstance()) {
