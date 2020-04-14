@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
-import com.facebook.soloader.SoLoader
 import com.google.android.material.appbar.MaterialToolbar
 import com.sample.component.ComponentActivity
 import com.sample.component.ComponentListAdapter
@@ -78,23 +77,11 @@ class MainActivity : ReactActivity() {
 
     private fun reload(toolbar: MaterialToolbar, useEmbeddedBundle: Boolean) {
         val reactNativeHost = reactNativeHost
-        if (reactNativeHost.hasInstance()) {
-            if (!useEmbeddedBundle && (reactNativeHost as? TestAppReactNativeHost)?.useEmbeddedBundle == useEmbeddedBundle) {
-                reactInstanceManager.devSupportManager.handleReloadJS()
-                return
-            }
-            reactNativeHost.clear()
-        } else {
-            SoLoader.init(this, false)
-        }
-
         if (reactNativeHost is TestAppReactNativeHost) {
-            reactNativeHost.useEmbeddedBundle = useEmbeddedBundle
+            reactNativeHost.reload(useEmbeddedBundle)
         }
 
-        reactInstanceManager.createReactContextInBackground()
-
-        toolbar.menu.findItem(R.id.showDevOptions)?.apply {
+        toolbar.menu.findItem(R.id.show_dev_options)?.apply {
             isEnabled = !useEmbeddedBundle
         }
     }

@@ -5,6 +5,7 @@ import com.facebook.react.*
 import com.facebook.react.bridge.ReactMarker
 import com.facebook.react.bridge.ReactMarkerConstants
 import com.facebook.react.common.LifecycleState
+import com.facebook.soloader.SoLoader
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,6 +17,21 @@ class TestAppReactNativeHost @Inject constructor(
 
     var currentActivity: ReactActivity? = null
     var useEmbeddedBundle: Boolean = true
+
+    fun reload(useEmbeddedBundle: Boolean) {
+        if (hasInstance()) {
+            if (!useEmbeddedBundle && useEmbeddedBundle == this.useEmbeddedBundle) {
+                reactInstanceManager.devSupportManager.handleReloadJS()
+                return
+            }
+            clear()
+        } else {
+            SoLoader.init(application, false)
+        }
+
+        this.useEmbeddedBundle = useEmbeddedBundle
+        reactInstanceManager.createReactContextInBackground()
+    }
 
     override fun createReactInstanceManager(): ReactInstanceManager {
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_START)
