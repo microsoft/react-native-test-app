@@ -1,5 +1,6 @@
 package com.sample.react
 
+import android.app.Activity
 import android.app.Application
 import com.facebook.react.*
 import com.facebook.react.bridge.ReactMarker
@@ -15,21 +16,33 @@ class TestAppReactNativeHost @Inject constructor(
         private val reactBundleNameProvider: ReactBundleNameProvider
 ) : ReactNativeHost(application) {
 
-    var currentActivity: ReactActivity? = null
+    private var currentActivity: Activity? = null
     private var useEmbeddedBundle: Boolean = true
 
-    fun reload(useEmbeddedBundle: Boolean) {
-        if (hasInstance()) {
-            if (!useEmbeddedBundle && useEmbeddedBundle == this.useEmbeddedBundle) {
-                reactInstanceManager.devSupportManager.handleReloadJS()
-                return
-            }
-            clear()
-        } else {
-            SoLoader.init(application, false)
+    fun reload(activity: Activity, useEmbeddedBundle: Boolean) {
+        assert(hasInstance()) {
+            "startInBackground() must be called the first time ReactInstanceManager is created"
         }
 
+        if (!useEmbeddedBundle && useEmbeddedBundle == this.useEmbeddedBundle) {
+            reactInstanceManager.devSupportManager.handleReloadJS()
+            return
+        }
+
+        clear()
+
+        this.currentActivity = activity
         this.useEmbeddedBundle = useEmbeddedBundle
+
+        reactInstanceManager.createReactContextInBackground()
+    }
+
+    fun startInBackground() {
+        assert(currentActivity == null) {
+            "startInBackground() can only be called once on startup"
+        }
+
+        SoLoader.init(application, false)
         reactInstanceManager.createReactContextInBackground()
     }
 
@@ -43,7 +56,11 @@ class TestAppReactNativeHost @Inject constructor(
                 .setJSMainModulePath(jsMainModuleName)
                 .addPackages(packages)
                 .setUseDeveloperSupport(useDeveloperSupport && !useEmbeddedBundle)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .setInitialLifecycleState(if (currentActivity == null) {
+                    LifecycleState.BEFORE_CREATE
+                } else {
+                    LifecycleState.RESUMED
+                })
                 .setUIImplementationProvider(uiImplementationProvider)
                 .setRedBoxHandler(redBoxHandler)
                 .setJSIModulesPackage(jsiModulePackage)

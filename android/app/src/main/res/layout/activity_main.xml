@@ -27,4 +27,12 @@
         android:paddingBottom="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+    <TextView
+        android:id="@+id/runtime_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        android:gravity="end" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
