@@ -2,8 +2,8 @@ package com.sample
 
 import android.app.Application
 import com.facebook.react.ReactApplication
-import com.facebook.react.ReactNativeHost
 import com.sample.di.DaggerTestAppComponent
+import com.sample.react.TestAppReactNativeHost
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -15,16 +15,18 @@ class TestApp : Application(), HasAndroidInjector, ReactApplication {
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     @Inject
-    lateinit var reactNativeHostInternal: ReactNativeHost
+    lateinit var reactNativeHostInternal: TestAppReactNativeHost
 
     override fun onCreate() {
         super.onCreate()
 
         val testAppComponent = DaggerTestAppComponent.builder()
-            .binds(this)
-            .build()
+                .binds(this)
+                .build()
 
         testAppComponent.inject(this)
+
+        reactNativeHostInternal.startInBackground()
     }
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
