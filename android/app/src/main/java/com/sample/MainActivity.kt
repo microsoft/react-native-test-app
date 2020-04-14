@@ -42,19 +42,19 @@ class MainActivity : ReactActivity() {
 
         val manifest = manifestProvider.manifest
                 ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
-        findViewById<MaterialToolbar>(R.id.topAppBar).apply {
+        findViewById<MaterialToolbar>(R.id.top_app_bar).apply {
             title = manifest.displayName
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.loadEmbeddedJsBundle -> {
+                    R.id.load_embedded_js_bundle -> {
                         reload(this, true)
                         true
                     }
-                    R.id.loadFromDevServer -> {
+                    R.id.load_from_dev_server -> {
                         reload(this, false)
                         true
                     }
-                    R.id.showDevOptions -> {
+                    R.id.show_dev_options -> {
                         reactInstanceManager.devSupportManager.showDevOptionsDialog()
                         true
                     }

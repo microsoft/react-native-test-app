@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/loadEmbeddedJsBundle"
+        android:id="@+id/load_embedded_js_bundle"
         android:contentDescription="@string/content_description_load_embedded_js_bundle"
         android:title="@string/load_embedded_js_bundle"
         app:showAsAction="never" />
     <item
-        android:id="@+id/loadFromDevServer"
+        android:id="@+id/load_from_dev_server"
         android:contentDescription="@string/content_description_load_from_dev_server"
         android:title="@string/load_from_dev_server"
         app:showAsAction="never" />
     <item
-        android:id="@+id/showDevOptions"
+        android:id="@+id/show_dev_options"
         android:contentDescription="@string/content_description_show_dev_options"
         android:enabled="false"
         android:title="@string/show_dev_options"
