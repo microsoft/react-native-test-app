@@ -10,6 +10,10 @@ def include_react_native!(react_native)
   pod 'React', :path => react_native
   pod 'React-Core', :path => "#{react_native}/React", :inhibit_warnings => true
   pod 'React-DevSupport', :path => "#{react_native}/React"
+
+  # fishhook was removed in 0.60.5
+  pod 'React-fishhook', :path => "#{react_native}/Libraries/fishhook" if File.exist?("#{react_native}/Libraries/fishhook")
+
   pod 'React-RCTActionSheet', :path => "#{react_native}/Libraries/ActionSheetIOS"
   pod 'React-RCTAnimation', :path => "#{react_native}/Libraries/NativeAnimation"
   pod 'React-RCTBlob', :path => "#{react_native}/Libraries/Blob"
