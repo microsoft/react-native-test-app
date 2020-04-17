@@ -33,9 +33,9 @@ class MainActivity : ReactActivity() {
 
     private val listener = { component: ComponentViewModel ->
         startActivity(
-            ComponentActivity.newIntent(
-                this, component.name, component.displayName
-            )
+                ComponentActivity.newIntent(
+                        this, component.name, component.displayName
+                )
         )
     }
 
@@ -46,7 +46,7 @@ class MainActivity : ReactActivity() {
         setContentView(R.layout.activity_main)
 
         val manifest = manifestProvider.manifest
-            ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
+                ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
 
         setupToolbar(manifest.displayName)
         setupRecyclerView(manifest.components)
@@ -96,7 +96,7 @@ class MainActivity : ReactActivity() {
         findViewById<RecyclerView>(R.id.recyclerview).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ComponentListAdapter(
-                LayoutInflater.from(context), components, listener
+                    LayoutInflater.from(context), components, listener
             )
 
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -104,11 +104,11 @@ class MainActivity : ReactActivity() {
 
         findViewById<TextView>(R.id.runtime_info).apply {
             text = resources.getString(
-                R.string.runtime_info,
-                ReactNativeVersion.VERSION["major"] as Int,
-                ReactNativeVersion.VERSION["minor"] as Int,
-                ReactNativeVersion.VERSION["patch"] as Int,
-                reactInstanceManager.jsExecutorName
+                    R.string.runtime_info,
+                    ReactNativeVersion.VERSION["major"] as Int,
+                    ReactNativeVersion.VERSION["minor"] as Int,
+                    ReactNativeVersion.VERSION["patch"] as Int,
+                    reactInstanceManager.jsExecutorName
             )
         }
     }

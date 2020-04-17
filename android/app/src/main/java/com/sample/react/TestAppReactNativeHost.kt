@@ -36,11 +36,11 @@ sealed class BundleSource {
 
 @Singleton
 class TestAppReactNativeHost @Inject constructor(
-    application: Application,
-    private val reactBundleNameProvider: ReactBundleNameProvider
+        application: Application,
+        private val reactBundleNameProvider: ReactBundleNameProvider
 ) : ReactNativeHost(application) {
     var source: BundleSource = reactBundleNameProvider.bundleName
-        ?.let { BundleSource.Disk } ?: BundleSource.Server
+            ?.let { BundleSource.Disk } ?: BundleSource.Server
 
     fun reload(activity: Activity, newSource: BundleSource) {
         assert(hasInstance()) {
@@ -75,17 +75,17 @@ class TestAppReactNativeHost @Inject constructor(
     override fun createReactInstanceManager(): ReactInstanceManager {
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_START)
         val reactInstanceManager = ReactInstanceManager.builder()
-            .setApplication(application)
-            .setJavaScriptExecutorFactory(javaScriptExecutorFactory)
-            .setBundleAssetName(bundleAssetName)
-            .setJSMainModulePath(jsMainModuleName)
-            .addPackages(packages)
-            .setUseDeveloperSupport(useDeveloperSupport)
-            .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
-            .setUIImplementationProvider(uiImplementationProvider)
-            .setRedBoxHandler(redBoxHandler)
-            .setJSIModulesPackage(jsiModulePackage)
-            .build()
+                .setApplication(application)
+                .setJavaScriptExecutorFactory(javaScriptExecutorFactory)
+                .setBundleAssetName(bundleAssetName)
+                .setJSMainModulePath(jsMainModuleName)
+                .addPackages(packages)
+                .setUseDeveloperSupport(useDeveloperSupport)
+                .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
+                .setUIImplementationProvider(uiImplementationProvider)
+                .setRedBoxHandler(redBoxHandler)
+                .setJSIModulesPackage(jsiModulePackage)
+                .build()
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_END)
         return reactInstanceManager
     }
@@ -93,7 +93,7 @@ class TestAppReactNativeHost @Inject constructor(
     override fun getJSMainModuleName() = "index"
 
     override fun getBundleAssetName() =
-        if (source == BundleSource.Disk) reactBundleNameProvider.bundleName else null
+            if (source == BundleSource.Disk) reactBundleNameProvider.bundleName else null
 
     override fun getUseDeveloperSupport() = source == BundleSource.Server
 
