@@ -2,7 +2,10 @@ package com.sample.react
 
 import android.app.Activity
 import android.app.Application
-import com.facebook.react.*
+import com.facebook.react.PackageList
+import com.facebook.react.ReactInstanceManager
+import com.facebook.react.ReactNativeHost
+import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.ReactMarker
 import com.facebook.react.bridge.ReactMarkerConstants
 import com.facebook.react.common.LifecycleState
@@ -12,8 +15,8 @@ import javax.inject.Singleton
 
 @Singleton
 class TestAppReactNativeHost @Inject constructor(
-        application: Application,
-        private val reactBundleNameProvider: ReactBundleNameProvider
+    application: Application,
+    private val reactBundleNameProvider: ReactBundleNameProvider
 ) : ReactNativeHost(application) {
 
     private var currentActivity: Activity? = null
@@ -49,22 +52,24 @@ class TestAppReactNativeHost @Inject constructor(
     override fun createReactInstanceManager(): ReactInstanceManager {
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_START)
         val reactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(application)
-                .setCurrentActivity(currentActivity)
-                .setJavaScriptExecutorFactory(javaScriptExecutorFactory)
-                .setBundleAssetName(bundleAssetName)
-                .setJSMainModulePath(jsMainModuleName)
-                .addPackages(packages)
-                .setUseDeveloperSupport(useDeveloperSupport && !useEmbeddedBundle)
-                .setInitialLifecycleState(if (currentActivity == null) {
+            .setApplication(application)
+            .setCurrentActivity(currentActivity)
+            .setJavaScriptExecutorFactory(javaScriptExecutorFactory)
+            .setBundleAssetName(bundleAssetName)
+            .setJSMainModulePath(jsMainModuleName)
+            .addPackages(packages)
+            .setUseDeveloperSupport(useDeveloperSupport)
+            .setInitialLifecycleState(
+                if (currentActivity == null) {
                     LifecycleState.BEFORE_CREATE
                 } else {
                     LifecycleState.RESUMED
-                })
-                .setUIImplementationProvider(uiImplementationProvider)
-                .setRedBoxHandler(redBoxHandler)
-                .setJSIModulesPackage(jsiModulePackage)
-                .build()
+                }
+            )
+            .setUIImplementationProvider(uiImplementationProvider)
+            .setRedBoxHandler(redBoxHandler)
+            .setJSIModulesPackage(jsiModulePackage)
+            .build()
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_END)
         return reactInstanceManager
     }
@@ -72,9 +77,9 @@ class TestAppReactNativeHost @Inject constructor(
     override fun getJSMainModuleName(): String = "index"
 
     override fun getBundleAssetName(): String? =
-            if (useEmbeddedBundle) reactBundleNameProvider.bundleName else null
+        if (useEmbeddedBundle) reactBundleNameProvider.bundleName else null
 
-    override fun getUseDeveloperSupport() = true
+    override fun getUseDeveloperSupport() = bundleAssetName == null
 
     override fun getPackages(): List<ReactPackage> = PackageList(application).packages
 }
