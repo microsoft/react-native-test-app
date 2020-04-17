@@ -26,7 +26,7 @@ class TestApp : Application(), HasAndroidInjector, ReactApplication {
 
         testAppComponent.inject(this)
 
-        reactNativeHostInternal.startInBackground()
+        reactNativeHostInternal.init()
     }
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector

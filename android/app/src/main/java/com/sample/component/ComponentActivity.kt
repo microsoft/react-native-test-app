@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.facebook.react.ReactActivity
-import com.facebook.soloader.SoLoader
 
 class ComponentActivity : ReactActivity() {
 
@@ -28,7 +27,6 @@ class ComponentActivity : ReactActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SoLoader.init(this, false)
 
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

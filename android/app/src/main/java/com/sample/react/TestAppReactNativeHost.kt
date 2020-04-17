@@ -13,37 +13,65 @@ import com.facebook.soloader.SoLoader
 import javax.inject.Inject
 import javax.inject.Singleton
 
+sealed class BundleSource {
+    enum class Action {
+        RESTART, RELOAD, NOOP
+    }
+
+    abstract fun moveTo(to: BundleSource): Action
+
+    object Disk : BundleSource() {
+        override fun moveTo(to: BundleSource): Action {
+            return when (to) {
+                Disk -> Action.NOOP
+                Server -> Action.RESTART
+            }
+        }
+    }
+
+    object Server : BundleSource() {
+        override fun moveTo(to: BundleSource): Action {
+            return when (to) {
+                Disk -> Action.RESTART
+                Server -> Action.RELOAD
+            }
+        }
+    }
+}
+
 @Singleton
 class TestAppReactNativeHost @Inject constructor(
     application: Application,
     private val reactBundleNameProvider: ReactBundleNameProvider
 ) : ReactNativeHost(application) {
+    var source: BundleSource = reactBundleNameProvider.bundleName
+        ?.let { BundleSource.Disk } ?: BundleSource.Server
 
-    private var currentActivity: Activity? = null
-    private var useEmbeddedBundle: Boolean = true
-
-    fun reload(activity: Activity, useEmbeddedBundle: Boolean) {
+    fun reload(activity: Activity, newSource: BundleSource) {
         assert(hasInstance()) {
-            "startInBackground() must be called the first time ReactInstanceManager is created"
+            "init() must be called the first time ReactInstanceManager is created"
         }
 
-        if (!useEmbeddedBundle && useEmbeddedBundle == this.useEmbeddedBundle) {
-            reactInstanceManager.devSupportManager.handleReloadJS()
-            return
+        val action = source.moveTo(newSource)
+        source = newSource
+
+        when (action) {
+            BundleSource.Action.RELOAD -> reactInstanceManager.devSupportManager.handleReloadJS()
+            BundleSource.Action.RESTART -> {
+                clear()
+
+                reactInstanceManager.run {
+                    createReactContextInBackground()
+                    onHostResume(activity)
+                }
+            }
+            else -> {
+            }
         }
-
-        clear()
-
-        this.currentActivity = activity
-        this.useEmbeddedBundle = useEmbeddedBundle
-
-        reactInstanceManager.createReactContextInBackground()
     }
 
-    fun startInBackground() {
-        assert(currentActivity == null) {
-            "startInBackground() can only be called once on startup"
-        }
+    fun init() {
+        assert(!hasInstance()) { "init() can only be called once on startup" }
 
         SoLoader.init(application, false)
         reactInstanceManager.createReactContextInBackground()
@@ -53,19 +81,12 @@ class TestAppReactNativeHost @Inject constructor(
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_START)
         val reactInstanceManager = ReactInstanceManager.builder()
             .setApplication(application)
-            .setCurrentActivity(currentActivity)
             .setJavaScriptExecutorFactory(javaScriptExecutorFactory)
             .setBundleAssetName(bundleAssetName)
             .setJSMainModulePath(jsMainModuleName)
             .addPackages(packages)
             .setUseDeveloperSupport(useDeveloperSupport)
-            .setInitialLifecycleState(
-                if (currentActivity == null) {
-                    LifecycleState.BEFORE_CREATE
-                } else {
-                    LifecycleState.RESUMED
-                }
-            )
+            .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
             .setUIImplementationProvider(uiImplementationProvider)
             .setRedBoxHandler(redBoxHandler)
             .setJSIModulesPackage(jsiModulePackage)
@@ -74,12 +95,12 @@ class TestAppReactNativeHost @Inject constructor(
         return reactInstanceManager
     }
 
-    override fun getJSMainModuleName(): String = "index"
+    override fun getJSMainModuleName() = "index"
 
-    override fun getBundleAssetName(): String? =
-        if (useEmbeddedBundle) reactBundleNameProvider.bundleName else null
+    override fun getBundleAssetName() =
+        if (source == BundleSource.Disk) reactBundleNameProvider.bundleName else null
 
-    override fun getUseDeveloperSupport() = bundleAssetName == null
+    override fun getUseDeveloperSupport() = source == BundleSource.Server
 
     override fun getPackages(): List<ReactPackage> = PackageList(application).packages
 }
