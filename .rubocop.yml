@@ -1,6 +1,6 @@
 AllCops:
   Exclude:
-    - '**/node_modules/**/*'
+    - "**/node_modules/**/*"
   TargetRubyVersion: 2.3
 
 Layout/LineLength:
@@ -15,7 +15,7 @@ Metrics/MethodLength:
 Naming/FileName:
   Exclude:
     - !ruby/regexp /-\d+\.\d+\.rb$/
-    - '**/*.podspec'
+    - "**/*.podspec"
 
 Style/Documentation:
   Enabled: false

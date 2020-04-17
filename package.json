@@ -15,8 +15,8 @@
   "homepage": "https://github.com/microsoft/react-native-test-app",
   "scripts": {
     "format:c": "clang-format -i $(git ls-files '*.h' '*.m' '*.mm')",
-    "format:js": "prettier --write $(git ls-files '*.js')",
-    "lint:js": "eslint $(git ls-files '*.js')"
+    "format:js": "prettier --write $(git ls-files '*.js' '*.yml')",
+    "lint:js": "eslint $(git ls-files '*.js' '*.yml')"
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
