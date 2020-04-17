@@ -51,7 +51,9 @@ class TestAppReactNativeHost @Inject constructor(
         source = newSource
 
         when (action) {
-            BundleSource.Action.RELOAD -> reactInstanceManager.devSupportManager.handleReloadJS()
+            BundleSource.Action.RELOAD -> {
+                reactInstanceManager.devSupportManager.handleReloadJS()
+            }
             BundleSource.Action.RESTART -> {
                 clear()
 
