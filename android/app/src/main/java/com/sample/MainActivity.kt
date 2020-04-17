@@ -28,8 +28,8 @@ class MainActivity : ReactActivity() {
     @Inject
     lateinit var bundleNameProvider: ReactBundleNameProvider
 
-    @Inject
-    lateinit var testReactNativeVersion: TestAppReactNativeHost
+    private val testReactNativeVersion: TestAppReactNativeHost
+        get() = reactNativeHost as TestAppReactNativeHost
 
     private val listener = { component: ComponentViewModel ->
         startActivity(
