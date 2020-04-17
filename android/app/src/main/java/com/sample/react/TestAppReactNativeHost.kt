@@ -15,18 +15,13 @@ import javax.inject.Singleton
 
 sealed class BundleSource {
     enum class Action {
-        RESTART, RELOAD, NOOP
+        RESTART, RELOAD
     }
 
     abstract fun moveTo(to: BundleSource): Action
 
     object Disk : BundleSource() {
-        override fun moveTo(to: BundleSource): Action {
-            return when (to) {
-                Disk -> Action.NOOP
-                Server -> Action.RESTART
-            }
-        }
+        override fun moveTo(to: BundleSource) = Action.RESTART
     }
 
     object Server : BundleSource() {
@@ -64,8 +59,6 @@ class TestAppReactNativeHost @Inject constructor(
                     createReactContextInBackground()
                     onHostResume(activity)
                 }
-            }
-            else -> {
             }
         }
     }
