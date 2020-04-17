@@ -12,7 +12,10 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.sample.component.ComponentActivity
 import com.sample.component.ComponentListAdapter
 import com.sample.component.ComponentViewModel
+import com.sample.manifest.Components
 import com.sample.manifest.ManifestProvider
+import com.sample.react.BundleSource
+import com.sample.react.ReactBundleNameProvider
 import com.sample.react.TestAppReactNativeHost
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -21,6 +24,12 @@ class MainActivity : ReactActivity() {
 
     @Inject
     lateinit var manifestProvider: ManifestProvider
+
+    @Inject
+    lateinit var bundleNameProvider: ReactBundleNameProvider
+
+    private val testAppReactNativeHost: TestAppReactNativeHost
+        get() = reactNativeHost as TestAppReactNativeHost
 
     private val listener = { component: ComponentViewModel ->
         startActivity(
@@ -38,28 +47,50 @@ class MainActivity : ReactActivity() {
 
         val manifest = manifestProvider.manifest
                 ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
-        findViewById<MaterialToolbar>(R.id.top_app_bar).apply {
-            title = manifest.displayName
-            setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.load_embedded_js_bundle -> {
-                        reload(this, true)
-                        true
-                    }
-                    R.id.load_from_dev_server -> {
-                        reload(this, false)
-                        true
-                    }
-                    R.id.show_dev_options -> {
-                        reactInstanceManager.devSupportManager.showDevOptionsDialog()
-                        true
-                    }
-                    else -> false
+
+        setupToolbar(manifest.displayName)
+        setupRecyclerView(manifest.components)
+    }
+
+    private fun setupToolbar(displayName: String) {
+        val toolbar = findViewById<MaterialToolbar>(R.id.top_app_bar)
+
+        toolbar.title = displayName
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.load_embedded_js_bundle -> {
+                    reload(toolbar, BundleSource.Disk)
+                    true
                 }
+                R.id.load_from_dev_server -> {
+                    reload(toolbar, BundleSource.Server)
+                    true
+                }
+                R.id.show_dev_options -> {
+                    reactInstanceManager.devSupportManager.showDevOptionsDialog()
+                    true
+                }
+                else -> false
             }
         }
 
-        val components = manifest.components.map {
+        updateMenuItemState(toolbar, testAppReactNativeHost.source)
+    }
+
+    private fun reload(toolbar: MaterialToolbar, bundleSource: BundleSource) {
+        testAppReactNativeHost.reload(this, bundleSource)
+        updateMenuItemState(toolbar, bundleSource)
+    }
+
+    private fun updateMenuItemState(toolbar: MaterialToolbar, bundleSource: BundleSource) {
+        toolbar.menu.apply {
+            findItem(R.id.load_embedded_js_bundle).isEnabled = bundleNameProvider.bundleName != null
+            findItem(R.id.show_dev_options).isEnabled = bundleSource == BundleSource.Server
+        }
+    }
+
+    private fun setupRecyclerView(manifestComponents: Components) {
+        val components = manifestComponents.map {
             ComponentViewModel(it.key, it.value.displayName ?: it.key)
         }
         findViewById<RecyclerView>(R.id.recyclerview).apply {
@@ -77,18 +108,8 @@ class MainActivity : ReactActivity() {
                     ReactNativeVersion.VERSION["major"] as Int,
                     ReactNativeVersion.VERSION["minor"] as Int,
                     ReactNativeVersion.VERSION["patch"] as Int,
-                    reactInstanceManager.jsExecutorName)
-        }
-    }
-
-    private fun reload(toolbar: MaterialToolbar, useEmbeddedBundle: Boolean) {
-        val reactNativeHost = reactNativeHost
-        if (reactNativeHost is TestAppReactNativeHost) {
-            reactNativeHost.reload(this, useEmbeddedBundle)
-        }
-
-        toolbar.menu.findItem(R.id.show_dev_options)?.apply {
-            isEnabled = !useEmbeddedBundle
+                    reactInstanceManager.jsExecutorName
+            )
         }
     }
 }

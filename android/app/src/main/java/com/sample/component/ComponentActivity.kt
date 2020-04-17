@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.facebook.react.ReactActivity
-import com.facebook.soloader.SoLoader
 
 class ComponentActivity : ReactActivity() {
 
@@ -15,9 +14,9 @@ class ComponentActivity : ReactActivity() {
         private const val COMPONENT_DISPLAY_NAME = "extra:componentDisplayName"
 
         fun newIntent(
-            activity: Activity,
-            componentName: String,
-            componentDisplayName: String
+                activity: Activity,
+                componentName: String,
+                componentDisplayName: String
         ): Intent {
             return Intent(activity, ComponentActivity::class.java).apply {
                 putExtra(COMPONENT_NAME, componentName)
@@ -28,13 +27,12 @@ class ComponentActivity : ReactActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SoLoader.init(this, false)
 
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val componentName = intent.extras?.getString(COMPONENT_NAME, null)
-            ?: throw IllegalArgumentException("Class name has to be provided.")
+                ?: throw IllegalArgumentException("Class name has to be provided.")
         title = intent.extras?.getString(COMPONENT_DISPLAY_NAME, componentName)
 
         findClass(componentName)?.let {
@@ -43,8 +41,8 @@ class ComponentActivity : ReactActivity() {
 
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
-                    .replace(android.R.id.content, fragment)
-                    .commitNow()
+                        .replace(android.R.id.content, fragment)
+                        .commitNow()
             }
         } ?: loadApp(componentName)
     }
