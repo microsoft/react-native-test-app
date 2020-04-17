@@ -28,7 +28,7 @@ class MainActivity : ReactActivity() {
     @Inject
     lateinit var bundleNameProvider: ReactBundleNameProvider
 
-    private val testReactNativeVersion: TestAppReactNativeHost
+    private val testAppReactNativeHost: TestAppReactNativeHost
         get() = reactNativeHost as TestAppReactNativeHost
 
     private val listener = { component: ComponentViewModel ->
@@ -74,11 +74,11 @@ class MainActivity : ReactActivity() {
             }
         }
 
-        updateMenuItemState(toolbar, testReactNativeVersion.source)
+        updateMenuItemState(toolbar, testAppReactNativeHost.source)
     }
 
     private fun reload(toolbar: MaterialToolbar, bundleSource: BundleSource) {
-        testReactNativeVersion.reload(this, bundleSource)
+        testAppReactNativeHost.reload(this, bundleSource)
         updateMenuItemState(toolbar, bundleSource)
     }
 
