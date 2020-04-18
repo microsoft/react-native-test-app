@@ -21,8 +21,8 @@ class TestApp : Application(), HasAndroidInjector, ReactApplication {
         super.onCreate()
 
         val testAppComponent = DaggerTestAppComponent.builder()
-                .binds(this)
-                .build()
+            .binds(this)
+            .build()
 
         testAppComponent.inject(this)
 

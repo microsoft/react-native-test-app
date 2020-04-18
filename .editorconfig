@@ -1,0 +1,21 @@
+root = true
+
+[*]
+indent_style = space
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{js,json,podspec,rb,sh,ts,yml},Podfile]
+indent_size = 2
+
+[*.{gradle,h,kt,m,mm}]
+indent_size = 4
+
+[*.{h,m,md,mm}]
+max_line_length = 80
+guidelines = 80
+
+[*.{gradle,kt}]
+max_line_length = 100
+guidelines = 100
