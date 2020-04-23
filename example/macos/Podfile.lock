@@ -1,0 +1,203 @@
+PODS:
+  - boost-for-react-native (1.63.0)
+  - DoubleConversion (1.1.6)
+  - Folly (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - Folly/Default (= 2018.10.22.00)
+    - glog
+  - Folly/Default (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.5)
+  - React (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+    - React-DevSupport (= 0.60.0-microsoft.79)
+    - React-RCTActionSheet (= 0.60.0-microsoft.79)
+    - React-RCTAnimation (= 0.60.0-microsoft.79)
+    - React-RCTBlob (= 0.60.0-microsoft.79)
+    - React-RCTImage (= 0.60.0-microsoft.79)
+    - React-RCTLinking (= 0.60.0-microsoft.79)
+    - React-RCTNetwork (= 0.60.0-microsoft.79)
+    - React-RCTSettings (= 0.60.0-microsoft.79)
+    - React-RCTText (= 0.60.0-microsoft.79)
+    - React-RCTVibration (= 0.60.0-microsoft.79)
+    - React-RCTWebSocket (= 0.60.0-microsoft.79)
+  - React-Core (0.60.0-microsoft.79):
+    - Folly (= 2018.10.22.00)
+    - React-cxxreact (= 0.60.0-microsoft.79)
+    - React-jsiexecutor (= 0.60.0-microsoft.79)
+    - yoga (= 0.60.0-microsoft.79.React)
+  - React-cxxreact (0.60.0-microsoft.79):
+    - boost-for-react-native (= 1.63.0)
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-jsinspector (= 0.60.0-microsoft.79)
+  - React-DevSupport (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+    - React-RCTWebSocket (= 0.60.0-microsoft.79)
+  - React-fishhook (0.60.0-microsoft.79)
+  - React-jsi (0.60.0-microsoft.79):
+    - boost-for-react-native (= 1.63.0)
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-jsi/Default (= 0.60.0-microsoft.79)
+  - React-jsi/Default (0.60.0-microsoft.79):
+    - boost-for-react-native (= 1.63.0)
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+  - React-jsiexecutor (0.60.0-microsoft.79):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-cxxreact (= 0.60.0-microsoft.79)
+    - React-jsi (= 0.60.0-microsoft.79)
+  - React-jsinspector (0.60.0-microsoft.79)
+  - React-RCTActionSheet (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+  - React-RCTAnimation (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+  - React-RCTBlob (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+    - React-RCTNetwork (= 0.60.0-microsoft.79)
+    - React-RCTWebSocket (= 0.60.0-microsoft.79)
+  - React-RCTImage (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+    - React-RCTNetwork (= 0.60.0-microsoft.79)
+  - React-RCTLinking (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+  - React-RCTNetwork (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+  - React-RCTSettings (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+  - React-RCTText (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+  - React-RCTVibration (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+  - React-RCTWebSocket (0.60.0-microsoft.79):
+    - React-Core (= 0.60.0-microsoft.79)
+    - React-fishhook (= 0.60.0-microsoft.79)
+  - ReactTestApp-DevSupport (0.0.15)
+  - ReactTestApp-Resources (1.0.0-dev)
+  - SwiftLint (0.39.2)
+  - yoga (0.60.0-microsoft.79.React)
+
+DEPENDENCIES:
+  - boost-for-react-native (from `../node_modules/react-native-macos/third-party-podspecs/boost-for-react-native.podspec`)
+  - DoubleConversion (from `../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec`)
+  - Folly (from `../node_modules/react-native-macos/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native-macos/third-party-podspecs/glog.podspec`)
+  - React (from `../node_modules/react-native-macos`)
+  - React-Core (from `../node_modules/react-native-macos/React`)
+  - React-cxxreact (from `../node_modules/react-native-macos/ReactCommon/cxxreact`)
+  - React-DevSupport (from `../node_modules/react-native-macos/React`)
+  - React-fishhook (from `../node_modules/react-native-macos/Libraries/fishhook`)
+  - React-jsi (from `../node_modules/react-native-macos/ReactCommon/jsi`)
+  - React-jsiexecutor (from `../node_modules/react-native-macos/ReactCommon/jsiexecutor`)
+  - React-jsinspector (from `../node_modules/react-native-macos/ReactCommon/jsinspector`)
+  - React-RCTActionSheet (from `../node_modules/react-native-macos/Libraries/ActionSheetIOS`)
+  - React-RCTAnimation (from `../node_modules/react-native-macos/Libraries/NativeAnimation`)
+  - React-RCTBlob (from `../node_modules/react-native-macos/Libraries/Blob`)
+  - React-RCTImage (from `../node_modules/react-native-macos/Libraries/Image`)
+  - React-RCTLinking (from `../node_modules/react-native-macos/Libraries/LinkingIOS`)
+  - React-RCTNetwork (from `../node_modules/react-native-macos/Libraries/Network`)
+  - React-RCTSettings (from `../node_modules/react-native-macos/Libraries/Settings`)
+  - React-RCTText (from `../node_modules/react-native-macos/Libraries/Text`)
+  - React-RCTVibration (from `../node_modules/react-native-macos/Libraries/Vibration`)
+  - React-RCTWebSocket (from `../node_modules/react-native-macos/Libraries/WebSocket`)
+  - ReactTestApp-DevSupport (from `../..`)
+  - ReactTestApp-Resources (from `..`)
+  - SwiftLint
+  - yoga (from `../node_modules/react-native-macos/ReactCommon/yoga`)
+
+SPEC REPOS:
+  trunk:
+    - SwiftLint
+
+EXTERNAL SOURCES:
+  boost-for-react-native:
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/boost-for-react-native.podspec"
+  DoubleConversion:
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec"
+  Folly:
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/Folly.podspec"
+  glog:
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/glog.podspec"
+  React:
+    :path: "../node_modules/react-native-macos"
+  React-Core:
+    :path: "../node_modules/react-native-macos/React"
+  React-cxxreact:
+    :path: "../node_modules/react-native-macos/ReactCommon/cxxreact"
+  React-DevSupport:
+    :path: "../node_modules/react-native-macos/React"
+  React-fishhook:
+    :path: "../node_modules/react-native-macos/Libraries/fishhook"
+  React-jsi:
+    :path: "../node_modules/react-native-macos/ReactCommon/jsi"
+  React-jsiexecutor:
+    :path: "../node_modules/react-native-macos/ReactCommon/jsiexecutor"
+  React-jsinspector:
+    :path: "../node_modules/react-native-macos/ReactCommon/jsinspector"
+  React-RCTActionSheet:
+    :path: "../node_modules/react-native-macos/Libraries/ActionSheetIOS"
+  React-RCTAnimation:
+    :path: "../node_modules/react-native-macos/Libraries/NativeAnimation"
+  React-RCTBlob:
+    :path: "../node_modules/react-native-macos/Libraries/Blob"
+  React-RCTImage:
+    :path: "../node_modules/react-native-macos/Libraries/Image"
+  React-RCTLinking:
+    :path: "../node_modules/react-native-macos/Libraries/LinkingIOS"
+  React-RCTNetwork:
+    :path: "../node_modules/react-native-macos/Libraries/Network"
+  React-RCTSettings:
+    :path: "../node_modules/react-native-macos/Libraries/Settings"
+  React-RCTText:
+    :path: "../node_modules/react-native-macos/Libraries/Text"
+  React-RCTVibration:
+    :path: "../node_modules/react-native-macos/Libraries/Vibration"
+  React-RCTWebSocket:
+    :path: "../node_modules/react-native-macos/Libraries/WebSocket"
+  ReactTestApp-DevSupport:
+    :path: "../.."
+  ReactTestApp-Resources:
+    :path: ".."
+  yoga:
+    :path: "../node_modules/react-native-macos/ReactCommon/yoga"
+
+SPEC CHECKSUMS:
+  boost-for-react-native: a110407d9db2642fd2e1bcd7c5a51c81f2521dc9
+  DoubleConversion: a1bc12a74baa397a2609e0f10e19b8062d864053
+  Folly: feff29ba9d0b7c2e4f793a94942831d6cc5bbad7
+  glog: b3f6d74f3e2d33396addc0ee724d2b2b79fc3e00
+  React: 3231fd482d650466a8936464501ea1a61a5aa678
+  React-Core: d6eb0deaee31e7d1c9d6b09e5402f8004ff3d095
+  React-cxxreact: 6a8f44872c1df17552ef15ee77e77c6ca3c5f55a
+  React-DevSupport: e67a5dc7c4797b99d7311ed7e33dcc187c1f0bce
+  React-fishhook: be31669c26ecc09882cdcbb6a60cc4bae96ac81a
+  React-jsi: 6eb8cb13eb534aed3ce876d1a797eff41beb9a60
+  React-jsiexecutor: caa20535bb6a8418cba8b3c991e8dadc5bba445a
+  React-jsinspector: afaaf4bb46af238b991d32f75d125418c0dfaa7b
+  React-RCTActionSheet: e0e2f2ad0d4e3e84445293bfe803d4de3ef7361b
+  React-RCTAnimation: d096fc8f7301cbb1eb0283ff295a10419464b142
+  React-RCTBlob: 75d9e6538433f44b8fbb22d8389e2ccd1a7bf266
+  React-RCTImage: 1f08e42378d9f0335948e84a15eaee2b0c2bec8b
+  React-RCTLinking: f293bb64258f757304a99cbc3e406502690fdccb
+  React-RCTNetwork: ac1c158ab8cbe1683002f59872a0a6a75d2f8d8a
+  React-RCTSettings: 1752947f5f133be1adcf32ba1b39278c6e095b27
+  React-RCTText: e98ccd6061197bbcab155c2af1184519d4c10290
+  React-RCTVibration: d65410f1d96b8ab1e54ed00c5bafcaf83b655424
+  React-RCTWebSocket: 064d37b5498df29c2c8753542a248fcfb59a0a1d
+  ReactTestApp-DevSupport: 4bc3104215b749fe64dc0b6f602fb13558d9deb6
+  ReactTestApp-Resources: c070f72dfcb2806d922eec6656259cbf7a4d2bcf
+  SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
+  yoga: 2a52465aadd70426513eaf9b4f66e1eb3121dac6
+
+PODFILE CHECKSUM: d91f67e74b6410c05259188d419eeed2bd768445
+
+COCOAPODS: 1.9.1

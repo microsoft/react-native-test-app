@@ -1,0 +1,597 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		193EF063247A736200BE8C79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF062247A736200BE8C79 /* AppDelegate.swift */; };
+		193EF065247A736200BE8C79 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF064247A736200BE8C79 /* ViewController.swift */; };
+		193EF067247A736300BE8C79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 193EF066247A736300BE8C79 /* Assets.xcassets */; };
+		193EF06A247A736300BE8C79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 193EF068247A736300BE8C79 /* Main.storyboard */; };
+		193EF076247A736300BE8C79 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF075247A736300BE8C79 /* ReactTestAppTests.swift */; };
+		193EF081247A736300BE8C79 /* ReactTestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF080247A736300BE8C79 /* ReactTestAppUITests.swift */; };
+		193EF08F247A799D00BE8C79 /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF08E247A799D00BE8C79 /* Manifest.swift */; };
+		193EF093247A830200BE8C79 /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */; };
+		193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF097247B130700BE8C79 /* ReactInstance.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		193EF072247A736300BE8C79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 193EF057247A736100BE8C79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 193EF05E247A736100BE8C79;
+			remoteInfo = ReactTestApp;
+		};
+		193EF07D247A736300BE8C79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 193EF057247A736100BE8C79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 193EF05E247A736100BE8C79;
+			remoteInfo = ReactTestApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		193EF05F247A736200BE8C79 /* ReactTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		193EF062247A736200BE8C79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		193EF064247A736200BE8C79 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		193EF066247A736300BE8C79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		193EF069247A736300BE8C79 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		193EF06B247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		193EF06C247A736300BE8C79 /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
+		193EF071247A736300BE8C79 /* ReactTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		193EF075247A736300BE8C79 /* ReactTestAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactTestAppTests.swift; sourceTree = "<group>"; };
+		193EF077247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		193EF07C247A736300BE8C79 /* ReactTestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		193EF080247A736300BE8C79 /* ReactTestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactTestAppUITests.swift; sourceTree = "<group>"; };
+		193EF082247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		193EF08E247A799D00BE8C79 /* Manifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manifest.swift; path = ../ReactTestAppShared/Manifest.swift; sourceTree = "<group>"; };
+		193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ReactTestApp.m"; path = "../ReactTestAppShared/UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
+		193EF092247A830200BE8C79 /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ReactTestApp.h"; path = "../ReactTestAppShared/UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
+		193EF094247A84DA00BE8C79 /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ReactTestApp-Bridging-Header.h"; path = "../ReactTestAppShared/ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		193EF097247B130700BE8C79 /* ReactInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReactInstance.swift; path = ../ReactTestAppShared/ReactInstance.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		193EF05C247A736100BE8C79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		193EF06E247A736300BE8C79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		193EF079247A736300BE8C79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		193EF056247A736100BE8C79 = {
+			isa = PBXGroup;
+			children = (
+				193EF061247A736200BE8C79 /* ReactTestApp */,
+				193EF074247A736300BE8C79 /* ReactTestAppTests */,
+				193EF07F247A736300BE8C79 /* ReactTestAppUITests */,
+				193EF060247A736200BE8C79 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		193EF060247A736200BE8C79 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				193EF05F247A736200BE8C79 /* ReactTestApp.app */,
+				193EF071247A736300BE8C79 /* ReactTestAppTests.xctest */,
+				193EF07C247A736300BE8C79 /* ReactTestAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		193EF061247A736200BE8C79 /* ReactTestApp */ = {
+			isa = PBXGroup;
+			children = (
+				193EF062247A736200BE8C79 /* AppDelegate.swift */,
+				193EF08E247A799D00BE8C79 /* Manifest.swift */,
+				193EF097247B130700BE8C79 /* ReactInstance.swift */,
+				193EF064247A736200BE8C79 /* ViewController.swift */,
+				193EF094247A84DA00BE8C79 /* ReactTestApp-Bridging-Header.h */,
+				193EF092247A830200BE8C79 /* UIViewController+ReactTestApp.h */,
+				193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */,
+				193EF066247A736300BE8C79 /* Assets.xcassets */,
+				193EF068247A736300BE8C79 /* Main.storyboard */,
+				193EF06B247A736300BE8C79 /* Info.plist */,
+				193EF06C247A736300BE8C79 /* ReactTestApp.entitlements */,
+			);
+			path = ReactTestApp;
+			sourceTree = "<group>";
+		};
+		193EF074247A736300BE8C79 /* ReactTestAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				193EF075247A736300BE8C79 /* ReactTestAppTests.swift */,
+				193EF077247A736300BE8C79 /* Info.plist */,
+			);
+			path = ReactTestAppTests;
+			sourceTree = "<group>";
+		};
+		193EF07F247A736300BE8C79 /* ReactTestAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				193EF080247A736300BE8C79 /* ReactTestAppUITests.swift */,
+				193EF082247A736300BE8C79 /* Info.plist */,
+			);
+			path = ReactTestAppUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		193EF05E247A736100BE8C79 /* ReactTestApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 193EF085247A736300BE8C79 /* Build configuration list for PBXNativeTarget "ReactTestApp" */;
+			buildPhases = (
+				193EF05B247A736100BE8C79 /* Sources */,
+				193EF05C247A736100BE8C79 /* Frameworks */,
+				193EF05D247A736100BE8C79 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReactTestApp;
+			productName = ReactTestApp;
+			productReference = 193EF05F247A736200BE8C79 /* ReactTestApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		193EF070247A736300BE8C79 /* ReactTestAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 193EF088247A736300BE8C79 /* Build configuration list for PBXNativeTarget "ReactTestAppTests" */;
+			buildPhases = (
+				193EF06D247A736300BE8C79 /* Sources */,
+				193EF06E247A736300BE8C79 /* Frameworks */,
+				193EF06F247A736300BE8C79 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				193EF073247A736300BE8C79 /* PBXTargetDependency */,
+			);
+			name = ReactTestAppTests;
+			productName = ReactTestAppTests;
+			productReference = 193EF071247A736300BE8C79 /* ReactTestAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		193EF07B247A736300BE8C79 /* ReactTestAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 193EF08B247A736300BE8C79 /* Build configuration list for PBXNativeTarget "ReactTestAppUITests" */;
+			buildPhases = (
+				193EF078247A736300BE8C79 /* Sources */,
+				193EF079247A736300BE8C79 /* Frameworks */,
+				193EF07A247A736300BE8C79 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				193EF07E247A736300BE8C79 /* PBXTargetDependency */,
+			);
+			name = ReactTestAppUITests;
+			productName = ReactTestAppUITests;
+			productReference = 193EF07C247A736300BE8C79 /* ReactTestAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		193EF057247A736100BE8C79 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1150;
+				LastUpgradeCheck = 1150;
+				ORGANIZATIONNAME = Microsoft;
+				TargetAttributes = {
+					193EF05E247A736100BE8C79 = {
+						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1150;
+					};
+					193EF070247A736300BE8C79 = {
+						CreatedOnToolsVersion = 11.5;
+						TestTargetID = 193EF05E247A736100BE8C79;
+					};
+					193EF07B247A736300BE8C79 = {
+						CreatedOnToolsVersion = 11.5;
+						TestTargetID = 193EF05E247A736100BE8C79;
+					};
+				};
+			};
+			buildConfigurationList = 193EF05A247A736100BE8C79 /* Build configuration list for PBXProject "ReactTestApp" */;
+			compatibilityVersion = "Xcode 11.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 193EF056247A736100BE8C79;
+			productRefGroup = 193EF060247A736200BE8C79 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				193EF05E247A736100BE8C79 /* ReactTestApp */,
+				193EF070247A736300BE8C79 /* ReactTestAppTests */,
+				193EF07B247A736300BE8C79 /* ReactTestAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		193EF05D247A736100BE8C79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				193EF067247A736300BE8C79 /* Assets.xcassets in Resources */,
+				193EF06A247A736300BE8C79 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		193EF06F247A736300BE8C79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		193EF07A247A736300BE8C79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		193EF05B247A736100BE8C79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				193EF063247A736200BE8C79 /* AppDelegate.swift in Sources */,
+				193EF08F247A799D00BE8C79 /* Manifest.swift in Sources */,
+				193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */,
+				193EF065247A736200BE8C79 /* ViewController.swift in Sources */,
+				193EF093247A830200BE8C79 /* UIViewController+ReactTestApp.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		193EF06D247A736300BE8C79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				193EF076247A736300BE8C79 /* ReactTestAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		193EF078247A736300BE8C79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				193EF081247A736300BE8C79 /* ReactTestAppUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		193EF073247A736300BE8C79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 193EF05E247A736100BE8C79 /* ReactTestApp */;
+			targetProxy = 193EF072247A736300BE8C79 /* PBXContainerItemProxy */;
+		};
+		193EF07E247A736300BE8C79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 193EF05E247A736100BE8C79 /* ReactTestApp */;
+			targetProxy = 193EF07D247A736300BE8C79 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		193EF068247A736300BE8C79 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				193EF069247A736300BE8C79 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		193EF083247A736300BE8C79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		193EF084247A736300BE8C79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		193EF086247A736300BE8C79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ReactTestApp/ReactTestApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ReactTestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.ReactTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ReactTestAppShared/ReactTestApp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		193EF087247A736300BE8C79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ReactTestApp/ReactTestApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ReactTestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.ReactTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ReactTestAppShared/ReactTestApp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		193EF089247A736300BE8C79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ReactTestAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.ReactTestAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactTestApp.app/Contents/MacOS/ReactTestApp";
+			};
+			name = Debug;
+		};
+		193EF08A247A736300BE8C79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ReactTestAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.ReactTestAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactTestApp.app/Contents/MacOS/ReactTestApp";
+			};
+			name = Release;
+		};
+		193EF08C247A736300BE8C79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ReactTestAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.ReactTestAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ReactTestApp;
+			};
+			name = Debug;
+		};
+		193EF08D247A736300BE8C79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ReactTestAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.ReactTestAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ReactTestApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		193EF05A247A736100BE8C79 /* Build configuration list for PBXProject "ReactTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				193EF083247A736300BE8C79 /* Debug */,
+				193EF084247A736300BE8C79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		193EF085247A736300BE8C79 /* Build configuration list for PBXNativeTarget "ReactTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				193EF086247A736300BE8C79 /* Debug */,
+				193EF087247A736300BE8C79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		193EF088247A736300BE8C79 /* Build configuration list for PBXNativeTarget "ReactTestAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				193EF089247A736300BE8C79 /* Debug */,
+				193EF08A247A736300BE8C79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		193EF08B247A736300BE8C79 /* Build configuration list for PBXNativeTarget "ReactTestAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				193EF08C247A736300BE8C79 /* Debug */,
+				193EF08D247A736300BE8C79 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 193EF057247A736100BE8C79 /* Project object */;
+}

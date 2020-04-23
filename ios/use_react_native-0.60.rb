@@ -14,7 +14,8 @@ def include_react_native!(react_native, target_platform)
   pod 'React-DevSupport', :path => "#{react_native}/React"
 
   # fishhook was removed in 0.60.5
-  pod 'React-fishhook', :path => "#{react_native}/Libraries/fishhook" if File.exist?("#{react_native}/Libraries/fishhook")
+  fishhook = "#{react_native}/Libraries/fishhook"
+  pod 'React-fishhook', :path => fishhook if File.exist?(fishhook)
 
   pod 'React-RCTActionSheet', :path => "#{react_native}/Libraries/ActionSheetIOS"
   pod 'React-RCTAnimation', :path => "#{react_native}/Libraries/NativeAnimation"
@@ -36,6 +37,10 @@ def include_react_native!(react_native, target_platform)
   pod 'DoubleConversion', :podspec => "#{react_native}/third-party-podspecs/DoubleConversion.podspec"
   pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
   pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
+
+  # Required by `react-native-macos` otherwise it will find Boost elsewhere
+  boost = "#{react_native}/third-party-podspecs/boost-for-react-native.podspec"
+  pod 'boost-for-react-native', :podspec => boost if File.exist?(boost)
 end
 
 # rubocop:enable Layout/LineLength

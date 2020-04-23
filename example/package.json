@@ -5,11 +5,14 @@
   "scripts": {
     "build:android": "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.jsbundle --assets-dest dist/res --reset-cache",
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache",
-    "start": "react-native start"
+    "build:macos": "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache --config=metro.config.macos.js",
+    "start": "react-native start",
+    "start:macos": "react-native start --config=metro.config.macos.js"
   },
   "peerDependencies": {
     "react": "^16.8.6",
-    "react-native": "^0.60.6"
+    "react-native": "^0.60.6",
+    "react-native-macos": "0.60.0-microsoft.79"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -19,6 +22,7 @@
     "mkdirp": "^0.5.1",
     "react": "16.8.6",
     "react-native": "0.60.6",
+    "react-native-macos": "0.60.0-microsoft.79",
     "react-native-test-app": "../"
   }
 }

@@ -16,7 +16,7 @@ NSNotificationName const ReactTestAppSceneDidOpenURLNotification =
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 @end
 
-UIViewController *RTAViewControllerFromString(NSString *name, RCTBridge *bridge)
+RTAViewController *RTAViewControllerFromString(NSString *name, RCTBridge *bridge)
 {
     Class viewController = NSClassFromString(name);
     return [viewController instancesRespondToSelector:@selector(initWithBridge:)]

@@ -62,12 +62,15 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
             name: .RCTJavaScriptWillStartLoading,
             object: nil
         )
+
+    #if os(iOS)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(onRemoteBundleURLReceived(_:)),
             name: .didReceiveRemoteBundleURL,
             object: nil
         )
+    #endif
     }
 
     init(forTestingPurposesOnly: Bool) {

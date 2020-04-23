@@ -115,7 +115,7 @@ def use_test_app_internal!(target_platform)
   FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
 
   # Link source files
-  %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
+  %w[ReactTestApp ReactTestAppShared ReactTestAppTests ReactTestAppUITests].each do |file|
     source = File.expand_path(File.join(__dir__, '..', target_platform.to_s, file))
     FileUtils.ln_sf(source, destination)
   end
