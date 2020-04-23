@@ -195,7 +195,7 @@ module.exports = (plop) => {
             "",
             "workspace '{{name}}.xcworkspace'",
             "",
-            "use_test_app!(__dir__)",
+            "use_test_app!",
             "",
           ].join("\n"),
         });

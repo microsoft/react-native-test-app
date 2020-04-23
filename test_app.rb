@@ -22,6 +22,15 @@ def find_file(file_name, current_dir)
   find_file(file_name, current_dir.parent)
 end
 
+def find_project_root
+  podfile_path = Thread.current.backtrace_locations.find do |location|
+    File.basename(location.absolute_path) == 'Podfile'
+  end
+  raise "Could not find 'Podfile'" if podfile_path.nil?
+
+  Pathname.new(File.dirname(podfile_path.absolute_path))
+end
+
 def nearest_node_modules(project_root)
   path = find_file('node_modules', project_root)
   raise "Could not find 'node_modules'" if path.nil?
@@ -83,11 +92,10 @@ def use_react_native!(project_root)
   include_react_native!(react_native.relative_path_from(project_root).to_s)
 end
 
-def use_test_app!(project_root)
+def use_test_app!
   xcodeproj = 'ReactTestApp.xcodeproj'
-
-  project_root = Pathname.new(project_root) unless project_root.is_a?(Pathname)
   src_xcodeproj = File.join(__dir__, 'ios', xcodeproj)
+  project_root = find_project_root
   destination = File.join(nearest_node_modules(project_root), '.generated')
   dst_xcodeproj = File.join(destination, xcodeproj)
 
