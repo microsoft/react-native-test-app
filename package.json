@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "react-native-test-app",
   "license": "MIT",
   "author": {
@@ -10,8 +9,20 @@
     "type": "git",
     "url": "https://github.com/microsoft/react-native-test-app.git"
   },
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "react-native-test-app provides a test app for all supported platforms as a package",
+  "keywords": [
+    "android",
+    "app",
+    "ios",
+    "macos",
+    "react",
+    "react-native",
+    "test",
+    "test-app",
+    "testing",
+    "windows"
+  ],
   "homepage": "https://github.com/microsoft/react-native-test-app",
   "scripts": {
     "format:c": "clang-format -i $(git ls-files '*.h' '*.m' '*.mm')",
