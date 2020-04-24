@@ -1,5 +1,8 @@
 # React Native Test App
 
+![build](https://github.com/microsoft/react-native-test-app/workflows/build/badge.svg)
+[![npm version](https://badgen.net/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
+
 React Native Test App provides test apps for all platforms as a package.
 
 This is a work in progress. You can read and discuss the RFC at
@@ -11,12 +14,11 @@ will write documentation when it becomes ready.
 
 # Quick Start
 
-Install `react-native-test-app` and `plop`. We will use Plop to generate the
-test app:
+Install `react-native-test-app` and `plop`. We will use
+[Plop](https://plopjs.com/) to generate the test app:
 
 ```bash
-yarn add react-native-test-app --dev
-yarn add plop --dev
+yarn add plop react-native-test-app --dev
 yarn plop --plopfile node_modules/react-native-test-app/plopfile.js --dest sample
 ```
 

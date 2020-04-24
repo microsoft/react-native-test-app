@@ -5,8 +5,10 @@ on:
       - master
   pull_request:
 jobs:
-  Lint-Test:
+  lint-test:
+    name: "lint + test"
     runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,8 +27,10 @@ jobs:
           echo "::add-matcher::.github/eslint-stylish.json"
           yarn lint:js
           echo "::remove-matcher owner=eslint-stylish::"
-  iOS:
+  ios:
+    name: "iOS"
     runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -45,8 +49,10 @@ jobs:
         run: |
           ../scripts/xcodebuild-ios.sh ios/Example.xcworkspace test-without-building
         working-directory: example
-  iOS-template:
+  ios-template:
+    name: "iOS [template: all]"
     runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -59,8 +65,10 @@ jobs:
           pod install --project-directory=ios
           ../scripts/xcodebuild-ios.sh ios/TemplateExample.xcworkspace build
         working-directory: template-example
-  iOS-template-exclusive:
+  ios-template-exclusive:
+    name: "iOS [template: ios]"
     runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -73,11 +81,13 @@ jobs:
           pod install
           ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
         working-directory: template-example
-  Android:
+  android:
+    name: "Android"
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -105,11 +115,13 @@ jobs:
           pushd android 1> /dev/null
           ./gradlew clean build check test
         working-directory: example
-  Android-template:
+  android-template:
+    name: "Android [template: all]"
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -136,11 +148,13 @@ jobs:
           ./gradlew clean build check test
         shell: bash
         working-directory: template-example
-  Android-template-exclusive:
+  android-template-exclusive:
+    name: "Android [template: android]"
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -166,3 +180,31 @@ jobs:
           ./gradlew clean build check test
         shell: bash
         working-directory: template-example
+  release:
+    needs:
+      [
+        lint-test,
+        ios,
+        ios-template,
+        ios-template-exclusive,
+        android,
+        android-template,
+        android-template-exclusive,
+      ]
+    runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install
+        run: |
+          yarn
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
