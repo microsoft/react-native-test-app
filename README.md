@@ -28,15 +28,49 @@ test app, then answer a couple of questions:
 
 ```console
 ? What is the name of your test app? Sample
-? Which platforms do you need test apps for? (Use arrow keys)
-❯ all
-  android
-  ios
-  macos
-  windows
+? Which platforms do you need test apps for? all
 ```
 
-# Set up the Development Environment
+Run `yarn` inside the new project folder:
+
+```bash
+cd sample
+yarn
+```
+
+Once the dependencies are installed, follow the platform specific instructions below.
+
+## Android
+
+```bash
+# Bundle the JS first so Gradle can find
+# the assets.
+yarn build:android
+
+# Finally, open `sample/android` in
+# Android Studio.
+
+# On macOS, you can open the project from
+# the terminal:
+open -a "Android Studio" android
+```
+
+## iOS
+
+```bash
+# Bundle the JS first so CocoaPods can
+# find the assets.
+yarn build:ios
+pod install
+
+# Finally, open the Xcode workspace.
+open Sample.xcworkspace
+```
+
+For more details, please refer to the
+[wiki](https://github.com/microsoft/react-native-test-app/wiki).
+
+# Developing React Native Test App
 
 We'll be using the Example app for all development of the React Native Test App.
 Some platforms may require extra steps for the initial set up. Please follow the
@@ -47,34 +81,50 @@ Open a terminal and navigate to your clone of this repository:
 ```bash
 cd react-native-test-app
 
-# This step only needs to be done once, before we can install the
-# Example app's dependencies. It is stored in
-# `~/.config/yarn/link/react-native-test-app`. You can run `unlink`
-# if you need to remove it later.
+# This step only needs to be done once,
+# before we can install the Example app's
+# dependencies. It is stored in
+# `~/.config/yarn/link/react-native-test-app`.
+# You can run `unlink` if you need to
+# remove it later.
 yarn link
 
 # Install Example app's dependencies.
 cd example
 yarn
 
-# Now we use the link we created earlier. This step needs to be run
-# _after_ `yarn install` otherwise it will be overwritten.
+# Now we use the link we created earlier.
+# This step needs to be run _after_
+# `yarn` otherwise it will be
+# overwritten.
 yarn link "react-native-test-app"
 ```
 
 ## Android
 
-TODO: https://github.com/microsoft/react-native-test-app/projects/1#card-32331906
+```bash
+# Bundle the JS first so Gradle can find
+# the assets.
+yarn build:android
+
+# Finally, open the `android` folder in
+# Android Studio.
+
+# On macOS, you can open the project from
+# the terminal:
+open -a "Android Studio" android
+```
 
 ## iOS
 
 ```bash
-# Bundle the JS first so CocoaPods can find the assets.
+# Bundle the JS first so CocoaPods can
+# find the assets.
 yarn build:ios
-pod install
+pod install --project-directory=ios
 
 # Finally, open the Xcode workspace.
-open Example.xcworkspace
+open ios/Example.xcworkspace
 ```
 
 # Known Issues
@@ -90,9 +140,9 @@ of the package:
 module.exports = {
   project: {
     ios: {
-      project: 'ReactTestApp-Dummy.xcodeproj'
-    }
-  }
+      project: "ReactTestApp-Dummy.xcodeproj",
+    },
+  },
 };
 ```
 
