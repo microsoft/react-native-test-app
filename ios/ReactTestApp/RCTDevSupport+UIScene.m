@@ -61,7 +61,15 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
                       @selector(showErrorMessage:withStack:isUpdate:),
                       @selector(rta_showErrorMessage:withStack:isUpdate:));
       swizzleSelector(class, @selector(dismiss), @selector(rta_dismiss));
+      swizzleSelector(class, @selector(makeKeyAndVisible), @selector(rta_makeKeyAndVisible));
     });
+}
+
+- (void)rta_makeKeyAndVisible
+{
+    // Manually adding the rootViewController's view to the view hierarchy is no
+    // longer supported. Overriding to allow UIWindow to add the
+    // rootViewController's view to the view hierarchy itself.
 }
 
 - (void)rta_dismiss
@@ -73,7 +81,7 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
                    withStack:(NSArray<RCTJSStackFrame *> *)stack
                     isUpdate:(BOOL)isUpdate
 {
-    if (!self.isKeyWindow) {
+    if (self.rootViewController.presentingViewController == nil) {
         self.rootViewController.view.backgroundColor = UIColor.blackColor;
         [RCTSharedApplication().delegate.window.rootViewController
             presentViewController:self.rootViewController
