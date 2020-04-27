@@ -205,6 +205,7 @@ jobs:
           yarn
       - name: Release
         env:
+          GIT_AUTHOR_EMAIL: ${{ secrets. GIT_AUTHOR_EMAIL }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
