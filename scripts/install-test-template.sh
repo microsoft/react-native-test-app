@@ -2,15 +2,14 @@
 set -eo pipefail
 
 platform=$1
+version=$(node -e 'console.log(require("./package.json").version)')
+
+# Use tarballs to ensure that published packages are consumable
+npm pack
 
 yarn
 yarn plop --dest template-example TemplateExample $platform
-rm -rf node_modules
 
 pushd template-example 1> /dev/null
-if [[ $(uname) == Darwin ]]; then
-  sed -e 's/"\(react-native-test-app\)": "[0-9][.0-9]*"/"\1": "..\/"/' -i '' package.json
-else
-  sed -e 's/"\(react-native-test-app\)": "[0-9][.0-9]*"/"\1": "..\/"/' -i package.json
-fi
+yarn add ../react-native-test-app-$version.tgz --dev
 yarn
