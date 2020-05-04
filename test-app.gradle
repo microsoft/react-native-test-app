@@ -44,7 +44,9 @@ ext.applyTestAppModule = { Project project, String packageName ->
     def androidResDir = androidResourceFiles
         .find { it.isDirectory() && it.name == "res" }
 
-    androidResourceFiles.remove(androidResDir)
+    if (androidResDir != null) {
+        androidResourceFiles.remove(androidResDir)
+    }
 
     def generatedAssetsDir = file("${buildDir}/generated/rncli/src/main/assets/")
     generatedAssetsDir.mkdirs()
@@ -69,8 +71,10 @@ ext.applyTestAppModule = { Project project, String packageName ->
     }
 
     task copyResources(type: Copy) {
-        from androidResDir
-        into generatedResDir
+        if (androidResDir != null) {
+            from androidResDir
+            into generatedResDir
+        }
     }
 
     preBuild.dependsOn(copyManifest)
