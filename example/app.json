@@ -1,11 +1,12 @@
 {
   "name": "Example",
   "displayName": "Example",
-  "components": {
-    "Example": {
+  "components": [
+    {
+      "appKey": "Example",
       "displayName": "App"
     }
-  },
+  ],
   "resources": {
     "ios": [
       "dist/assets",

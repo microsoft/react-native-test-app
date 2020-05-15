@@ -52,11 +52,12 @@ module.exports = (plop) => {
             {
               name,
               displayName: name,
-              components: {
-                [name]: {
+              components: [
+                {
+                  appKey: name,
                   displayName: name,
                 },
-              },
+              ],
               resources: ["dist/assets", "dist/main.jsbundle", "dist/res"],
             },
             undefined,

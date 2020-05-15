@@ -19,11 +19,8 @@ class ManifestTests: XCTestCase {
         XCTAssertEqual(manifest.displayName, "Example")
         XCTAssertEqual(manifest.components.count, 1)
 
-        guard let component = manifest.components["Example"] else {
-            XCTFail("Expected 'Example' component")
-            return
-        }
-
+        let component = manifest.components[0]
+        XCTAssertEqual(component.appKey, "Example")
         XCTAssertEqual(component.displayName, "App")
         XCTAssertNil(component.initialProperties)
     }
@@ -33,8 +30,8 @@ class ManifestTests: XCTestCase {
             name: "Name",
             displayName: "Display Name",
             components: [
-                "0": Component(displayName: nil, initialProperties: ["key": "value"]),
-                "1": Component(displayName: "1", initialProperties: nil),
+                Component(appKey: "0", displayName: nil, initialProperties: ["key": "value"]),
+                Component(appKey: "1", displayName: "1", initialProperties: nil),
             ]
         )
 
@@ -48,15 +45,19 @@ class ManifestTests: XCTestCase {
         XCTAssertEqual(manifest.displayName, expected.displayName)
         XCTAssertEqual(manifest.components.count, expected.components.count)
 
-        XCTAssertEqual(manifest.components["0"]!.displayName,
-                       expected.components["0"]!.displayName)
-        XCTAssertEqual(manifest.components["0"]!.initialProperties!["key"]!,
-                       expected.components["0"]!.initialProperties!["key"]!)
+        XCTAssertEqual(manifest.components[0].appKey,
+                       expected.components[0].appKey)
+        XCTAssertEqual(manifest.components[0].displayName,
+                       expected.components[0].displayName)
+        XCTAssertEqual(manifest.components[0].initialProperties!["key"]!,
+                       expected.components[0].initialProperties!["key"]!)
 
-        XCTAssertEqual(manifest.components["1"]!.displayName,
-                       expected.components["1"]!.displayName)
-        XCTAssertEqual(manifest.components["1"]!.initialProperties,
-                       expected.components["1"]!.initialProperties)
+        XCTAssertEqual(manifest.components[1].appKey,
+                       expected.components[1].appKey)
+        XCTAssertEqual(manifest.components[1].displayName,
+                       expected.components[1].displayName)
+        XCTAssertEqual(manifest.components[1].initialProperties,
+                       expected.components[1].initialProperties)
     }
 
 }

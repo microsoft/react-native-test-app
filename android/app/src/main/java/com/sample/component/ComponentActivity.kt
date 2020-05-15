@@ -36,6 +36,7 @@ class ComponentActivity : ReactActivity() {
         title = intent.extras?.getString(COMPONENT_DISPLAY_NAME, componentName)
 
         findClass(componentName)?.let {
+            @Suppress("UNCHECKED_CAST")
             val fragmentClass = it as Class<Fragment>
             val fragment = fragmentClass.newInstance()
 

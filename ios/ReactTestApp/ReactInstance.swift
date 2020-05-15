@@ -74,7 +74,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
         assert(forTestingPurposesOnly)
     }
 
-    func initReact(onDidInitialize: @escaping ([String: Component]) -> Void) {
+    func initReact(onDidInitialize: @escaping ([Component]) -> Void) {
         if let bridge = bridge {
             if remoteBundleURL == nil {
                 // When loading the embedded bundle, we must disable remote
