@@ -8,6 +8,7 @@
 import Foundation
 
 struct Component: Codable {
+    let appKey: String
     let displayName: String?
     let initialProperties: [String: String]?
 }
@@ -15,7 +16,7 @@ struct Component: Codable {
 struct Manifest: Codable {
     let name: String
     let displayName: String
-    let components: [String: Component]
+    let components: [Component]
 
     static func fromFile() -> Manifest? {
         guard let manifestURL = Bundle.main.url(forResource: "app", withExtension: "json", subdirectory: "assets"),

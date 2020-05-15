@@ -65,6 +65,7 @@ def resources_pod(project_root)
     'license' => 'Unlicense',
     'authors' => '@microsoft/react-native-test-app',
     'source' => { 'git' => 'https://github.com/microsoft/react-native-test-app.git' },
+    'platforms' => { 'ios' => '12.0' },
     'resources' => resources
   }
 

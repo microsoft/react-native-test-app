@@ -49,8 +49,8 @@ final class ContentViewController: UITableViewController {
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.reactInstance.initReact { components in
-                let items: [NavigationLink] = components.map { (name, component) in
-                    (component.displayName ?? name, { self?.navigate(to: component, name: name) })
+                let items: [NavigationLink] = components.map { (component) in
+                    (component.displayName ?? component.appKey, { self?.navigate(to: component) })
                 }
                 DispatchQueue.main.async {
                     guard let strongSelf = self else {
@@ -132,21 +132,21 @@ final class ContentViewController: UITableViewController {
         #endif
     }
 
-    private func navigate(to component: Component, name: String) {
+    private func navigate(to component: Component) {
         guard let bridge = reactInstance.bridge,
               let navigationController = navigationController else {
             return
         }
 
         let viewController: UIViewController = {
-            if let viewController = RTAViewControllerFromString(name, bridge) {
+            if let viewController = RTAViewControllerFromString(component.appKey, bridge) {
                 return viewController
             }
 
             let viewController = UIViewController(nibName: nil, bundle: nil)
             viewController.view = RCTRootView(
                 bridge: bridge,
-                moduleName: name,
+                moduleName: component.appKey,
                 initialProperties: component.initialProperties
             )
             return viewController

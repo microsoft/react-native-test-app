@@ -12,7 +12,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.sample.component.ComponentActivity
 import com.sample.component.ComponentListAdapter
 import com.sample.component.ComponentViewModel
-import com.sample.manifest.Components
+import com.sample.manifest.Component
 import com.sample.manifest.ManifestProvider
 import com.sample.react.BundleSource
 import com.sample.react.ReactBundleNameProvider
@@ -89,9 +89,9 @@ class MainActivity : ReactActivity() {
         }
     }
 
-    private fun setupRecyclerView(manifestComponents: Components) {
+    private fun setupRecyclerView(manifestComponents: List<Component>) {
         val components = manifestComponents.map {
-            ComponentViewModel(it.key, it.value.displayName ?: it.key)
+            ComponentViewModel(it.appKey, it.displayName ?: it.appKey)
         }
         findViewById<RecyclerView>(R.id.recyclerview).apply {
             layoutManager = LinearLayoutManager(context)

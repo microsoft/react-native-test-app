@@ -2,14 +2,16 @@ package com.sample.manifest
 
 import com.squareup.moshi.JsonClass
 
-typealias Components = Map<String, Component>
-
 @JsonClass(generateAdapter = true)
 data class Manifest(
     val name: String,
     val displayName: String,
-    val components: Components
+    val components: List<Component>
 )
 
 @JsonClass(generateAdapter = true)
-data class Component(val displayName: String?)
+data class Component(
+    val appKey: String,
+    val displayName: String?,
+    val initialProperties: Map<String, String?>?
+)
