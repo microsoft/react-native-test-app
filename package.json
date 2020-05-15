@@ -25,7 +25,7 @@
   ],
   "homepage": "https://github.com/microsoft/react-native-test-app",
   "scripts": {
-    "clean": "npx rimraf example/node_modules/react-native-test-app; git clean -dfqx",
+    "clean": "npx --quiet rimraf example/node_modules/react-native-test-app; git clean -dfqx",
     "format:c": "clang-format -i $(git ls-files '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml')",
     "lint:js": "eslint $(git ls-files '*.js')"
