@@ -34,7 +34,7 @@ class MainActivity : ReactActivity() {
     private val listener = { component: ComponentViewModel ->
         startActivity(
             ComponentActivity.newIntent(
-                this, component.name, component.displayName
+                this, component.name, component.displayName, component.initialProperties
             )
         )
     }
@@ -91,7 +91,7 @@ class MainActivity : ReactActivity() {
 
     private fun setupRecyclerView(manifestComponents: List<Component>) {
         val components = manifestComponents.map {
-            ComponentViewModel(it.appKey, it.displayName ?: it.appKey)
+            ComponentViewModel(it.appKey, it.displayName ?: it.appKey, it.initialProperties)
         }
         findViewById<RecyclerView>(R.id.recyclerview).apply {
             layoutManager = LinearLayoutManager(context)

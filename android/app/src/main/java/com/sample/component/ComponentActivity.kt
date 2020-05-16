@@ -6,23 +6,47 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.facebook.react.ReactActivity
+import com.facebook.react.ReactActivityDelegate
 
 class ComponentActivity : ReactActivity() {
+
+    private inner class ComponentActivityDelegate(
+        activity: ReactActivity,
+        mainComponentName: String?
+    ) : ReactActivityDelegate(activity, mainComponentName) {
+        override fun getLaunchOptions(): Bundle? {
+            return intent.extras?.getBundle(COMPONENT_INITIAL_PROPERTIES)
+        }
+    }
 
     companion object {
         private const val COMPONENT_NAME = "extra:componentName"
         private const val COMPONENT_DISPLAY_NAME = "extra:componentDisplayName"
+        private const val COMPONENT_INITIAL_PROPERTIES = "extra:componentInitialProperties"
 
         fun newIntent(
             activity: Activity,
             componentName: String,
-            componentDisplayName: String
+            componentDisplayName: String,
+            componentInitialProperties: Map<String, String?>?
         ): Intent {
             return Intent(activity, ComponentActivity::class.java).apply {
                 putExtra(COMPONENT_NAME, componentName)
                 putExtra(COMPONENT_DISPLAY_NAME, componentDisplayName)
+
+                if (componentInitialProperties != null) {
+                    val bundle = Bundle()
+                    for ((k, v) in componentInitialProperties) {
+                        bundle.putString(k, v)
+                    }
+                    putExtra(COMPONENT_INITIAL_PROPERTIES, bundle)
+                }
             }
         }
+    }
+
+    override fun createReactActivityDelegate(): ReactActivityDelegate {
+        return ComponentActivityDelegate(this, mainComponentName)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +83,7 @@ class ComponentActivity : ReactActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (android.R.id.home == item.itemId) {
             onBackPressed()
-            return true;
+            return true
         }
 
         return super.onOptionsItemSelected(item)
