@@ -202,12 +202,6 @@ jobs:
           node-version: 12
       - name: Install
         run: |
-          yarn link
-          pushd example 1> /dev/null
-          yarn
-          yarn link react-native-test-app
-          pod install --project-directory=ios
-          popd 1> /dev/null
           yarn
       - name: Release
         env:
