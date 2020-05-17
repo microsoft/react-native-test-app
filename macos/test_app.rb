@@ -5,10 +5,10 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-require_relative('ios/test_app.rb')
+require_relative('../ios/test_app.rb')
 
 def use_test_app!
-  use_test_app_internal!(:ios) do |target|
+  use_test_app_internal!(:macos) do |target|
     yield target if block_given?
   end
 end
