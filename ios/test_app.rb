@@ -136,7 +136,7 @@ def use_test_app_internal!(target_platform)
       pod 'ReactTestApp-Resources', :path => resources_pod_path
     end
 
-    yield ReactTestAppTargets.new(self)
+    yield ReactTestAppTargets.new(self) if block_given?
 
     use_native_modules! '.'
   end

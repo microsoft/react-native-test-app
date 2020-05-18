@@ -7,8 +7,6 @@
 
 require_relative('ios/test_app.rb')
 
-def use_test_app!
-  use_test_app_internal!(:ios) do |target|
-    yield target if block_given?
-  end
+def use_test_app!(&block)
+  use_test_app_internal!(:ios, &block)
 end
