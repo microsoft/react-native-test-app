@@ -1,9 +1,10 @@
 {
   "name": "TestFixture",
   "displayName": "TestFixture",
-  "components": {
-    "TestFixture": {
+  "components": [
+    {
+      "appKey": "TestFixture",
       "displayName": "Test"
     }
-  }
+  ]
 }

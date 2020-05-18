@@ -7,7 +7,7 @@
 
 require('minitest/autorun')
 
-require_relative('../test_app')
+require_relative('../ios/test_app')
 
 def app_manifest_path(project_root, podspec_path)
   File.join(project_root, podspec_path, 'ReactTestApp-Resources.podspec.json')
@@ -18,38 +18,50 @@ def fixture_path(*args)
 end
 
 class TestTestApp < Minitest::Test
-  def test_resources_pod_returns_spec_path
-    assert_nil(resources_pod(Pathname.new('/')))
-    assert_nil(resources_pod(Pathname.new('.')))
+  %i[ios macos].each do |target|
+    define_method("test_#{target}_resources_pod_returns_spec_path") do
+      assert_nil(resources_pod(Pathname.new('/'), target))
+      assert_nil(resources_pod(Pathname.new('.'), target))
 
-    assert_nil(resources_pod(fixture_path('without_resources')))
-    assert_nil(resources_pod(fixture_path('without_resources', 'ios')))
+      assert_nil(resources_pod(fixture_path('without_resources'), target))
+      assert_nil(resources_pod(fixture_path('without_resources', target.to_s), target))
 
-    assert_nil(resources_pod(fixture_path('without_ios_resources')))
-    assert_nil(resources_pod(fixture_path('without_ios_resources', 'ios')))
+      assert_nil(resources_pod(fixture_path('without_platform_resources'), target))
+      assert_nil(resources_pod(fixture_path('without_platform_resources', target.to_s), target))
 
-    assert_equal('.', resources_pod(fixture_path('with_resources')))
-    assert_equal('..', resources_pod(fixture_path('with_resources', 'ios')))
+      assert_equal('.', resources_pod(fixture_path('with_resources'), target))
+      assert_equal('..', resources_pod(fixture_path('with_resources', target.to_s), target))
 
-    assert_equal('.', resources_pod(fixture_path('with_ios_resources')))
-    assert_equal('..', resources_pod(fixture_path('with_ios_resources', 'ios')))
+      assert_equal('.', resources_pod(fixture_path('with_platform_resources'), target))
+      assert_equal('..',
+                   resources_pod(fixture_path('with_platform_resources', target.to_s), target))
+    end
   end
 
-  def test_resources_pod_writes_podspec
-    [
-      fixture_path('with_resources'),
-      fixture_path('with_resources', 'ios'),
-      fixture_path('with_ios_resources'),
-      fixture_path('with_ios_resources', 'ios')
-    ].each do |project_root|
-      begin
-        podspec_path = resources_pod(project_root)
-        manifest_path = app_manifest_path(project_root, podspec_path)
-        manifest = JSON.parse(File.read(manifest_path))
+  %i[ios macos].each do |target|
+    define_method("test_#{target}_resources_pod_writes_podspec") do
+      resources = %w[dist/assets dist/main.jsbundle]
+      platform_resources = ["dist-#{target}/assets", "dist-#{target}/main.jsbundle"]
 
-        assert_equal(%w[dist/assets dist/main.jsbundle], manifest['resources'].sort)
-      ensure
-        File.delete(manifest_path)
+      [
+        fixture_path('with_resources'),
+        fixture_path('with_resources', target.to_s),
+        fixture_path('with_platform_resources'),
+        fixture_path('with_platform_resources', target.to_s)
+      ].each do |project_root|
+        begin
+          podspec_path = resources_pod(project_root, target)
+          manifest_path = app_manifest_path(project_root, podspec_path)
+          manifest = JSON.parse(File.read(manifest_path))
+
+          if project_root.to_s.include?('with_platform_resources')
+            assert_equal(platform_resources, manifest['resources'].sort)
+          else
+            assert_equal(resources, manifest['resources'].sort)
+          end
+        ensure
+          File.delete(manifest_path)
+        end
       end
     end
   end

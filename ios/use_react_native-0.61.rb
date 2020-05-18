@@ -6,7 +6,9 @@
 #
 # rubocop:disable Layout/LineLength
 
-def include_react_native!(react_native)
+def include_react_native!(react_native, target_platform)
+  react_native = "#{react_native}-macos" if target_platform == :macos
+
   pod 'FBLazyVector', :path => "#{react_native}/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "#{react_native}/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "#{react_native}/Libraries/RCTRequired"
