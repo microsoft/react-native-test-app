@@ -18,8 +18,8 @@ def fixture_path(*args)
 end
 
 class TestTestApp < Minitest::Test
-  def test_resources_pod_returns_spec_path
-    %i[ios macos].each do |target|
+  %i[ios macos].each do |target|
+    define_method("test_#{target}_resources_pod_returns_spec_path") do
       assert_nil(resources_pod(Pathname.new('/'), target))
       assert_nil(resources_pod(Pathname.new('.'), target))
 
@@ -38,9 +38,9 @@ class TestTestApp < Minitest::Test
     end
   end
 
-  def test_resources_pod_writes_podspec
-    resources = %w[dist/assets dist/main.jsbundle]
-    %i[ios macos].each do |target|
+  %i[ios macos].each do |target|
+    define_method("test_#{target}_resources_pod_writes_podspec") do
+      resources = %w[dist/assets dist/main.jsbundle]
       platform_resources = ["dist-#{target}/assets", "dist-#{target}/main.jsbundle"]
 
       [
