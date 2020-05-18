@@ -1,7 +1,7 @@
 PODS:
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Example-Tests (0.0.14):
+  - Example-Tests (0.0.15):
     - React
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -82,7 +82,7 @@ PODS:
     - React-Core (= 0.60.6)
   - React-RCTWebSocket (0.60.6):
     - React-Core (= 0.60.6)
-  - ReactTestApp-DevSupport (0.0.14)
+  - ReactTestApp-DevSupport (0.0.15)
   - ReactTestApp-Resources (1.0.0-dev)
   - SwiftLint (0.39.1)
   - yoga (0.60.6.React)
@@ -174,7 +174,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  Example-Tests: 89126626c7905017d8c49e0817b87623d9b09266
+  Example-Tests: 37e8241259c416108804b018d149b21ab0905b40
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
@@ -195,7 +195,7 @@ SPEC CHECKSUMS:
   React-RCTText: d91537e29e38dc69cf09cbca0875cf5dc7402da6
   React-RCTVibration: 7655d72dfb919dd6d8e135ca108a5a2bd9fcd7b4
   React-RCTWebSocket: 7cd2c8d0f8ddd680dc76404defba7ab1f56b83af
-  ReactTestApp-DevSupport: 7b8bf85ce84176899550a1556b4f9f2fc39f6a9f
+  ReactTestApp-DevSupport: ac31b3ca3ffbf3fe674a1364d96d189897db2fef
   ReactTestApp-Resources: c070f72dfcb2806d922eec6656259cbf7a4d2bcf
   SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
   yoga: 5079887aa3e4c62142d6bcee493022643ee4d730
