@@ -106,7 +106,7 @@ def use_test_app_internal!(target_platform)
   xcodeproj = 'ReactTestApp.xcodeproj'
   src_xcodeproj = File.join(__dir__, '..', target_platform.to_s, xcodeproj)
   project_root = find_project_root
-  destination = File.join(nearest_node_modules(project_root), '.generated')
+  destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
   dst_xcodeproj = File.join(destination, xcodeproj)
 
   # Copy/link Xcode project files
@@ -116,7 +116,8 @@ def use_test_app_internal!(target_platform)
 
   # Link source files
   %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
-    FileUtils.ln_sf(File.join(__dir__, '..', 'ios', file), destination)
+    source = File.expand_path(File.join(__dir__, '..', target_platform.to_s, file))
+    FileUtils.ln_sf(source, destination)
   end
 
   require_relative(autolink_script_path)
