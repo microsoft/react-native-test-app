@@ -3,14 +3,29 @@
 ![build](https://github.com/microsoft/react-native-test-app/workflows/build/badge.svg)
 [![npm version](https://badgen.net/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
 
-React Native Test App provides test apps for all platforms as a package.
+React Native Test App provides test apps for all platforms as a package. Bring
+your own JS bundle, and let us manage the native bits.
 
 This is a work in progress. You can read and discuss the RFC at
 [React Native: Discussions and Proposals](https://github.com/react-native-community/discussions-and-proposals/pull/204).
 
-The package is still a bit cumbersome to consume, and requires manually writing
-some of the configuration. We are currently working on making it easier, and
-will write documentation when it becomes ready.
+For more details, please refer to the
+[wiki](https://github.com/microsoft/react-native-test-app/wiki).
+
+## Dependencies
+
+`react-native-test-app` is published with source code only. You will still need
+to compile the test apps yourself.
+
+- **Android**:
+  - [Android Studio](https://developer.android.com/studio) 3.6 or later
+    - Android SDK Platform 29
+    - Android SDK Build-Tools 29.0.3
+    - To install the required SDKs, go into **Preferences** ❭ **Appearance &
+      Behavior** ❭ **System Settings** ❭ **Android SDK**.
+- **iOS**:
+  - [Xcode](https://apps.apple.com/app/xcode/id497799835?mt=12) 11.3 or later
+  - [CocoaPods](https://cocoapods.org/)
 
 # Quick Start
 
@@ -38,7 +53,8 @@ cd sample
 yarn
 ```
 
-Once the dependencies are installed, follow the platform specific instructions below.
+Once the dependencies are installed, follow the platform specific instructions
+below.
 
 ## Android
 
@@ -67,10 +83,13 @@ pod install
 open Sample.xcworkspace
 ```
 
-For more details, please refer to the
-[wiki](https://github.com/microsoft/react-native-test-app/wiki).
-
 # Developing React Native Test App
+
+Additional dependencies:
+
+- [Node](https://nodejs.org/) 12 LTS
+- [Yarn](https://classic.yarnpkg.com/docs/install)
+- **macOS:** [Homebrew](https://brew.sh/)
 
 We'll be using the Example app for all development of the React Native Test App.
 Some platforms may require extra steps for the initial set up. Please follow the
