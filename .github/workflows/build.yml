@@ -28,7 +28,7 @@ jobs:
           yarn lint:js
           echo "::remove-matcher owner=eslint-stylish::"
   ios:
-    name: "iOS + macOS"
+    name: "iOS"
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -38,27 +38,16 @@ jobs:
         run: |
           yarn
         working-directory: example
-      - name: Build iOS
+      - name: Build
         run: |
           set -eo pipefail
           yarn build:ios
           pod install --project-directory=ios
           ../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
         working-directory: example
-      - name: Test iOS
+      - name: Test
         run: |
           ../scripts/xcodebuild.sh ios/Example.xcworkspace test-without-building
-        working-directory: example
-      - name: Cleanup
-        run: |
-          rm -r dist
-        working-directory: example
-      - name: Build macOS
-        run: |
-          set -eo pipefail
-          yarn build:macos
-          pod install --project-directory=macos
-          ../scripts/xcodebuild.sh macos/Example.xcworkspace build
         working-directory: example
   ios-template:
     name: "iOS [template]"
@@ -178,3 +167,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
+  macos:
+    name: "macOS"
+    runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: |
+          yarn
+        working-directory: example
+      - name: Build
+        run: |
+          set -eo pipefail
+          yarn build:macos
+          pod install --project-directory=macos
+          ../scripts/xcodebuild.sh macos/Example.xcworkspace build
+        working-directory: example
