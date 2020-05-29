@@ -146,6 +146,18 @@ pod install --project-directory=ios
 open ios/Example.xcworkspace
 ```
 
+## macOS
+
+```bash
+# Bundle the JS first so CocoaPods can
+# find the assets.
+yarn build:macos
+pod install --project-directory=macos
+
+# Finally, open the Xcode workspace.
+open macos/Example.xcworkspace
+```
+
 # Known Issues
 
 ## Invalid `Podfile` file: undefined method `[]' for nil:NilClass
