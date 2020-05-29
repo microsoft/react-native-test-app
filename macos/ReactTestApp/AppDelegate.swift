@@ -62,7 +62,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             withTitle: reactMenu.title,
             action: nil,
             keyEquivalent: "",
-            at: mainMenu.numberOfItems - 1
+            at: 5  // ReactTestApp  File  Edit  Format  View  React  Window  Help
         )
         reactMenuItem.submenu = reactMenu
 
