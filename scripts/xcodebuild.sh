@@ -17,7 +17,8 @@ elif [[ $platform == macos/* ]]; then
   destination=''
   skip_testing=''
 else
-  echo "Unknown platform: $workspace"
+  echo "Cannot detect platform: $workspace"
+  exit 1
 fi
 
 build_cmd=$(

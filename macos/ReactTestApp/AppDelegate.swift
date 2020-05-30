@@ -58,11 +58,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             )
         }
 
+        // ReactTestApp  File  Edit  Format  View  React  Window  Help
         let reactMenuItem = mainMenu.insertItem(
             withTitle: reactMenu.title,
             action: nil,
             keyEquivalent: "",
-            at: 5  // ReactTestApp  File  Edit  Format  View  React  Window  Help
+            at: 5
         )
         reactMenuItem.submenu = reactMenu
 
@@ -119,4 +120,3 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
     }
 }
-

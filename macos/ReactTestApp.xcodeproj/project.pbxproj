@@ -144,6 +144,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 193EF085247A736300BE8C79 /* Build configuration list for PBXNativeTarget "ReactTestApp" */;
 			buildPhases = (
+				19482473248280F7001B8381 /* Run SwiftLint */,
 				193EF05B247A736100BE8C79 /* Sources */,
 				193EF05C247A736100BE8C79 /* Frameworks */,
 				193EF05D247A736100BE8C79 /* Resources */,
@@ -262,6 +263,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		19482473248280F7001B8381 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint || exit 0\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		193EF05B247A736100BE8C79 /* Sources */ = {
