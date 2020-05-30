@@ -11,23 +11,23 @@ if [[ $platform == ios/* ]]; then
   re='\(([0-9]+[.0-9]*)\)'
   [[ $device =~ $re ]] || exit 1
 
-  xcodebuild \
-    -workspace $workspace \
-    -scheme ReactTestApp \
-    -destination "platform=iOS Simulator,name=${device_name},OS=${BASH_REMATCH[1]}" \
-    -skip-testing:ReactTestAppTests/ReactNativePerformanceTests \
-    CODE_SIGNING_ALLOWED=NO \
-    COMPILER_INDEX_STORE_ENABLE=NO \
-    $action \
-    | xcpretty
+  destination="-destination \"platform=iOS Simulator,name=${device_name},OS=${BASH_REMATCH[1]}\""
+  skip_testing='-skip-testing:ReactTestAppTests/ReactNativePerformanceTests'
 elif [[ $platform == macos/* ]]; then
-  xcodebuild \
-    -workspace $workspace \
-    -scheme ReactTestApp \
-    CODE_SIGNING_ALLOWED=NO \
-    COMPILER_INDEX_STORE_ENABLE=NO \
-    $action \
-    | xcpretty
+  destination=''
+  skip_testing=''
 else
   echo "Unknown platform: $workspace"
 fi
+
+build_cmd=$(
+  echo xcodebuild \
+    -workspace $workspace \
+    -scheme ReactTestApp \
+    $destination \
+    $skip_testing \
+    CODE_SIGNING_ALLOWED=NO \
+    COMPILER_INDEX_STORE_ENABLE=NO \
+    $action \
+)
+eval $build_cmd | xcpretty
