@@ -11,8 +11,6 @@
 		193EF065247A736200BE8C79 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF064247A736200BE8C79 /* ViewController.swift */; };
 		193EF067247A736300BE8C79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 193EF066247A736300BE8C79 /* Assets.xcassets */; };
 		193EF06A247A736300BE8C79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 193EF068247A736300BE8C79 /* Main.storyboard */; };
-		193EF076247A736300BE8C79 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF075247A736300BE8C79 /* ReactTestAppTests.swift */; };
-		193EF081247A736300BE8C79 /* ReactTestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF080247A736300BE8C79 /* ReactTestAppUITests.swift */; };
 		193EF08F247A799D00BE8C79 /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF08E247A799D00BE8C79 /* Manifest.swift */; };
 		193EF093247A830200BE8C79 /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */; };
 		193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF097247B130700BE8C79 /* ReactInstance.swift */; };
@@ -44,10 +42,8 @@
 		193EF06B247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		193EF06C247A736300BE8C79 /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
 		193EF071247A736300BE8C79 /* ReactTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		193EF075247A736300BE8C79 /* ReactTestAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactTestAppTests.swift; sourceTree = "<group>"; };
 		193EF077247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		193EF07C247A736300BE8C79 /* ReactTestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		193EF080247A736300BE8C79 /* ReactTestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactTestAppUITests.swift; sourceTree = "<group>"; };
 		193EF082247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		193EF08E247A799D00BE8C79 /* Manifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manifest.swift; path = ../ReactTestAppShared/Manifest.swift; sourceTree = "<group>"; };
 		193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ReactTestApp.m"; path = "../ReactTestAppShared/UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
@@ -122,7 +118,6 @@
 		193EF074247A736300BE8C79 /* ReactTestAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				193EF075247A736300BE8C79 /* ReactTestAppTests.swift */,
 				193EF077247A736300BE8C79 /* Info.plist */,
 			);
 			path = ReactTestAppTests;
@@ -131,7 +126,6 @@
 		193EF07F247A736300BE8C79 /* ReactTestAppUITests */ = {
 			isa = PBXGroup;
 			children = (
-				193EF080247A736300BE8C79 /* ReactTestAppUITests.swift */,
 				193EF082247A736300BE8C79 /* Info.plist */,
 			);
 			path = ReactTestAppUITests;
@@ -302,7 +296,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				193EF076247A736300BE8C79 /* ReactTestAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +303,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				193EF081247A736300BE8C79 /* ReactTestAppUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
