@@ -32,7 +32,7 @@ build_cmd=$(
     $action \
 )
 
-if [[ $(command -v xcpretty >/dev/null 2>&1) ]]; then
+if command -v xcpretty >/dev/null 2>&1; then
   eval $build_cmd | xcpretty
 else
   eval $build_cmd
