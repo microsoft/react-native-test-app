@@ -7,7 +7,7 @@ platform=$(grep -o '\w\+/ReactTestApp.xcodeproj' "$workspace/contents.xcworkspac
 
 if [[ $platform == ios/* ]]; then
   device_name=${3:-'iPhone 11'}
-  device=$(xcrun simctl list devices 'iPhone 11' available | grep "${device_name} (")
+  device=$(xcrun simctl list devices "${device_name}" available | grep "${device_name} (")
   re='\(([-0-9A-Fa-f]+)\)'
   [[ $device =~ $re ]] || exit 1
 
