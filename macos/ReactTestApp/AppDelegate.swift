@@ -11,10 +11,6 @@ import Cocoa
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private(set) lazy var reactInstance = ReactInstance()
 
-    private var keyWindow: NSWindow? {
-        NSApplication.shared.windows.first(where: { $0.isKeyWindow })
-    }
-
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
@@ -82,7 +78,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc
     private func onComponentSelected(menuItem: NSMenuItem) {
-        guard let window = keyWindow,
+        guard let window = NSApplication.shared.keyWindow,
               let component = menuItem.representedObject as? Component,
               let bridge = reactInstance.bridge else {
             return

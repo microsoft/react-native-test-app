@@ -97,7 +97,9 @@ def use_react_native!(project_root, target_platform)
     raise "Unsupported React Native version: #{version[0]}"
   end
 
-  include_react_native!(react_native.relative_path_from(project_root).to_s, target_platform)
+  include_react_native!(react_native.relative_path_from(project_root).to_s,
+                        target_platform,
+                        project_root)
 end
 
 def use_test_app_internal!(target_platform)
