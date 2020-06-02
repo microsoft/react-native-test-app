@@ -50,36 +50,28 @@ jobs:
           ../scripts/xcodebuild-ios.sh ios/Example.xcworkspace test-without-building
         working-directory: example
   ios-template:
-    name: "iOS [template: all]"
+    name: "iOS [template]"
+    strategy:
+      matrix:
+        template: [all, ios]
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install
-        run: scripts/install-test-template.sh all
+        run: scripts/install-test-template.sh ${{ matrix.template }}
       - name: Build
         run: |
           set -eo pipefail
           yarn build:ios
-          pod install --project-directory=ios
-          ../scripts/xcodebuild-ios.sh ios/TemplateExample.xcworkspace build
-        working-directory: template-example
-  ios-template-exclusive:
-    name: "iOS [template: ios]"
-    runs-on: macos-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install
-        run: scripts/install-test-template.sh ios
-      - name: Build
-        run: |
-          set -eo pipefail
-          yarn build:ios
-          pod install
-          ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
+          if [[ ${{ matrix.template }} == ios ]]; then
+            pod install
+            ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
+          else
+            pod install --project-directory=ios
+            ../scripts/xcodebuild-ios.sh ios/TemplateExample.xcworkspace build
+          fi
         working-directory: template-example
   android:
     name: "Android"
@@ -116,9 +108,10 @@ jobs:
           ./gradlew clean build check test
         working-directory: example
   android-template:
-    name: "Android [template: all]"
+    name: "Android [template]"
     strategy:
       matrix:
+        template: [all, android]
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
@@ -138,45 +131,13 @@ jobs:
           # https://github.com/facebook/react-native/issues/26598
           node-version: 12.9.1
       - name: Install
-        run: scripts/install-test-template.sh all
+        run: scripts/install-test-template.sh ${{ matrix.template }}
         shell: bash
       - name: Build
         run: |
           set -eo pipefail
           yarn build:android
-          pushd android 1> /dev/null
-          ./gradlew clean build check test
-        shell: bash
-        working-directory: template-example
-  android-template-exclusive:
-    name: "Android [template: android]"
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Set up Node
-        uses: actions/setup-node@v1
-        with:
-          # Node has a bug where it crashes compiling a regular
-          # expression of react-native cli. Using a specific
-          # Node version helps to workaround this problem:
-          # https://github.com/facebook/react-native/issues/26598
-          node-version: 12.9.1
-      - name: Install
-        run: scripts/install-test-template.sh android
-        shell: bash
-      - name: Build
-        run: |
-          set -eo pipefail
-          yarn build:android
+          [[ -d android ]] && pushd android 1> /dev/null
           ./gradlew clean build check test
         shell: bash
         working-directory: template-example
@@ -186,10 +147,8 @@ jobs:
         lint-test,
         ios,
         ios-template,
-        ios-template-exclusive,
         android,
         android-template,
-        android-template-exclusive,
       ]
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
