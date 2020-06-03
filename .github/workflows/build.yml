@@ -43,11 +43,11 @@ jobs:
           set -eo pipefail
           yarn build:ios
           pod install --project-directory=ios
-          ../scripts/xcodebuild-ios.sh ios/Example.xcworkspace build-for-testing
+          ../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test
         run: |
-          ../scripts/xcodebuild-ios.sh ios/Example.xcworkspace test-without-building
+          ../scripts/xcodebuild.sh ios/Example.xcworkspace test-without-building
         working-directory: example
   ios-template:
     name: "iOS [template]"
@@ -67,10 +67,10 @@ jobs:
           yarn build:ios
           if [[ ${{ matrix.template }} == ios ]]; then
             pod install
-            ../scripts/xcodebuild-ios.sh TemplateExample.xcworkspace build
+            ../scripts/xcodebuild.sh TemplateExample.xcworkspace build
           else
             pod install --project-directory=ios
-            ../scripts/xcodebuild-ios.sh ios/TemplateExample.xcworkspace build
+            ../scripts/xcodebuild.sh ios/TemplateExample.xcworkspace build
           fi
         working-directory: template-example
   android:
@@ -141,6 +141,24 @@ jobs:
           ./gradlew clean build check test
         shell: bash
         working-directory: template-example
+  macos:
+    name: "macOS"
+    runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: |
+          yarn
+        working-directory: example
+      - name: Build
+        run: |
+          set -eo pipefail
+          yarn build:macos
+          pod install --project-directory=macos
+          ../scripts/xcodebuild.sh macos/Example.xcworkspace build
+        working-directory: example
   release:
     needs:
       [
@@ -149,6 +167,7 @@ jobs:
         ios-template,
         android,
         android-template,
+        macos
       ]
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"

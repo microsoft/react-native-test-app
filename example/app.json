@@ -12,6 +12,10 @@
       "dist/assets",
       "dist/main.jsbundle"
     ],
+    "macos": [
+      "dist/assets",
+      "dist/main.jsbundle"
+    ],
     "android": [
       "dist/res",
       "dist/main.jsbundle"
