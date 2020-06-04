@@ -77,10 +77,22 @@ open -a "Android Studio" android
 # Bundle the JS first so CocoaPods can
 # find the assets.
 yarn build:ios
-pod install
+pod install --project-directory=ios
 
 # Finally, open the Xcode workspace.
-open Sample.xcworkspace
+open ios/Sample.xcworkspace
+```
+
+## macOS
+
+```bash
+# Bundle the JS first so CocoaPods can
+# find the assets.
+yarn build:macos
+pod install --project-directory=macos
+
+# Finally, open the Xcode workspace.
+open macos/Sample.xcworkspace
 ```
 
 # Developing React Native Test App

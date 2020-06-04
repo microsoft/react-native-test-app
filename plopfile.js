@@ -10,6 +10,25 @@
  * }} InputData
  */
 
+/**
+ * Converts an object or value to a pretty JSON string.
+ * @param {{ [key: string]: unknown }} obj
+ * @return {string}
+ */
+function serialize(obj) {
+  return JSON.stringify(obj, undefined, 2) + "\n";
+}
+
+/**
+ * Sort the keys in specified object.
+ * @param {{ [key: string]: unknown }} obj
+ */
+function sortByKeys(obj) {
+  return Object.keys(obj)
+    .sort()
+    .reduce((sorted, key) => ({ ...sorted, [key]: obj[key] }), {});
+}
+
 /** @type {(plop: import('plop').NodePlopAPI) => void} */
 module.exports = (plop) => {
   plop.setGenerator("app", {
@@ -31,6 +50,7 @@ module.exports = (plop) => {
     ],
     actions: (/** @type {InputData} */ { name, platforms }) => {
       const path = require("path");
+      const exclusive = platforms !== "all";
       const templateDir = path.dirname(
         require.resolve("react-native/template/package.json")
       );
@@ -48,21 +68,17 @@ module.exports = (plop) => {
         {
           type: "add",
           path: "app.json",
-          template: JSON.stringify(
-            {
-              name,
-              displayName: name,
-              components: [
-                {
-                  appKey: name,
-                  displayName: name,
-                },
-              ],
-              resources: ["dist/assets", "dist/main.jsbundle", "dist/res"],
-            },
-            undefined,
-            2
-          ),
+          template: serialize({
+            name,
+            displayName: name,
+            components: [
+              {
+                appKey: name,
+                displayName: name,
+              },
+            ],
+            resources: ["dist/assets", "dist/main.jsbundle", "dist/res"],
+          }),
         },
         {
           type: "add",
@@ -79,9 +95,7 @@ module.exports = (plop) => {
         {
           type: "add",
           path: "metro.config.js",
-          templateFile: require.resolve(
-            "react-native/template/metro.config.js"
-          ),
+          templateFile: path.join(__dirname, "example", "metro.config.js"),
         },
         {
           type: "add",
@@ -93,42 +107,67 @@ module.exports = (plop) => {
               version: testAppPackageVersion,
             } = require("./package.json");
             const packageJson = JSON.parse(template);
-            const devDependencies = {
-              ...packageJson.devDependencies,
-              [testAppPackageName]: testAppPackageVersion,
-              mkdirp: "^1.0.0",
-              // TODO(tido64): Remove these when https://github.com/microsoft/react-native-test-app/pull/17 is merged
-              "@react-native-community/cli": "^4.3.0",
-              "@react-native-community/cli-platform-android": "^4.3.0",
-              "@react-native-community/cli-platform-ios": "^4.3.0",
-              "@react-native-community/eslint-config": "^0.0.5",
-            };
-            return JSON.stringify(
-              {
-                ...packageJson,
-                name,
-                scripts: {
-                  "build:android":
-                    "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.jsbundle --assets-dest dist/res --reset-cache",
-                  "build:ios":
-                    "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache",
-                  ...packageJson.scripts,
-                },
-                devDependencies: Object.keys(devDependencies)
-                  .sort()
-                  .reduce(
-                    (deps, key) => ({ ...deps, [key]: devDependencies[key] }),
-                    {}
-                  ),
-              },
-              undefined,
-              2
-            );
+            return serialize({
+              ...packageJson,
+              name,
+              scripts: sortByKeys({
+                ...(!exclusive || platforms === "android"
+                  ? {
+                      "build:android":
+                        "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.jsbundle --assets-dest dist/res --reset-cache",
+                    }
+                  : undefined),
+                ...(!exclusive || platforms === "ios"
+                  ? {
+                      "build:ios":
+                        "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache",
+                    }
+                  : undefined),
+                ...(!exclusive || platforms === "macos"
+                  ? {
+                      "build:macos":
+                        "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache --config=metro.config.macos.js",
+                      "start:macos":
+                        "react-native start --config=metro.config.macos.js",
+                    }
+                  : undefined),
+                ...(platforms !== "macos"
+                  ? { start: "react-native start" }
+                  : undefined),
+                ...packageJson.scripts,
+              }),
+              dependencies: sortByKeys({
+                ...packageJson.dependencies,
+                ...(!exclusive || platforms === "macos"
+                  ? { "react-native-macos": "0.60.0-microsoft.79" }
+                  : undefined),
+              }),
+              devDependencies: sortByKeys({
+                ...packageJson.devDependencies,
+                [testAppPackageName]: testAppPackageVersion,
+                mkdirp: "^1.0.0",
+                // TODO(tido64): Remove these when https://github.com/microsoft/react-native-test-app/pull/17 is merged
+                "@react-native-community/cli": "^4.3.0",
+                "@react-native-community/cli-platform-android": "^4.3.0",
+                "@react-native-community/cli-platform-ios": "^4.3.0",
+                "@react-native-community/eslint-config": "^0.0.5",
+              }),
+            });
           },
         },
       ];
 
-      const exclusive = platforms !== "all";
+      if (!exclusive) {
+        actions.push({
+          type: "add",
+          path: "react-native.config.js",
+          templateFile: path.join(
+            __dirname,
+            "example",
+            "react-native.config.js"
+          ),
+        });
+      }
 
       if (!exclusive || platforms === "android") {
         const prefix = exclusive ? "" : "android/";
@@ -200,20 +239,69 @@ module.exports = (plop) => {
             "",
           ].join("\n"),
         });
+        if (exclusive) {
+          actions.push({
+            type: "add",
+            path: "react-native.config.js",
+            template: [
+              "module.exports = {",
+              "  project: {",
+              "    ios: {",
+              `      project: "${prefix}ReactTestApp-Dummy.xcodeproj"`,
+              "    }",
+              "  }",
+              "};",
+              "",
+            ].join("\n"),
+          });
+        }
+      }
+
+      if (!exclusive || platforms === "macos") {
+        const prefix = exclusive ? "" : "macos/";
         actions.push({
           type: "add",
-          path: "react-native.config.js",
+          path: `${prefix}Podfile`,
           template: [
-            "module.exports = {",
-            "  project: {",
-            "    ios: {",
-            `      project: "${prefix}ReactTestApp-Dummy.xcodeproj"`,
-            "    }",
-            "  }",
-            "};",
+            `require_relative '${
+              exclusive ? "" : "../"
+            }node_modules/react-native-test-app/macos/test_app.rb'`,
+            "",
+            "workspace '{{name}}.xcworkspace'",
+            "",
+            "use_test_app!",
             "",
           ].join("\n"),
         });
+        actions.push({
+          type: "add",
+          path: "metro.config.macos.js",
+          templateFile: require.resolve(
+            "react-native-macos/local-cli/generator-macos/templates/metro.config.macos.js"
+          ),
+        });
+        if (exclusive) {
+          actions.push({
+            type: "add",
+            path: "react-native.config.js",
+            template: [
+              'if (process.argv.includes("--config=metro.config.macos.js")) {',
+              "  module.exports = {",
+              '    reactNativePath: "node_modules/react-native-macos",',
+              "  };",
+              "} else {",
+              "  module.exports = {",
+              "    project: {",
+              "      ios: {",
+              '        project: "ReactTestApp-Dummy.xcodeproj",',
+              "      },",
+              "    },",
+              "  };",
+              "}",
+              "",
+            ].join("\n"),
+          });
+        }
       }
 
       return actions;

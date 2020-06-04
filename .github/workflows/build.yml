@@ -159,6 +159,30 @@ jobs:
           pod install --project-directory=macos
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build
         working-directory: example
+  macos-template:
+    name: "macOS [template]"
+    strategy:
+      matrix:
+        template: [all, macos]
+    runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: scripts/install-test-template.sh ${{ matrix.template }}
+      - name: Build
+        run: |
+          set -eo pipefail
+          yarn build:macos
+          if [[ ${{ matrix.template }} == macos ]]; then
+            pod install
+            ../scripts/xcodebuild.sh TemplateExample.xcworkspace build
+          else
+            pod install --project-directory=macos
+            ../scripts/xcodebuild.sh macos/TemplateExample.xcworkspace build
+          fi
+        working-directory: template-example
   release:
     needs:
       [
@@ -167,7 +191,8 @@ jobs:
         ios-template,
         android,
         android-template,
-        macos
+        macos,
+        macos-template,
       ]
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
