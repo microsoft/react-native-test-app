@@ -66,6 +66,7 @@
           "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
           "assets": [
             "example/ios/Podfile.lock",
+            "example/macos/Podfile.lock",
             "example/yarn.lock",
             "package.json"
           ]
