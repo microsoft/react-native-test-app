@@ -95,6 +95,8 @@ jobs:
           # Node version helps to workaround this problem:
           # https://github.com/facebook/react-native/issues/26598
           node-version: 12.9.1
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
       - name: Install
         run: |
           yarn
