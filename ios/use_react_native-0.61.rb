@@ -6,7 +6,7 @@
 #
 # rubocop:disable Layout/LineLength
 
-def include_react_native!(react_native, target_platform, _project_root)
+def include_react_native!(react_native, target_platform, project_root)
   react_native = "#{react_native}-macos" if target_platform == :macos
 
   pod 'FBLazyVector', :path => "#{react_native}/Libraries/FBLazyVector"
@@ -39,6 +39,10 @@ def include_react_native!(react_native, target_platform, _project_root)
   pod 'DoubleConversion', :podspec => "#{react_native}/third-party-podspecs/DoubleConversion.podspec"
   pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
   pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
+
+  # Required by `react-native-macos` otherwise it will find Boost elsewhere
+  boost = "#{react_native}/third-party-podspecs/boost-for-react-native.podspec"
+  pod 'boost-for-react-native', :podspec => boost if File.exist?(File.join(project_root, boost))
 end
 
 # rubocop:enable Layout/LineLength

@@ -139,18 +139,13 @@ module.exports = (plop) => {
               dependencies: sortByKeys({
                 ...packageJson.dependencies,
                 ...(!exclusive || platforms === "macos"
-                  ? { "react-native-macos": "0.60.0-microsoft.79" }
+                  ? { "react-native-macos": "0.61.39" }
                   : undefined),
               }),
               devDependencies: sortByKeys({
                 ...packageJson.devDependencies,
                 [testAppPackageName]: testAppPackageVersion,
                 mkdirp: "^1.0.0",
-                // TODO(tido64): Remove these when https://github.com/microsoft/react-native-test-app/pull/17 is merged
-                "@react-native-community/cli": "^4.3.0",
-                "@react-native-community/cli-platform-android": "^4.3.0",
-                "@react-native-community/cli-platform-ios": "^4.3.0",
-                "@react-native-community/eslint-config": "^0.0.5",
               }),
             });
           },
@@ -191,7 +186,8 @@ module.exports = (plop) => {
             "wrapper",
             "gradle-wrapper.properties"
           ),
-          transform: (template) => template.replace(/5\.4\.1/, "5.6.4"),
+          transform: (template) =>
+            template.replace(/5\.4\.1/, "5.6.4").replace(/5\.5/, "5.6.4"),
         });
         actions.push({
           type: "add",

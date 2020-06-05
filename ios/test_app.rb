@@ -145,7 +145,7 @@ def use_test_app_internal!(target_platform)
 
     yield ReactTestAppTargets.new(self) if block_given?
 
-    use_native_modules! '.'
+    use_native_modules!
   end
 
   post_install do

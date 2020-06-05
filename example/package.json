@@ -10,19 +10,16 @@
     "start:macos": "react-native start --config=metro.config.macos.js"
   },
   "peerDependencies": {
-    "react": "^16.8.6",
-    "react-native": "^0.60.6",
-    "react-native-macos": "0.60.0-microsoft.79"
+    "react": "~16.8.6 || ~16.9.0",
+    "react-native": "^0.60.6 || ^0.61.5",
+    "react-native-macos": "^0.60 || ^0.61.39"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@react-native-community/cli": "^3.0.0",
-    "@react-native-community/cli-platform-android": "^3.0.0",
-    "@react-native-community/cli-platform-ios": "^3.0.0",
     "mkdirp": "^0.5.1",
-    "react": "16.8.6",
-    "react-native": "0.60.6",
-    "react-native-macos": "0.60.0-microsoft.79",
+    "react": "16.9.0",
+    "react-native": "0.61.5",
+    "react-native-macos": "0.61.39",
     "react-native-test-app": "../"
   }
 }
