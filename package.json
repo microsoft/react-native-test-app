@@ -39,13 +39,13 @@
     "metro-react-native-babel-preset": "0.54.1",
     "react": "16.8.6",
     "react-native": "0.60.6",
-    "react-native-macos": "0.60.0-microsoft.79"
+    "react-native-macos": "0.60.0-microsoft.79",
+    "plop": "^2.6.0"
   },
   "devDependencies": {
     "@semantic-release/git": "^9.0.0",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "plop": "^2.6.0",
     "prettier": "2.0.4",
     "semantic-release": "^17.0.0"
   },

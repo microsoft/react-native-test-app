@@ -29,11 +29,11 @@ to compile the test apps yourself.
 
 # Quick Start
 
-Install `react-native-test-app` and `plop`. We will use
+Install `react-native-test-app` as a dev dependency. We will use
 [Plop](https://plopjs.com/) to generate the test app:
 
 ```bash
-yarn add plop react-native-test-app --dev
+yarn add react-native-test-app --dev
 yarn plop --plopfile node_modules/react-native-test-app/plopfile.js --dest sample
 ```
 
