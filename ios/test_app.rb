@@ -17,6 +17,11 @@ def autolink_script_path
   File.join(package_path, 'native_modules')
 end
 
+def autolink_script_version
+  package_path = resolve_module('@react-native-community/cli-platform-ios')
+  package_version(package_path)[:major].to_i
+end
+
 def find_file(file_name, current_dir)
   return if current_dir.expand_path.to_s == '/'
 
@@ -40,6 +45,11 @@ def nearest_node_modules(project_root)
   assert(!path.nil?, "Could not find 'node_modules'")
 
   path
+end
+
+def package_version(package_path)
+  package_json = JSON.parse(File.read(File.join(package_path, 'package.json')))
+  package_json['version'].match(/(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/)
 end
 
 def resolve_module(request)
@@ -85,9 +95,7 @@ end
 
 def use_react_native!(project_root, target_platform)
   react_native = Pathname.new(resolve_module('react-native'))
-
-  package_json = JSON.parse(File.read(File.join(react_native.to_s, 'package.json')))
-  version = package_json['version'].match(/(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/)
+  version = package_version(react_native.to_s)
 
   if version[:major] == '0' && version[:minor] == '60'
     require_relative('use_react_native-0.60')
@@ -102,6 +110,7 @@ def use_react_native!(project_root, target_platform)
                         project_root)
 end
 
+# rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 def use_test_app_internal!(target_platform)
   assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
 
@@ -123,8 +132,10 @@ def use_test_app_internal!(target_platform)
   end
 
   # Shared code lives in `ios/ReactTestApp/`
-  source = File.expand_path(File.join(__dir__, 'ReactTestApp'))
-  FileUtils.ln_sf(source, File.join(destination, 'ReactTestAppShared'))
+  if target_platform != :ios
+    source = File.expand_path(File.join(__dir__, 'ReactTestApp'))
+    FileUtils.ln_sf(source, File.join(destination, 'ReactTestAppShared'))
+  end
 
   require_relative(autolink_script_path)
 
@@ -145,7 +156,11 @@ def use_test_app_internal!(target_platform)
 
     yield ReactTestAppTargets.new(self) if block_given?
 
-    use_native_modules!
+    if autolink_script_version == 2
+      use_native_modules! '.'
+    else
+      use_native_modules!
+    end
   end
 
   post_install do
@@ -156,6 +171,7 @@ def use_test_app_internal!(target_platform)
     puts ''
   end
 end
+# rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 
 class ReactTestAppTargets
   def initialize(podfile)
