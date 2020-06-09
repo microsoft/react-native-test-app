@@ -46,12 +46,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 item.isEnabled = false
                 item.representedObject = component
             }
+
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                self?.reactInstance.initReact { _ in
+                    DispatchQueue.main.async {
+                        reactMenu.items.forEach { $0.isEnabled = true }
+                    }
+                }
+            }
         } else {
-            reactMenu.addItem(
+            let item = reactMenu.addItem(
                 withTitle: "Could not load 'app.json'",
                 action: nil,
                 keyEquivalent: ""
             )
+            item.isEnabled = false
         }
 
         // ReactTestApp  File  Edit  Format  View  React  Window  Help
@@ -62,14 +71,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             at: 5
         )
         reactMenuItem.submenu = reactMenu
-
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.reactInstance.initReact { _ in
-                DispatchQueue.main.async {
-                    reactMenu.items.forEach { $0.isEnabled = true }
-                }
-            }
-        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

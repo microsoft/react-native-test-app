@@ -110,6 +110,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
             return remoteBundleURL
         }
 
+    #if os(iOS)
         let possibleEntryFiles = [
             "index.ios",
             "main.ios",
@@ -120,6 +121,17 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
             "index",
             "main",
         ]
+    #elseif os(macOS)
+        let possibleEntryFiles = [
+            "index.macos",
+            "main.macos",
+            "index.native",
+            "main.native",
+            "index",
+            "main",
+        ]
+    #endif
+
         let jsBundleURL = possibleEntryFiles
             .lazy
             .map({
