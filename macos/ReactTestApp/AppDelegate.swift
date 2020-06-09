@@ -9,78 +9,85 @@ import Cocoa
 
 @NSApplicationMain
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    @IBOutlet weak var reactMenu: NSMenu!
+
     private(set) lazy var reactInstance = ReactInstance()
+
+    private weak var mainWindow: NSWindow?
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        guard let mainMenu = NSApplication.shared.mainMenu else {
-            return
-        }
+        // `keyWindow` might be `nil` while loading or when the window is not
+        // active. Use `identifier` to find our main window.
+        let windows = NSApplication.shared.windows
+        mainWindow = windows.first { $0.identifier?.rawValue == "MainWindow" }
 
-        let reactMenu = NSMenu(title: "React")
-        reactMenu.autoenablesItems = false
-        reactMenu.addItem(
-            withTitle: "Load Embedded JS Bundle",
-            action: #selector(onLoadEmbeddedBundle),
-            keyEquivalent: ""
-        )
-        reactMenu.addItem(
-            withTitle: "Load From Dev Server",
-            action: #selector(onLoadFromDevServer),
-            keyEquivalent: ""
-        )
-        reactMenu.addItem(NSMenuItem.separator())
-
-        if let manifest = Manifest.fromFile() {
-            for (index, component) in manifest.components.enumerated() {
-                let title = component.displayName ?? component.appKey
-                let item = reactMenu.addItem(
-                    withTitle: title,
-                    action: #selector(onComponentSelected),
-                    keyEquivalent: index < 10 ? String(index) : ""
-                )
-                item.keyEquivalentModifierMask = [.shift, .command]
-                item.isEnabled = false
-                item.representedObject = component
-            }
-
-            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                self?.reactInstance.initReact { _ in
-                    DispatchQueue.main.async {
-                        reactMenu.items.forEach { $0.isEnabled = true }
-                    }
-                }
-            }
-        } else {
+        guard let manifest = Manifest.fromFile() else {
             let item = reactMenu.addItem(
                 withTitle: "Could not load 'app.json'",
                 action: nil,
                 keyEquivalent: ""
             )
             item.isEnabled = false
+            return
         }
 
-        // ReactTestApp  File  Edit  Format  View  React  Window  Help
-        let reactMenuItem = mainMenu.insertItem(
-            withTitle: reactMenu.title,
-            action: nil,
-            keyEquivalent: "",
-            at: 5
-        )
-        reactMenuItem.submenu = reactMenu
+        for (index, component) in manifest.components.enumerated() {
+            let title = component.displayName ?? component.appKey
+            let item = reactMenu.addItem(
+                withTitle: title,
+                action: #selector(onComponentSelected),
+                keyEquivalent: index < 10 ? String(index) : ""
+            )
+            item.keyEquivalentModifierMask = [.shift, .command]
+            item.isEnabled = false
+            item.representedObject = component
+        }
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.reactInstance.initReact { _ in
+                DispatchQueue.main.async {
+                    if manifest.components.count == 1 {
+                        self?.present(manifest.components[0])
+                    }
+                    self?.reactMenu.items.forEach { $0.isEnabled = true }
+                }
+            }
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
 
+    // MARK: - User interaction
+
     @objc
     private func onComponentSelected(menuItem: NSMenuItem) {
-        guard let window = NSApplication.shared.keyWindow,
-              let component = menuItem.representedObject as? Component,
+        guard let component = menuItem.representedObject as? Component else {
+            return
+        }
+
+        present(component)
+    }
+
+    @IBAction
+    func onLoadEmbeddedBundle(_ sender: NSMenuItem) {
+        reactInstance.remoteBundleURL = nil
+    }
+
+    @IBAction
+    func onLoadFromDevServer(_ sender: NSMenuItem) {
+        reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
+    }
+
+    // MARK: - Private
+
+    private func present(_ component: Component) {
+        guard let window = mainWindow,
               let bridge = reactInstance.bridge else {
             return
         }
@@ -105,15 +112,5 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         viewController.view.frame = frame ?? NSRect(x: 0, y: 0, width: 480, height: 270)
 
         window.contentViewController = viewController
-    }
-
-    @objc
-    private func onLoadEmbeddedBundle(menuItem: NSMenuItem) {
-        reactInstance.remoteBundleURL = nil
-    }
-
-    @objc
-    private func onLoadFromDevServer(menuItem: NSMenuItem) {
-        reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
     }
 }
