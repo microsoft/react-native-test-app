@@ -56,6 +56,11 @@ final class ContentViewController: UITableViewController {
                     guard let strongSelf = self else {
                         return
                     }
+
+                    if components.count == 1, let component = components.first {
+                        strongSelf.navigate(to: component)
+                    }
+
                     strongSelf.sections[0].items = items
                     strongSelf.tableView.reloadData()
                 }
