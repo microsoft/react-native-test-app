@@ -85,7 +85,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
                 // -[RCTWebSocketExecutor executeApplicationScript:sourceURL:onComplete:]
                 RCTDevSettings().isDebuggingRemotely = false
             }
-            bridge.reload()
+            RTATriggerReloadCommand(bridge, "ReactTestApp")
         } else if let bridge = RCTBridge(delegate: self, launchOptions: nil) {
             self.bridge = bridge
 
