@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/microsoft/react-native-test-app.git"
   },
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "react-native-test-app provides a test app for all supported platforms as a package",
   "keywords": [
     "android",
