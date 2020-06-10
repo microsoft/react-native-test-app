@@ -110,13 +110,8 @@ def use_react_native!(project_root, target_platform)
                         project_root)
 end
 
-# rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-def use_test_app_internal!(target_platform)
-  assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
-
-  xcodeproj = 'ReactTestApp.xcodeproj'
+def make_project!(xcodeproj, project_root, target_platform)
   src_xcodeproj = File.join(__dir__, '..', target_platform.to_s, xcodeproj)
-  project_root = find_project_root
   destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
   dst_xcodeproj = File.join(destination, xcodeproj)
 
@@ -136,6 +131,32 @@ def use_test_app_internal!(target_platform)
     source = File.expand_path(File.join(__dir__, 'ReactTestApp'))
     FileUtils.ln_sf(source, File.join(destination, 'ReactTestAppShared'))
   end
+
+  react_native = Pathname.new(resolve_module('react-native'))
+  version = package_version(react_native.to_s)
+  version = version[:major].to_i * 10_000 + version[:minor].to_i * 100 + version[:patch].to_i
+  version_macro = "REACT_NATIVE_VERSION=#{version}"
+
+  app_project = Xcodeproj::Project.open(dst_xcodeproj)
+  app_project.native_targets.each do |target|
+    next if target.name != 'ReactTestApp'
+
+    target.build_configurations.each do |config|
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', version_macro]
+    end
+  end
+  app_project.save
+
+  dst_xcodeproj
+end
+
+# rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+def use_test_app_internal!(target_platform)
+  assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
+
+  xcodeproj = 'ReactTestApp.xcodeproj'
+  project_root = find_project_root
+  dst_xcodeproj = make_project!(xcodeproj, project_root, target_platform)
 
   require_relative(autolink_script_path)
 

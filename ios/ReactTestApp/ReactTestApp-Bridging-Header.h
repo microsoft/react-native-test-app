@@ -17,4 +17,5 @@
 #import <React/RCTVersion.h>
 #import <ReactTestApp-DevSupport/ReactTestApp-DevSupport.h>
 
+#import "React+Compatibility.h"
 #import "UIViewController+ReactTestApp.h"
