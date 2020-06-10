@@ -77,7 +77,11 @@ module.exports = (plop) => {
                 displayName: name,
               },
             ],
-            resources: ["dist/assets", "dist/main.jsbundle", "dist/res"],
+            resources: {
+              android: ["dist/res", "dist/main.android.jsbundle"],
+              ios: ["dist/assets", "dist/main.ios.jsbundle"],
+              macos: ["dist/assets", "dist/main.macos.jsbundle"],
+            },
           }),
         },
         {
@@ -114,19 +118,19 @@ module.exports = (plop) => {
                 ...(!exclusive || platforms === "android"
                   ? {
                       "build:android":
-                        "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.jsbundle --assets-dest dist/res --reset-cache",
+                        "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res --reset-cache",
                     }
                   : undefined),
                 ...(!exclusive || platforms === "ios"
                   ? {
                       "build:ios":
-                        "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache",
+                        "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist --reset-cache",
                     }
                   : undefined),
                 ...(!exclusive || platforms === "macos"
                   ? {
                       "build:macos":
-                        "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.jsbundle --assets-dest dist --reset-cache --config=metro.config.macos.js",
+                        "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist --reset-cache --config=metro.config.macos.js",
                       "start:macos":
                         "react-native start --config=metro.config.macos.js",
                     }
