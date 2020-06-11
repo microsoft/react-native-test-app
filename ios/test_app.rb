@@ -93,6 +93,7 @@ def resources_pod(project_root, target_platform)
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
+# rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 def use_react_native!(project_root, target_platform)
   react_native = Pathname.new(resolve_module('react-native'))
   version = package_version(react_native.to_s)
@@ -101,6 +102,8 @@ def use_react_native!(project_root, target_platform)
     require_relative('use_react_native-0.60')
   elsif version[:major] == '0' && version[:minor] == '61'
     require_relative('use_react_native-0.61')
+  elsif version[:major] == '0' && version[:minor] == '62'
+    require_relative('use_react_native-0.62')
   else
     raise "Unsupported React Native version: #{version[0]}"
   end
@@ -109,6 +112,7 @@ def use_react_native!(project_root, target_platform)
                         target_platform,
                         project_root)
 end
+# rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 
 def make_project!(xcodeproj, project_root, target_platform)
   src_xcodeproj = File.join(__dir__, '..', target_platform.to_s, xcodeproj)
