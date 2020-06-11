@@ -8,17 +8,17 @@
     }
   ],
   "resources": {
+    "android": [
+      "dist/res",
+      "dist/main.android.jsbundle"
+    ],
     "ios": [
       "dist/assets",
-      "dist/main.jsbundle"
+      "dist/main.ios.jsbundle"
     ],
     "macos": [
       "dist/assets",
-      "dist/main.jsbundle"
-    ],
-    "android": [
-      "dist/res",
-      "dist/main.jsbundle"
+      "dist/main.macos.jsbundle"
     ]
   }
 }
