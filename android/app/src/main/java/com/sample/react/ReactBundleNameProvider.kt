@@ -7,7 +7,7 @@ import javax.inject.Singleton
 @Singleton
 class ReactBundleNameProvider @Inject constructor(private val context: Context) {
     val bundleName: String? by lazy {
-        val possibleEntryFiles = listOf(
+        val entryFileNames = listOf(
             "index.android",
             "main.android",
             "index.mobile",
@@ -16,7 +16,9 @@ class ReactBundleNameProvider @Inject constructor(private val context: Context) 
             "main.native",
             "index",
             "main"
-        ).map { "$it.jsbundle" }
+        )
+        val possibleEntryFiles = entryFileNames.map { "$it.jsbundle" } +
+            entryFileNames.map { "$it.bundle" }
 
         context.resources.assets.list("")
             ?.firstOrNull { possibleEntryFiles.contains(it) }
