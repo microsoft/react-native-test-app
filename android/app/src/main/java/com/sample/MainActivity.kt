@@ -31,12 +31,22 @@ class MainActivity : ReactActivity() {
     private val testAppReactNativeHost: TestAppReactNativeHost
         get() = reactNativeHost as TestAppReactNativeHost
 
-    private val listener = { component: ComponentViewModel ->
-        startActivity(
-            ComponentActivity.newIntent(
-                this, component.name, component.displayName, component.initialProperties
-            )
+    private val newComponentActivityIntent = { component: ComponentViewModel ->
+        ComponentActivity.newIntent(
+            this, component.name, component.displayName, component.initialProperties
         )
+    }
+
+    private val newComponentViewModel = { component: Component ->
+        ComponentViewModel(
+            component.appKey,
+            component.displayName ?: component.appKey,
+            component.initialProperties
+        )
+    }
+
+    private val startComponentActivity = { component: ComponentViewModel ->
+        startActivity(newComponentActivityIntent(component))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +57,11 @@ class MainActivity : ReactActivity() {
 
         val manifest = manifestProvider.manifest
             ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
+
+        if (manifest.components.count() == 1) {
+            val component = newComponentViewModel(manifest.components[0])
+            startComponentActivity(component)
+        }
 
         setupToolbar(manifest.displayName)
         setupRecyclerView(manifest.components)
@@ -90,13 +105,11 @@ class MainActivity : ReactActivity() {
     }
 
     private fun setupRecyclerView(manifestComponents: List<Component>) {
-        val components = manifestComponents.map {
-            ComponentViewModel(it.appKey, it.displayName ?: it.appKey, it.initialProperties)
-        }
+        val components = manifestComponents.map(newComponentViewModel)
         findViewById<RecyclerView>(R.id.recyclerview).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ComponentListAdapter(
-                LayoutInflater.from(context), components, listener
+                LayoutInflater.from(context), components, startComponentActivity
             )
 
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
