@@ -10,6 +10,25 @@
  * }} InputData
  */
 
+const chalk = require("chalk");
+
+/**
+ * Returns whether the specified package is installed.
+ * @param {string} pkg The target package, e.g. "react-native-macos"
+ * @param {boolean} isRequired Whether the package is required
+ * @return {boolean}
+ */
+function isInstalled(pkg, isRequired) {
+  try {
+    return Boolean(require.resolve(pkg));
+  } catch (error) {
+    if (isRequired) {
+      throw error;
+    }
+    return false;
+  }
+}
+
 /**
  * Converts an object or value to a pretty JSON string.
  * @param {{ [key: string]: unknown }} obj
@@ -50,7 +69,12 @@ module.exports = (plop) => {
     ],
     actions: (/** @type {InputData} */ { name, platforms }) => {
       const path = require("path");
+
       const exclusive = platforms !== "all";
+      const includeMacOS =
+        (!exclusive || platforms === "macos") &&
+        isInstalled("react-native-macos", exclusive);
+
       const templateDir = path.dirname(
         require.resolve("react-native/template/package.json")
       );
@@ -127,7 +151,7 @@ module.exports = (plop) => {
                         "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist --reset-cache",
                     }
                   : undefined),
-                ...(!exclusive || platforms === "macos"
+                ...(includeMacOS
                   ? {
                       "build:macos":
                         "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist --reset-cache --config=metro.config.macos.js",
@@ -142,7 +166,7 @@ module.exports = (plop) => {
               }),
               dependencies: sortByKeys({
                 ...packageJson.dependencies,
-                ...(!exclusive || platforms === "macos"
+                ...(includeMacOS
                   ? { "react-native-macos": "0.61.39" }
                   : undefined),
               }),
@@ -258,49 +282,56 @@ module.exports = (plop) => {
       }
 
       if (!exclusive || platforms === "macos") {
-        const prefix = exclusive ? "" : "macos/";
-        actions.push({
-          type: "add",
-          path: `${prefix}Podfile`,
-          template: [
-            `require_relative '${
-              exclusive ? "" : "../"
-            }node_modules/react-native-test-app/macos/test_app.rb'`,
-            "",
-            "workspace '{{name}}.xcworkspace'",
-            "",
-            "use_test_app!",
-            "",
-          ].join("\n"),
-        });
-        actions.push({
-          type: "add",
-          path: "metro.config.macos.js",
-          templateFile: require.resolve(
-            "react-native-macos/local-cli/generator-macos/templates/metro.config.macos.js"
-          ),
-        });
-        if (exclusive) {
+        if (isInstalled("react-native-macos", exclusive)) {
+          const prefix = exclusive ? "" : "macos/";
           actions.push({
             type: "add",
-            path: "react-native.config.js",
+            path: `${prefix}Podfile`,
             template: [
-              'if (process.argv.includes("--config=metro.config.macos.js")) {',
-              "  module.exports = {",
-              '    reactNativePath: "node_modules/react-native-macos",',
-              "  };",
-              "} else {",
-              "  module.exports = {",
-              "    project: {",
-              "      ios: {",
-              '        project: "ReactTestApp-Dummy.xcodeproj",',
-              "      },",
-              "    },",
-              "  };",
-              "}",
+              `require_relative '${
+                exclusive ? "" : "../"
+              }node_modules/react-native-test-app/macos/test_app.rb'`,
+              "",
+              "workspace '{{name}}.xcworkspace'",
+              "",
+              "use_test_app!",
               "",
             ].join("\n"),
           });
+          actions.push({
+            type: "add",
+            path: "metro.config.macos.js",
+            templateFile: require.resolve(
+              "react-native-macos/local-cli/generator-macos/templates/metro.config.macos.js"
+            ),
+          });
+          if (exclusive) {
+            actions.push({
+              type: "add",
+              path: "react-native.config.js",
+              template: [
+                'if (process.argv.includes("--config=metro.config.macos.js")) {',
+                "  module.exports = {",
+                '    reactNativePath: "node_modules/react-native-macos",',
+                "  };",
+                "} else {",
+                "  module.exports = {",
+                "    project: {",
+                "      ios: {",
+                '        project: "ReactTestApp-Dummy.xcodeproj",',
+                "      },",
+                "    },",
+                "  };",
+                "}",
+                "",
+              ].join("\n"),
+            });
+          }
+        } else {
+          console.warn(
+            chalk.yellow("[WARN] ") +
+              "Cannot find module 'react-native-macos'; skipping macOS target"
+          );
         }
       }
 
