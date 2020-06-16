@@ -1,16 +1,32 @@
 AllCops:
   Exclude:
     - "**/node_modules/**/*"
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.6
 
 Layout/LineLength:
   Max: 100
+
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
 
 Metrics/AbcSize:
   Enabled: false
 
 Metrics/MethodLength:
   Enabled: false
+
+Metrics/CyclomaticComplexity:
+  IgnoredMethods: [
+    make_project!,
+    use_react_native!,
+    use_test_app_internal!
+  ]
+
+Metrics/PerceivedComplexity:
+  IgnoredMethods: [
+    use_react_native!,
+    use_test_app_internal!
+  ]
 
 Naming/FileName:
   Exclude:
@@ -34,3 +50,9 @@ Style/HashTransformKeys:
 
 Style/HashTransformValues:
   Enabled: true
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma

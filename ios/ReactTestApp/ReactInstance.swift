@@ -71,6 +71,19 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
             object: nil
         )
     #endif
+
+    #if USE_FLIPPER
+        if let flipper = FlipperClient.shared() {
+            flipper.add(FlipperKitLayoutPlugin(
+                rootNode: application,
+                with: SKDescriptorMapper()
+            ))
+            flipper.add(FKUserDefaultsPlugin(suiteName: nil))
+            flipper.add(FlipperKitReactPlugin())
+            flipper.add(FlipperKitNetworkPlugin(networkAdapter: SKIOSNetworkAdapter()))
+            flipper.start()
+        }
+    #endif
     }
 
     init(forTestingPurposesOnly: Bool) {

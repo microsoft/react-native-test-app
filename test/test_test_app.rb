@@ -47,21 +47,20 @@ class TestTestApp < Minitest::Test
         fixture_path('with_resources'),
         fixture_path('with_resources', target.to_s),
         fixture_path('with_platform_resources'),
-        fixture_path('with_platform_resources', target.to_s)
+        fixture_path('with_platform_resources', target.to_s),
       ].each do |project_root|
-        begin
-          podspec_path = resources_pod(project_root, target)
-          manifest_path = app_manifest_path(project_root, podspec_path)
-          manifest = JSON.parse(File.read(manifest_path))
+        podspec_path = resources_pod(project_root, target)
+        manifest_path = app_manifest_path(project_root, podspec_path)
+        manifest = JSON.parse(File.read(manifest_path))
 
-          if project_root.to_s.include?('with_platform_resources')
-            assert_equal(platform_resources, manifest['resources'].sort)
-          else
-            assert_equal(resources, manifest['resources'].sort)
-          end
-        ensure
-          File.delete(manifest_path)
+        if project_root.to_s.include?('with_platform_resources')
+          assert_equal(platform_resources, manifest['resources'].sort)
+        else
+          assert_equal(resources, manifest['resources'].sort)
         end
+
+      ensure
+        File.delete(manifest_path)
       end
     end
   end
