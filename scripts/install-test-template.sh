@@ -11,5 +11,12 @@ yarn
 yarn plop --dest template-example TemplateExample $platform
 
 pushd template-example 1> /dev/null
-yarn add ../react-native-test-app-$version.tgz --dev
+
+script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/react-native-test-app-$version.tgz\"/"
+if sed --version &> /dev/null; then
+  sed -i'' "$script" package.json
+else
+  sed -i '' "$script" package.json
+fi
+
 yarn

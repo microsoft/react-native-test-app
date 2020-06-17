@@ -1,7 +1,7 @@
 PODS:
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Example-Tests (0.1.4):
+  - Example-Tests (0.0.1-dev):
     - React
   - FBLazyVector (0.61.5)
   - FBReactNativeSpec (0.61.5):
@@ -220,9 +220,9 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
-  - ReactTestApp-DevSupport (0.1.4)
+  - ReactTestApp-DevSupport (0.0.1-dev)
   - ReactTestApp-Resources (1.0.0-dev)
-  - SwiftLint (0.39.1)
+  - SwiftLint (0.39.2)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -327,7 +327,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  Example-Tests: a9469b2406804bcc1ac76e8f1c661f86ca653781
+  Example-Tests: 3f25ba918fd9eeaf220d45602bc9c446513847f7
   FBLazyVector: aaeaf388755e4f29cd74acbc9e3b8da6d807c37f
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -352,9 +352,9 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  ReactTestApp-DevSupport: 33f1a78a766f1fe7931c3fbd0111439096dc2113
-  ReactTestApp-Resources: c070f72dfcb2806d922eec6656259cbf7a4d2bcf
-  SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
+  ReactTestApp-DevSupport: 1aee56d5c69fe4a4f4d5be0cbd3f22f5326d70fd
+  ReactTestApp-Resources: 6d92ddc0b2da071656efa3b828d8ad341b3cbb1d
+  SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: 2e7c7df6fd87cf74da985794a7d8f186edd6ac1f
