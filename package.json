@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/microsoft/react-native-test-app.git"
   },
-  "version": "0.1.10",
+  "version": "0.0.1-dev",
   "description": "react-native-test-app provides a test app for all supported platforms as a package",
   "keywords": [
     "android",
@@ -45,7 +45,6 @@
     "react-native-macos": "^0.60 || ^0.61.39"
   },
   "devDependencies": {
-    "@semantic-release/git": "^9.0.0",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.3",
     "prettier": "2.0.5",
@@ -55,24 +54,6 @@
     "semantic-release": "^17.0.0"
   },
   "release": {
-    "tagFormat": "${version}",
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      "@semantic-release/github",
-      [
-        "@semantic-release/git",
-        {
-          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
-          "assets": [
-            "example/ios/Podfile.lock",
-            "example/macos/Podfile.lock",
-            "example/yarn.lock",
-            "package.json"
-          ]
-        }
-      ]
-    ]
+    "tagFormat": "${version}"
   }
 }
