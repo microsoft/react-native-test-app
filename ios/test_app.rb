@@ -8,6 +8,8 @@
 require('json')
 require('pathname')
 
+@use_flipper = false
+
 def assert(condition, message)
   raise message unless condition
 end
@@ -81,9 +83,9 @@ def resources_pod(project_root, target_platform)
     'source' => { 'git' => 'https://github.com/microsoft/react-native-test-app.git' },
     'platforms' => {
       'ios' => '12.0',
-      'osx' => '10.14'
+      'osx' => '10.14',
     },
-    'resources' => resources
+    'resources' => resources,
   }
 
   app_dir = File.dirname(app_manifest)
@@ -93,7 +95,10 @@ def resources_pod(project_root, target_platform)
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
-# rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+def use_flipper!(versions = {})
+  @use_flipper = versions
+end
+
 def use_react_native!(project_root, target_platform)
   react_native = Pathname.new(resolve_module('react-native'))
   version = package_version(react_native.to_s)
@@ -108,11 +113,11 @@ def use_react_native!(project_root, target_platform)
     raise "Unsupported React Native version: #{version[0]}"
   end
 
-  include_react_native!(react_native.relative_path_from(project_root).to_s,
-                        target_platform,
-                        project_root)
+  include_react_native!(react_native: react_native.relative_path_from(project_root).to_s,
+                        target_platform: target_platform,
+                        project_root: project_root,
+                        use_flipper: @use_flipper)
 end
-# rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 
 def make_project!(xcodeproj, project_root, target_platform)
   src_xcodeproj = File.join(__dir__, '..', target_platform.to_s, xcodeproj)
@@ -146,7 +151,22 @@ def make_project!(xcodeproj, project_root, target_platform)
     next if target.name != 'ReactTestApp'
 
     target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', version_macro]
+      use_flipper = config.name == 'Debug' && @use_flipper
+
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+        '$(inherited)',
+        version_macro,
+        'FB_SONARKIT_ENABLED=' + (use_flipper ? '1' : '0'),
+        'USE_FLIPPER=' + (use_flipper ? '1' : '0'),
+      ]
+
+      next unless use_flipper
+
+      config.build_settings['OTHER_SWIFT_FLAGS'] ||= [
+        '$(inherited)',
+        '-DFB_SONARKIT_ENABLED',
+        '-DUSE_FLIPPER',
+      ]
     end
   end
   app_project.save
@@ -154,7 +174,6 @@ def make_project!(xcodeproj, project_root, target_platform)
   dst_xcodeproj
 end
 
-# rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 def use_test_app_internal!(target_platform)
   assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
 
@@ -188,15 +207,29 @@ def use_test_app_internal!(target_platform)
     end
   end
 
-  post_install do
+  post_install do |installer|
     puts ''
     puts 'NOTE'
     puts "  `#{xcodeproj}` was sourced from `react-native-test-app`"
     puts '  All modifications will be overwritten next time you run `pod install`'
     puts ''
+
+    installer.pods_project.targets.each do |target|
+      case target.name
+      when 'SwiftLint'
+        # Let SwiftLint inherit the deployment target from the Pods project
+        target.build_configurations.each do |config|
+          config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
+          config.build_settings.delete('MACOSX_DEPLOYMENT_TARGET')
+        end
+      when 'YogaKit' # Flipper
+        target.build_configurations.each do |config|
+          config.build_settings['SWIFT_VERSION'] = '4.1'
+        end
+      end
+    end
   end
 end
-# rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 
 class ReactTestAppTargets
   def initialize(podfile)

@@ -17,5 +17,14 @@
 #import <React/RCTVersion.h>
 #import <ReactTestApp-DevSupport/ReactTestApp-DevSupport.h>
 
+#if USE_FLIPPER
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
+#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
+#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
+#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
+#endif
+
 #import "React+Compatibility.h"
 #import "UIViewController+ReactTestApp.h"

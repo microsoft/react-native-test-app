@@ -3,6 +3,7 @@ package com.sample.react
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactNativeHost
@@ -83,6 +84,20 @@ class TestAppReactNativeHost @Inject constructor(
 
         SoLoader.init(application, false)
         reactInstanceManager.createReactContextInBackground()
+
+        if (BuildConfig.DEBUG) {
+            try {
+                Class.forName("com.sample.react.ReactNativeFlipper")
+                    .getMethod("initialize", Context::class.java, ReactInstanceManager::class.java)
+                    .invoke(null, application, reactInstanceManager)
+            } catch (e: ClassNotFoundException) {
+                Log.i(
+                    "ReactTestApp",
+                    "To use Flipper, define `FLIPPER_VERSION` in your `gradle.properties`. "
+                        + "If you're using React Native 0.62, you should use `FLIPPER_VERSION=0.33.1`."
+                )
+            }
+        }
     }
 
     override fun createReactInstanceManager(): ReactInstanceManager {
@@ -116,7 +131,7 @@ class TestAppReactNativeHost @Inject constructor(
         val latch = CountDownLatch(1)
         var packagerIsRunning = false
         DevServerHelper(
-            DevInternalSettings.withoutNativeDeltaClient(context) {},
+            DevInternalSettings(context) {},
             context.packageName,
             BundleStatusProvider { BundleStatus() }
         ).isPackagerRunning {
