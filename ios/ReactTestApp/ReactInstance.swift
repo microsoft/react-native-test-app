@@ -75,7 +75,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
     #if USE_FLIPPER
         if let flipper = FlipperClient.shared() {
             flipper.add(FlipperKitLayoutPlugin(
-                rootNode: application,
+                rootNode: UIApplication.shared,
                 with: SKDescriptorMapper()
             ))
             flipper.add(FKUserDefaultsPlugin(suiteName: nil))
