@@ -35,7 +35,7 @@ apply from: file("${testAppDir}/test-app.gradle")
 applyTestAppModule(project, "com.sample")
 
 project.ext.react = [
-  enableFlipper: hasProperty('FLIPPER_VERSION'),
+  enableFlipper: getFlipperVersion(rootDir),
   enableHermes: true,
 ]
 
@@ -104,13 +104,14 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
 
     if (project.ext.react.enableFlipper) {
-        debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
+        def flipperVersion = project.ext.react.enableFlipper
+        debugImplementation("com.facebook.flipper:flipper:${flipperVersion}") {
             exclude group:'com.facebook.fbjni'
         }
-        debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
+        debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${flipperVersion}") {
             exclude group:'com.facebook.flipper'
         }
-        debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
+        debugImplementation("com.facebook.flipper:flipper-network-plugin:${flipperVersion}") {
             exclude group:'com.facebook.flipper'
         }
     }

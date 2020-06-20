@@ -8,8 +8,6 @@
 require('json')
 require('pathname')
 
-@use_flipper = false
-
 def assert(condition, message)
   raise message unless condition
 end
@@ -40,6 +38,10 @@ def find_project_root
   assert(!podfile_path.nil?, "Could not find 'Podfile'")
 
   Pathname.new(File.dirname(podfile_path.absolute_path))
+end
+
+def flipper_enabled?(react_native_version)
+  react_native_version >= 6200 && @flipper_versions != false
 end
 
 def nearest_node_modules(project_root)
@@ -96,7 +98,7 @@ def resources_pod(project_root, target_platform)
 end
 
 def use_flipper!(versions = {})
-  @use_flipper = versions
+  @flipper_versions = versions
 end
 
 def use_react_native!(project_root, target_platform)
@@ -116,7 +118,7 @@ def use_react_native!(project_root, target_platform)
   include_react_native!(react_native: react_native.relative_path_from(project_root).to_s,
                         target_platform: target_platform,
                         project_root: project_root,
-                        use_flipper: @use_flipper)
+                        flipper_versions: @flipper_versions || {})
 end
 
 def make_project!(xcodeproj, project_root, target_platform)
@@ -151,7 +153,7 @@ def make_project!(xcodeproj, project_root, target_platform)
     next if target.name != 'ReactTestApp'
 
     target.build_configurations.each do |config|
-      use_flipper = config.name == 'Debug' && @use_flipper
+      use_flipper = config.name == 'Debug' && flipper_enabled?(version)
 
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
