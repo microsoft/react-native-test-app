@@ -1,0 +1,24 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'de.undercouch:gradle-download-task:4.0.4'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+    configurations.all {
+        resolutionStrategy {
+            dependencySubstitution {
+                substitute module("com.facebook.react:react-native:+") with project(":ReactAndroid")
+            }
+        }
+    }
+}

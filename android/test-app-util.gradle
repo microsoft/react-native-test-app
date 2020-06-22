@@ -1,5 +1,10 @@
 import java.nio.file.Paths
 
+ext.buildReactNativeFromSource = { baseDir ->
+    def reactNativePath = findNodeModulesPath(baseDir, 'react-native')
+    return !file("${reactNativePath}/android").exists()
+}
+
 ext.findFile = { fileName ->
     def currentDir = file(rootDir)
     while (currentDir != null) {
