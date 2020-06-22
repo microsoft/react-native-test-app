@@ -51,3 +51,25 @@ ext.findNodeModulesPath = { baseDir, packageName ->
 
     return null
 }
+
+ext.getFlipperVersion = { baseDir ->
+    def reactNativePath = findNodeModulesPath(baseDir, 'react-native')
+    def props = new Properties()
+    file("${reactNativePath}/template/android/gradle.properties").withInputStream {
+        props.load(it)
+    }
+
+    def recommendedFlipperVersion = props.getProperty('FLIPPER_VERSION')
+    if (recommendedFlipperVersion == null) {
+        // Current React Native version doesn't support Flipper
+        return null
+    }
+
+    // Prefer user specified Flipper version
+    if (project.hasProperty('FLIPPER_VERSION')) {
+        return project.getProperty('FLIPPER_VERSION')
+    }
+
+    // Use the recommended Flipper version
+    return recommendedFlipperVersion
+}
