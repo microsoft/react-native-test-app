@@ -118,7 +118,7 @@ def use_react_native!(project_root, target_platform)
   include_react_native!(react_native: react_native.relative_path_from(project_root).to_s,
                         target_platform: target_platform,
                         project_root: project_root,
-                        flipper_versions: @flipper_versions || {})
+                        flipper_versions: @flipper_versions != false && (@flipper_versions || {}))
 end
 
 def make_project!(xcodeproj, project_root, target_platform)
