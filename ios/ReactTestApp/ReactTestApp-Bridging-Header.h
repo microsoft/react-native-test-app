@@ -5,6 +5,8 @@
 // LICENSE file in the root directory of this source tree.
 //
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
 #import <React/RCTAssert.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -15,6 +17,8 @@
 #import <React/RCTRootView.h>
 #import <React/RCTUtils.h>
 #import <React/RCTVersion.h>
+#pragma clang diagnostic pop
+
 #import <ReactTestApp-DevSupport/ReactTestApp-DevSupport.h>
 
 #if USE_FLIPPER
