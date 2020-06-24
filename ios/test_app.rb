@@ -7,6 +7,7 @@
 
 require('json')
 require('pathname')
+require('rubygems/version')
 
 def assert(condition, message)
   raise message unless condition
@@ -18,8 +19,7 @@ def autolink_script_path
 end
 
 def autolink_script_version
-  package_path = resolve_module('@react-native-community/cli-platform-ios')
-  package_version(package_path)[:major]
+  package_version(resolve_module('@react-native-community/cli-platform-ios'))
 end
 
 def find_file(file_name, current_dir)
@@ -53,12 +53,7 @@ end
 
 def package_version(package_path)
   package_json = JSON.parse(File.read(File.join(package_path, 'package.json')))
-  match = package_json['version'].match(/(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/)
-
-  # Convert #<MatchData "0.62.2" major:"0" minor:"62" patch:"2">
-  #      => {:major=>0, :minor=>62, :patch=>2}
-  # Source: https://gist.github.com/bchase/d9ecfc1d58e38f158793525864583b17
-  [match.names.map(&:to_sym), match.captures.map(&:to_i)].transpose.to_h
+  Gem::Version.new(package_json['version'])
 end
 
 def resolve_module(request)
@@ -110,16 +105,16 @@ def use_react_native!(project_root, target_platform)
   react_native = Pathname.new(resolve_module('react-native'))
   version = package_version(react_native.to_s)
 
-  if version[:major].zero? && version[:minor] >= 63
+  if version >= Gem::Version.new('0.63')
     require_relative('use_react_native-0.63')
-  elsif version[:major].zero? && version[:minor] == 62
+  elsif version >= Gem::Version.new('0.62')
     require_relative('use_react_native-0.62')
-  elsif version[:major].zero? && version[:minor] == 61
+  elsif version >= Gem::Version.new('0.61')
     require_relative('use_react_native-0.61')
-  elsif version[:major].zero? && version[:minor] == 60
+  elsif version >= Gem::Version.new('0.60')
     require_relative('use_react_native-0.60')
   else
-    raise "Unsupported React Native version: #{version[0]}"
+    raise "Unsupported React Native version: #{version}"
   end
 
   include_react_native!(react_native: react_native.relative_path_from(project_root).to_s,
@@ -151,8 +146,8 @@ def make_project!(xcodeproj, project_root, target_platform)
   end
 
   react_native = Pathname.new(resolve_module('react-native'))
-  version = package_version(react_native.to_s)
-  version = version[:major] * 10_000 + version[:minor] * 100 + version[:patch]
+  version = package_version(react_native.to_s).segments
+  version = version[0] * 10_000 + version[1] * 100 + version[2]
   version_macro = "REACT_NATIVE_VERSION=#{version}"
 
   app_project = Xcodeproj::Project.open(dst_xcodeproj)
@@ -209,7 +204,7 @@ def use_test_app_internal!(target_platform)
 
     yield ReactTestAppTargets.new(self) if block_given?
 
-    if autolink_script_version == 2
+    if autolink_script_version < Gem::Version.new('3.0')
       use_native_modules! '.'
     else
       use_native_modules!
