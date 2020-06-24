@@ -5,13 +5,13 @@ buildscript {
     apply from: "$buildscriptDir/../test-app-util.gradle"
 
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "com.android.tools.build:gradle:3.6.1"
+        classpath "com.android.tools.build:gradle:3.6.2"
     }
 }
 
@@ -20,8 +20,8 @@ repositories {
         url("${findNodeModulesPath(rootDir, "react-native")}/android")
     }
 
-    jcenter()
     google()
+    jcenter()
 }
 
 apply plugin: "com.android.application"
@@ -35,8 +35,8 @@ apply from: file("${testAppDir}/test-app.gradle")
 applyTestAppModule(project, "com.sample")
 
 project.ext.react = [
-  enableFlipper: getFlipperVersion(rootDir),
-  enableHermes: true,
+    enableFlipper: getFlipperVersion(rootDir),
+    enableHermes: true,
 ]
 
 android {
@@ -87,7 +87,11 @@ dependencies {
     releaseImplementation files("$hermesPath/hermes-release.aar")
     debugImplementation files("$hermesPath/hermes-debug.aar")
 
-    implementation "com.facebook.react:react-native:+"
+    if (buildReactNativeFromSource(rootDir)) {
+        implementation project(':ReactAndroid')
+    } else {
+        implementation "com.facebook.react:react-native:+"
+    }
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "androidx.appcompat:appcompat:1.1.0"

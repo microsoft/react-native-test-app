@@ -1,8 +1,19 @@
 import groovy.json.JsonSlurper
+import java.nio.file.Paths
 import org.gradle.initialization.DefaultSettings
 
 private static void apply(Settings settings) {
     def projectDir = settings.findNodeModulesPath(settings.rootDir, "react-native-test-app")
+
+    if (settings.buildReactNativeFromSource(settings.rootDir)) {
+        def buildFile = Paths.get("${projectDir}/android/react-native-build.gradle")
+        settings.rootProject.buildFileName = settings.rootDir.toPath().relativize(buildFile)
+
+        def reactNativeDir = settings.findNodeModulesPath(settings.rootDir, "react-native")
+        settings.include(":ReactAndroid")
+        settings.project(":ReactAndroid")
+                .projectDir = new File("${reactNativeDir}/ReactAndroid")
+    }
 
     settings.include(":app")
     settings.project(":app")
