@@ -18,13 +18,11 @@ Metrics/MethodLength:
 Metrics/CyclomaticComplexity:
   IgnoredMethods: [
     make_project!,
-    use_react_native!,
     use_test_app_internal!
   ]
 
 Metrics/PerceivedComplexity:
   IgnoredMethods: [
-    use_react_native!,
     use_test_app_internal!
   ]
 
