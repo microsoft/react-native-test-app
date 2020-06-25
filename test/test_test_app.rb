@@ -18,6 +18,20 @@ def fixture_path(*args)
 end
 
 class TestTestApp < Minitest::Test
+  def test_autolink_script_path
+    cli = fixture_path('test_app', 'node_modules', '@react-native-community', 'cli-platform-ios')
+    stub :resolve_module, cli do
+      assert(require(autolink_script_path))
+    end
+  end
+
+  def test_autolink_script_version
+    cli = fixture_path('test_app', 'node_modules', '@react-native-community', 'cli-platform-ios')
+    stub :resolve_module, cli do
+      assert_equal(Gem::Version.new('4.10.1'), autolink_script_version)
+    end
+  end
+
   def test_flipper_enabled?
     refute(flipper_enabled?(6199))
     assert(flipper_enabled?(6200))
