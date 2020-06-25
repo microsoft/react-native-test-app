@@ -44,6 +44,10 @@ def flipper_enabled?(react_native_version)
   react_native_version >= 6200 && @flipper_versions != false
 end
 
+def flipper_versions
+  @flipper_versions != false && (@flipper_versions || {})
+end
+
 def nearest_node_modules(project_root)
   path = find_file('node_modules', project_root)
   assert(!path.nil?, "Could not find 'node_modules'")
@@ -54,6 +58,21 @@ end
 def package_version(package_path)
   package_json = JSON.parse(File.read(File.join(package_path, 'package.json')))
   Gem::Version.new(package_json['version'])
+end
+
+def react_native_pods(version)
+  v = version.release
+  if v >= Gem::Version.new('0.63')
+    'use_react_native-0.63'
+  elsif v >= Gem::Version.new('0.62')
+    'use_react_native-0.62'
+  elsif v >= Gem::Version.new('0.61')
+    'use_react_native-0.61'
+  elsif v >= Gem::Version.new('0.60')
+    'use_react_native-0.60'
+  else
+    raise "Unsupported React Native version: #{version}"
+  end
 end
 
 def resolve_module(request)
@@ -105,22 +124,12 @@ def use_react_native!(project_root, target_platform)
   react_native = Pathname.new(resolve_module('react-native'))
   version = package_version(react_native.to_s)
 
-  if version >= Gem::Version.new('0.63')
-    require_relative('use_react_native-0.63')
-  elsif version >= Gem::Version.new('0.62')
-    require_relative('use_react_native-0.62')
-  elsif version >= Gem::Version.new('0.61')
-    require_relative('use_react_native-0.61')
-  elsif version >= Gem::Version.new('0.60')
-    require_relative('use_react_native-0.60')
-  else
-    raise "Unsupported React Native version: #{version}"
-  end
+  require_relative(react_native_pods(version))
 
   include_react_native!(react_native: react_native.relative_path_from(project_root).to_s,
                         target_platform: target_platform,
                         project_root: project_root,
-                        flipper_versions: @flipper_versions != false && (@flipper_versions || {}))
+                        flipper_versions: flipper_versions)
 end
 
 def make_project!(xcodeproj, project_root, target_platform)

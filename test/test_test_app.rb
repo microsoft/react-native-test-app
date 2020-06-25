@@ -18,6 +18,81 @@ def fixture_path(*args)
 end
 
 class TestTestApp < Minitest::Test
+  def test_flipper_enabled?
+    refute(flipper_enabled?(6199))
+    assert(flipper_enabled?(6200))
+
+    use_flipper!(false)
+
+    refute(flipper_enabled?(6199))
+    refute(flipper_enabled?(6200))
+
+    use_flipper!
+
+    refute(flipper_enabled?(6199))
+    assert(flipper_enabled?(6200))
+  ensure
+    use_flipper!(nil)
+  end
+
+  def test_flipper_versions
+    assert_equal({}, flipper_versions)
+
+    use_flipper!(false)
+    refute(flipper_versions)
+
+    versions = { 'Flipper': '~> 0.41.1' }
+    use_flipper!(versions)
+    assert_equal(versions, flipper_versions)
+
+    use_flipper!
+    assert_equal({}, flipper_versions)
+
+    use_flipper!(false)
+    refute(flipper_versions)
+  ensure
+    use_flipper!(nil)
+  end
+
+  def test_nearest_node_modules
+    expected = fixture_path('test_app', 'node_modules')
+
+    assert_equal(expected, nearest_node_modules(fixture_path('test_app')))
+
+    react_native = fixture_path('test_app', 'node_modules', 'react-native')
+    assert_equal(expected, nearest_node_modules(react_native))
+
+    assert_equal(expected, nearest_node_modules(fixture_path('test_app', 'src')))
+  end
+
+  def test_package_version
+    react_native = fixture_path('test_app', 'node_modules', 'react-native')
+    assert_equal(Gem::Version.new('1000.0.0'), package_version(react_native))
+
+    cli = fixture_path('test_app', 'node_modules', '@react-native-community', 'cli-platform-ios')
+    assert_equal(Gem::Version.new('4.10.1'), package_version(cli))
+  end
+
+  def test_react_native_pods
+    assert_equal('use_react_native-0.63', react_native_pods(Gem::Version.new('1000.0.0')))
+
+    assert_equal('use_react_native-0.63', react_native_pods(Gem::Version.new('0.63.0')))
+    assert_equal('use_react_native-0.63', react_native_pods(Gem::Version.new('0.63.0-rc.1')))
+
+    assert_equal('use_react_native-0.62', react_native_pods(Gem::Version.new('0.62.2')))
+    assert_equal('use_react_native-0.62', react_native_pods(Gem::Version.new('0.62.0')))
+
+    assert_equal('use_react_native-0.61', react_native_pods(Gem::Version.new('0.61.5')))
+    assert_equal('use_react_native-0.61', react_native_pods(Gem::Version.new('0.61.0')))
+
+    assert_equal('use_react_native-0.60', react_native_pods(Gem::Version.new('0.60.6')))
+    assert_equal('use_react_native-0.60', react_native_pods(Gem::Version.new('0.60.0')))
+
+    assert_raises(RuntimeError) do
+      react_native_pods(Gem::Version.new('0.59.10'))
+    end
+  end
+
   %i[ios macos].each do |target|
     define_method("test_#{target}_resources_pod_returns_spec_path") do
       assert_nil(resources_pod(Pathname.new('/'), target))
