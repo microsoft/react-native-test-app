@@ -41,9 +41,9 @@ App::App()
 /// <param name="e">Details about the launch request and process.</param>
 void App::OnLaunched(LaunchActivatedEventArgs const& e)
 {
-    Frame rootFrame{ nullptr };
+    Frame rootFrame = nullptr;
     auto content = Window::Current().Content();
-    if (content)
+    if (content != nullptr)
     {
         rootFrame = content.try_as<Frame>();
     }
@@ -64,7 +64,7 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
             // final launch steps after the restore is complete
         }
 
-        if (e.PrelaunchActivated() == false)
+        if (!e.PrelaunchActivated())
         {
             if (rootFrame.Content() == nullptr)
             {
