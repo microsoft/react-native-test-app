@@ -1,8 +1,8 @@
-package com.sample.di
+package com.react.testapp.di
 
 import android.app.Application
-import com.sample.TestApp
-import com.sample.manifest.ManifestModule
+import com.react.testapp.TestApp
+import com.react.testapp.manifest.ManifestModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

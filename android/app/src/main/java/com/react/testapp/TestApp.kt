@@ -1,9 +1,9 @@
-package com.sample
+package com.react.testapp
 
 import android.app.Application
 import com.facebook.react.ReactApplication
-import com.sample.di.DaggerTestAppComponent
-import com.sample.react.TestAppReactNativeHost
+import com.react.testapp.di.DaggerTestAppComponent
+import com.react.testapp.react.TestAppReactNativeHost
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector

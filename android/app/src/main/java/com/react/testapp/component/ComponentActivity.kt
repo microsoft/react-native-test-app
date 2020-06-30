@@ -1,4 +1,4 @@
-package com.sample.component
+package com.react.testapp.component
 
 import android.app.Activity
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.sample.component
+package com.react.testapp.component
 
 data class ComponentViewModel(
     val name: String,

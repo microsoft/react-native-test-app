@@ -1,4 +1,4 @@
-package com.sample
+package com.react.testapp
 
 import org.junit.Test
 

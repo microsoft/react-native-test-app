@@ -1,8 +1,8 @@
-package com.sample.di
+package com.react.testapp.di
 
 import android.app.Application
 import android.content.Context
-import com.sample.MainActivity
+import com.react.testapp.MainActivity
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
