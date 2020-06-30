@@ -14,3 +14,4 @@ example/*
 !example/react-native.config.js
 scripts/
 test/
+windows/
