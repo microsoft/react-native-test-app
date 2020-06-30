@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 
 #include "App.h"
 #include "MainPage.h"
@@ -10,8 +10,8 @@ using namespace Windows::Foundation;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Navigation;
-using namespace ReactNativeTestApp;
-using namespace ReactNativeTestApp::implementation;
+using namespace ReactTestApp;
+using namespace ReactTestApp::implementation;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
@@ -71,7 +71,7 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootFrame.Navigate(xaml_typename<ReactNativeTestApp::MainPage>(), box_value(e.Arguments()));
+                rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
             }
             // Place the frame in the current Window
             Window::Current().Content(rootFrame);
@@ -81,14 +81,14 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
     }
     else
     {
-        if (e.PrelaunchActivated() == false)
+        if (!e.PrelaunchActivated())
         {
             if (rootFrame.Content() == nullptr)
             {
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootFrame.Navigate(xaml_typename<ReactNativeTestApp::MainPage>(), box_value(e.Arguments()));
+                rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
             }
             // Ensure the current window is active
             Window::Current().Activate();
@@ -103,7 +103,7 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
 /// </summary>
 /// <param name="sender">The source of the suspend request.</param>
 /// <param name="e">Details about the suspend request.</param>
-void App::OnSuspending([[maybe_unused]] IInspectable const& sender, [[maybe_unused]] SuspendingEventArgs const& e)
+void App::OnSuspending(IInspectable const&, SuspendingEventArgs const&)
 {
     // Save application state and stop any background activity
 }

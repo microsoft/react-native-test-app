@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
   <Identity
-    Name="5664930c-16b2-46e9-a9fd-72b7718d297a"
+    Name="40411fc5-8e92-4d46-b68d-b62df44b1366"
     Publisher="CN=AnastasiaOrishchenko"
     Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="5664930c-16b2-46e9-a9fd-72b7718d297a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="40411fc5-8e92-4d46-b68d-b62df44b1366" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
-    <DisplayName>ReactNativeTestApp</DisplayName>
+    <DisplayName>ReactTestApp</DisplayName>
     <PublisherDisplayName>AnastasiaOrishchenko</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -17,8 +17,8 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="ReactNativeTestApp.App">
-      <uap:VisualElements DisplayName="ReactNativeTestApp" Description="Project for a single page C++/WinRT Universal Windows Platform (UWP) app with no predefined layout"
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="ReactTestApp.App">
+      <uap:VisualElements DisplayName="ReactTestApp" Description="Project for a single page C++/WinRT Universal Windows Platform (UWP) app with no predefined layout"
         Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
         </uap:DefaultTile>
