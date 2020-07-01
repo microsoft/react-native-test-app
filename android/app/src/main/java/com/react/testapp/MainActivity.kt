@@ -118,7 +118,7 @@ class MainActivity : ReactActivity() {
 
         findViewById<TextView>(R.id.runtime_info).apply {
             text = resources.getString(
-                    R.string.runtime_info,
+                R.string.runtime_info,
                 ReactNativeVersion.VERSION["major"] as Int,
                 ReactNativeVersion.VERSION["minor"] as Int,
                 ReactNativeVersion.VERSION["patch"] as Int,
