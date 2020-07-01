@@ -32,7 +32,7 @@ apply plugin: "kotlin-kapt"
 def testAppDir = file("$projectDir/../../")
 
 apply from: file("${testAppDir}/test-app.gradle")
-applyTestAppModule(project, "com.sample")
+applyTestAppModule(project, "com.react.testapp")
 
 project.ext.react = [
     enableFlipper: getFlipperVersion(rootDir),
@@ -51,7 +51,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.sample"
+        applicationId "com.react.testapp"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

@@ -1,4 +1,4 @@
-package com.sample
+package com.react.testapp
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,14 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.google.android.material.appbar.MaterialToolbar
-import com.sample.component.ComponentActivity
-import com.sample.component.ComponentListAdapter
-import com.sample.component.ComponentViewModel
-import com.sample.manifest.Component
-import com.sample.manifest.ManifestProvider
-import com.sample.react.BundleSource
-import com.sample.react.ReactBundleNameProvider
-import com.sample.react.TestAppReactNativeHost
+import com.react.testapp.R
+import com.react.testapp.component.ComponentActivity
+import com.react.testapp.component.ComponentListAdapter
+import com.react.testapp.component.ComponentViewModel
+import com.react.testapp.manifest.Component
+import com.react.testapp.manifest.ManifestProvider
+import com.react.testapp.react.BundleSource
+import com.react.testapp.react.ReactBundleNameProvider
+import com.react.testapp.react.TestAppReactNativeHost
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 

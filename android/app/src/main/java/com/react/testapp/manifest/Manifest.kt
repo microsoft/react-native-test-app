@@ -1,4 +1,4 @@
-package com.sample.manifest
+package com.react.testapp.manifest
 
 import com.squareup.moshi.JsonClass
 

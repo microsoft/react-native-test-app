@@ -1,7 +1,7 @@
-package com.sample.manifest
+package com.react.testapp.manifest
 
 import android.content.Context
-import com.sample.R
+import com.react.testapp.R
 import com.squareup.moshi.JsonAdapter
 import javax.inject.Inject
 import javax.inject.Singleton
