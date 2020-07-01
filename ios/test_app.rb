@@ -60,6 +60,10 @@ def package_version(package_path)
   Gem::Version.new(package_json['version'])
 end
 
+def project_path(file, target_platform)
+  File.expand_path(file, File.join(__dir__, '..', target_platform.to_s))
+end
+
 def react_native_pods(version)
   v = version.release
   if v >= Gem::Version.new('0.63')
@@ -91,9 +95,7 @@ def resources_pod(project_root, target_platform)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
-  manifest_resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
-  resources = ['app.json'] + (manifest_resources.instance_of?(Array) ? manifest_resources : [])
-
+  resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
   spec = {
     'name' => 'ReactTestApp-Resources',
     'version' => '1.0.0-dev',
@@ -106,7 +108,7 @@ def resources_pod(project_root, target_platform)
       'ios' => '12.0',
       'osx' => '10.14',
     },
-    'resources' => resources,
+    'resources' => ['app.json', *resources],
   }
 
   app_dir = File.dirname(app_manifest)
@@ -133,7 +135,7 @@ def use_react_native!(project_root, target_platform)
 end
 
 def make_project!(xcodeproj, project_root, target_platform)
-  src_xcodeproj = File.join(__dir__, '..', target_platform.to_s, xcodeproj)
+  src_xcodeproj = project_path(xcodeproj, target_platform)
   destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
   dst_xcodeproj = File.join(destination, xcodeproj)
 
@@ -142,15 +144,37 @@ def make_project!(xcodeproj, project_root, target_platform)
   FileUtils.cp(File.join(src_xcodeproj, 'project.pbxproj'), dst_xcodeproj)
   FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
 
+  # Copy Xcode build configuration files
+  common_xcconfig = project_path('ReactTestApp.common.xcconfig', target_platform)
+  if File.exist?(common_xcconfig)
+    FileUtils.cp(common_xcconfig, destination)
+    %w[debug release].each do |config|
+      xcconfig = project_path("ReactTestApp.#{config}.xcconfig", target_platform)
+      next unless File.exist?(xcconfig)
+
+      dst_xcconfig = File.expand_path("ReactTestApp.#{config}.xcconfig", destination)
+      File.open(dst_xcconfig, 'w') do |fo|
+        pods_xcconfig_path = File.join(
+          project_root.relative_path_from(destination).to_s,
+          'Pods',
+          'Target Support Files',
+          'Pods-ReactTestApp',
+          "Pods-ReactTestApp.#{config}.xcconfig"
+        )
+        fo.puts("#include \"#{pods_xcconfig_path}\"")
+        File.foreach(xcconfig) { |line| fo.puts(line) }
+      end
+    end
+  end
+
   # Link source files
   %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
-    source = File.expand_path(File.join(__dir__, '..', target_platform.to_s, file))
-    FileUtils.ln_sf(source, destination)
+    FileUtils.ln_sf(project_path(file, target_platform), destination)
   end
 
   # Shared code lives in `ios/ReactTestApp/`
   if target_platform != :ios
-    source = File.expand_path(File.join(__dir__, 'ReactTestApp'))
+    source = File.expand_path('ReactTestApp', __dir__)
     FileUtils.ln_sf(source, File.join(destination, 'ReactTestAppShared'))
   end
 
