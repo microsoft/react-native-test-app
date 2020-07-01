@@ -91,8 +91,8 @@ def resources_pod(project_root, target_platform)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
-  resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
-  return if !resources.instance_of?(Array) || resources.empty?
+  manifest_resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
+  resources = ['app.json'] + (manifest_resources.instance_of?(Array) ? manifest_resources : [])
 
   spec = {
     'name' => 'ReactTestApp-Resources',

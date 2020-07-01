@@ -19,7 +19,7 @@ struct Manifest: Codable {
     let components: [Component]
 
     static func fromFile() -> Manifest? {
-        guard let manifestURL = Bundle.main.url(forResource: "app", withExtension: "json", subdirectory: "assets"),
+        guard let manifestURL = Bundle.main.url(forResource: "app", withExtension: "json"),
               let data = try? Data(contentsOf: manifestURL, options: .uncached) else {
             return nil
         }
