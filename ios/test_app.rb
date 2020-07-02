@@ -146,10 +146,11 @@ def make_project!(xcodeproj, project_root, target_platform)
 
   # Link Xcode build configuration files
   %w[common debug release].each do |config|
-    xcconfig = project_path("ReactTestApp.#{config}.xcconfig", target_platform)
+    filename = "ReactTestApp.#{config}.xcconfig"
+    xcconfig = project_path(filename, target_platform)
     next unless File.exist?(xcconfig)
 
-    dst_xcconfig = File.expand_path("ReactTestApp.#{config}.xcconfig", destination)
+    dst_xcconfig = File.expand_path(filename, destination)
     FileUtils.ln_sf(xcconfig, dst_xcconfig)
   end
 
