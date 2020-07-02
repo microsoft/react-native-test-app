@@ -66,13 +66,7 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
 
         if (!e.PrelaunchActivated())
         {
-            if (rootFrame.Content() == nullptr)
-            {
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter
-                rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
-            }
+            NavigateToFirstPage(rootFrame, e);
             // Place the frame in the current Window
             Window::Current().Content(rootFrame);
             // Ensure the current window is active
@@ -83,13 +77,7 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
     {
         if (!e.PrelaunchActivated())
         {
-            if (rootFrame.Content() == nullptr)
-            {
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter
-                rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
-            }
+            NavigateToFirstPage(rootFrame, e);
             // Ensure the current window is active
             Window::Current().Activate();
         }
@@ -116,4 +104,14 @@ void App::OnSuspending(IInspectable const&, SuspendingEventArgs const&)
 void App::OnNavigationFailed(IInspectable const&, NavigationFailedEventArgs const& e)
 {
     throw hresult_error(E_FAIL, hstring(L"Failed to load Page ") + e.SourcePageType().Name);
+}
+
+void App::NavigateToFirstPage(Frame &rootFrame , LaunchActivatedEventArgs const &e)
+{
+    if (rootFrame.Content() == nullptr) {
+        // When the navigation stack isn't restored navigate to the first page,
+        // configuring the new page by passing required information as a navigation
+        // parameter
+        rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
+    }
 }
