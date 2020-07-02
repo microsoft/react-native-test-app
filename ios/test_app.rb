@@ -91,9 +91,7 @@ def resources_pod(project_root, target_platform)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
-  manifest_resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
-  resources = ['app.json'] + (manifest_resources.instance_of?(Array) ? manifest_resources : [])
-
+  resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
   spec = {
     'name' => 'ReactTestApp-Resources',
     'version' => '1.0.0-dev',
@@ -106,7 +104,7 @@ def resources_pod(project_root, target_platform)
       'ios' => '12.0',
       'osx' => '10.14',
     },
-    'resources' => resources,
+    'resources' => ['app.json', *resources],
   }
 
   app_dir = File.dirname(app_manifest)
