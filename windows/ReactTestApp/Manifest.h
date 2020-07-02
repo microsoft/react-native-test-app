@@ -10,7 +10,8 @@
 using json = nlohmann::json;
 using namespace std;
 
-namespace winrt::ReactTestApp::implementation {
+namespace winrt::ReactTestApp::implementation
+{
     struct Component {
         string appKey;
         std::optional<string> displayName;
@@ -27,8 +28,7 @@ namespace winrt::ReactTestApp::implementation {
     std::optional<T> get_optional(const json &j, const string &key)
     try {
         return j.at(key).get<T>();
-    }
-    catch (const json::exception &) {
+    } catch (const json::exception &) {
         return std::nullopt;
     }
 

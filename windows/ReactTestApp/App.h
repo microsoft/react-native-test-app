@@ -1,7 +1,9 @@
 #pragma once
+
 #include "App.xaml.g.h"
 
-namespace winrt::ReactTestApp::implementation {
+namespace winrt::ReactTestApp::implementation
+{
     struct App : AppT<App> {
         App();
 

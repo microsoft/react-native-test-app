@@ -1,4 +1,5 @@
-namespace ReactTestApp {
+namespace ReactTestApp
+{
     runtimeclass ComponentViewModel
     {
         String Name

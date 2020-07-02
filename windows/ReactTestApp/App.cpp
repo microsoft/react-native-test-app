@@ -1,6 +1,7 @@
+#include "App.h"
+
 #include "pch.h"
 
-#include "App.h"
 #include "MainPage.h"
 
 using namespace winrt;
@@ -20,13 +21,11 @@ using namespace ReactTestApp::implementation;
 App::App()
 {
     InitializeComponent();
-    Suspending({ this, &App::OnSuspending });
+    Suspending({this, &App::OnSuspending});
 
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
-    UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e)
-    {
-        if (IsDebuggerPresent())
-        {
+    UnhandledException([this](IInspectable const &, UnhandledExceptionEventArgs const &e) {
+        if (IsDebuggerPresent()) {
             auto errorMessage = e.Message();
             __debugbreak();
         }
@@ -39,44 +38,37 @@ App::App()
 /// will be used such as when the application is launched to open a specific file.
 /// </summary>
 /// <param name="e">Details about the launch request and process.</param>
-void App::OnLaunched(LaunchActivatedEventArgs const& e)
+void App::OnLaunched(LaunchActivatedEventArgs const &e)
 {
     Frame rootFrame = nullptr;
     auto content = Window::Current().Content();
-    if (content != nullptr)
-    {
+    if (content != nullptr) {
         rootFrame = content.try_as<Frame>();
     }
 
     // Do not repeat app initialization when the Window already has content,
     // just ensure that the window is active
-    if (rootFrame == nullptr)
-    {
+    if (rootFrame == nullptr) {
         // Create a Frame to act as the navigation context and associate it with
         // a SuspensionManager key
         rootFrame = Frame();
 
-        rootFrame.NavigationFailed({ this, &App::OnNavigationFailed });
+        rootFrame.NavigationFailed({this, &App::OnNavigationFailed});
 
-        if (e.PreviousExecutionState() == ApplicationExecutionState::Terminated)
-        {
+        if (e.PreviousExecutionState() == ApplicationExecutionState::Terminated) {
             // Restore the saved session state only when appropriate, scheduling the
             // final launch steps after the restore is complete
         }
 
-        if (!e.PrelaunchActivated())
-        {
+        if (!e.PrelaunchActivated()) {
             NavigateToFirstPage(rootFrame, e);
             // Place the frame in the current Window
             Window::Current().Content(rootFrame);
             // Ensure the current window is active
             Window::Current().Activate();
         }
-    }
-    else
-    {
-        if (!e.PrelaunchActivated())
-        {
+    } else {
+        if (!e.PrelaunchActivated()) {
             NavigateToFirstPage(rootFrame, e);
             // Ensure the current window is active
             Window::Current().Activate();
@@ -91,7 +83,7 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
 /// </summary>
 /// <param name="sender">The source of the suspend request.</param>
 /// <param name="e">Details about the suspend request.</param>
-void App::OnSuspending(IInspectable const&, SuspendingEventArgs const&)
+void App::OnSuspending(IInspectable const &, SuspendingEventArgs const &)
 {
     // Save application state and stop any background activity
 }
@@ -101,12 +93,12 @@ void App::OnSuspending(IInspectable const&, SuspendingEventArgs const&)
 /// </summary>
 /// <param name="sender">The Frame which failed navigation</param>
 /// <param name="e">Details about the navigation failure</param>
-void App::OnNavigationFailed(IInspectable const&, NavigationFailedEventArgs const& e)
+void App::OnNavigationFailed(IInspectable const &, NavigationFailedEventArgs const &e)
 {
     throw hresult_error(E_FAIL, hstring(L"Failed to load Page ") + e.SourcePageType().Name);
 }
 
-void App::NavigateToFirstPage(Frame &rootFrame , LaunchActivatedEventArgs const &e)
+void App::NavigateToFirstPage(Frame &rootFrame, LaunchActivatedEventArgs const &e)
 {
     if (rootFrame.Content() == nullptr) {
         // When the navigation stack isn't restored navigate to the first page,
