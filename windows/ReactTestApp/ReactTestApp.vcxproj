@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.200615.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200615.7\build\native\Microsoft.Windows.CppWinRT.props')" />
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props')" />
     <PropertyGroup Label="Globals">
         <CppWinRTOptimized>true</CppWinRTOptimized>
         <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -118,7 +118,9 @@
         </Link>
     </ItemDefinitionGroup>
     <ItemGroup>
+        <ClInclude Include="ComponentViewModel.h" />
         <ClInclude Include="pch.h" />
+        <ClInclude Include="Manifest.h" />
         <ClInclude Include="App.h">
             <DependentUpon>App.xaml</DependentUpon>
         </ClInclude>
@@ -147,8 +149,10 @@
         <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
         <Image Include="Assets\StoreLogo.png" />
         <Image Include="Assets\Wide310x150Logo.scale-200.png" />
+        <Text Include="..\..\example\app.json" />
     </ItemGroup>
     <ItemGroup>
+        <ClCompile Include="ComponentViewModel.cpp" />
         <ClCompile Include="pch.cpp">
             <PrecompiledHeader>Create</PrecompiledHeader>
         </ClCompile>
@@ -159,6 +163,7 @@
             <DependentUpon>MainPage.xaml</DependentUpon>
         </ClCompile>
         <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+        <ClCompile Include="Manifest.cpp" />
     </ItemGroup>
     <ItemGroup>
         <Midl Include="App.idl">
@@ -167,6 +172,7 @@
         <Midl Include="MainPage.idl">
             <DependentUpon>MainPage.xaml</DependentUpon>
         </Midl>
+        <Midl Include="ComponentViewModel.idl" />
     </ItemGroup>
     <ItemGroup>
         <None Include="packages.config" />
@@ -174,13 +180,15 @@
     </ItemGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
     <ImportGroup Label="ExtensionTargets">
-        <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.200615.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200615.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
+        <Import Project="..\packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets" Condition="Exists('..\packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets')" />
+        <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets')" />
     </ImportGroup>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
             <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
         </PropertyGroup>
-        <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200615.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.200615.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
-        <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200615.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.200615.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+        <Error Condition="!Exists('..\packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets'))" />
+        <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props'))" />
+        <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets'))" />
     </Target>
 </Project>

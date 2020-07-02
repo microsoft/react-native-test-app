@@ -1,8 +1,13 @@
-namespace ReactTestApp
-{
-    [default_interface]
-    runtimeclass MainPage : Windows.UI.Xaml.Controls.Page
+import "ComponentViewModel.idl";
+
+namespace ReactTestApp {
+    [default_interface] runtimeclass MainPage : Windows.UI.Xaml.Controls.Page
     {
         MainPage();
+
+        Windows.Foundation.Collections.IVector<ComponentViewModel> Components
+        {
+            get;
+        };
     }
-}
+}  // namespace ReactTestApp
