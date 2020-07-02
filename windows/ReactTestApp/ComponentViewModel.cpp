@@ -1,6 +1,6 @@
-#include "ComponentViewModel.h"
-
 #include "pch.h"
+
+#include "ComponentViewModel.h"
 
 #include "ComponentViewModel.g.cpp"
 

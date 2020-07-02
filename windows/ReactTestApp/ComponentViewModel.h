@@ -2,8 +2,6 @@
 
 #include "ComponentViewModel.g.h"
 
-using namespace std;
-
 namespace winrt::ReactTestApp::implementation
 {
     struct ComponentViewModel : ComponentViewModelT<ComponentViewModel> {
