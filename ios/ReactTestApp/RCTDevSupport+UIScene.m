@@ -30,8 +30,7 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
                             swizzledSelector,
                             method_getImplementation(originalMethod),
                             method_getTypeEncoding(originalMethod));
-    }
-    else {
+    } else {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }
