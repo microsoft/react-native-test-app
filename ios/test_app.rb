@@ -144,27 +144,13 @@ def make_project!(xcodeproj, project_root, target_platform)
   FileUtils.cp(File.join(src_xcodeproj, 'project.pbxproj'), dst_xcodeproj)
   FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
 
-  # Copy Xcode build configuration files
-  common_xcconfig = project_path('ReactTestApp.common.xcconfig', target_platform)
-  if File.exist?(common_xcconfig)
-    FileUtils.cp(common_xcconfig, destination)
-    %w[debug release].each do |config|
-      xcconfig = project_path("ReactTestApp.#{config}.xcconfig", target_platform)
-      next unless File.exist?(xcconfig)
+  # Link Xcode build configuration files
+  %w[common debug release].each do |config|
+    xcconfig = project_path("ReactTestApp.#{config}.xcconfig", target_platform)
+    next unless File.exist?(xcconfig)
 
-      dst_xcconfig = File.expand_path("ReactTestApp.#{config}.xcconfig", destination)
-      File.open(dst_xcconfig, 'w') do |fo|
-        pods_xcconfig_path = File.join(
-          project_root.relative_path_from(destination).to_s,
-          'Pods',
-          'Target Support Files',
-          'Pods-ReactTestApp',
-          "Pods-ReactTestApp.#{config}.xcconfig"
-        )
-        fo.puts("#include \"#{pods_xcconfig_path}\"")
-        File.foreach(xcconfig) { |line| fo.puts(line) }
-      end
-    end
+    dst_xcconfig = File.expand_path("ReactTestApp.#{config}.xcconfig", destination)
+    FileUtils.ln_sf(xcconfig, dst_xcconfig)
   end
 
   # Link source files
