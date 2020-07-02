@@ -144,16 +144,6 @@ def make_project!(xcodeproj, project_root, target_platform)
   FileUtils.cp(File.join(src_xcodeproj, 'project.pbxproj'), dst_xcodeproj)
   FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
 
-  # Link Xcode build configuration files
-  %w[common debug release].each do |config|
-    filename = "ReactTestApp.#{config}.xcconfig"
-    xcconfig = project_path(filename, target_platform)
-    next unless File.exist?(xcconfig)
-
-    dst_xcconfig = File.expand_path(filename, destination)
-    FileUtils.ln_sf(xcconfig, dst_xcconfig)
-  end
-
   # Link source files
   %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
     FileUtils.ln_sf(project_path(file, target_platform), destination)
