@@ -109,7 +109,12 @@ def resources_pod(project_root, target_platform)
 
   app_dir = File.dirname(app_manifest)
   podspec_path = File.join(app_dir, 'ReactTestApp-Resources.podspec.json')
-  File.write(podspec_path, spec.to_json)
+  File.open(podspec_path, 'w') do |f|
+    # Under certain conditions, the file doesn't get written to disk before it
+    # is read by CocoaPods.
+    f.write(spec.to_json)
+    f.fsync
+  end
   at_exit { File.delete(podspec_path) if File.exist?(podspec_path) }
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
