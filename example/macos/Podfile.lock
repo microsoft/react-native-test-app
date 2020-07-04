@@ -1,6 +1,8 @@
 PODS:
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
+  - Example-Tests (0.0.1-dev):
+    - React
   - FBLazyVector (0.61.39)
   - FBReactNativeSpec (0.61.39):
     - Folly (= 2018.10.22.00)
@@ -225,6 +227,7 @@ PODS:
 DEPENDENCIES:
   - boost-for-react-native (from `../node_modules/react-native-macos/third-party-podspecs/boost-for-react-native.podspec`)
   - DoubleConversion (from `../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec`)
+  - Example-Tests (from `..`)
   - FBLazyVector (from `../node_modules/react-native-macos/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native-macos/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native-macos/third-party-podspecs/Folly.podspec`)
@@ -265,6 +268,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native-macos/third-party-podspecs/boost-for-react-native.podspec"
   DoubleConversion:
     :podspec: "../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec"
+  Example-Tests:
+    :path: ".."
   FBLazyVector:
     :path: "../node_modules/react-native-macos/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -321,6 +326,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: a110407d9db2642fd2e1bcd7c5a51c81f2521dc9
   DoubleConversion: a1bc12a74baa397a2609e0f10e19b8062d864053
+  Example-Tests: 1605ab8a9f15c3394c656e5e673470a40eb41561
   FBLazyVector: a194b5854c4e6a3918805e89a64f05c59eb547a2
   FBReactNativeSpec: 30a6ee31420ab9321a7345e5b1cd6d050813e058
   Folly: feff29ba9d0b7c2e4f793a94942831d6cc5bbad7
@@ -345,10 +351,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: 2ab29818330374b02167caac117d609159f360ab
   ReactCommon: e24f8c0d974cdb872d73cbd87cdfea9d72cfae26
   ReactTestApp-DevSupport: 1aee56d5c69fe4a4f4d5be0cbd3f22f5326d70fd
-  ReactTestApp-Resources: 9f6dbc95cedd2fb13e857d8f2c84dfe26e6c2471
+  ReactTestApp-Resources: 4791cb085c4a05930792ae7206240bcc6813e539
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
   Yoga: 9cc54b8ca13d6fa87f8214c6eac97745e1df8092
 
-PODFILE CHECKSUM: d91f67e74b6410c05259188d419eeed2bd768445
+PODFILE CHECKSUM: 46118b2425d29bf77d0f229aa6514b3efa6510fa
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3

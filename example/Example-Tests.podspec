@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
   s.summary   = 'Example tests'
 
   s.ios.deployment_target = '12.0'
+  s.osx.deployment_target = '10.14'
 
   s.dependency 'React'
 
@@ -20,4 +21,5 @@ Pod::Spec.new do |s|
 
   s.source_files = 'ios/ExampleTests/**/*.{m,swift}',
                    'node_modules/react-native-test-app/ios/ReactTestApp/Manifest.swift'
+  s.osx.exclude_files = 'ios/ExampleTests/ReactNativePerformanceTests.m'
 end
