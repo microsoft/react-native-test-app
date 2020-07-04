@@ -60,6 +60,10 @@ def package_version(package_path)
   Gem::Version.new(package_json['version'])
 end
 
+def project_path(file, target_platform)
+  File.expand_path(file, File.join(__dir__, '..', target_platform.to_s))
+end
+
 def react_native_pods(version)
   v = version.release
   if v >= Gem::Version.new('0.63')
@@ -136,7 +140,7 @@ def use_react_native!(project_root, target_platform)
 end
 
 def make_project!(xcodeproj, project_root, target_platform)
-  src_xcodeproj = File.join(__dir__, '..', target_platform.to_s, xcodeproj)
+  src_xcodeproj = project_path(xcodeproj, target_platform)
   destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
   dst_xcodeproj = File.join(destination, xcodeproj)
 
@@ -147,13 +151,12 @@ def make_project!(xcodeproj, project_root, target_platform)
 
   # Link source files
   %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
-    source = File.expand_path(File.join(__dir__, '..', target_platform.to_s, file))
-    FileUtils.ln_sf(source, destination)
+    FileUtils.ln_sf(project_path(file, target_platform), destination)
   end
 
   # Shared code lives in `ios/ReactTestApp/`
   if target_platform != :ios
-    source = File.expand_path(File.join(__dir__, 'ReactTestApp'))
+    source = File.expand_path('ReactTestApp', __dir__)
     FileUtils.ln_sf(source, File.join(destination, 'ReactTestAppShared'))
   end
 
