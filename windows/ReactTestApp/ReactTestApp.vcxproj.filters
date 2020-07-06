@@ -23,7 +23,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Manifest.h" />
     <ClInclude Include="ComponentViewModel.h" />
-    <ClInclude Include="json_custom.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

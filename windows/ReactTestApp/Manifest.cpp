@@ -4,8 +4,7 @@
 
 #include <fstream>
 #include <iostream>
-
-#include <json_custom.h>
+#include <nlohmann/json.hpp>
 
 namespace winrt::ReactTestApp::implementation
 {
