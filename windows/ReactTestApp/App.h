@@ -5,8 +5,9 @@
 namespace winrt::ReactTestApp::implementation
 {
     struct App : AppT<App> {
-        App();
+        App() noexcept;
 
+        /*
         void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs const &);
         void OnSuspending(IInspectable const &,
                           Windows::ApplicationModel::SuspendingEventArgs const &);
@@ -17,5 +18,7 @@ namespace winrt::ReactTestApp::implementation
         void NavigateToFirstPage(
             Windows::UI::Xaml::Controls::Frame &rootFrame,
             Windows::ApplicationModel::Activation::LaunchActivatedEventArgs const &e);
+    };
+    */
     };
 }  // namespace winrt::ReactTestApp::implementation
