@@ -71,6 +71,9 @@
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
     <ImportGroup Label="ExtensionSettings">
     </ImportGroup>
+    <ImportGroup Label="Shared">
+        <Import Project="..\..\node_modules\react-native-windows\Microsoft.ReactNative.Cxx\Microsoft.ReactNative.Cxx.vcxitems" Label="Shared" />
+    </ImportGroup>
     <ImportGroup Label="PropertySheets">
         <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     </ImportGroup>
@@ -118,6 +121,10 @@
         </Link>
     </ItemDefinitionGroup>
     <ItemGroup>
+        <ClInclude Include="ComponentPage.h">
+            <DependentUpon>ComponentPage.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
         <ClInclude Include="ComponentViewModel.h" />
         <ClInclude Include="pch.h" />
         <ClInclude Include="Manifest.h" />
@@ -132,6 +139,9 @@
         <ApplicationDefinition Include="App.xaml">
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Page Include="ComponentPage.xaml">
+            <SubType>Designer</SubType>
+        </Page>
         <Page Include="MainPage.xaml">
             <SubType>Designer</SubType>
         </Page>
@@ -152,6 +162,10 @@
         <Text Include="..\..\example\app.json" />
     </ItemGroup>
     <ItemGroup>
+        <ClCompile Include="ComponentPage.cpp">
+            <DependentUpon>ComponentPage.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
         <ClCompile Include="ComponentViewModel.cpp" />
         <ClCompile Include="pch.cpp">
             <PrecompiledHeader>Create</PrecompiledHeader>
@@ -169,6 +183,10 @@
         <Midl Include="App.idl">
             <DependentUpon>App.xaml</DependentUpon>
         </Midl>
+        <Midl Include="ComponentPage.idl">
+            <DependentUpon>ComponentPage.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Midl>
         <Midl Include="MainPage.idl">
             <DependentUpon>MainPage.xaml</DependentUpon>
         </Midl>
@@ -177,6 +195,11 @@
     <ItemGroup>
         <None Include="packages.config" />
         <None Include="PropertySheet.props" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\node_modules\react-native-windows\Microsoft.ReactNative\Microsoft.ReactNative.vcxproj">
+            <Project>{f7d32bd0-2749-483e-9a0d-1635ef7e3136}</Project>
+        </ProjectReference>
     </ItemGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
     <ImportGroup Label="ExtensionTargets">

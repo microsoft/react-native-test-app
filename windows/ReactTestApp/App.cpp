@@ -4,22 +4,24 @@
 
 #include "MainPage.h"
 
-using namespace winrt;
-using namespace Windows::ApplicationModel;
-using namespace Windows::ApplicationModel::Activation;
-using namespace Windows::Foundation;
-using namespace Windows::UI::Xaml;
-using namespace Windows::UI::Xaml::Controls;
-using namespace Windows::UI::Xaml::Navigation;
-using namespace ReactTestApp;
-using namespace ReactTestApp::implementation;
+//using namespace winrt;
+//using namespace Windows::ApplicationModel;
+//using namespace Windows::ApplicationModel::Activation;
+//using namespace Windows::Foundation;
+//using namespace Windows::UI::Xaml;
+//using namespace Windows::UI::Xaml::Controls;
+//using namespace Windows::UI::Xaml::Navigation;
+using namespace winrt::ReactTestApp;
+using namespace winrt::ReactTestApp::implementation;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
 /// executed, and as such is the logical equivalent of main() or WinMain().
 /// </summary>
-App::App()
+App::App() noexcept
 {
+    MainComponentName(L"ReactTestApp");
+    /*
     InitializeComponent();
     Suspending({this, &App::OnSuspending});
 
@@ -31,8 +33,11 @@ App::App()
         }
     });
 #endif
+*/
+    InitializeComponent();
 }
 
+/*
 /// <summary>
 /// Invoked when the application is launched normally by the end user.  Other entry points
 /// will be used such as when the application is launched to open a specific file.
@@ -107,3 +112,4 @@ void App::NavigateToFirstPage(Frame &rootFrame, LaunchActivatedEventArgs const &
         rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
     }
 }
+*/
