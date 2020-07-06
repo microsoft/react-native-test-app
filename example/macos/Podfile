@@ -2,4 +2,8 @@ require_relative '../node_modules/react-native-test-app/macos/test_app.rb'
 
 workspace 'Example.xcworkspace'
 
-use_test_app!
+use_test_app! do |target|
+  target.tests do
+    pod 'Example-Tests', :path => '..'
+  end
+end
