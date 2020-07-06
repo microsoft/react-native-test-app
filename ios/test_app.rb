@@ -118,8 +118,8 @@ def resources_pod(project_root, target_platform)
     # is read by CocoaPods.
     f.write(spec.to_json)
     f.fsync
+    ObjectSpace.define_finalizer(self, Remover.new(f))
   end
-  at_exit { File.delete(podspec_path) if File.exist?(podspec_path) }
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
@@ -271,5 +271,19 @@ class ReactTestAppTargets
       @podfile.inherit! :search_paths
       yield if block_given?
     end
+  end
+end
+
+class Remover
+  def initialize(tmpfile)
+    @pid = Process.pid
+    @tmpfile = tmpfile
+  end
+
+  def call(*_args)
+    return if @pid != Process.pid
+
+    @tmpfile.close
+    File.unlink(@tmpfile.path) if File.exist?(@tmpfile.path)
   end
 end
