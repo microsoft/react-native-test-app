@@ -1,0 +1,10 @@
+namespace ReactTestApp
+{
+    runtimeclass ComponentViewModel
+    {
+        String Name
+        {
+            get;
+        };
+    }
+}  // namespace ReactTestApp

@@ -7,10 +7,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <MenuBar VerticalAlignment="Top">
-        <MenuBarItem Title="React">
-            <MenuFlyoutItem Text="Load from JS bundle"/>
-            <MenuFlyoutItem Text="Load from dev server"/>
-        </MenuBarItem>
-    </MenuBar>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <MenuBar VerticalAlignment="Top" Grid.Row="0">
+            <MenuBarItem Title="React">
+                <MenuFlyoutItem Text="Load from JS bundle"/>
+                <MenuFlyoutItem Text="Load from dev server"/>
+            </MenuBarItem>
+        </MenuBar>
+
+        <ListView ItemsSource="{x:Bind Components}" Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:ComponentViewModel">
+                    <TextBlock Text="{x:Bind Name}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </Page>
