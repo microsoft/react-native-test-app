@@ -154,8 +154,6 @@ class TestTestApp < Minitest::Test
         else
           assert_equal(resources, manifest['resources'].sort)
         end
-      ensure
-        File.delete(manifest_path)
       end
     end
   end
