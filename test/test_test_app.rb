@@ -130,6 +130,11 @@ class TestTestApp < Minitest::Test
 
   %i[ios macos].each do |target|
     define_method("test_#{target}_resources_pod_writes_podspec") do
+      # Lifetime of the resources `.podspec` is tied to the lifetime of the
+      # owning object (normally a `Pod` object). Disable GC to avoid random
+      # variances.
+      GC.disable
+
       resources = %w[app.json dist/assets dist/main.jsbundle]
       platform_resources = ['app.json', "dist-#{target}/assets", "dist-#{target}/main.jsbundle"]
 
@@ -155,6 +160,8 @@ class TestTestApp < Minitest::Test
           assert_equal(resources, manifest['resources'].sort)
         end
       end
+
+      GC.enable
     end
   end
 end
