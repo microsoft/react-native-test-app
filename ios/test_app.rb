@@ -271,14 +271,14 @@ class ReactTestAppTargets
 
   def tests
     @podfile.target 'ReactTestAppTests' do
-      @podfile.inherit! :search_paths
+      @podfile.inherit! :complete
       yield if block_given?
     end
   end
 
   def ui_tests
     @podfile.target 'ReactTestAppUITests' do
-      @podfile.inherit! :search_paths
+      @podfile.inherit! :complete
       yield if block_given?
     end
   end
