@@ -17,9 +17,9 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "mkdirp": "^0.5.1",
-    "react": "16.9.0",
-    "react-native": "0.61.5",
-    "react-native-macos": "0.61.39",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
+    "react-native-macos": "0.62.1",
     "react-native-test-app": "../"
   }
 }
