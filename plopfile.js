@@ -167,7 +167,7 @@ module.exports = (plop) => {
               dependencies: sortByKeys({
                 ...packageJson.dependencies,
                 ...(includeMacOS
-                  ? { "react-native-macos": "0.61.39" }
+                  ? { "react-native-macos": "0.62.1" }
                   : undefined),
               }),
               devDependencies: sortByKeys({
