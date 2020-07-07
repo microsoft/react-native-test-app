@@ -123,6 +123,12 @@ def resources_pod(project_root, target_platform)
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
+# rubocop:disable Style/TrivialAccessors
+def test_app_bundle_identifier(identifier)
+  @test_app_bundle_identifier = identifier
+end
+# rubocop:enable Style/TrivialAccessors
+
 def use_flipper!(versions = {})
   @flipper_versions = versions
 end
@@ -178,6 +184,10 @@ def make_project!(xcodeproj, project_root, target_platform)
         'FB_SONARKIT_ENABLED=' + (use_flipper ? '1' : '0'),
         'USE_FLIPPER=' + (use_flipper ? '1' : '0'),
       ]
+
+      if @test_app_bundle_identifier.is_a? String
+        config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = @test_app_bundle_identifier
+      end
 
       next unless use_flipper
 

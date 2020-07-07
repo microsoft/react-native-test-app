@@ -35,6 +35,7 @@ apply from: file("${testAppDir}/test-app.gradle")
 applyTestAppModule(project, "com.react.testapp")
 
 project.ext.react = [
+    applicationId: getApplicationId(),
     enableFlipper: getFlipperVersion(rootDir),
     enableHermes: true,
 ]
@@ -51,7 +52,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.react.testapp"
+        applicationId project.ext.react.applicationId
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
