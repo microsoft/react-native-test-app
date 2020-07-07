@@ -19,7 +19,6 @@
     "mkdirp": "^0.5.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-macos": "0.61.39",
     "react-native-test-app": "../"
   }
 }
