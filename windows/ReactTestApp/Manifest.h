@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace winrt::ReactTestApp::implementation
+namespace ReactTestApp
 {
     struct Component {
         std::string appKey;
@@ -21,4 +21,4 @@ namespace winrt::ReactTestApp::implementation
 
     Manifest GetManifest();
 
-}  // namespace winrt::ReactTestApp::implementation
+}  // namespace ReactTestApp
