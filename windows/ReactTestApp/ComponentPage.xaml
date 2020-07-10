@@ -8,4 +8,18 @@
     mc:Ignorable="d"
     xmlns:react="using:Microsoft.ReactNative">
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <CommandBar Grid.Row="0">
+            <CommandBar.Content>
+                <Button Style="{StaticResource NavigationBackButtonNormalStyle}" VerticalAlignment="Top" Click="OnBackButtonClicked"/>
+            </CommandBar.Content>
+        </CommandBar>
+
+        <react:ReactRootView x:Name="ReactRootView" Grid.Row="1"/>
+    </Grid>
 </Page>
