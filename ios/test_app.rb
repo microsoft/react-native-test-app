@@ -60,6 +60,10 @@ def package_version(package_path)
   Gem::Version.new(package_json['version'])
 end
 
+def project_path(file, target_platform)
+  File.expand_path(file, File.join(__dir__, '..', target_platform.to_s))
+end
+
 def react_native_pods(version)
   v = version.release
   if v >= Gem::Version.new('0.63')
@@ -91,9 +95,7 @@ def resources_pod(project_root, target_platform)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
-  manifest_resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
-  resources = ['app.json'] + (manifest_resources.instance_of?(Array) ? manifest_resources : [])
-
+  resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
   spec = {
     'name' => 'ReactTestApp-Resources',
     'version' => '1.0.0-dev',
@@ -106,15 +108,26 @@ def resources_pod(project_root, target_platform)
       'ios' => '12.0',
       'osx' => '10.14',
     },
-    'resources' => resources,
+    'resources' => ['app.json', *resources],
   }
 
   app_dir = File.dirname(app_manifest)
   podspec_path = File.join(app_dir, 'ReactTestApp-Resources.podspec.json')
-  File.write(podspec_path, spec.to_json)
-  at_exit { File.delete(podspec_path) if File.exist?(podspec_path) }
+  File.open(podspec_path, 'w') do |f|
+    # Under certain conditions, the file doesn't get written to disk before it
+    # is read by CocoaPods.
+    f.write(spec.to_json)
+    f.fsync
+    ObjectSpace.define_finalizer(self, Remover.new(f))
+  end
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
+
+# rubocop:disable Style/TrivialAccessors
+def test_app_bundle_identifier(identifier)
+  @test_app_bundle_identifier = identifier
+end
+# rubocop:enable Style/TrivialAccessors
 
 def use_flipper!(versions = {})
   @flipper_versions = versions
@@ -133,7 +146,7 @@ def use_react_native!(project_root, target_platform)
 end
 
 def make_project!(xcodeproj, project_root, target_platform)
-  src_xcodeproj = File.join(__dir__, '..', target_platform.to_s, xcodeproj)
+  src_xcodeproj = project_path(xcodeproj, target_platform)
   destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
   dst_xcodeproj = File.join(destination, xcodeproj)
 
@@ -144,13 +157,12 @@ def make_project!(xcodeproj, project_root, target_platform)
 
   # Link source files
   %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
-    source = File.expand_path(File.join(__dir__, '..', target_platform.to_s, file))
-    FileUtils.ln_sf(source, destination)
+    FileUtils.ln_sf(project_path(file, target_platform), destination)
   end
 
   # Shared code lives in `ios/ReactTestApp/`
   if target_platform != :ios
-    source = File.expand_path(File.join(__dir__, 'ReactTestApp'))
+    source = File.expand_path('ReactTestApp', __dir__)
     FileUtils.ln_sf(source, File.join(destination, 'ReactTestAppShared'))
   end
 
@@ -172,6 +184,10 @@ def make_project!(xcodeproj, project_root, target_platform)
         'FB_SONARKIT_ENABLED=' + (use_flipper ? '1' : '0'),
         'USE_FLIPPER=' + (use_flipper ? '1' : '0'),
       ]
+
+      if @test_app_bundle_identifier.is_a? String
+        config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = @test_app_bundle_identifier
+      end
 
       next unless use_flipper
 
@@ -255,15 +271,29 @@ class ReactTestAppTargets
 
   def tests
     @podfile.target 'ReactTestAppTests' do
-      @podfile.inherit! :search_paths
+      @podfile.inherit! :complete
       yield if block_given?
     end
   end
 
   def ui_tests
     @podfile.target 'ReactTestAppUITests' do
-      @podfile.inherit! :search_paths
+      @podfile.inherit! :complete
       yield if block_given?
     end
+  end
+end
+
+class Remover
+  def initialize(tmpfile)
+    @pid = Process.pid
+    @tmpfile = tmpfile
+  end
+
+  def call(*_args)
+    return if @pid != Process.pid
+
+    @tmpfile.close
+    File.unlink(@tmpfile.path) if File.exist?(@tmpfile.path)
   end
 end

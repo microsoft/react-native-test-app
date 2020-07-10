@@ -30,6 +30,7 @@ Metrics/CyclomaticComplexity:
 
 Metrics/PerceivedComplexity:
   IgnoredMethods: [
+    make_project!,
     use_test_app_internal!
   ]
 

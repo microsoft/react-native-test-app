@@ -57,6 +57,14 @@ ext.findNodeModulesPath = { baseDir, packageName ->
     return null
 }
 
+ext.getApplicationId = {
+    if (project.hasProperty('TEST_APP_IDENTIFIER')) {
+        return project.getProperty('TEST_APP_IDENTIFIER')
+    }
+
+    return 'com.react.testapp'
+}
+
 ext.getFlipperVersion = { baseDir ->
     def reactNativePath = findNodeModulesPath(baseDir, 'react-native')
     def props = new Properties()

@@ -2,14 +2,11 @@
 
 #include "MainPage.h"
 
-#include "ComponentPage.h"
 #include "ComponentViewModel.h"
 #include "MainPage.g.cpp"
 #include "Manifest.h"
 
-using namespace winrt;
-using namespace Windows::UI::Xaml;
-using namespace Windows::UI::Core;
+using winrt::Windows::Foundation::Collections::IVector;
 
 namespace winrt::ReactTestApp::implementation
 {

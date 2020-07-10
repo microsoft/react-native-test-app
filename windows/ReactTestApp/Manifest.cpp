@@ -4,21 +4,26 @@
 
 #include <fstream>
 #include <iostream>
+
 #include <nlohmann/json.hpp>
 
-namespace winrt::ReactTestApp::implementation
+namespace
 {
     template <typename T>
     std::optional<T> get_optional(const nlohmann::json &j, const std::string &key)
     {
-        if (j.find(key) != j.end()) {
-            return j.at(key).get<T>();
+        auto element = j.find(key);
+        if (element != j.end()) {
+            return element->get<T>();
         } else {
             return std::nullopt;
         }
     }
+}  // namespace
 
-    inline void from_json(const nlohmann::json &j, Component &c)
+namespace ReactTestApp
+{
+    void from_json(const nlohmann::json &j, Component &c)
     {
         c.appKey = j.at("appKey");
         c.displayName = get_optional<std::string>(j, "displayName");
@@ -26,7 +31,7 @@ namespace winrt::ReactTestApp::implementation
             get_optional<std::map<std::string, std::string>>(j, "initialProperties");
     }
 
-    inline void from_json(const nlohmann::json &j, Manifest &m)
+    void from_json(const nlohmann::json &j, Manifest &m)
     {
         m.name = j.at("name");
         m.displayName = j.at("displayName");
@@ -41,4 +46,4 @@ namespace winrt::ReactTestApp::implementation
         Manifest m = j.get<Manifest>();
         return m;
     }
-}  // namespace winrt::ReactTestApp::implementation
+}  // namespace ReactTestApp
