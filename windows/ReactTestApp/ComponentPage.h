@@ -6,6 +6,10 @@ namespace winrt::ReactTestApp::implementation
 {
     struct ComponentPage : ComponentPageT<ComponentPage> {
         ComponentPage();
+
+        void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &e);
+        void ComponentPage::OnBackButtonClicked(Windows::Foundation::IInspectable const &,
+                                                Windows::UI::Xaml::RoutedEventArgs e);
     };
 }  // namespace winrt::ReactTestApp::implementation
 
