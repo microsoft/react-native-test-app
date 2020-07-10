@@ -6,8 +6,7 @@
 #include "MainPage.g.cpp"
 #include "Manifest.h"
 
-using namespace winrt;
-using namespace Windows::UI::Xaml;
+using winrt::Windows::Foundation::Collections::IVector;
 
 namespace winrt::ReactTestApp::implementation
 {
@@ -16,16 +15,15 @@ namespace winrt::ReactTestApp::implementation
         InitializeComponent();
     }
 
-    Windows::Foundation::Collections::IVector<ReactTestApp::ComponentViewModel>
-    MainPage::Components()
+    IVector<ReactTestApp::ComponentViewModel> MainPage::Components()
     {
-        Windows::Foundation::Collections::IVector<ReactTestApp::ComponentViewModel> components =
+        IVector<ReactTestApp::ComponentViewModel> components =
             winrt::single_threaded_observable_vector<ReactTestApp::ComponentViewModel>();
 
-        for (auto &&c : GetManifest().components) {
+        for (auto &&c : ::ReactTestApp::GetManifest().components) {
             hstring componentName = to_hstring(c.displayName.value_or(c.appKey));
             ReactTestApp::ComponentViewModel newComponent =
-                winrt::make<ReactTestApp::implementation::ComponentViewModel>((componentName));
+                winrt::make<ComponentViewModel>(componentName);
             components.Append(newComponent);
         }
 
