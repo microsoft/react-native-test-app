@@ -10,6 +10,9 @@ namespace winrt::ReactTestApp::implementation
 
         Windows::Foundation::Collections::IVector<ReactTestApp::ComponentViewModel> Components();
 
+        void OnItemClick(Windows::Foundation::IInspectable const &sender,
+                         Windows::UI::Xaml::Controls::ItemClickEventArgs e);
+
     private:
         Windows::Foundation::Collections::IVector<ReactTestApp::ComponentViewModel> m_components;
     };

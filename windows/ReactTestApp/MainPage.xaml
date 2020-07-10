@@ -20,10 +20,10 @@
             </MenuBarItem>
         </MenuBar>
 
-        <ListView ItemsSource="{x:Bind Components}" Grid.Row="1">
+        <ListView ItemsSource="{x:Bind Components}" Grid.Row="1" ItemClick="OnItemClick" IsItemClickEnabled="True">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:ComponentViewModel">
-                    <TextBlock Text="{x:Bind Name}"/>
+                    <TextBlock Text="{x:Bind DisplayName}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

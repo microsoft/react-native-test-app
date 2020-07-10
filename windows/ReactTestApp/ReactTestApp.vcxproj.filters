@@ -52,12 +52,18 @@
         </Text>
     </ItemGroup>
     <ItemGroup>
+        <Content Include="Bundle\main.windows.bundle">
+            <Filter>Bundle</Filter>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
         <AppxManifest Include="Package.appxmanifest" />
     </ItemGroup>
     <ItemGroup>
         <Filter Include="Assets">
             <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
         </Filter>
+        <Filter Include="Bundle"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="PropertySheet.props" />
