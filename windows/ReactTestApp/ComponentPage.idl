@@ -1,8 +1,0 @@
-namespace ReactTestApp
-{
-    [default_interface]
-    runtimeclass ComponentPage : Windows.UI.Xaml.Controls.Page
-    {
-        ComponentPage();
-    }
-}
