@@ -4,20 +4,26 @@
 
 #include "MainPage.h"
 
-using namespace winrt::ReactTestApp;
-using namespace winrt::ReactTestApp::implementation;
-using namespace winrt::Windows::UI::Xaml;
-using namespace winrt::Windows::UI::Xaml::Controls;
-using namespace winrt::Windows::UI::Core;
+using namespace winrt;
+using namespace Windows::ApplicationModel;
+using namespace Windows::ApplicationModel::Activation;
+using namespace Windows::Foundation;
+using namespace Windows::UI::Xaml;
+using namespace Windows::UI::Xaml::Controls;
+using namespace Windows::UI::Xaml::Navigation;
+using namespace ReactTestApp;
+using namespace ReactTestApp::implementation;
+
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
 /// executed, and as such is the logical equivalent of main() or WinMain().
 /// </summary>
-App::App() noexcept
+App::App()
 {
     InitializeComponent();
     Suspending({this, &App::OnSuspending});
+
 
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
     UnhandledException([this](IInspectable const &, UnhandledExceptionEventArgs const &e) {
@@ -27,8 +33,6 @@ App::App() noexcept
         }
     });
 #endif
-
-    InitializeComponent();
 }
 
 /// <summary>
@@ -104,4 +108,9 @@ void App::NavigateToFirstPage(Frame &rootFrame, LaunchActivatedEventArgs const &
         // parameter
         rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
     }
+}
+
+winrt::Microsoft::ReactNative::ReactNativeHost App::InitReact()
+{
+    return winrt::Microsoft::ReactNative::ReactNativeHost();
 }

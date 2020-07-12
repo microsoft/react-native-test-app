@@ -15,6 +15,13 @@ namespace winrt::ReactTestApp::implementation
 
     private:
         Windows::Foundation::Collections::IVector<ReactTestApp::ComponentViewModel> m_components;
+        winrt::Microsoft::ReactNative::ReactNativeHost m_reactNativeHost;
+        bool m_useBundle = false;
+
+        void InitReact();
+        void SetComponents();
+        void LoadFromJSBundle();
+        void LoadFromDevServer();
     };
 }  // namespace winrt::ReactTestApp::implementation
 
