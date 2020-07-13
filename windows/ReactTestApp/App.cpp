@@ -109,8 +109,3 @@ void App::NavigateToFirstPage(Frame &rootFrame, LaunchActivatedEventArgs const &
         rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
     }
 }
-
-winrt::Microsoft::ReactNative::ReactNativeHost App::InitReact()
-{
-    return winrt::Microsoft::ReactNative::ReactNativeHost();
-}

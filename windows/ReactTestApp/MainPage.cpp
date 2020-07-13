@@ -65,7 +65,7 @@ namespace winrt::ReactTestApp::implementation
         m_reactNativeHost.InstanceSettings().UseLiveReload(true);
         m_reactNativeHost.InstanceSettings().UseWebDebugger(true);
         m_reactNativeHost.InstanceSettings().UseFastRefresh(true);
-        m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(L"index.windows");  // TODO
+        m_reactNativeHost.InstanceSettings().JavaScriptMainModuleName(L"index.windows");  // TODO
         m_reactNativeHost.ReloadInstance();
     }
 
