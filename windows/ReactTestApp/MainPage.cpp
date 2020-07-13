@@ -21,18 +21,26 @@ namespace winrt::ReactTestApp::implementation
     void MainPage::SetComponents()
     {
         auto menuItems = MenuFlyout().Items();
-        for (auto &&c : ::ReactTestApp::GetManifest().components) {
-            hstring componentDisplayName = to_hstring(c.displayName.value_or(c.appKey));
-            hstring componentName = to_hstring(c.appKey);
-            ReactTestApp::ComponentViewModel newComponent =
-                winrt::make<ComponentViewModel>(componentName, componentDisplayName);
-            m_components.push_back(newComponent);
-
+        std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
+        if (manifest == std::nullopt) {
             MenuFlyoutItem newMenuItem = MenuFlyoutItem();
-            newMenuItem.CommandParameter(newComponent);
-            newMenuItem.Text(newComponent.DisplayName());
-            newMenuItem.Click({this, &MainPage::SetReactComponentName});
+            newMenuItem.Text(L"Couldn't parse app.json");
+            newMenuItem.IsEnabled(false);
             menuItems.Append(newMenuItem);
+        } else {
+            for (auto &&c : manifest.value().components) {
+                hstring componentDisplayName = to_hstring(c.displayName.value_or(c.appKey));
+                hstring componentName = to_hstring(c.appKey);
+                ReactTestApp::ComponentViewModel newComponent =
+                    winrt::make<ComponentViewModel>(componentName, componentDisplayName);
+                m_components.push_back(newComponent);
+
+                MenuFlyoutItem newMenuItem = MenuFlyoutItem();
+                newMenuItem.CommandParameter(newComponent);
+                newMenuItem.Text(newComponent.DisplayName());
+                newMenuItem.Click({this, &MainPage::SetReactComponentName});
+                menuItems.Append(newMenuItem);
+            }
         }
     }
 
