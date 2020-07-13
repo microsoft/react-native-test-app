@@ -8,20 +8,22 @@ namespace winrt::ReactTestApp::implementation
     public:
         MainPage();
 
-        Windows::Foundation::Collections::IVector<ReactTestApp::ComponentViewModel> Components();
-
-        void OnItemClick(Windows::Foundation::IInspectable const &sender,
-                         Windows::UI::Xaml::Controls::ItemClickEventArgs e);
+        void LoadFromJSBundle(Windows::Foundation::IInspectable const &,
+                              Windows::UI::Xaml::RoutedEventArgs);
+        void LoadFromDevServer(Windows::Foundation::IInspectable const &,
+                               Windows::UI::Xaml::RoutedEventArgs);
+        void SetComponents();
 
     private:
-        Windows::Foundation::Collections::IVector<ReactTestApp::ComponentViewModel> m_components;
         winrt::Microsoft::ReactNative::ReactNativeHost m_reactNativeHost;
-        bool m_useBundle = false;
+        std::vector<ReactTestApp::ComponentViewModel> m_components;
 
-        void InitReact();
-        void SetComponents();
         void LoadFromJSBundle();
         void LoadFromDevServer();
+
+        void InitReact();
+        void SetReactComponentName(Windows::Foundation::IInspectable const &,
+                                   Windows::UI::Xaml::RoutedEventArgs e);
     };
 }  // namespace winrt::ReactTestApp::implementation
 

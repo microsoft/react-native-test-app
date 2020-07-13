@@ -10,27 +10,19 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <MenuBar VerticalAlignment="Top" Grid.Row="0">
-            <MenuBarItem Title="React">
-                <MenuFlyoutItem Text="Load from JS bundle"/>
-                <MenuFlyoutItem Text="Load from dev server"/>
+            <MenuBarItem Title="React" x:Name="MenuFlyout">
+                <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle"/>
+                <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer"/>
+                <MenuFlyoutSeparator/>
             </MenuBarItem>
         </MenuBar>
 
-        <ListView ItemsSource="{x:Bind Components}" Grid.Row="1" ItemClick="OnItemClick" IsItemClickEnabled="True">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:ComponentViewModel">
-                    <TextBlock Text="{x:Bind DisplayName}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-        <react:ReactRootView x:Name="ReactRootView" Grid.Row="2"/>
+        <react:ReactRootView x:Name="ReactRootView" Grid.Row="1"/>
 
     </Grid>
 </Page>
