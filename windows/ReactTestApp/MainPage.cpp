@@ -22,8 +22,8 @@ namespace winrt::ReactTestApp::implementation
     {
         auto menuItems = MenuFlyout().Items();
         std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
-        if (manifest == std::nullopt) {
-            MenuFlyoutItem newMenuItem = MenuFlyoutItem();
+        if (!manifest.has_value()) {
+            MenuFlyoutItem newMenuItem;
             newMenuItem.Text(L"Couldn't parse app.json");
             newMenuItem.IsEnabled(false);
             menuItems.Append(newMenuItem);
@@ -35,7 +35,7 @@ namespace winrt::ReactTestApp::implementation
                     winrt::make<ComponentViewModel>(componentName, componentDisplayName);
                 m_components.push_back(newComponent);
 
-                MenuFlyoutItem newMenuItem = MenuFlyoutItem();
+                MenuFlyoutItem newMenuItem;
                 newMenuItem.CommandParameter(newComponent);
                 newMenuItem.Text(newComponent.DisplayName());
                 newMenuItem.Click({this, &MainPage::SetReactComponentName});
@@ -46,10 +46,8 @@ namespace winrt::ReactTestApp::implementation
 
     void MainPage::InitReact()
     {
-        m_reactNativeHost = ReactNativeHost();
-
         // TODO fallback to JS bundle
-        LoadFromJSBundle();
+        LoadJSBundleFrom(JSBundleSource::Embedded);
 
         // If only one component is present load it automatically
         if (m_components.size() == 1) {
@@ -59,40 +57,43 @@ namespace winrt::ReactTestApp::implementation
         ReactRootView().ReactNativeHost(m_reactNativeHost);
     }
 
-    void MainPage::LoadFromJSBundle()
+    void MainPage::LoadJSBundleFrom(JSBundleSource source)
     {
-        m_reactNativeHost.InstanceSettings().UseLiveReload(false);
-        m_reactNativeHost.InstanceSettings().UseWebDebugger(false);
-        m_reactNativeHost.InstanceSettings().UseFastRefresh(false);
-        m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(L"main.windows");  // TODO
-        m_reactNativeHost.ReloadInstance();
-    }
+        m_reactNativeHost.InstanceSettings().UseLiveReload(source == JSBundleSource::DevServer);
+        m_reactNativeHost.InstanceSettings().UseWebDebugger(source == JSBundleSource::DevServer);
+        m_reactNativeHost.InstanceSettings().UseFastRefresh(source == JSBundleSource::DevServer);
 
-    void MainPage::LoadFromDevServer()
-    {
-        m_reactNativeHost.InstanceSettings().UseLiveReload(true);
-        m_reactNativeHost.InstanceSettings().UseWebDebugger(true);
-        m_reactNativeHost.InstanceSettings().UseFastRefresh(true);
-        m_reactNativeHost.InstanceSettings().JavaScriptMainModuleName(L"index.windows");  // TODO
+        switch (source) {
+            case JSBundleSource::DevServer:
+                m_reactNativeHost.InstanceSettings().JavaScriptMainModuleName(L"index");
+                m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(L"");
+                break;
+            case JSBundleSource::Embedded:
+                m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(
+                    L"main.windows.jsbundle");  // TODO
+                break;
+        }
+
         m_reactNativeHost.ReloadInstance();
     }
 
     void MainPage::LoadFromJSBundle(Windows::Foundation::IInspectable const &,
                                     Windows::UI::Xaml::RoutedEventArgs)
     {
-        LoadFromJSBundle();
+        LoadJSBundleFrom(JSBundleSource::Embedded);
     }
 
     void MainPage::LoadFromDevServer(Windows::Foundation::IInspectable const &,
                                      Windows::UI::Xaml::RoutedEventArgs)
     {
-        LoadFromDevServer();
+        LoadJSBundleFrom(JSBundleSource::DevServer);
     }
 
     void MainPage::SetReactComponentName(Windows::Foundation::IInspectable const &sender,
-                                         Windows::UI::Xaml::RoutedEventArgs e)
+                                         Windows::UI::Xaml::RoutedEventArgs)
     {
-        auto s = sender.as<winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem>().CommandParameter();
+        auto s = sender.as<MenuFlyoutItem>().CommandParameter();
         ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
     }
+
 }  // namespace winrt::ReactTestApp::implementation

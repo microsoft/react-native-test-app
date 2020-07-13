@@ -6,19 +6,19 @@
 
 namespace winrt::ReactTestApp::implementation
 {
-    ComponentViewModel::ComponentViewModel(hstring const &name, hstring const &display_name)
+    ComponentViewModel::ComponentViewModel(hstring const &appKey, hstring const &displayName)
     {
-        m_app_key = name;
-        m_display_name = display_name;
+        appKey_ = appKey;
+        displayName_ = displayName;
     }
 
     hstring ComponentViewModel::AppKey()
     {
-        return m_app_key;
+        return appKey_;
     }
 
     hstring ComponentViewModel::DisplayName()
     {
-        return m_display_name;
+        return displayName_;
     }
 }  // namespace winrt::ReactTestApp::implementation

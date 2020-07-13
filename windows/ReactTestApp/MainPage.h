@@ -4,6 +4,11 @@
 
 namespace winrt::ReactTestApp::implementation
 {
+    enum class JSBundleSource {
+        DevServer,
+        Embedded,
+    };
+
     struct MainPage : MainPageT<MainPage> {
     public:
         MainPage();
@@ -12,15 +17,13 @@ namespace winrt::ReactTestApp::implementation
                               Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromDevServer(Windows::Foundation::IInspectable const &,
                                Windows::UI::Xaml::RoutedEventArgs);
-        void SetComponents();
 
     private:
         winrt::Microsoft::ReactNative::ReactNativeHost m_reactNativeHost;
         std::vector<ReactTestApp::ComponentViewModel> m_components;
 
-        void LoadFromJSBundle();
-        void LoadFromDevServer();
-
+        void LoadJSBundleFrom(JSBundleSource source);
+        void SetComponents();
         void InitReact();
         void SetReactComponentName(Windows::Foundation::IInspectable const &,
                                    Windows::UI::Xaml::RoutedEventArgs e);
