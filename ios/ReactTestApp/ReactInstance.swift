@@ -8,6 +8,9 @@
 import Foundation
 
 final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDelegate {
+    public static let scanForQRCodeNotification =
+        NSNotification.Name("ReactInstance.scanForQRCodeNotification")
+
     static func jsBundleURL() -> URL? {
         return RCTBundleURLProvider.sharedSettings().jsBundleURL(
             forBundleRoot: "index",
@@ -60,6 +63,13 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
             self,
             selector: #selector(onJavaScriptLoading(_:)),
             name: .RCTJavaScriptWillStartLoading,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onJavaScriptLoaded(_:)),
+            name: .RCTJavaScriptDidLoad,
             object: nil
         )
 
@@ -176,6 +186,46 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
     }
 
     // MARK: - Private
+
+    @objc private func onJavaScriptLoaded(_ notification: Notification) {
+        guard let bridge = notification.userInfo?["bridge"] as? RCTBridge,
+              let currentBundleURL = bridge.bundleURL else {
+            return
+        }
+
+        RCTExecuteOnMainQueue({ [weak self] in
+            guard let devMenu = bridge.devMenu else {
+                return
+            }
+
+            devMenu.add(RCTDevMenuItem.buttonItem(
+                titleBlock: {
+                    currentBundleURL.isFileURL ? "Load From Dev Server"
+                                               : "Load Embedded JS Bundle"
+                },
+                handler: {
+                    guard let strongSelf = self else {
+                        return
+                    }
+
+                    if currentBundleURL.isFileURL {
+                        strongSelf.remoteBundleURL = ReactInstance.jsBundleURL()
+                    } else {
+                        strongSelf.remoteBundleURL = nil
+                    }
+                }
+            ))
+
+        #if os(iOS) && !targetEnvironment(simulator)
+            devMenu.add(RCTDevMenuItem.buttonItem(withTitle: "Scan QR Code") {
+                NotificationCenter.default.post(
+                    name: ReactInstance.scanForQRCodeNotification,
+                    object: self
+                )
+            })
+        #endif
+        })
+    }
 
     @objc private func onJavaScriptLoading(_ notification: Notification) {
         guard self.bridge != nil else {
