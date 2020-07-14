@@ -5,6 +5,7 @@
 #include "ComponentViewModel.h"
 #include "MainPage.g.cpp"
 #include "Manifest.h"
+#include "filesystem"
 
 using namespace winrt::Microsoft::ReactNative;
 using namespace winrt::Windows::UI::Xaml::Controls;
@@ -69,8 +70,8 @@ namespace winrt::ReactTestApp::implementation
                 m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(L"");
                 break;
             case JSBundleSource::Embedded:
-                m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(
-                    L"main.windows.jsbundle");  // TODO
+                hstring bundleFileName = to_hstring(GetBundleName());
+                m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(bundleFileName);
                 break;
         }
 
@@ -94,6 +95,25 @@ namespace winrt::ReactTestApp::implementation
     {
         auto s = sender.as<MenuFlyoutItem>().CommandParameter();
         ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
+    }
+
+    std::string MainPage::GetBundleName()
+    {
+        std::vector entryFileNames = {"index.windows",
+                                      "main.windows",
+                                      "index.native",
+                                      "main.native",
+                                      "index"
+                                      "main"};
+
+        for (std::string &&n : entryFileNames) {
+            std::string path = "Bundle\\" + n + ".bundle";
+            if (std::filesystem::exists(path)) {
+                return n;
+            }
+        }
+
+        return ""; //TODO handle bundle not present
     }
 
 }  // namespace winrt::ReactTestApp::implementation
