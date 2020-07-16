@@ -24,7 +24,6 @@ namespace winrt::ReactTestApp::implementation
 
         void SetReactComponentName(Windows::Foundation::IInspectable const &,
                                    Windows::UI::Xaml::RoutedEventArgs e);
-        std::string GetBundleName();
     };
 }  // namespace winrt::ReactTestApp::implementation
 
