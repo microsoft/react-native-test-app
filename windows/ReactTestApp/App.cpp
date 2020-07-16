@@ -11,8 +11,8 @@ using namespace Windows::Foundation;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Navigation;
-using namespace ReactTestApp;
-using namespace ReactTestApp::implementation;
+using namespace winrt::ReactTestApp;
+using namespace winrt::ReactTestApp::implementation;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code

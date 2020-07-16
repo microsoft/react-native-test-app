@@ -5,9 +5,7 @@
 #include "ComponentViewModel.h"
 #include "MainPage.g.cpp"
 #include "Manifest.h"
-#include "filesystem"
 
-using namespace winrt::Microsoft::ReactNative;
 using namespace winrt::Windows::UI::Xaml::Controls;
 
 namespace winrt::ReactTestApp::implementation
@@ -15,12 +13,7 @@ namespace winrt::ReactTestApp::implementation
     MainPage::MainPage()
     {
         InitializeComponent();
-        SetComponents();
-        InitReact();
-    }
 
-    void MainPage::SetComponents()
-    {
         auto menuItems = MenuFlyout().Items();
         std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
         if (!manifest.has_value()) {
@@ -29,12 +22,12 @@ namespace winrt::ReactTestApp::implementation
             newMenuItem.IsEnabled(false);
             menuItems.Append(newMenuItem);
         } else {
-            for (auto &&c : manifest.value().components) {
+            auto &components = manifest.value().components;
+            for (auto &&c : components) {
                 hstring componentDisplayName = to_hstring(c.displayName.value_or(c.appKey));
-                hstring componentName = to_hstring(c.appKey);
+                hstring appKey = to_hstring(c.appKey);
                 ReactTestApp::ComponentViewModel newComponent =
-                    winrt::make<ComponentViewModel>(componentName, componentDisplayName);
-                m_components.push_back(newComponent);
+                    winrt::make<ComponentViewModel>(appKey, componentDisplayName);
 
                 MenuFlyoutItem newMenuItem;
                 newMenuItem.CommandParameter(newComponent);
@@ -42,52 +35,28 @@ namespace winrt::ReactTestApp::implementation
                 newMenuItem.Click({this, &MainPage::SetReactComponentName});
                 menuItems.Append(newMenuItem);
             }
+
+            // If only one component is present load it automatically
+            if (components.size() == 1) {
+                ReactRootView().ComponentName(to_hstring(components.at(0).appKey));
+            }
+            // TODO fallback to JS bundle
+            reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::Embedded);
+
+            ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
         }
-    }
-
-    void MainPage::InitReact()
-    {
-        // TODO fallback to JS bundle
-        LoadJSBundleFrom(JSBundleSource::Embedded);
-
-        // If only one component is present load it automatically
-        if (m_components.size() == 1) {
-            ReactRootView().ComponentName(m_components.at(0).AppKey());
-        }
-
-        ReactRootView().ReactNativeHost(m_reactNativeHost);
-    }
-
-    void MainPage::LoadJSBundleFrom(JSBundleSource source)
-    {
-        m_reactNativeHost.InstanceSettings().UseLiveReload(source == JSBundleSource::DevServer);
-        m_reactNativeHost.InstanceSettings().UseWebDebugger(source == JSBundleSource::DevServer);
-        m_reactNativeHost.InstanceSettings().UseFastRefresh(source == JSBundleSource::DevServer);
-
-        switch (source) {
-            case JSBundleSource::DevServer:
-                m_reactNativeHost.InstanceSettings().JavaScriptMainModuleName(L"index");
-                m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(L"");
-                break;
-            case JSBundleSource::Embedded:
-                hstring bundleFileName = to_hstring(GetBundleName());
-                m_reactNativeHost.InstanceSettings().JavaScriptBundleFile(bundleFileName);
-                break;
-        }
-
-        m_reactNativeHost.ReloadInstance();
     }
 
     void MainPage::LoadFromJSBundle(Windows::Foundation::IInspectable const &,
                                     Windows::UI::Xaml::RoutedEventArgs)
     {
-        LoadJSBundleFrom(JSBundleSource::Embedded);
+        reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::Embedded);
     }
 
     void MainPage::LoadFromDevServer(Windows::Foundation::IInspectable const &,
                                      Windows::UI::Xaml::RoutedEventArgs)
     {
-        LoadJSBundleFrom(JSBundleSource::DevServer);
+        reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::DevServer);
     }
 
     void MainPage::SetReactComponentName(Windows::Foundation::IInspectable const &sender,
@@ -96,24 +65,4 @@ namespace winrt::ReactTestApp::implementation
         auto s = sender.as<MenuFlyoutItem>().CommandParameter();
         ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
     }
-
-    std::string MainPage::GetBundleName()
-    {
-        std::vector entryFileNames = {"index.windows",
-                                      "main.windows",
-                                      "index.native",
-                                      "main.native",
-                                      "index"
-                                      "main"};
-
-        for (std::string &&n : entryFileNames) {
-            std::string path = "Bundle\\" + n + ".bundle";
-            if (std::filesystem::exists(path)) {
-                return n;
-            }
-        }
-
-        return ""; //TODO handle bundle not present
-    }
-
 }  // namespace winrt::ReactTestApp::implementation

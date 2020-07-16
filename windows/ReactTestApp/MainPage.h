@@ -1,33 +1,23 @@
 #pragma once
 
 #include "MainPage.g.h"
+#include "ReactInstance.h"
 
 namespace winrt::ReactTestApp::implementation
 {
-    enum class JSBundleSource {
-        DevServer,
-        Embedded,
-    };
-
     struct MainPage : MainPageT<MainPage> {
     public:
         MainPage();
-
         void LoadFromJSBundle(Windows::Foundation::IInspectable const &,
                               Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromDevServer(Windows::Foundation::IInspectable const &,
                                Windows::UI::Xaml::RoutedEventArgs);
 
     private:
-        winrt::Microsoft::ReactNative::ReactNativeHost m_reactNativeHost;
-        std::vector<ReactTestApp::ComponentViewModel> m_components;
+        ::ReactTestApp::ReactInstance reactInstance_;
 
-        void LoadJSBundleFrom(JSBundleSource source);
-        void SetComponents();
-        void InitReact();
         void SetReactComponentName(Windows::Foundation::IInspectable const &,
                                    Windows::UI::Xaml::RoutedEventArgs e);
-        std::string GetBundleName();
     };
 }  // namespace winrt::ReactTestApp::implementation
 
