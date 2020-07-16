@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Cache
+      - name: Cache /node_modules
         uses: actions/cache@v2
         with:
           path: node_modules
@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Cache
+      - name: Cache /example/node_modules
         uses: actions/cache@v2
         with:
           path: example/node_modules
@@ -81,6 +81,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
+      - name: Cache /node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
       - name: Build
@@ -117,13 +122,13 @@ jobs:
           # Node version helps to workaround this problem:
           # https://github.com/facebook/react-native/issues/26598
           node-version: 12.9.1
-      - name: Cache
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Cache /example/node_modules
         uses: actions/cache@v2
         with:
           path: example/node_modules
           key: example-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
       - name: Install
         run: |
           yarn
@@ -159,6 +164,11 @@ jobs:
           # Node version helps to workaround this problem:
           # https://github.com/facebook/react-native/issues/26598
           node-version: 12.9.1
+      - name: Cache /node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
         shell: bash
@@ -181,7 +191,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Cache
+      - name: Cache /example/node_modules
         uses: actions/cache@v2
         with:
           path: example/node_modules
@@ -215,6 +225,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
+      - name: Cache /node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
       - name: Build
@@ -249,7 +264,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Cache
+      - name: Cache /node_modules
         uses: actions/cache@v2
         with:
           path: node_modules
