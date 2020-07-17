@@ -15,8 +15,10 @@ import com.facebook.react.devsupport.DevInternalSettings
 import com.facebook.react.devsupport.DevServerHelper
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatusProvider
+import com.facebook.react.devsupport.interfaces.DevSupportManager
 import com.facebook.soloader.SoLoader
 import com.react.testapp.BuildConfig
+import com.react.testapp.R
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -54,28 +56,7 @@ class TestAppReactNativeHost @Inject constructor(
             BundleSource.Disk
         }
 
-    fun reload(activity: Activity, newSource: BundleSource) {
-        if (BuildConfig.DEBUG && !hasInstance()) {
-            error("init() must be called the first time ReactInstanceManager is created")
-        }
-
-        val action = source.moveTo(newSource)
-        source = newSource
-
-        when (action) {
-            BundleSource.Action.RELOAD -> {
-                reactInstanceManager.devSupportManager.handleReloadJS()
-            }
-            BundleSource.Action.RESTART -> {
-                clear()
-
-                reactInstanceManager.run {
-                    createReactContextInBackground()
-                    onHostResume(activity)
-                }
-            }
-        }
-    }
+    var onBundleSourceChanged: ((newSource: BundleSource) -> Unit)? = null
 
     fun init() {
         if (BuildConfig.DEBUG && hasInstance()) {
@@ -100,6 +81,33 @@ class TestAppReactNativeHost @Inject constructor(
         }
     }
 
+    fun reload(activity: Activity?, newSource: BundleSource) {
+        if (BuildConfig.DEBUG && !hasInstance()) {
+            error("init() must be called the first time ReactInstanceManager is created")
+        }
+
+        val action = source.moveTo(newSource)
+        source = newSource
+
+        when (action) {
+            BundleSource.Action.RELOAD -> {
+                reactInstanceManager.devSupportManager.handleReloadJS()
+            }
+            BundleSource.Action.RESTART -> {
+                clear()
+
+                reactInstanceManager.run {
+                    createReactContextInBackground()
+                    if (activity != null) {
+                        onHostResume(activity)
+                    }
+                }
+            }
+        }
+
+        onBundleSourceChanged?.invoke(newSource)
+    }
+
     override fun createReactInstanceManager(): ReactInstanceManager {
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_START)
         val reactInstanceManager = ReactInstanceManager.builder()
@@ -115,6 +123,7 @@ class TestAppReactNativeHost @Inject constructor(
             .setJSIModulesPackage(jsiModulePackage)
             .build()
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_END)
+        addCustomDevOptions(reactInstanceManager.devSupportManager)
         return reactInstanceManager
     }
 
@@ -140,5 +149,27 @@ class TestAppReactNativeHost @Inject constructor(
         }
         latch.await()
         return packagerIsRunning
+    }
+
+    private fun addCustomDevOptions(devSupportManager: DevSupportManager) {
+        val bundleOption = application.resources.getString(
+            if (source == BundleSource.Disk) {
+                R.string.load_from_dev_server
+            } else {
+                R.string.load_embedded_js_bundle
+            }
+        )
+        devSupportManager.addCustomDevOption(bundleOption) {
+            when (source) {
+                BundleSource.Disk -> {
+                    val currentActivity = reactInstanceManager.currentReactContext?.currentActivity
+                    reload(currentActivity, BundleSource.Server)
+                }
+                BundleSource.Server -> {
+                    val currentActivity = reactInstanceManager.currentReactContext?.currentActivity
+                    reload(currentActivity, BundleSource.Disk)
+                }
+            }
+        }
     }
 }
