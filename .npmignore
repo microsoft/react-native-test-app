@@ -13,5 +13,6 @@ example/*
 !example/metro.config.js
 !example/react-native.config.js
 scripts/
+template-example/
 test/
 windows/
