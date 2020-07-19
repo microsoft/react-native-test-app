@@ -6,6 +6,7 @@
 .idea/
 Pods/
 build/
+clang-format-diff.py
 dist/
 local.properties
 node_modules/
