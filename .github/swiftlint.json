@@ -10,8 +10,7 @@
           "column": 3,
           "severity": 4,
           "code": 6,
-          "message": 5,
-          "loop": true
+          "message": 5
         }
       ]
     }
