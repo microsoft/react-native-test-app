@@ -52,7 +52,8 @@
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-macos": "0.61.39",
-    "semantic-release": "^17.0.0"
+    "semantic-release": "^17.0.0",
+    "suggestion-bot": "^1.0.0"
   },
   "release": {
     "tagFormat": "${version}"
