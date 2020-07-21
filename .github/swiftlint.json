@@ -1,0 +1,18 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "swiftlint",
+      "pattern": [
+        {
+          "regexp": "react-native-test-app\\/(?!react-native-test-app)(.*):(\\d+):(\\d+): (\\w+): (.*)\\((\\w+)\\)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 6,
+          "message": 5
+        }
+      ]
+    }
+  ]
+}
