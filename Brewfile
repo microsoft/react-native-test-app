@@ -1,5 +1,6 @@
 tap 'AdoptOpenJDK/openjdk'
 brew 'clang-format'
 brew 'node'
+brew 'swiftlint'
 brew 'yarn'
 cask 'adoptopenjdk8'
