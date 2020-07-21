@@ -96,6 +96,13 @@ jobs:
         with:
           path: node_modules
           key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Cache /template-example/node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            template-example/node_modules
+            template-example/yarn.lock
+          key: ${{ matrix.template }}-${{ runner.os }}-${{ hashFiles('p*e.js*') }} # package.json + plopfile.js
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
       - name: Build
@@ -179,6 +186,13 @@ jobs:
         with:
           path: node_modules
           key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Cache /template-example/node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            template-example/node_modules
+            template-example/yarn.lock
+          key: ${{ matrix.template }}-${{ runner.os }}-${{ hashFiles('p*e.js*') }} # package.json + plopfile.js
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
         shell: bash
@@ -240,6 +254,13 @@ jobs:
         with:
           path: node_modules
           key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Cache /template-example/node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            template-example/node_modules
+            template-example/yarn.lock
+          key: ${{ matrix.template }}-${{ runner.os }}-${{ hashFiles('p*e.js*') }} # package.json + plopfile.js
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
       - name: Build
