@@ -6,7 +6,11 @@
 #include "MainPage.g.cpp"
 #include "Manifest.h"
 
-using namespace winrt::Windows::UI::Xaml::Controls;
+using winrt::Windows::Foundation::IAsyncAction;
+using winrt::Windows::UI::Xaml::RoutedEventArgs;
+using winrt::Windows::UI::Xaml::Controls::MenuFlyout;
+using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
+using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
 
 namespace winrt::ReactTestApp::implementation
 {
@@ -40,29 +44,35 @@ namespace winrt::ReactTestApp::implementation
             if (components.size() == 1) {
                 ReactRootView().ComponentName(to_hstring(components.at(0).appKey));
             }
-            // TODO fallback to JS bundle
-            reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::Embedded);
 
             ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
         }
     }
 
-    void MainPage::LoadFromJSBundle(Windows::Foundation::IInspectable const &,
-                                    Windows::UI::Xaml::RoutedEventArgs)
+    IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs)
+    {
+        bool devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
+        if (devServerIsRunning) {
+            reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::DevServer);
+        } else {
+            reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::Embedded);
+        }
+    }
+
+    void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
     {
         reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::Embedded);
     }
 
-    void MainPage::LoadFromDevServer(Windows::Foundation::IInspectable const &,
-                                     Windows::UI::Xaml::RoutedEventArgs)
+    void MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
     {
         reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::DevServer);
     }
 
-    void MainPage::SetReactComponentName(Windows::Foundation::IInspectable const &sender,
-                                         Windows::UI::Xaml::RoutedEventArgs)
+    void MainPage::SetReactComponentName(IInspectable const &sender, RoutedEventArgs)
     {
         auto s = sender.as<MenuFlyoutItem>().CommandParameter();
         ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
     }
+
 }  // namespace winrt::ReactTestApp::implementation

@@ -19,5 +19,6 @@ namespace ReactTestApp
     };
 
     std::string GetBundleName();
+    winrt::Windows::Foundation::IAsyncOperation<bool> IsDevServerRunning();
 
 }  // namespace ReactTestApp
