@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //       support UIScene yet. Revisit when we bump React Native.
     @objc var window: UIWindow? {
         get { application?.windows.first }
+        // swiftlint:disable:next unused_setter_value
         set { }
     }
 

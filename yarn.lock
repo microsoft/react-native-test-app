@@ -8253,9 +8253,9 @@ sudo-prompt@^9.0.0:
   integrity sha512-es33J1g2HjMpyAhz8lOR+ICmXXAqTuKbuXuUWLhOLew20oN9oUCgCJx615U/v7aioZg7IX5lIh9x34vwneu4pA==
 
 suggestion-bot@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/suggestion-bot/-/suggestion-bot-1.0.0.tgz#e00d5c5555d5149ffe81519ea63f53b8ebde0753"
-  integrity sha512-dJvcNX9DuuhN5CfJmiTlLoocO3qv5JXCVyJI3u9zU0bsOBMFGlS1MluK6H6YbD9MCNc1RpwyOh/d7OH9m/RYBw==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/suggestion-bot/-/suggestion-bot-1.0.3.tgz#19f2466df32a66f6f1ff9271692dc1d56d1d28c8"
+  integrity sha512-EnsLFCa6li+0hkEcJH0Cr+VjZ+DtwVFPNbGoANewQjC3YEgRIKBZBQJwryyA6cj5gjL/LJx+hFvLNSGTwSkGbw==
   dependencies:
     "@octokit/rest" "^17.0.0"
     parse-diff "^0.7.0"
