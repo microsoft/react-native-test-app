@@ -49,8 +49,9 @@ namespace winrt::ReactTestApp::implementation
         }
     }
 
-    IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs)
+    IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
     {
+        Base::OnNavigatedTo(e);
         bool devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
         if (devServerIsRunning) {
             reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::DevServer);

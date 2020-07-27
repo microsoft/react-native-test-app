@@ -10,7 +10,7 @@
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-**/AppPackages/**
+AppPackages/
 x64/
 x86/
 build/

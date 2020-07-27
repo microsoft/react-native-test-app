@@ -12,7 +12,6 @@ using winrt::Windows::Web::Http::HttpClient;
 
 namespace ReactTestApp
 {
-
     void ReactInstance::LoadJSBundleFrom(JSBundleSource source)
     {
         auto instanceSettings = reactNativeHost_.InstanceSettings();
@@ -55,14 +54,13 @@ namespace ReactTestApp
             }
         }
 
-        return "";  // TODO handle bundle not present
+        return "";
     }
 
     IAsyncOperation<bool> IsDevServerRunning()
     {
         Uri uri = Uri(L"http://localhost:8081/status");
         HttpClient httpClient;
-        std::wstring httpResponseBody;
         try {
             auto r = co_await httpClient.GetAsync(uri);
             co_return r.IsSuccessStatusCode();
