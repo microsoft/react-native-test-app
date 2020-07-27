@@ -3,18 +3,19 @@
 #include "MainPage.h"
 
 #include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.UI.ViewManagement.h>
 
 #include "ComponentViewModel.h"
 #include "MainPage.g.cpp"
-#include "Manifest.h"
+
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
 using winrt::Windows::Foundation::IAsyncAction;
+using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
+using winrt::Windows::UI::Xaml::Style;
 using winrt::Windows::UI::Xaml::Window;
 using winrt::Windows::UI::Xaml::Controls::Button;
-using winrt::Windows::UI::Xaml::Input::TappedRoutedEventArgs;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
-using winrt::Windows::UI::Xaml::Style;
 
 namespace winrt::ReactTestApp::implementation
 {
@@ -22,9 +23,7 @@ namespace winrt::ReactTestApp::implementation
     {
         InitializeComponent();
 
-        auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
-        coreTitleBar.ExtendViewIntoTitleBar(true);
-        Window::Current().SetTitleBar(BackgroundElement());
+        SetUpTitleBar();
 
         auto menuItems = ReactMenu().Children();
         std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
@@ -38,19 +37,7 @@ namespace winrt::ReactTestApp::implementation
 
             auto &components = manifest.value().components;
             for (auto &&c : components) {
-                hstring componentDisplayName = to_hstring(c.displayName.value_or(c.appKey));
-                hstring appKey = to_hstring(c.appKey);
-                ReactTestApp::ComponentViewModel newComponent =
-                    winrt::make<ComponentViewModel>(appKey, componentDisplayName);
-
-                Button newMenuItem;
-                auto style = this->Resources()
-                                 .Lookup(winrt::box_value(L"ReactMenuButton"))
-                                 .as<::Style>();
-                newMenuItem.Style(style);
-                newMenuItem.Content(winrt::box_value(newComponent.DisplayName()));
-                newMenuItem.CommandParameter(newComponent);
-                newMenuItem.Click({this, &MainPage::SetReactComponentName});
+                Button newMenuItem = GetComponentMenuButton(c);
                 menuItems.Append(newMenuItem);
             }
 
@@ -93,6 +80,43 @@ namespace winrt::ReactTestApp::implementation
     void MainPage::OpenReactMenu(IInspectable const &, RoutedEventArgs)
     {
         ReactButton().Flyout().ShowAt(ReactButton());
+    }
+
+    Button MainPage::GetComponentMenuButton(::ReactTestApp::Component &component)
+    {
+        hstring componentDisplayName = to_hstring(component.displayName.value_or(component.appKey));
+        hstring appKey = to_hstring(component.appKey);
+        ReactTestApp::ComponentViewModel newComponent =
+            winrt::make<ComponentViewModel>(appKey, componentDisplayName);
+
+        Button newMenuItem;
+        auto style = this->Resources().Lookup(winrt::box_value(L"ReactMenuButton")).as<::Style>();
+        newMenuItem.Style(style);
+        newMenuItem.Content(winrt::box_value(newComponent.DisplayName()));
+        newMenuItem.CommandParameter(newComponent);
+        newMenuItem.Click({this, &MainPage::SetReactComponentName});
+        return newMenuItem;
+    }
+
+    void MainPage::SetUpTitleBar()
+    {
+        // Set close, minimize and maximize icons background to transparent
+        auto appView = ApplicationView::GetForCurrentView().TitleBar();
+        appView.ButtonBackgroundColor(winrt::Windows::UI::Colors::Transparent());
+        appView.BackgroundColor(winrt::Windows::UI::Colors::Transparent());
+
+        auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
+        coreTitleBar.LayoutMetricsChanged({this, &MainPage::CoreTitleBarLayoutMetricsChanged});
+        coreTitleBar.ExtendViewIntoTitleBar(true);
+        Window::Current().SetTitleBar(BackgroundElement());
+    }
+
+    // Adjust height of custom title bar to match close, minimize and maximize icons
+    void MainPage::CoreTitleBarLayoutMetricsChanged(
+        winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &sender,
+        Windows::Foundation::IInspectable const &)
+    {
+        TitleBar().Height(sender.Height());
     }
 
 }  // namespace winrt::ReactTestApp::implementation

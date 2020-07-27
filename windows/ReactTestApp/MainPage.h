@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MainPage.g.h"
+#include "Manifest.h"
 #include "ReactInstance.h"
 
 namespace winrt::ReactTestApp::implementation
@@ -12,6 +13,8 @@ namespace winrt::ReactTestApp::implementation
                               Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromDevServer(Windows::Foundation::IInspectable const &,
                                Windows::UI::Xaml::RoutedEventArgs);
+        void MainPage::OpenReactMenu(Windows::Foundation::IInspectable const &,
+                                     winrt::Windows::UI::Xaml::RoutedEventArgs);
         Windows::Foundation::IAsyncAction
         OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &e);
         using Base = MainPageT;
@@ -24,6 +27,12 @@ namespace winrt::ReactTestApp::implementation
 
         void SetReactComponentName(Windows::Foundation::IInspectable const &,
                                    Windows::UI::Xaml::RoutedEventArgs);
+        Windows::UI::Xaml::Controls::Button
+        GetComponentMenuButton(::ReactTestApp::Component &component);
+        void CoreTitleBarLayoutMetricsChanged(
+            winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &sender,
+            Windows::Foundation::IInspectable const &);
+        void SetUpTitleBar();
     };
 }  // namespace winrt::ReactTestApp::implementation
 

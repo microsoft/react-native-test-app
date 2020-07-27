@@ -14,7 +14,7 @@
             <Setter Property="FontSize" Value="12pt"/>
         </Style>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -22,15 +22,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="TitleBar" Background="Transparent">
-            <Rectangle x:Name="BackgroundElement" />
-
+        <Grid x:Name="TitleBar">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="React" x:Name="ReactButton" Click="OpenReactMenu" Style="{StaticResource ReactMenuButton}" Foreground="Black">
+                <Button Grid.Column="1" Content="React" x:Name="ReactButton" Click="OpenReactMenu" Style="{StaticResource ReactMenuButton}">
                     <Button.Flyout>
                         <Flyout Placement="BottomEdgeAlignedLeft" x:Name="MenuFlyout">
                             <StackPanel x:Name="ReactMenu">
@@ -41,12 +41,11 @@
                         </Flyout>
                     </Button.Flyout>
                 </Button>
-
-                <TextBlock x:Name="AppTitle" 
-               Grid.Column="1" 
-               Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-               />
+                <Grid x:Name="BackgroundElement" Grid.Column="2" Background="Transparent">
+                    <TextBlock x:Name="AppTitle" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Grid>
             </Grid>
+
         </Grid>
 
         <react:ReactRootView x:Name="ReactRootView" Grid.Row="2"/>
