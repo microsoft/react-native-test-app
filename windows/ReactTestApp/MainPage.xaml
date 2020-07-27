@@ -8,21 +8,48 @@
     mc:Ignorable="d"
     xmlns:react="using:Microsoft.ReactNative">
 
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="ReactMenuButton" BasedOn="{StaticResource TextBlockButtonStyle}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="12pt"/>
+        </Style>
+    </Page.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <MenuBar VerticalAlignment="Top" Grid.Row="0">
-            <MenuBarItem Title="React" x:Name="MenuFlyout">
-                <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle"/>
-                <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer"/>
-                <MenuFlyoutSeparator/>
-            </MenuBarItem>
-        </MenuBar>
+        <Grid x:Name="TitleBar" Background="Transparent">
+            <Rectangle x:Name="BackgroundElement" />
 
-        <react:ReactRootView x:Name="ReactRootView" Grid.Row="1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="React" x:Name="ReactButton" Click="OpenReactMenu" Style="{StaticResource ReactMenuButton}" Foreground="Black">
+                    <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedLeft" x:Name="MenuFlyout">
+                            <StackPanel x:Name="ReactMenu">
+                                <Button Click="LoadFromJSBundle" Style="{StaticResource ReactMenuButton}">Load from JS bundle</Button>
+                                <Button Click="LoadFromDevServer" Style="{StaticResource ReactMenuButton}">Load from dev server</Button>
+                                <MenuFlyoutSeparator/>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+
+                <TextBlock x:Name="AppTitle" 
+               Grid.Column="1" 
+               Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+               />
+            </Grid>
+        </Grid>
+
+        <react:ReactRootView x:Name="ReactRootView" Grid.Row="2"/>
 
     </Grid>
 </Page>

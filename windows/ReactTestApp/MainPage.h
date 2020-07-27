@@ -23,7 +23,7 @@ namespace winrt::ReactTestApp::implementation
         ::ReactTestApp::ReactInstance reactInstance_;
 
         void SetReactComponentName(Windows::Foundation::IInspectable const &,
-                                   Windows::UI::Xaml::RoutedEventArgs e);
+                                   Windows::UI::Xaml::RoutedEventArgs);
     };
 }  // namespace winrt::ReactTestApp::implementation
 

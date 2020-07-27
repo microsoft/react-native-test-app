@@ -2,15 +2,19 @@
 
 #include "MainPage.h"
 
+#include <winrt/Windows.ApplicationModel.Core.h>
+
 #include "ComponentViewModel.h"
 #include "MainPage.g.cpp"
 #include "Manifest.h"
-
+using winrt::Windows::ApplicationModel::Core::CoreApplication;
 using winrt::Windows::Foundation::IAsyncAction;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
-using winrt::Windows::UI::Xaml::Controls::MenuFlyout;
-using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
+using winrt::Windows::UI::Xaml::Window;
+using winrt::Windows::UI::Xaml::Controls::Button;
+using winrt::Windows::UI::Xaml::Input::TappedRoutedEventArgs;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
+using winrt::Windows::UI::Xaml::Style;
 
 namespace winrt::ReactTestApp::implementation
 {
@@ -18,14 +22,20 @@ namespace winrt::ReactTestApp::implementation
     {
         InitializeComponent();
 
-        auto menuItems = MenuFlyout().Items();
+        auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
+        coreTitleBar.ExtendViewIntoTitleBar(true);
+        Window::Current().SetTitleBar(BackgroundElement());
+
+        auto menuItems = ReactMenu().Children();
         std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
         if (!manifest.has_value()) {
-            MenuFlyoutItem newMenuItem;
-            newMenuItem.Text(L"Couldn't parse app.json");
+            Button newMenuItem;
+            newMenuItem.Content(winrt::box_value(L"Couldn't parse app.json"));
             newMenuItem.IsEnabled(false);
             menuItems.Append(newMenuItem);
         } else {
+            AppTitle().Text(to_hstring(manifest.value().displayName));
+
             auto &components = manifest.value().components;
             for (auto &&c : components) {
                 hstring componentDisplayName = to_hstring(c.displayName.value_or(c.appKey));
@@ -33,9 +43,13 @@ namespace winrt::ReactTestApp::implementation
                 ReactTestApp::ComponentViewModel newComponent =
                     winrt::make<ComponentViewModel>(appKey, componentDisplayName);
 
-                MenuFlyoutItem newMenuItem;
+                Button newMenuItem;
+                auto style = this->Resources()
+                                 .Lookup(winrt::box_value(L"ReactMenuButton"))
+                                 .as<::Style>();
+                newMenuItem.Style(style);
+                newMenuItem.Content(winrt::box_value(newComponent.DisplayName()));
                 newMenuItem.CommandParameter(newComponent);
-                newMenuItem.Text(newComponent.DisplayName());
                 newMenuItem.Click({this, &MainPage::SetReactComponentName});
                 menuItems.Append(newMenuItem);
             }
@@ -72,8 +86,13 @@ namespace winrt::ReactTestApp::implementation
 
     void MainPage::SetReactComponentName(IInspectable const &sender, RoutedEventArgs)
     {
-        auto s = sender.as<MenuFlyoutItem>().CommandParameter();
+        auto s = sender.as<Button>().CommandParameter();
         ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
+    }
+
+    void MainPage::OpenReactMenu(IInspectable const &, RoutedEventArgs)
+    {
+        ReactButton().Flyout().ShowAt(ReactButton());
     }
 
 }  // namespace winrt::ReactTestApp::implementation
