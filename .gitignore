@@ -4,10 +4,11 @@
 .DS_Store
 .gradle/
 .idea/
+.vs/
 Pods/
-build/
 clang-format-diff.py
 dist/
+example/android/build/
 local.properties
 node_modules/
 !test/fixtures/**/node_modules/
@@ -15,4 +16,3 @@ package-lock.json
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 xcuserdata/
 yarn-error.log*
-.vs/
