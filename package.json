@@ -42,7 +42,8 @@
   "peerDependencies": {
     "react": "~16.8.6 || ~16.9.0 || ~16.11.0 || ~16.13.1",
     "react-native": "^0.60.6 || ^0.61.5 || ^0.62.2 || ^0.63 || 1000.0.0",
-    "react-native-macos": "^0.60 || ^0.61.39"
+    "react-native-macos": "^0.60 || ^0.61.39",
+    "react-native-windows": "^0.62.2"
   },
   "devDependencies": {
     "eslint": "^7.4.0",
@@ -51,6 +52,7 @@
     "prettier": "2.0.5",
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-windows": "0.62.2",
     "semantic-release": "^17.0.0"
   },
   "release": {

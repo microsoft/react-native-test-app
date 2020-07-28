@@ -5,11 +5,14 @@
 namespace winrt::ReactTestApp::implementation
 {
     struct ComponentViewModel : ComponentViewModelT<ComponentViewModel> {
-        ComponentViewModel(hstring const &name);
+        ComponentViewModel(hstring const &appKey, hstring const &displayName);
 
-        hstring Name();
+        hstring AppKey();
+
+        hstring DisplayName();
 
     private:
-        hstring m_name;
+        hstring appKey_;
+        hstring displayName_;
     };
 }  // namespace winrt::ReactTestApp::implementation
