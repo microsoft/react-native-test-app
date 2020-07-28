@@ -13,24 +13,21 @@ namespace winrt::ReactTestApp::implementation
                               Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromDevServer(Windows::Foundation::IInspectable const &,
                                Windows::UI::Xaml::RoutedEventArgs);
-        void MainPage::OpenReactMenu(Windows::Foundation::IInspectable const &,
-                                     winrt::Windows::UI::Xaml::RoutedEventArgs);
+        void OpenReactMenu(Windows::Foundation::IInspectable const &,
+                           winrt::Windows::UI::Xaml::RoutedEventArgs);
         Windows::Foundation::IAsyncAction
         OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &e);
         using Base = MainPageT;
-
-        void OnItemClick(Windows::Foundation::IInspectable const &sender,
-                         Windows::UI::Xaml::Controls::ItemClickEventArgs e);
 
     private:
         ::ReactTestApp::ReactInstance reactInstance_;
 
         void SetReactComponentName(Windows::Foundation::IInspectable const &,
                                    Windows::UI::Xaml::RoutedEventArgs);
-        Windows::UI::Xaml::Controls::Button
+        Windows::UI::Xaml::Controls::MenuFlyoutItem
         GetComponentMenuButton(::ReactTestApp::Component &component);
         void CoreTitleBarLayoutMetricsChanged(
-            winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &sender,
+            Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &sender,
             Windows::Foundation::IInspectable const &);
         void SetUpTitleBar();
     };

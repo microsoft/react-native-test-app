@@ -9,12 +9,13 @@
 #include "MainPage.g.cpp"
 
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
+using winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar;
 using winrt::Windows::Foundation::IAsyncAction;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
-using winrt::Windows::UI::Xaml::Style;
 using winrt::Windows::UI::Xaml::Window;
-using winrt::Windows::UI::Xaml::Controls::Button;
+using winrt::Windows::UI::Xaml::Controls::MenuFlyout;
+using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
 
 namespace winrt::ReactTestApp::implementation
@@ -25,11 +26,11 @@ namespace winrt::ReactTestApp::implementation
 
         SetUpTitleBar();
 
-        auto menuItems = ReactMenu().Children();
+        auto menuItems = MenuFlyout().Items();
         std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
         if (!manifest.has_value()) {
-            Button newMenuItem;
-            newMenuItem.Content(winrt::box_value(L"Couldn't parse app.json"));
+            MenuFlyoutItem newMenuItem;
+            newMenuItem.Text(L"Couldn't parse app.json");
             newMenuItem.IsEnabled(false);
             menuItems.Append(newMenuItem);
         } else {
@@ -37,7 +38,7 @@ namespace winrt::ReactTestApp::implementation
 
             auto &components = manifest.value().components;
             for (auto &&c : components) {
-                Button newMenuItem = GetComponentMenuButton(c);
+                MenuFlyoutItem newMenuItem = GetComponentMenuButton(c);
                 menuItems.Append(newMenuItem);
             }
 
@@ -73,7 +74,7 @@ namespace winrt::ReactTestApp::implementation
 
     void MainPage::SetReactComponentName(IInspectable const &sender, RoutedEventArgs)
     {
-        auto s = sender.as<Button>().CommandParameter();
+        auto s = sender.as<MenuFlyoutItem>().CommandParameter();
         ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
     }
 
@@ -82,17 +83,15 @@ namespace winrt::ReactTestApp::implementation
         ReactButton().Flyout().ShowAt(ReactButton());
     }
 
-    Button MainPage::GetComponentMenuButton(::ReactTestApp::Component &component)
+    MenuFlyoutItem MainPage::GetComponentMenuButton(::ReactTestApp::Component &component)
     {
         hstring componentDisplayName = to_hstring(component.displayName.value_or(component.appKey));
         hstring appKey = to_hstring(component.appKey);
         ReactTestApp::ComponentViewModel newComponent =
             winrt::make<ComponentViewModel>(appKey, componentDisplayName);
 
-        Button newMenuItem;
-        auto style = this->Resources().Lookup(winrt::box_value(L"ReactMenuButton")).as<::Style>();
-        newMenuItem.Style(style);
-        newMenuItem.Content(winrt::box_value(newComponent.DisplayName()));
+        MenuFlyoutItem newMenuItem;
+        newMenuItem.Text(newComponent.DisplayName());
         newMenuItem.CommandParameter(newComponent);
         newMenuItem.Click({this, &MainPage::SetReactComponentName});
         return newMenuItem;
@@ -112,9 +111,8 @@ namespace winrt::ReactTestApp::implementation
     }
 
     // Adjust height of custom title bar to match close, minimize and maximize icons
-    void MainPage::CoreTitleBarLayoutMetricsChanged(
-        winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &sender,
-        Windows::Foundation::IInspectable const &)
+    void MainPage::CoreTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar const &sender,
+                                                    IInspectable const &)
     {
         TitleBar().Height(sender.Height());
     }
