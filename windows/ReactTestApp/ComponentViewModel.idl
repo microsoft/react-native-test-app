@@ -2,7 +2,12 @@ namespace ReactTestApp
 {
     runtimeclass ComponentViewModel
     {
-        String Name
+        String AppKey
+        {
+            get;
+        };
+
+        String DisplayName
         {
             get;
         };

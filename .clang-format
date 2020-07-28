@@ -11,7 +11,7 @@ Cpp11BracedListStyle: true
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '"pch\.h"'
-    Priority: 1
+    Priority: -1
   - Regex: '^<QRCodeReader'
     Priority: 4
   - Regex: '^<React'
