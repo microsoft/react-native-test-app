@@ -10,17 +10,28 @@ jobs:
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Cache
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 64
+      - name: Cache /node_modules
         uses: actions/cache@v2
         with:
           path: node_modules
           key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Install
+        run: |
+          yarn
+      - name: ClangFormat
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          scripts/clang-format-diff.sh
       - name: CocoaPods
         run: |
           bundle install
@@ -32,22 +43,27 @@ jobs:
           echo "::remove-matcher owner=minitest::"
       - name: JavaScript
         run: |
-          yarn
           echo "::add-matcher::.github/eslint-stylish.json"
           yarn lint:js
           echo "::remove-matcher owner=eslint-stylish::"
+      - name: SwiftLint
+        run: |
+          brew install swiftlint
+          echo "::add-matcher::.github/swiftlint.json"
+          swiftlint
+          echo "::remove-matcher owner=swiftlint::"
   ios:
     name: "iOS"
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Cache
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache /example/node_modules
         uses: actions/cache@v2
         with:
           path: example/node_modules
@@ -75,12 +91,24 @@ jobs:
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache /node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Cache /template-example/node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            template-example/node_modules
+            template-example/yarn.lock
+          key: ${{ matrix.template }}-${{ runner.os }}-${{ hashFiles('p*e.js*') }} # package.json + plopfile.js
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
       - name: Build
@@ -103,8 +131,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -117,13 +143,15 @@ jobs:
           # Node version helps to workaround this problem:
           # https://github.com/facebook/react-native/issues/26598
           node-version: 12.9.1
-      - name: Cache
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Cache /example/node_modules
         uses: actions/cache@v2
         with:
           path: example/node_modules
           key: example-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
       - name: Install
         run: |
           yarn
@@ -145,8 +173,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -159,6 +185,20 @@ jobs:
           # Node version helps to workaround this problem:
           # https://github.com/facebook/react-native/issues/26598
           node-version: 12.9.1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache /node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Cache /template-example/node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            template-example/node_modules
+            template-example/yarn.lock
+          key: ${{ matrix.template }}-${{ runner.os }}-${{ hashFiles('p*e.js*') }} # package.json + plopfile.js
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
         shell: bash
@@ -175,13 +215,13 @@ jobs:
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Cache
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache /example/node_modules
         uses: actions/cache@v2
         with:
           path: example/node_modules
@@ -209,12 +249,24 @@ jobs:
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache /node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Cache /template-example/node_modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            template-example/node_modules
+            template-example/yarn.lock
+          key: ${{ matrix.template }}-${{ runner.os }}-${{ hashFiles('p*e.js*') }} # package.json + plopfile.js
       - name: Install
         run: scripts/install-test-template.sh ${{ matrix.template }}
       - name: Build
@@ -243,13 +295,13 @@ jobs:
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Cache
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache /node_modules
         uses: actions/cache@v2
         with:
           path: node_modules

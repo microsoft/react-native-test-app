@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.google.android.material.appbar.MaterialToolbar
-import com.react.testapp.R
 import com.react.testapp.component.ComponentActivity
 import com.react.testapp.component.ComponentListAdapter
 import com.react.testapp.component.ComponentViewModel
@@ -75,11 +74,11 @@ class MainActivity : ReactActivity() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.load_embedded_js_bundle -> {
-                    reload(toolbar, BundleSource.Disk)
+                    reload(BundleSource.Disk)
                     true
                 }
                 R.id.load_from_dev_server -> {
-                    reload(toolbar, BundleSource.Server)
+                    reload(BundleSource.Server)
                     true
                 }
                 R.id.show_dev_options -> {
@@ -91,11 +90,13 @@ class MainActivity : ReactActivity() {
         }
 
         updateMenuItemState(toolbar, testAppReactNativeHost.source)
+        testAppReactNativeHost.onBundleSourceChanged = {
+            updateMenuItemState(toolbar, it)
+        }
     }
 
-    private fun reload(toolbar: MaterialToolbar, bundleSource: BundleSource) {
+    private fun reload(bundleSource: BundleSource) {
         testAppReactNativeHost.reload(this, bundleSource)
-        updateMenuItemState(toolbar, bundleSource)
     }
 
     private fun updateMenuItemState(toolbar: MaterialToolbar, bundleSource: BundleSource) {

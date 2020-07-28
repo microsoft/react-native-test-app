@@ -7,8 +7,6 @@
 # rubocop:disable Layout/LineLength
 
 def include_react_native!(react_native:, target_platform:, project_root:, flipper_versions:)
-  react_native = "#{react_native}-macos" if target_platform == :macos
-
   pod 'React', :path => react_native
   pod 'React-Core', :path => "#{react_native}/React", :inhibit_warnings => true
   pod 'React-DevSupport', :path => "#{react_native}/React"

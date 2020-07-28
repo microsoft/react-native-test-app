@@ -24,17 +24,20 @@ final class ContentViewController: UITableViewController {
 
     public init() {
         reactInstance = ReactInstance()
-        sections = [SectionData(items: [], footer: nil)]
+        sections = []
 
         super.init(style: .grouped)
+
         title = "ReactTestApp"
 
+    #if targetEnvironment(simulator)
+        let keyboardShortcut = " (⌃⌘Z)"
+    #else
+        let keyboardShortcut = ""
+    #endif
         sections.append(SectionData(
-            items: [
-                ("Load Embedded JS Bundle", { [weak self] in self?.reactInstance.remoteBundleURL = nil }),
-                itemWithRemoteJSBundle()
-            ],
-            footer: runtimeInfo()
+            items: [],
+            footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
         ))
     }
 
@@ -66,6 +69,13 @@ final class ContentViewController: UITableViewController {
                 }
             }
         }
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(scanForQRCode(_:)),
+            name: ReactInstance.scanForQRCodeNotification,
+            object: nil
+        )
     }
 
     // MARK: - UITableViewDelegate overrides
@@ -106,37 +116,6 @@ final class ContentViewController: UITableViewController {
 
     // MARK: - Private
 
-    private func itemWithRemoteJSBundle() -> (String, () -> Void) {
-        #if targetEnvironment(simulator)
-        return (
-            "Load From Dev Server", { [weak self] in
-                self?.reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
-            }
-        )
-        #else
-        return (
-            "Scan QR Code", { [weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-
-                let builder = QRCodeReaderViewControllerBuilder {
-                    $0.reader = QRCodeReader(
-                        metadataObjectTypes: [.qr],
-                        captureDevicePosition: .back
-                    )
-                    $0.showSwitchCameraButton = false
-                    $0.showOverlayView = true
-                    $0.rectOfInterest = CGRect(x: 0.2, y: 0.3, width: 0.6, height: 0.4)
-                }
-                let viewController = QRCodeReaderViewController(builder: builder)
-                viewController.delegate = strongSelf.qrCodeReaderDelegate
-                strongSelf.present(viewController, animated: true)
-            }
-        )
-        #endif
-    }
-
     private func navigate(to component: Component) {
         guard let bridge = reactInstance.bridge,
               let navigationController = navigationController else {
@@ -171,5 +150,20 @@ final class ContentViewController: UITableViewController {
             return "\(major).\(minor).\(patch)"
         }()
         return "React Native version: \(version)"
+    }
+
+    @objc private func scanForQRCode(_ notification: Notification) {
+        let builder = QRCodeReaderViewControllerBuilder {
+            $0.reader = QRCodeReader(
+                metadataObjectTypes: [.qr],
+                captureDevicePosition: .back
+            )
+            $0.showSwitchCameraButton = false
+            $0.showOverlayView = true
+            $0.rectOfInterest = CGRect(x: 0.2, y: 0.3, width: 0.6, height: 0.4)
+        }
+        let viewController = QRCodeReaderViewController(builder: builder)
+        viewController.delegate = qrCodeReaderDelegate
+        present(viewController, animated: true)
     }
 }
