@@ -8,4 +8,3 @@ build/
 dist/
 local.properties
 node_modules/
-.vs/
