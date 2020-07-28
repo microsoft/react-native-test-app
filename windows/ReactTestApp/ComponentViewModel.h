@@ -7,9 +7,15 @@ namespace winrt::ReactTestApp::implementation
     struct ComponentViewModel : ComponentViewModelT<ComponentViewModel> {
         ComponentViewModel(hstring const &appKey, hstring const &displayName);
 
-        hstring AppKey();
+        auto AppKey()
+        {
+            return appKey_;
+        }
 
-        hstring DisplayName();
+        auto DisplayName()
+        {
+            return displayName_;
+        }
 
     private:
         hstring appKey_;

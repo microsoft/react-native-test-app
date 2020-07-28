@@ -1,5 +1,9 @@
 #pragma once
+
 #include <string>
+
+#include <winrt/Microsoft.ReactNative.h>
+#include <winrt/Windows.Foundation.h>
 
 namespace ReactTestApp
 {
@@ -11,7 +15,11 @@ namespace ReactTestApp
     class ReactInstance
     {
     public:
-        winrt::Microsoft::ReactNative::ReactNativeHost &ReactHost();
+        auto &ReactHost()
+        {
+            return reactNativeHost_;
+        }
+
         void LoadJSBundleFrom(JSBundleSource source);
 
     private:

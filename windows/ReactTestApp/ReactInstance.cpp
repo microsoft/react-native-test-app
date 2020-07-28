@@ -33,11 +33,6 @@ namespace ReactTestApp
         reactNativeHost_.ReloadInstance();
     }
 
-    winrt::Microsoft::ReactNative::ReactNativeHost &ReactInstance::ReactHost()
-    {
-        return reactNativeHost_;
-    }
-
     std::string GetBundleName()
     {
         std::vector entryFileNames = {"index.windows",
@@ -59,7 +54,7 @@ namespace ReactTestApp
 
     IAsyncOperation<bool> IsDevServerRunning()
     {
-        Uri uri = Uri(L"http://localhost:8081/status");
+        Uri uri(L"http://localhost:8081/status");
         HttpClient httpClient;
         try {
             auto r = co_await httpClient.GetAsync(uri);

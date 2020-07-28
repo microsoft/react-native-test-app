@@ -45,6 +45,7 @@ namespace ReactTestApp
         if (j.is_discarded()) {
             return std::nullopt;
         }
+
         Manifest m = j.get<Manifest>();
         return m;
     }

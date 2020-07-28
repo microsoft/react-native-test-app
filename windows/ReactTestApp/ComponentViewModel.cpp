@@ -11,14 +11,4 @@ namespace winrt::ReactTestApp::implementation
         appKey_ = appKey;
         displayName_ = displayName;
     }
-
-    hstring ComponentViewModel::AppKey()
-    {
-        return appKey_;
-    }
-
-    hstring ComponentViewModel::DisplayName()
-    {
-        return displayName_;
-    }
 }  // namespace winrt::ReactTestApp::implementation

@@ -4,15 +4,14 @@
 
 #include "MainPage.h"
 
-using namespace winrt;
-using namespace Windows::ApplicationModel;
-using namespace Windows::ApplicationModel::Activation;
-using namespace Windows::Foundation;
-using namespace Windows::UI::Xaml;
-using namespace Windows::UI::Xaml::Controls;
-using namespace Windows::UI::Xaml::Navigation;
-using namespace winrt::ReactTestApp;
-using namespace winrt::ReactTestApp::implementation;
+using winrt::ReactTestApp::implementation::App;
+using winrt::Windows::ApplicationModel::SuspendingEventArgs;
+using winrt::Windows::ApplicationModel::Activation::ApplicationExecutionState;
+using winrt::Windows::ApplicationModel::Activation::LaunchActivatedEventArgs;
+using winrt::Windows::UI::Xaml::UnhandledExceptionEventArgs;
+using winrt::Windows::UI::Xaml::Window;
+using winrt::Windows::UI::Xaml::Controls::Frame;
+using winrt::Windows::UI::Xaml::Navigation::NavigationFailedEventArgs;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
