@@ -19,6 +19,10 @@
     "macos": [
       "dist/assets",
       "dist/main.macos.jsbundle"
+    ],
+    "windows": [
+      "dist/assets",
+      "dist/main.windows.jsbundle"
     ]
   }
 }

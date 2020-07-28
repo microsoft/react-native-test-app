@@ -38,11 +38,14 @@ namespace ReactTestApp
         m.components = j.at("components").get<std::vector<Component>>();
     }
 
-    Manifest GetManifest()
+    std::optional<Manifest> GetManifest()
     {
         std::ifstream manifestFile("app.json");
-        nlohmann::json j;
-        manifestFile >> j;
+        nlohmann::json j = nlohmann::json::parse(manifestFile, nullptr, false);
+        if (j.is_discarded()) {
+            return std::nullopt;
+        }
+
         Manifest m = j.get<Manifest>();
         return m;
     }

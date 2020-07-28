@@ -5,27 +5,24 @@
     xmlns:local="using:ReactTestApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:react="using:Microsoft.ReactNative">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <MenuBar VerticalAlignment="Top" Grid.Row="0">
-            <MenuBarItem Title="React">
-                <MenuFlyoutItem Text="Load from JS bundle"/>
-                <MenuFlyoutItem Text="Load from dev server"/>
+            <MenuBarItem Title="React" x:Name="MenuFlyout">
+                <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle"/>
+                <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer"/>
+                <MenuFlyoutSeparator/>
             </MenuBarItem>
         </MenuBar>
 
-        <ListView ItemsSource="{x:Bind Components}" Grid.Row="1">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:ComponentViewModel">
-                    <TextBlock Text="{x:Bind Name}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <react:ReactRootView x:Name="ReactRootView" Grid.Row="1"/>
+
     </Grid>
 </Page>
