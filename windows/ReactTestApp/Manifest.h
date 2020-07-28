@@ -19,6 +19,6 @@ namespace ReactTestApp
         std::vector<Component> components;
     };
 
-    Manifest GetManifest();
+    std::optional<Manifest> GetManifest();
 
 }  // namespace ReactTestApp

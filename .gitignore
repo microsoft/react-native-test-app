@@ -10,6 +10,7 @@ clang-format-diff.py
 dist/
 example/android/build/
 local.properties
+msbuild.binlog
 node_modules/
 !test/fixtures/**/node_modules/
 package-lock.json
