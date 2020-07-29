@@ -2,12 +2,19 @@
 
 #include "MainPage.h"
 
+#include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.UI.ViewManagement.h>
+
 #include "ComponentViewModel.h"
 #include "MainPage.g.cpp"
-#include "Manifest.h"
 
+using winrt::Windows::ApplicationModel::Core::CoreApplication;
+using winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar;
 using winrt::Windows::Foundation::IAsyncAction;
+using winrt::Windows::UI::Colors;
+using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
+using winrt::Windows::UI::Xaml::Window;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyout;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
@@ -18,6 +25,8 @@ namespace winrt::ReactTestApp::implementation
     {
         InitializeComponent();
 
+        SetUpTitleBar();
+
         auto menuItems = MenuFlyout().Items();
         std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
         if (!manifest.has_value()) {
@@ -26,17 +35,11 @@ namespace winrt::ReactTestApp::implementation
             newMenuItem.IsEnabled(false);
             menuItems.Append(newMenuItem);
         } else {
+            AppTitle().Text(to_hstring(manifest.value().displayName));
+
             auto &components = manifest.value().components;
             for (auto &&c : components) {
-                hstring componentDisplayName = to_hstring(c.displayName.value_or(c.appKey));
-                hstring appKey = to_hstring(c.appKey);
-                ReactTestApp::ComponentViewModel newComponent =
-                    winrt::make<ComponentViewModel>(appKey, componentDisplayName);
-
-                MenuFlyoutItem newMenuItem;
-                newMenuItem.CommandParameter(newComponent);
-                newMenuItem.Text(newComponent.DisplayName());
-                newMenuItem.Click({this, &MainPage::SetReactComponentName});
+                MenuFlyoutItem newMenuItem = MakeComponentMenuButton(c);
                 menuItems.Append(newMenuItem);
             }
 
@@ -74,6 +77,45 @@ namespace winrt::ReactTestApp::implementation
     {
         auto s = sender.as<MenuFlyoutItem>().CommandParameter();
         ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
+    }
+
+    void MainPage::OnReactMenuClick(IInspectable const &, RoutedEventArgs)
+    {
+        ReactMenuButton().Flyout().ShowAt(ReactMenuButton());
+    }
+
+    MenuFlyoutItem MainPage::MakeComponentMenuButton(::ReactTestApp::Component &component)
+    {
+        hstring componentDisplayName = to_hstring(component.displayName.value_or(component.appKey));
+        hstring appKey = to_hstring(component.appKey);
+        ReactTestApp::ComponentViewModel newComponent =
+            winrt::make<ComponentViewModel>(appKey, componentDisplayName);
+
+        MenuFlyoutItem newMenuItem;
+        newMenuItem.Text(newComponent.DisplayName());
+        newMenuItem.CommandParameter(newComponent);
+        newMenuItem.Click({this, &MainPage::SetReactComponentName});
+        return newMenuItem;
+    }
+
+    void MainPage::SetUpTitleBar()
+    {
+        // Set close, minimize and maximize icons background to transparent
+        auto appView = ApplicationView::GetForCurrentView().TitleBar();
+        appView.ButtonBackgroundColor(Colors::Transparent());
+        appView.BackgroundColor(Colors::Transparent());
+
+        auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
+        coreTitleBar.LayoutMetricsChanged({this, &MainPage::OnCoreTitleBarLayoutMetricsChanged});
+        coreTitleBar.ExtendViewIntoTitleBar(true);
+        Window::Current().SetTitleBar(BackgroundElement());
+    }
+
+    // Adjust height of custom title bar to match close, minimize and maximize icons
+    void MainPage::OnCoreTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar const &sender,
+                                                      IInspectable const &)
+    {
+        TitleBar().Height(sender.Height());
     }
 
 }  // namespace winrt::ReactTestApp::implementation
