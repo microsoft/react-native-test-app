@@ -8,21 +8,44 @@
     mc:Ignorable="d"
     xmlns:react="using:Microsoft.ReactNative">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="ButtonBackground" Color="{ThemeResource SystemAltHighColor}"/>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <MenuBar VerticalAlignment="Top" Grid.Row="0">
-            <MenuBarItem Title="React" x:Name="MenuFlyout">
-                <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle"/>
-                <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer"/>
-                <MenuFlyoutSeparator/>
-            </MenuBarItem>
-        </MenuBar>
+        <Grid x:Name="TitleBar">
+            <Grid>
+                <Grid x:Name="BackgroundElement" Background="Transparent">
+                    <TextBlock x:Name="AppTitle" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
 
-        <react:ReactRootView x:Name="ReactRootView" Grid.Row="1"/>
+                <Button Content="React" x:Name="ReactMenuButton" Click="OnReactMenuClick">
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="MenuFlyout" Placement="BottomEdgeAlignedLeft">
+                            <MenuFlyout.MenuFlyoutPresenterStyle>
+                                <Style TargetType= "MenuFlyoutPresenter" >
+                                    <Setter Property = "Margin" Value= "0,-5,0,0"/>
+                                </Style>
+                            </MenuFlyout.MenuFlyoutPresenterStyle>
+                            <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle"/>
+                            <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer"/>
+                            <MenuFlyoutSeparator/>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
+            </Grid>
+
+        </Grid>
+
+        <react:ReactRootView x:Name="ReactRootView" Grid.Row="2"/>
 
     </Grid>
 </Page>
