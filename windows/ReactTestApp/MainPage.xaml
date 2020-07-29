@@ -10,14 +10,7 @@
 
     <Page.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="ButtonBackground" Color="{ThemeResource SystemAltHighColor}"/>
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="ButtonBackground" Color="{ThemeResource SystemAltHighColor}"/>
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
+            <SolidColorBrush x:Key="ButtonBackground" Color="{ThemeResource SystemAltHighColor}"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -29,18 +22,18 @@
 
         <Grid x:Name="TitleBar">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
-                </Grid.ColumnDefinitions>
-                <Grid x:Name="BackgroundElement" Grid.Column="1" Background="Transparent">
+                <Grid x:Name="BackgroundElement" Background="Transparent">
                     <TextBlock x:Name="AppTitle" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
 
-                <Button Grid.Column="1" Content="React" x:Name="ReactButton" Click="OpenReactMenu">
+                <Button Content="React" x:Name="ReactMenuButton" Click="OnReactMenuClick">
                     <Button.Flyout>
                         <MenuFlyout x:Name="MenuFlyout" Placement="BottomEdgeAlignedLeft">
+                            <MenuFlyout.MenuFlyoutPresenterStyle>
+                                <Style TargetType= "MenuFlyoutPresenter" >
+                                    <Setter Property = "Margin" Value= "0,-5,0,0"/>
+                                </Style>
+                            </MenuFlyout.MenuFlyoutPresenterStyle>
                             <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle"/>
                             <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer"/>
                             <MenuFlyoutSeparator/>

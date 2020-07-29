@@ -11,6 +11,7 @@
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
 using winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar;
 using winrt::Windows::Foundation::IAsyncAction;
+using winrt::Windows::UI::Colors;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::Window;
@@ -38,7 +39,7 @@ namespace winrt::ReactTestApp::implementation
 
             auto &components = manifest.value().components;
             for (auto &&c : components) {
-                MenuFlyoutItem newMenuItem = GetComponentMenuButton(c);
+                MenuFlyoutItem newMenuItem = MakeComponentMenuButton(c);
                 menuItems.Append(newMenuItem);
             }
 
@@ -78,12 +79,12 @@ namespace winrt::ReactTestApp::implementation
         ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
     }
 
-    void MainPage::OpenReactMenu(IInspectable const &, RoutedEventArgs)
+    void MainPage::OnReactMenuClick(IInspectable const &, RoutedEventArgs)
     {
-        ReactButton().Flyout().ShowAt(ReactButton());
+        ReactMenuButton().Flyout().ShowAt(ReactMenuButton());
     }
 
-    MenuFlyoutItem MainPage::GetComponentMenuButton(::ReactTestApp::Component &component)
+    MenuFlyoutItem MainPage::MakeComponentMenuButton(::ReactTestApp::Component &component)
     {
         hstring componentDisplayName = to_hstring(component.displayName.value_or(component.appKey));
         hstring appKey = to_hstring(component.appKey);
@@ -101,18 +102,18 @@ namespace winrt::ReactTestApp::implementation
     {
         // Set close, minimize and maximize icons background to transparent
         auto appView = ApplicationView::GetForCurrentView().TitleBar();
-        appView.ButtonBackgroundColor(winrt::Windows::UI::Colors::Transparent());
-        appView.BackgroundColor(winrt::Windows::UI::Colors::Transparent());
+        appView.ButtonBackgroundColor(Colors::Transparent());
+        appView.BackgroundColor(Colors::Transparent());
 
         auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
-        coreTitleBar.LayoutMetricsChanged({this, &MainPage::CoreTitleBarLayoutMetricsChanged});
+        coreTitleBar.LayoutMetricsChanged({this, &MainPage::OnCoreTitleBarLayoutMetricsChanged});
         coreTitleBar.ExtendViewIntoTitleBar(true);
         Window::Current().SetTitleBar(BackgroundElement());
     }
 
     // Adjust height of custom title bar to match close, minimize and maximize icons
-    void MainPage::CoreTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar const &sender,
-                                                    IInspectable const &)
+    void MainPage::OnCoreTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar const &sender,
+                                                      IInspectable const &)
     {
         TitleBar().Height(sender.Height());
     }
