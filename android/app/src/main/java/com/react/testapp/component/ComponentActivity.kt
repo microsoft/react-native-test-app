@@ -80,15 +80,6 @@ class ComponentActivity : ReactActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (android.R.id.home == item.itemId) {
-            onBackPressed()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun getSystemService(name: String): Any? {
         if (name == "service:reactNativeHostService") {
             return reactNativeHost
@@ -98,16 +89,20 @@ class ComponentActivity : ReactActivity() {
     }
 
     // TODO: https://github.com/microsoft/react-native-test-app/issues/51
-    override fun onBackPressed() {
-        super.invokeDefaultOnBackPressed()
-    }
-
-    // TODO: https://github.com/microsoft/react-native-test-app/issues/51
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         supportFragmentManager.fragments.forEach {
             it.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (android.R.id.home == item.itemId) {
+            onBackPressed()
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

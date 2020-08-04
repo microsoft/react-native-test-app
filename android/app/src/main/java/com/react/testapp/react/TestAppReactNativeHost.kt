@@ -136,21 +136,6 @@ class TestAppReactNativeHost @Inject constructor(
 
     override fun getPackages(): List<ReactPackage> = PackageList(application).packages
 
-    private fun isPackagerRunning(context: Context): Boolean {
-        val latch = CountDownLatch(1)
-        var packagerIsRunning = false
-        DevServerHelper(
-            DevInternalSettings(context) {},
-            context.packageName,
-            BundleStatusProvider { BundleStatus() }
-        ).isPackagerRunning {
-            packagerIsRunning = it
-            latch.countDown()
-        }
-        latch.await()
-        return packagerIsRunning
-    }
-
     private fun addCustomDevOptions(devSupportManager: DevSupportManager) {
         val bundleOption = application.resources.getString(
             if (source == BundleSource.Disk) {
@@ -171,5 +156,20 @@ class TestAppReactNativeHost @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun isPackagerRunning(context: Context): Boolean {
+        val latch = CountDownLatch(1)
+        var packagerIsRunning = false
+        DevServerHelper(
+            DevInternalSettings(context) {},
+            context.packageName,
+            BundleStatusProvider { BundleStatus() }
+        ).isPackagerRunning {
+            packagerIsRunning = it
+            latch.countDown()
+        }
+        latch.await()
+        return packagerIsRunning
     }
 }
