@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.14'
 
   s.dependency 'React'
+  s.dependency 'ReactTestApp-DevSupport'
 
   s.framework             = 'XCTest'
   s.user_target_xcconfig  = { 'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => '$(inherited)' }
