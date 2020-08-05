@@ -87,7 +87,7 @@ class ComponentActivity : ReactActivity() {
 
         return super.getSystemService(name)
     }
-    
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
