@@ -45,7 +45,20 @@ namespace winrt::ReactTestApp::implementation
 
             // If only one component is present load it automatically
             if (components.size() == 1) {
-                ReactRootView().ComponentName(to_hstring(components.at(0).appKey));
+                auto firstComponent = components.at(0);
+                ReactRootView().ComponentName(to_hstring(firstComponent.appKey));
+                if (firstComponent.initialProperties.has_value()) {
+                    ReactRootView().InitialProps(
+                        [firstComponent](winrt::Microsoft::ReactNative::IJSValueWriter writer) {
+                            writer.WriteObjectBegin();
+                            for (auto &&property : firstComponent.initialProperties.value()) {
+                                std::any value = property.second;
+                                writer.WritePropertyName(to_hstring(property.first));
+                                WritePropertyValue(value, writer);
+                            }
+                            writer.WriteObjectEnd();
+                        });
+                }
             }
 
             ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
@@ -116,6 +129,37 @@ namespace winrt::ReactTestApp::implementation
                                                       IInspectable const &)
     {
         TitleBar().Height(sender.Height());
+    }
+
+    void WritePropertyValue(std::any propertyValue,
+                            winrt::Microsoft::ReactNative::IJSValueWriter writer)
+    {
+        if (propertyValue.type() == typeid(boolean)) {
+            writer.WriteBoolean(std::any_cast<boolean>(propertyValue));
+        } else if (propertyValue.type() == typeid(std::int64_t)) {
+            writer.WriteInt64(std::any_cast<std::int64_t>(propertyValue));
+        } else if (propertyValue.type() == typeid(std::uint64_t)) {
+            writer.WriteInt64(std::any_cast<std::uint64_t>(propertyValue));
+        } else if (propertyValue.type() == typeid(double)) {
+            writer.WriteDouble(std::any_cast<double>(propertyValue));
+        } else if (propertyValue.type() == typeid(std::nullopt)) {
+            writer.WriteNull();
+        } else if (propertyValue.type() == typeid(std::basic_string<char>)) {
+            writer.WriteString(to_hstring(std::any_cast<std::string>(propertyValue)));
+        } else if (propertyValue.type() == typeid(std::vector<std::any>)) {
+            writer.WriteArrayBegin();
+            for (auto &&e : std::any_cast<std::vector<std::any>>(propertyValue)) {
+                WritePropertyValue(e, writer);
+            }
+            writer.WriteArrayEnd();
+        } else if (propertyValue.type() == typeid(std::map<std::string, std::any>)) {
+            writer.WriteObjectBegin();
+            for (auto &&e : std::any_cast<std::map<std::string, std::any>>(propertyValue)) {
+                writer.WritePropertyName(to_hstring(e.first));
+                WritePropertyValue(e.second, writer);
+            }
+            writer.WriteObjectEnd();
+        }
     }
 
 }  // namespace winrt::ReactTestApp::implementation

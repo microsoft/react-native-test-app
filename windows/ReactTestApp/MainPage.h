@@ -1,5 +1,7 @@
 #pragma once
 
+#include <any>
+
 #include "MainPage.g.h"
 #include "Manifest.h"
 #include "ReactInstance.h"
@@ -19,9 +21,6 @@ namespace winrt::ReactTestApp::implementation
         OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &e);
         using Base = MainPageT;
 
-        void OnItemClick(Windows::Foundation::IInspectable const &sender,
-                         Windows::UI::Xaml::Controls::ItemClickEventArgs e);
-
     private:
         ::ReactTestApp::ReactInstance reactInstance_;
 
@@ -34,6 +33,9 @@ namespace winrt::ReactTestApp::implementation
             Windows::Foundation::IInspectable const &);
         void SetUpTitleBar();
     };
+
+    void WritePropertyValue(std::any propertyValue,
+                            winrt::Microsoft::ReactNative::IJSValueWriter writer);
 }  // namespace winrt::ReactTestApp::implementation
 
 namespace winrt::ReactTestApp::factory_implementation

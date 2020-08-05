@@ -59,7 +59,7 @@
         <Filter Include="Assets">
             <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
         </Filter>
-        <Filter  Include="Bundle"/>
+        <Filter Include="Bundle"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="PropertySheet.props" />
