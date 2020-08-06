@@ -5,9 +5,9 @@
 #include <winrt/Windows.ApplicationModel.Core.h>
 #include <winrt/Windows.UI.ViewManagement.h>
 
-#include "ComponentViewModel.h"
 #include "MainPage.g.cpp"
 
+using winrt::Microsoft::ReactNative::IJSValueWriter;
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
 using winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar;
 using winrt::Windows::Foundation::IAsyncAction;
@@ -43,25 +43,14 @@ namespace winrt::ReactTestApp::implementation
                 menuItems.Append(newMenuItem);
             }
 
+            ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
+
             // If only one component is present load it automatically
             if (components.size() == 1) {
                 auto firstComponent = components.at(0);
                 ReactRootView().ComponentName(to_hstring(firstComponent.appKey));
-                if (firstComponent.initialProperties.has_value()) {
-                    ReactRootView().InitialProps(
-                        [firstComponent](winrt::Microsoft::ReactNative::IJSValueWriter writer) {
-                            writer.WriteObjectBegin();
-                            for (auto &&property : firstComponent.initialProperties.value()) {
-                                std::any value = property.second;
-                                writer.WritePropertyName(to_hstring(property.first));
-                                WritePropertyValue(value, writer);
-                            }
-                            writer.WriteObjectEnd();
-                        });
-                }
+                WriteInitialProperties(firstComponent.initialProperties);
             }
-
-            ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
         }
     }
 
@@ -86,10 +75,13 @@ namespace winrt::ReactTestApp::implementation
         reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::DevServer);
     }
 
-    void MainPage::SetReactComponentName(IInspectable const &sender, RoutedEventArgs)
+    void
+    MainPage::LoadReactComponent(std::string const &appKey,
+                                 std::optional<std::map<std::string, std::any>> const &initialProps)
     {
-        auto s = sender.as<MenuFlyoutItem>().CommandParameter();
-        ReactRootView().ComponentName(s.as<ComponentViewModel>()->AppKey());
+        ReactRootView().ReactNativeHost().ReloadInstance();
+        ReactRootView().ComponentName(to_hstring(appKey));
+        WriteInitialProperties(initialProps);
     }
 
     void MainPage::OnReactMenuClick(IInspectable const &, RoutedEventArgs)
@@ -100,14 +92,12 @@ namespace winrt::ReactTestApp::implementation
     MenuFlyoutItem MainPage::MakeComponentMenuButton(::ReactTestApp::Component &component)
     {
         hstring componentDisplayName = to_hstring(component.displayName.value_or(component.appKey));
-        hstring appKey = to_hstring(component.appKey);
-        ReactTestApp::ComponentViewModel newComponent =
-            winrt::make<ComponentViewModel>(appKey, componentDisplayName);
 
         MenuFlyoutItem newMenuItem;
-        newMenuItem.Text(newComponent.DisplayName());
-        newMenuItem.CommandParameter(newComponent);
-        newMenuItem.Click({this, &MainPage::SetReactComponentName});
+        newMenuItem.Text(componentDisplayName);
+        newMenuItem.Click([this, component](IInspectable const &, RoutedEventArgs) {
+            LoadReactComponent(component.appKey, component.initialProperties);
+        });
         return newMenuItem;
     }
 
@@ -131,8 +121,23 @@ namespace winrt::ReactTestApp::implementation
         TitleBar().Height(sender.Height());
     }
 
-    void WritePropertyValue(std::any propertyValue,
-                            winrt::Microsoft::ReactNative::IJSValueWriter writer)
+    void MainPage::WriteInitialProperties(
+        std::optional<std::map<std::string, std::any>> const &initialProps)
+    {
+        if (initialProps.has_value()) {
+            ReactRootView().InitialProps([initialProps](IJSValueWriter const &writer) {
+                writer.WriteObjectBegin();
+                for (auto &&property : initialProps.value()) {
+                    auto &value = property.second;
+                    writer.WritePropertyName(to_hstring(property.first));
+                    WritePropertyValue(value, writer);
+                }
+                writer.WriteObjectEnd();
+            });
+        }
+    }
+
+    void WritePropertyValue(std::any const &propertyValue, IJSValueWriter const &writer)
     {
         if (propertyValue.type() == typeid(boolean)) {
             writer.WriteBoolean(std::any_cast<boolean>(propertyValue));
@@ -159,6 +164,8 @@ namespace winrt::ReactTestApp::implementation
                 WritePropertyValue(e.second, writer);
             }
             writer.WriteObjectEnd();
+        } else {
+            assert(false);
         }
     }
 

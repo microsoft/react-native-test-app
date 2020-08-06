@@ -24,8 +24,10 @@ namespace winrt::ReactTestApp::implementation
     private:
         ::ReactTestApp::ReactInstance reactInstance_;
 
-        void SetReactComponentName(Windows::Foundation::IInspectable const &,
-                                   Windows::UI::Xaml::RoutedEventArgs);
+        void LoadReactComponent(std::string const &appKey,
+                                std::optional<std::map<std::string, std::any>> const &initialProps);
+        void
+        WriteInitialProperties(std::optional<std::map<std::string, std::any>> const &initialProps);
         Windows::UI::Xaml::Controls::MenuFlyoutItem
         MakeComponentMenuButton(::ReactTestApp::Component &component);
         void OnCoreTitleBarLayoutMetricsChanged(
@@ -34,8 +36,8 @@ namespace winrt::ReactTestApp::implementation
         void SetUpTitleBar();
     };
 
-    void WritePropertyValue(std::any propertyValue,
-                            winrt::Microsoft::ReactNative::IJSValueWriter writer);
+    void WritePropertyValue(std::any const &propertyValue,
+                            winrt::Microsoft::ReactNative::IJSValueWriter const &writer);
 }  // namespace winrt::ReactTestApp::implementation
 
 namespace winrt::ReactTestApp::factory_implementation

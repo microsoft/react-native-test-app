@@ -9,7 +9,6 @@
     <ItemGroup>
         <Midl Include="App.idl" />
         <Midl Include="MainPage.idl" />
-        <Midl Include="ComponentViewModel.idl" />
     </ItemGroup>
     <ItemGroup>
         <ClCompile Include="pch.cpp" />
@@ -17,13 +16,11 @@
         <ClCompile Include="MainPage.cpp" />
         <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
         <ClCompile Include="Manifest.cpp" />
-        <ClCompile Include="ComponentViewModel.cpp" />
         <ClCompile Include="ReactInstance.cpp" />
     </ItemGroup>
     <ItemGroup>
         <ClInclude Include="pch.h" />
         <ClInclude Include="Manifest.h" />
-        <ClInclude Include="ComponentViewModel.h" />
         <ClInclude Include="ReactInstance.h" />
     </ItemGroup>
     <ItemGroup>

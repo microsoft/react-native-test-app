@@ -7,7 +7,7 @@
 
 #include <nlohmann/json.hpp>
 
-using namespace nlohmann::detail;
+using nlohmann::detail::value_t;
 
 namespace
 {
@@ -27,29 +27,22 @@ namespace
         switch (j.type()) {
             case value_t::null:
                 return std::nullopt;
-                break;
             case value_t::boolean:
                 return j.get<boolean>();
-                break;
             case value_t::number_integer:
                 return j.get<std::int64_t>();
-                break;
             case value_t::number_unsigned:
                 return j.get<std::uint64_t>();
-                break;
             case value_t::number_float:
                 return j.get<double>();
-                break;
             case value_t::string:
                 return j.get<std::string>();
-                break;
             case value_t::object: {
                 std::map<std::string, std::any> map;
                 for (auto &&e : j.items()) {
-                    map.insert(std::pair(e.key(), getAny(e.value())));
+                    map.insert(std::make_pair(e.key(), getAny(e.value())));
                 }
                 return map;
-                break;
             }
             case value_t::array: {
                 std::vector<std::any> array;
@@ -57,12 +50,12 @@ namespace
                     array.push_back(getAny(e.value()));
                 }
                 return array;
-                break;
             }
             // value_t::discarded. This case should never be hit since the check for malformed json
             // is done previously in GetManifest()
             default:
-                return nullptr;
+                assert(false);
+                return std::nullopt;
         }
     }
 
@@ -72,7 +65,7 @@ namespace
         if (element != j.end()) {
             std::map<std::string, std::any> map;
             for (auto &&property : element->items()) {
-                map.insert(std::pair(property.key(), getAny(property.value())));
+                map.insert(std::make_pair(property.key(), getAny(property.value())));
             }
             return map;
         } else {
