@@ -75,7 +75,7 @@ jobs:
       - name: Build
         run: |
           set -eo pipefail
-          yarn build:ios
+          yarn build:ios || yarn build:ios
           pod install --project-directory=ios
           ../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
         working-directory: example
@@ -114,7 +114,7 @@ jobs:
       - name: Build
         run: |
           set -eo pipefail
-          yarn build:ios
+          yarn build:ios || yarn build:ios
           if [[ ${{ matrix.template }} == ios ]]; then
             pod install
             ../scripts/xcodebuild.sh TemplateExample.xcworkspace build
@@ -160,7 +160,7 @@ jobs:
         shell: bash
         run: |
           set -eo pipefail
-          yarn build:android
+          yarn build:android || yarn build:android
           pushd android 1> /dev/null
           ./gradlew clean build check test
         working-directory: example
@@ -205,7 +205,7 @@ jobs:
       - name: Build
         run: |
           set -eo pipefail
-          yarn build:android
+          yarn build:android || yarn build:android
           [[ -d android ]] && pushd android 1> /dev/null
           ./gradlew clean build check test
         shell: bash
@@ -233,7 +233,7 @@ jobs:
       - name: Build
         run: |
           set -eo pipefail
-          yarn build:macos
+          yarn build:macos || yarn build:macos
           pod install --project-directory=macos
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
         working-directory: example
@@ -272,7 +272,7 @@ jobs:
       - name: Build
         run: |
           set -eo pipefail
-          yarn build:macos
+          yarn build:macos || yarn build:macos
           if [[ ${{ matrix.template }} == macos ]]; then
             pod install
             ../scripts/xcodebuild.sh TemplateExample.xcworkspace build
