@@ -1,6 +1,9 @@
 #pragma once
 
 #include <any>
+#include <string>
+#include <map>
+#include <optional>
 
 #include "MainPage.g.h"
 #include "Manifest.h"
@@ -24,12 +27,11 @@ namespace winrt::ReactTestApp::implementation
     private:
         ::ReactTestApp::ReactInstance reactInstance_;
 
-        void LoadReactComponent(std::string const &appKey,
-                                std::optional<std::map<std::string, std::any>> const &initialProps);
+        void LoadReactComponent(::ReactTestApp::Component const &component);
         void
-        WriteInitialProperties(std::optional<std::map<std::string, std::any>> const &initialProps);
+        SetInitialProperties(std::optional<std::map<std::string, std::any>> const &initialProps);
         Windows::UI::Xaml::Controls::MenuFlyoutItem
-        MakeComponentMenuButton(::ReactTestApp::Component &component);
+        MakeComponentMenuButton(::ReactTestApp::Component const &component);
         void OnCoreTitleBarLayoutMetricsChanged(
             Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &sender,
             Windows::Foundation::IInspectable const &);
