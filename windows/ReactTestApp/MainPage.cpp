@@ -27,7 +27,7 @@ namespace winrt::ReactTestApp::implementation
 
         SetUpTitleBar();
 
-        auto menuItems = MenuFlyout().Items();
+        auto menuItems = ReactMenuBarItem().Items();
         std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
         if (!manifest.has_value()) {
             MenuFlyoutItem newMenuItem;
@@ -82,11 +82,6 @@ namespace winrt::ReactTestApp::implementation
         SetInitialProperties(component.initialProperties);
     }
 
-    void MainPage::OnReactMenuClick(IInspectable const &, RoutedEventArgs)
-    {
-        ReactMenuButton().Flyout().ShowAt(ReactMenuButton());
-    }
-
     MenuFlyoutItem MainPage::MakeComponentMenuButton(::ReactTestApp::Component const &component)
     {
         hstring componentDisplayName = to_hstring(component.displayName.value_or(component.appKey));
@@ -101,22 +96,24 @@ namespace winrt::ReactTestApp::implementation
 
     void MainPage::SetUpTitleBar()
     {
-        // Set close, minimize and maximize icons background to transparent
-        auto appView = ApplicationView::GetForCurrentView().TitleBar();
-        appView.ButtonBackgroundColor(Colors::Transparent());
-        appView.BackgroundColor(Colors::Transparent());
-
         auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
         coreTitleBar.LayoutMetricsChanged({this, &MainPage::OnCoreTitleBarLayoutMetricsChanged});
         coreTitleBar.ExtendViewIntoTitleBar(true);
-        Window::Current().SetTitleBar(BackgroundElement());
+
+        // Set close, minimize and maximize icons background to transparent
+        auto viewTitleBar = ApplicationView::GetForCurrentView().TitleBar();
+        viewTitleBar.ButtonBackgroundColor(Colors::Transparent());
+        viewTitleBar.ButtonInactiveBackgroundColor(Colors::Transparent());
+
+        Window::Current().SetTitleBar(AppTitleBar());
     }
 
     // Adjust height of custom title bar to match close, minimize and maximize icons
     void MainPage::OnCoreTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar const &sender,
                                                       IInspectable const &)
     {
-        TitleBar().Height(sender.Height());
+        AppTitleBar().Height(sender.Height());
+        AppMenuBar().Height(sender.Height());
     }
 
     void MainPage::SetInitialProperties(

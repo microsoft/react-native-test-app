@@ -18,8 +18,6 @@ namespace winrt::ReactTestApp::implementation
                               Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromDevServer(Windows::Foundation::IInspectable const &,
                                Windows::UI::Xaml::RoutedEventArgs);
-        void OnReactMenuClick(Windows::Foundation::IInspectable const &,
-                              Windows::UI::Xaml::RoutedEventArgs);
         Windows::Foundation::IAsyncAction
         OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &e);
         using Base = MainPageT;
