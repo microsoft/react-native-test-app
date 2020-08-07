@@ -1,4 +1,4 @@
-tap 'AdoptOpenJDK/openjdk'
+tap 'homebrew/cask-versions'
 brew 'clang-format'
 brew 'node'
 brew 'swiftlint'
