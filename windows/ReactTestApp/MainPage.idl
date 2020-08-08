@@ -1,4 +1,3 @@
-import "ComponentViewModel.idl";
 
 namespace ReactTestApp
 {
