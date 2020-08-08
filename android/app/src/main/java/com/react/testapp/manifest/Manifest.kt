@@ -1,5 +1,13 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+
 package com.react.testapp.manifest
 
+import android.os.Bundle
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -13,5 +21,5 @@ data class Manifest(
 data class Component(
     val appKey: String,
     val displayName: String?,
-    val initialProperties: Map<String, String?>?
+    val initialProperties: Bundle?
 )

@@ -1,3 +1,10 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+
 package com.react.testapp.component
 
 import android.app.Activity
@@ -24,22 +31,13 @@ class ComponentActivity : ReactActivity() {
         private const val COMPONENT_DISPLAY_NAME = "extra:componentDisplayName"
         private const val COMPONENT_INITIAL_PROPERTIES = "extra:componentInitialProperties"
 
-        fun newIntent(
-            activity: Activity,
-            componentName: String,
-            componentDisplayName: String,
-            componentInitialProperties: Map<String, String?>?
-        ): Intent {
+        fun newIntent(activity: Activity, component: ComponentViewModel): Intent {
             return Intent(activity, ComponentActivity::class.java).apply {
-                putExtra(COMPONENT_NAME, componentName)
-                putExtra(COMPONENT_DISPLAY_NAME, componentDisplayName)
+                putExtra(COMPONENT_NAME, component.name)
+                putExtra(COMPONENT_DISPLAY_NAME, component.displayName)
 
-                if (componentInitialProperties != null) {
-                    val bundle = Bundle()
-                    for ((k, v) in componentInitialProperties) {
-                        bundle.putString(k, v)
-                    }
-                    putExtra(COMPONENT_INITIAL_PROPERTIES, bundle)
+                if (component.initialProperties != null) {
+                    putExtra(COMPONENT_INITIAL_PROPERTIES, component.initialProperties)
                 }
             }
         }
