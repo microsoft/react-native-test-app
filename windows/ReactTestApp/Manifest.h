@@ -1,5 +1,6 @@
 #pragma once
 
+#include <any>
 #include <map>
 #include <optional>
 #include <string>
@@ -10,7 +11,7 @@ namespace ReactTestApp
     struct Component {
         std::string appKey;
         std::optional<std::string> displayName;
-        std::optional<std::map<std::string, std::string>> initialProperties;
+        std::optional<std::map<std::string, std::any>> initialProperties;
     };
 
     struct Manifest {

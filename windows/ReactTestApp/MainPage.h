@@ -1,5 +1,10 @@
 #pragma once
 
+#include <any>
+#include <map>
+#include <optional>
+#include <string>
+
 #include "MainPage.g.h"
 #include "Manifest.h"
 #include "ReactInstance.h"
@@ -22,15 +27,19 @@ namespace winrt::ReactTestApp::implementation
     private:
         ::ReactTestApp::ReactInstance reactInstance_;
 
-        void SetReactComponentName(Windows::Foundation::IInspectable const &,
-                                   Windows::UI::Xaml::RoutedEventArgs);
+        void LoadReactComponent(::ReactTestApp::Component const &component);
+        void
+        SetInitialProperties(std::optional<std::map<std::string, std::any>> const &initialProps);
         Windows::UI::Xaml::Controls::MenuFlyoutItem
-        MakeComponentMenuButton(::ReactTestApp::Component &component);
+        MakeComponentMenuButton(::ReactTestApp::Component const &component);
         void OnCoreTitleBarLayoutMetricsChanged(
             Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &sender,
             Windows::Foundation::IInspectable const &);
         void SetUpTitleBar();
     };
+
+    void WritePropertyValue(std::any const &propertyValue,
+                            winrt::Microsoft::ReactNative::IJSValueWriter const &writer);
 }  // namespace winrt::ReactTestApp::implementation
 
 namespace winrt::ReactTestApp::factory_implementation
