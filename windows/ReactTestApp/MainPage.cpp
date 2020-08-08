@@ -7,6 +7,7 @@
 
 #include "MainPage.g.cpp"
 
+using ReactTestApp::JSBundleSource;
 using winrt::Microsoft::ReactNative::IJSValueWriter;
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
 using winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar;
@@ -14,10 +15,46 @@ using winrt::Windows::Foundation::IAsyncAction;
 using winrt::Windows::UI::Colors;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
+using winrt::Windows::UI::Xaml::RoutedEventHandler;
 using winrt::Windows::UI::Xaml::Window;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyout;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
+
+namespace
+{
+    void WritePropertyValue(std::any const &propertyValue, IJSValueWriter const &writer)
+    {
+        if (propertyValue.type() == typeid(boolean)) {
+            writer.WriteBoolean(std::any_cast<boolean>(propertyValue));
+        } else if (propertyValue.type() == typeid(std::int64_t)) {
+            writer.WriteInt64(std::any_cast<std::int64_t>(propertyValue));
+        } else if (propertyValue.type() == typeid(std::uint64_t)) {
+            writer.WriteInt64(std::any_cast<std::uint64_t>(propertyValue));
+        } else if (propertyValue.type() == typeid(double)) {
+            writer.WriteDouble(std::any_cast<double>(propertyValue));
+        } else if (propertyValue.type() == typeid(std::nullopt)) {
+            writer.WriteNull();
+        } else if (propertyValue.type() == typeid(std::string)) {
+            writer.WriteString(winrt::to_hstring(std::any_cast<std::string>(propertyValue)));
+        } else if (propertyValue.type() == typeid(std::vector<std::any>)) {
+            writer.WriteArrayBegin();
+            for (auto &&e : std::any_cast<std::vector<std::any>>(propertyValue)) {
+                WritePropertyValue(e, writer);
+            }
+            writer.WriteArrayEnd();
+        } else if (propertyValue.type() == typeid(std::map<std::string, std::any>)) {
+            writer.WriteObjectBegin();
+            for (auto &&e : std::any_cast<std::map<std::string, std::any>>(propertyValue)) {
+                writer.WritePropertyName(winrt::to_hstring(e.first));
+                WritePropertyValue(e.second, writer);
+            }
+            writer.WriteObjectEnd();
+        } else {
+            assert(false);
+        }
+    }
+}  // namespace
 
 namespace winrt::ReactTestApp::implementation
 {
@@ -35,63 +72,67 @@ namespace winrt::ReactTestApp::implementation
             newMenuItem.IsEnabled(false);
             menuItems.Append(newMenuItem);
         } else {
-            AppTitle().Text(to_hstring(manifest.value().displayName));
-
-            auto &components = manifest.value().components;
-            for (auto &&c : components) {
-                MenuFlyoutItem newMenuItem = MakeComponentMenuButton(c);
-                menuItems.Append(newMenuItem);
-            }
-
             ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
 
             // If only one component is present load it automatically
+            auto &components = manifest.value().components;
             if (components.size() == 1) {
                 LoadReactComponent(components.at(0));
+            } else {
+                AppTitle().Text(to_hstring(manifest.value().displayName));
+            }
+
+            for (auto &&c : components) {
+                MenuFlyoutItem newMenuItem;
+                newMenuItem.Text(winrt::to_hstring(c.displayName.value_or(c.appKey)));
+                newMenuItem.Click(
+                    [this, component = std::move(c)](IInspectable const &, RoutedEventArgs) {
+                        LoadReactComponent(component);
+                    });
+                menuItems.Append(newMenuItem);
             }
         }
+    }
+
+    void MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
+    {
+        reactInstance_.LoadJSBundleFrom(JSBundleSource::DevServer);
+    }
+
+    void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
+    {
+        reactInstance_.LoadJSBundleFrom(JSBundleSource::Embedded);
     }
 
     IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
     {
         Base::OnNavigatedTo(e);
+
         bool devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
         if (devServerIsRunning) {
-            reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::DevServer);
+            reactInstance_.LoadJSBundleFrom(JSBundleSource::DevServer);
         } else {
-            reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::Embedded);
+            reactInstance_.LoadJSBundleFrom(JSBundleSource::Embedded);
         }
     }
 
-    void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
-    {
-        reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::Embedded);
-    }
-
-    void MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
-    {
-        reactInstance_.LoadJSBundleFrom(::ReactTestApp::JSBundleSource::DevServer);
-    }
-
-    void
-    MainPage::LoadReactComponent(::ReactTestApp::Component const &component)
+    void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)
     {
         AppTitle().Text(to_hstring(component.displayName.value_or(component.appKey)));
 
         ReactRootView().ComponentName(to_hstring(component.appKey));
-        SetInitialProperties(component.initialProperties);
-    }
-
-    MenuFlyoutItem MainPage::MakeComponentMenuButton(::ReactTestApp::Component const &component)
-    {
-        hstring componentDisplayName = to_hstring(component.displayName.value_or(component.appKey));
-
-        MenuFlyoutItem newMenuItem;
-        newMenuItem.Text(componentDisplayName);
-        newMenuItem.Click([this, component](IInspectable const &, RoutedEventArgs) {
-            LoadReactComponent(component);
-        });
-        return newMenuItem;
+        ReactRootView().InitialProps(
+            [&initialProps = component.initialProperties](IJSValueWriter const &writer) {
+                if (initialProps.has_value()) {
+                    writer.WriteObjectBegin();
+                    for (auto &&property : initialProps.value()) {
+                        auto &value = property.second;
+                        writer.WritePropertyName(to_hstring(property.first));
+                        WritePropertyValue(value, writer);
+                    }
+                    writer.WriteObjectEnd();
+                }
+            });
     }
 
     void MainPage::SetUpTitleBar()
@@ -115,53 +156,4 @@ namespace winrt::ReactTestApp::implementation
         AppTitleBar().Height(sender.Height());
         AppMenuBar().Height(sender.Height());
     }
-
-    void MainPage::SetInitialProperties(
-        std::optional<std::map<std::string, std::any>> const &initialProps)
-    {
-        ReactRootView().InitialProps([&initialProps](IJSValueWriter const &writer) {
-            if (initialProps.has_value()) {
-                writer.WriteObjectBegin();
-                for (auto &&property : initialProps.value()) {
-                    auto &value = property.second;
-                    writer.WritePropertyName(to_hstring(property.first));
-                    WritePropertyValue(value, writer);
-                }
-                writer.WriteObjectEnd();
-            }
-        });
-    }
-
-    void WritePropertyValue(std::any const &propertyValue, IJSValueWriter const &writer)
-    {
-        if (propertyValue.type() == typeid(boolean)) {
-            writer.WriteBoolean(std::any_cast<boolean>(propertyValue));
-        } else if (propertyValue.type() == typeid(std::int64_t)) {
-            writer.WriteInt64(std::any_cast<std::int64_t>(propertyValue));
-        } else if (propertyValue.type() == typeid(std::uint64_t)) {
-            writer.WriteInt64(std::any_cast<std::uint64_t>(propertyValue));
-        } else if (propertyValue.type() == typeid(double)) {
-            writer.WriteDouble(std::any_cast<double>(propertyValue));
-        } else if (propertyValue.type() == typeid(std::nullopt)) {
-            writer.WriteNull();
-        } else if (propertyValue.type() == typeid(std::string)) {
-            writer.WriteString(to_hstring(std::any_cast<std::string>(propertyValue)));
-        } else if (propertyValue.type() == typeid(std::vector<std::any>)) {
-            writer.WriteArrayBegin();
-            for (auto &&e : std::any_cast<std::vector<std::any>>(propertyValue)) {
-                WritePropertyValue(e, writer);
-            }
-            writer.WriteArrayEnd();
-        } else if (propertyValue.type() == typeid(std::map<std::string, std::any>)) {
-            writer.WriteObjectBegin();
-            for (auto &&e : std::any_cast<std::map<std::string, std::any>>(propertyValue)) {
-                writer.WritePropertyName(to_hstring(e.first));
-                WritePropertyValue(e.second, writer);
-            }
-            writer.WriteObjectEnd();
-        } else {
-            assert(false);
-        }
-    }
-
 }  // namespace winrt::ReactTestApp::implementation
