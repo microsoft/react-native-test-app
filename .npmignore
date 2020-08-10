@@ -9,6 +9,8 @@
 Brewfile*
 Gemfile*
 android/app/build/
+android/app/src/androidTest/
+android/app/src/test/
 example/*
 !example/metro.config.js
 !example/react-native.config.js

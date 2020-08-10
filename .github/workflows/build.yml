@@ -164,6 +164,22 @@ jobs:
           pushd android 1> /dev/null
           ./gradlew clean build check test
         working-directory: example
+      - name: Cache /node_modules
+        if: ${{ matrix.os == 'macos-latest' }}
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: project-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Install
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: yarn
+      - name: Run instrumented tests
+        if: ${{ matrix.os == 'macos-latest' }}
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: cd android/ && ./gradlew clean build connectedCheck
+          arch: x86_64
   android-template:
     name: "Android [template]"
     strategy:

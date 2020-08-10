@@ -6,14 +6,17 @@ ext.buildReactNativeFromSource = { baseDir ->
 }
 
 ext.findFile = { fileName ->
-    def currentDir = file(rootDir)
-    while (currentDir != null) {
-        def file = Paths.get(currentDir.toString(), fileName).toFile()
-        if (file.exists()) {
-            return file
+    def currentDirPath = rootDir == null ? null : rootDir.toString()
+
+    while (currentDirPath != null) {
+        def currentDir = file(currentDirPath);
+        def requestedFile = Paths.get(currentDirPath, fileName).toFile()
+
+        if (requestedFile.exists()) {
+            return requestedFile
         }
 
-        currentDir = currentDir.getParent()
+        currentDirPath = currentDir.getParent()
     }
 
     return null

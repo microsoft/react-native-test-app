@@ -1,7 +1,6 @@
 package com.react.testapp.manifest
 
 import android.content.Context
-import com.react.testapp.R
 import com.squareup.moshi.JsonAdapter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,11 +11,15 @@ class ManifestProvider @Inject constructor(
     private val adapter: JsonAdapter<Manifest>
 ) {
     val manifest: Manifest? by lazy {
-        val appJson = context.resources
-            .openRawResource(R.raw.app)
-            .bufferedReader()
-            .use { it.readText() }
+        val appIdentifier = context.resources
+            .getIdentifier("raw/app", null, context.packageName)
 
-        adapter.fromJson(appJson)
+        if (appIdentifier != 0) {
+            val manifest = context.resources
+                .openRawResource(appIdentifier)
+                .bufferedReader()
+                .use { it.readText() }
+            adapter.fromJson(manifest)
+        } else null
     }
 }
