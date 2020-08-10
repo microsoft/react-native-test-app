@@ -1,3 +1,10 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+
 package com.react.testapp
 
 import android.os.Bundle
@@ -32,9 +39,7 @@ class MainActivity : ReactActivity() {
         get() = reactNativeHost as TestAppReactNativeHost
 
     private val newComponentActivityIntent = { component: ComponentViewModel ->
-        ComponentActivity.newIntent(
-            this, component.name, component.displayName, component.initialProperties
-        )
+        ComponentActivity.newIntent(this, component)
     }
 
     private val newComponentViewModel = { component: Component ->

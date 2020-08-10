@@ -1,3 +1,10 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+
 package com.react.testapp.manifest
 
 import com.squareup.moshi.JsonAdapter
@@ -11,10 +18,13 @@ class ManifestModule {
 
     @Provides
     @Singleton
-    fun providesMoshi(): Moshi = Moshi.Builder().build()
+    fun providesMoshi(): Moshi {
+        return Moshi.Builder().add(MoshiBundleAdapter()).build()
+    }
 
     @Provides
     @Singleton
-    fun providesManifestMoshiAdapter(moshi: Moshi): JsonAdapter<Manifest> =
-        ManifestJsonAdapter(moshi)
+    fun providesManifestMoshiAdapter(moshi: Moshi): JsonAdapter<Manifest> {
+        return ManifestJsonAdapter(moshi)
+    }
 }
