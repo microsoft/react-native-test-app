@@ -54,6 +54,9 @@ jobs:
           echo "::remove-matcher owner=swiftlint::"
   ios:
     name: "iOS"
+    strategy:
+      matrix:
+        version: ['0.60', '0.61', '0.62', '0.63']
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -67,15 +70,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: example/node_modules
-          key: example-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
+          key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
       - name: Install
         run: |
+          cp versions/package.${{ matrix.version }}.json package.json
           yarn
         working-directory: example
       - name: Build
         run: |
           set -eo pipefail
           yarn build:ios || yarn build:ios
+          rm ios/Podfile.lock
           pod install --project-directory=ios
           ../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
         working-directory: example
@@ -128,6 +133,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
+        version: ['0.60', '0.61', '0.62', '0.63']
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -151,9 +157,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: example/node_modules
-          key: example-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
+          key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
       - name: Install
         run: |
+          cp versions/package.${{ matrix.version }}.json package.json
           yarn
         working-directory: example
       - name: Build
@@ -228,6 +235,9 @@ jobs:
         working-directory: template-example
   macos:
     name: "macOS"
+    strategy:
+      matrix:
+        version: ['0.60', '0.61']
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -241,15 +251,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: example/node_modules
-          key: example-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
+          key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
       - name: Install
         run: |
+          cp versions/package.${{ matrix.version }}.json package.json
           yarn
         working-directory: example
       - name: Build
         run: |
           set -eo pipefail
           yarn build:macos || yarn build:macos
+          rm macos/Podfile.lock
           pod install --project-directory=macos
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
         working-directory: example
