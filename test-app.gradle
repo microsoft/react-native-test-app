@@ -1,6 +1,7 @@
 import groovy.json.JsonSlurper
-import java.nio.file.Paths
 import org.gradle.initialization.DefaultSettings
+
+import java.nio.file.Paths
 
 private static void apply(Settings settings) {
     def projectDir = settings.findNodeModulesPath(settings.rootDir, "react-native-test-app")
@@ -12,12 +13,12 @@ private static void apply(Settings settings) {
         def reactNativeDir = settings.findNodeModulesPath(settings.rootDir, "react-native")
         settings.include(":ReactAndroid")
         settings.project(":ReactAndroid")
-                .projectDir = new File("${reactNativeDir}/ReactAndroid")
+            .projectDir = new File("${reactNativeDir}/ReactAndroid")
     }
 
     settings.include(":app")
     settings.project(":app")
-            .projectDir = new File("${projectDir}/android/app")
+        .projectDir = new File("${projectDir}/android/app")
 }
 
 def scriptDir = buildscript.sourceFile.getParent()
@@ -33,7 +34,15 @@ ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
 ext.applyTestAppModule = { Project project, String packageName ->
     applyNativeModulesAppBuildGradle(project, packageName)
 
+    def isRntaProject = project.projectDir.getParent() != null &&
+        (project.rootDir == file(project.projectDir.getParent()))
+
     def manifestFile = findFile("app.json")
+    if (isRntaProject && manifestFile == null) {
+        logger.warn("app.json was not found; test app integration is disabled")
+        return
+    }
+
     def manifest = new JsonSlurper().parseText(manifestFile.text)
 
     def resources = manifest["resources"]
