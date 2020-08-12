@@ -72,6 +72,12 @@
         <WholeProgramOptimization>true</WholeProgramOptimization>
         <LinkIncremental>false</LinkIncremental>
     </PropertyGroup>
+    <PropertyGroup Label="UserMacros">
+        <BundleContentRoot>..\..\example\dist</BundleContentRoot>
+        <ManifestRootPath>..\..\example\</ManifestRootPath>
+        <BundleContent>$(BundleContentRoot)\**\*</BundleContent>
+        <ReactNativeModulePath>..\..\node_modules\react-native-windows\</ReactNativeModulePath>
+    </PropertyGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
     <ImportGroup Label="ExtensionSettings">
     </ImportGroup>

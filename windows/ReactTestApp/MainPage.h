@@ -25,9 +25,6 @@ namespace winrt::ReactTestApp::implementation
         Windows::Foundation::IAsyncAction
         OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &e);
 
-        void OnItemClick(Windows::Foundation::IInspectable const &sender,
-                         Windows::UI::Xaml::Controls::ItemClickEventArgs e);
-
     private:
         using Base = MainPageT;
 
