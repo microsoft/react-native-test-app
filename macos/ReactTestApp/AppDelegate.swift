@@ -40,7 +40,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let item = reactMenu.addItem(
                 withTitle: title,
                 action: #selector(onComponentSelected),
-                keyEquivalent: index < 10 ? String(index) : ""
+                keyEquivalent: index < 9 ? String(index + 1) : ""
             )
             item.keyEquivalentModifierMask = [.shift, .command]
             item.isEnabled = false
