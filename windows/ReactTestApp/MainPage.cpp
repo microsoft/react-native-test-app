@@ -166,6 +166,7 @@ namespace winrt::ReactTestApp::implementation
     void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)
     {
         AppTitle().Text(to_hstring(component.displayName.value_or(component.appKey)));
+        OpenDebugMenuButton().IsEnabled(true);
 
         ReactRootView().ComponentName(to_hstring(component.appKey));
         ReactRootView().InitialProps(
