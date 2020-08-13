@@ -116,7 +116,7 @@ namespace winrt::ReactTestApp::implementation
 
                     newMenuItem.KeyboardAccelerators().Append(keyboardAccelerator);
                     keyboardAcceleratorKey =
-                        static_cast<VirtualKey>(static_cast<uint32_t>(keyboardAcceleratorKey) + 1);
+                        static_cast<VirtualKey>(static_cast<int32_t>(keyboardAcceleratorKey) + 1);
                 }
 
                 menuItems.Append(newMenuItem);
@@ -139,9 +139,9 @@ namespace winrt::ReactTestApp::implementation
         InputInjector inputInjector = InputInjector::TryCreate();
         InjectedInputKeyboardInfo d, shift, control;
         // Simulate pressing Ctrl+Shift+D keys
-        d.VirtualKey(static_cast<uint32_t>(VirtualKey::D));
-        shift.VirtualKey(static_cast<uint32_t>(VirtualKey::Shift));
-        control.VirtualKey(static_cast<uint32_t>(VirtualKey::Control));
+        d.VirtualKey(static_cast<int32_t>(VirtualKey::D));
+        shift.VirtualKey(static_cast<int32_t>(VirtualKey::Shift));
+        control.VirtualKey(static_cast<int32_t>(VirtualKey::Control));
         inputInjector.InjectKeyboardInput({control, shift, d});
 
         // Release keys
