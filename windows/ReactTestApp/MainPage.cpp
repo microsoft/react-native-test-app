@@ -15,6 +15,9 @@ using winrt::Windows::Foundation::IAsyncAction;
 using winrt::Windows::System::VirtualKey;
 using winrt::Windows::System::VirtualKeyModifiers;
 using winrt::Windows::UI::Colors;
+using winrt::Windows::UI::Input::Preview::Injection::InjectedInputKeyboardInfo;
+using winrt::Windows::UI::Input::Preview::Injection::InjectedInputKeyOptions;
+using winrt::Windows::UI::Input::Preview::Injection::InputInjector;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::RoutedEventHandler;
@@ -101,7 +104,7 @@ namespace winrt::ReactTestApp::implementation
                     /*
                     According to
                     https://docs.microsoft.com/en-us/uwp/api/windows.system.virtualkeymodifiers?view=winrt-19041
-                    following should work, but it doesn't, so using casts for now: 
+                    following should work, but it doesn't, so using casts for now:
                     keyboardAccelerator.Modifiers(VirtualKeyModifiers::Control |
                     VirtualKeyModifiers::Shift);
                     */
@@ -129,6 +132,23 @@ namespace winrt::ReactTestApp::implementation
     void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
     {
         reactInstance_.LoadJSBundleFrom(JSBundleSource::Embedded);
+    }
+
+    void MainPage::OpenDebugMenu(IInspectable const &, RoutedEventArgs)
+    {
+        InputInjector inputInjector = InputInjector::TryCreate();
+        InjectedInputKeyboardInfo d, shift, control;
+        // Simulate pressing Ctrl+Shift+D keys
+        d.VirtualKey(static_cast<uint32_t>(VirtualKey::D));
+        shift.VirtualKey(static_cast<uint32_t>(VirtualKey::Shift));
+        control.VirtualKey(static_cast<uint32_t>(VirtualKey::Control));
+        inputInjector.InjectKeyboardInput({control, shift, d});
+
+        // Release keys
+        d.KeyOptions(InjectedInputKeyOptions::KeyUp);
+        shift.KeyOptions(InjectedInputKeyOptions::KeyUp);
+        control.KeyOptions(InjectedInputKeyOptions::KeyUp);
+        inputInjector.InjectKeyboardInput({control, shift, d});
     }
 
     IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
