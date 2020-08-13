@@ -12,13 +12,19 @@ using winrt::Microsoft::ReactNative::IJSValueWriter;
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
 using winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar;
 using winrt::Windows::Foundation::IAsyncAction;
+using winrt::Windows::System::VirtualKey;
+using winrt::Windows::System::VirtualKeyModifiers;
 using winrt::Windows::UI::Colors;
+using winrt::Windows::UI::Input::Preview::Injection::InjectedInputKeyboardInfo;
+using winrt::Windows::UI::Input::Preview::Injection::InjectedInputKeyOptions;
+using winrt::Windows::UI::Input::Preview::Injection::InputInjector;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::RoutedEventHandler;
 using winrt::Windows::UI::Xaml::Window;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyout;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
+using winrt::Windows::UI::Xaml::Input::KeyboardAccelerator;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
 
 namespace
@@ -82,13 +88,37 @@ namespace winrt::ReactTestApp::implementation
                 AppTitle().Text(to_hstring(manifest.value().displayName));
             }
 
+            auto keyboardAcceleratorKey = VirtualKey::Number1;
             for (auto &&c : components) {
                 MenuFlyoutItem newMenuItem;
+
                 newMenuItem.Text(winrt::to_hstring(c.displayName.value_or(c.appKey)));
                 newMenuItem.Click(
                     [this, component = std::move(c)](IInspectable const &, RoutedEventArgs) {
                         LoadReactComponent(component);
                     });
+
+                // Add keyboard accelerators for first nine (1-9) components
+                if (keyboardAcceleratorKey <= VirtualKey::Number9) {
+                    KeyboardAccelerator keyboardAccelerator;
+                    /*
+                    According to
+                    https://docs.microsoft.com/en-us/uwp/api/windows.system.virtualkeymodifiers?view=winrt-19041
+                    following should work, but it doesn't, so using casts for now:
+                    keyboardAccelerator.Modifiers(VirtualKeyModifiers::Control |
+                    VirtualKeyModifiers::Shift);
+                    */
+                    keyboardAccelerator.Modifiers(static_cast<VirtualKeyModifiers>(
+                        static_cast<uint32_t>(VirtualKeyModifiers::Control) |
+                        static_cast<uint32_t>(VirtualKeyModifiers::Shift)));
+
+                    keyboardAccelerator.Key(keyboardAcceleratorKey);
+
+                    newMenuItem.KeyboardAccelerators().Append(keyboardAccelerator);
+                    keyboardAcceleratorKey =
+                        static_cast<VirtualKey>(static_cast<int32_t>(keyboardAcceleratorKey) + 1);
+                }
+
                 menuItems.Append(newMenuItem);
             }
         }
@@ -102,6 +132,23 @@ namespace winrt::ReactTestApp::implementation
     void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
     {
         reactInstance_.LoadJSBundleFrom(JSBundleSource::Embedded);
+    }
+
+    void MainPage::OpenDebugMenu(IInspectable const &, RoutedEventArgs)
+    {
+        InputInjector inputInjector = InputInjector::TryCreate();
+        InjectedInputKeyboardInfo d, shift, control;
+        // Simulate pressing Ctrl+Shift+D keys
+        d.VirtualKey(static_cast<int32_t>(VirtualKey::D));
+        shift.VirtualKey(static_cast<int32_t>(VirtualKey::Shift));
+        control.VirtualKey(static_cast<int32_t>(VirtualKey::Control));
+        inputInjector.InjectKeyboardInput({control, shift, d});
+
+        // Release keys
+        d.KeyOptions(InjectedInputKeyOptions::KeyUp);
+        shift.KeyOptions(InjectedInputKeyOptions::KeyUp);
+        control.KeyOptions(InjectedInputKeyOptions::KeyUp);
+        inputInjector.InjectKeyboardInput({control, shift, d});
     }
 
     IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
@@ -119,6 +166,7 @@ namespace winrt::ReactTestApp::implementation
     void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)
     {
         AppTitle().Text(to_hstring(component.displayName.value_or(component.appKey)));
+        OpenDebugMenuButton().IsEnabled(true);
 
         ReactRootView().ComponentName(to_hstring(component.appKey));
         ReactRootView().InitialProps(

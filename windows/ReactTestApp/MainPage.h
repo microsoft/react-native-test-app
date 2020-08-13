@@ -19,6 +19,8 @@ namespace winrt::ReactTestApp::implementation
                                Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromJSBundle(Windows::Foundation::IInspectable const &,
                               Windows::UI::Xaml::RoutedEventArgs);
+        void OpenDebugMenu(Windows::Foundation::IInspectable const &,
+                           Windows::UI::Xaml::RoutedEventArgs);
 
         Windows::Foundation::IAsyncAction
         OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &e);

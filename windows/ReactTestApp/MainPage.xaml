@@ -22,6 +22,7 @@
                 <MenuBarItem x:Name="ReactMenuBarItem" Title="React">
                     <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle"/>
                     <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer"/>
+                    <MenuFlyoutItem Text="Open debug menu" Click="OpenDebugMenu" KeyboardAcceleratorTextOverride="Ctrl+Shift+D" x:Name="OpenDebugMenuButton" IsEnabled="false"/>
                     <MenuFlyoutSeparator/>
                 </MenuBarItem>
             </MenuBar>
