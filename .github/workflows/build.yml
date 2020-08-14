@@ -66,11 +66,11 @@ jobs:
           node-version: 12
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /example/node_modules
-        uses: actions/cache@v2
-        with:
-          path: example/node_modules
-          key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
+#     - name: Cache /example/node_modules
+#       uses: actions/cache@v2
+#       with:
+#         path: example/node_modules
+#         key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
       - name: Install
         run: |
           cp versions/package.${{ matrix.version }}.json package.json
@@ -153,11 +153,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Cache /example/node_modules
-        uses: actions/cache@v2
-        with:
-          path: example/node_modules
-          key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
+#     - name: Cache /example/node_modules
+#       uses: actions/cache@v2
+#       with:
+#         path: example/node_modules
+#         key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
       - name: Install
         run: |
           cp versions/package.${{ matrix.version }}.json package.json
@@ -247,11 +247,11 @@ jobs:
           node-version: 12
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /example/node_modules
-        uses: actions/cache@v2
-        with:
-          path: example/node_modules
-          key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
+#     - name: Cache /example/node_modules
+#       uses: actions/cache@v2
+#       with:
+#         path: example/node_modules
+#         key: example-${{ matrix.version }}-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
       - name: Install
         run: |
           cp versions/package.${{ matrix.version }}.json package.json
