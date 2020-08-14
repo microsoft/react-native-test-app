@@ -9,7 +9,8 @@ package com.react.testapp.react
 
 import com.facebook.react.bridge.*
 
-fun Map<*, *>.toReadableMap(): ReadableMap {
+// TODO: Change the return type to `ReadableMap` when RN 0.60 is deprecated
+fun Map<*, *>.toReadableMap(): WritableMap {
     return Arguments.createMap().also { map ->
         for ((k, v) in this) {
             map.putValue(k as String, v)
@@ -43,13 +44,15 @@ private fun WritableMap.putValue(key: String, value: Any?) {
     }
 }
 
-private fun toReadableArray(list: ArrayList<*>): ReadableArray {
+// TODO: Change the return type to `ReadableArray` when RN 0.60 is deprecated
+private fun toReadableArray(list: ArrayList<*>): WritableArray {
     return Arguments.createArray().also { array ->
         list.forEach { array.pushValue(it) }
     }
 }
 
-private fun toReadableMap(obj: Any): ReadableMap {
+// TODO: Change the return type to `ReadableMap` when RN 0.60 is deprecated
+private fun toReadableMap(obj: Any): WritableMap {
     val map = obj as? Map<*, *> ?: throw NotImplementedError(
         "Encountered unknown type while parsing manifest: ${obj::class.qualifiedName}"
     )
