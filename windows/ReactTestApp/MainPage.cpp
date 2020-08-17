@@ -16,26 +16,54 @@
 
 using ReactTestApp::JSBundleSource;
 using winrt::Microsoft::ReactNative::IJSValueWriter;
+using winrt::ReactTestApp::implementation::MainPage;
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
 using winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar;
 using winrt::Windows::Foundation::IAsyncAction;
+using winrt::Windows::Foundation::IInspectable;
 using winrt::Windows::System::VirtualKey;
 using winrt::Windows::System::VirtualKeyModifiers;
 using winrt::Windows::UI::Colors;
-using winrt::Windows::UI::Input::Preview::Injection::InjectedInputKeyboardInfo;
-using winrt::Windows::UI::Input::Preview::Injection::InjectedInputKeyOptions;
-using winrt::Windows::UI::Input::Preview::Injection::InputInjector;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
-using winrt::Windows::UI::Xaml::RoutedEventHandler;
 using winrt::Windows::UI::Xaml::Window;
-using winrt::Windows::UI::Xaml::Controls::MenuFlyout;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Input::KeyboardAccelerator;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
 
 namespace
 {
+    void SetMenuItemText(IInspectable const &sender,
+                         bool const isEnabled,
+                         winrt::hstring const &enableText,
+                         winrt::hstring const &disableText)
+    {
+        auto item = sender.as<MenuFlyoutItem>();
+        item.Text(isEnabled ? disableText : enableText);
+    }
+
+    void SetBreakOnFirstLineMenuItem(IInspectable const &sender, bool const value)
+    {
+        SetMenuItemText(
+            sender, value, L"Enable Break on First Line", L"Disable Break on First Line");
+    }
+
+    void SetDirectDebuggerMenuItem(IInspectable const &sender, bool const value)
+    {
+        SetMenuItemText(sender, value, L"Enable Direct Debugging", L"Disable Direct Debugging");
+    }
+
+    void SetFastRefreshMenuItem(IInspectable const &sender, bool const value)
+    {
+        SetMenuItemText(sender, value, L"Enable Fast Refresh", L"Disable Fast Refresh");
+    }
+
+    void SetWebDebuggerMenuItem(IInspectable const &sender, bool const value)
+    {
+        SetMenuItemText(
+            sender, value, L"Enable Remote JS Debugging", L"Disable Remote JS Debugging");
+    }
+
     void WritePropertyValue(std::any const &propertyValue, IJSValueWriter const &writer)
     {
         if (propertyValue.type() == typeid(bool)) {
@@ -67,148 +95,187 @@ namespace
             assert(false);
         }
     }
+
+    // According to
+    // https://docs.microsoft.com/en-us/uwp/api/windows.system.virtualkeymodifiers?view=winrt-19041,
+    // the following should work but doesn't. We implement our own operator
+    // until we figure out why it doesn't.
+    auto operator|(VirtualKeyModifiers lhs, VirtualKeyModifiers rhs)
+    {
+        return static_cast<VirtualKeyModifiers>(
+            static_cast<std::underlying_type_t<VirtualKeyModifiers>>(lhs) |
+            static_cast<std::underlying_type_t<VirtualKeyModifiers>>(rhs));
+    }
 }  // namespace
 
-namespace winrt::ReactTestApp::implementation
+MainPage::MainPage()
 {
-    MainPage::MainPage()
-    {
-        InitializeComponent();
+    InitializeComponent();
+    InitializeTitleBar();
+    InitializeReactMenu();
+    InitializeDebugMenu();
+}
 
-        SetUpTitleBar();
+void MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
+{
+    reactInstance_.LoadJSBundleFrom(JSBundleSource::DevServer);
+}
 
-        auto menuItems = ReactMenuBarItem().Items();
-        std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest("app.json");
-        if (!manifest.has_value()) {
+void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
+{
+    reactInstance_.LoadJSBundleFrom(JSBundleSource::Embedded);
+}
+
+void MainPage::Reload(Windows::Foundation::IInspectable const &, Windows::UI::Xaml::RoutedEventArgs)
+{
+    reactInstance_.Reload();
+}
+
+void MainPage::ToggleBreakOnFirstLine(IInspectable const &sender, RoutedEventArgs)
+{
+    auto const breakOnFirstLine = !reactInstance_.BreakOnFirstLine();
+    SetBreakOnFirstLineMenuItem(sender, breakOnFirstLine);
+    reactInstance_.BreakOnFirstLine(breakOnFirstLine);
+}
+
+void MainPage::ToggleDirectDebugger(IInspectable const &sender, RoutedEventArgs)
+{
+    auto const useDirectDebugger = !reactInstance_.UseDirectDebugger();
+    SetDirectDebuggerMenuItem(sender, useDirectDebugger);
+    reactInstance_.UseDirectDebugger(useDirectDebugger);
+}
+
+void MainPage::ToggleFastRefresh(IInspectable const &sender, RoutedEventArgs)
+{
+    auto const useFastRefresh = !reactInstance_.UseFastRefresh();
+    SetFastRefreshMenuItem(sender, useFastRefresh);
+    reactInstance_.UseFastRefresh(useFastRefresh);
+}
+
+void MainPage::ToggleInspector(Windows::Foundation::IInspectable const &,
+                               Windows::UI::Xaml::RoutedEventArgs)
+{
+    reactInstance_.ToggleElementInspector();
+}
+
+void MainPage::ToggleWebDebugger(IInspectable const &sender, RoutedEventArgs)
+{
+    auto const useWebDebugger = !reactInstance_.UseWebDebugger();
+    SetWebDebuggerMenuItem(sender, useWebDebugger);
+    reactInstance_.UseWebDebugger(useWebDebugger);
+}
+
+IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
+{
+    Base::OnNavigatedTo(e);
+
+    bool devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
+    reactInstance_.LoadJSBundleFrom(devServerIsRunning ? JSBundleSource::DevServer
+                                                       : JSBundleSource::Embedded);
+}
+
+void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)
+{
+    AppTitle().Text(to_hstring(component.displayName.value_or(component.appKey)));
+
+    ReactRootView().ComponentName(to_hstring(component.appKey));
+    ReactRootView().InitialProps(
+        [&initialProps = component.initialProperties](IJSValueWriter const &writer) {
+            if (initialProps.has_value()) {
+                writer.WriteObjectBegin();
+                for (auto &&property : initialProps.value()) {
+                    auto &value = property.second;
+                    writer.WritePropertyName(to_hstring(property.first));
+                    WritePropertyValue(value, writer);
+                }
+                writer.WriteObjectEnd();
+            }
+        });
+}
+
+void MainPage::InitializeDebugMenu()
+{
+    if (!reactInstance_.UseCustomDeveloperMenu()) {
+        return;
+    }
+
+    SetWebDebuggerMenuItem(WebDebuggerMenuItem(), reactInstance_.UseWebDebugger());
+    SetDirectDebuggerMenuItem(DirectDebuggingMenuItem(), reactInstance_.UseDirectDebugger());
+    SetBreakOnFirstLineMenuItem(BreakOnFirstLineMenuItem(), reactInstance_.BreakOnFirstLine());
+    SetFastRefreshMenuItem(FastRefreshMenuItem(), reactInstance_.UseFastRefresh());
+    DebugMenuBarItem().IsEnabled(true);
+}
+
+void MainPage::InitializeReactMenu()
+{
+    std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest("app.json");
+    auto menuItems = ReactMenuBarItem().Items();
+    if (!manifest.has_value()) {
+        MenuFlyoutItem newMenuItem;
+        newMenuItem.Text(L"Couldn't parse 'app.json'");
+        newMenuItem.IsEnabled(false);
+        menuItems.Append(newMenuItem);
+    } else {
+        ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
+
+        // If only one component is present load it automatically
+        auto &components = manifest.value().components;
+        if (components.size() == 1) {
+            LoadReactComponent(components.at(0));
+        } else {
+            AppTitle().Text(to_hstring(manifest.value().displayName));
+        }
+
+        auto keyboardAcceleratorKey = VirtualKey::Number1;
+        for (auto &&c : components) {
             MenuFlyoutItem newMenuItem;
-            newMenuItem.Text(L"Couldn't parse app.json");
-            newMenuItem.IsEnabled(false);
+
+            newMenuItem.Text(winrt::to_hstring(c.displayName.value_or(c.appKey)));
+            newMenuItem.Click(
+                [this, component = std::move(c)](IInspectable const &, RoutedEventArgs) {
+                    LoadReactComponent(component);
+                });
+
+            // Add keyboard accelerators for first nine (1-9) components
+            if (keyboardAcceleratorKey <= VirtualKey::Number9) {
+                auto const num = std::underlying_type_t<VirtualKey>(keyboardAcceleratorKey) -
+                                 std::underlying_type_t<VirtualKey>(VirtualKey::Number0);
+                newMenuItem.AccessKey(to_hstring(num));
+
+                KeyboardAccelerator keyboardAccelerator;
+                keyboardAccelerator.Modifiers(VirtualKeyModifiers::Control |
+                                              VirtualKeyModifiers::Shift);
+                keyboardAccelerator.Key(keyboardAcceleratorKey);
+
+                newMenuItem.KeyboardAccelerators().Append(keyboardAccelerator);
+
+                keyboardAcceleratorKey =
+                    static_cast<VirtualKey>(static_cast<int32_t>(keyboardAcceleratorKey) + 1);
+            }
+
             menuItems.Append(newMenuItem);
-        } else {
-            ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
-
-            // If only one component is present load it automatically
-            auto &components = manifest.value().components;
-            if (components.size() == 1) {
-                LoadReactComponent(components.at(0));
-            } else {
-                AppTitle().Text(to_hstring(manifest.value().displayName));
-            }
-
-            auto keyboardAcceleratorKey = VirtualKey::Number1;
-            for (auto &&c : components) {
-                MenuFlyoutItem newMenuItem;
-
-                newMenuItem.Text(winrt::to_hstring(c.displayName.value_or(c.appKey)));
-                newMenuItem.Click(
-                    [this, component = std::move(c)](IInspectable const &, RoutedEventArgs) {
-                        LoadReactComponent(component);
-                    });
-
-                // Add keyboard accelerators for first nine (1-9) components
-                if (keyboardAcceleratorKey <= VirtualKey::Number9) {
-                    KeyboardAccelerator keyboardAccelerator;
-                    /*
-                    According to
-                    https://docs.microsoft.com/en-us/uwp/api/windows.system.virtualkeymodifiers?view=winrt-19041
-                    following should work, but it doesn't, so using casts for now:
-                    keyboardAccelerator.Modifiers(VirtualKeyModifiers::Control |
-                    VirtualKeyModifiers::Shift);
-                    */
-                    keyboardAccelerator.Modifiers(static_cast<VirtualKeyModifiers>(
-                        static_cast<uint32_t>(VirtualKeyModifiers::Control) |
-                        static_cast<uint32_t>(VirtualKeyModifiers::Shift)));
-
-                    keyboardAccelerator.Key(keyboardAcceleratorKey);
-
-                    newMenuItem.KeyboardAccelerators().Append(keyboardAccelerator);
-                    keyboardAcceleratorKey =
-                        static_cast<VirtualKey>(static_cast<int32_t>(keyboardAcceleratorKey) + 1);
-                }
-
-                menuItems.Append(newMenuItem);
-            }
         }
     }
+}
 
-    void MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
-    {
-        reactInstance_.LoadJSBundleFrom(JSBundleSource::DevServer);
-    }
+void MainPage::InitializeTitleBar()
+{
+    auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
+    coreTitleBar.LayoutMetricsChanged({this, &MainPage::OnCoreTitleBarLayoutMetricsChanged});
+    coreTitleBar.ExtendViewIntoTitleBar(true);
 
-    void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
-    {
-        reactInstance_.LoadJSBundleFrom(JSBundleSource::Embedded);
-    }
+    // Set close, minimize and maximize icons background to transparent
+    auto viewTitleBar = ApplicationView::GetForCurrentView().TitleBar();
+    viewTitleBar.ButtonBackgroundColor(Colors::Transparent());
+    viewTitleBar.ButtonInactiveBackgroundColor(Colors::Transparent());
 
-    void MainPage::OpenDebugMenu(IInspectable const &, RoutedEventArgs)
-    {
-        InputInjector inputInjector = InputInjector::TryCreate();
-        InjectedInputKeyboardInfo d, shift, control;
-        // Simulate pressing Ctrl+Shift+D keys
-        d.VirtualKey(static_cast<int32_t>(VirtualKey::D));
-        shift.VirtualKey(static_cast<int32_t>(VirtualKey::Shift));
-        control.VirtualKey(static_cast<int32_t>(VirtualKey::Control));
-        inputInjector.InjectKeyboardInput({control, shift, d});
+    Window::Current().SetTitleBar(AppTitleBar());
+}
 
-        // Release keys
-        d.KeyOptions(InjectedInputKeyOptions::KeyUp);
-        shift.KeyOptions(InjectedInputKeyOptions::KeyUp);
-        control.KeyOptions(InjectedInputKeyOptions::KeyUp);
-        inputInjector.InjectKeyboardInput({control, shift, d});
-    }
-
-    IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
-    {
-        Base::OnNavigatedTo(e);
-
-        bool devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
-        if (devServerIsRunning) {
-            reactInstance_.LoadJSBundleFrom(JSBundleSource::DevServer);
-        } else {
-            reactInstance_.LoadJSBundleFrom(JSBundleSource::Embedded);
-        }
-    }
-
-    void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)
-    {
-        AppTitle().Text(to_hstring(component.displayName.value_or(component.appKey)));
-        OpenDebugMenuButton().IsEnabled(true);
-
-        ReactRootView().ComponentName(to_hstring(component.appKey));
-        ReactRootView().InitialProps(
-            [&initialProps = component.initialProperties](IJSValueWriter const &writer) {
-                if (initialProps.has_value()) {
-                    writer.WriteObjectBegin();
-                    for (auto &&property : initialProps.value()) {
-                        auto &value = property.second;
-                        writer.WritePropertyName(to_hstring(property.first));
-                        WritePropertyValue(value, writer);
-                    }
-                    writer.WriteObjectEnd();
-                }
-            });
-    }
-
-    void MainPage::SetUpTitleBar()
-    {
-        auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
-        coreTitleBar.LayoutMetricsChanged({this, &MainPage::OnCoreTitleBarLayoutMetricsChanged});
-        coreTitleBar.ExtendViewIntoTitleBar(true);
-
-        // Set close, minimize and maximize icons background to transparent
-        auto viewTitleBar = ApplicationView::GetForCurrentView().TitleBar();
-        viewTitleBar.ButtonBackgroundColor(Colors::Transparent());
-        viewTitleBar.ButtonInactiveBackgroundColor(Colors::Transparent());
-
-        Window::Current().SetTitleBar(AppTitleBar());
-    }
-
-    // Adjust height of custom title bar to match close, minimize and maximize icons
-    void MainPage::OnCoreTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar const &sender,
-                                                      IInspectable const &)
-    {
-        AppTitleBar().Height(sender.Height());
-        AppMenuBar().Height(sender.Height());
-    }
-}  // namespace winrt::ReactTestApp::implementation
+// Adjust height of custom title bar to match close, minimize and maximize icons
+void MainPage::OnCoreTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar const &sender,
+                                                  IInspectable const &)
+{
+    AppTitleBar().Height(sender.Height());
+    AppMenuBar().Height(sender.Height());
+}

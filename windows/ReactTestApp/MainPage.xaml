@@ -2,7 +2,6 @@
     x:Class="ReactTestApp.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ReactTestApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -19,11 +18,21 @@
                 <TextBlock x:Name="AppTitle" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
             <MenuBar x:Name="AppMenuBar" HorizontalAlignment="Left" VerticalContentAlignment="Stretch" Width="Auto">
-                <MenuBarItem x:Name="ReactMenuBarItem" Title="React">
-                    <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle"/>
-                    <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer"/>
-                    <MenuFlyoutItem Text="Open debug menu" Click="OpenDebugMenu" KeyboardAcceleratorTextOverride="Ctrl+Shift+D" x:Name="OpenDebugMenuButton" IsEnabled="false"/>
+                <MenuBarItem x:Name="ReactMenuBarItem" Title="React" AccessKey="R">
+                    <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle" AccessKey="E"/>
+                    <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer" AccessKey="D"/>
                     <MenuFlyoutSeparator/>
+                </MenuBarItem>
+                <MenuBarItem x:Name="DebugMenuBarItem" IsEnabled="false" Title="Debug" AccessKey="D">
+                    <MenuBarItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="D" Modifiers="Control,Shift"/>
+                    </MenuBarItem.KeyboardAccelerators>
+                    <MenuFlyoutItem Text="Reload JavaScript" Click="Reload" AccessKey="R"/>
+                    <MenuFlyoutItem x:Name="WebDebuggerMenuItem" Click="ToggleWebDebugger" AccessKey="W"/>
+                    <MenuFlyoutItem x:Name="DirectDebuggingMenuItem" Click="ToggleDirectDebugger" AccessKey="D"/>
+                    <MenuFlyoutItem x:Name="BreakOnFirstLineMenuItem" Click="ToggleBreakOnFirstLine" AccessKey="B"/>
+                    <MenuFlyoutItem x:Name="FastRefreshMenuItem" Click="ToggleFastRefresh" AccessKey="F"/>
+                    <MenuFlyoutItem Text="Toggle Inspector" Click="ToggleInspector" AccessKey="I"/>
                 </MenuBarItem>
             </MenuBar>
         </Grid>
