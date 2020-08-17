@@ -45,7 +45,7 @@
         <Image Include="Assets\LockScreenLogo.scale-200.png">
             <Filter>Assets</Filter>
         </Image>
-        <Text Include="$(ManifestRootPath)app.json">
+        <Text Include="$(ManifestRootPath)\app.json">
             <Filter>Assets</Filter>
         </Text>
     </ItemGroup>
@@ -56,7 +56,6 @@
         <Filter Include="Assets">
             <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
         </Filter>
-        <Filter Include="Bundle"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="PropertySheet.props" />
