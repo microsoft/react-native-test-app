@@ -5,7 +5,6 @@ const chalk = require("chalk");
 
 const windowsDir = "windows";
 const nodeModulesDir = "node_modules";
-const bundleDir = "Bundle";
 const generatedDir = ".generated";
 const closestNodeModules = findClosestPathTo(nodeModulesDir);
 const reactNativeModulePath = findClosestPathTo(
@@ -30,17 +29,6 @@ function findClosestPathTo(fileOrDirName) {
   }
 
   return null;
-}
-
-function walk(current) {
-  if (!fs.lstatSync(current).isDirectory()) {
-    return [current];
-  }
-
-  const files = fs
-    .readdirSync(current)
-    .map((child) => walk(path.join(current, child)));
-  return [current, ...files.flat()];
 }
 
 /**
@@ -108,26 +96,6 @@ function copyAndReplace(
   }
 }
 
-function copyAndReplaceAll(
-  srcPath,
-  destPath,
-  relativeDestDir,
-  replacements = {}
-) {
-  return Promise.all(
-    walk(srcPath).map((absoluteSrcFilePath) => {
-      const filename = path.relative(srcPath, absoluteSrcFilePath);
-      const relativeDestPath = path.join(relativeDestDir, filename);
-      return copyAndReplace(
-        absoluteSrcFilePath,
-        destPath,
-        relativeDestPath,
-        replacements
-      );
-    })
-  );
-}
-
 function copyProjectTemplateAndReplace(
   destPath,
   nodeModulesPath,
@@ -155,41 +123,54 @@ function copyProjectTemplateAndReplace(
     projDir
   );
 
-  fs.mkdirSync(path.join(projectFilesDestPath, bundleDir), { recursive: true });
+  fs.mkdirSync(projectFilesDestPath, { recursive: true });
   fs.mkdirSync(path.join(destPath, windowsDir), { recursive: true });
 
   const manifestFilePath = findClosestPathTo("app.json");
 
-  //Read path to resources from manifest and copy them
-  fs.readFile(manifestFilePath, (error, content) => {
-    let resourcesPaths = JSON.parse(content.toString()).resources;
-    resourcesPaths =
-      (resourcesPaths && resourcesPaths.windows) || resourcesPaths;
-    if (!Array.isArray(resourcesPaths)) {
-      return;
-    }
+  //Read path to resources from manifest
+  let bundleDirContent = "";
+  let bundleFileContent = "";
+  const content = fs.readFileSync(manifestFilePath);
+  let resourcesPaths = {};
+  try {
+    resourcesPaths = JSON.parse(content.toString()).resources;
+  } catch (e) {
+    console.warn(chalk.red(`Couldn't parse app.json: \n${e.message}`));
+  }
+  resourcesPaths = (resourcesPaths && resourcesPaths.windows) || resourcesPaths;
+  if (Array.isArray(resourcesPaths)) {
     for (const resource of resourcesPaths) {
       const resourceSrcPath = path.relative(
         path.dirname(manifestFilePath),
         resource
       );
       if (fs.existsSync(resourceSrcPath)) {
-        copyAndReplaceAll(
-          resourceSrcPath,
+        let relativeResourcePath = path.relative(
           projectFilesDestPath,
-          path.join(bundleDir, path.basename(resource))
+          resourceSrcPath
         );
+        if (fs.statSync(resourceSrcPath).isDirectory()) {
+          relativeResourcePath = relativeResourcePath.concat("\\**\\*");
+          bundleDirContent = bundleDirContent.concat(
+            relativeResourcePath + ";"
+          );
+        } else {
+          bundleFileContent = bundleFileContent.concat(
+            relativeResourcePath + ";"
+          );
+        }
       } else {
-        console.log(
+        console.warn(
           chalk.yellow(`warning: resource with path ${resource} was not found`)
         );
       }
     }
-  });
+  }
 
   const projectFilesReplacements = {
     "\\$\\(ManifestRootPath\\)": path.relative(
-      path.join(projectFilesDestPath),
+      projectFilesDestPath,
       path.dirname(manifestFilePath)
     ),
     "\\$\\(ReactNativeModulePath\\)": path.relative(
@@ -200,6 +181,8 @@ function copyProjectTemplateAndReplace(
       projectFilesDestPath,
       path.join(srcRootPath, projDir)
     ),
+    "\\$\\(BundleDirContentPaths\\)": bundleDirContent,
+    "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
   };
 
   const projectFilesMappings = [

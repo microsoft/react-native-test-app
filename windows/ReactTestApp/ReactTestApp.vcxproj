@@ -58,8 +58,8 @@
         <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
         <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
         <CharacterSet>Unicode</CharacterSet>
-        <BundleContentRoot>Bundle</BundleContentRoot>
-        <BundleContent>$(BundleContentRoot)\**\*</BundleContent>
+        <BundleDirAssets>$(BundleDirContentPaths)</BundleDirAssets>
+        <BundleFileAssets>$(BundleFileContentPaths)</BundleFileAssets>
         <AssetsContentRoot>$(SourceFilesPath)\Assets</AssetsContentRoot>
         <AssetsContent>$(AssetsContentRoot)\**\*</AssetsContent>
     </PropertyGroup>
@@ -201,8 +201,17 @@
         <None Include="PropertySheet.props" />
     </ItemGroup>
     <ItemGroup>
-        <BundleContentToBePackaged Include="$(BundleContent)" />
-        <None Include="@(BundleContentToBePackaged)">
+        <BundleDirContentToBePackaged Include="$(BundleDirAssets)"/>
+        <None Include="@(BundleDirContentToBePackaged)">
+            <DirNameFullPath>$([MSBuild]::ValueOrDefault('%(FullPath)', '').Remove($([MSBuild]::ValueOrDefault(%(FullPath), '').LastIndexOf(\%(RecursiveDir)%(Filename)%(Extension)))))</DirNameFullPath>
+            <DirName Condition="'%(DirNameFullPath)' != ''">$([MSBuild]::ValueOrDefault(%(DirNameFullPath), '').Substring($([MSBuild]::ValueOrDefault(%(DirNameFullPath), '').LastIndexOf('\'))))</DirName>
+            <Link>$([MSBuild]::MakeRelative($(ProjectDir),'Bundle%(DirName)\%(RecursiveDir)%(Filename)%(Extension)'))</Link>
+            <DeploymentContent>true</DeploymentContent>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <BundleFileContentToBePackaged Include="$(BundleFileAssets)"/>
+        <None Include="@(BundleFileContentToBePackaged)">
             <Link>$([MSBuild]::MakeRelative($(ProjectDir),'Bundle\%(RecursiveDir)%(Filename)%(Extension)'))</Link>
             <DeploymentContent>true</DeploymentContent>
         </None>
