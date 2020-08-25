@@ -6,6 +6,8 @@
 #
 # rubocop:disable Layout/LineLength
 
+require_relative('pod_helpers.rb')
+
 def add_flipper_pods!(versions = {})
   versions['Flipper'] ||= '~> 0.33.1'
   versions['DoubleConversion'] ||= '1.1.7'
@@ -70,7 +72,15 @@ def include_react_native!(react_native:, target_platform:, project_root:, flippe
 
   pod 'DoubleConversion', :podspec => "#{react_native}/third-party-podspecs/DoubleConversion.podspec"
   pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
-  pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
+
+  # `react-native` pods
+  try_pod('Folly', "#{react_native}/third-party-podspecs/Folly.podspec", project_root)
+
+  # `react-native-macos` pods
+  try_pod('RCT-Folly', "#{react_native}/third-party-podspecs/RCT-Folly.podspec", project_root)
+  try_pod('boost-for-react-native',
+          "#{react_native}/third-party-podspecs/boost-for-react-native.podspec",
+          project_root)
 end
 
 # rubocop:enable Layout/LineLength
