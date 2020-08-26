@@ -22,7 +22,7 @@
     ],
     "windows": [
       "dist/assets",
-      "dist/main.windows.jsbundle"
+      "dist/main.windows.bundle"
     ]
   }
 }
