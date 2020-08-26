@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props')" />
+    <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props')" />
     <PropertyGroup Label="Globals">
         <CppWinRTOptimized>true</CppWinRTOptimized>
         <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -58,8 +58,10 @@
         <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
         <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
         <CharacterSet>Unicode</CharacterSet>
-        <BundleContentRoot>..\..\example\dist</BundleContentRoot>
-        <BundleContent>$(BundleContentRoot)\**\*</BundleContent>
+        <BundleDirAssets>$(BundleDirContentPaths)</BundleDirAssets>
+        <BundleFileAssets>$(BundleFileContentPaths)</BundleFileAssets>
+        <AssetsContentRoot>$(SourceFilesPath)\Assets</AssetsContentRoot>
+        <AssetsContent>$(AssetsContentRoot)\**\*</AssetsContent>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
         <UseDebugLibraries>true</UseDebugLibraries>
@@ -74,7 +76,7 @@
     <ImportGroup Label="ExtensionSettings">
     </ImportGroup>
     <ImportGroup Label="Shared">
-        <Import Project="..\..\node_modules\react-native-windows\Microsoft.ReactNative.Cxx\Microsoft.ReactNative.Cxx.vcxitems" Label="Shared" />
+        <Import Project="$(ReactNativeModulePath)\Microsoft.ReactNative.Cxx\Microsoft.ReactNative.Cxx.vcxitems" Label="Shared" />
     </ImportGroup>
     <ImportGroup Label="PropertySheets">
         <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -82,7 +84,30 @@
     <ImportGroup Label="PropertySheets">
         <Import Project="PropertySheet.props" />
     </ImportGroup>
-    <PropertyGroup Label="UserMacros" />
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SourceFilesPath)</IncludePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SourceFilesPath)</IncludePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SourceFilesPath)</IncludePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SourceFilesPath)</IncludePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SourceFilesPath)</IncludePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SourceFilesPath)</IncludePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SourceFilesPath)</IncludePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SourceFilesPath)</IncludePath>
+    </PropertyGroup>
     <ItemDefinitionGroup>
         <ClCompile>
             <PrecompiledHeader>Use</PrecompiledHeader>
@@ -116,59 +141,59 @@
         </ClCompile>
     </ItemDefinitionGroup>
     <ItemGroup>
-        <ClInclude Include="pch.h" />
-        <ClInclude Include="Manifest.h" />
-        <ClInclude Include="App.h">
-            <DependentUpon>App.xaml</DependentUpon>
+        <ClInclude Include="$(SourceFilesPath)\pch.h" />
+        <ClInclude Include="$(SourceFilesPath)\Manifest.h" />
+        <ClInclude Include="$(SourceFilesPath)\App.h">
+            <DependentUpon>$(SourceFilesPath)\App.xaml</DependentUpon>
         </ClInclude>
-        <ClInclude Include="MainPage.h">
-            <DependentUpon>MainPage.xaml</DependentUpon>
+        <ClInclude Include="$(SourceFilesPath)\MainPage.h">
+            <DependentUpon>$(SourceFilesPath)\MainPage.xaml</DependentUpon>
         </ClInclude>
-        <ClInclude Include="ReactInstance.h" />
+        <ClInclude Include="$(SourceFilesPath)\ReactInstance.h" />
     </ItemGroup>
     <ItemGroup>
-        <ApplicationDefinition Include="App.xaml">
+        <ApplicationDefinition Include="$(SourceFilesPath)\App.xaml">
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Page Include="MainPage.xaml">
+        <Page Include="$(SourceFilesPath)\MainPage.xaml">
             <SubType>Designer</SubType>
         </Page>
     </ItemGroup>
     <ItemGroup>
-        <AppxManifest Include="Package.appxmanifest">
+        <AppxManifest Include="$(SourceFilesPath)\Package.appxmanifest">
             <SubType>Designer</SubType>
         </AppxManifest>
     </ItemGroup>
     <ItemGroup>
-        <Image Include="Assets\LockScreenLogo.scale-200.png" />
-        <Image Include="Assets\SplashScreen.scale-200.png" />
-        <Image Include="Assets\Square150x150Logo.scale-200.png" />
-        <Image Include="Assets\Square44x44Logo.scale-200.png" />
-        <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-        <Image Include="Assets\StoreLogo.png" />
-        <Image Include="Assets\Wide310x150Logo.scale-200.png" />
-        <Text Include="..\..\example\app.json" />
+        <AssetsToBePackaged Include="$(AssetsContent)" />
+        <None Include="@(AssetsToBePackaged)">
+            <Link>$([MSBuild]::MakeRelative($(ProjectDir),'Assets\%(RecursiveDir)%(Filename)%(Extension)'))</Link>
+            <DeploymentContent>true</DeploymentContent>
+        </None>
     </ItemGroup>
     <ItemGroup>
-        <ClCompile Include="pch.cpp">
+        <Text Include="$(ManifestRootPath)\app.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <ClCompile Include="$(SourceFilesPath)\pch.cpp">
             <PrecompiledHeader>Create</PrecompiledHeader>
         </ClCompile>
-        <ClCompile Include="App.cpp">
-            <DependentUpon>App.xaml</DependentUpon>
+        <ClCompile Include="$(SourceFilesPath)\App.cpp">
+            <DependentUpon>$(SourceFilesPath)\App.xaml</DependentUpon>
         </ClCompile>
-        <ClCompile Include="MainPage.cpp">
-            <DependentUpon>MainPage.xaml</DependentUpon>
+        <ClCompile Include="$(SourceFilesPath)\MainPage.cpp">
+            <DependentUpon>$(SourceFilesPath)\MainPage.xaml</DependentUpon>
         </ClCompile>
         <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-        <ClCompile Include="Manifest.cpp" />
-        <ClCompile Include="ReactInstance.cpp" />
+        <ClCompile Include="$(SourceFilesPath)\Manifest.cpp" />
+        <ClCompile Include="$(SourceFilesPath)\ReactInstance.cpp" />
     </ItemGroup>
     <ItemGroup>
-        <Midl Include="App.idl">
-            <DependentUpon>App.xaml</DependentUpon>
+        <Midl Include="$(SourceFilesPath)\App.idl">
+            <DependentUpon>$(SourceFilesPath)\App.xaml</DependentUpon>
         </Midl>
-        <Midl Include="MainPage.idl">
-            <DependentUpon>MainPage.xaml</DependentUpon>
+        <Midl Include="$(SourceFilesPath)\MainPage.idl">
+            <DependentUpon>$(SourceFilesPath)\MainPage.xaml</DependentUpon>
         </Midl>
     </ItemGroup>
     <ItemGroup>
@@ -176,44 +201,53 @@
         <None Include="PropertySheet.props" />
     </ItemGroup>
     <ItemGroup>
-        <BundleContentToBePackaged Include="$(BundleContent)" />
-        <None Include="@(BundleContentToBePackaged)">
+        <BundleDirContentToBePackaged Include="$(BundleDirAssets)"/>
+        <None Include="@(BundleDirContentToBePackaged)">
+            <DirNameFullPath>$([MSBuild]::ValueOrDefault('%(FullPath)', '').Remove($([MSBuild]::ValueOrDefault(%(FullPath), '').LastIndexOf(\%(RecursiveDir)%(Filename)%(Extension)))))</DirNameFullPath>
+            <DirName Condition="'%(DirNameFullPath)' != ''">$([MSBuild]::ValueOrDefault(%(DirNameFullPath), '').Substring($([MSBuild]::ValueOrDefault(%(DirNameFullPath), '').LastIndexOf('\'))))</DirName>
+            <Link>$([MSBuild]::MakeRelative($(ProjectDir),'Bundle%(DirName)\%(RecursiveDir)%(Filename)%(Extension)'))</Link>
+            <DeploymentContent>true</DeploymentContent>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <BundleFileContentToBePackaged Include="$(BundleFileAssets)"/>
+        <None Include="@(BundleFileContentToBePackaged)">
             <Link>$([MSBuild]::MakeRelative($(ProjectDir),'Bundle\%(RecursiveDir)%(Filename)%(Extension)'))</Link>
             <DeploymentContent>true</DeploymentContent>
         </None>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\node_modules\react-native-windows\Common\Common.vcxproj">
+        <ProjectReference Include="$(ReactNativeModulePath)\Common\Common.vcxproj">
             <Project>{fca38f3c-7c73-4c47-be4e-32f77fa8538d}</Project>
         </ProjectReference>
-        <ProjectReference Include="..\..\node_modules\react-native-windows\Folly\Folly.vcxproj">
+        <ProjectReference Include="$(ReactNativeModulePath)\Folly\Folly.vcxproj">
             <Project>{a990658c-ce31-4bcc-976f-0fc6b1af693d}</Project>
         </ProjectReference>
-        <ProjectReference Include="..\..\node_modules\react-native-windows\JSI\Universal\JSI.Universal.vcxproj">
+        <ProjectReference Include="$(ReactNativeModulePath)\JSI\Universal\JSI.Universal.vcxproj">
             <Project>{a62d504a-16b8-41d2-9f19-e2e86019e5e4}</Project>
         </ProjectReference>
-        <ProjectReference Include="..\..\node_modules\react-native-windows\Microsoft.ReactNative\Microsoft.ReactNative.vcxproj">
+        <ProjectReference Include="$(ReactNativeModulePath)\Microsoft.ReactNative\Microsoft.ReactNative.vcxproj">
             <Project>{f7d32bd0-2749-483e-9a0d-1635ef7e3136}</Project>
             <Private>false</Private>
         </ProjectReference>
-        <ProjectReference Include="..\..\node_modules\react-native-windows\ReactCommon\ReactCommon.vcxproj">
+        <ProjectReference Include="$(ReactNativeModulePath)\ReactCommon\ReactCommon.vcxproj">
             <Project>{a9d95a91-4db7-4f72-beb6-fe8a5c89bfbd}</Project>
         </ProjectReference>
-        <ProjectReference Include="..\..\node_modules\react-native-windows\ReactWindowsCore\ReactWindowsCore.vcxproj">
+        <ProjectReference Include="$(ReactNativeModulePath)\ReactWindowsCore\ReactWindowsCore.vcxproj">
             <Project>{11c084a3-a57c-4296-a679-cac17b603144}</Project>
         </ProjectReference>
     </ItemGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
     <ImportGroup Label="ExtensionTargets">
-        <Import Project="..\packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets" Condition="Exists('..\packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets')" />
-        <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets')" />
+        <Import Project="$(SolutionDir)packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets" Condition="Exists('$(SolutionDir)packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets')" />
+        <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets')" />
     </ImportGroup>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
             <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
         </PropertyGroup>
-        <Error Condition="!Exists('..\packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets'))" />
-        <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props'))" />
-        <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+        <Error Condition="!Exists('$(SolutionDir)packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\nlohmann.json.3.7.3\build\native\nlohmann.json.targets'))" />
+        <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props'))" />
+        <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets'))" />
     </Target>
 </Project>

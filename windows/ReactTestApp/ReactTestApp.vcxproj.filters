@@ -1,62 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <ItemGroup>
-        <ApplicationDefinition Include="App.xaml" />
+        <ApplicationDefinition Include="$(SourceFilesPath)\App.xaml" />
     </ItemGroup>
     <ItemGroup>
-        <Page Include="MainPage.xaml" />
+        <Page Include="$(SourceFilesPath)\MainPage.xaml" />
     </ItemGroup>
     <ItemGroup>
-        <Midl Include="App.idl" />
-        <Midl Include="MainPage.idl" />
+        <Midl Include="$(SourceFilesPath)\App.idl" />
+        <Midl Include="$(SourceFilesPath)\MainPage.idl" />
     </ItemGroup>
     <ItemGroup>
-        <ClCompile Include="pch.cpp" />
-        <ClCompile Include="App.cpp" />
-        <ClCompile Include="MainPage.cpp" />
+        <ClCompile Include="$(SourceFilesPath)\pch.cpp" />
+        <ClCompile Include="$(SourceFilesPath)\App.cpp" />
+        <ClCompile Include="$(SourceFilesPath)\MainPage.cpp" />
         <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-        <ClCompile Include="Manifest.cpp" />
-        <ClCompile Include="ReactInstance.cpp" />
+        <ClCompile Include="$(SourceFilesPath)\Manifest.cpp" />
+        <ClCompile Include="$(SourceFilesPath)\ReactInstance.cpp" />
     </ItemGroup>
     <ItemGroup>
-        <ClInclude Include="pch.h" />
-        <ClInclude Include="Manifest.h" />
-        <ClInclude Include="ReactInstance.h" />
+        <ClInclude Include="$(SourceFilesPath)\pch.h" />
+        <ClInclude Include="$(SourceFilesPath)\Manifest.h" />
+        <ClInclude Include="$(SourceFilesPath)\ReactInstance.h" />
     </ItemGroup>
     <ItemGroup>
-        <Image Include="Assets\Wide310x150Logo.scale-200.png">
-            <Filter>Assets</Filter>
-        </Image>
-        <Image Include="Assets\StoreLogo.png">
-            <Filter>Assets</Filter>
-        </Image>
-        <Image Include="Assets\Square150x150Logo.scale-200.png">
-            <Filter>Assets</Filter>
-        </Image>
-        <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
-            <Filter>Assets</Filter>
-        </Image>
-        <Image Include="Assets\Square44x44Logo.scale-200.png">
-            <Filter>Assets</Filter>
-        </Image>
-        <Image Include="Assets\SplashScreen.scale-200.png">
-            <Filter>Assets</Filter>
-        </Image>
-        <Image Include="Assets\LockScreenLogo.scale-200.png">
-            <Filter>Assets</Filter>
-        </Image>
-        <Text Include="..\..\example\app.json">
+        <Text Include="$(ManifestRootPath)\app.json">
             <Filter>Assets</Filter>
         </Text>
     </ItemGroup>
     <ItemGroup>
-        <AppxManifest Include="Package.appxmanifest" />
+        <AppxManifest Include="$(SourceFilesPath)\Package.appxmanifest" />
     </ItemGroup>
     <ItemGroup>
         <Filter Include="Assets">
             <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
         </Filter>
-        <Filter Include="Bundle"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="PropertySheet.props" />
