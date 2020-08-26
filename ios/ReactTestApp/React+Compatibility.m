@@ -13,7 +13,7 @@
 
 // `RCTReloadCommand.h` is excluded from `react-native-macos`
 // See https://github.com/microsoft/react-native-macos/blob/v0.61.39/React-Core.podspec#L66
-#if !TARGET_OS_OSX
+#if REACT_NATIVE_VERSION >= 6200
 #import <React/RCTReloadCommand.h>
 #endif
 

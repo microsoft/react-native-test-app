@@ -81,6 +81,18 @@ def include_react_native!(react_native:, target_platform:, project_root:, flippe
   try_pod('boost-for-react-native',
           "#{react_native}/third-party-podspecs/boost-for-react-native.podspec",
           project_root)
+
+  return unless target_platform == :macos
+
+  # Hermes
+  begin
+    hermes_engine_darwin = resolve_module('hermes-engine-darwin')
+    pod 'React-Core/Hermes', :path => "#{react_native}/"
+    pod 'hermes', :path => Pathname.new(hermes_engine_darwin).relative_path_from(project_root).to_s
+    pod 'libevent', :podspec => "#{react_native}/third-party-podspecs/libevent.podspec"
+  rescue StandardError
+    # Use JavaScriptCore
+  end
 end
 
 # rubocop:enable Layout/LineLength

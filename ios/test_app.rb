@@ -9,6 +9,8 @@ require('json')
 require('pathname')
 require('rubygems/version')
 
+require_relative('pod_helpers.rb')
+
 def assert(condition, message)
   raise message unless condition
 end
@@ -86,11 +88,6 @@ def react_native_pods(version)
   else
     raise "Unsupported React Native version: #{version}"
   end
-end
-
-def resolve_module(request)
-  script = "console.log(path.dirname(require.resolve('#{request}/package.json')));"
-  Pod::Executable.execute_command('node', ['-e', script], true).strip
 end
 
 def resolve_resources(manifest, target_platform)
@@ -180,12 +177,14 @@ def make_project!(xcodeproj, project_root, target_platform)
   version = version[0] * 10_000 + version[1] * 100 + version[2]
   version_macro = "REACT_NATIVE_VERSION=#{version}"
 
+  supports_flipper = target_platform == :ios && flipper_enabled?(version)
+
   app_project = Xcodeproj::Project.open(dst_xcodeproj)
   app_project.native_targets.each do |target|
     next if target.name != 'ReactTestApp'
 
     target.build_configurations.each do |config|
-      use_flipper = config.name == 'Debug' && flipper_enabled?(version)
+      use_flipper = config.name == 'Debug' && supports_flipper
 
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
