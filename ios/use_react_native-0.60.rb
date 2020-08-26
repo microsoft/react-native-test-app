@@ -6,6 +6,8 @@
 #
 # rubocop:disable Layout/LineLength
 
+require_relative('pod_helpers.rb')
+
 def include_react_native!(react_native:, target_platform:, project_root:, flipper_versions:)
   pod 'React', :path => react_native
   pod 'React-Core', :path => "#{react_native}/React", :inhibit_warnings => true
@@ -36,9 +38,10 @@ def include_react_native!(react_native:, target_platform:, project_root:, flippe
   pod 'glog', :podspec => "#{react_native}/third-party-podspecs/glog.podspec"
   pod 'Folly', :podspec => "#{react_native}/third-party-podspecs/Folly.podspec"
 
-  # Required by `react-native-macos` otherwise it will find Boost elsewhere
-  boost = "#{react_native}/third-party-podspecs/boost-for-react-native.podspec"
-  pod 'boost-for-react-native', :podspec => boost if File.exist?(File.join(project_root, boost))
+  # Required by `react-native-macos`; otherwise it will find Boost elsewhere
+  try_pod('boost-for-react-native',
+          "#{react_native}/third-party-podspecs/boost-for-react-native.podspec",
+          project_root)
 end
 
 # rubocop:enable Layout/LineLength
