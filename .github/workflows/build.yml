@@ -46,6 +46,7 @@ jobs:
           echo "::add-matcher::.github/eslint-stylish.json"
           yarn lint:js
           echo "::remove-matcher owner=eslint-stylish::"
+          yarn tsc
       - name: SwiftLint
         run: |
           brew install swiftlint
