@@ -53,7 +53,7 @@
     "eslint": "^7.4.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.3",
-    "prettier": "2.0.5",
+    "prettier": "2.1.1",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-macos": "0.61.39",
