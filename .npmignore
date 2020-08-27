@@ -1,6 +1,7 @@
 **/xcuserdata/
 *.tgz
 .clang-format
+.editorconfig
 .eslintrc.json
 .gitattributes
 .github/
@@ -17,4 +18,3 @@ example/*
 scripts/
 template-example/
 test/
-windows/
