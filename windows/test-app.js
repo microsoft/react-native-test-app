@@ -2,9 +2,9 @@
 const path = require("path");
 const fs = require("fs");
 
-const windowsDir = "windows";
 const nodeModulesDir = "node_modules";
 const generatedDir = ".generated";
+const windowsDir = "windows";
 const closestNodeModules = findClosestPathTo(nodeModulesDir);
 const reactNativeModulePath = findClosestPathTo(
   path.join(nodeModulesDir, "react-native-windows")
@@ -12,7 +12,8 @@ const reactNativeModulePath = findClosestPathTo(
 const testAppNodeModulePath = findClosestPathTo(
   path.join(nodeModulesDir, "react-native-test-app")
 );
-const destPath = path.resolve("");
+const destPath = path.resolve(process.argv[2]);
+const appName = process.argv[3];
 
 function findClosestPathTo(fileOrDirName) {
   let basePath = path.resolve("");
@@ -53,16 +54,10 @@ const binaryExtensions = [".png", ".pfx"];
  * @param destPath Destination path.
  * @param replacements: e.g. {'TextToBeReplaced': 'Replacement'}
  */
-function copyAndReplace(
-  srcPath,
-  destPath,
-  relativeDestPath,
-  replacements = {}
-) {
-  const fullDestPath = path.join(destPath, relativeDestPath);
+function copyAndReplace(srcPath, destPath, replacements = {}) {
   if (fs.lstatSync(srcPath).isDirectory()) {
-    if (!fs.existsSync(fullDestPath)) {
-      fs.mkdirSync(fullDestPath);
+    if (!fs.existsSync(destPath)) {
+      fs.mkdirSync(destPath);
     }
     return;
   }
@@ -70,7 +65,7 @@ function copyAndReplace(
   const extension = path.extname(srcPath);
   if (binaryExtensions.indexOf(extension) !== -1) {
     // Binary file
-    fs.copyFile(srcPath, fullDestPath, (err) => {
+    fs.copyFile(srcPath, destPath, (err) => {
       if (err) {
         throw err;
       }
@@ -80,7 +75,7 @@ function copyAndReplace(
     const srcPermissions = fs.statSync(srcPath).mode;
     const content = resolveContents(srcPath, replacements);
     fs.writeFile(
-      fullDestPath,
+      destPath,
       content,
       {
         encoding: "utf8",
@@ -115,8 +110,7 @@ function copyTestProject(
 
   copyAndReplace(
     path.join(testProjectFilePath, testProjectTemplateFile),
-    testProjectFilePath,
-    "ReactTestAppTests.vcxproj",
+    path.join(testProjectFilePath, "ReactTestAppTests.vcxproj"),
     testProjectFileReplacements
   );
 }
@@ -125,7 +119,8 @@ function copyProjectTemplateAndReplace(
   destPath,
   nodeModulesPath,
   reactNativeModulePath,
-  testAppNodeModulePath
+  testAppNodeModulePath,
+  appName
 ) {
   if (!destPath) {
     throw new Error("Need a path to copy to");
@@ -149,7 +144,7 @@ function copyProjectTemplateAndReplace(
   );
 
   fs.mkdirSync(projectFilesDestPath, { recursive: true });
-  fs.mkdirSync(path.join(destPath, windowsDir), { recursive: true });
+  fs.mkdirSync(destPath, { recursive: true });
 
   const manifestFilePath = findClosestPathTo("app.json");
 
@@ -221,20 +216,10 @@ function copyProjectTemplateAndReplace(
   }));
 
   for (const mapping of projectFilesMappings) {
-    copyAndReplace(
-      mapping.from,
-      destPath,
-      mapping.to,
-      projectFilesReplacements
-    );
+    copyAndReplace(mapping.from, mapping.to, projectFilesReplacements);
   }
 
-  const solutionFileDestPath = path.join(destPath, windowsDir);
-
-  const testProjectFilePath = path.join(
-    solutionFileDestPath,
-    "ReactTestAppTests"
-  );
+  const testProjectFilePath = path.join(destPath, "ReactTestAppTests");
   const testProjectTemplateFile = "ReactTestAppTestsTemplate.vcxproj";
   let testProjectEntry = "";
 
@@ -257,11 +242,11 @@ function copyProjectTemplateAndReplace(
 
   const solutionFileReplacements = {
     "\\$\\(ReactNativeModulePath\\)": path.relative(
-      solutionFileDestPath,
+      destPath,
       reactNativeModulePath
     ),
     "\\$\\(ReactTestAppProjectPath\\)": path.relative(
-      solutionFileDestPath,
+      destPath,
       projectFilesDestPath
     ),
     "\\$\\(TestProject\\)": testProjectEntry,
@@ -269,8 +254,7 @@ function copyProjectTemplateAndReplace(
 
   copyAndReplace(
     path.join(srcRootPath, "ReactTestApp.sln"),
-    destPath,
-    path.join(windowsDir, "ReactTestApp.sln"),
+    path.join(destPath, `${appName}.sln`),
     solutionFileReplacements
   );
 }
@@ -279,5 +263,6 @@ copyProjectTemplateAndReplace(
   destPath,
   closestNodeModules,
   reactNativeModulePath,
-  testAppNodeModulePath
+  testAppNodeModulePath,
+  appName
 );
