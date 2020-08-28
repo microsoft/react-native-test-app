@@ -1,0 +1,16 @@
+{
+  "name": "Example",
+  "displayName": "Example",
+  "components": [
+    {
+      "appKey": "0",
+      "initialProperties": {
+        "key": "value"
+      }
+    },
+    {
+      "appKey": "1",
+      "displayName": "1"
+    }
+  ]
+}

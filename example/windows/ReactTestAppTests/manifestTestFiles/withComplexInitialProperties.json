@@ -1,0 +1,36 @@
+{
+  "name": "Name",
+  "displayName": "Display Name",
+  "components": [
+    {
+      "appKey": "AppKey",
+      "initialProperties": {
+        "boolean": true,
+        "number": 9000,
+        "string": "string",
+        "array": [
+          null,
+          true,
+          9000,
+          "string",
+          [],
+          {}
+        ],
+        "object": {
+          "boolean": true,
+          "number": 9000,
+          "string": "string",
+          "array": [
+            null,
+            true,
+            9000,
+            "string",
+            [],
+            {}
+          ],
+          "object": null
+        }
+      }
+    }
+  ]
+}
