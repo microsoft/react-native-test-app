@@ -297,6 +297,44 @@ jobs:
             ../scripts/xcodebuild.sh macos/TemplateExample.xcworkspace build
           fi
         working-directory: template-example
+  windows:
+    name: "Windows"
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: [ARM, x64]
+        configuration: [Debug, Release]
+    steps:
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache /example/node_modules
+        uses: actions/cache@v2
+        with:
+          path: example/node_modules
+          key: example-${{ runner.os }}-${{ hashFiles('example/yarn.lock') }}
+      - name: Install
+        run: |
+          yarn
+        working-directory: example
+      - name: Build bundle and create solution
+        run: |
+          yarn build:windows
+          node node_modules/react-native-test-app/windows/test-app.js
+        working-directory: example
+      - name: Install NuGet packages
+        run: |
+          nuget restore
+        working-directory: example/windows
+      - name: Build
+        run: |
+          MSBuild ReactTestApp.sln -t:Rebuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }}
+        working-directory: example/windows
   release:
     needs:
       [
