@@ -2,6 +2,13 @@
 const path = require("path");
 const fs = require("fs");
 
+/**
+ * This script takes two parameters: destination path [destPath] and application name [appName].
+ * Solution will be generated at [destPath]/[appName].sln
+ */
+const destPath = path.resolve(process.argv[2]);
+const appName = process.argv[3];
+
 const nodeModulesDir = "node_modules";
 const generatedDir = ".generated";
 const windowsDir = "windows";
@@ -12,8 +19,6 @@ const reactNativeModulePath = findClosestPathTo(
 const testAppNodeModulePath = findClosestPathTo(
   path.join(nodeModulesDir, "react-native-test-app")
 );
-const destPath = path.resolve(process.argv[2]);
-const appName = process.argv[3];
 
 function findClosestPathTo(fileOrDirName) {
   let basePath = path.resolve("");

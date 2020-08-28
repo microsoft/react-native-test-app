@@ -323,7 +323,7 @@ jobs:
       - name: Build bundle and create solution
         run: |
           yarn build:windows
-          node node_modules/react-native-test-app/windows/test-app.js
+          windows/test-app
         working-directory: example
       - name: Install NuGet packages
         run: |
@@ -331,13 +331,48 @@ jobs:
         working-directory: example/windows
       - name: Build
         run: |
-          MSBuild ReactTestApp.sln /t:Rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }}
+          MSBuild Example.sln /t:Rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }}
         working-directory: example/windows
       - name: Test
         run: |
           MSBuild ReactTestAppTests.vcxproj /t:Build /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }}
           if ("${{ matrix.platform }}" -eq "x64") { VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll }
         working-directory: example/windows/ReactTestAppTests
+  windows-template:
+    name: "Windows [template]"
+    runs-on: windows-latest
+    strategy: 
+      matrix:
+        configuration: [Debug, Release]
+        platform: [ARM, x64]
+    steps:
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: |
+          yarn link #Remove when windows folder is part of release 
+          scripts/install-test-template.sh windows
+        shell: bash
+      - name: Build bundle and create solution
+        run: |
+          yarn link react-native-test-app #Remove when windows folder is part of release 
+          yarn build:windows
+          ./test-app
+        working-directory: template-example
+      - name: Install NuGet packages
+        run: |
+          nuget restore
+        working-directory: template-example
+      - name: Build
+        run: |
+          MSBuild TemplateExample.sln /t:Rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }}
+        working-directory: template-example
   release:
     needs:
       [
