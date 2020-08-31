@@ -1,7 +1,6 @@
 //@ts-check
 const path = require("path");
 const fs = require("fs");
-const chalk = require("chalk");
 
 const windowsDir = "windows";
 const nodeModulesDir = "node_modules";
@@ -96,6 +95,32 @@ function copyAndReplace(
   }
 }
 
+function copyTestProject(
+  testProjectFilePath,
+  testProjectTemplateFile,
+  srcRootPath,
+  projDir,
+  projectFilesDestPath
+) {
+  const testProjectFileReplacements = {
+    "\\$\\(SourceFilesPath\\)": path.relative(
+      testProjectFilePath,
+      path.join(srcRootPath, projDir)
+    ),
+    "\\$\\(ReactTestAppProjectPath\\)": path.relative(
+      testProjectFilePath,
+      projectFilesDestPath
+    ),
+  };
+
+  copyAndReplace(
+    path.join(testProjectFilePath, testProjectTemplateFile),
+    testProjectFilePath,
+    "ReactTestAppTests.vcxproj",
+    testProjectFileReplacements
+  );
+}
+
 function copyProjectTemplateAndReplace(
   destPath,
   nodeModulesPath,
@@ -136,7 +161,7 @@ function copyProjectTemplateAndReplace(
   try {
     resourcesPaths = JSON.parse(content.toString()).resources;
   } catch (e) {
-    console.warn(chalk.red(`Couldn't parse app.json: \n${e.message}`));
+    console.warn(`Couldn't parse app.json: \n${e.message}`);
   }
   resourcesPaths = (resourcesPaths && resourcesPaths.windows) || resourcesPaths;
   if (Array.isArray(resourcesPaths)) {
@@ -161,9 +186,7 @@ function copyProjectTemplateAndReplace(
           );
         }
       } else {
-        console.warn(
-          chalk.yellow(`warning: resource with path ${resource} was not found`)
-        );
+        console.warn(`warning: resource with path ${resource} was not found`);
       }
     }
   }
@@ -207,6 +230,31 @@ function copyProjectTemplateAndReplace(
   }
 
   const solutionFileDestPath = path.join(destPath, windowsDir);
+
+  const testProjectFilePath = path.join(
+    solutionFileDestPath,
+    "ReactTestAppTests"
+  );
+  const testProjectTemplateFile = "ReactTestAppTestsTemplate.vcxproj";
+  let testProjectEntry = "";
+
+  if (fs.existsSync(path.join(testProjectFilePath, testProjectTemplateFile))) {
+    testProjectEntry =
+      'Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReactTestAppTests", "ReactTestAppTests\\ReactTestAppTests.vcxproj", "{D2B221C0-0781-4D20-8BF1-D88684662A5D}"\n' +
+      "\tProjectSection(ProjectDependencies) = postProject\n" +
+      "\t\t{B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D} = {B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D}\n" +
+      "\tEndProjectSection\n" +
+      "EndProject";
+
+    copyTestProject(
+      testProjectFilePath,
+      testProjectTemplateFile,
+      srcRootPath,
+      projDir,
+      projectFilesDestPath
+    );
+  }
+
   const solutionFileReplacements = {
     "\\$\\(ReactNativeModulePath\\)": path.relative(
       solutionFileDestPath,
@@ -216,6 +264,7 @@ function copyProjectTemplateAndReplace(
       solutionFileDestPath,
       projectFilesDestPath
     ),
+    "\\$\\(TestProject\\)": testProjectEntry,
   };
 
   copyAndReplace(

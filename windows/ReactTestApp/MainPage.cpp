@@ -31,8 +31,8 @@ namespace
 {
     void WritePropertyValue(std::any const &propertyValue, IJSValueWriter const &writer)
     {
-        if (propertyValue.type() == typeid(boolean)) {
-            writer.WriteBoolean(std::any_cast<boolean>(propertyValue));
+        if (propertyValue.type() == typeid(bool)) {
+            writer.WriteBoolean(std::any_cast<bool>(propertyValue));
         } else if (propertyValue.type() == typeid(std::int64_t)) {
             writer.WriteInt64(std::any_cast<std::int64_t>(propertyValue));
         } else if (propertyValue.type() == typeid(std::uint64_t)) {
@@ -71,7 +71,7 @@ namespace winrt::ReactTestApp::implementation
         SetUpTitleBar();
 
         auto menuItems = ReactMenuBarItem().Items();
-        std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest();
+        std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest("app.json");
         if (!manifest.has_value()) {
             MenuFlyoutItem newMenuItem;
             newMenuItem.Text(L"Couldn't parse app.json");

@@ -20,6 +20,6 @@ namespace ReactTestApp
         std::vector<Component> components;
     };
 
-    std::optional<Manifest> GetManifest();
+    std::optional<Manifest> GetManifest(std::string const &manifestFileName);
 
 }  // namespace ReactTestApp
