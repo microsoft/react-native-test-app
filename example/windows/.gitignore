@@ -24,3 +24,4 @@ x86/
 packages/
 
 **/Generated Files/**
+*.sln
