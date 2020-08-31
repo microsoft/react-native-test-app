@@ -28,7 +28,7 @@ namespace
             case value_t::null:
                 return std::nullopt;
             case value_t::boolean:
-                return j.get<boolean>();
+                return j.get<bool>();
             case value_t::number_integer:
                 return j.get<std::int64_t>();
             case value_t::number_unsigned:
@@ -91,9 +91,9 @@ namespace ReactTestApp
         m.components = j.at("components").get<std::vector<Component>>();
     }
 
-    std::optional<Manifest> GetManifest()
+    std::optional<Manifest> GetManifest(std::string const &manifestFileName)
     {
-        std::ifstream manifestFile("app.json");
+        std::ifstream manifestFile(manifestFileName);
         nlohmann::json j = nlohmann::json::parse(manifestFile, nullptr, false);
         if (j.is_discarded()) {
             return std::nullopt;
