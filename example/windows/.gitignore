@@ -11,6 +11,7 @@
 [Rr]elease/
 [Rr]eleases/
 AppPackages/
+ARM/
 x64/
 x86/
 build/
