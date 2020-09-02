@@ -1,13 +1,26 @@
+#!/usr/bin/env node
+
 //@ts-check
 const path = require("path");
 const fs = require("fs");
 
-/**
- * This script takes two parameters: destination path [destPath] and application name [appName].
- * Solution will be generated at [destPath]/[appName].sln
- */
-const destPath = path.resolve(process.argv[2]);
-const appName = process.argv[3];
+const { argv } = require("yargs")
+  .usage("Usage: $0 --projectDirectory=directory --applicationName=name")
+  .option("projectDirectory", {
+    alias: "projectDirectory",
+    type: "string",
+    description: "Directory where solution will be created",
+    demandOption: true,
+  })
+  .option("applicationName", {
+    alias: "applicationName",
+    type: "string",
+    description: "Name of solution file which will be created",
+    demandOption: true,
+  });
+
+const destPath = path.resolve(argv.projectDirectory);
+const appName = argv.applicationName;
 
 const nodeModulesDir = "node_modules";
 const generatedDir = ".generated";

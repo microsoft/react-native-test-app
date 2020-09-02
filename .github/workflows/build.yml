@@ -323,7 +323,7 @@ jobs:
       - name: Build bundle and create solution
         run: |
           yarn build:windows
-          windows/test-app
+          yarn install-windows-test-app --projectDirectory=windows --applicationName=Example
         working-directory: example
       - name: Install NuGet packages
         run: |

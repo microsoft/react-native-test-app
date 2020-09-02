@@ -166,7 +166,7 @@ module.exports = (plop) => {
                         "react-native start --config=metro.config.macos.js",
                     }
                   : undefined),
-                ...(!exclusive || platforms === "windows"
+                ...(includeWindows
                   ? {
                       "build:windows":
                         "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist --reset-cache --config=metro.config.windows.js",
@@ -174,7 +174,7 @@ module.exports = (plop) => {
                         "react-native start --config=metro.config.windows.js",
                     }
                   : undefined),
-                ...(platforms !== "macos" || platforms !== "windows"
+                ...(platforms !== "macos" && platforms !== "windows"
                   ? { start: "react-native start" }
                   : undefined),
                 ...packageJson.scripts,
@@ -185,7 +185,7 @@ module.exports = (plop) => {
                   ? { "react-native-macos": "0.62.1" }
                   : undefined),
                 ...(includeWindows
-                  ? { "react-native-windows": "0.62.2" }
+                  ? { "react-native-windows": "0.62.6" }
                   : undefined),
               }),
               devDependencies: sortByKeys({
@@ -361,9 +361,9 @@ module.exports = (plop) => {
             path: `${prefix}test-app.bat`,
             template: `node ./${
               exclusive ? "" : "../"
-            }/node_modules/react-native-test-app/windows/test-app.js ${
+            }/node_modules/react-native-test-app/windows/test-app.js --projectDirectory=${
               exclusive ? "./" : "windows/"
-            } ${name}`,
+            } --applicationName=${name}`,
           });
           actions.push({
             type: "add",
