@@ -23,9 +23,17 @@ to compile the test apps yourself.
     - Android SDK Build-Tools 29.0.3
     - To install the required SDKs, go into **Preferences** ❭ **Appearance &
       Behavior** ❭ **System Settings** ❭ **Android SDK**.
-- **iOS**:
+- **iOS/macOS**:
   - [Xcode](https://apps.apple.com/app/xcode/id497799835?mt=12) 11.3 or later
   - [CocoaPods](https://cocoapods.org/)
+- **Windows**:
+  - Ensure that
+    [Developer Mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development)
+    is turned on in Windows Settings app
+  - Install development dependencies as described in the
+    [React Native for Windows documentation](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies)
+  - [Google Chrome](https://www.google.com/chrome/) (optional, but recommended
+    for JS debugging)
 
 # Quick Start
 
@@ -93,6 +101,22 @@ pod install --project-directory=macos
 
 # Finally, open the Xcode workspace.
 open macos/Sample.xcworkspace
+```
+
+## Windows
+
+```bash
+# Bundle the JS first so the assets can
+# be included in the project.
+yarn build:windows
+yarn install-windows-test-app
+
+# Finally, open 'windows/Sample.sln' in
+# Visual Studio.
+
+# To run test app on your local machine,
+# remember to set platform to x64 (it is
+# set to ARM by default)
 ```
 
 # Developing React Native Test App
@@ -168,6 +192,22 @@ pod install --project-directory=macos
 
 # Finally, open the Xcode workspace.
 open macos/Example.xcworkspace
+```
+
+## Windows
+
+```bash
+# Bundle the JS first so the assets can
+# be included in the project.
+yarn build:windows
+yarn install-windows-test-app
+
+# Finally, open 'Example.sln' in Visual
+# Studio.
+
+# To run test app on your local machine,
+# remember to set platform to x64 (it is
+# set to ARM by default)
 ```
 
 # Known Issues
