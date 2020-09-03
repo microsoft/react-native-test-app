@@ -355,16 +355,6 @@ module.exports = (plop) => {
 
       if (!exclusive || platforms === "windows") {
         if (isInstalled("react-native-windows", exclusive)) {
-          const prefix = exclusive ? "" : "windows/";
-          actions.push({
-            type: "add",
-            path: `${prefix}test-app.bat`,
-            template: `node ./${
-              exclusive ? "" : "../"
-            }/node_modules/react-native-test-app/windows/test-app.js --projectDirectory=${
-              exclusive ? "./" : "windows/"
-            } --applicationName=${name}`,
-          });
           actions.push({
             type: "add",
             path: "metro.config.windows.js",
