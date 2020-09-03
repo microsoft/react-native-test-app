@@ -26,6 +26,10 @@ to compile the test apps yourself.
 - **iOS**:
   - [Xcode](https://apps.apple.com/app/xcode/id497799835?mt=12) 11.3 or later
   - [CocoaPods](https://cocoapods.org/)
+- **Windows**:
+  - Ensure that [Developer Mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development) is turned on in Windows Settings App
+  - Set up development environment as described [here](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies) 
+  - [Chrome](https://www.google.com/chrome/) (optional, but required for JS debugging)
 
 # Quick Start
 
@@ -93,6 +97,18 @@ pod install --project-directory=macos
 
 # Finally, open the Xcode workspace.
 open macos/Sample.xcworkspace
+```
+
+## Windows
+
+```bash
+# Bundle the JS first so the assets can
+# be included in the project.
+yarn build:windows
+yarn install-windows-test-app
+
+# Finally, open 'windows/Sample.sln' in Visual Studio.
+# To run test app on your local machine, remember to set platform to x64 (it is set to ARM by default)
 ```
 
 # Developing React Native Test App
@@ -168,6 +184,18 @@ pod install --project-directory=macos
 
 # Finally, open the Xcode workspace.
 open macos/Example.xcworkspace
+```
+
+## Windows
+
+```bash
+# Bundle the JS first so the assets can
+# included in the project.
+yarn build:windows
+yarn install-windows-test-app 
+
+# Finally, open 'Example.sln' in Visual Studio.
+# To run test app on your local machine, remember to set platform to x64 (it is set to ARM by default)
 ```
 
 # Known Issues
