@@ -1,10 +1,23 @@
+#!/usr/bin/env node
+
 //@ts-check
 const path = require("path");
 const fs = require("fs");
 
-const windowsDir = "windows";
+const { argv } = require("yargs")
+  .usage("Usage: $0 --projectDirectory=directory")
+  .option("projectDirectory", {
+    alias: "p",
+    type: "string",
+    description: "Directory where solution will be created",
+    default: "windows",
+  });
+
+const destPath = path.resolve(argv.projectDirectory);
+
 const nodeModulesDir = "node_modules";
 const generatedDir = ".generated";
+const windowsDir = "windows";
 const closestNodeModules = findClosestPathTo(nodeModulesDir);
 const reactNativeModulePath = findClosestPathTo(
   path.join(nodeModulesDir, "react-native-windows")
@@ -12,7 +25,6 @@ const reactNativeModulePath = findClosestPathTo(
 const testAppNodeModulePath = findClosestPathTo(
   path.join(nodeModulesDir, "react-native-test-app")
 );
-const destPath = path.resolve("");
 
 function findClosestPathTo(fileOrDirName) {
   let basePath = path.resolve("");
@@ -53,24 +65,11 @@ const binaryExtensions = [".png", ".pfx"];
  * @param destPath Destination path.
  * @param replacements: e.g. {'TextToBeReplaced': 'Replacement'}
  */
-function copyAndReplace(
-  srcPath,
-  destPath,
-  relativeDestPath,
-  replacements = {}
-) {
-  const fullDestPath = path.join(destPath, relativeDestPath);
-  if (fs.lstatSync(srcPath).isDirectory()) {
-    if (!fs.existsSync(fullDestPath)) {
-      fs.mkdirSync(fullDestPath);
-    }
-    return;
-  }
-
+function copyAndReplace(srcPath, destPath, replacements = {}) {
   const extension = path.extname(srcPath);
   if (binaryExtensions.indexOf(extension) !== -1) {
     // Binary file
-    fs.copyFile(srcPath, fullDestPath, (err) => {
+    fs.copyFile(srcPath, destPath, (err) => {
       if (err) {
         throw err;
       }
@@ -80,7 +79,7 @@ function copyAndReplace(
     const srcPermissions = fs.statSync(srcPath).mode;
     const content = resolveContents(srcPath, replacements);
     fs.writeFile(
-      fullDestPath,
+      destPath,
       content,
       {
         encoding: "utf8",
@@ -115,8 +114,7 @@ function copyTestProject(
 
   copyAndReplace(
     path.join(testProjectFilePath, testProjectTemplateFile),
-    testProjectFilePath,
-    "ReactTestAppTests.vcxproj",
+    path.join(testProjectFilePath, "ReactTestAppTests.vcxproj"),
     testProjectFileReplacements
   );
 }
@@ -149,53 +147,62 @@ function copyProjectTemplateAndReplace(
   );
 
   fs.mkdirSync(projectFilesDestPath, { recursive: true });
-  fs.mkdirSync(path.join(destPath, windowsDir), { recursive: true });
+  fs.mkdirSync(destPath, { recursive: true });
 
   const manifestFilePath = findClosestPathTo("app.json");
 
   //Read path to resources from manifest
   let bundleDirContent = "";
   let bundleFileContent = "";
-  const content = fs.readFileSync(manifestFilePath);
-  let resourcesPaths = {};
-  try {
-    resourcesPaths = JSON.parse(content.toString()).resources;
-  } catch (e) {
-    console.warn(`Couldn't parse app.json: \n${e.message}`);
-  }
-  resourcesPaths = (resourcesPaths && resourcesPaths.windows) || resourcesPaths;
-  if (Array.isArray(resourcesPaths)) {
-    for (const resource of resourcesPaths) {
-      const resourceSrcPath = path.relative(
-        path.dirname(manifestFilePath),
-        resource
-      );
-      if (fs.existsSync(resourceSrcPath)) {
-        let relativeResourcePath = path.relative(
-          projectFilesDestPath,
-          resourceSrcPath
+  let appName = "ReactTestApp"; //Default value if manifest or 'name' field doesn't exist
+
+  if (manifestFilePath) {
+    const content = fs.readFileSync(manifestFilePath);
+    let resourcesPaths = {};
+    try {
+      const json = JSON.parse(content.toString());
+      resourcesPaths = json.resources;
+      appName = json.name || appName;
+    } catch (e) {
+      console.warn(`Couldn't parse \'app.json\': \n${e.message}`);
+    }
+    resourcesPaths =
+      (resourcesPaths && resourcesPaths.windows) || resourcesPaths;
+    if (Array.isArray(resourcesPaths)) {
+      for (const resource of resourcesPaths) {
+        const resourceSrcPath = path.relative(
+          path.dirname(manifestFilePath),
+          resource
         );
-        if (fs.statSync(resourceSrcPath).isDirectory()) {
-          relativeResourcePath = relativeResourcePath.concat("\\**\\*");
-          bundleDirContent = bundleDirContent.concat(
-            relativeResourcePath + ";"
+        if (fs.existsSync(resourceSrcPath)) {
+          let relativeResourcePath = path.relative(
+            projectFilesDestPath,
+            resourceSrcPath
           );
+          if (fs.statSync(resourceSrcPath).isDirectory()) {
+            bundleDirContent = bundleDirContent.concat(
+              relativeResourcePath,
+              "\\**\\*;"
+            );
+          } else {
+            bundleFileContent = bundleFileContent.concat(
+              relativeResourcePath,
+              ";"
+            );
+          }
         } else {
-          bundleFileContent = bundleFileContent.concat(
-            relativeResourcePath + ";"
-          );
+          console.warn(`warning: resource with path ${resource} was not found`);
         }
-      } else {
-        console.warn(`warning: resource with path ${resource} was not found`);
       }
     }
+  } else {
+    console.warn("Could not find 'app.json' file. ");
   }
 
   const projectFilesReplacements = {
-    "\\$\\(ManifestRootPath\\)": path.relative(
-      projectFilesDestPath,
-      path.dirname(manifestFilePath)
-    ),
+    "\\$\\(ManifestRootPath\\)": manifestFilePath
+      ? path.relative(projectFilesDestPath, path.dirname(manifestFilePath))
+      : "",
     "\\$\\(ReactNativeModulePath\\)": path.relative(
       projectFilesDestPath,
       reactNativeModulePath
@@ -221,20 +228,10 @@ function copyProjectTemplateAndReplace(
   }));
 
   for (const mapping of projectFilesMappings) {
-    copyAndReplace(
-      mapping.from,
-      destPath,
-      mapping.to,
-      projectFilesReplacements
-    );
+    copyAndReplace(mapping.from, mapping.to, projectFilesReplacements);
   }
 
-  const solutionFileDestPath = path.join(destPath, windowsDir);
-
-  const testProjectFilePath = path.join(
-    solutionFileDestPath,
-    "ReactTestAppTests"
-  );
+  const testProjectFilePath = path.join(destPath, "ReactTestAppTests");
   const testProjectTemplateFile = "ReactTestAppTestsTemplate.vcxproj";
   let testProjectEntry = "";
 
@@ -257,11 +254,11 @@ function copyProjectTemplateAndReplace(
 
   const solutionFileReplacements = {
     "\\$\\(ReactNativeModulePath\\)": path.relative(
-      solutionFileDestPath,
+      destPath,
       reactNativeModulePath
     ),
     "\\$\\(ReactTestAppProjectPath\\)": path.relative(
-      solutionFileDestPath,
+      destPath,
       projectFilesDestPath
     ),
     "\\$\\(TestProject\\)": testProjectEntry,
@@ -269,8 +266,7 @@ function copyProjectTemplateAndReplace(
 
   copyAndReplace(
     path.join(srcRootPath, "ReactTestApp.sln"),
-    destPath,
-    path.join(windowsDir, "ReactTestApp.sln"),
+    path.join(destPath, `${appName}.sln`),
     solutionFileReplacements
   );
 }
