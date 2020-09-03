@@ -323,7 +323,7 @@ jobs:
       - name: Build bundle and create solution
         run: |
           yarn build:windows
-          node node_modules/react-native-test-app/windows/test-app.js
+          yarn install-windows-test-app --projectDirectory=windows
         working-directory: example
       - name: Install NuGet packages
         run: |
@@ -331,13 +331,48 @@ jobs:
         working-directory: example/windows
       - name: Build
         run: |
-          MSBuild ReactTestApp.sln /t:Rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }}
+          MSBuild Example.sln /t:Rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }}
         working-directory: example/windows
       - name: Test
         run: |
           MSBuild ReactTestAppTests.vcxproj /t:Build /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }}
           if ("${{ matrix.platform }}" -eq "x64") { VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll }
         working-directory: example/windows/ReactTestAppTests
+  windows-template:
+    name: "Windows [template]"
+    runs-on: windows-latest
+    strategy: 
+      matrix:
+        template: [all, windows]
+    steps:
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: |
+          scripts/install-test-template.sh ${{ matrix.template }}
+        shell: bash
+      - name: Build bundle and create solution
+        run: |
+          yarn build:windows
+          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app --projectDirectory=windows }
+          else { yarn install-windows-test-app --projectDirectory=./}
+        working-directory: template-example
+      - name: Install NuGet packages
+        run: |
+          if ("${{ matrix.template }}" -eq "all") { cd windows }
+          nuget restore
+        working-directory: template-example
+      - name: Build
+        run: |
+          if ("${{ matrix.template }}" -eq "all") { MSBuild windows/TemplateExample.sln /t:Rebuild }
+          else { MSBuild TemplateExample.sln /t:Rebuild }
+        working-directory: template-example
   release:
     needs:
       [
