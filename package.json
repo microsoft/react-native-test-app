@@ -5,6 +5,9 @@
     "name": "Microsoft Open Source",
     "email": "microsoftopensource@users.noreply.github.com"
   },
+  "bin": {
+    "install-windows-test-app": "windows/test-app.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/microsoft/react-native-test-app.git"
@@ -35,7 +38,8 @@
     "@react-native-community/cli-platform-android": "^4.5.1",
     "@react-native-community/cli-platform-ios": "^4.5.0",
     "chalk": "^4.1.0",
-    "plop": "^2.6.0"
+    "plop": "^2.6.0",
+    "yargs": "^15.4.1"
   },
   "peerDependencies": {
     "react": "~16.8.6 || ~16.9.0 || ~16.11.0 || ~16.13.1",

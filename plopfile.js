@@ -74,6 +74,9 @@ module.exports = (plop) => {
       const includeMacOS =
         (!exclusive || platforms === "macos") &&
         isInstalled("react-native-macos", exclusive);
+      const includeWindows =
+        (!exclusive || platforms === "windows") &&
+        isInstalled("react-native-windows", exclusive);
 
       const templateDir = path.dirname(
         require.resolve("react-native/template/package.json")
@@ -105,6 +108,7 @@ module.exports = (plop) => {
               android: ["dist/res", "dist/main.android.jsbundle"],
               ios: ["dist/assets", "dist/main.ios.jsbundle"],
               macos: ["dist/assets", "dist/main.macos.jsbundle"],
+              windows: ["dist/assets", "dist/main.windows.bundle"],
             },
           }),
         },
@@ -159,7 +163,15 @@ module.exports = (plop) => {
                         "react-native start --config=metro.config.macos.js",
                     }
                   : undefined),
-                ...(platforms !== "macos"
+                ...(includeWindows
+                  ? {
+                      "build:windows":
+                        "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist --reset-cache --config=metro.config.windows.js",
+                      "start:windows":
+                        "react-native start --config=metro.config.windows.js",
+                    }
+                  : undefined),
+                ...(platforms !== "macos" && platforms !== "windows"
                   ? { start: "react-native start" }
                   : undefined),
                 ...packageJson.scripts,
@@ -168,6 +180,9 @@ module.exports = (plop) => {
                 ...packageJson.dependencies,
                 ...(includeMacOS
                   ? { "react-native-macos": "0.62.1" }
+                  : undefined),
+                ...(includeWindows
+                  ? { "react-native-windows": "0.62.6" }
                   : undefined),
               }),
               devDependencies: sortByKeys({
@@ -331,6 +346,37 @@ module.exports = (plop) => {
           console.warn(
             chalk.yellow("[WARN] ") +
               "Cannot find module 'react-native-macos'; skipping macOS target"
+          );
+        }
+      }
+
+      if (!exclusive || platforms === "windows") {
+        if (isInstalled("react-native-windows", exclusive)) {
+          actions.push({
+            type: "add",
+            path: "metro.config.windows.js",
+            templateFile: require.resolve(
+              "react-native-windows/local-cli/generator-windows/templates/metro.config.js"
+            ),
+          });
+          if (exclusive) {
+            actions.push({
+              type: "add",
+              path: "react-native.config.js",
+              template: [
+                'if (process.argv.includes("--config=metro.config.windows.js")) {',
+                "  module.exports = {",
+                '    reactNativePath: "node_modules/react-native-windows",',
+                "  };",
+                "}",
+                "",
+              ].join("\n"),
+            });
+          }
+        } else {
+          console.warn(
+            chalk.yellow("[WARN] ") +
+              "Cannot find module 'react-native-windows'; skipping Windows target"
           );
         }
       }
