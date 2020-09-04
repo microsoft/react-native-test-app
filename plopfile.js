@@ -3,11 +3,6 @@
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- *
- * @typedef {{
- *   name: string;
- *   platforms: "all" | "android" | "ios" | "macos" | "windows";
- * }} InputData
  */
 
 const chalk = require("chalk");
@@ -67,9 +62,17 @@ module.exports = (plop) => {
         choices: ["all", "android", "ios", "macos", "windows"],
       },
     ],
-    actions: (/** @type {InputData} */ { name, platforms }) => {
+    /** @typedef {"all" | "android" | "ios" | "macos" | "windows"} Platforms */
+    /** @type {(answers?: { name: string; platforms: Platforms }) => import('node-plop').Actions} **/
+    // @ts-ignore tsc seems to think `answers` is missing properties `name` and `platforms`
+    actions: (answers) => {
+      if (!answers) {
+        return [];
+      }
+
       const path = require("path");
 
+      const { name, platforms } = answers;
       const exclusive = platforms !== "all";
       const includeMacOS =
         (!exclusive || platforms === "macos") &&
@@ -133,7 +136,7 @@ module.exports = (plop) => {
           type: "add",
           path: "package.json",
           templateFile: require.resolve("react-native/template/package.json"),
-          transform: (template) => {
+          transform: (/** @type {string} */ template) => {
             const {
               name: testAppPackageName,
               version: testAppPackageVersion,

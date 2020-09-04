@@ -28,10 +28,13 @@
   ],
   "homepage": "https://github.com/microsoft/react-native-test-app",
   "scripts": {
-    "clean": "npx --quiet rimraf example/node_modules/react-native-test-app; git clean -dfqx",
+    "clean": "npx --quiet rimraf example/node_modules/react-native-test-app && git clean -dfqx",
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml')",
-    "lint:js": "eslint $(git ls-files '*.js')"
+    "lint:js": "eslint $(git ls-files '*.js')",
+    "lint:rb": "bundle exec rubocop",
+    "test:js": "jest",
+    "test:rb": "bundle exec ruby -Ilib:test test/test_test_app.rb"
   },
   "dependencies": {
     "@react-native-community/cli": "^4.5.1",
@@ -57,16 +60,66 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "eslint": "^7.7.0",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^12.12.0",
+    "eslint": "^7.8.0",
+    "eslint-plugin-jest": "^24.0.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
+    "jest": "^26.4.2",
     "prettier": "2.1.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-macos": "0.62.1",
     "react-native-windows": "0.62.7",
     "semantic-release": "^17.0.0",
-    "suggestion-bot": "^1.0.0"
+    "suggestion-bot": "^1.0.0",
+    "typescript": "^4.0.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:jest/recommended",
+      "plugin:jest/style",
+      "plugin:react/recommended"
+    ],
+    "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ],
+      "react/prop-types": "off"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+  },
+  "jest": {
+    "roots": [
+      "test"
+    ]
   },
   "release": {
     "tagFormat": "${version}"
