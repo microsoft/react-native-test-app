@@ -83,7 +83,8 @@ ext.getFlipperVersion = { baseDir ->
 
     // Prefer user specified Flipper version
     if (project.hasProperty('FLIPPER_VERSION')) {
-        return project.getProperty('FLIPPER_VERSION')
+        def flipperVersion = project.getProperty('FLIPPER_VERSION')
+        return flipperVersion == "false" ? null : flipperVersion
     }
 
     // Use the recommended Flipper version
