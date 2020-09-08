@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
+import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.google.android.material.appbar.MaterialToolbar
 import com.react.testapp.component.ComponentActivity
@@ -51,11 +52,15 @@ class MainActivity : ReactActivity() {
     }
 
     private val startComponentActivity = { component: ComponentViewModel ->
+        didInitialNavigation = true;
         startActivity(newComponentActivityIntent(component))
     }
 
+    private var didInitialNavigation = false;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
+        didInitialNavigation = savedInstanceState?.getBoolean("didInitialNavigation", false) == true
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -65,11 +70,20 @@ class MainActivity : ReactActivity() {
 
         if (manifest.components.count() == 1) {
             val component = newComponentViewModel(manifest.components[0])
-            startComponentActivity(component)
+            testAppReactNativeHost.addReactInstanceEventListener { _: ReactContext  ->
+                if (!didInitialNavigation) {
+                    startComponentActivity(component)
+                }
+            }
         }
 
         setupToolbar(manifest.displayName)
         setupRecyclerView(manifest.components)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("didInitialNavigation", didInitialNavigation);
+        super.onSaveInstanceState(outState)
     }
 
     private fun setupToolbar(displayName: String) {
