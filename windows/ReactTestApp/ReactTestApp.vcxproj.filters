@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <ItemGroup>
-        <ApplicationDefinition Include="$(SourceFilesPath)\App.xaml" />
+        <ApplicationDefinition Include="$(ReactTestAppDir)\App.xaml" />
     </ItemGroup>
     <ItemGroup>
-        <Page Include="$(SourceFilesPath)\MainPage.xaml" />
+        <Page Include="$(ReactTestAppDir)\MainPage.xaml" />
     </ItemGroup>
     <ItemGroup>
-        <Midl Include="$(SourceFilesPath)\App.idl" />
-        <Midl Include="$(SourceFilesPath)\MainPage.idl" />
+        <Midl Include="$(ReactTestAppDir)\App.idl" />
+        <Midl Include="$(ReactTestAppDir)\MainPage.idl" />
     </ItemGroup>
     <ItemGroup>
-        <ClCompile Include="$(SourceFilesPath)\pch.cpp" />
-        <ClCompile Include="$(SourceFilesPath)\App.cpp" />
-        <ClCompile Include="$(SourceFilesPath)\MainPage.cpp" />
+        <ClCompile Include="$(ReactTestAppDir)\pch.cpp" />
+        <ClCompile Include="$(ReactTestAppDir)\App.cpp" />
+        <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp" />
+        <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
+        <ClCompile Include="$(ReactTestAppDir)\ReactInstance.cpp" />
         <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-        <ClCompile Include="$(SourceFilesPath)\Manifest.cpp" />
-        <ClCompile Include="$(SourceFilesPath)\ReactInstance.cpp" />
     </ItemGroup>
     <ItemGroup>
-        <ClInclude Include="$(SourceFilesPath)\pch.h" />
-        <ClInclude Include="$(SourceFilesPath)\Manifest.h" />
-        <ClInclude Include="$(SourceFilesPath)\ReactInstance.h" />
+        <ClInclude Include="$(ReactTestAppDir)\pch.h" />
+        <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />
+        <ClInclude Include="$(ReactTestAppDir)\ReactInstance.h" />
     </ItemGroup>
     <ItemGroup>
-        <Text Include="$(ManifestRootPath)\app.json">
+        <Text Include="$(ProjectRootDir)\app.json">
             <Filter>Assets</Filter>
         </Text>
     </ItemGroup>
     <ItemGroup>
-        <AppxManifest Include="$(SourceFilesPath)\Package.appxmanifest" />
+        <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" />
     </ItemGroup>
     <ItemGroup>
         <Filter Include="Assets">
