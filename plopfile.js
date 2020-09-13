@@ -43,7 +43,7 @@ function sortByKeys(obj) {
     .reduce((sorted, key) => ({ ...sorted, [key]: obj[key] }), {});
 }
 
-/** @type {(plop: import('plop').NodePlopAPI) => void} */
+/** @type {(plop: import("plop").NodePlopAPI) => void} */
 module.exports = (plop) => {
   plop.setGenerator("app", {
     description: "ReactTestApp configuration",
@@ -63,7 +63,7 @@ module.exports = (plop) => {
       },
     ],
     /** @typedef {"all" | "android" | "ios" | "macos" | "windows"} Platforms */
-    /** @type {(answers?: { name: string; platforms: Platforms }) => import('node-plop').Actions} **/
+    /** @type {(answers?: { name: string; platforms: Platforms }) => import("node-plop").Actions} **/
     // @ts-ignore tsc seems to think `answers` is missing properties `name` and `platforms`
     actions: (answers) => {
       if (!answers) {
@@ -182,10 +182,10 @@ module.exports = (plop) => {
               dependencies: sortByKeys({
                 ...packageJson.dependencies,
                 ...(includeMacOS
-                  ? { "react-native-macos": "0.62.1" }
+                  ? { "react-native-macos": "0.62.10" }
                   : undefined),
                 ...(includeWindows
-                  ? { "react-native-windows": "0.62.6" }
+                  ? { "react-native-windows": "0.62.9" }
                   : undefined),
               }),
               devDependencies: sortByKeys({

@@ -28,6 +28,7 @@
   ],
   "homepage": "https://github.com/microsoft/react-native-test-app",
   "scripts": {
+    "ci": "yarn --use-yarnrc .yarnrc-offline --prefer-offline",
     "clean": "npx --quiet rimraf example/node_modules/react-native-test-app && git clean -dfqx",
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml')",
@@ -42,7 +43,7 @@
     "@react-native-community/cli-platform-ios": "^4.5.0",
     "chalk": "^4.1.0",
     "plop": "^2.6.0",
-    "yargs": "^15.4.1"
+    "yargs": "^16.0.0"
   },
   "peerDependencies": {
     "react": "~16.8.6 || ~16.9.0 || ~16.11.0 || ~16.13.1",
@@ -61,17 +62,17 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@types/jest": "^26.0.0",
-    "@types/node": "^12.12.0",
-    "eslint": "^7.8.0",
-    "eslint-plugin-jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "eslint": "^7.9.0",
+    "eslint-plugin-jest": "^24.0.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
     "jest": "^26.4.2",
     "prettier": "2.1.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-macos": "0.62.1",
-    "react-native-windows": "0.62.7",
+    "react-native-macos": "0.62.10",
+    "react-native-windows": "0.62.9",
     "semantic-release": "^17.0.0",
     "suggestion-bot": "^1.0.0",
     "typescript": "^4.0.0"

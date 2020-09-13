@@ -7,8 +7,9 @@ version=$(node -e 'console.log(require("./package.json").version)')
 # Use tarballs to ensure that published packages are consumable
 npm pack
 
-yarn
+yarn ci
 yarn plop --dest template-example TemplateExample $platform
+cp .yarnrc-offline template-example/.yarnrc
 
 pushd template-example 1> /dev/null
 
@@ -19,4 +20,4 @@ else
   sed -i '' "$script" package.json
 fi
 
-yarn
+yarn --prefer-offline
