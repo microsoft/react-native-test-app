@@ -6,6 +6,7 @@
 .github/
 .rubocop.yml
 .swiftlint.yml
+.yarn*
 Brewfile*
 Gemfile*
 android/app/build/

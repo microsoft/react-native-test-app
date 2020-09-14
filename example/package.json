@@ -7,6 +7,7 @@
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist --reset-cache",
     "build:macos": "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist --reset-cache --config=metro.config.macos.js",
     "build:windows": "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist --reset-cache --config=metro.config.windows.js",
+    "ci": "yarn --use-yarnrc .yarnrc-offline --prefer-offline",
     "start": "react-native start",
     "start:macos": "react-native start --config=metro.config.macos.js",
     "start:windows": "react-native start --config=metro.config.windows.js"
@@ -22,8 +23,8 @@
     "mkdirp": "^0.5.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-macos": "0.62.1",
+    "react-native-macos": "0.62.10",
     "react-native-test-app": "../",
-    "react-native-windows": "0.62.7"
+    "react-native-windows": "0.62.9"
   }
 }

@@ -5,6 +5,7 @@
 .gradle/
 .idea/
 .vs/
+.yarn-offline-mirror/
 Pods/
 clang-format-diff.py
 coverage/
