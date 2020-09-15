@@ -1,12 +1,22 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+// @ts-check
+
 jest.mock("fs");
 
 describe("copyAndReplace", () => {
   const { copyAndReplace } = require("../windows/test-app");
 
+  // @ts-ignore `__setMockFiles`
   afterEach(() => require("fs").__setMockFiles({}));
 
   test("replaces text files only", () => {
     const fs = require("fs");
+    // @ts-ignore `__setMockFiles`
     fs.__setMockFiles({
       "ReactTestApp_TemporaryKey.pfx": "binary",
       "ReactTestApp.png": "binary",

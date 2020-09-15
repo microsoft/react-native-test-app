@@ -4,11 +4,16 @@
     "allowJs": true,
     "checkJs": true,
     "noEmit": true,
+    "strict": true,
     "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "resolveJsonModule": true
   },
-  "include": ["plopfile.js", "windows/test-app.js"]
+  "include": [
+    "plopfile.js",
+    "test/*.test.js",
+    "windows/test-app.js"
+  ]
 }

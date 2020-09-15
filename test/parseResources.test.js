@@ -1,18 +1,28 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+// @ts-check
+
 jest.mock("fs");
 
 describe("parseResources", () => {
   const { parseResources } = require("../windows/test-app");
 
+  // @ts-ignore `__setMockFiles`
   afterEach(() => require("fs").__setMockFiles({}));
 
   test("returns empty strings for no resources", () => {
     expect(parseResources(undefined, "", "")).toEqual(["", ""]);
     expect(parseResources([], "", "")).toEqual(["", ""]);
     expect(parseResources({}, "", "")).toEqual(["", ""]);
-    expect(parseResources({ windows: {} }, "", "")).toEqual(["", ""]);
+    expect(parseResources({ windows: [] }, "", "")).toEqual(["", ""]);
   });
 
   test("returns references to existing assets", () => {
+    // @ts-ignore `__setMockFiles`
     require("fs").__setMockFiles({
       "dist/assets": "directory",
       "dist/main.jsbundle": "text",

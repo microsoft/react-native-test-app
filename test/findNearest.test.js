@@ -1,3 +1,11 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+// @ts-check
+
 describe("findNearest", () => {
   const path = require("path");
   const { findNearest } = require("../windows/test-app");
@@ -12,7 +20,7 @@ describe("findNearest", () => {
   });
 
   test("returns target in ancestor path", () => {
-    const fixturePath = path.join("test", "fixtures", "with_resources");
+    const fixturePath = path.join("test", "__fixtures__", "with_resources");
     const projectPath = path.join(fixturePath, "windows");
     expect(findNearest("app.json", projectPath)).toBe(
       path.join(fixturePath, "app.json")
@@ -20,7 +28,7 @@ describe("findNearest", () => {
   });
 
   test("finds arbitrary paths", () => {
-    const fixturePath = path.join("test", "fixtures", "test_app");
+    const fixturePath = path.join("test", "__fixtures__", "test_app");
     const projectPath = path.join(fixturePath, "windows");
     expect(
       findNearest(path.join("node_modules", "react-native"), projectPath)

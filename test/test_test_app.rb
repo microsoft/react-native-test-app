@@ -14,7 +14,7 @@ def app_manifest_path(project_root, podspec_path)
 end
 
 def fixture_path(*args)
-  Pathname.new(__dir__).join('fixtures', *args)
+  Pathname.new(__dir__).join('__fixtures__', *args)
 end
 
 class TestTestApp < Minitest::Test
