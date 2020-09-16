@@ -1,11 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-const chalk = require("chalk");
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
 
 /**
  * Returns whether the specified package is installed.
@@ -70,6 +68,7 @@ module.exports = (plop) => {
         return [];
       }
 
+      const chalk = require("chalk");
       const path = require("path");
 
       const { name, platforms } = answers;
@@ -347,8 +346,9 @@ module.exports = (plop) => {
           }
         } else {
           console.warn(
-            chalk.yellow("[WARN] ") +
-              "Cannot find module 'react-native-macos'; skipping macOS target"
+            `${chalk.yellow(
+              "[WARN]"
+            )} Cannot find module 'react-native-macos'; skipping macOS target`
           );
         }
       }
@@ -378,8 +378,9 @@ module.exports = (plop) => {
           }
         } else {
           console.warn(
-            chalk.yellow("[WARN] ") +
-              "Cannot find module 'react-native-windows'; skipping Windows target"
+            `${chalk.yellow(
+              "[WARN]"
+            )} Cannot find module 'react-native-windows'; skipping Windows target`
           );
         }
       }

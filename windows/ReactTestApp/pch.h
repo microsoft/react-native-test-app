@@ -1,4 +1,13 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+
 #pragma once
+
+#define NOMINMAX
 
 #include <hstring.h>
 #include <restrictederrorinfo.h>
@@ -6,6 +15,14 @@
 #include <windows.h>
 
 #include <winrt/Microsoft.ReactNative.h>
+
+#if __has_include(<winrt/Microsoft.UI.Xaml.Controls.h>)
+#include <winrt/Microsoft.UI.Xaml.Controls.h>
+#endif
+#if __has_include(<winrt/Microsoft.UI.Xaml.XamlTypeInfo.h>)
+#include <winrt/Microsoft.UI.Xaml.XamlTypeInfo.h>
+#endif
+
 #include <winrt/Windows.ApplicationModel.Activation.h>
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Foundation.h>

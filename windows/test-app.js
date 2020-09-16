@@ -1,8 +1,21 @@
 #!/usr/bin/env node
-
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
 // @ts-check
-const path = require("path");
+
 const fs = require("fs");
+const os = require("os");
+const path = require("path");
+
+const templateView = {
+  name: "ReactTestApp",
+  projectGuidUpper: "{B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D}",
+  useExperimentalNuget: false,
+};
 
 // Binary files in React Native Test App Windows project
 const binaryExtensions = [".png", ".pfx"];
@@ -195,18 +208,6 @@ function generateSolution(destPath) {
   );
 
   const projectFilesReplacements = {
-    "\\$\\(ManifestRootPath\\)": path.relative(
-      projectFilesDestPath,
-      path.dirname(manifestFilePath)
-    ),
-    "\\$\\(ReactNativeModulePath\\)": path.relative(
-      projectFilesDestPath,
-      rnWindowsPath
-    ),
-    "\\$\\(SourceFilesPath\\)": path.relative(
-      projectFilesDestPath,
-      path.join(__dirname, projDir)
-    ),
     "\\$\\(BundleDirContentPaths\\)": bundleDirContent,
     "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
   };
@@ -253,18 +254,64 @@ function generateSolution(destPath) {
     );
   }
 
-  copyAndReplace(
-    path.join(__dirname, "ReactTestApp.sln"),
-    path.join(destPath, `${appName}.sln`),
-    {
-      "\\$\\(ReactNativeModulePath\\)": path.relative(destPath, rnWindowsPath),
-      "\\$\\(ReactTestAppProjectPath\\)": path.relative(
-        destPath,
-        projectFilesDestPath
-      ),
-      "\\$\\(TestProject\\)": testProjectEntry,
-    }
+  // The mustache template was introduced in 0.63
+  const solutionTemplatePath = findNearest(
+    path.join(
+      nodeModulesDir,
+      "@react-native-windows",
+      "cli",
+      "templates",
+      "cpp",
+      "proj",
+      "MyApp.sln"
+    )
   );
+
+  if (!solutionTemplatePath) {
+    copyAndReplace(
+      path.join(__dirname, "ReactTestApp.sln"),
+      path.join(destPath, `${appName}.sln`),
+      {
+        "\\$\\(ReactNativeModulePath\\)": path.relative(
+          destPath,
+          rnWindowsPath
+        ),
+        "\\$\\(ReactTestAppProjectPath\\)": path.relative(
+          destPath,
+          projectFilesDestPath
+        ),
+        "\\$\\(TestProject\\)": testProjectEntry,
+      }
+    );
+  } else {
+    const mustache = require("mustache");
+    fs.writeFile(
+      path.join(destPath, `${appName}.sln`),
+      mustache
+        .render(
+          fs.readFileSync(solutionTemplatePath, { encoding: "utf8" }),
+          templateView
+        )
+        .replace(
+          "ReactTestApp\\ReactTestApp.vcxproj",
+          path.relative(
+            destPath,
+            path.join(projectFilesDestPath, "ReactTestApp.vcxproj")
+          )
+        )
+        .replace(
+          /EndProject\r?\nGlobal/,
+          ["EndProject", testProjectEntry, "Global"].join(os.EOL)
+        ),
+      {
+        encoding: "utf8",
+        mode: 0o644,
+      },
+      (e) => {
+        if (e) throw e;
+      }
+    );
+  }
 
   return undefined;
 }
