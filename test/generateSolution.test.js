@@ -1,3 +1,11 @@
+//
+// Copyright (c) Microsoft Corporation
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+// @ts-check
+
 jest.mock("fs");
 
 describe("generateSolution", () => {
@@ -11,6 +19,7 @@ describe("generateSolution", () => {
   });
 
   afterEach(() => {
+    // @ts-ignore `__setMockFiles`
     require("fs").__setMockFiles({});
     process.chdir(cwd);
   });
@@ -26,6 +35,7 @@ describe("generateSolution", () => {
   });
 
   test("exits if 'react-native-windows' folder cannot be found", () => {
+    // @ts-ignore `__setMockFiles`
     require("fs").__setMockFiles({
       [path.resolve("", "node_modules")]: "directory",
     });
@@ -36,6 +46,7 @@ describe("generateSolution", () => {
   });
 
   test("exits if 'react-native-test-app' folder cannot be found", () => {
+    // @ts-ignore `__setMockFiles`
     require("fs").__setMockFiles({
       [path.resolve("", "node_modules")]: "directory",
       [path.resolve("", "node_modules", "react-native-windows")]: "directory",

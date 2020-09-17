@@ -45,6 +45,41 @@ function findNearest(fileOrDirName, currentDir = path.resolve("")) {
 }
 
 /**
+ * Finds all Visual Studio projects in specified directory.
+ * @param {string} projectDir
+ * @param {{ path: string; name: string; guid: string; }[]=} projects
+ * @returns {{ path: string; name: string; guid: string; }[]}
+ */
+function findUserProjects(projectDir, projects = []) {
+  return fs.readdirSync(projectDir).reduce((projects, file) => {
+    const fullPath = path.join(projectDir, file);
+    if (fs.lstatSync(fullPath).isDirectory()) {
+      if (!["android", "ios", "macos", "node_modules"].includes(file)) {
+        findUserProjects(fullPath, projects);
+      }
+    } else if (fullPath.endsWith(".vcxproj")) {
+      const vcxproj = fs.readFileSync(fullPath, { encoding: "utf8" });
+      const guidMatch = vcxproj.match(
+        /<ProjectGuid>({[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}})<\/ProjectGuid>/
+      );
+      if (guidMatch) {
+        const projectNameMatch = vcxproj.match(
+          /<ProjectName>(.*?)<\/ProjectName>/
+        );
+        projects.push({
+          path: fullPath,
+          name: projectNameMatch
+            ? projectNameMatch[1]
+            : path.basename(file, ".vcxproj"),
+          guid: guidMatch[1],
+        });
+      }
+    }
+    return projects;
+  }, projects);
+}
+
+/**
  * @param {string[] | { windows?: string[] } | undefined} resources
  * @param {string} projectPath
  * @param {string} vcxProjectPath
@@ -96,13 +131,30 @@ function replaceContent(content, replacements) {
 }
 
 /**
+ * Returns a solution entry for specified project.
+ * @param {{ path: string; name: string; guid: string; }} project
+ * @param {string} destPath
+ */
+function toProjectEntry(project, destPath) {
+  return [
+    `Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "${
+      project.name
+    }", "${path.relative(destPath, project.path)}", "${project.guid}"`,
+    "\tProjectSection(ProjectDependencies) = postProject",
+    `\t\t${templateView.projectGuidUpper} = ${templateView.projectGuidUpper}`,
+    "\tEndProjectSection",
+    "EndProject",
+  ].join(os.EOL);
+}
+
+/**
  * Copies a file to given destination, replacing parts of its contents.
  * @param {string} srcPath Path to the file to be copied.
  * @param {string} destPath Destination path.
  * @param {{ [pattern: string]: string }=} replacements e.g. {'TextToBeReplaced': 'Replacement'}
  */
 function copyAndReplace(srcPath, destPath, replacements = {}) {
-  /** @type {(e?: Error) => void} */
+  /** @type {(e: NodeJS.ErrnoException | null) => void} */
   const throwOnError = (e) => {
     if (e) {
       throw e;
@@ -131,7 +183,7 @@ function copyAndReplace(srcPath, destPath, replacements = {}) {
 
 /**
  * Reads manifest file and and resolves paths to bundle resources.
- * @param {string} manifestFilePath Path to the closest manifest file.
+ * @param {string | null} manifestFilePath Path to the closest manifest file.
  * @param {string} projectFilesDestPath Resolved paths will be relative to this path.
  * @return {[string, string, string]} Application name and paths to directories and files to include
  */
@@ -227,32 +279,9 @@ function generateSolution(destPath) {
     )
   );
 
-  const testProjectFilePath = path.join(destPath, "ReactTestAppTests");
-  const testProjectTemplateFile = "ReactTestAppTestsTemplate.vcxproj";
-  let testProjectEntry = "";
-
-  if (fs.existsSync(path.join(testProjectFilePath, testProjectTemplateFile))) {
-    testProjectEntry =
-      'Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReactTestAppTests", "ReactTestAppTests\\ReactTestAppTests.vcxproj", "{D2B221C0-0781-4D20-8BF1-D88684662A5D}"\n' +
-      "\tProjectSection(ProjectDependencies) = postProject\n" +
-      "\t\t{B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D} = {B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D}\n" +
-      "\tEndProjectSection\n" +
-      "EndProject";
-    copyAndReplace(
-      path.join(testProjectFilePath, testProjectTemplateFile),
-      path.join(testProjectFilePath, "ReactTestAppTests.vcxproj"),
-      {
-        "\\$\\(SourceFilesPath\\)": path.relative(
-          testProjectFilePath,
-          path.join(__dirname, projDir)
-        ),
-        "\\$\\(ReactTestAppProjectPath\\)": path.relative(
-          testProjectFilePath,
-          projectFilesDestPath
-        ),
-      }
-    );
-  }
+  const additionalProjectEntries = findUserProjects(destPath)
+    .map((project) => toProjectEntry(project, destPath))
+    .join(os.EOL);
 
   // The mustache template was introduced in 0.63
   const solutionTemplatePath = findNearest(
@@ -280,7 +309,7 @@ function generateSolution(destPath) {
           destPath,
           projectFilesDestPath
         ),
-        "\\$\\(TestProject\\)": testProjectEntry,
+        "\\$\\(AdditionalProjects\\)": additionalProjectEntries,
       }
     );
   } else {
@@ -301,7 +330,7 @@ function generateSolution(destPath) {
         )
         .replace(
           /EndProject\r?\nGlobal/,
-          ["EndProject", testProjectEntry, "Global"].join(os.EOL)
+          ["EndProject", additionalProjectEntries, "Global"].join(os.EOL)
         ),
       {
         encoding: "utf8",
@@ -333,8 +362,10 @@ if (require.main === module) {
 } else {
   exports["copyAndReplace"] = copyAndReplace;
   exports["findNearest"] = findNearest;
+  exports["findUserProjects"] = findUserProjects;
   exports["generateSolution"] = generateSolution;
   exports["getBundleResources"] = getBundleResources;
   exports["parseResources"] = parseResources;
   exports["replaceContent"] = replaceContent;
+  exports["toProjectEntry"] = toProjectEntry;
 }
