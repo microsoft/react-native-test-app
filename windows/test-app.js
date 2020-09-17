@@ -163,10 +163,10 @@ function copyAndReplace(srcPath, destPath, replacements = {}) {
 
   if (binaryExtensions.includes(path.extname(srcPath))) {
     // Binary file
-    fs.copyFile(srcPath, destPath, throwOnError);
+    return fs.copyFile(srcPath, destPath, throwOnError);
   } else {
     // Text file
-    fs.writeFile(
+    return fs.writeFile(
       destPath,
       replaceContent(
         fs.readFileSync(srcPath, { encoding: "utf8" }),
@@ -214,9 +214,10 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
 /**
  * Generates Visual Studio solution.
  * @param {string} destPath Destination path.
+ * @param {boolean} [noAutolink] Skip autolinking.
  * @returns {string | undefined} An error message; `undefined` otherwise.
  */
-function generateSolution(destPath) {
+function generateSolution(destPath, noAutolink) {
   if (!destPath) {
     throw "Missing or invalid destination path";
   }
@@ -264,14 +265,16 @@ function generateSolution(destPath) {
     "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
   };
 
-  [
+  const copyTasks = [
+    "AutolinkedNativeModules.g.cpp",
+    "AutolinkedNativeModules.g.targets",
     "Package.appxmanifest",
     "packages.config",
     "PropertySheet.props",
     "ReactTestApp_TemporaryKey.pfx",
     "ReactTestApp.vcxproj.filters",
     "ReactTestApp.vcxproj",
-  ].forEach((file) =>
+  ].map((file) =>
     copyAndReplace(
       path.join(__dirname, projDir, file),
       path.join(projectFilesDestPath, file),
@@ -314,7 +317,11 @@ function generateSolution(destPath) {
     );
   } else {
     const mustache = require("mustache");
-    fs.writeFile(
+    const reactTestAppProjectPath = path.join(
+      projectFilesDestPath,
+      "ReactTestApp.vcxproj"
+    );
+    const solutionTask = fs.writeFile(
       path.join(destPath, `${appName}.sln`),
       mustache
         .render(
@@ -323,10 +330,7 @@ function generateSolution(destPath) {
         )
         .replace(
           "ReactTestApp\\ReactTestApp.vcxproj",
-          path.relative(
-            destPath,
-            path.join(projectFilesDestPath, "ReactTestApp.vcxproj")
-          )
+          path.relative(destPath, reactTestAppProjectPath)
         )
         .replace(
           /EndProject\r?\nGlobal/,
@@ -340,25 +344,50 @@ function generateSolution(destPath) {
         if (e) throw e;
       }
     );
+    if (!noAutolink) {
+      Promise.all([...copyTasks, solutionTask]).then(() => {
+        const { spawn } = require("child_process");
+        spawn(path.join(path.dirname(process.argv0), "npx.cmd"), [
+          "react-native",
+          "autolink-windows",
+          "--proj",
+          reactTestAppProjectPath,
+        ]);
+      });
+    }
   }
 
   return undefined;
 }
 
 if (require.main === module) {
-  const { argv } = require("yargs")
-    .usage("Usage: $0 --projectDirectory=directory")
-    .option("projectDirectory", {
-      alias: "p",
-      type: "string",
-      description: "Directory where solution will be created",
-      default: "windows",
-    });
-  const error = generateSolution(path.resolve(argv.projectDirectory));
-  if (error) {
-    console.error(error);
-    process.exit(1);
-  }
+  require("yargs").usage(
+    "$0 [options]",
+    "Generate a Visual Studio solution for React Test App",
+    {
+      projectDirectory: {
+        alias: "p",
+        type: "string",
+        description: "Directory where solution will be created",
+        default: "windows",
+      },
+      noAutolink: {
+        type: "boolean",
+        description: "Skip autolinking",
+        default: false,
+      },
+    },
+    ({ projectDirectory, noAutolink }) => {
+      const error = generateSolution(
+        path.resolve(projectDirectory),
+        noAutolink
+      );
+      if (error) {
+        console.error(error);
+        process.exit(1);
+      }
+    }
+  ).argv;
 } else {
   exports["copyAndReplace"] = copyAndReplace;
   exports["findNearest"] = findNearest;

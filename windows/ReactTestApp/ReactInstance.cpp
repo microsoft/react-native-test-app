@@ -13,6 +13,7 @@
 
 #include <winrt/Windows.Web.Http.Headers.h>
 
+#include "AutolinkedNativeModules.g.h"
 #include "ReactPackageProvider.h"
 
 using ReactTestApp::ReactInstance;
@@ -24,6 +25,8 @@ using winrt::Windows::Web::Http::HttpClient;
 ReactInstance::ReactInstance()
 {
     reactNativeHost_.PackageProviders().Append(winrt::make<ReactPackageProvider>());
+    winrt::Microsoft::ReactNative::RegisterAutolinkedNativeModulePackages(
+        reactNativeHost_.PackageProviders());
 }
 
 void ReactInstance::LoadJSBundleFrom(JSBundleSource source)
