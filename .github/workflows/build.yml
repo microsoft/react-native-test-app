@@ -318,6 +318,7 @@ jobs:
   windows:
     name: "Windows"
     runs-on: windows-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
         platform: [ARM, x64]
@@ -353,16 +354,17 @@ jobs:
         working-directory: example/windows
       - name: Build
         run: |
-          MSBuild Example.sln -t:Rebuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} -m
+          MSBuild Example.sln -t:Rebuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }}
         working-directory: example/windows
       - name: Test
         run: |
-          MSBuild ReactTestAppTests.vcxproj -t:Build -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} -m
+          MSBuild ReactTestAppTests.vcxproj -t:Build -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }}
           if ("${{ matrix.platform }}" -eq "x64") { VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll }
         working-directory: example/windows/ReactTestAppTests
   windows-template:
     name: "Windows [template]"
     runs-on: windows-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
         template: [all, windows]
@@ -408,8 +410,8 @@ jobs:
         working-directory: template-example
       - name: Build
         run: |
-          if ("${{ matrix.template }}" -eq "all") { MSBuild windows/TemplateExample.sln -t:Rebuild -p:Platform=x64 -m }
-          else { MSBuild TemplateExample.sln -t:Rebuild -p:Platform=x64 -m }
+          if ("${{ matrix.template }}" -eq "all") { MSBuild windows/TemplateExample.sln -t:Rebuild -p:Platform=x64 }
+          else { MSBuild TemplateExample.sln -t:Rebuild -p:Platform=x64 }
         working-directory: template-example
   release:
     needs:
@@ -421,6 +423,8 @@ jobs:
         android-template,
         macos,
         macos-template,
+        windows,
+        windows-template
       ]
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
