@@ -141,6 +141,7 @@
         <ClInclude Include="$(ReactTestAppDir)\App.h">
             <DependentUpon>$(ReactTestAppDir)\App.xaml</DependentUpon>
         </ClInclude>
+        <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
         <ClInclude Include="$(ReactTestAppDir)\MainPage.h">
             <DependentUpon>$(ReactTestAppDir)\MainPage.xaml</DependentUpon>
         </ClInclude>
@@ -194,11 +195,12 @@
         <ClCompile Include="$(ReactTestAppDir)\App.cpp">
             <DependentUpon>$(ReactTestAppDir)\App.xaml</DependentUpon>
         </ClCompile>
+        <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp">
             <DependentUpon>$(ReactTestAppDir)\MainPage.xaml</DependentUpon>
         </ClCompile>
-        <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
+        <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\ReactInstance.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\ReactPackageProvider.cpp" />
     </ItemGroup>

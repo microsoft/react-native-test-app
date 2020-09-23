@@ -13,15 +13,21 @@
     <ItemGroup>
         <ClCompile Include="$(ReactTestAppDir)\pch.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\App.cpp" />
+        <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\ReactInstance.cpp" />
+        <ClCompile Include="$(ReactTestAppDir)\ReactPackageProvider.cpp" />
         <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     </ItemGroup>
     <ItemGroup>
         <ClInclude Include="$(ReactTestAppDir)\pch.h" />
+        <ClInclude Include="$(ReactTestAppDir)\App.h" />
+        <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
+        <ClInclude Include="$(ReactTestAppDir)\MainPage.h" />
         <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />
         <ClInclude Include="$(ReactTestAppDir)\ReactInstance.h" />
+        <ClInclude Include="$(ReactTestAppDir)\ReactPackageProvider.h" />
     </ItemGroup>
     <ItemGroup>
         <Text Include="$(ProjectRootDir)\app.json">
