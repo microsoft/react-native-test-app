@@ -1,4 +1,7 @@
-buildDir = "$rootDir/build"
+// `react-native run-android` is hard-coded to look for the output APK at a very
+// specific location. See
+// https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
+buildDir = "$rootDir/$name/build"
 
 def reactNativeDir = findNodeModulesPath(rootDir, "react-native")
 def hermesEngineDir =

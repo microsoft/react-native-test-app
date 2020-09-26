@@ -70,8 +70,10 @@ below.
 # Bundle the JS first so Gradle can find
 # the assets.
 yarn build:android
+yarn android
 
-# Finally, open `sample/android` in
+# Instead of `yarn android`, you can
+# also build and run `sample/android` in
 # Android Studio.
 
 # On macOS, you can open the project from
@@ -86,8 +88,10 @@ open -a "Android Studio" android
 # find the assets.
 yarn build:ios
 pod install --project-directory=ios
+yarn ios
 
-# Finally, open the Xcode workspace.
+# Instead of `yarn ios`, you can also
+# build and run in Xcode.
 open ios/Sample.xcworkspace
 ```
 
@@ -98,8 +102,10 @@ open ios/Sample.xcworkspace
 # find the assets.
 yarn build:macos
 pod install --project-directory=macos
+yarn macos
 
-# Finally, open the Xcode workspace.
+# Instead of `yarn macos`, you can also
+# build and run in Xcode.
 open macos/Sample.xcworkspace
 ```
 
@@ -110,9 +116,11 @@ open macos/Sample.xcworkspace
 # be included in the project.
 yarn build:windows
 yarn install-windows-test-app
+yarn windows
 
-# Finally, open 'windows/Sample.sln' in
-# Visual Studio.
+# Instead of `yarn windows`, you can
+# also build and run 'windows/Sample.sln'
+# in Visual Studio.
 
 # To run test app on your local machine,
 # remember to set platform to x64 (it is
