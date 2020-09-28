@@ -1,4 +1,5 @@
 *.xcworkspace/
+*.zip
 .DS_Store
 .gradle/
 .idea/
@@ -7,4 +8,5 @@ Pods/
 build/
 dist/
 local.properties
+msbuild.binlog
 node_modules/

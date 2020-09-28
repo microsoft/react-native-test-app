@@ -7,6 +7,25 @@
 // @ts-check
 
 /**
+ * @typedef {"android" | "ios" | "macos" | "windows"} Platform
+ */
+
+/**
+ * Returns whether the target platform is included.
+ * @param {"all" | Platform} platforms
+ * @param {Platform} target
+ */
+function includesPlatform(platforms, target) {
+  const exclusive = platforms !== "all";
+  return (
+    (!exclusive || platforms === target) &&
+    (target === "android" ||
+      target === "ios" ||
+      isInstalled(`react-native-${target}`, exclusive))
+  );
+}
+
+/**
  * Returns whether the specified package is installed.
  * @param {string} pkg The target package, e.g. "react-native-macos"
  * @param {boolean} isRequired Whether the package is required
@@ -25,7 +44,7 @@ function isInstalled(pkg, isRequired) {
 
 /**
  * Converts an object or value to a pretty JSON string.
- * @param {{ [key: string]: unknown }} obj
+ * @param {Record<string, unknown>} obj
  * @return {string}
  */
 function serialize(obj) {
@@ -34,16 +53,89 @@ function serialize(obj) {
 
 /**
  * Sort the keys in specified object.
- * @param {{ [key: string]: unknown }} obj
+ * @param {Record<string, unknown>} obj
  */
 function sortByKeys(obj) {
   return Object.keys(obj)
     .sort()
-    .reduce((sorted, key) => ({ ...sorted, [key]: obj[key] }), {});
+    .reduce(
+      /** @type {(sorted: Record<string, unknown>, key: string) => Record<string, unknown>} */
+      (sorted, key) => {
+        sorted[key] = obj[key];
+        return sorted;
+      },
+      {}
+    );
 }
 
-/** @type {(plop: import("plop").NodePlopAPI) => void} */
-module.exports = (plop) => {
+/**
+ * Returns scripts for all specified platforms.
+ * @param {string} name
+ * @param {"all" | Platform} platforms
+ * @returns {Record<string, string?>}
+ */
+function getScripts(name, platforms) {
+  /** @type {(platform: string, bundle: string, assetsDest: string) => string} */
+  const rnBundle = (platform, bundle, assetsDest) =>
+    `mkdirp ${assetsDest} && react-native bundle --entry-file index.js --platform ${platform} --dev true --bundle-output dist/main.${platform}.${bundle} --assets-dest ${assetsDest} --reset-cache`;
+
+  const allScripts = {
+    android: {
+      android: "react-native run-android",
+      "build:android": rnBundle("android", "jsbundle", "dist/res"),
+      start: "react-native start",
+    },
+    ios: {
+      "build:ios": rnBundle("ios", "jsbundle", "dist"),
+      ios:
+        "react-native run-ios --scheme ReactTestApp" +
+        (platforms === "all" ? "" : " --project-path ."),
+      start: "react-native start",
+    },
+    macos: {
+      "build:macos": `${rnBundle(
+        "macos",
+        "jsbundle",
+        "dist"
+      )} --config=metro.config.macos.js`,
+      macos:
+        "react-native run-macos --scheme ReactTestApp" +
+        (platforms === "all" ? "" : " --project-path ."),
+      "start:macos": "react-native start --config=metro.config.macos.js",
+    },
+    windows: {
+      "build:windows": `${rnBundle(
+        "windows",
+        "bundle",
+        "dist"
+      )} --config=metro.config.windows.js`,
+      "start:windows": "react-native start --config=metro.config.windows.js",
+      windows: `react-native run-windows --sln ${
+        platforms === "all" ? "windows" : ""
+      }${name}.sln`,
+    },
+  };
+
+  /** @type {(keyof allScripts)[]} */
+  // @ts-ignore `Object.keys()` returns `string[]`
+  const keys = Object.keys(allScripts);
+
+  return keys.reduce(
+    /** @type {(scripts: Record<string, string?>, platform: Platform) => Record<string, string?>} */
+    (scripts, platform) => {
+      if (includesPlatform(platforms, platform)) {
+        return {
+          ...scripts,
+          ...allScripts[platform],
+        };
+      }
+      return scripts;
+    },
+    {}
+  );
+}
+
+module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
   plop.setGenerator("app", {
     description: "ReactTestApp configuration",
     prompts: [
@@ -61,8 +153,7 @@ module.exports = (plop) => {
         choices: ["all", "android", "ios", "macos", "windows"],
       },
     ],
-    /** @typedef {"all" | "android" | "ios" | "macos" | "windows"} Platforms */
-    /** @type {(answers?: { name: string; platforms: Platforms }) => import("node-plop").Actions} **/
+    /** @type {(answers?: { name: string; platforms: "all" | Platform }) => import("node-plop").Actions} **/
     // @ts-ignore tsc seems to think `answers` is missing properties `name` and `platforms`
     actions: (answers) => {
       if (!answers) {
@@ -73,13 +164,6 @@ module.exports = (plop) => {
       const path = require("path");
 
       const { name, platforms } = answers;
-      const exclusive = platforms !== "all";
-      const includeMacOS =
-        (!exclusive || platforms === "macos") &&
-        isInstalled("react-native-macos", exclusive);
-      const includeWindows =
-        (!exclusive || platforms === "windows") &&
-        isInstalled("react-native-windows", exclusive);
 
       const templateDir = path.dirname(
         require.resolve("react-native/template/package.json")
@@ -146,46 +230,16 @@ module.exports = (plop) => {
               ...packageJson,
               name,
               scripts: sortByKeys({
-                ...(!exclusive || platforms === "android"
-                  ? {
-                      "build:android":
-                        "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res --reset-cache",
-                    }
-                  : undefined),
-                ...(!exclusive || platforms === "ios"
-                  ? {
-                      "build:ios":
-                        "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist --reset-cache",
-                    }
-                  : undefined),
-                ...(includeMacOS
-                  ? {
-                      "build:macos":
-                        "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist --reset-cache --config=metro.config.macos.js",
-                      "start:macos":
-                        "react-native start --config=metro.config.macos.js",
-                    }
-                  : undefined),
-                ...(includeWindows
-                  ? {
-                      "build:windows":
-                        "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist --reset-cache --config=metro.config.windows.js",
-                      "start:windows":
-                        "react-native start --config=metro.config.windows.js",
-                    }
-                  : undefined),
-                ...(platforms !== "macos" && platforms !== "windows"
-                  ? { start: "react-native start" }
-                  : undefined),
                 ...packageJson.scripts,
+                ...getScripts(name, platforms),
               }),
               dependencies: sortByKeys({
                 ...packageJson.dependencies,
-                ...(includeMacOS
-                  ? { "react-native-macos": "0.62.10" }
+                ...(includesPlatform(platforms, "macos")
+                  ? { "react-native-macos": "0.62.14" }
                   : undefined),
-                ...(includeWindows
-                  ? { "react-native-windows": "0.62.9" }
+                ...(includesPlatform(platforms, "windows")
+                  ? { "react-native-windows": "0.62.12" }
                   : undefined),
               }),
               devDependencies: sortByKeys({
@@ -198,6 +252,7 @@ module.exports = (plop) => {
         },
       ];
 
+      const exclusive = platforms !== "all";
       if (!exclusive) {
         actions.push({
           type: "add",
@@ -263,6 +318,34 @@ module.exports = (plop) => {
             "",
           ].join("\n"),
         });
+        if (exclusive) {
+          actions.push({
+            type: "add",
+            path: "react-native.config.js",
+            template: [
+              'const path = require("path");',
+              "module.exports = {",
+              "  project: {",
+              "    android: {",
+              '      sourceDir: ".",',
+              "      manifestPath: path.relative(",
+              "        __dirname,",
+              "        path.join(",
+              '          path.dirname(require.resolve("react-native-test-app/package.json")),',
+              '          "android",',
+              '          "app",',
+              '          "src",',
+              '          "main",',
+              '          "AndroidManifest.xml"',
+              "        )",
+              "      ),",
+              "    },",
+              "  },",
+              "};",
+              "",
+            ].join("\n"),
+          });
+        }
       }
 
       if (!exclusive || platforms === "ios") {
@@ -389,4 +472,11 @@ module.exports = (plop) => {
       return actions;
     },
   });
+
+  return {
+    includesPlatform,
+    isInstalled,
+    sortByKeys,
+    getScripts,
+  };
 };

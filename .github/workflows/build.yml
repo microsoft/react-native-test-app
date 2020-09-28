@@ -50,7 +50,6 @@ jobs:
           yarn test:js --ci
       - name: SwiftLint
         run: |
-          brew install swiftlint
           echo "::add-matcher::.github/swiftlint.json"
           swiftlint
           echo "::remove-matcher owner=swiftlint::"
