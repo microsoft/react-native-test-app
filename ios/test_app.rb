@@ -24,6 +24,20 @@ def autolink_script_version
   package_version(resolve_module('@react-native-community/cli-platform-ios'))
 end
 
+def bundle_identifier(project_root, target_platform)
+  manifest_path = find_file('app.json', project_root)
+  unless manifest_path.nil?
+    manifest = JSON.parse(File.read(manifest_path))
+    platform_config = manifest[target_platform.to_s]
+    if !platform_config.nil? && !platform_config.empty?
+      bundle_identifier = platform_config['bundleIdentifier']
+      return bundle_identifier if bundle_identifier.is_a? String
+    end
+  end
+
+  @test_app_bundle_identifier
+end
+
 def find_file(file_name, current_dir)
   return if current_dir.expand_path.to_s == '/'
 
@@ -129,11 +143,26 @@ def resources_pod(project_root, target_platform)
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
-# rubocop:disable Style/TrivialAccessors
 def test_app_bundle_identifier(identifier)
+  warn <<~HEREDOC
+    Warning: test_app_bundle_identifier() is deprecated
+      Please set the bundle identifier in `app.json`, e.g.
+
+        {
+          "name": "Example",
+          "displayName": "Example",
+          "components": [],
+          "resources": {},
+          "ios": {
+            "bundleIdentifier": "#{identifier}"
+          },
+          "macos": {
+            "bundleIdentifier": "#{identifier}"
+          }
+        }
+  HEREDOC
   @test_app_bundle_identifier = identifier
 end
-# rubocop:enable Style/TrivialAccessors
 
 def use_flipper!(versions = {})
   @flipper_versions = versions
@@ -177,6 +206,7 @@ def make_project!(xcodeproj, project_root, target_platform)
   version = version[0] * 10_000 + version[1] * 100 + version[2]
   version_macro = "REACT_NATIVE_VERSION=#{version}"
 
+  product_bundle_identifier = bundle_identifier(project_root, target_platform)
   supports_flipper = target_platform == :ios && flipper_enabled?(version)
 
   app_project = Xcodeproj::Project.open(dst_xcodeproj)
@@ -193,8 +223,8 @@ def make_project!(xcodeproj, project_root, target_platform)
         'USE_FLIPPER=' + (use_flipper ? '1' : '0'),
       ]
 
-      if @test_app_bundle_identifier.is_a? String
-        config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = @test_app_bundle_identifier
+      if product_bundle_identifier.is_a? String
+        config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = product_bundle_identifier
       end
 
       next unless use_flipper
