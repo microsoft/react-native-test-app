@@ -108,6 +108,15 @@ class TestTestApp < Minitest::Test
   end
 
   %i[ios macos].each do |target|
+    define_method("test_#{target}_bundle_identifier") do
+      assert_equal("com.react.ReactTestApp-#{target}",
+                   bundle_identifier(fixture_path('with_platform_resources'), target))
+      assert_nil(bundle_identifier(fixture_path('without_platform_resources'), target))
+      assert_nil(bundle_identifier(fixture_path('without_resources'), target))
+    end
+  end
+
+  %i[ios macos].each do |target|
     define_method("test_#{target}_resources_pod_returns_spec_path") do
       assert_nil(resources_pod(Pathname.new('/'), target))
       assert_nil(resources_pod(Pathname.new('.'), target))
