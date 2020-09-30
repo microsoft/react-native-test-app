@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 import java.nio.file.Paths
 
 ext.buildReactNativeFromSource = { baseDir ->
@@ -49,7 +51,7 @@ ext.findNodeModulesPath = { baseDir, packageName ->
     // Node's module resolution algorithm searches up to the root directory,
     // after which the base path will be null
     while (basePath) {
-        def candidatePath = Paths.get(basePath.toString(), "node_modules", packageName)
+        def candidatePath = Paths.get(basePath.toString(), 'node_modules', packageName)
         if (candidatePath.toFile().exists()) {
             return candidatePath.toString()
         }
@@ -60,9 +62,31 @@ ext.findNodeModulesPath = { baseDir, packageName ->
     return null
 }
 
-ext.getApplicationId = {
+ext.getApplicationId = { baseDir ->
+    def manifestFile = findFile('app.json')
+    if (manifestFile != null) {
+        def manifest = new JsonSlurper().parseText(manifestFile.text)
+        def config = manifest['android']
+        if (config instanceof Object && config.containsKey('package')) {
+            return config['package']
+        }
+    }
+
     if (project.hasProperty('TEST_APP_IDENTIFIER')) {
-        return project.getProperty('TEST_APP_IDENTIFIER')
+        def applicationId = project.getProperty('TEST_APP_IDENTIFIER')
+        logger.warn('WARNING: Setting TEST_APP_IDENTIFIER in `gradle.properties` is deprecated')
+        logger.warn('WARNING: Please set the application identifier in `app.json`, e.g.')
+        logger.warn('WARNING:')
+        logger.warn('WARNING:     {')
+        logger.warn('WARNING:       "name": "Example",')
+        logger.warn('WARNING:       "displayName": "Example",')
+        logger.warn('WARNING:       "components": [],')
+        logger.warn('WARNING:       "resources": {},')
+        logger.warn('WARNING:       "android": {')
+        logger.warn("WARNING:         \"package\": \"${applicationId}\"")
+        logger.warn('WARNING:       }')
+        logger.warn('WARNING:     }')
+        return applicationId
     }
 
     return 'com.microsoft.reacttestapp'
@@ -84,7 +108,7 @@ ext.getFlipperVersion = { baseDir ->
     // Prefer user specified Flipper version
     if (project.hasProperty('FLIPPER_VERSION')) {
         def flipperVersion = project.getProperty('FLIPPER_VERSION')
-        return flipperVersion == "false" ? null : flipperVersion
+        return flipperVersion == 'false' ? null : flipperVersion
     }
 
     // Use the recommended Flipper version
