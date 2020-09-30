@@ -5,21 +5,12 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-package com.react.testapp.manifest
+package com.microsoft.reacttestapp.component
 
 import android.os.Bundle
-import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
-data class Manifest(
+data class ComponentViewModel(
     val name: String,
     val displayName: String,
-    val components: List<Component>
-)
-
-@JsonClass(generateAdapter = true)
-data class Component(
-    val appKey: String,
-    val displayName: String?,
     val initialProperties: Bundle?
 )

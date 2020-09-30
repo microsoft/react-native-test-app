@@ -1,4 +1,4 @@
-package com.react.testapp
+package com.microsoft.reacttestapp
 
 import android.content.Context
 import com.facebook.flipper.android.AndroidFlipperClient

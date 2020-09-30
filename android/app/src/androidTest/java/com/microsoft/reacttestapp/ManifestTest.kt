@@ -1,8 +1,8 @@
-package com.react.testapp
+package com.microsoft.reacttestapp
 
-import com.react.testapp.manifest.Manifest
-import com.react.testapp.manifest.ManifestJsonAdapter
-import com.react.testapp.manifest.MoshiBundleAdapter
+import com.microsoft.reacttestapp.manifest.Manifest
+import com.microsoft.reacttestapp.manifest.ManifestJsonAdapter
+import com.microsoft.reacttestapp.manifest.MoshiBundleAdapter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert.assertEquals

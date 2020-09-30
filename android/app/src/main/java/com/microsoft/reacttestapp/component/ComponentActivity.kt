@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-package com.react.testapp.component
+package com.microsoft.reacttestapp.component
 
 import android.app.Activity
 import android.content.Intent

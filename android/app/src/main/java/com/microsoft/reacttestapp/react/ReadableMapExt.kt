@@ -5,9 +5,11 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-package com.react.testapp.react
+package com.microsoft.reacttestapp.react
 
-import com.facebook.react.bridge.*
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.WritableArray
+import com.facebook.react.bridge.WritableMap
 
 // TODO: Change the return type to `ReadableMap` when RN 0.60 is deprecated
 fun Map<*, *>.toReadableMap(): WritableMap {

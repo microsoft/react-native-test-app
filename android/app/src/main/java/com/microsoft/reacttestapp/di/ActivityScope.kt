@@ -1,4 +1,4 @@
-package com.react.testapp.di
+package com.microsoft.reacttestapp.di
 
 import javax.inject.Scope
 

@@ -65,7 +65,7 @@ ext.getApplicationId = {
         return project.getProperty('TEST_APP_IDENTIFIER')
     }
 
-    return 'com.react.testapp'
+    return 'com.microsoft.reacttestapp'
 }
 
 ext.getFlipperVersion = { baseDir ->

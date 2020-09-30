@@ -1,4 +1,4 @@
-package com.react.testapp.react
+package com.microsoft.reacttestapp.react
 
 import android.content.Context
 import javax.inject.Inject
