@@ -1,4 +1,4 @@
-package com.react.testapp.react
+package com.microsoft.reacttestapp.react
 
 import android.app.Activity
 import android.app.Application
@@ -18,8 +18,8 @@ import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatusProvider
 import com.facebook.react.devsupport.interfaces.DevSupportManager
 import com.facebook.soloader.SoLoader
-import com.react.testapp.BuildConfig
-import com.react.testapp.R
+import com.microsoft.reacttestapp.BuildConfig
+import com.microsoft.reacttestapp.R
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -69,7 +69,7 @@ class TestAppReactNativeHost @Inject constructor(
 
         if (BuildConfig.DEBUG) {
             try {
-                Class.forName("com.react.testapp.ReactNativeFlipper")
+                Class.forName("com.microsoft.reacttestapp.ReactNativeFlipper")
                     .getMethod("initialize", Context::class.java, ReactInstanceManager::class.java)
                     .invoke(null, application, reactInstanceManager)
             } catch (e: ClassNotFoundException) {

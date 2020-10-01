@@ -1,8 +1,8 @@
-package com.react.testapp.manifest
+package com.microsoft.reacttestapp.manifest
 
 import android.os.Bundle
 import com.facebook.react.bridge.Arguments
-import com.react.testapp.react.toReadableMap
+import com.microsoft.reacttestapp.react.toReadableMap
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
 

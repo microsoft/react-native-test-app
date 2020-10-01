@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-package com.react.testapp.manifest
+package com.microsoft.reacttestapp.manifest
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi

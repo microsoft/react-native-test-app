@@ -89,7 +89,7 @@ ext.getApplicationId = { baseDir ->
         return applicationId
     }
 
-    return 'com.react.testapp'
+    return 'com.microsoft.reacttestapp'
 }
 
 ext.getFlipperVersion = { baseDir ->

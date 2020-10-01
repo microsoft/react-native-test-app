@@ -1,10 +1,10 @@
-package com.react.testapp.component
+package com.microsoft.reacttestapp.component
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.react.testapp.R
+import com.microsoft.reacttestapp.R
 
 class ComponentListAdapter(
     private val layoutInflater: LayoutInflater,

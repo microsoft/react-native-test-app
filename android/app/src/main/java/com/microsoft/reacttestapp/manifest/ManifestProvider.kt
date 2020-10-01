@@ -1,4 +1,4 @@
-package com.react.testapp.manifest
+package com.microsoft.reacttestapp.manifest
 
 import android.content.Context
 import com.squareup.moshi.JsonAdapter

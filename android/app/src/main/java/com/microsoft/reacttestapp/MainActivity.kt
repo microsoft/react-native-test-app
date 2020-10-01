@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-package com.react.testapp
+package com.microsoft.reacttestapp
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,14 +17,14 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.google.android.material.appbar.MaterialToolbar
-import com.react.testapp.component.ComponentActivity
-import com.react.testapp.component.ComponentListAdapter
-import com.react.testapp.component.ComponentViewModel
-import com.react.testapp.manifest.Component
-import com.react.testapp.manifest.ManifestProvider
-import com.react.testapp.react.BundleSource
-import com.react.testapp.react.ReactBundleNameProvider
-import com.react.testapp.react.TestAppReactNativeHost
+import com.microsoft.reacttestapp.component.ComponentActivity
+import com.microsoft.reacttestapp.component.ComponentListAdapter
+import com.microsoft.reacttestapp.component.ComponentViewModel
+import com.microsoft.reacttestapp.manifest.Component
+import com.microsoft.reacttestapp.manifest.ManifestProvider
+import com.microsoft.reacttestapp.react.BundleSource
+import com.microsoft.reacttestapp.react.ReactBundleNameProvider
+import com.microsoft.reacttestapp.react.TestAppReactNativeHost
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
