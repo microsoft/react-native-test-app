@@ -38,6 +38,18 @@ def bundle_identifier(project_root, target_platform)
   @test_app_bundle_identifier
 end
 
+def react_native_path_from_manifest(project_root, target_platform) 
+  manifest_path = find_file('app.json', project_root)
+  unless manifest_path.nil?
+      manifest = JSON.parse(File.read(manifest_path))
+      platform_config = manifest[target_platform]
+      if !platform_config.nil? && !platform_config.empty?
+        reactNativePath = platform_config['reactNativePath']
+        return reactNativePath if reactNativePath.is_a? String
+      end
+  end
+end
+
 def find_file(file_name, current_dir)
   return if current_dir.expand_path.to_s == '/'
 
@@ -80,13 +92,18 @@ def project_path(file, target_platform)
   File.expand_path(file, File.join(__dir__, '..', target_platform.to_s))
 end
 
-def react_native_path(target_platform)
-  react_native = case target_platform
-                 when :ios then 'react-native'
-                 when :macos then 'react-native-macos'
-                 else raise "Unsupported target platform: #{target_platform}"
-                 end
-  Pathname.new(resolve_module(react_native))
+def react_native_path(project_root, target_platform)
+  react_native_from_manifest = react_native_path_from_manifest(project_root, target_platform)
+  if !react_native_from_manifest.nil?
+    react_native_from_manifest
+  else
+    react_native = case target_platform
+                  when :ios then 'react-native'
+                  when :macos then 'react-native-macos'
+                  else raise "Unsupported target platform: #{target_platform}"
+                  end
+    Pathname.new(resolve_module(react_native))
+  end
 end
 
 def react_native_pods(version)
@@ -169,7 +186,7 @@ def use_flipper!(versions = {})
 end
 
 def use_react_native!(project_root, target_platform)
-  react_native = react_native_path(target_platform)
+  react_native = react_native_path(project_root, target_platform)
   version = package_version(react_native.to_s)
 
   require_relative(react_native_pods(version))
@@ -201,7 +218,7 @@ def make_project!(xcodeproj, project_root, target_platform)
     FileUtils.ln_sf(source, File.join(destination, 'ReactTestAppShared'))
   end
 
-  react_native = react_native_path(target_platform)
+  react_native = react_native_path(project_root, target_platform)
   version = package_version(react_native.to_s).segments
   version = version[0] * 10_000 + version[1] * 100 + version[2]
   version_macro = "REACT_NATIVE_VERSION=#{version}"
