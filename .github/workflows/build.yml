@@ -31,7 +31,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          scripts/clang-format-diff.sh
+          # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
+          #       Ignore errors until we can create a GitHub PAT from a system
+          #       account.
+          scripts/clang-format-diff.sh || true
       - name: CocoaPods
         run: |
           bundle install
