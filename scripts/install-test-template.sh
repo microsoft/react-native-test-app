@@ -8,7 +8,7 @@ version=$(node -e 'console.log(require("./package.json").version)')
 npm pack
 
 yarn ci
-yarn plop --dest template-example TemplateExample $platform
+yarn react-native init-test-app --destination template-example --name TemplateExample --platform $platform
 cp .yarnrc-offline template-example/.yarnrc
 
 pushd template-example 1> /dev/null
