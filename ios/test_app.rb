@@ -26,29 +26,29 @@ end
 
 def platform_config(project_root, target_platform)
   manifest_path = find_file('app.json', project_root)
-  unless manifest_path.nil?
-      manifest = JSON.parse(File.read(manifest_path))
-      config = manifest[target_platform.to_s]
-      return config if !config.nil? && !config.empty?
-  end
+  return if manifest_path.nil?
+
+  manifest = JSON.parse(File.read(manifest_path))
+  config = manifest[target_platform.to_s]
+  return config if !config.nil? && !config.empty?
 end
 
 def bundle_identifier(project_root, target_platform)
   config = platform_config(project_root, target_platform)
-  unless config.nil?
-    bundle_identifier = config['bundleIdentifier']
-    return bundle_identifier if bundle_identifier.is_a? String
-  end
+  return if config.nil?
+
+  bundle_identifier = config['bundleIdentifier']
+  return bundle_identifier if bundle_identifier.is_a? String
 
   @test_app_bundle_identifier
 end
 
-def react_native_path_from_manifest(project_root, target_platform) 
+def react_native_path_from_manifest(project_root, target_platform)
   config = platform_config(project_root, target_platform)
-  unless config.nil?
-    reactNativePath = config['reactNativePath']
-    return Pathname.new(resolve_module(reactNativePath)) if reactNativePath.is_a? String
-  end
+  return if config.nil?
+
+  react_native_path = config['reactNativePath']
+  return Pathname.new(resolve_module(react_native_path)) if react_native_path.is_a? String 
 end
 
 def find_file(file_name, current_dir)
@@ -96,11 +96,12 @@ end
 def react_native_path(project_root, target_platform)
   react_native_from_manifest = react_native_path_from_manifest(project_root, target_platform)
   return react_native_from_manifest unless react_native_from_manifest.nil?
+  
   react_native = case target_platform
-                  when :ios then 'react-native'
-                  when :macos then 'react-native-macos'
-                  else raise "Unsupported target platform: #{target_platform}"
-                  end
+                 when :ios then 'react-native'
+                 when :macos then 'react-native-macos'
+                 else raise "Unsupported target platform: #{target_platform}"
+                 end
   Pathname.new(resolve_module(react_native))
 end
 
