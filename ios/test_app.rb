@@ -43,7 +43,7 @@ def bundle_identifier(project_root, target_platform)
   @test_app_bundle_identifier
 end
 
-def react_native_path_from_manifest(project_root, target_platform)
+def react_native_from_manifest(project_root, target_platform)
   config = platform_config(project_root, target_platform)
   return if config.nil?
 
@@ -94,7 +94,7 @@ def project_path(file, target_platform)
 end
 
 def react_native_path(project_root, target_platform)
-  react_native_from_manifest = react_native_path_from_manifest(project_root, target_platform)
+  react_native_from_manifest = react_native_from_manifest(project_root, target_platform)
   return Pathname.new(resolve_module(react_native_from_manifest)) unless react_native_from_manifest.nil?
 
   react_native = case target_platform
