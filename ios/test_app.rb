@@ -48,7 +48,7 @@ def react_native_path_from_manifest(project_root, target_platform)
   return if config.nil?
 
   react_native_path = config['reactNativePath']
-  return Pathname.new(resolve_module(react_native_path)) if react_native_path.is_a? String
+  return react_native_path if react_native_path.is_a? String
 end
 
 def find_file(file_name, current_dir)
@@ -95,7 +95,7 @@ end
 
 def react_native_path(project_root, target_platform)
   react_native_from_manifest = react_native_path_from_manifest(project_root, target_platform)
-  return react_native_from_manifest unless react_native_from_manifest.nil?
+  return Pathname.new(resolve_module(react_native_from_manifest)) unless react_native_from_manifest.nil?
 
   react_native = case target_platform
                  when :ios then 'react-native'
