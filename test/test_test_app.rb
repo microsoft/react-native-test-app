@@ -117,6 +117,15 @@ class TestTestApp < Minitest::Test
   end
 
   %i[ios macos].each do |target|
+    define_method("test_#{target}_react_native_path") do
+      assert_equal("react-native-#{target}",
+                   react_native_from_manifest(fixture_path('with_platform_resources'), target))
+      assert_nil(react_native_from_manifest(fixture_path('without_platform_resources'), target))
+      assert_nil(react_native_from_manifest(fixture_path('without_resources'), target))
+    end
+  end
+
+  %i[ios macos].each do |target|
     define_method("test_#{target}_resources_pod_returns_spec_path") do
       assert_nil(resources_pod(Pathname.new('/'), target))
       assert_nil(resources_pod(Pathname.new('.'), target))
