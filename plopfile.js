@@ -12,13 +12,13 @@
 
 /**
  * Returns whether the target platform is included.
- * @param {"all" | Platform} platforms
+ * @param {"all" | Platform} platform
  * @param {Platform} target
  */
-function includesPlatform(platforms, target) {
-  const exclusive = platforms !== "all";
+function includesPlatform(platform, target) {
+  const exclusive = platform !== "all";
   return (
-    (!exclusive || platforms === target) &&
+    (!exclusive || platform === target) &&
     (target === "android" ||
       target === "ios" ||
       isInstalled(`react-native-${target}`, exclusive))
@@ -69,12 +69,12 @@ function sortByKeys(obj) {
 }
 
 /**
- * Returns scripts for all specified platforms.
+ * Returns scripts for specified platform.
  * @param {string} name
- * @param {"all" | Platform} platforms
+ * @param {"all" | Platform} targetPlatform
  * @returns {Record<string, string?>}
  */
-function getScripts(name, platforms) {
+function getScripts(name, targetPlatform) {
   /** @type {(platform: string, bundle: string, assetsDest: string) => string} */
   const rnBundle = (platform, bundle, assetsDest) =>
     `mkdirp ${assetsDest} && react-native bundle --entry-file index.js --platform ${platform} --dev true --bundle-output dist/main.${platform}.${bundle} --assets-dest ${assetsDest} --reset-cache`;
@@ -89,7 +89,7 @@ function getScripts(name, platforms) {
       "build:ios": rnBundle("ios", "jsbundle", "dist"),
       ios:
         "react-native run-ios --scheme ReactTestApp" +
-        (platforms === "all" ? "" : " --project-path ."),
+        (targetPlatform === "all" ? "" : " --project-path ."),
       start: "react-native start",
     },
     macos: {
@@ -100,7 +100,7 @@ function getScripts(name, platforms) {
       )} --config=metro.config.macos.js`,
       macos:
         "react-native run-macos --scheme ReactTestApp" +
-        (platforms === "all" ? "" : " --project-path ."),
+        (targetPlatform === "all" ? "" : " --project-path ."),
       "start:macos": "react-native start --config=metro.config.macos.js",
     },
     windows: {
@@ -111,7 +111,7 @@ function getScripts(name, platforms) {
       )} --config=metro.config.windows.js`,
       "start:windows": "react-native start --config=metro.config.windows.js",
       windows: `react-native run-windows --sln ${
-        platforms === "all" ? "windows" : ""
+        targetPlatform === "all" ? "windows" : ""
       }${name}.sln`,
     },
   };
@@ -123,7 +123,7 @@ function getScripts(name, platforms) {
   return keys.reduce(
     /** @type {(scripts: Record<string, string?>, platform: Platform) => Record<string, string?>} */
     (scripts, platform) => {
-      if (includesPlatform(platforms, platform)) {
+      if (includesPlatform(targetPlatform, platform)) {
         return {
           ...scripts,
           ...allScripts[platform],
@@ -148,13 +148,13 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
       },
       {
         type: "list",
-        name: "platforms",
+        name: "platform",
         message: "Which platforms do you need test apps for?",
         choices: ["all", "android", "ios", "macos", "windows"],
       },
     ],
-    /** @type {(answers?: { name: string; platforms: "all" | Platform }) => import("node-plop").Actions} **/
-    // @ts-ignore tsc seems to think `answers` is missing properties `name` and `platforms`
+    /** @type {(answers?: { name: string; platform: "all" | Platform }) => import("node-plop").Actions} **/
+    // @ts-ignore tsc seems to think `answers` is missing properties `name` and `platform`
     actions: (answers) => {
       if (!answers) {
         return [];
@@ -163,7 +163,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
       const chalk = require("chalk");
       const path = require("path");
 
-      const { name, platforms } = answers;
+      const { name, platform } = answers;
 
       const templateDir = path.dirname(
         require.resolve("react-native/template/package.json")
@@ -231,14 +231,14 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
               name,
               scripts: sortByKeys({
                 ...packageJson.scripts,
-                ...getScripts(name, platforms),
+                ...getScripts(name, platform),
               }),
               dependencies: sortByKeys({
                 ...packageJson.dependencies,
-                ...(includesPlatform(platforms, "macos")
+                ...(includesPlatform(platform, "macos")
                   ? { "react-native-macos": "0.62.14" }
                   : undefined),
-                ...(includesPlatform(platforms, "windows")
+                ...(includesPlatform(platform, "windows")
                   ? { "react-native-windows": "0.62.12" }
                   : undefined),
               }),
@@ -252,7 +252,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
         },
       ];
 
-      const exclusive = platforms !== "all";
+      const exclusive = platform !== "all";
       if (!exclusive) {
         actions.push({
           type: "add",
@@ -265,7 +265,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
         });
       }
 
-      if (!exclusive || platforms === "android") {
+      if (!exclusive || platform === "android") {
         const prefix = exclusive ? "" : "android/";
         const androidTemplateDir = path.join(templateDir, "android");
         actions.push({
@@ -348,7 +348,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
         }
       }
 
-      if (!exclusive || platforms === "ios") {
+      if (!exclusive || platform === "ios") {
         const prefix = exclusive ? "" : "ios/";
         actions.push({
           type: "add",
@@ -382,7 +382,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
         }
       }
 
-      if (!exclusive || platforms === "macos") {
+      if (!exclusive || platform === "macos") {
         if (isInstalled("react-native-macos", exclusive)) {
           const prefix = exclusive ? "" : "macos/";
           actions.push({
@@ -437,7 +437,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
         }
       }
 
-      if (!exclusive || platforms === "windows") {
+      if (!exclusive || platform === "windows") {
         if (isInstalled("react-native-windows", exclusive)) {
           actions.push({
             type: "add",

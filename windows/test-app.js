@@ -260,9 +260,17 @@ function generateSolution(destPath, noAutolink) {
     projectFilesDestPath
   );
 
+  const { version: rnWindowsVersion } = JSON.parse(
+    fs.readFileSync(path.join(rnWindowsPath, "package.json"), {
+      encoding: "utf8",
+    })
+  );
+
   const projectFilesReplacements = {
     "\\$\\(BundleDirContentPaths\\)": bundleDirContent,
     "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
+    "packages\\\\Microsoft\\.ReactNative\\.0\\.63\\.2\\\\build\\\\native\\\\Microsoft\\.ReactNative\\.targets": `packages\\Microsoft.ReactNative.${rnWindowsVersion}\\build\\native\\Microsoft.ReactNative.targets`,
+    "packages\\\\Microsoft\\.ReactNative\\.Cxx\\.0\\.63\\.2\\\\build\\\\native\\\\Microsoft\\.ReactNative\\.Cxx\\.targets": `packages\\Microsoft.ReactNative.Cxx.${rnWindowsVersion}\\build\\native\\Microsoft.ReactNative.Cxx.targets`,
   };
 
   const copyTasks = [
