@@ -7,8 +7,5 @@
       "displayName": "Test"
     }
   ],
-  "resources": [
-    "dist/assets",
-    "dist/main.jsbundle"
-  ]
+  "resources": ["dist/assets", "dist/main.jsbundle"]
 }

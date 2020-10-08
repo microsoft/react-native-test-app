@@ -45,7 +45,13 @@ jobs:
           bundle exec ruby -Ilib:test test/test_test_app.rb
           echo "::remove-matcher owner=minitest::"
       - name: JavaScript
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
+          # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
+          #       Ignore errors until we can create a GitHub PAT from a system
+          #       account.
+          scripts/prettier-diff.js $(git ls-files '*.js' '*.yml' 'test/**/*.json') || true
           echo "::add-matcher::.github/eslint-stylish.json"
           yarn lint:js
           echo "::remove-matcher owner=eslint-stylish::"
@@ -426,7 +432,7 @@ jobs:
         macos,
         macos-template,
         windows,
-        windows-template
+        windows-template,
       ]
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"

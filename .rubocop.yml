@@ -23,16 +23,10 @@ Metrics/MethodLength:
   Enabled: false
 
 Metrics/CyclomaticComplexity:
-  IgnoredMethods: [
-    make_project!,
-    use_test_app_internal!
-  ]
+  IgnoredMethods: [make_project!, use_test_app_internal!]
 
 Metrics/PerceivedComplexity:
-  IgnoredMethods: [
-    make_project!,
-    use_test_app_internal!
-  ]
+  IgnoredMethods: [make_project!, use_test_app_internal!]
 
 Naming/FileName:
   Exclude:

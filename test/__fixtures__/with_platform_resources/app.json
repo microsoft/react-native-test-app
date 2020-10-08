@@ -8,21 +8,15 @@
     }
   ],
   "resources": {
-    "ios": [
-      "dist-ios/assets",
-      "dist-ios/main.jsbundle"
-    ],
-    "macos": [
-      "dist-macos/assets",
-      "dist-macos/main.jsbundle"
-    ]
+    "ios": ["dist-ios/assets", "dist-ios/main.jsbundle"],
+    "macos": ["dist-macos/assets", "dist-macos/main.jsbundle"]
   },
   "ios": {
     "bundleIdentifier": "com.react.ReactTestApp-ios",
-    "reactNativePath":"react-native-ios"
+    "reactNativePath": "react-native-ios"
   },
   "macos": {
     "bundleIdentifier": "com.react.ReactTestApp-macos",
-    "reactNativePath":"react-native-macos"
+    "reactNativePath": "react-native-macos"
   }
 }
