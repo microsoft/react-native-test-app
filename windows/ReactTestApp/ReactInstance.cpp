@@ -28,16 +28,6 @@ using winrt::Windows::Web::Http::HttpClient;
 
 namespace
 {
-    // The `DevSettings` module override used to get the `ReactContext` was
-    // introduced in 0.63. `ReactContext` is needed to toggle element inspector.
-    // We also need to be on a version with the fix for re-initializing native
-    // modules when reloading.
-#if REACT_NATIVE_VERSION >= 6305
-    constexpr bool kUseCustomDeveloperMenu = true;
-#else
-    constexpr bool kUseCustomDeveloperMenu = false;
-#endif
-
     winrt::hstring const kBreakOnFirstLine = L"breakOnFirstLine";
     winrt::hstring const kUseDirectDebugger = L"useDirectDebugger";
     winrt::hstring const kUseFastRefresh = L"useFastRefresh";
@@ -57,7 +47,17 @@ namespace
         values.Insert(key, PropertyValue::CreateBoolean(value));
     }
 
+    // The `DevSettings` module override used to get the `ReactContext` was
+    // introduced in 0.63. `ReactContext` is needed to toggle element inspector.
+    // We also need to be on a version with the fix for re-initializing native
+    // modules when reloading.
+#if REACT_NATIVE_VERSION < 6305
+    constexpr bool kUseCustomDeveloperMenu = false;
+#else
+    constexpr bool kUseCustomDeveloperMenu = true;
+
     REACT_MODULE(DevSettings)
+#endif
     struct DevSettings {
         REACT_INIT(Initialize)
         void Initialize(winrt::Microsoft::ReactNative::ReactContext const &reactContext) noexcept
