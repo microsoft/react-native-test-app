@@ -9,8 +9,10 @@
 
 #include "ReactInstance.h"
 
+#include <NativeModules.h>
 #include <filesystem>
 
+#include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Web.Http.Headers.h>
 
 #include "AutolinkedNativeModules.g.h"
@@ -19,8 +21,61 @@
 using ReactTestApp::ReactInstance;
 using winrt::ReactTestApp::implementation::ReactPackageProvider;
 using winrt::Windows::Foundation::IAsyncOperation;
+using winrt::Windows::Foundation::PropertyValue;
 using winrt::Windows::Foundation::Uri;
+using winrt::Windows::Storage::ApplicationData;
 using winrt::Windows::Web::Http::HttpClient;
+
+namespace
+{
+    winrt::hstring const kBreakOnFirstLine = L"breakOnFirstLine";
+    winrt::hstring const kUseDirectDebugger = L"useDirectDebugger";
+    winrt::hstring const kUseFastRefresh = L"useFastRefresh";
+    winrt::hstring const kUseWebDebugger = L"useWebDebugger";
+
+    bool RetrieveLocalSetting(winrt::hstring const &key, bool defaultValue)
+    {
+        auto localSettings = ApplicationData::Current().LocalSettings();
+        auto values = localSettings.Values();
+        return winrt::unbox_value_or<bool>(values.Lookup(key), defaultValue);
+    }
+
+    void StoreLocalSetting(winrt::hstring const &key, bool value)
+    {
+        auto localSettings = ApplicationData::Current().LocalSettings();
+        auto values = localSettings.Values();
+        values.Insert(key, PropertyValue::CreateBoolean(value));
+    }
+
+    // The `DevSettings` module override used to get the `ReactContext` was
+    // introduced in 0.63. `ReactContext` is needed to toggle element inspector.
+    // We also need to be on a version with the fix for re-initializing native
+    // modules when reloading.
+#if REACT_NATIVE_VERSION < 6305
+    constexpr bool kUseCustomDeveloperMenu = false;
+#else
+    constexpr bool kUseCustomDeveloperMenu = true;
+
+    REACT_MODULE(DevSettings)
+#endif
+    struct DevSettings {
+        REACT_INIT(Initialize)
+        void Initialize(winrt::Microsoft::ReactNative::ReactContext const &reactContext) noexcept
+        {
+            context_ = reactContext;
+        }
+
+        static void ToggleElementInspector() noexcept
+        {
+            context_.CallJSFunction(L"RCTDeviceEventEmitter", L"emit", L"toggleElementInspector");
+        }
+
+    private:
+        static winrt::Microsoft::ReactNative::ReactContext context_;
+    };
+
+    winrt::Microsoft::ReactNative::ReactContext DevSettings::context_ = nullptr;
+}  // namespace
 
 ReactInstance::ReactInstance()
 {
@@ -32,22 +87,95 @@ ReactInstance::ReactInstance()
 void ReactInstance::LoadJSBundleFrom(JSBundleSource source)
 {
     auto instanceSettings = reactNativeHost_.InstanceSettings();
-    instanceSettings.UseLiveReload(source == JSBundleSource::DevServer);
-    instanceSettings.UseWebDebugger(source == JSBundleSource::DevServer);
-    instanceSettings.UseFastRefresh(source == JSBundleSource::DevServer);
-
     switch (source) {
         case JSBundleSource::DevServer:
             instanceSettings.JavaScriptMainModuleName(L"index");
             instanceSettings.JavaScriptBundleFile(L"");
             break;
         case JSBundleSource::Embedded:
-            winrt::hstring bundleFileName = winrt::to_hstring(GetBundleName());
-            instanceSettings.JavaScriptBundleFile(bundleFileName);
+            instanceSettings.JavaScriptBundleFile(winrt::to_hstring(GetBundleName()));
             break;
     }
 
+    Reload();
+}
+
+void ReactInstance::Reload()
+{
+    auto instanceSettings = reactNativeHost_.InstanceSettings();
+
+    instanceSettings.UseWebDebugger(UseWebDebugger());
+    instanceSettings.UseDirectDebugger(UseDirectDebugger());
+
+    auto useFastRefresh = UseFastRefresh();
+    instanceSettings.UseFastRefresh(useFastRefresh);
+    instanceSettings.UseLiveReload(useFastRefresh);
+
+    instanceSettings.EnableDeveloperMenu(!kUseCustomDeveloperMenu);
+
     reactNativeHost_.ReloadInstance();
+}
+
+bool ReactInstance::BreakOnFirstLine() const
+{
+    return RetrieveLocalSetting(kBreakOnFirstLine, false);
+}
+
+void ReactInstance::BreakOnFirstLine(bool breakOnFirstLine)
+{
+    StoreLocalSetting(kBreakOnFirstLine, breakOnFirstLine);
+    Reload();
+}
+
+void ReactInstance::ToggleElementInspector() const
+{
+    DevSettings::ToggleElementInspector();
+}
+
+bool ReactInstance::UseCustomDeveloperMenu() const
+{
+    return kUseCustomDeveloperMenu;
+}
+
+bool ReactInstance::UseDirectDebugger() const
+{
+    return RetrieveLocalSetting(kUseDirectDebugger, false);
+}
+
+void ReactInstance::UseDirectDebugger(bool useDirectDebugger)
+{
+    if (useDirectDebugger) {
+        // Remote debugging is incompatible with direct debugging
+        StoreLocalSetting(kUseWebDebugger, false);
+    }
+    StoreLocalSetting(kUseDirectDebugger, useDirectDebugger);
+    Reload();
+}
+
+bool ReactInstance::UseFastRefresh() const
+{
+    return RetrieveLocalSetting(kUseFastRefresh, true);
+}
+
+void ReactInstance::UseFastRefresh(bool useFastRefresh)
+{
+    StoreLocalSetting(kUseFastRefresh, useFastRefresh);
+    Reload();
+}
+
+bool ReactInstance::UseWebDebugger() const
+{
+    return RetrieveLocalSetting(kUseWebDebugger, false);
+}
+
+void ReactInstance::UseWebDebugger(bool useWebDebugger)
+{
+    if (useWebDebugger) {
+        // Remote debugging is incompatible with direct debugging
+        StoreLocalSetting(kUseDirectDebugger, false);
+    }
+    StoreLocalSetting(kUseWebDebugger, useWebDebugger);
+    Reload();
 }
 
 std::string ReactTestApp::GetBundleName()

@@ -212,6 +212,38 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
 }
 
 /**
+ * Returns the version number the package at specified path.
+ * @param {string} packagePath
+ * @returns {string}
+ */
+function getPackageVersion(packagePath) {
+  const { version } = JSON.parse(
+    fs.readFileSync(path.join(packagePath, "package.json"), {
+      encoding: "utf8",
+    })
+  );
+  return version;
+}
+
+/**
+ * Returns a single number for the specified version, suitable as a value for a
+ * preprocessor definition.
+ * @param {string} version
+ * @returns {number}
+ */
+function getVersionNumber(version) {
+  const components = version.split(".");
+  const lastIndex = components.length - 1;
+  return components.reduce(
+    /** @type {(sum: number, value: string, index: number) => number} */
+    (sum, value, index) => {
+      return sum + parseInt(value) * Math.pow(100, lastIndex - index);
+    },
+    0
+  );
+}
+
+/**
  * Generates Visual Studio solution.
  * @param {string} destPath Destination path.
  * @param {boolean} [noAutolink] Skip autolinking.
@@ -260,13 +292,12 @@ function generateSolution(destPath, noAutolink) {
     projectFilesDestPath
   );
 
-  const { version: rnWindowsVersion } = JSON.parse(
-    fs.readFileSync(path.join(rnWindowsPath, "package.json"), {
-      encoding: "utf8",
-    })
-  );
+  const rnWindowsVersion = getPackageVersion(rnWindowsPath);
 
   const projectFilesReplacements = {
+    "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${getVersionNumber(
+      rnWindowsVersion
+    )};`,
     "\\$\\(BundleDirContentPaths\\)": bundleDirContent,
     "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
     "packages\\\\Microsoft\\.ReactNative\\.0\\.63\\.2\\\\build\\\\native\\\\Microsoft\\.ReactNative\\.targets": `packages\\Microsoft.ReactNative.${rnWindowsVersion}\\build\\native\\Microsoft.ReactNative.targets`,
@@ -277,11 +308,11 @@ function generateSolution(destPath, noAutolink) {
     "AutolinkedNativeModules.g.cpp",
     "AutolinkedNativeModules.g.targets",
     "Package.appxmanifest",
-    "packages.config",
     "PropertySheet.props",
-    "ReactTestApp_TemporaryKey.pfx",
-    "ReactTestApp.vcxproj.filters",
     "ReactTestApp.vcxproj",
+    "ReactTestApp.vcxproj.filters",
+    "ReactTestApp_TemporaryKey.pfx",
+    "packages.config",
   ].map((file) =>
     copyAndReplace(
       path.join(__dirname, projDir, file),
@@ -402,6 +433,8 @@ if (require.main === module) {
   exports["findUserProjects"] = findUserProjects;
   exports["generateSolution"] = generateSolution;
   exports["getBundleResources"] = getBundleResources;
+  exports["getPackageVersion"] = getPackageVersion;
+  exports["getVersionNumber"] = getVersionNumber;
   exports["parseResources"] = parseResources;
   exports["replaceContent"] = replaceContent;
   exports["toProjectEntry"] = toProjectEntry;

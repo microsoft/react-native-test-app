@@ -26,23 +26,35 @@ namespace winrt::ReactTestApp::implementation
                                Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromJSBundle(Windows::Foundation::IInspectable const &,
                               Windows::UI::Xaml::RoutedEventArgs);
-        void OpenDebugMenu(Windows::Foundation::IInspectable const &,
-                           Windows::UI::Xaml::RoutedEventArgs);
+
+        void Reload(Windows::Foundation::IInspectable const &, Windows::UI::Xaml::RoutedEventArgs);
+        void ToggleBreakOnFirstLine(Windows::Foundation::IInspectable const &,
+                                    Windows::UI::Xaml::RoutedEventArgs);
+        void ToggleDirectDebugger(Windows::Foundation::IInspectable const &,
+                                  Windows::UI::Xaml::RoutedEventArgs);
+        void ToggleFastRefresh(Windows::Foundation::IInspectable const &,
+                               Windows::UI::Xaml::RoutedEventArgs);
+        void ToggleInspector(Windows::Foundation::IInspectable const &,
+                             Windows::UI::Xaml::RoutedEventArgs);
+        void ToggleWebDebugger(Windows::Foundation::IInspectable const &,
+                               Windows::UI::Xaml::RoutedEventArgs);
 
         Windows::Foundation::IAsyncAction
-        OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &e);
+        OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const &);
 
     private:
         using Base = MainPageT;
 
         ::ReactTestApp::ReactInstance reactInstance_;
 
-        void LoadReactComponent(::ReactTestApp::Component const &component);
+        void InitializeDebugMenu();
+        void InitializeReactMenu();
+        void InitializeTitleBar();
 
-        void SetUpTitleBar();
+        void LoadReactComponent(::ReactTestApp::Component const &);
 
         void OnCoreTitleBarLayoutMetricsChanged(
-            Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &sender,
+            Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &,
             Windows::Foundation::IInspectable const &);
     };
 }  // namespace winrt::ReactTestApp::implementation

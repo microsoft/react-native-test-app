@@ -24,12 +24,29 @@ namespace ReactTestApp
     public:
         ReactInstance();
 
-        auto &ReactHost()
+        auto const &ReactHost() const
         {
             return reactNativeHost_;
         }
 
-        void LoadJSBundleFrom(JSBundleSource source);
+        void LoadJSBundleFrom(JSBundleSource);
+        void Reload();
+
+        bool BreakOnFirstLine() const;
+        void BreakOnFirstLine(bool);
+
+        void ToggleElementInspector() const;
+
+        bool UseCustomDeveloperMenu() const;
+
+        bool UseDirectDebugger() const;
+        void UseDirectDebugger(bool);
+
+        bool UseFastRefresh() const;
+        void UseFastRefresh(bool);
+
+        bool UseWebDebugger() const;
+        void UseWebDebugger(bool);
 
     private:
         winrt::Microsoft::ReactNative::ReactNativeHost reactNativeHost_;
