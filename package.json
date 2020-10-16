@@ -28,7 +28,7 @@
   ],
   "homepage": "https://github.com/microsoft/react-native-test-app",
   "scripts": {
-    "ci": "yarn --use-yarnrc .yarnrc-offline --prefer-offline",
+    "ci": "yarn --use-yarnrc .yarnrc-offline --prefer-offline --frozen-lockfile --non-interactive",
     "clean": "npx --quiet rimraf example/node_modules/react-native-test-app && git clean -dfqx",
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml' 'test/**/*.json')",
