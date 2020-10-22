@@ -309,6 +309,12 @@ def use_test_app_internal!(target_platform)
         target.build_configurations.each do |config|
           config.build_settings['SWIFT_VERSION'] = '4.1'
         end
+      when /\AReact/
+        target.build_configurations.each do |config|
+          # Xcode 10.2 requires suppression of nullability for React
+          # https://stackoverflow.com/questions/37691049/xcode-compile-flag-to-suppress-nullability-warnings-not-working
+          config.build_settings['WARNING_CFLAGS'] ||= ['"-Wno-nullability-completeness"']
+        end
       end
     end
   end
