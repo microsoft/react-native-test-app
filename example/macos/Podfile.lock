@@ -279,7 +279,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native-macos/Libraries/Vibration`)
   - ReactCommon/callinvoker (from `../node_modules/react-native-macos/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native-macos/ReactCommon`)
-  - ReactTestApp-DevSupport (from `../node_modules/react-native-test-app`)
+  - ReactTestApp-DevSupport (from `../..`)
   - ReactTestApp-Resources (from `..`)
   - SwiftLint
   - Yoga (from `../node_modules/react-native-macos/ReactCommon/yoga`)
@@ -342,7 +342,7 @@ EXTERNAL SOURCES:
   ReactCommon:
     :path: "../node_modules/react-native-macos/ReactCommon"
   ReactTestApp-DevSupport:
-    :path: "../node_modules/react-native-test-app"
+    :path: "../.."
   ReactTestApp-Resources:
     :path: ".."
   Yoga:

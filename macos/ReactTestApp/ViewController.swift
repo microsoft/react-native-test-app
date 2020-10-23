@@ -12,7 +12,14 @@ final class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        view.wantsLayer = true
+        guard let layer = view.layer,
+              let reactMenuImage = NSImage(named: "ReactMenu") else {
+            return
+        }
+
+        layer.contents = reactMenuImage
+        layer.contentsGravity = .center
     }
 
     override var representedObject: Any? {
