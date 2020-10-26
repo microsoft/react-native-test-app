@@ -15,6 +15,20 @@ def assert(condition, message)
   raise message unless condition
 end
 
+def app_manifest(project_root)
+  manifest_path = find_file('app.json', project_root)
+  return if manifest_path.nil?
+
+  JSON.parse(File.read(manifest_path))
+end
+
+def app_name(project_root)
+  manifest = app_manifest(project_root)
+  return [nil, nil] if manifest.nil?
+
+  [manifest['name'], manifest['displayName']]
+end
+
 def autolink_script_path
   package_path = resolve_module('@react-native-community/cli-platform-ios')
   File.join(package_path, 'native_modules')
@@ -25,10 +39,9 @@ def autolink_script_version
 end
 
 def platform_config(project_root, target_platform)
-  manifest_path = find_file('app.json', project_root)
-  return if manifest_path.nil?
+  manifest = app_manifest(project_root)
+  return if manifest.nil?
 
-  manifest = JSON.parse(File.read(manifest_path))
   config = manifest[target_platform.to_s]
   return config if !config.nil? && !config.empty?
 end
@@ -131,7 +144,7 @@ def resources_pod(project_root, target_platform)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
-  resources = resolve_resources(JSON.parse(File.read(app_manifest)), target_platform)
+  resources = resolve_resources(app_manifest(project_root), target_platform)
   spec = {
     'name' => 'ReactTestApp-Resources',
     'version' => '1.0.0-dev',
@@ -201,10 +214,15 @@ def make_project!(xcodeproj, project_root, target_platform)
   destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
   dst_xcodeproj = File.join(destination, xcodeproj)
 
-  # Copy/link Xcode project files
-  FileUtils.mkdir_p(dst_xcodeproj)
-  FileUtils.cp(File.join(src_xcodeproj, 'project.pbxproj'), dst_xcodeproj)
-  FileUtils.ln_sf(File.join(src_xcodeproj, 'xcshareddata'), dst_xcodeproj)
+  # Copy Xcode project files
+  FileUtils.mkdir_p(destination)
+  FileUtils.cp_r(src_xcodeproj, destination)
+  name, _display_name = app_name(project_root)
+  unless name.nil?
+    xcschemes_path = File.join(dst_xcodeproj, 'xcshareddata', 'xcschemes')
+    FileUtils.cp(File.join(xcschemes_path, 'ReactTestApp.xcscheme'),
+                 File.join(xcschemes_path, "#{name}.xcscheme"))
+  end
 
   # Link source files
   %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
