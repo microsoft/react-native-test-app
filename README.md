@@ -220,22 +220,9 @@ yarn install-windows-test-app
 
 # Known Issues
 
-## Invalid `Podfile` file: undefined method `[]' for nil:NilClass
-
-This can occur if your package is iOS specific, i.e. it contains no `ios` folder
-with an Xcode project. `react-native config` cannot detect your package if this
-is missing. We can work around it by adding `react-native.config.js` at the root
-of the package:
-
-```js
-module.exports = {
-  project: {
-    ios: {
-      project: "ReactTestApp-Dummy.xcodeproj",
-    },
-  },
-};
-```
+For a list of known issues and workarounds, please go to the
+[Troubleshooting](https://github.com/microsoft/react-native-test-app/wiki/Troubleshooting)
+page in the wiki.
 
 # Contributing
 

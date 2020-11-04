@@ -35,6 +35,10 @@ module.exports = {
       new RegExp(
         `${path.resolve(__dirname, "windows").replace(/[/\\]/g, "/")}.*`
       ),
+
+      // Workaround for `EBUSY: resource busy or locked, open '~\msbuild.ProjectImports.zip'`
+      // when building with `yarn windows --release`
+      /.*\.ProjectImports\.zip/,
     ]),
   },
   transformer: {

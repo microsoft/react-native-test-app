@@ -65,6 +65,9 @@
         <BundleFileAssets>$(BundleFileContentPaths)</BundleFileAssets>
         <AssetsContentRoot>$(ReactTestAppDir)\Assets</AssetsContentRoot>
         <AssetsContent>$(AssetsContentRoot)\**\*</AssetsContent>
+        <PackageCertificateThumbprint>4AC7A41A12F06BCFEDBADCE05ECFFDF546109B66</PackageCertificateThumbprint>
+        <PackageCertificateKeyFile>ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
         <UseDebugLibraries>true</UseDebugLibraries>
@@ -76,7 +79,8 @@
         <LinkIncremental>false</LinkIncremental>
     </PropertyGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-    <ImportGroup Label="ExtensionSettings"></ImportGroup>
+    <ImportGroup Label="ExtensionSettings">
+    </ImportGroup>
     <ImportGroup Label="PropertySheets">
         <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     </ImportGroup>
@@ -120,7 +124,8 @@
             <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
             <!--Temporarily disable cppwinrt heap enforcement to work around xaml compiler generated std::shared_ptr use -->
             <AdditionalOptions Condition="'$(CppWinRTHeapEnforcement)'==''">/DWINRT_NO_MAKE_DETECTION %(AdditionalOptions)</AdditionalOptions>
-            <DisableSpecificWarnings></DisableSpecificWarnings>
+            <DisableSpecificWarnings>
+            </DisableSpecificWarnings>
             <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;WINRT_LEAN_AND_MEAN;REACT_NATIVE_VERSION=10000000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
         </ClCompile>
     </ItemDefinitionGroup>
@@ -166,16 +171,17 @@
         <Text Include="$(ProjectRootDir)\app.json" />
     </ItemGroup>
     <ItemGroup>
-        <BundleDirContentToBePackaged Include="$(BundleDirAssets)"/>
+        <BundleDirContentToBePackaged Include="$(BundleDirAssets)" />
         <None Include="@(BundleDirContentToBePackaged)">
             <DirNameFullPath>$([MSBuild]::ValueOrDefault('%(FullPath)', '').Remove($([MSBuild]::ValueOrDefault(%(FullPath), '').LastIndexOf(\%(RecursiveDir)%(Filename)%(Extension)))))</DirNameFullPath>
             <DirName Condition="'%(DirNameFullPath)' != ''">$([MSBuild]::ValueOrDefault(%(DirNameFullPath), '').Substring($([MSBuild]::ValueOrDefault(%(DirNameFullPath), '').LastIndexOf('\'))))</DirName>
             <Link>$([MSBuild]::MakeRelative($(ProjectDir),'Bundle%(DirName)\%(RecursiveDir)%(Filename)%(Extension)'))</Link>
             <DeploymentContent>true</DeploymentContent>
         </None>
+        <None Include="ReactTestApp_TemporaryKey.pfx" />
     </ItemGroup>
     <ItemGroup>
-        <BundleFileContentToBePackaged Include="$(BundleFileAssets)"/>
+        <BundleFileContentToBePackaged Include="$(BundleFileAssets)" />
         <None Include="@(BundleFileContentToBePackaged)">
             <Link>$([MSBuild]::MakeRelative($(ProjectDir),'Bundle\%(RecursiveDir)%(Filename)%(Extension)'))</Link>
             <DeploymentContent>true</DeploymentContent>
@@ -195,7 +201,7 @@
         <ClCompile Include="$(ReactTestAppDir)\App.cpp">
             <DependentUpon>$(ReactTestAppDir)\App.xaml</DependentUpon>
         </ClCompile>
-        <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
+        <ClCompile Include="AutolinkedNativeModules.g.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp">
             <DependentUpon>$(ReactTestAppDir)\MainPage.xaml</DependentUpon>
         </ClCompile>

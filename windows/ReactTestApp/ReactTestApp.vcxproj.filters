@@ -45,5 +45,6 @@
     <ItemGroup>
         <None Include="PropertySheet.props" />
         <None Include="packages.config" />
+        <None Include="ReactTestApp_TemporaryKey.pfx" />
     </ItemGroup>
 </Project>

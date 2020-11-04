@@ -1,13 +1,35 @@
+const path = require("path");
+
 if (process.argv.includes("--config=metro.config.macos.js")) {
   module.exports = {
     reactNativePath: "node_modules/react-native-macos",
   };
-} else if (process.argv.includes("--config=metro.config.windows.js")) {
+} else if (
+  process.argv.includes("--config=metro.config.windows.js") ||
+  process.argv.includes("run-windows")
+) {
+  const sourceDir = "windows";
   module.exports = {
+    project: {
+      windows: {
+        sourceDir,
+        project: {
+          projectFile: path.relative(
+            path.join(__dirname, sourceDir),
+            path.join(
+              "node_modules",
+              ".generated",
+              "windows",
+              "ReactTestApp",
+              "ReactTestApp.vcxproj"
+            )
+          ),
+        },
+      },
+    },
     reactNativePath: "node_modules/react-native-windows",
   };
 } else {
-  const path = require("path");
   const sourceDir = "android";
   module.exports = {
     project: {

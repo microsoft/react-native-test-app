@@ -1,3 +1,4 @@
+*.binlog
 *.xcworkspace/
 *.zip
 .DS_Store
