@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "19ECD0D1232ED425003D8557"
+               BlueprintIdentifier = "193EF05E247A736100BE8C79"
                BuildableName = "ReactTestApp.app"
                BlueprintName = "ReactTestApp"
                ReferencedContainer = "container:ReactTestApp.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "19ECD0E7232ED427003D8557"
+               BlueprintIdentifier = "193EF070247A736300BE8C79"
                BuildableName = "ReactTestAppTests.xctest"
                BlueprintName = "ReactTestAppTests"
                ReferencedContainer = "container:ReactTestApp.xcodeproj">
@@ -42,7 +42,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "19ECD0F2232ED428003D8557"
+               BlueprintIdentifier = "193EF07B247A736300BE8C79"
                BuildableName = "ReactTestAppUITests.xctest"
                BlueprintName = "ReactTestAppUITests"
                ReferencedContainer = "container:ReactTestApp.xcodeproj">
@@ -64,7 +64,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "19ECD0D1232ED425003D8557"
+            BlueprintIdentifier = "193EF05E247A736100BE8C79"
             BuildableName = "ReactTestApp.app"
             BlueprintName = "ReactTestApp"
             ReferencedContainer = "container:ReactTestApp.xcodeproj">
@@ -81,7 +81,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "19ECD0D1232ED425003D8557"
+            BlueprintIdentifier = "193EF05E247A736100BE8C79"
             BuildableName = "ReactTestApp.app"
             BlueprintName = "ReactTestApp"
             ReferencedContainer = "container:ReactTestApp.xcodeproj">

@@ -18,6 +18,12 @@ def fixture_path(*args)
 end
 
 class TestTestApp < Minitest::Test
+  def test_app_name
+    name, display_name = app_name(fixture_path('with_resources'))
+    assert_equal(name, 'TestFixture')
+    assert_equal(display_name, 'Test Fixture')
+  end
+
   def test_autolink_script_path
     cli = fixture_path('test_app', 'node_modules', '@react-native-community', 'cli-platform-ios')
     stub :resolve_module, cli do
