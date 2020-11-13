@@ -1,0 +1,18 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "swiftformat",
+      "pattern": [
+        {
+          "regexp": "react-native-test-app\\/(?!react-native-test-app)(.*):(\\d+):(\\d+): (\\w+): \\((.*?)\\) (.*?)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        }
+      ]
+    }
+  ]
+}

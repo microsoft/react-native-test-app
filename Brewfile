@@ -1,6 +1,7 @@
 tap 'homebrew/cask-versions'
 brew 'clang-format'
 brew 'node'
+brew 'swiftformat'
 brew 'swiftlint'
 brew 'yarn'
 cask 'adoptopenjdk8'

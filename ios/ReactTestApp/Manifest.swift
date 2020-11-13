@@ -44,14 +44,15 @@ struct Manifest: Decodable {
 
     static func fromFile() -> Manifest? {
         guard let manifestURL = Bundle.main.url(forResource: "app", withExtension: "json"),
-              let data = try? Data(contentsOf: manifestURL, options: .uncached) else {
+              let data = try? Data(contentsOf: manifestURL, options: .uncached)
+        else {
             return nil
         }
         return from(data: data)
     }
 
     static func from(data: Data) -> Manifest? {
-        return try? JSONDecoder().decode(self, from: data)
+        try? JSONDecoder().decode(self, from: data)
     }
 }
 
