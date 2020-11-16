@@ -32,8 +32,10 @@
     "clean": "npx --quiet rimraf example/node_modules/react-native-test-app && git clean -dfqx",
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml' 'test/**/*.json')",
+    "format:swift": "swiftformat --swiftversion 5.3 ios macos",
     "lint:js": "eslint $(git ls-files '*.js')",
     "lint:rb": "bundle exec rubocop",
+    "lint:swift": "swiftlint",
     "test:js": "jest",
     "test:rb": "bundle exec ruby -Ilib:test test/test_test_app.rb"
   },

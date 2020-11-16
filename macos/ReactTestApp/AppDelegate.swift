@@ -9,17 +9,17 @@ import Cocoa
 
 @NSApplicationMain
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    @IBOutlet weak var reactMenu: NSMenu!
+    @IBOutlet var reactMenu: NSMenu!
 
     private(set) lazy var reactInstance = ReactInstance()
 
     private weak var mainWindow: NSWindow?
 
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
         true
     }
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
+    func applicationDidFinishLaunching(_: Notification) {
         // `keyWindow` might be `nil` while loading or when the window is not
         // active. Use `identifier` to find our main window.
         let windows = NSApplication.shared.windows
@@ -59,7 +59,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationWillTerminate(_ aNotification: Notification) {
+    func applicationWillTerminate(_: Notification) {
         // Insert code here to tear down your application
     }
 
@@ -75,12 +75,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction
-    func onLoadEmbeddedBundle(_ sender: NSMenuItem) {
+    func onLoadEmbeddedBundle(_: NSMenuItem) {
         reactInstance.remoteBundleURL = nil
     }
 
     @IBAction
-    func onLoadFromDevServer(_ sender: NSMenuItem) {
+    func onLoadFromDevServer(_: NSMenuItem) {
         reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
     }
 
@@ -88,7 +88,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func present(_ component: Component) {
         guard let window = mainWindow,
-              let bridge = reactInstance.bridge else {
+              let bridge = reactInstance.bridge
+        else {
             return
         }
 

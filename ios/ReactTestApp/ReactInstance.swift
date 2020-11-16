@@ -12,7 +12,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
         NSNotification.Name("ReactInstance.scanForQRCodeNotification")
 
     static func jsBundleURL() -> URL? {
-        return RCTBundleURLProvider.sharedSettings().jsBundleURL(
+        RCTBundleURLProvider.sharedSettings().jsBundleURL(
             forBundleRoot: "index",
             fallbackResource: nil
         )
@@ -32,7 +32,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
 
     override init() {
         #if DEBUG
-        remoteBundleURL = ReactInstance.jsBundleURL()
+            remoteBundleURL = ReactInstance.jsBundleURL()
         #endif
 
         super.init()
@@ -73,27 +73,27 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
             object: nil
         )
 
-    #if os(iOS)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(onRemoteBundleURLReceived(_:)),
-            name: .didReceiveRemoteBundleURL,
-            object: nil
-        )
-    #endif
+        #if os(iOS)
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(onRemoteBundleURLReceived(_:)),
+                name: .didReceiveRemoteBundleURL,
+                object: nil
+            )
+        #endif
 
-    #if USE_FLIPPER
-        if let flipper = FlipperClient.shared() {
-            flipper.add(FlipperKitLayoutPlugin(
-                rootNode: UIApplication.shared,
-                with: SKDescriptorMapper()
-            ))
-            flipper.add(FKUserDefaultsPlugin(suiteName: nil))
-            flipper.add(FlipperKitReactPlugin())
-            flipper.add(FlipperKitNetworkPlugin(networkAdapter: SKIOSNetworkAdapter()))
-            flipper.start()
-        }
-    #endif
+        #if USE_FLIPPER
+            if let flipper = FlipperClient.shared() {
+                flipper.add(FlipperKitLayoutPlugin(
+                    rootNode: UIApplication.shared,
+                    with: SKDescriptorMapper()
+                ))
+                flipper.add(FKUserDefaultsPlugin(suiteName: nil))
+                flipper.add(FlipperKitReactPlugin())
+                flipper.add(FlipperKitNetworkPlugin(networkAdapter: SKIOSNetworkAdapter()))
+                flipper.start()
+            }
+        #endif
     }
 
     init(forTestingPurposesOnly: Bool) {
@@ -128,80 +128,82 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
 
     // MARK: - RCTBridgeDelegate details
 
-    func sourceURL(for bridge: RCTBridge?) -> URL? {
+    func sourceURL(for _: RCTBridge?) -> URL? {
         if let remoteBundleURL = remoteBundleURL {
             return remoteBundleURL
         }
 
-    #if os(iOS)
-        let possibleEntryFiles = [
-            "index.ios",
-            "main.ios",
-            "index.mobile",
-            "main.mobile",
-            "index.native",
-            "main.native",
-            "index",
-            "main",
-        ]
-    #elseif os(macOS)
-        let possibleEntryFiles = [
-            "index.macos",
-            "main.macos",
-            "index.native",
-            "main.native",
-            "index",
-            "main",
-        ]
-    #endif
+        #if os(iOS)
+            let possibleEntryFiles = [
+                "index.ios",
+                "main.ios",
+                "index.mobile",
+                "main.mobile",
+                "index.native",
+                "main.native",
+                "index",
+                "main",
+            ]
+        #elseif os(macOS)
+            let possibleEntryFiles = [
+                "index.macos",
+                "main.macos",
+                "index.native",
+                "main.native",
+                "index",
+                "main",
+            ]
+        #endif
 
         let jsBundleURL = possibleEntryFiles
             .lazy
-            .map({
+            .map {
                 Bundle.main.url(
                     forResource: $0,
                     withExtension: "jsbundle"
                 )
-            })
+            }
             .first(where: { $0 != nil })
         return jsBundleURL ?? ReactInstance.jsBundleURL()
     }
 
-    func extraModules(for bridge: RCTBridge!) -> [RCTBridgeModule] {
-        return []
+    func extraModules(for _: RCTBridge!) -> [RCTBridgeModule] {
+        []
     }
 
     // MARK: - RCTTurboModuleLookupDelegate details
 
-    func module(forName moduleName: UnsafePointer<Int8>?) -> Any? {
-        return nil
+    func module(forName _: UnsafePointer<Int8>?) -> Any? {
+        nil
     }
 
-    func module(forName moduleName: UnsafePointer<Int8>?, warnOnLookupFailure: Bool) -> Any? {
-        return nil
+    func module(forName _: UnsafePointer<Int8>?, warnOnLookupFailure _: Bool) -> Any? {
+        nil
     }
 
-    func moduleIsInitialized(_ moduleName: UnsafePointer<Int8>?) -> Bool {
-        return false
+    func moduleIsInitialized(_: UnsafePointer<Int8>?) -> Bool {
+        false
     }
 
     // MARK: - Private
 
     @objc private func onJavaScriptLoaded(_ notification: Notification) {
         guard let bridge = notification.userInfo?["bridge"] as? RCTBridge,
-              let currentBundleURL = bridge.bundleURL else {
+              let currentBundleURL = bridge.bundleURL
+        else {
             return
         }
 
-        RCTExecuteOnMainQueue({ [weak self] in
+        RCTExecuteOnMainQueue { [weak self] in
             guard let devMenu = bridge.devMenu else {
                 return
             }
 
             devMenu.add(RCTDevMenuItem.buttonItem(
                 titleBlock: {
-                    currentBundleURL.isFileURL ? "Load From Dev Server"
-                                               : "Load Embedded JS Bundle"
+                    currentBundleURL.isFileURL
+                        ? "Load From Dev Server"
+                        : "Load Embedded JS Bundle"
                 },
                 handler: {
                     guard let strongSelf = self else {
@@ -216,15 +218,15 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
                 }
             ))
 
-        #if os(iOS) && !targetEnvironment(simulator)
-            devMenu.add(RCTDevMenuItem.buttonItem(withTitle: "Scan QR Code") {
-                NotificationCenter.default.post(
-                    name: ReactInstance.scanForQRCodeNotification,
-                    object: self
-                )
-            })
-        #endif
-        })
+            #if os(iOS) && !targetEnvironment(simulator)
+                devMenu.add(RCTDevMenuItem.buttonItem(withTitle: "Scan QR Code") {
+                    NotificationCenter.default.post(
+                        name: ReactInstance.scanForQRCodeNotification,
+                        object: self
+                    )
+                })
+            #endif
+        }
     }
 
     @objc private func onJavaScriptLoading(_ notification: Notification) {
@@ -241,7 +243,8 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
 
     @objc private func onRemoteBundleURLReceived(_ notification: Notification) {
         guard let value = notification.userInfo?["value"] as? String,
-              var urlComponents = URLComponents(string: value) else {
+              var urlComponents = URLComponents(string: value)
+        else {
             return
         }
 

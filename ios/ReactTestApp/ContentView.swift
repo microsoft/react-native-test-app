@@ -5,8 +5,8 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-import UIKit
 import QRCodeReader
+import UIKit
 
 typealias NavigationLink = (String, () -> Void)
 
@@ -30,29 +30,30 @@ final class ContentViewController: UITableViewController {
 
         title = "ReactTestApp"
 
-    #if targetEnvironment(simulator)
-        let keyboardShortcut = " (⌃⌘Z)"
-    #else
-        let keyboardShortcut = ""
-    #endif
+        #if targetEnvironment(simulator)
+            let keyboardShortcut = " (⌃⌘Z)"
+        #else
+            let keyboardShortcut = ""
+        #endif
         sections.append(SectionData(
             items: [],
             footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
         ))
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("\(#function) has not been implemented")
     }
 
     // MARK: - UIViewController overrides
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.reactInstance.initReact { components in
-                let items: [NavigationLink] = components.map { (component) in
+                let items: [NavigationLink] = components.map { component in
                     (component.displayName ?? component.appKey, { self?.navigate(to: component) })
                 }
                 DispatchQueue.main.async {
@@ -80,7 +81,7 @@ final class ContentViewController: UITableViewController {
 
     // MARK: - UITableViewDelegate overrides
 
-    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let (_, action) = sections[indexPath.section].items[indexPath.row]
         action()
         tableView.deselectRow(at: indexPath, animated: true)
@@ -88,11 +89,11 @@ final class ContentViewController: UITableViewController {
 
     // MARK: - UITableViewDataSource overrides
 
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].items.count
+    override public func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+        sections[section].items.count
     }
 
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override public func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let (title, _) = sections[indexPath.section].items[indexPath.row]
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         let presentsNewContent = indexPath.section == 0
@@ -106,19 +107,20 @@ final class ContentViewController: UITableViewController {
         return cell
     }
 
-    public override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+    override public func numberOfSections(in _: UITableView) -> Int {
+        sections.count
     }
 
-    public override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return sections[section].footer
+    override public func tableView(_: UITableView, titleForFooterInSection section: Int) -> String? {
+        sections[section].footer
     }
 
     // MARK: - Private
 
     private func navigate(to component: Component) {
         guard let bridge = reactInstance.bridge,
-              let navigationController = navigationController else {
+              let navigationController = navigationController
+        else {
             return
         }
 
@@ -152,7 +154,7 @@ final class ContentViewController: UITableViewController {
         return "React Native version: \(version)"
     }
 
-    @objc private func scanForQRCode(_ notification: Notification) {
+    @objc private func scanForQRCode(_: Notification) {
         let builder = QRCodeReaderViewControllerBuilder {
             $0.reader = QRCodeReader(
                 metadataObjectTypes: [.qr],

@@ -57,6 +57,12 @@ jobs:
           echo "::remove-matcher owner=eslint-stylish::"
           yarn tsc
           yarn test:js --ci
+      - name: SwiftFormat
+        run: |
+          brew install swiftformat
+          echo "::add-matcher::.github/swiftformat.json"
+          yarn format:swift --lint
+          echo "::remove-matcher owner=swiftformat::"
       - name: SwiftLint
         run: |
           echo "::add-matcher::.github/swiftlint.json"
