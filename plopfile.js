@@ -283,8 +283,6 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
             "wrapper",
             "gradle-wrapper.properties"
           ),
-          transform: (template) =>
-            template.replace(/5\.4\.1/, "5.6.4").replace(/5\.5/, "5.6.4"),
         });
         actions.push({
           type: "add",
