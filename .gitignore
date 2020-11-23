@@ -5,6 +5,7 @@
 .gradle/
 .idea/
 .vs/
+.watchman-*
 .yarn-offline-mirror/
 Pods/
 clang-format-diff.py
