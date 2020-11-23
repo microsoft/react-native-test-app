@@ -86,6 +86,8 @@ ReactInstance::ReactInstance()
 
 void ReactInstance::LoadJSBundleFrom(JSBundleSource source)
 {
+    source_ = source;
+
     auto instanceSettings = reactNativeHost_.InstanceSettings();
     switch (source) {
         case JSBundleSource::DevServer:
@@ -154,7 +156,7 @@ void ReactInstance::UseDirectDebugger(bool useDirectDebugger)
 
 bool ReactInstance::UseFastRefresh() const
 {
-    return RetrieveLocalSetting(kUseFastRefresh, true);
+    return isFastRefreshAvailable() && RetrieveLocalSetting(kUseFastRefresh, true);
 }
 
 void ReactInstance::UseFastRefresh(bool useFastRefresh)
@@ -165,7 +167,7 @@ void ReactInstance::UseFastRefresh(bool useFastRefresh)
 
 bool ReactInstance::UseWebDebugger() const
 {
-    return RetrieveLocalSetting(kUseWebDebugger, false);
+    return isWebDebuggerAvailable() && RetrieveLocalSetting(kUseWebDebugger, false);
 }
 
 void ReactInstance::UseWebDebugger(bool useWebDebugger)
