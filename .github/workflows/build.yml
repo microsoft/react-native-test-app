@@ -13,7 +13,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -76,7 +76,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /example/.yarn-offline-mirror
@@ -110,7 +110,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -159,11 +159,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          # Node has a bug where it crashes compiling a regular
-          # expression of react-native cli. Using a specific
-          # Node version helps to workaround this problem:
-          # https://github.com/facebook/react-native/issues/26598
-          node-version: 12.9.1
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Validate Gradle wrapper
@@ -218,11 +214,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          # Node has a bug where it crashes compiling a regular
-          # expression of react-native cli. Using a specific
-          # Node version helps to workaround this problem:
-          # https://github.com/facebook/react-native/issues/26598
-          node-version: 12.9.1
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -261,7 +253,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /example/.yarn-offline-mirror
@@ -295,7 +287,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -345,7 +337,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /example/.yarn-offline-mirror
@@ -388,7 +380,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -446,7 +438,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
