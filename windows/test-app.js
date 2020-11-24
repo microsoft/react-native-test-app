@@ -400,6 +400,14 @@ function generateSolution(destPath, noAutolink) {
 }
 
 if (require.main === module) {
+  // Add the `node_modules` path whence the script was invoked. Without it, this
+  // script will fail to resolve any packages when `react-native-test-app` was
+  // linked using npm or yarn link.
+  const nodeModulesDir = process.argv[1].match(/(.*?[/\\]node_modules)[/\\]/);
+  if (nodeModulesDir) {
+    module.paths.push(nodeModulesDir[1]);
+  }
+
   require("yargs").usage(
     "$0 [options]",
     "Generate a Visual Studio solution for React Test App",
