@@ -7,5 +7,6 @@
         "optional": "cpp",
         "string": "cpp",
         "vector": "cpp"
-    }
+    },
+    "react-native-tools.projectRoot": "./example"
 }
