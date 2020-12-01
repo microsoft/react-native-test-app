@@ -19,9 +19,9 @@
     </PropertyGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
     <PropertyGroup Label="ReactNativeWindowsProps">
-        <ProjectRootDir Condition="'$(ProjectRootDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'app.json'))</ProjectRootDir>
-        <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
-        <ReactTestAppDir Condition="'$(ReactTestAppDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows\ReactTestApp\</ReactTestAppDir>
+        <ProjectRootDir Condition="'$(ProjectRootDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ProjectRootDir>
+        <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
+        <ReactTestAppDir Condition="'$(ReactTestAppDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows\ReactTestApp\</ReactTestAppDir>
     </PropertyGroup>
     <ItemGroup Label="ProjectConfigurations">
         <ProjectConfiguration Include="Debug|ARM">
