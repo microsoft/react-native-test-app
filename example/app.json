@@ -5,6 +5,11 @@
     {
       "appKey": "Example",
       "displayName": "App"
+    },
+    {
+      "appKey": "Example",
+      "displayName": "App (modal)",
+      "presentationStyle": "modal"
     }
   ],
   "resources": {

@@ -89,6 +89,7 @@ namespace ReactTestApp
         c.appKey = j.at("appKey");
         c.displayName = get_optional<std::string>(j, "displayName");
         c.initialProperties = parseInitialProps(j);
+        c.presentationStyle = get_optional<std::string>(j, "presentationStyle");
     }
 
     void from_json(const nlohmann::json &j, Manifest &m)

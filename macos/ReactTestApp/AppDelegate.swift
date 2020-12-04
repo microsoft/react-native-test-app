@@ -86,6 +86,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Private
 
+    private enum WindowSize {
+        static let defaultSize = CGSize(width: 640, height: 480)
+        static let modalSize = CGSize(width: 586, height: 326)
+    }
+
     private func present(_ component: Component) {
         guard let window = mainWindow,
               let bridge = reactInstance.bridge
@@ -93,7 +98,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        window.title = component.displayName ?? component.appKey
+        let title = component.displayName ?? component.appKey
 
         let viewController: NSViewController = {
             if let viewController = RTAViewControllerFromString(component.appKey, bridge) {
@@ -101,6 +106,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
 
             let viewController = NSViewController(nibName: nil, bundle: nil)
+            viewController.title = title
             viewController.view = RCTRootView(
                 bridge: bridge,
                 moduleName: component.appKey,
@@ -109,9 +115,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return viewController
         }()
 
-        let frame = window.contentViewController?.view.frame
-        viewController.view.frame = frame ?? NSRect(x: 0, y: 0, width: 480, height: 270)
+        switch component.presentationStyle {
+        case "modal":
+            viewController.view.frame = NSRect(size: WindowSize.modalSize)
+            if let rootView = viewController.view as? RCTRootView {
+                rootView.minimumSize = WindowSize.modalSize
+            }
+            window.contentViewController?.presentAsModalWindow(viewController)
+        default:
+            window.title = title
+            let frame = window.contentViewController?.view.frame
+            viewController.view.frame = frame ?? NSRect(size: WindowSize.defaultSize)
+            window.contentViewController = viewController
+        }
+    }
+}
 
-        window.contentViewController = viewController
+extension NSRect {
+    init(size: CGSize) {
+        self.init(x: 0, y: 0, width: size.width, height: size.height)
     }
 }

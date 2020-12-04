@@ -21,5 +21,6 @@ data class Manifest(
 data class Component(
     val appKey: String,
     val displayName: String?,
-    val initialProperties: Bundle?
+    val initialProperties: Bundle?,
+    val presentationStyle: String?
 )
