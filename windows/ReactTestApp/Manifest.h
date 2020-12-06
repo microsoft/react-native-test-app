@@ -19,6 +19,7 @@ namespace ReactTestApp
         std::string appKey;
         std::optional<std::string> displayName;
         std::optional<std::map<std::string, std::any>> initialProperties;
+        std::optional<std::string> presentationStyle;
     };
 
     struct Manifest {

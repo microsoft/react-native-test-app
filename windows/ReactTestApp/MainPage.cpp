@@ -96,6 +96,24 @@ namespace
         }
     }
 
+    void InitializeReactRootView(winrt::Microsoft::ReactNative::ReactRootView reactRootView,
+                                 ReactTestApp::Component const &component)
+    {
+        reactRootView.ComponentName(winrt::to_hstring(component.appKey));
+        reactRootView.InitialProps(
+            [&initialProps = component.initialProperties](IJSValueWriter const &writer) {
+                if (initialProps.has_value()) {
+                    writer.WriteObjectBegin();
+                    for (auto &&property : initialProps.value()) {
+                        auto &value = property.second;
+                        writer.WritePropertyName(winrt::to_hstring(property.first));
+                        WritePropertyValue(value, writer);
+                    }
+                    writer.WriteObjectEnd();
+                }
+            });
+    }
+
     // According to
     // https://docs.microsoft.com/en-us/uwp/api/windows.system.virtualkeymodifiers?view=winrt-19041,
     // the following should work but doesn't. We implement our own operator
@@ -180,21 +198,24 @@ void MainPage::LoadJSBundleFrom(JSBundleSource source)
 
 void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)
 {
-    AppTitle().Text(to_hstring(component.displayName.value_or(component.appKey)));
+    auto title = to_hstring(component.displayName.value_or(component.appKey));
+    auto &&presentationStyle = component.presentationStyle.value_or("");
+    if (presentationStyle == "modal") {
+        if (DialogReactRootView().ReactNativeHost() == nullptr) {
+            DialogReactRootView().ReactNativeHost(reactInstance_.ReactHost());
+        }
 
-    ReactRootView().ComponentName(to_hstring(component.appKey));
-    ReactRootView().InitialProps(
-        [&initialProps = component.initialProperties](IJSValueWriter const &writer) {
-            if (initialProps.has_value()) {
-                writer.WriteObjectBegin();
-                for (auto &&property : initialProps.value()) {
-                    auto &value = property.second;
-                    writer.WritePropertyName(to_hstring(property.first));
-                    WritePropertyValue(value, writer);
-                }
-                writer.WriteObjectEnd();
-            }
-        });
+        InitializeReactRootView(DialogReactRootView(), component);
+        ContentDialog().Title(winrt::box_value(title));
+        ContentDialog().ShowAsync();
+    } else {
+        if (ReactRootView().ReactNativeHost() == nullptr) {
+            ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
+        }
+
+        InitializeReactRootView(ReactRootView(), component);
+        AppTitle().Text(title);
+    }
 }
 
 void MainPage::InitializeDebugMenu()
@@ -225,8 +246,6 @@ void MainPage::InitializeReactMenu()
         newMenuItem.IsEnabled(false);
         menuItems.Append(newMenuItem);
     } else {
-        ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
-
         // If only one component is present load it automatically
         auto &components = manifest.value().components;
         if (components.size() == 1) {

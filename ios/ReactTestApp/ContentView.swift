@@ -137,7 +137,13 @@ final class ContentViewController: UITableViewController {
             )
             return viewController
         }()
-        navigationController.pushViewController(viewController, animated: true)
+
+        switch component.presentationStyle {
+        case "modal":
+            present(viewController, animated: true, completion: nil)
+        default:
+            navigationController.pushViewController(viewController, animated: true)
+        }
     }
 
     private func runtimeInfo() -> String {

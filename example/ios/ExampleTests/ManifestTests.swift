@@ -18,12 +18,19 @@ class ManifestTests: XCTestCase {
 
         XCTAssertEqual(manifest.name, "Example")
         XCTAssertEqual(manifest.displayName, "Example")
-        XCTAssertEqual(manifest.components.count, 1)
+        XCTAssertEqual(manifest.components.count, 2)
 
         let component = manifest.components[0]
         XCTAssertEqual(component.appKey, "Example")
         XCTAssertEqual(component.displayName, "App")
+        XCTAssertNil(component.presentationStyle)
         XCTAssertNil(component.initialProperties)
+
+        let modalComponent = manifest.components[1]
+        XCTAssertEqual(modalComponent.appKey, "Example")
+        XCTAssertEqual(modalComponent.displayName, "App (modal)")
+        XCTAssertEqual(modalComponent.presentationStyle, "modal")
+        XCTAssertNil(modalComponent.initialProperties)
     }
 
     func testMultipleComponents() {
@@ -31,8 +38,18 @@ class ManifestTests: XCTestCase {
             name: "Name",
             displayName: "Display Name",
             components: [
-                Component(appKey: "0", displayName: nil, initialProperties: ["key": "value"]),
-                Component(appKey: "1", displayName: "1", initialProperties: nil),
+                Component(
+                    appKey: "0",
+                    displayName: nil,
+                    initialProperties: ["key": "value"],
+                    presentationStyle: nil
+                ),
+                Component(
+                    appKey: "1",
+                    displayName: "1",
+                    initialProperties: nil,
+                    presentationStyle: nil
+                ),
             ]
         )
 
