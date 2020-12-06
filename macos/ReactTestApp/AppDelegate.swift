@@ -10,10 +10,12 @@ import Cocoa
 @NSApplicationMain
 final class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var reactMenu: NSMenu!
+    @IBOutlet var rememberLastComponentMenuItem: NSMenuItem!
 
     private(set) lazy var reactInstance = ReactInstance()
 
     private weak var mainWindow: NSWindow?
+    private var manifestChecksum: String?
 
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
         true
@@ -25,7 +27,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let windows = NSApplication.shared.windows
         mainWindow = windows.first { $0.identifier?.rawValue == "MainWindow" }
 
-        guard let manifest = Manifest.fromFile() else {
+        if Session.shouldRememberLastComponent {
+            rememberLastComponentMenuItem.state = .on
+        }
+
+        guard let (manifest, checksum) = Manifest.fromFile() else {
             let item = reactMenu.addItem(
                 withTitle: "Could not load 'app.json'",
                 action: nil,
@@ -35,28 +41,37 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        for (index, component) in manifest.components.enumerated() {
+        manifest.components.enumerated().forEach { index, component in
             let title = component.displayName ?? component.appKey
             let item = reactMenu.addItem(
                 withTitle: title,
                 action: #selector(onComponentSelected),
                 keyEquivalent: index < 9 ? String(index + 1) : ""
             )
+            item.tag = index
             item.keyEquivalentModifierMask = [.shift, .command]
             item.isEnabled = false
             item.representedObject = component
         }
 
+        let components = manifest.components
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.reactInstance.initReact { _ in
+            self?.reactInstance.initReact {
                 DispatchQueue.main.async {
-                    if manifest.components.count == 1 {
-                        self?.present(manifest.components[0])
+                    guard let strongSelf = self else {
+                        return
                     }
-                    self?.reactMenu.items.forEach { $0.isEnabled = true }
+
+                    if let index = components.count == 1 ? 0 : Session.lastOpenedComponent(checksum) {
+                        strongSelf.present(components[index])
+                    }
+
+                    strongSelf.reactMenu.items.forEach { $0.isEnabled = true }
                 }
             }
         }
+
+        manifestChecksum = checksum
     }
 
     func applicationWillTerminate(_: Notification) {
@@ -72,16 +87,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         present(component)
+
+        if let checksum = manifestChecksum {
+            Session.storeComponent(index: menuItem.tag, checksum: checksum)
+        }
     }
 
     @IBAction
-    func onLoadEmbeddedBundle(_: NSMenuItem) {
+    func onLoadEmbeddedBundleSelected(_: NSMenuItem) {
         reactInstance.remoteBundleURL = nil
     }
 
     @IBAction
-    func onLoadFromDevServer(_: NSMenuItem) {
+    func onLoadFromDevServerSelected(_: NSMenuItem) {
         reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
+    }
+
+    @IBAction
+    func onRememberLastComponentSelected(_ menuItem: NSMenuItem) {
+        switch menuItem.state {
+        case .mixed, .on:
+            Session.shouldRememberLastComponent = false
+            menuItem.state = .off
+        case .off:
+            Session.shouldRememberLastComponent = true
+            menuItem.state = .on
+        default:
+            assertionFailure()
+        }
     }
 
     // MARK: - Private

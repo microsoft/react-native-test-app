@@ -20,7 +20,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 
     var remoteBundleURL: URL? {
         didSet {
-            initReact(onDidInitialize: { _ in /* noop */ })
+            initReact(onDidInitialize: { /* noop */ })
         }
     }
 
@@ -96,7 +96,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         assert(forTestingPurposesOnly)
     }
 
-    func initReact(onDidInitialize: @escaping ([Component]) -> Void) {
+    func initReact(onDidInitialize: @escaping () -> Void) {
         if let bridge = bridge {
             if remoteBundleURL == nil {
                 // When loading the embedded bundle, we must disable remote
@@ -113,10 +113,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
                 object: bridge
             )
 
-            guard let manifest = Manifest.fromFile() else {
-                return
-            }
-            onDidInitialize(manifest.components)
+            onDidInitialize()
         } else {
             assertionFailure("Failed to instantiate RCTBridge")
         }

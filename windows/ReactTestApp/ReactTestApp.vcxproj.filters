@@ -28,6 +28,7 @@
         <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />
         <ClInclude Include="$(ReactTestAppDir)\ReactInstance.h" />
         <ClInclude Include="$(ReactTestAppDir)\ReactPackageProvider.h" />
+        <ClInclude Include="$(ReactTestAppDir)\Session.h" />
     </ItemGroup>
     <ItemGroup>
         <Text Include="$(ProjectRootDir)\app.json">

@@ -13,8 +13,10 @@
 #include <winrt/Windows.UI.ViewManagement.h>
 
 #include "MainPage.g.cpp"
+#include "Session.h"
 
 using ReactTestApp::JSBundleSource;
+using ReactTestApp::Session;
 using winrt::Microsoft::ReactNative::IJSValueWriter;
 using winrt::ReactTestApp::implementation::MainPage;
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
@@ -28,6 +30,7 @@ using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::Window;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
+using winrt::Windows::UI::Xaml::Controls::ToggleMenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Input::KeyboardAccelerator;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
 
@@ -143,6 +146,12 @@ void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
     LoadJSBundleFrom(JSBundleSource::Embedded);
 }
 
+void MainPage::ToggleRememberLastComponent(IInspectable const &sender, RoutedEventArgs)
+{
+    auto item = sender.as<ToggleMenuFlyoutItem>();
+    Session::ShouldRememberLastComponent(item.IsChecked());
+}
+
 void MainPage::Reload(Windows::Foundation::IInspectable const &, Windows::UI::Xaml::RoutedEventArgs)
 {
     reactInstance_.Reload();
@@ -238,51 +247,64 @@ void MainPage::InitializeDebugMenu()
 
 void MainPage::InitializeReactMenu()
 {
-    std::optional<::ReactTestApp::Manifest> manifest = ::ReactTestApp::GetManifest("app.json");
+    RememberLastComponentMenuItem().IsChecked(Session::ShouldRememberLastComponent());
+
+    auto result = ::ReactTestApp::GetManifest("app.json");
     auto menuItems = ReactMenuBarItem().Items();
-    if (!manifest.has_value()) {
+    if (!result.has_value()) {
         MenuFlyoutItem newMenuItem;
         newMenuItem.Text(L"Couldn't parse 'app.json'");
         newMenuItem.IsEnabled(false);
         menuItems.Append(newMenuItem);
+        return;
+    }
+
+    auto &&[manifest, checksum] = result.value();
+    manifestChecksum_ = std::move(checksum);
+
+    // If only one component is present load, it automatically. Otherwise, check
+    // whether we can reopen a component from previous session.
+    auto &components = manifest.components;
+    auto index = components.size() == 1 ? 0 : Session::GetLastOpenedComponent(manifestChecksum_);
+    if (index.has_value()) {
+        Loaded([this, component = components[index.value()]](IInspectable const &,
+                                                             RoutedEventArgs const &) {
+            LoadReactComponent(component);
+        });
     } else {
-        // If only one component is present load it automatically
-        auto &components = manifest.value().components;
-        if (components.size() == 1) {
-            LoadReactComponent(components.at(0));
-        } else {
-            AppTitle().Text(to_hstring(manifest.value().displayName));
+        AppTitle().Text(to_hstring(manifest.displayName));
+    }
+
+    auto keyboardAcceleratorKey = VirtualKey::Number1;
+    for (int i = 0; i < static_cast<int>(components.size()); ++i) {
+        auto &&component = components[i];
+
+        MenuFlyoutItem newMenuItem;
+        newMenuItem.Text(winrt::to_hstring(component.displayName.value_or(component.appKey)));
+        newMenuItem.Click(
+            [this, component = std::move(component), i](IInspectable const &, RoutedEventArgs) {
+                LoadReactComponent(component);
+                Session::StoreComponent(i, manifestChecksum_);
+            });
+
+        // Add keyboard accelerator for first nine (1-9) components
+        if (keyboardAcceleratorKey <= VirtualKey::Number9) {
+            auto const num = std::underlying_type_t<VirtualKey>(keyboardAcceleratorKey) -
+                             std::underlying_type_t<VirtualKey>(VirtualKey::Number0);
+            newMenuItem.AccessKey(to_hstring(num));
+
+            KeyboardAccelerator keyboardAccelerator;
+            keyboardAccelerator.Modifiers(VirtualKeyModifiers::Control |
+                                          VirtualKeyModifiers::Shift);
+            keyboardAccelerator.Key(keyboardAcceleratorKey);
+
+            newMenuItem.KeyboardAccelerators().Append(keyboardAccelerator);
+
+            keyboardAcceleratorKey =
+                static_cast<VirtualKey>(static_cast<int32_t>(keyboardAcceleratorKey) + 1);
         }
 
-        auto keyboardAcceleratorKey = VirtualKey::Number1;
-        for (auto &&c : components) {
-            MenuFlyoutItem newMenuItem;
-
-            newMenuItem.Text(winrt::to_hstring(c.displayName.value_or(c.appKey)));
-            newMenuItem.Click(
-                [this, component = std::move(c)](IInspectable const &, RoutedEventArgs) {
-                    LoadReactComponent(component);
-                });
-
-            // Add keyboard accelerators for first nine (1-9) components
-            if (keyboardAcceleratorKey <= VirtualKey::Number9) {
-                auto const num = std::underlying_type_t<VirtualKey>(keyboardAcceleratorKey) -
-                                 std::underlying_type_t<VirtualKey>(VirtualKey::Number0);
-                newMenuItem.AccessKey(to_hstring(num));
-
-                KeyboardAccelerator keyboardAccelerator;
-                keyboardAccelerator.Modifiers(VirtualKeyModifiers::Control |
-                                              VirtualKeyModifiers::Shift);
-                keyboardAccelerator.Key(keyboardAcceleratorKey);
-
-                newMenuItem.KeyboardAccelerators().Append(keyboardAccelerator);
-
-                keyboardAcceleratorKey =
-                    static_cast<VirtualKey>(static_cast<int32_t>(keyboardAcceleratorKey) + 1);
-            }
-
-            menuItems.Append(newMenuItem);
-        }
+        menuItems.Append(newMenuItem);
     }
 }
 
