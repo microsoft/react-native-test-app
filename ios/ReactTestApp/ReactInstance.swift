@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDelegate {
+final class ReactInstance: NSObject, RCTBridgeDelegate {
     public static let scanForQRCodeNotification =
         NSNotification.Name("ReactInstance.scanForQRCodeNotification")
 
@@ -24,11 +24,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
         }
     }
 
-    private(set) var bridge: RCTBridge? {
-        didSet {
-            bridge?.setRCTTurboModuleLookupDelegate(self)
-        }
-    }
+    private(set) var bridge: RCTBridge?
 
     override init() {
         #if DEBUG
@@ -169,20 +165,6 @@ final class ReactInstance: NSObject, RCTBridgeDelegate, RCTTurboModuleLookupDele
 
     func extraModules(for _: RCTBridge!) -> [RCTBridgeModule] {
         []
-    }
-
-    // MARK: - RCTTurboModuleLookupDelegate details
-
-    func module(forName _: UnsafePointer<Int8>?) -> Any? {
-        nil
-    }
-
-    func module(forName _: UnsafePointer<Int8>?, warnOnLookupFailure _: Bool) -> Any? {
-        nil
-    }
-
-    func moduleIsInitialized(_: UnsafePointer<Int8>?) -> Bool {
-        false
     }
 
     // MARK: - Private
