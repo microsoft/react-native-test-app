@@ -14,26 +14,9 @@
 #import <React/RCTUtils.h>
 #import <React/RCTVersion.h>
 
+#import "React+Compatibility.h"
+
 #if DEBUG
-
-void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
-{
-    Method originalMethod = class_getInstanceMethod(class, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-
-    BOOL didAddMethod = class_addMethod(class,
-                                        originalSelector,
-                                        method_getImplementation(swizzledMethod),
-                                        method_getTypeEncoding(swizzledMethod));
-    if (didAddMethod) {
-        class_replaceMethod(class,
-                            swizzledSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
 
 // MARK: - RCTRedBoxWindow
 
@@ -56,11 +39,11 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
       Class class = [self class];
-      swizzleSelector(class,
-                      @selector(showErrorMessage:withStack:isUpdate:),
-                      @selector(rta_showErrorMessage:withStack:isUpdate:));
-      swizzleSelector(class, @selector(dismiss), @selector(rta_dismiss));
-      swizzleSelector(class, @selector(makeKeyAndVisible), @selector(rta_makeKeyAndVisible));
+      RTASwizzleSelector(class,
+                         @selector(showErrorMessage:withStack:isUpdate:),
+                         @selector(rta_showErrorMessage:withStack:isUpdate:));
+      RTASwizzleSelector(class, @selector(dismiss), @selector(rta_dismiss));
+      RTASwizzleSelector(class, @selector(makeKeyAndVisible), @selector(rta_makeKeyAndVisible));
     });
 }
 
@@ -103,9 +86,9 @@ void swizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
     }
 
     if (@available(iOS 13.0, *)) {
-        swizzleSelector([self class],
-                        @selector(showMessage:color:backgroundColor:),
-                        @selector(rta_showMessage:color:backgroundColor:));
+        RTASwizzleSelector([self class],
+                           @selector(showMessage:color:backgroundColor:),
+                           @selector(rta_showMessage:color:backgroundColor:));
     }
 }
 

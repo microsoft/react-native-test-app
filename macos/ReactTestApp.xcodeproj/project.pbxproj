@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		193EF063247A736200BE8C79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF062247A736200BE8C79 /* AppDelegate.swift */; };
+		193EF08F247A799D00BE8C79 /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF08E247A799D00BE8C79 /* Manifest.swift */; };
+		193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF097247B130700BE8C79 /* ReactInstance.swift */; };
 		193EF065247A736200BE8C79 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF064247A736200BE8C79 /* ViewController.swift */; };
+		196C22652490CBAB00449D3C /* React+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 196C22632490CBAB00449D3C /* React+Compatibility.m */; };
+		193EF093247A830200BE8C79 /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */; };
 		193EF067247A736300BE8C79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 193EF066247A736300BE8C79 /* Assets.xcassets */; };
 		193EF06A247A736300BE8C79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 193EF068247A736300BE8C79 /* Main.storyboard */; };
-		193EF08F247A799D00BE8C79 /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF08E247A799D00BE8C79 /* Manifest.swift */; };
-		193EF093247A830200BE8C79 /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */; };
-		193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF097247B130700BE8C79 /* ReactInstance.swift */; };
-		196C22652490CBAB00449D3C /* React+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 196C22632490CBAB00449D3C /* React+Compatibility.m */; };
 		19E791C024B08E1400FA6468 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E791BF24B08E1400FA6468 /* ReactTestAppTests.swift */; };
 		19E791C324B08E4D00FA6468 /* ReactTestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E791C224B08E4D00FA6468 /* ReactTestAppUITests.swift */; };
 /* End PBXBuildFile section */
@@ -211,8 +211,8 @@
 		193EF057247A736100BE8C79 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1150;
-				LastUpgradeCheck = 1220;
+				LastSwiftUpdateCheck = 1230;
+				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					193EF05E247A736100BE8C79 = {
