@@ -354,6 +354,11 @@ jobs:
           yarn build:windows
           yarn install-windows-test-app
         working-directory: example
+      - name: Cache ~/.nuget/packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('example/node_modules/.generated/windows/ReactTestApp/ReactTestApp.vcxproj') }}
       - name: Install NuGet packages
         run: |
           nuget restore
@@ -409,6 +414,11 @@ jobs:
           if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app }
           else { yarn install-windows-test-app --projectDirectory=. }
         working-directory: template-example
+      - name: Cache ~/.nuget/packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('template-example/node_modules/.generated/windows/ReactTestApp/ReactTestApp.vcxproj') }}
       - name: Install NuGet packages
         run: |
           if ("${{ matrix.template }}" -eq "all") { cd windows }
