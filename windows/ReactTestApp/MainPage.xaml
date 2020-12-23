@@ -39,5 +39,8 @@
 
         <react:ReactRootView x:Name="ReactRootView" Grid.Row="2"/>
 
+        <ContentDialog x:Name="ContentDialog" CloseButtonText="OK">
+            <react:ReactRootView x:Name="DialogReactRootView" MinWidth="320" MinHeight="200"/>
+        </ContentDialog>
     </Grid>
 </Page>

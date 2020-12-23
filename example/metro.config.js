@@ -11,7 +11,6 @@ module.exports = {
   resolver: {
     blacklistRE: blacklist([
       /node_modules\/.*\/node_modules\/react-native\/.*/,
-      /node_modules\/react-native-macos\/.*/,
 
       // Workaround for `EBUSY: resource busy or locked, open '~\msbuild.ProjectImports.zip'`
       // when building with `yarn windows --release`

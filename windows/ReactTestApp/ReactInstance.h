@@ -35,6 +35,16 @@ namespace ReactTestApp
         bool BreakOnFirstLine() const;
         void BreakOnFirstLine(bool);
 
+        bool isFastRefreshAvailable() const
+        {
+            return source_ == JSBundleSource::DevServer;
+        }
+
+        bool isWebDebuggerAvailable() const
+        {
+            return source_ == JSBundleSource::DevServer;
+        }
+
         void ToggleElementInspector() const;
 
         bool UseCustomDeveloperMenu() const;
@@ -50,6 +60,7 @@ namespace ReactTestApp
 
     private:
         winrt::Microsoft::ReactNative::ReactNativeHost reactNativeHost_;
+        JSBundleSource source_ = JSBundleSource::DevServer;
     };
 
     std::string GetBundleName();

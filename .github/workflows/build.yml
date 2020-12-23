@@ -13,7 +13,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -29,7 +29,7 @@ jobs:
       - name: ClangFormat
         if: ${{ github.event_name == 'pull_request' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
           #       Ignore errors until we can create a GitHub PAT from a system
@@ -46,7 +46,7 @@ jobs:
           echo "::remove-matcher owner=minitest::"
       - name: JavaScript
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
           #       Ignore errors until we can create a GitHub PAT from a system
@@ -76,7 +76,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /example/.yarn-offline-mirror
@@ -110,7 +110,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -159,11 +159,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          # Node has a bug where it crashes compiling a regular
-          # expression of react-native cli. Using a specific
-          # Node version helps to workaround this problem:
-          # https://github.com/facebook/react-native/issues/26598
-          node-version: 12.9.1
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Validate Gradle wrapper
@@ -218,11 +214,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          # Node has a bug where it crashes compiling a regular
-          # expression of react-native cli. Using a specific
-          # Node version helps to workaround this problem:
-          # https://github.com/facebook/react-native/issues/26598
-          node-version: 12.9.1
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -261,7 +253,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /example/.yarn-offline-mirror
@@ -295,7 +287,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -339,13 +331,13 @@ jobs:
         configuration: [Debug, Release]
     steps:
       - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v1.0.1
+        uses: microsoft/setup-msbuild@v1.0.2
       - name: Setup VSTest.console.exe
         uses: darenm/Setup-VSTest@v1
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /example/.yarn-offline-mirror
@@ -384,11 +376,11 @@ jobs:
         template: [all, windows]
     steps:
       - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v1.0.1
+        uses: microsoft/setup-msbuild@v1.0.2
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -446,7 +438,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache /.yarn-offline-mirror
@@ -459,7 +451,7 @@ jobs:
           yarn ci
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npx semantic-release

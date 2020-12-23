@@ -11,17 +11,24 @@ struct Component: Decodable {
     let appKey: String
     let displayName: String?
     let initialProperties: [AnyHashable: Any]?
+    let presentationStyle: String?
 
     private enum Keys: String, CodingKey {
         case appKey
         case displayName
         case initialProperties
+        case presentationStyle
     }
 
-    init(appKey: String, displayName: String?, initialProperties: [AnyHashable: Any]?) {
+    init(appKey: String,
+         displayName: String?,
+         initialProperties: [AnyHashable: Any]?,
+         presentationStyle: String?)
+    {
         self.appKey = appKey
         self.displayName = displayName
         self.initialProperties = initialProperties
+        self.presentationStyle = presentationStyle
     }
 
     init(from decoder: Decoder) throws {
@@ -34,6 +41,7 @@ struct Component: Decodable {
             }
             return try? [AnyHashable: Any].decode(from: decoder)
         }()
+        presentationStyle = try container.decodeIfPresent(String.self, forKey: .presentationStyle)
     }
 }
 

@@ -88,20 +88,16 @@ function getScripts(name, targetPlatform) {
     ios: {
       "build:ios": rnBundle("ios", "jsbundle", "dist"),
       ios:
-        "react-native run-ios --scheme ReactTestApp" +
+        "react-native run-ios" +
         (targetPlatform === "all" ? "" : " --project-path ."),
       start: "react-native start",
     },
     macos: {
-      "build:macos": `${rnBundle(
-        "macos",
-        "jsbundle",
-        "dist"
-      )} --config=metro.config.macos.js`,
+      "build:macos": rnBundle("macos", "jsbundle", "dist"),
       macos:
-        "react-native run-macos --scheme ReactTestApp" +
+        `react-native run-macos --scheme ${name}` +
         (targetPlatform === "all" ? "" : " --project-path ."),
-      "start:macos": "react-native start --config=metro.config.macos.js",
+      "start:macos": "react-native start",
     },
     windows: {
       "build:windows": `${rnBundle(
@@ -236,10 +232,10 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
               dependencies: sortByKeys({
                 ...packageJson.dependencies,
                 ...(includesPlatform(platform, "macos")
-                  ? { "react-native-macos": "0.62.14" }
+                  ? { "react-native-macos": "0.63.1" }
                   : undefined),
                 ...(includesPlatform(platform, "windows")
-                  ? { "react-native-windows": "0.62.12" }
+                  ? { "react-native-windows": "0.63.10" }
                   : undefined),
               }),
               devDependencies: sortByKeys({
@@ -287,8 +283,6 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
             "wrapper",
             "gradle-wrapper.properties"
           ),
-          transform: (template) =>
-            template.replace(/5\.4\.1/, "5.6.4").replace(/5\.5/, "5.6.4"),
         });
         actions.push({
           type: "add",
@@ -372,7 +366,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
               "module.exports = {",
               "  project: {",
               "    ios: {",
-              `      project: "${prefix}ReactTestApp-Dummy.xcodeproj"`,
+              `      project: "ReactTestApp-Dummy.xcodeproj"`,
               "    }",
               "  }",
               "};",
@@ -399,31 +393,18 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
               "",
             ].join("\n"),
           });
-          actions.push({
-            type: "add",
-            path: "metro.config.macos.js",
-            templateFile: require.resolve(
-              "react-native-macos/local-cli/generator-macos/templates/metro.config.macos.js"
-            ),
-          });
           if (exclusive) {
             actions.push({
               type: "add",
               path: "react-native.config.js",
               template: [
-                'if (process.argv.includes("--config=metro.config.macos.js")) {',
-                "  module.exports = {",
-                '    reactNativePath: "node_modules/react-native-macos",',
-                "  };",
-                "} else {",
-                "  module.exports = {",
-                "    project: {",
-                "      ios: {",
-                '        project: "ReactTestApp-Dummy.xcodeproj",',
-                "      },",
+                "module.exports = {",
+                "  project: {",
+                "    ios: {",
+                '      project: "ReactTestApp-Dummy.xcodeproj",',
                 "    },",
-                "  };",
-                "}",
+                "  },",
+                "};",
                 "",
               ].join("\n"),
             });
@@ -443,7 +424,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
             type: "add",
             path: "metro.config.windows.js",
             templateFile: require.resolve(
-              "react-native-windows/local-cli/generator-windows/templates/metro.config.js"
+              "@react-native-windows/cli/templates/metro.config.js"
             ),
           });
           if (exclusive) {

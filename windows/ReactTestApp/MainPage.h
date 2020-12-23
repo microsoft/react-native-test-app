@@ -51,6 +51,7 @@ namespace winrt::ReactTestApp::implementation
         void InitializeReactMenu();
         void InitializeTitleBar();
 
+        void LoadJSBundleFrom(::ReactTestApp::JSBundleSource);
         void LoadReactComponent(::ReactTestApp::Component const &);
 
         void OnCoreTitleBarLayoutMetricsChanged(

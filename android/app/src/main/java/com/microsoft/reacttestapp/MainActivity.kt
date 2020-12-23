@@ -18,6 +18,7 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.google.android.material.appbar.MaterialToolbar
 import com.microsoft.reacttestapp.component.ComponentActivity
+import com.microsoft.reacttestapp.component.ComponentBottomSheetDialogFragment
 import com.microsoft.reacttestapp.component.ComponentListAdapter
 import com.microsoft.reacttestapp.component.ComponentViewModel
 import com.microsoft.reacttestapp.manifest.Component
@@ -39,21 +40,27 @@ class MainActivity : ReactActivity() {
     private val testAppReactNativeHost: TestAppReactNativeHost
         get() = reactNativeHost as TestAppReactNativeHost
 
-    private val newComponentActivityIntent = { component: ComponentViewModel ->
-        ComponentActivity.newIntent(this, component)
-    }
-
     private val newComponentViewModel = { component: Component ->
         ComponentViewModel(
             component.appKey,
             component.displayName ?: component.appKey,
-            component.initialProperties
+            component.initialProperties,
+            component.presentationStyle
         )
     }
 
-    private val startComponentActivity = { component: ComponentViewModel ->
+    private val startComponent: (ComponentViewModel) -> Unit = { component: ComponentViewModel ->
         didInitialNavigation = true;
-        startActivity(newComponentActivityIntent(component))
+        when (component.presentationStyle) {
+            "modal" -> {
+                ComponentBottomSheetDialogFragment
+                    .newInstance(component)
+                    .show(supportFragmentManager, ComponentBottomSheetDialogFragment.TAG)
+            }
+            else -> {
+                startActivity(ComponentActivity.newIntent(this, component))
+            }
+        }
     }
 
     private var didInitialNavigation = false;
@@ -72,7 +79,7 @@ class MainActivity : ReactActivity() {
             val component = newComponentViewModel(manifest.components[0])
             testAppReactNativeHost.addReactInstanceEventListener { _: ReactContext  ->
                 if (!didInitialNavigation) {
-                    startComponentActivity(component)
+                    startComponent(component)
                 }
             }
         }
@@ -130,7 +137,7 @@ class MainActivity : ReactActivity() {
         findViewById<RecyclerView>(R.id.recyclerview).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ComponentListAdapter(
-                LayoutInflater.from(context), components, startComponentActivity
+                LayoutInflater.from(context), components, startComponent
             )
 
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
