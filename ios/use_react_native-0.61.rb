@@ -6,7 +6,9 @@
 #
 # rubocop:disable Layout/LineLength
 
-def include_react_native!(react_native:, target_platform:, project_root:, flipper_versions:)
+def include_react_native!(options)
+  react_native, project_root = options.values_at(:path, :rta_project_root)
+
   pod 'FBLazyVector', :path => "#{react_native}/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "#{react_native}/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "#{react_native}/Libraries/RCTRequired"

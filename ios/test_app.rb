@@ -197,16 +197,17 @@ def use_flipper!(versions = {})
   @flipper_versions = versions
 end
 
-def use_react_native!(project_root, target_platform)
+def use_react_native!(project_root, target_platform, options)
   react_native = react_native_path(project_root, target_platform)
   version = package_version(react_native.to_s)
 
   require_relative(react_native_pods(version))
 
-  include_react_native!(react_native: react_native.relative_path_from(project_root).to_s,
-                        target_platform: target_platform,
-                        project_root: project_root,
-                        flipper_versions: flipper_versions)
+  include_react_native!(**options,
+                        path: react_native.relative_path_from(project_root).to_s,
+                        rta_flipper_versions: flipper_versions,
+                        rta_project_root: project_root,
+                        rta_target_platform: target_platform)
 end
 
 def make_project!(xcodeproj, project_root, target_platform)
@@ -275,7 +276,7 @@ def make_project!(xcodeproj, project_root, target_platform)
   dst_xcodeproj
 end
 
-def use_test_app_internal!(target_platform)
+def use_test_app_internal!(target_platform, options)
   assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
 
   xcodeproj = 'ReactTestApp.xcodeproj'
@@ -293,7 +294,7 @@ def use_test_app_internal!(target_platform)
     pod 'QRCodeReader.swift' if target_platform == :ios
     pod 'SwiftLint'
 
-    use_react_native!(project_root, target_platform)
+    use_react_native!(project_root, target_platform, options)
 
     if (resources_pod_path = resources_pod(project_root, target_platform))
       pod 'ReactTestApp-Resources', :path => resources_pod_path
