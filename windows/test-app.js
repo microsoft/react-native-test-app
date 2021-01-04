@@ -306,6 +306,7 @@ function generateSolution(destPath, noAutolink) {
 
   const copyTasks = [
     "AutolinkedNativeModules.g.cpp",
+    "AutolinkedNativeModules.g.props",
     "AutolinkedNativeModules.g.targets",
     "Package.appxmanifest",
     "PropertySheet.props",

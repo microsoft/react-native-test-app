@@ -232,10 +232,10 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
               dependencies: sortByKeys({
                 ...packageJson.dependencies,
                 ...(includesPlatform(platform, "macos")
-                  ? { "react-native-macos": "0.63.1" }
+                  ? { "react-native-macos": "0.63.3" }
                   : undefined),
                 ...(includesPlatform(platform, "windows")
-                  ? { "react-native-windows": "0.63.10" }
+                  ? { "react-native-windows": "0.63.14" }
                   : undefined),
               }),
               devDependencies: sortByKeys({
