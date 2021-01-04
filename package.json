@@ -36,6 +36,7 @@
     "lint:js": "eslint $(git ls-files '*.js')",
     "lint:rb": "bundle exec rubocop",
     "lint:swift": "swiftlint",
+    "set-react-version": "scripts/set-react-version.js",
     "test:js": "jest",
     "test:rb": "bundle exec ruby -Ilib:test test/test_test_app.rb"
   },

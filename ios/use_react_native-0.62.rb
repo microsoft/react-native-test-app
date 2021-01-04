@@ -40,7 +40,11 @@ def add_flipper_pods!(versions = {})
   pod 'FlipperKit/FlipperKitNetworkPlugin', versions['Flipper'], :configuration => 'Debug'
 end
 
-def include_react_native!(react_native:, target_platform:, project_root:, flipper_versions:)
+def include_react_native!(options)
+  react_native, flipper_versions, project_root, target_platform = options.values_at(
+    :path, :rta_flipper_versions, :rta_project_root, :rta_target_platform
+  )
+
   add_flipper_pods!(flipper_versions) if target_platform == :ios && flipper_versions
 
   pod 'FBLazyVector', :path => "#{react_native}/Libraries/FBLazyVector"

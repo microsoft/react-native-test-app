@@ -7,6 +7,6 @@
 
 require_relative('../ios/test_app.rb')
 
-def use_test_app!(&block)
-  use_test_app_internal!(:macos, &block)
+def use_test_app!(options = {}, &block)
+  use_test_app_internal!(:macos, options, &block)
 end
