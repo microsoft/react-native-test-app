@@ -12,6 +12,12 @@
         android:title="@string/load_from_dev_server"
         app:showAsAction="never" />
     <item
+        android:id="@+id/remember_last_component"
+        android:checkable="true"
+        android:contentDescription="@string/content_description_remember_last_component"
+        android:title="@string/remember_last_component"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/show_dev_options"
         android:contentDescription="@string/content_description_show_dev_options"
         android:enabled="false"
