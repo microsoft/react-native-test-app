@@ -8,7 +8,23 @@
 import QRCodeReader
 import UIKit
 
-typealias NavigationLink = (String, () -> Void)
+private struct NavigationLink {
+    let title: String
+    let action: (() -> Void)?
+    let accessoryView: UIView?
+
+    init(title: String, action: @escaping () -> Void) {
+        self.title = title
+        self.action = action
+        accessoryView = nil
+    }
+
+    init(title: String, accessoryView: UIView) {
+        self.title = title
+        action = nil
+        self.accessoryView = accessoryView
+    }
+}
 
 private struct SectionData {
     var items: [NavigationLink]
@@ -16,6 +32,11 @@ private struct SectionData {
 }
 
 final class ContentViewController: UITableViewController {
+    private enum Section {
+        static let components = 0
+        static let settings = 1
+    }
+
     private let reactInstance: ReactInstance
     private var sections: [SectionData]
 
@@ -27,18 +48,6 @@ final class ContentViewController: UITableViewController {
         sections = []
 
         super.init(style: .grouped)
-
-        title = "ReactTestApp"
-
-        #if targetEnvironment(simulator)
-            let keyboardShortcut = " (⌃⌘Z)"
-        #else
-            let keyboardShortcut = ""
-        #endif
-        sections.append(SectionData(
-            items: [],
-            footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
-        ))
     }
 
     @available(*, unavailable)
@@ -51,25 +60,54 @@ final class ContentViewController: UITableViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
+        guard let (manifest, checksum) = Manifest.fromFile() else {
+            return
+        }
+
+        let components = manifest.components
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.reactInstance.initReact { components in
-                let items: [NavigationLink] = components.map { component in
-                    (component.displayName ?? component.appKey, { self?.navigate(to: component) })
-                }
-                DispatchQueue.main.async {
-                    guard let strongSelf = self else {
-                        return
+            self?.reactInstance.initReact {
+                if let index = components.count == 1 ? 0 : Session.lastOpenedComponent(checksum) {
+                    DispatchQueue.main.async {
+                        self?.navigate(to: components[index])
                     }
-
-                    if components.count == 1, let component = components.first {
-                        strongSelf.navigate(to: component)
-                    }
-
-                    strongSelf.sections[0].items = items
-                    strongSelf.tableView.reloadData()
                 }
             }
         }
+
+        title = manifest.displayName
+
+        #if targetEnvironment(simulator)
+            let keyboardShortcut = " (⌃⌘Z)"
+        #else
+            let keyboardShortcut = ""
+        #endif
+        sections.append(SectionData(
+            items: components.enumerated().map { index, component in
+                NavigationLink(title: component.displayName ?? component.appKey) { [weak self] in
+                    self?.navigate(to: component)
+                    Session.storeComponent(index: index, checksum: checksum)
+                }
+            },
+            footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
+        ))
+
+        let rememberLastComponentSwitch = UISwitch()
+        rememberLastComponentSwitch.isOn = Session.shouldRememberLastComponent
+        rememberLastComponentSwitch.addTarget(
+            self,
+            action: #selector(rememberLastComponentSwitchDidChangeValue(_:)),
+            for: .valueChanged
+        )
+        sections.append(SectionData(
+            items: [
+                NavigationLink(
+                    title: "Remember Last Opened Component",
+                    accessoryView: rememberLastComponentSwitch
+                ),
+            ],
+            footer: nil
+        ))
 
         NotificationCenter.default.addObserver(
             self,
@@ -81,10 +119,12 @@ final class ContentViewController: UITableViewController {
 
     // MARK: - UITableViewDelegate overrides
 
-    override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let (_, action) = sections[indexPath.section].items[indexPath.row]
-        action()
-        tableView.deselectRow(at: indexPath, animated: true)
+    override public func tableView(_: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        indexPath.section == Section.components
+    }
+
+    override public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+        sections[indexPath.section].items[indexPath.row].action?()
     }
 
     // MARK: - UITableViewDataSource overrides
@@ -94,16 +134,27 @@ final class ContentViewController: UITableViewController {
     }
 
     override public func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let (title, _) = sections[indexPath.section].items[indexPath.row]
+        let link = sections[indexPath.section].items[indexPath.row]
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        let presentsNewContent = indexPath.section == 0
-        cell.accessoryType = presentsNewContent ? .disclosureIndicator : .none
+
         if let textLabel = cell.textLabel {
-            textLabel.text = title
-            textLabel.textColor = presentsNewContent ? .label : .link
+            textLabel.text = link.title
+            textLabel.textColor = .label
             textLabel.allowsDefaultTighteningForTruncation = true
             textLabel.numberOfLines = 1
         }
+
+        switch indexPath.section {
+        case Section.components:
+            cell.accessoryType = .disclosureIndicator
+            cell.accessoryView = nil
+        case Section.settings:
+            cell.accessoryType = .none
+            cell.accessoryView = link.accessoryView
+        default:
+            assertionFailure()
+        }
+
         return cell
     }
 
@@ -144,6 +195,10 @@ final class ContentViewController: UITableViewController {
         default:
             navigationController.pushViewController(viewController, animated: true)
         }
+    }
+
+    @objc private func rememberLastComponentSwitchDidChangeValue(_ sender: UISwitch) {
+        Session.shouldRememberLastComponent = sender.isOn
     }
 
     private func runtimeInfo() -> String {

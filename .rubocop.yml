@@ -7,9 +7,6 @@ AllCops:
 Layout/LineLength:
   Max: 100
 
-Lint/UnusedMethodArgument:
-  AllowUnusedKeywordArguments: true
-
 Metrics/AbcSize:
   Enabled: false
 

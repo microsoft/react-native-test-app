@@ -22,10 +22,16 @@ namespace winrt::ReactTestApp::implementation
     public:
         MainPage();
 
+        // React menu
+
         void LoadFromDevServer(Windows::Foundation::IInspectable const &,
                                Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromJSBundle(Windows::Foundation::IInspectable const &,
                               Windows::UI::Xaml::RoutedEventArgs);
+        void ToggleRememberLastComponent(Windows::Foundation::IInspectable const &,
+                                         Windows::UI::Xaml::RoutedEventArgs);
+
+        // Debug menu
 
         void Reload(Windows::Foundation::IInspectable const &, Windows::UI::Xaml::RoutedEventArgs);
         void ToggleBreakOnFirstLine(Windows::Foundation::IInspectable const &,
@@ -46,6 +52,7 @@ namespace winrt::ReactTestApp::implementation
         using Base = MainPageT;
 
         ::ReactTestApp::ReactInstance reactInstance_;
+        std::string manifestChecksum_;
 
         void InitializeDebugMenu();
         void InitializeReactMenu();

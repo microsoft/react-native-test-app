@@ -26,58 +26,58 @@ namespace ReactTestAppTests
     public:
         TEST_METHOD(ParseManifestWithOneComponent)
         {
-            std::optional<ReactTestApp::Manifest> manifest =
-                ReactTestApp::GetManifest("manifestTestFiles/simpleManifest.json");
-            if (!manifest.has_value()) {
+            auto result = ReactTestApp::GetManifest("manifestTestFiles/simpleManifest.json");
+            if (!result.has_value()) {
                 Assert::Fail(L"Couldn't read manifest file");
             }
 
-            auto &manifestContents = manifest.value();
-            Assert::AreEqual(manifestContents.name, {"Example"});
-            Assert::AreEqual(manifestContents.displayName, {"Example"});
-            Assert::AreEqual(manifestContents.components[0].appKey, {"Example"});
-            Assert::AreEqual(manifestContents.components[0].displayName.value(), {"App"});
-            Assert::IsFalse(manifestContents.components[0].initialProperties.has_value());
+            auto&& [manifest, checksum] = result.value();
+
+            Assert::AreEqual(manifest.name, {"Example"});
+            Assert::AreEqual(manifest.displayName, {"Example"});
+            Assert::AreEqual(manifest.components[0].appKey, {"Example"});
+            Assert::AreEqual(manifest.components[0].displayName.value(), {"App"});
+            Assert::IsFalse(manifest.components[0].initialProperties.has_value());
         }
 
         TEST_METHOD(ParseManifestWithMultipleComponents)
         {
-            std::optional<ReactTestApp::Manifest> manifest =
-                ReactTestApp::GetManifest("manifestTestFiles/withMultipleComponents.json");
-            if (!manifest.has_value()) {
+            auto result = ReactTestApp::GetManifest("manifestTestFiles/withMultipleComponents.json");
+            if (!result.has_value()) {
                 Assert::Fail(L"Couldn't read manifest file");
             }
 
-            auto &manifestContents = manifest.value();
-            Assert::AreEqual(manifestContents.name, {"Example"});
-            Assert::AreEqual(manifestContents.displayName, {"Example"});
-            Assert::AreEqual(manifestContents.components.size(), {2});
+            auto&& [manifest, checksum] = result.value();
 
-            Assert::AreEqual(manifestContents.components[0].appKey, {"0"});
-            Assert::IsFalse(manifestContents.components[0].displayName.has_value());
-            Assert::IsTrue(manifestContents.components[0].initialProperties.has_value());
+            Assert::AreEqual(manifest.name, {"Example"});
+            Assert::AreEqual(manifest.displayName, {"Example"});
+            Assert::AreEqual(manifest.components.size(), {2});
+
+            Assert::AreEqual(manifest.components[0].appKey, {"0"});
+            Assert::IsFalse(manifest.components[0].displayName.has_value());
+            Assert::IsTrue(manifest.components[0].initialProperties.has_value());
             Assert::AreEqual(std::any_cast<std::string>(
-                                 manifestContents.components[0].initialProperties.value()["key"]),
+                                 manifest.components[0].initialProperties.value()["key"]),
                              {"value"});
 
-            Assert::AreEqual(manifestContents.components[1].appKey, {"1"});
-            Assert::AreEqual(manifestContents.components[1].displayName.value(), {"1"});
-            Assert::IsFalse(manifestContents.components[1].initialProperties.has_value());
+            Assert::AreEqual(manifest.components[1].appKey, {"1"});
+            Assert::AreEqual(manifest.components[1].displayName.value(), {"1"});
+            Assert::IsFalse(manifest.components[1].initialProperties.has_value());
         }
 
         TEST_METHOD(ParseManifestWithComplexInitialProperties)
         {
-            std::optional<ReactTestApp::Manifest> manifest =
-                ReactTestApp::GetManifest("manifestTestFiles/withComplexInitialProperties.json");
-            if (!manifest.has_value()) {
+            auto result = ReactTestApp::GetManifest("manifestTestFiles/withComplexInitialProperties.json");
+            if (!result.has_value()) {
                 Assert::Fail(L"Couldn't read manifest file");
             }
 
-            auto &manifestContents = manifest.value();
-            auto &component = manifestContents.components[0];
-            Assert::AreEqual(manifestContents.name, {"Name"});
-            Assert::AreEqual(manifestContents.displayName, {"Display Name"});
+            auto&& [manifest, checksum] = result.value();
 
+            Assert::AreEqual(manifest.name, {"Name"});
+            Assert::AreEqual(manifest.displayName, {"Display Name"});
+
+            auto &component = manifest.components[0];
             Assert::AreEqual(component.appKey, {"AppKey"});
             Assert::IsFalse(component.displayName.has_value());
             Assert::IsTrue(component.initialProperties.has_value());

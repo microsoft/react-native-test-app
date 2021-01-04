@@ -11,10 +11,12 @@ import XCTest
 class ManifestTests: XCTestCase {
 
     func testReadFromFile() {
-        guard let manifest = Manifest.fromFile() else {
+        guard let (manifest, checksum) = Manifest.fromFile() else {
             XCTFail("Failed to read 'app.json'")
             return
         }
+
+        XCTAssertEqual(checksum.count, 64)
 
         XCTAssertEqual(manifest.name, "Example")
         XCTAssertEqual(manifest.displayName, "Example")
@@ -71,10 +73,12 @@ class ManifestTests: XCTestCase {
         """
 
         guard let data = json.data(using: .utf8),
-              let manifest = Manifest.from(data: data) else {
+              let (manifest, checksum) = Manifest.from(data: data) else {
             XCTFail("Failed to read manifest")
             return
         }
+
+        XCTAssertEqual(checksum.count, 64)
 
         XCTAssertEqual(manifest.name, expected.name)
         XCTAssertEqual(manifest.displayName, expected.displayName)
@@ -136,7 +140,7 @@ class ManifestTests: XCTestCase {
         """
 
         guard let data = json.data(using: .utf8),
-              let manifest = Manifest.from(data: data),
+              let (manifest, _) = Manifest.from(data: data),
               let component = manifest.components.first,
               let initialProperties = component.initialProperties else {
             XCTFail("Failed to read manifest")

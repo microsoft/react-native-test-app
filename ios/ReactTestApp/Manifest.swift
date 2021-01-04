@@ -5,6 +5,8 @@
 // LICENSE file in the root directory of this source tree.
 //
 
+import CommonCrypto
+import CryptoKit
 import Foundation
 
 struct Component: Decodable {
@@ -50,7 +52,7 @@ struct Manifest: Decodable {
     let displayName: String
     let components: [Component]
 
-    static func fromFile() -> Manifest? {
+    static func fromFile() -> (Manifest, String)? {
         guard let manifestURL = Bundle.main.url(forResource: "app", withExtension: "json"),
               let data = try? Data(contentsOf: manifestURL, options: .uncached)
         else {
@@ -59,8 +61,12 @@ struct Manifest: Decodable {
         return from(data: data)
     }
 
-    static func from(data: Data) -> Manifest? {
-        try? JSONDecoder().decode(self, from: data)
+    static func from(data: Data) -> (Manifest, String)? {
+        guard let manifest = try? JSONDecoder().decode(self, from: data) else {
+            return nil
+        }
+
+        return (manifest, data.sha256)
     }
 }
 
@@ -111,6 +117,24 @@ extension Array where Element == Any {
             }
         }
         return array
+    }
+}
+
+extension Data {
+    var sha256: String {
+        guard #available(iOS 13.0, macOS 10.15, *) else {
+            var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+            _ = withUnsafeBytes {
+                CC_SHA256($0.baseAddress, UInt32(count), &digest)
+            }
+
+            return digest.reduce("") { str, byte in
+                str + String(format: "%02x", UInt8(byte))
+            }
+        }
+
+        let digest = SHA256.hash(data: self)
+        return Array(digest.makeIterator()).map { String(format: "%02x", $0) }.joined()
     }
 }
 

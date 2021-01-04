@@ -11,6 +11,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace ReactTestApp
@@ -28,6 +29,6 @@ namespace ReactTestApp
         std::vector<Component> components;
     };
 
-    std::optional<Manifest> GetManifest(std::string const &manifestFileName);
+    std::optional<std::pair<Manifest, std::string>> GetManifest(std::string const &filename);
 
 }  // namespace ReactTestApp

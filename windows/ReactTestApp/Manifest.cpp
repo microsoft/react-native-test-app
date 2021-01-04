@@ -13,11 +13,26 @@
 #include <iostream>
 
 #include <nlohmann/json.hpp>
+#include <winrt/Windows.Security.Cryptography.Core.h>
+#include <winrt/Windows.Security.Cryptography.h>
 
 using nlohmann::detail::value_t;
+using winrt::Windows::Security::Cryptography::BinaryStringEncoding;
+using winrt::Windows::Security::Cryptography::CryptographicBuffer;
+using winrt::Windows::Security::Cryptography::Core::HashAlgorithmNames;
+using winrt::Windows::Security::Cryptography::Core::HashAlgorithmProvider;
 
 namespace
 {
+    std::string checksum(std::string const &data)
+    {
+        auto hasher = HashAlgorithmProvider::OpenAlgorithm(HashAlgorithmNames::Sha256());
+        auto digest = hasher.HashData(CryptographicBuffer::ConvertStringToBinary(
+            winrt::to_hstring(data), BinaryStringEncoding::Utf8));
+        auto checksum = CryptographicBuffer::EncodeToHexString(digest);
+        return winrt::to_string(checksum);
+    }
+
     template <typename T>
     std::optional<T> get_optional(const nlohmann::json &j, const std::string &key)
     {
@@ -99,15 +114,24 @@ namespace ReactTestApp
         m.components = j.at("components").get<std::vector<Component>>();
     }
 
-    std::optional<Manifest> GetManifest(std::string const &manifestFileName)
+    std::optional<std::pair<Manifest, std::string>> GetManifest(std::string const &filename)
     {
-        std::ifstream manifestFile(manifestFileName);
-        nlohmann::json j = nlohmann::json::parse(manifestFile, nullptr, false);
+        std::string json;
+        {
+            std::ifstream stream(filename);
+
+            stream.seekg(0, std::ios::end);
+            json.reserve(static_cast<size_t>(stream.tellg()));
+
+            stream.seekg(0, std::ios::beg);
+            json.assign(std::istreambuf_iterator<char>(stream), {});
+        }
+
+        auto j = nlohmann::json::parse(json, nullptr, false);
         if (j.is_discarded()) {
             return std::nullopt;
         }
 
-        Manifest m = j.get<Manifest>();
-        return m;
+        return std::make_pair(j.get<Manifest>(), checksum(json));
     }
 }  // namespace ReactTestApp

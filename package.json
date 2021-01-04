@@ -36,6 +36,7 @@
     "lint:js": "eslint $(git ls-files '*.js')",
     "lint:rb": "bundle exec rubocop",
     "lint:swift": "swiftlint",
+    "set-react-version": "scripts/set-react-version.js",
     "test:js": "jest",
     "test:rb": "bundle exec ruby -Ilib:test test/test_test_app.rb"
   },
@@ -77,9 +78,9 @@
     "jest": "^26.5.0",
     "prettier": "2.1.2",
     "react": "16.13.1",
-    "react-native": "0.63.3",
-    "react-native-macos": "0.63.1",
-    "react-native-windows": "0.63.10",
+    "react-native": "0.63.4",
+    "react-native-macos": "0.63.3",
+    "react-native-windows": "0.63.14",
     "semantic-release": "^17.0.0",
     "suggestion-bot": "^1.0.0",
     "typescript": "^4.0.0"

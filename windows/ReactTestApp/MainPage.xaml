@@ -21,6 +21,12 @@
                 <MenuBarItem x:Name="ReactMenuBarItem" Title="React" AccessKey="R">
                     <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle" AccessKey="E"/>
                     <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer" AccessKey="D"/>
+                    <ToggleMenuFlyoutItem
+                        x:Name="RememberLastComponentMenuItem"
+                        Text="Remember last opened component"
+                        Click="ToggleRememberLastComponent"
+                        AccessKey="R"
+                    />
                     <MenuFlyoutSeparator/>
                 </MenuBarItem>
                 <MenuBarItem x:Name="DebugMenuBarItem" IsEnabled="false" Title="Debug" AccessKey="D">

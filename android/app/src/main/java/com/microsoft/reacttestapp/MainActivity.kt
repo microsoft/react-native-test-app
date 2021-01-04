@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
-import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.google.android.material.appbar.MaterialToolbar
 import com.microsoft.reacttestapp.component.ComponentActivity
@@ -37,8 +36,7 @@ class MainActivity : ReactActivity() {
     @Inject
     lateinit var bundleNameProvider: ReactBundleNameProvider
 
-    private val testAppReactNativeHost: TestAppReactNativeHost
-        get() = reactNativeHost as TestAppReactNativeHost
+    private var didInitialNavigation = false
 
     private val newComponentViewModel = { component: Component ->
         ComponentViewModel(
@@ -49,8 +47,12 @@ class MainActivity : ReactActivity() {
         )
     }
 
-    private val startComponent: (ComponentViewModel) -> Unit = { component: ComponentViewModel ->
-        didInitialNavigation = true;
+    private val session by lazy {
+        Session(applicationContext)
+    }
+
+    private val startComponent: (ComponentViewModel) -> Unit = { component ->
+        didInitialNavigation = true
         when (component.presentationStyle) {
             "modal" -> {
                 ComponentBottomSheetDialogFragment
@@ -63,21 +65,24 @@ class MainActivity : ReactActivity() {
         }
     }
 
-    private var didInitialNavigation = false;
+    private val testAppReactNativeHost: TestAppReactNativeHost
+        get() = reactNativeHost as TestAppReactNativeHost
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        didInitialNavigation = savedInstanceState?.getBoolean("didInitialNavigation", false) == true
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val manifest = manifestProvider.manifest
+        didInitialNavigation = savedInstanceState?.getBoolean("didInitialNavigation", false) == true
+
+        val (manifest, checksum) = manifestProvider.fromResources()
             ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
 
-        if (manifest.components.count() == 1) {
-            val component = newComponentViewModel(manifest.components[0])
-            testAppReactNativeHost.addReactInstanceEventListener { _: ReactContext  ->
+        val index = if (manifest.components.count() == 1) 0 else session.lastOpenedComponent(checksum)
+        index?.let {
+            val component = newComponentViewModel(manifest.components[it])
+            testAppReactNativeHost.addReactInstanceEventListener {
                 if (!didInitialNavigation) {
                     startComponent(component)
                 }
@@ -85,12 +90,42 @@ class MainActivity : ReactActivity() {
         }
 
         setupToolbar(manifest.displayName)
-        setupRecyclerView(manifest.components)
+        setupRecyclerView(manifest.components, checksum)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBoolean("didInitialNavigation", didInitialNavigation);
+        outState.putBoolean("didInitialNavigation", didInitialNavigation)
         super.onSaveInstanceState(outState)
+    }
+
+    private fun reload(bundleSource: BundleSource) {
+        testAppReactNativeHost.reload(this, bundleSource)
+    }
+
+    private fun setupRecyclerView(manifestComponents: List<Component>, manifestChecksum: String) {
+        val components = manifestComponents.map(newComponentViewModel)
+        findViewById<RecyclerView>(R.id.recyclerview).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = ComponentListAdapter(
+                LayoutInflater.from(context),
+                components
+            ) { component, index ->
+                startComponent(component)
+                session.storeComponent(index, manifestChecksum)
+            }
+
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
+
+        findViewById<TextView>(R.id.runtime_info).apply {
+            text = resources.getString(
+                R.string.runtime_info,
+                ReactNativeVersion.VERSION["major"] as Int,
+                ReactNativeVersion.VERSION["minor"] as Int,
+                ReactNativeVersion.VERSION["patch"] as Int,
+                reactInstanceManager.jsExecutorName
+            )
+        }
     }
 
     private fun setupToolbar(displayName: String) {
@@ -107,6 +142,12 @@ class MainActivity : ReactActivity() {
                     reload(BundleSource.Server)
                     true
                 }
+                R.id.remember_last_component -> {
+                    val enable = !menuItem.isChecked
+                    menuItem.isChecked = enable
+                    session.shouldRememberLastComponent = enable
+                    true
+                }
                 R.id.show_dev_options -> {
                     reactInstanceManager.devSupportManager.showDevOptionsDialog()
                     true
@@ -121,36 +162,11 @@ class MainActivity : ReactActivity() {
         }
     }
 
-    private fun reload(bundleSource: BundleSource) {
-        testAppReactNativeHost.reload(this, bundleSource)
-    }
-
     private fun updateMenuItemState(toolbar: MaterialToolbar, bundleSource: BundleSource) {
         toolbar.menu.apply {
             findItem(R.id.load_embedded_js_bundle).isEnabled = bundleNameProvider.bundleName != null
+            findItem(R.id.remember_last_component).isChecked = session.shouldRememberLastComponent
             findItem(R.id.show_dev_options).isEnabled = bundleSource == BundleSource.Server
-        }
-    }
-
-    private fun setupRecyclerView(manifestComponents: List<Component>) {
-        val components = manifestComponents.map(newComponentViewModel)
-        findViewById<RecyclerView>(R.id.recyclerview).apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = ComponentListAdapter(
-                LayoutInflater.from(context), components, startComponent
-            )
-
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        }
-
-        findViewById<TextView>(R.id.runtime_info).apply {
-            text = resources.getString(
-                R.string.runtime_info,
-                ReactNativeVersion.VERSION["major"] as Int,
-                ReactNativeVersion.VERSION["minor"] as Int,
-                ReactNativeVersion.VERSION["patch"] as Int,
-                reactInstanceManager.jsExecutorName
-            )
         }
     }
 }

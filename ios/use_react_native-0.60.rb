@@ -8,7 +8,9 @@
 
 require_relative('pod_helpers.rb')
 
-def include_react_native!(react_native:, target_platform:, project_root:, flipper_versions:)
+def include_react_native!(options)
+  react_native, project_root = options.values_at(:path, :rta_project_root)
+
   pod 'React', :path => react_native
   pod 'React-Core', :path => "#{react_native}/React", :inhibit_warnings => true
   pod 'React-DevSupport', :path => "#{react_native}/React"

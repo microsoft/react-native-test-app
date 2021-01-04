@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -376,13 +377,19 @@
                                         <menuItem title="Load Embedded JS Bundle" id="eKz-kn-Unx">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="onLoadEmbeddedBundle:" target="Voe-Tx-rLC" id="Dp5-bz-UTv"/>
+                                                <action selector="onLoadEmbeddedBundleSelected:" target="Voe-Tx-rLC" id="Dp5-bz-UTv"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Load From Dev Server" id="175-aB-GZg">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="onLoadFromDevServer:" target="Voe-Tx-rLC" id="FOl-Nq-cWc"/>
+                                                <action selector="onLoadFromDevServerSelected:" target="Voe-Tx-rLC" id="FOl-Nq-cWc"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Remember Last Opened Component" id="lzS-xk-P1D">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="onRememberLastComponentSelected:" target="Voe-Tx-rLC" id="TFw-gh-YQX"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="uJa-x1-YNS"/>
@@ -435,6 +442,7 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ReactTestApp" customModuleProvider="target">
                     <connections>
                         <outlet property="reactMenu" destination="nwF-AT-VY9" id="mZ4-MI-fvy"/>
+                        <outlet property="rememberLastComponentMenuItem" destination="lzS-xk-P1D" id="azf-vw-Bvd"/>
                     </connections>
                 </customObject>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>

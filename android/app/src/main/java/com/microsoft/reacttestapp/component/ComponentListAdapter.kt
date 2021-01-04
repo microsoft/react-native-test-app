@@ -9,7 +9,7 @@ import com.microsoft.reacttestapp.R
 class ComponentListAdapter(
     private val layoutInflater: LayoutInflater,
     private val components: List<ComponentViewModel>,
-    private val listener: (ComponentViewModel) -> Unit
+    private val listener: (ComponentViewModel, Int) -> Unit
 ) : RecyclerView.Adapter<ComponentListAdapter.ComponentViewHolder>() {
 
     override fun getItemCount() = components.size
@@ -28,7 +28,7 @@ class ComponentListAdapter(
 
     inner class ComponentViewHolder(private val view: TextView) : RecyclerView.ViewHolder(view) {
         init {
-            view.setOnClickListener { listener(components[adapterPosition]) }
+            view.setOnClickListener { listener(components[adapterPosition], adapterPosition) }
         }
 
         fun bindTo(component: ComponentViewModel) {
