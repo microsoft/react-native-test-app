@@ -1,8 +1,11 @@
 #!/bin/bash
 set -eo pipefail
 
+all_args=("$@")
 workspace=$1
 action=$2
+xcconfig_overrides=("${all_args[@]:2}")
+
 platform=$(grep -o '\w\+/ReactTestApp.xcodeproj' "$workspace/contents.xcworkspacedata")
 
 if [[ $platform == ios/* ]]; then
@@ -30,6 +33,8 @@ build_cmd=$(
     CODE_SIGNING_ALLOWED=NO \
     COMPILER_INDEX_STORE_ENABLE=NO \
     $action \
+    $xcconfig_overrides \
+
 )
 
 if command -v xcpretty >/dev/null 2>&1; then

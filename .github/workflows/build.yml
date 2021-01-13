@@ -276,6 +276,12 @@ jobs:
         run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
         working-directory: example
+      - name: Build ARM
+        run: |
+          set -eo pipefail
+          ../scripts/xcodebuild.sh macos/Example.xcworkspace clean
+          ../scripts/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
+        working-directory: example
   macos-template:
     name: "macOS [template]"
     strategy:
