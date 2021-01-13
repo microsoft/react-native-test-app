@@ -279,8 +279,6 @@ jobs:
       - name: Build ARM
         run: |
           set -eo pipefail
-          yarn build:macos || yarn build:macos
-          pod install --project-directory=macos
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
         working-directory: example
   macos-template:
