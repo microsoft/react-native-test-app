@@ -270,7 +270,7 @@ jobs:
           set -eo pipefail
           yarn build:macos || yarn build:macos
           pod install --project-directory=macos
-          ../scripts/xcodebuild.sh macos/Example.xcworkspace
+          ../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test
         run: |
