@@ -150,9 +150,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         switch component.presentationStyle {
         case "modal":
-            viewController.view.frame = NSRect(size: WindowSize.modalSize)
+            let modalFrame = NSRect(size: WindowSize.modalSize)
+            viewController.view.frame = modalFrame
             if let rootView = viewController.view as? RCTRootView {
-                rootView.minimumSize = WindowSize.modalSize
+                var token: NSObjectProtocol?
+                token = NotificationCenter.default.addObserver(
+                    forName: .RCTContentDidAppear,
+                    object: rootView,
+                    queue: nil,
+                    using: { _ in
+                        rootView.contentView.frame = modalFrame
+                        NotificationCenter.default.removeObserver(token!)
+                    }
+                )
             }
             window.contentViewController?.presentAsModalWindow(viewController)
         default:
