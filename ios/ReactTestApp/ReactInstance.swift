@@ -82,7 +82,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             if let flipper = FlipperClient.shared() {
                 flipper.add(FlipperKitLayoutPlugin(
                     rootNode: UIApplication.shared,
-                    with: SKDescriptorMapper()
+                    with: SKDescriptorMapper(defaults: ())
                 ))
                 flipper.add(FKUserDefaultsPlugin(suiteName: nil))
                 flipper.add(FlipperKitReactPlugin())
