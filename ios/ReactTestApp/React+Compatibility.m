@@ -56,7 +56,10 @@ void RTATriggerReloadCommand(RCTBridge *bridge, NSString *reason)
 
 #if !TARGET_OS_OSX && REACT_NATIVE_VERSION < 6302
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
 #import <React/RCTUIImageViewAnimated.h>
+#pragma clang diagnostic pop
 
 @implementation RCTUIImageViewAnimated (ReactTestApp)
 
