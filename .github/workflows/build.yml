@@ -5,6 +5,30 @@ on:
       - master
   pull_request:
 jobs:
+  lint-commit:
+    name: "lint commit message"
+    runs-on: ubuntu-latest
+    if: "${{ github.event_name == 'pull_request' }}"
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache /.yarn-offline-mirror
+        uses: actions/cache@v2
+        with:
+          path: .yarn-offline-mirror
+          key: ${{ hashFiles('yarn.lock') }}
+      - name: Install
+        run: |
+          yarn ci
+      - name: Lint commit message
+        run: |
+          yarn lint:commit
   lint-test:
     name: "lint + test"
     runs-on: macos-latest
