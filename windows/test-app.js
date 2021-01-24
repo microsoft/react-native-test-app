@@ -368,6 +368,13 @@ function generateSolution(destPath, noAutolink) {
           fs.readFileSync(solutionTemplatePath, { encoding: "utf8" }),
           templateView
         )
+        // The current version of this template (v0.63.18) assumes that
+        // `react-native-windows` is always installed in
+        // `..\node_modules\react-native-windows`.
+        .replace(
+          /"\.\.\\node_modules\\react-native-windows\\/g,
+          `"${path.relative(destPath, rnWindowsPath)}\\`
+        )
         .replace(
           "ReactTestApp\\ReactTestApp.vcxproj",
           path.relative(destPath, reactTestAppProjectPath)
