@@ -372,8 +372,8 @@ function generateSolution(destPath, noAutolink) {
         // `react-native-windows` is always installed in
         // `..\node_modules\react-native-windows`.
         .replace(
-          /"\.\.\\node_modules\\react-native-windows/g,
-          '"' + path.relative(destPath, rnWindowsPath)
+          /"\.\.\\node_modules\\react-native-windows\\/g,
+          `"${path.relative(destPath, rnWindowsPath)}\\`
         )
         .replace(
           "ReactTestApp\\ReactTestApp.vcxproj",
