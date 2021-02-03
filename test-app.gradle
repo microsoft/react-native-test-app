@@ -17,8 +17,12 @@ private static void apply(Settings settings) {
     }
 
     settings.include(":app")
+    settings.include(":support")
+
     settings.project(":app")
         .projectDir = new File("${projectDir}/android/app")
+    settings.project(":support")
+        .projectDir = new File("${projectDir}/android/support")
 }
 
 def scriptDir = buildscript.sourceFile.getParent()

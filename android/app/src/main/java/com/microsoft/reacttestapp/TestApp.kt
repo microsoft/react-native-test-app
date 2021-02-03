@@ -10,16 +10,6 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-private fun PackageList.invokeLifecycleMethod(name: String) {
-    packages.forEach {
-        try {
-            val methodToFind = it.javaClass.getMethod(name)
-            methodToFind.invoke(it)
-        } catch (e: NoSuchMethodException) {
-        }
-    }
-}
-
 class TestApp : Application(), HasAndroidInjector, ReactApplication {
 
     @Inject
@@ -31,15 +21,18 @@ class TestApp : Application(), HasAndroidInjector, ReactApplication {
     override fun onCreate() {
         super.onCreate()
 
-        val packageList = PackageList(this)
-        packageList.invokeLifecycleMethod("onAppCreated")
+        val eventConsumers = PackageList(this).packages
+            .filter { it is ReactTestAppLifecycleEvents }
+            .map { it as ReactTestAppLifecycleEvents }
+
+        eventConsumers.forEach { it.onTestAppCreated() }
 
         val testAppComponent = DaggerTestAppComponent.builder()
                 .binds(this)
                 .build()
         testAppComponent.inject(this)
 
-        packageList.invokeLifecycleMethod("onPreReactNativeInit")
+        eventConsumers.forEach { it.onPreInitReactNativeInstance() }
         reactNativeHostInternal.init()
     }
 
