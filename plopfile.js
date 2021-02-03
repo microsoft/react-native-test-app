@@ -352,6 +352,12 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
               exclusive ? "" : "../"
             }node_modules/react-native-test-app/test_app.rb'`,
             "",
+            // Make sure Flipper-Folly stays on an older version to prevent
+            // breaking build. This should be removed when the template is
+            // bumped to a later version. For more details, see this issue:
+            // https://github.com/facebook/react-native/issues/30836
+            "use_flipper!({ 'Flipper-Folly' => '2.3.0' })",
+            "",
             "workspace '{{name}}.xcworkspace'",
             "",
             "use_test_app!",

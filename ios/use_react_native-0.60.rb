@@ -6,7 +6,7 @@
 #
 # rubocop:disable Layout/LineLength
 
-require_relative('pod_helpers.rb')
+require_relative('pod_helpers')
 
 def include_react_native!(options)
   react_native, project_root = options.values_at(:path, :rta_project_root)

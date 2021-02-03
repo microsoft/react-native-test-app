@@ -9,7 +9,7 @@ require('json')
 require('pathname')
 require('rubygems/version')
 
-require_relative('pod_helpers.rb')
+require_relative('pod_helpers')
 
 def assert(condition, message)
   raise message unless condition
@@ -218,7 +218,7 @@ def make_project!(xcodeproj, project_root, target_platform)
   # Copy Xcode project files
   FileUtils.mkdir_p(destination)
   FileUtils.cp_r(src_xcodeproj, destination)
-  name, _display_name = app_name(project_root)
+  name, display_name = app_name(project_root)
   unless name.nil?
     xcschemes_path = File.join(dst_xcodeproj, 'xcshareddata', 'xcschemes')
     FileUtils.cp(File.join(xcschemes_path, 'ReactTestApp.xcscheme'),
@@ -242,6 +242,7 @@ def make_project!(xcodeproj, project_root, target_platform)
   version_macro = "REACT_NATIVE_VERSION=#{version}"
 
   product_bundle_identifier = bundle_identifier(project_root, target_platform)
+  product_name = display_name || name
   supports_flipper = target_platform == :ios && flipper_enabled?(version)
 
   app_project = Xcodeproj::Project.open(dst_xcodeproj)
@@ -254,13 +255,19 @@ def make_project!(xcodeproj, project_root, target_platform)
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
         version_macro,
-        'FB_SONARKIT_ENABLED=' + (use_flipper ? '1' : '0'),
-        'USE_FLIPPER=' + (use_flipper ? '1' : '0'),
+        "FB_SONARKIT_ENABLED=#{use_flipper ? 1 : 0}",
+        "USE_FLIPPER=#{use_flipper ? 1 : 0}",
       ]
 
       if product_bundle_identifier.is_a? String
         config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = product_bundle_identifier
       end
+
+      config.build_settings['PRODUCT_DISPLAY_NAME'] = if product_name.is_a? String
+                                                        product_name
+                                                      else
+                                                        target.name
+                                                      end
 
       next unless use_flipper
 

@@ -61,7 +61,7 @@ class TestTestApp < Minitest::Test
     use_flipper!(false)
     refute(flipper_versions)
 
-    versions = { 'Flipper': '~> 0.41.1' }
+    versions = { 'Flipper' => '~> 0.41.1' }
     use_flipper!(versions)
     assert_equal(versions, flipper_versions)
 
@@ -120,18 +120,14 @@ class TestTestApp < Minitest::Test
       assert_nil(bundle_identifier(fixture_path('without_platform_resources'), target))
       assert_nil(bundle_identifier(fixture_path('without_resources'), target))
     end
-  end
 
-  %i[ios macos].each do |target|
     define_method("test_#{target}_react_native_path") do
       assert_equal("react-native-#{target}",
                    react_native_from_manifest(fixture_path('with_platform_resources'), target))
       assert_nil(react_native_from_manifest(fixture_path('without_platform_resources'), target))
       assert_nil(react_native_from_manifest(fixture_path('without_resources'), target))
     end
-  end
 
-  %i[ios macos].each do |target|
     define_method("test_#{target}_resources_pod_returns_spec_path") do
       assert_nil(resources_pod(Pathname.new('/'), target))
       assert_nil(resources_pod(Pathname.new('.'), target))
@@ -150,9 +146,7 @@ class TestTestApp < Minitest::Test
       assert_equal('..',
                    resources_pod(fixture_path('with_platform_resources', target.to_s), target))
     end
-  end
 
-  %i[ios macos].each do |target|
     define_method("test_#{target}_resources_pod_writes_podspec") do
       # Lifetime of the resources `.podspec` is tied to the lifetime of the
       # owning object (normally a `Pod` object). Disable GC to avoid random

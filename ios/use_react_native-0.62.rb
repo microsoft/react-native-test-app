@@ -6,7 +6,7 @@
 #
 # rubocop:disable Layout/LineLength
 
-require_relative('pod_helpers.rb')
+require_relative('pod_helpers')
 
 def add_flipper_pods!(versions = {})
   versions['Flipper'] ||= '~> 0.33.1'
