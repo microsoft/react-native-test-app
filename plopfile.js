@@ -302,7 +302,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
         actions.push({
           type: "add",
           path: `${prefix}build.gradle`,
-          templateFile: path.join(androidTemplateDir, "build.gradle")
+          templateFile: path.join(androidTemplateDir, "build.gradle"),
         });
         actions.push({
           type: "add",
