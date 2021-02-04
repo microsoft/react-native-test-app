@@ -54,12 +54,14 @@ Object {
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "android/build.gradle": "buildscript {
-    apply from: file(\\"../../../android/dependencies.gradle\\")
+    "android/build.gradle": "buildscript { scriptHandler ->
+    def androidTestAppDir = \\"../../../android\\"
+    apply from: \\"$androidTestAppDir/dependencies.gradle\\"
+    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
     repositories {
-        jcenter()
         google()
+        mavenCentral()
     }
 
     dependencies {
@@ -184,12 +186,14 @@ Object {
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "android/build.gradle": "buildscript {
-    apply from: file(\\"../../../android/dependencies.gradle\\")
+    "android/build.gradle": "buildscript { scriptHandler ->
+    def androidTestAppDir = \\"../../../android\\"
+    apply from: \\"$androidTestAppDir/dependencies.gradle\\"
+    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
     repositories {
-        jcenter()
         google()
+        mavenCentral()
     }
 
     dependencies {
@@ -287,12 +291,14 @@ Object {
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "android/build.gradle": "buildscript {
-    apply from: file(\\"../../../android/dependencies.gradle\\")
+    "android/build.gradle": "buildscript { scriptHandler ->
+    def androidTestAppDir = \\"../../../android\\"
+    apply from: \\"$androidTestAppDir/dependencies.gradle\\"
+    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
     repositories {
-        jcenter()
         google()
+        mavenCentral()
     }
 
     dependencies {

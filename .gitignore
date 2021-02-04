@@ -8,6 +8,7 @@
 .watchman-*
 .yarn-offline-mirror/
 Pods/
+android/**/build/
 clang-format-diff.py
 coverage/
 dist/
