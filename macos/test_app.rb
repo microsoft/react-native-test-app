@@ -5,7 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-require_relative('../ios/test_app.rb')
+require_relative('../ios/test_app')
 
 def use_test_app!(options = {}, &block)
   use_test_app_internal!(:macos, options, &block)

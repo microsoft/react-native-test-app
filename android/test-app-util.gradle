@@ -62,6 +62,25 @@ ext.findNodeModulesPath = { baseDir, packageName ->
     return null
 }
 
+ext.getAppName = { baseDir ->
+    def manifestFile = findFile('app.json')
+    if (manifestFile != null) {
+        def manifest = new JsonSlurper().parseText(manifestFile.text)
+
+        def displayName = manifest['displayName']
+        if (displayName instanceof String) {
+            return displayName
+        }
+
+        def name = manifest['name']
+        if (name instanceof String) {
+            return name
+        }
+    }
+
+    return "ReactTestApp"
+}
+
 ext.getApplicationId = { baseDir ->
     def manifestFile = findFile('app.json')
     if (manifestFile != null) {
