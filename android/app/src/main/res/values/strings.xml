@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">ReactTestApp</string>
     <string name="content_description_load_embedded_js_bundle">Load embedded JS bundle</string>
     <string name="load_embedded_js_bundle">Load embedded JS bundle</string>
     <string name="content_description_load_from_dev_server">Load from dev server</string>

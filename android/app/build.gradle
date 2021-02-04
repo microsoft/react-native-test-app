@@ -45,6 +45,7 @@ apply from: file("${testAppDir}/test-app.gradle")
 applyTestAppModule(project, "com.microsoft.reacttestapp")
 
 project.ext.react = [
+    appName: getAppName(),
     applicationId: getApplicationId(),
     enableFlipper: getFlipperVersion(rootDir),
     enableHermes : true,
@@ -72,6 +73,9 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
+        resValue "string", "app_name", project.ext.react.appName
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
