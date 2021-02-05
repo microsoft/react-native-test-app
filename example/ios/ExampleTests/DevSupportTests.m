@@ -18,6 +18,7 @@
 {
     XCTAssertNotNil(ReactTestAppDidInitializeNotification);
     XCTAssertNotNil(ReactTestAppWillInitializeReactNativeNotification);
+    XCTAssertNotNil(ReactTestAppInitializedReactNativeNotification);
     XCTAssertNotNil(ReactTestAppSceneDidOpenURLNotification);
 }
 

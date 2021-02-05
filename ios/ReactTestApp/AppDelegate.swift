@@ -23,6 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
         self.application = application
+
+        NotificationCenter.default.post(
+            name: .ReactTestAppDidInitializeNotification,
+            object: nil
+        )
+
         return true
     }
 
