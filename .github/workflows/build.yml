@@ -81,6 +81,12 @@ jobs:
           echo "::remove-matcher owner=eslint-stylish::"
           yarn tsc
           yarn test:js --ci
+      - name: ktlint
+        run: |
+          brew install ktlint
+          echo "::add-matcher::.github/ktlint.json"
+          yarn lint:kt
+          echo "::remove-matcher owner=ktlint::"
       - name: SwiftFormat
         run: |
           brew install swiftformat

@@ -36,7 +36,11 @@ class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val reactApplication = requireActivity().application as ReactApplication
         return ReactRootView(context).apply {
             startReactApplication(

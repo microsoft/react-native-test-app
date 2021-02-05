@@ -48,7 +48,9 @@ object ReactNativeFlipper {
                 object : ReactInstanceEventListener {
                     override fun onReactContextInitialized(reactContext: ReactContext) {
                         reactInstanceManager.removeReactInstanceEventListener(this)
-                        reactContext.runOnNativeModulesQueueThread { client.addPlugin(FrescoFlipperPlugin()) }
+                        reactContext.runOnNativeModulesQueueThread {
+                            client.addPlugin(FrescoFlipperPlugin())
+                        }
                     }
                 })
         } else {
