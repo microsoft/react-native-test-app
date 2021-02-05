@@ -16,13 +16,11 @@ buildscript {
     apply from: "$buildscriptDir/../test-app-util.gradle"
 
     repositories {
-        google()
         jcenter()
     }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "com.android.tools.build:gradle:4.0.2"
     }
 }
 
@@ -45,7 +43,7 @@ apply from: file("${testAppDir}/test-app.gradle")
 applyTestAppModule(project, "com.microsoft.reacttestapp")
 
 project.ext.react = [
-    appName: getAppName(),
+    appName      : getAppName(),
     applicationId: getApplicationId(),
     enableFlipper: getFlipperVersion(rootDir),
     enableHermes : true,
@@ -95,7 +93,7 @@ android {
 
 dependencies {
     implementation project(":support")
-    
+
     implementation "com.google.dagger:dagger:2.28.3"
     implementation "com.google.dagger:dagger-android:2.28.3"
     implementation "com.google.dagger:dagger-android-support:2.28.3"
