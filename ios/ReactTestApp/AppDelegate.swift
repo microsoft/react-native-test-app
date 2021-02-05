@@ -24,10 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         self.application = application
 
-        NotificationCenter.default.post(
-            name: .ReactTestAppDidInitialize,
-            object: nil
-        )
+        defer {
+            NotificationCenter.default.post(
+                name: .ReactTestAppDidInitialize,
+                object: nil
+            )
+        }
 
         return true
     }
