@@ -29,8 +29,8 @@ class TestApp : Application(), HasAndroidInjector, ReactApplication {
         eventConsumers.forEach { it.onTestAppCreated() }
 
         val testAppComponent = DaggerTestAppComponent.builder()
-                .binds(this)
-                .build()
+            .binds(this)
+            .build()
         testAppComponent.inject(this)
 
         eventConsumers.forEach { it.onPreInitReactNativeInstance() }
