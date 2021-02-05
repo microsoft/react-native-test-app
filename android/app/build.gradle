@@ -10,10 +10,9 @@ def hermesEngineDir =
 def hermesAndroidDir = "$hermesEngineDir/android"
 
 buildscript {
-    ext.kotlinVersion = "1.4.20"
-
-    def buildscriptDir = buildscript.sourceFile.getParent()
-    apply from: "$buildscriptDir/../test-app-util.gradle"
+    def androidDir = "${buildscript.sourceFile.getParent()}/../"
+    apply from: "$androidDir/test-app-util.gradle"
+    apply from: "$androidDir/dependencies.gradle"
 
     repositories {
         jcenter()
@@ -50,8 +49,8 @@ project.ext.react = [
 ]
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion sdk.version
+    buildToolsVersion sdk.buildToolsVersion
 
     // TODO: Remove this block when minSdkVersion >= 24. See
     // https://stackoverflow.com/q/53402639 for details.
@@ -67,10 +66,10 @@ android {
 
     defaultConfig {
         applicationId project.ext.react.applicationId
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion sdk.minVersion
+        targetSdkVersion sdk.version
+        versionCode rntaVersion.code
+        versionName rntaVersion.label
 
         resValue "string", "app_name", project.ext.react.appName
 

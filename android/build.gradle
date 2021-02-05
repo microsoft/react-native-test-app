@@ -3,8 +3,11 @@ buildscript {
         jcenter()
         google()
     }
+    
+    def buildscriptDir = buildscript.sourceFile.getParent()
+    apply from: "$buildscriptDir/dependencies.gradle"
 
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.2"
+        classpath "com.android.tools.build:gradle:$androidPluginVersion"
     }
 }

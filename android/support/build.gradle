@@ -5,15 +5,18 @@ repositories {
 
 apply plugin: "com.android.library"
 
+def androidDir = "${buildscript.sourceFile.getParent()}/../"
+apply from: "$androidDir/dependencies.gradle"
+
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion sdk.version
+    buildToolsVersion sdk.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion sdk.minVersion
+        targetSdkVersion sdk.version
+        versionCode rntaVersion.code
+        versionName rntaVersion.label
     }
 
     compileOptions {

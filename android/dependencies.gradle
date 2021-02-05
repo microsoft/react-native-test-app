@@ -1,0 +1,16 @@
+
+ext {
+    androidPluginVersion = "4.0.2"
+    kotlinVersion = "1.4.20"
+
+    rntaVersion = [
+        code: 1,
+        label: "1.0"
+    ]
+
+    sdk = [
+        version: 29,
+        minVersion: 21,
+        buildToolsVersion: "29.0.3"
+    ]    
+}
