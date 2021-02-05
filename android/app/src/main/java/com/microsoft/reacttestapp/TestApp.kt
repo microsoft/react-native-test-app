@@ -38,7 +38,7 @@ class TestApp : Application(), HasAndroidInjector, ReactApplication {
                 eventConsumers.forEach { it.onTestAppWillInitializeReactNative() }
             },
             afterReactNativeInit = {
-                eventConsumers.forEach { it.onTestAppDidInitializeReactNative()}
+                eventConsumers.forEach { it.onTestAppDidInitializeReactNative() }
             },
         )
     }
