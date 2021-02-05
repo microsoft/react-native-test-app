@@ -9,7 +9,7 @@
 
 NSNotificationName const ReactTestAppDidInitializeNotification =
     @"ReactTestAppDidInitializeNotification";
-NSNotificationName const ReactTestAppPreInitReactNativeInstanceNotification =
-    @"ReactTestAppPreInitReactNativeInstanceNotification";
+NSNotificationName const ReactTestAppWillInitializeReactNativeNotification =
+    @"ReactTestAppWillInitializeReactNativeNotification";
 NSNotificationName const ReactTestAppSceneDidOpenURLNotification =
     @"ReactTestAppSceneDidOpenURLNotification";

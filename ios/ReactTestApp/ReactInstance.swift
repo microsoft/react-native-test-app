@@ -99,8 +99,8 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
     func initReact(onDidInitialize: @escaping () -> Void) {
         if bridge == nil {
             NotificationCenter.default.post(
-                name: .ReactTestAppPreInitReactNativeInstance,
-                object: []
+                name: .ReactTestAppWillInitializeReactNative,
+                object: nil
             )
         }
 

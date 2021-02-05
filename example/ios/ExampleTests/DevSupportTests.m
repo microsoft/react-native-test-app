@@ -17,7 +17,7 @@
 - (void)testDevSupportIsLinked
 {
     XCTAssertNotNil(ReactTestAppDidInitializeNotification);
-    XCTAssertNotNil(ReactTestAppPreInitReactNativeInstanceNotification);
+    XCTAssertNotNil(ReactTestAppWillInitializeReactNativeNotification);
     XCTAssertNotNil(ReactTestAppSceneDidOpenURLNotification);
 }
 
