@@ -3,4 +3,5 @@
 source 'https://rubygems.org' do
   gem 'minitest'
   gem 'rubocop', require: false
+  gem 'rubocop-minitest'
 end
