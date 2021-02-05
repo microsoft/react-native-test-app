@@ -59,11 +59,24 @@ class TestAppReactNativeHost @Inject constructor(
 
     var onBundleSourceChanged: ((newSource: BundleSource) -> Unit)? = null
 
-    fun init() {
+    fun init(beforeReactNativeInit: () -> Unit, afterReactNativeInit: () -> Unit) {
         if (BuildConfig.DEBUG && hasInstance()) {
             error("init() can only be called once on startup")
         }
 
+        val reactInstanceListener = object : ReactInstanceManager.ReactInstanceEventListener {
+            override fun onReactContextInitialized(context: ReactContext?) {
+                afterReactNativeInit()
+
+                // proactively removing the listener to avoid leaking memory
+                // and to avoid dupe calls to afterReactNativeInit()
+                reactInstanceManager.removeReactInstanceEventListener(this)
+            }
+        }
+
+        reactInstanceManager.addReactInstanceEventListener(reactInstanceListener)
+
+        beforeReactNativeInit()
         SoLoader.init(application, false)
         reactInstanceManager.createReactContextInBackground()
 

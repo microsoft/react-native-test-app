@@ -1,6 +1,7 @@
 package com.microsoft.reacttestapp.support;
 
 public interface ReactTestAppLifecycleEvents {
-    void onTestAppCreated();
-    void onPreInitReactNativeInstance();
+    void onTestAppInitialized();
+    void onTestAppWillInitializeReactNative();
+    void onTestAppInitializedReactNative();
 }

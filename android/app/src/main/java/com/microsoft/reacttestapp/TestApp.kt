@@ -26,15 +26,21 @@ class TestApp : Application(), HasAndroidInjector, ReactApplication {
             .filter { it is ReactTestAppLifecycleEvents }
             .map { it as ReactTestAppLifecycleEvents }
 
-        eventConsumers.forEach { it.onTestAppCreated() }
+        eventConsumers.forEach { it.onTestAppInitialized() }
 
         val testAppComponent = DaggerTestAppComponent.builder()
             .binds(this)
             .build()
         testAppComponent.inject(this)
 
-        eventConsumers.forEach { it.onPreInitReactNativeInstance() }
-        reactNativeHostInternal.init()
+        reactNativeHostInternal.init(
+            beforeReactNativeInit = {
+                eventConsumers.forEach { it.onTestAppWillInitializeReactNative() }
+            },
+            afterReactNativeInit = {
+                eventConsumers.forEach { it.onTestAppInitializedReactNative()}
+            },
+        )
     }
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
