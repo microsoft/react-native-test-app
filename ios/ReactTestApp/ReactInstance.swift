@@ -97,6 +97,13 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
     }
 
     func initReact(onDidInitialize: @escaping () -> Void) {
+        if bridge == nil {
+            NotificationCenter.default.post(
+                name: .ReactTestAppWillInitializeReactNative,
+                object: nil
+            )
+        }
+
         if let bridge = bridge {
             if remoteBundleURL == nil {
                 // When loading the embedded bundle, we must disable remote
@@ -109,7 +116,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             self.bridge = bridge
 
             NotificationCenter.default.post(
-                name: .ReactTestAppDidInitialize,
+                name: .ReactTestAppDidInitializeReactNative,
                 object: bridge
             )
 

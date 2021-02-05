@@ -1,10 +1,11 @@
 buildscript {
-    apply from: file("../node_modules/react-native-test-app/android/dependencies.gradle")
-
     repositories {
         jcenter()
         google()
     }
+    
+    def buildscriptDir = buildscript.sourceFile.getParent()
+    apply from: "$buildscriptDir/dependencies.gradle"
 
     dependencies {
         classpath "com.android.tools.build:gradle:$androidPluginVersion"

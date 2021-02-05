@@ -1,10 +1,14 @@
 buildscript {
+    def buildscriptDir = buildscript.sourceFile.getParent()
+    apply from: "$buildscriptDir/dependencies.gradle"
+
     repositories {
         google()
         jcenter()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath "com.android.tools.build:gradle:$androidPluginVersion"
         classpath 'de.undercouch:gradle-download-task:4.1.1'
     }
 }

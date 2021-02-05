@@ -1,0 +1,26 @@
+repositories {
+    jcenter()
+    google()
+}
+
+apply plugin: "com.android.library"
+
+def androidDir = "${buildscript.sourceFile.getParent()}/../"
+apply from: "$androidDir/dependencies.gradle"
+
+android {
+    compileSdkVersion sdk.version
+    buildToolsVersion sdk.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion sdk.minVersion
+        targetSdkVersion sdk.version
+        versionCode rntaVersion.code
+        versionName rntaVersion.label
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
