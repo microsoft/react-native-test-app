@@ -116,7 +116,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             self.bridge = bridge
 
             NotificationCenter.default.post(
-                name: .ReactTestAppInitializedReactNative,
+                name: .ReactTestAppDidInitializeReactNative,
                 object: bridge
             )
 

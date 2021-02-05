@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.application = application
 
         NotificationCenter.default.post(
-            name: .ReactTestAppDidInitializeNotification,
+            name: .ReactTestAppDidInitialize,
             object: nil
         )
 
