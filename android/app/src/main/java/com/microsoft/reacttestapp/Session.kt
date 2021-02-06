@@ -24,7 +24,9 @@ class Session(context: Context) {
 
     var shouldRememberLastComponent: Boolean
         get() = sharedPreferences.getBoolean(REMEMBER_LAST_COMPONENT_ENABLED, false)
-        set(enabled) = sharedPreferences.edit { putBoolean(REMEMBER_LAST_COMPONENT_ENABLED, enabled) }
+        set(enabled) = sharedPreferences.edit {
+            putBoolean(REMEMBER_LAST_COMPONENT_ENABLED, enabled)
+        }
 
     fun lastOpenedComponent(checksum: String): Int? {
         if (!shouldRememberLastComponent || checksum != manifestChecksum) {

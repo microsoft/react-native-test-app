@@ -88,8 +88,9 @@ class TestAppReactNativeHost @Inject constructor(
             } catch (e: ClassNotFoundException) {
                 Log.i(
                     "ReactTestApp",
-                    "To use Flipper, define `FLIPPER_VERSION` in your `gradle.properties`. "
-                        + "If you're using React Native 0.62, you should use `FLIPPER_VERSION=0.33.1`."
+                    "To use Flipper, define `FLIPPER_VERSION` in your `gradle.properties`. " +
+                        "If you're using React Native 0.63, you should use " +
+                        "`FLIPPER_VERSION=0.54.0`."
                 )
             }
         }

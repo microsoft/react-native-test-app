@@ -35,6 +35,7 @@
     "format:swift": "swiftformat --swiftversion 5.3 ios macos",
     "lint:commit": "git log --format='%s' origin/master..HEAD | tail -1 | commitlint",
     "lint:js": "eslint $(git ls-files '*.js')",
+    "lint:kt": "ktlint --relative --verbose 'android/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
     "lint:swift": "swiftlint",
     "set-react-version": "scripts/set-react-version.js",
