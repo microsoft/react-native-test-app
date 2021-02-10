@@ -77,7 +77,7 @@ function sortByKeys(obj) {
 function getScripts(name, targetPlatform) {
   /** @type {(platform: string, bundle: string, assetsDest: string) => string} */
   const rnBundle = (platform, bundle, assetsDest) =>
-    `mkdirp ${assetsDest} && react-native bundle --entry-file index.js --platform ${platform} --dev true --bundle-output dist/main.${platform}.${bundle} --assets-dest ${assetsDest} --reset-cache`;
+    `mkdirp ${assetsDest} && react-native bundle --entry-file index.js --platform ${platform} --dev true --bundle-output dist/main.${platform}.${bundle} --assets-dest ${assetsDest}`;
 
   const allScripts = {
     android: {
@@ -355,7 +355,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
           template: [
             `require_relative '${
               exclusive ? "" : "../"
-            }node_modules/react-native-test-app/test_app.rb'`,
+            }node_modules/react-native-test-app/test_app'`,
             "",
             // Make sure Flipper-Folly stays on an older version to prevent
             // breaking build. This should be removed when the template is
@@ -396,7 +396,7 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
             template: [
               `require_relative '${
                 exclusive ? "" : "../"
-              }node_modules/react-native-test-app/macos/test_app.rb'`,
+              }node_modules/react-native-test-app/macos/test_app'`,
               "",
               "workspace '{{name}}.xcworkspace'",
               "",
