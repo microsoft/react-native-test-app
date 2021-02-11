@@ -6816,10 +6816,10 @@ marked-terminal@^4.0.0:
     node-emoji "^1.10.0"
     supports-hyperlinks "^2.1.0"
 
-marked@^1.0.0:
-  version "1.2.7"
-  resolved "https://registry.npmjs.org/marked/-/marked-1.2.7.tgz#6e14b595581d2319cdcf033a24caaf41455a01fb"
-  integrity sha512-No11hFYcXr/zkBvL6qFmAp1z6BKY3zqLMHny/JN/ey+al7qwCM2+CMBL9BOgqMxZU36fz4cCWfn2poWIf7QRXA==
+marked@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/marked/-/marked-2.0.0.tgz#9662bbcb77ebbded0662a7be66ff929a8611cee5"
+  integrity sha512-NqRSh2+LlN2NInpqTQnS614Y/3NkVMFFU6sJlRFEpxJ/LHuK/qJECH7/fXZjk4VZstPW/Pevjil/VtSONsLc7Q==
 
 meant@^1.0.2:
   version "1.0.3"
@@ -9392,9 +9392,9 @@ scheduler@0.19.1:
     object-assign "^4.1.1"
 
 semantic-release@^17.0.0:
-  version "17.3.6"
-  resolved "https://registry.npmjs.org/semantic-release/-/semantic-release-17.3.6.tgz#0390eb9c4d13e82dbf0f8e5700f196b599fa2a12"
-  integrity sha512-zPAFxmnMtEVbN1Lzxz+CMXlt5a9txB/PRWaVq+oAC9Mppbax/vWXZ0kisHX92O+BjEBbsaFtISjz82E+2Ro9gQ==
+  version "17.3.8"
+  resolved "https://registry.npmjs.org/semantic-release/-/semantic-release-17.3.8.tgz#ae713d239f60a6ea9ca1c431318507d54b278c67"
+  integrity sha512-VOYRY/qm4ysTUbOTrMaVRd+boG0HQlHgSCvVgNqvG0l99RCIwuUkamD0D+T5l7XhMHc4XGxNRGrElcVyPPS86A==
   dependencies:
     "@semantic-release/commit-analyzer" "^8.0.0"
     "@semantic-release/error" "^2.2.0"
@@ -9408,12 +9408,12 @@ semantic-release@^17.0.0:
     execa "^5.0.0"
     figures "^3.0.0"
     find-versions "^4.0.0"
-    get-stream "^5.0.0"
+    get-stream "^6.0.0"
     git-log-parser "^1.2.0"
     hook-std "^2.0.0"
     hosted-git-info "^3.0.0"
     lodash "^4.17.15"
-    marked "^1.0.0"
+    marked "^2.0.0"
     marked-terminal "^4.0.0"
     micromatch "^4.0.2"
     p-each-series "^2.1.0"
