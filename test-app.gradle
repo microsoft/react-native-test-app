@@ -14,6 +14,13 @@ private static void apply(Settings settings) {
         settings.include(":ReactAndroid")
         settings.project(":ReactAndroid")
             .projectDir = new File("${reactNativeDir}/ReactAndroid")
+
+        settings.include(":packages:react-native-codegen:android")
+        settings.project(":packages:react-native-codegen:android")
+            .projectDir = new File("${reactNativeDir}/packages/react-native-codegen/android")
+
+        settings.includeBuild("${reactNativeDir}/packages/react-native-codegen/android")
+        settings.includeBuild("${reactNativeDir}/packages/react-native-gradle-plugin")
     }
 
     settings.include(":app")

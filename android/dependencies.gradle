@@ -2,9 +2,9 @@ ext {
     androidPluginVersion = "4.0.2"
     kotlinVersion = "1.4.20"
 
-    rntaVersion = [
-        code : 1,
-        label: "1.0"
+    reactTestApp = [
+        versionCode: 1,
+        versionName: "1.0"
     ]
 
     sdk = [
