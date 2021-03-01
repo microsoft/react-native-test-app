@@ -35,7 +35,7 @@ const profiles = {
   master: {
     react: "17.0.1",
     "react-native": "facebook/react-native#master",
-    "react-native-codegen": "^0.0.6",
+    "react-native-codegen": "^0.0.7",
     "react-native-macos": undefined,
     "react-native-windows": undefined,
   },

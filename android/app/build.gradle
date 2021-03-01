@@ -52,6 +52,11 @@ android {
     compileSdkVersion sdk.version
     buildToolsVersion sdk.buildToolsVersion
 
+    // We need only set `ndkVersion` when building react-native from source.
+    if (hasProperty("ANDROID_NDK_VERSION")) {
+        ndkVersion ANDROID_NDK_VERSION
+    }
+
     // TODO: Remove this block when minSdkVersion >= 24. See
     // https://stackoverflow.com/q/53402639 for details.
     compileOptions {
@@ -68,8 +73,8 @@ android {
         applicationId project.ext.react.applicationId
         minSdkVersion sdk.minVersion
         targetSdkVersion sdk.version
-        versionCode rntaVersion.code
-        versionName rntaVersion.label
+        versionCode reactTestApp.versionCode
+        versionName reactTestApp.versionName
 
         resValue "string", "app_name", project.ext.react.appName
 
