@@ -186,6 +186,7 @@ final class ContentViewController: UITableViewController {
                 moduleName: component.appKey,
                 initialProperties: component.initialProperties
             )
+            viewController.view.backgroundColor = UIColor.systemBackground
             return viewController
         }()
 
