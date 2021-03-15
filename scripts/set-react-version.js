@@ -32,10 +32,15 @@ const profiles = {
     "react-native-macos": "0.63.3",
     "react-native-windows": "0.63.14",
   },
+  0.64: {
+    react: "17.0.1",
+    "react-native": "0.64.0",
+    "react-native-macos": undefined,
+    "react-native-windows": undefined,
+  },
   master: {
     react: "17.0.1",
     "react-native": "facebook/react-native#master",
-    "react-native-codegen": "^0.0.7",
     "react-native-macos": undefined,
     "react-native-windows": undefined,
   },
