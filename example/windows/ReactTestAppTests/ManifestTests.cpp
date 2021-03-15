@@ -8,6 +8,7 @@
 #include "pch.h"
 
 #include <CppUnitTest.h>
+#include <filesystem>
 #include <string>
 
 #include "Manifest.h"
@@ -16,6 +17,19 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 using ReactTestApp::Component;
 using ReactTestApp::Manifest;
+
+std::string fixturePath(std::filesystem::path file)
+{
+    // Current working directory when running tests (with VSTest.Console.exe)
+    // changed between Visual Studio 16.8 and 16.9 and broke our pipelines. To
+    // prevent future build failures, we'll use the absolute path to this
+    // source file to build the path to the test fixtures.
+    //
+    // To ensure that `__FILE__` is a full path, we must also enable `/FC` in
+    // Properties > C/C++ > Advanced.
+    const auto p = std::filesystem::path(__FILE__).replace_filename("manifestTestFiles") / file;
+    return p.string();
+}
 
 // disable clang-format because it doesn't handle macros very well
 // clang-format off
@@ -26,7 +40,7 @@ namespace ReactTestAppTests
     public:
         TEST_METHOD(ParseManifestWithOneComponent)
         {
-            auto result = ReactTestApp::GetManifest("manifestTestFiles/simpleManifest.json");
+            auto result = ReactTestApp::GetManifest(fixturePath("simpleManifest.json"));
             if (!result.has_value()) {
                 Assert::Fail(L"Couldn't read manifest file");
             }
@@ -42,7 +56,7 @@ namespace ReactTestAppTests
 
         TEST_METHOD(ParseManifestWithMultipleComponents)
         {
-            auto result = ReactTestApp::GetManifest("manifestTestFiles/withMultipleComponents.json");
+            auto result = ReactTestApp::GetManifest(fixturePath("withMultipleComponents.json"));
             if (!result.has_value()) {
                 Assert::Fail(L"Couldn't read manifest file");
             }
@@ -67,7 +81,7 @@ namespace ReactTestAppTests
 
         TEST_METHOD(ParseManifestWithComplexInitialProperties)
         {
-            auto result = ReactTestApp::GetManifest("manifestTestFiles/withComplexInitialProperties.json");
+            auto result = ReactTestApp::GetManifest(fixturePath("withComplexInitialProperties.json"));
             if (!result.has_value()) {
                 Assert::Fail(L"Couldn't read manifest file");
             }
