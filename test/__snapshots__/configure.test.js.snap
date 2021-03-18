@@ -1,0 +1,361 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gatherConfig() flattens configuration for a single platform only 1`] = `
+Object {
+  "dependencies": Object {},
+  "files": Object {
+    ".watchmanconfig": Object {
+      "source": "node_modules/react-native/template/_watchmanconfig",
+    },
+    "Podfile": "require_relative '../../../test_app'
+
+use_flipper!({ 'Flipper-Folly' => '2.3.0' })
+
+workspace 'Test.xcworkspace'
+
+use_test_app!
+",
+    "babel.config.js": Object {
+      "source": "node_modules/react-native/template/babel.config.js",
+    },
+    "metro.config.js": Object {
+      "source": "../example/metro.config.js",
+    },
+    "metro.config.windows.js": Object {
+      "source": "node_modules/@react-native-windows/cli/templates/metro.config.js",
+    },
+    "react-native.config.js": Object {
+      "source": "../example/react-native.config.js",
+    },
+  },
+  "oldFiles": Array [
+    "Podfile.lock",
+    "Pods",
+    "Test.xcodeproj",
+    "Test.xcworkspace",
+  ],
+  "scripts": Object {
+    "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+  },
+}
+`;
+
+exports[`gatherConfig() flattens configuration for a single platform only 2`] = `
+Object {
+  "dependencies": Object {},
+  "files": Object {
+    ".watchmanconfig": Object {
+      "source": "node_modules/react-native/template/_watchmanconfig",
+    },
+    "android/build.gradle": "buildscript {
+    apply from: file(\\"../../../android/dependencies.gradle\\")
+
+    repositories {
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath \\"com.android.tools.build:gradle:$androidPluginVersion\\"
+    }
+}
+",
+    "android/gradle.properties": Object {
+      "source": "../example/android/gradle.properties",
+    },
+    "android/gradle/wrapper/gradle-wrapper.jar": Object {
+      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.jar",
+    },
+    "android/gradle/wrapper/gradle-wrapper.properties": Object {
+      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.properties",
+    },
+    "android/gradlew": Object {
+      "source": "node_modules/react-native/template/android/gradlew",
+    },
+    "android/gradlew.bat": Object {
+      "source": "node_modules/react-native/template/android/gradlew.bat",
+    },
+    "android/settings.gradle": "pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        google()
+    }
+}
+
+rootProject.name='Test'
+
+apply from: file(\\"../../../test-app.gradle\\")
+applyTestAppSettings(settings)
+",
+    "babel.config.js": Object {
+      "source": "node_modules/react-native/template/babel.config.js",
+    },
+    "ios/Podfile": "require_relative '../../../test_app'
+
+use_flipper!({ 'Flipper-Folly' => '2.3.0' })
+
+workspace 'Test.xcworkspace'
+
+use_test_app!
+",
+    "metro.config.js": Object {
+      "source": "../example/metro.config.js",
+    },
+    "metro.config.windows.js": Object {
+      "source": "node_modules/@react-native-windows/cli/templates/metro.config.js",
+    },
+    "react-native.config.js": Object {
+      "source": "../example/react-native.config.js",
+    },
+  },
+  "oldFiles": Array [
+    "ios/Podfile.lock",
+    "ios/Pods",
+    "ios/Test.xcodeproj",
+    "ios/Test.xcworkspace",
+  ],
+  "scripts": Object {
+    "android": "react-native run-android",
+    "build:android": "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+    "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+  },
+}
+`;
+
+exports[`gatherConfig() returns configuration for a single platform 1`] = `
+Object {
+  "dependencies": Object {},
+  "files": Object {
+    ".watchmanconfig": Object {
+      "source": "node_modules/react-native/template/_watchmanconfig",
+    },
+    "babel.config.js": Object {
+      "source": "node_modules/react-native/template/babel.config.js",
+    },
+    "ios/Podfile": "require_relative '../../../test_app'
+
+use_flipper!({ 'Flipper-Folly' => '2.3.0' })
+
+workspace 'Test.xcworkspace'
+
+use_test_app!
+",
+    "metro.config.js": Object {
+      "source": "../example/metro.config.js",
+    },
+    "metro.config.windows.js": Object {
+      "source": "node_modules/@react-native-windows/cli/templates/metro.config.js",
+    },
+    "react-native.config.js": Object {
+      "source": "../example/react-native.config.js",
+    },
+  },
+  "oldFiles": Array [
+    "ios/Podfile.lock",
+    "ios/Pods",
+    "ios/Test.xcodeproj",
+    "ios/Test.xcworkspace",
+  ],
+  "scripts": Object {
+    "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+  },
+}
+`;
+
+exports[`gatherConfig() returns configuration for all platforms 1`] = `
+Object {
+  "dependencies": Object {
+    "react-native-macos": "^0.63.0",
+    "react-native-windows": "^0.63.0",
+  },
+  "files": Object {
+    ".watchmanconfig": Object {
+      "source": "node_modules/react-native/template/_watchmanconfig",
+    },
+    "android/build.gradle": "buildscript {
+    apply from: file(\\"../../../android/dependencies.gradle\\")
+
+    repositories {
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath \\"com.android.tools.build:gradle:$androidPluginVersion\\"
+    }
+}
+",
+    "android/gradle.properties": Object {
+      "source": "../example/android/gradle.properties",
+    },
+    "android/gradle/wrapper/gradle-wrapper.jar": Object {
+      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.jar",
+    },
+    "android/gradle/wrapper/gradle-wrapper.properties": Object {
+      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.properties",
+    },
+    "android/gradlew": Object {
+      "source": "node_modules/react-native/template/android/gradlew",
+    },
+    "android/gradlew.bat": Object {
+      "source": "node_modules/react-native/template/android/gradlew.bat",
+    },
+    "android/settings.gradle": "pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        google()
+    }
+}
+
+rootProject.name='Test'
+
+apply from: file(\\"../../../test-app.gradle\\")
+applyTestAppSettings(settings)
+",
+    "babel.config.js": Object {
+      "source": "node_modules/react-native/template/babel.config.js",
+    },
+    "ios/Podfile": "require_relative '../../../test_app'
+
+use_flipper!({ 'Flipper-Folly' => '2.3.0' })
+
+workspace 'Test.xcworkspace'
+
+use_test_app!
+",
+    "macos/Podfile": "require_relative '../../../macos/test_app'
+
+workspace 'Test.xcworkspace'
+
+use_test_app!
+",
+    "metro.config.js": Object {
+      "source": "../example/metro.config.js",
+    },
+    "metro.config.windows.js": Object {
+      "source": "node_modules/@react-native-windows/cli/templates/metro.config.js",
+    },
+    "react-native.config.js": Object {
+      "source": "../example/react-native.config.js",
+    },
+  },
+  "oldFiles": Array [
+    "ios/Podfile.lock",
+    "ios/Pods",
+    "ios/Test.xcodeproj",
+    "ios/Test.xcworkspace",
+    "macos/Podfile.lock",
+    "macos/Pods",
+    "macos/Test.xcodeproj",
+    "macos/Test.xcworkspace",
+    "windows/Test.sln",
+    "windows/Test.vcxproj",
+    "windows/Test/Test.vcxproj",
+  ],
+  "scripts": Object {
+    "android": "react-native run-android",
+    "build:android": "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+    "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+    "build:macos": "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
+    "build:windows": "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist --config=metro.config.windows.js",
+    "ios": "react-native run-ios",
+    "macos": "react-native run-macos --scheme Test",
+    "start": "react-native start",
+    "start:windows": "react-native start --config=metro.config.windows.js",
+    "windows": "react-native run-windows --sln windows/Test.sln",
+  },
+}
+`;
+
+exports[`gatherConfig() returns configuration for arbitrary platforms 1`] = `
+Object {
+  "dependencies": Object {},
+  "files": Object {
+    ".watchmanconfig": Object {
+      "source": "node_modules/react-native/template/_watchmanconfig",
+    },
+    "android/build.gradle": "buildscript {
+    apply from: file(\\"../../../android/dependencies.gradle\\")
+
+    repositories {
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath \\"com.android.tools.build:gradle:$androidPluginVersion\\"
+    }
+}
+",
+    "android/gradle.properties": Object {
+      "source": "../example/android/gradle.properties",
+    },
+    "android/gradle/wrapper/gradle-wrapper.jar": Object {
+      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.jar",
+    },
+    "android/gradle/wrapper/gradle-wrapper.properties": Object {
+      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.properties",
+    },
+    "android/gradlew": Object {
+      "source": "node_modules/react-native/template/android/gradlew",
+    },
+    "android/gradlew.bat": Object {
+      "source": "node_modules/react-native/template/android/gradlew.bat",
+    },
+    "android/settings.gradle": "pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        google()
+    }
+}
+
+rootProject.name='Test'
+
+apply from: file(\\"../../../test-app.gradle\\")
+applyTestAppSettings(settings)
+",
+    "babel.config.js": Object {
+      "source": "node_modules/react-native/template/babel.config.js",
+    },
+    "ios/Podfile": "require_relative '../../../test_app'
+
+use_flipper!({ 'Flipper-Folly' => '2.3.0' })
+
+workspace 'Test.xcworkspace'
+
+use_test_app!
+",
+    "metro.config.js": Object {
+      "source": "../example/metro.config.js",
+    },
+    "metro.config.windows.js": Object {
+      "source": "node_modules/@react-native-windows/cli/templates/metro.config.js",
+    },
+    "react-native.config.js": Object {
+      "source": "../example/react-native.config.js",
+    },
+  },
+  "oldFiles": Array [
+    "ios/Podfile.lock",
+    "ios/Pods",
+    "ios/Test.xcodeproj",
+    "ios/Test.xcworkspace",
+  ],
+  "scripts": Object {
+    "android": "react-native run-android",
+    "build:android": "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+    "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+  },
+}
+`;

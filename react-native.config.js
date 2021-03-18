@@ -7,24 +7,20 @@
 // @ts-check
 
 /**
- * @template ConfigT
+ * @template Args
  * @typedef {{
  *   name: string,
  *   description?: string,
- *   func: (argv: Array<string>, config: ConfigT, args: {}) => ?Promise<void>,
- *   options?: Array<{
- *     name: string,
- *     description?: string,
- *     parse?: (val: string) => any,
- *     default?:
- *       | string
- *       | boolean
- *       | number
- *       | ((config: ConfigT) => string | boolean | number),
- *   }>,
  *   examples?: Array<{
- *     desc: string,
- *     cmd: string,
+ *     desc: string;
+ *     cmd: string;
+ *   }>,
+ *   func: (argv: Array<string>, config: {}, args: Args) => void | Promise<void>,
+ *   options?: Array<{
+ *     name: string;
+ *     description?: string;
+ *     parse?: (val: string) => any;
+ *     default?: string | number | boolean;
  *   }>,
  * }} Command;
  */
@@ -50,21 +46,40 @@ function inferProjectName() {
   return undefined;
 }
 
-/** @type {{ commands: Command<{}>[] }} */
+/**
+ * @param {string} choice
+ * @returns {import("./scripts/configure").Platform[]}
+ */
+function sanitizePlatformChoice(choice) {
+  switch (choice) {
+    case "all":
+      return ["android", "ios", "macos", "windows"];
+    case "android":
+    case "ios":
+    case "macos":
+    case "windows":
+      return [choice];
+    default:
+      throw new Error(`Unknown platform: ${choice}`);
+  }
+}
+
+/** @type {{ commands: Command<{ destination: string; name: string; platform: string; }>[] }} */
 module.exports = {
   commands: [
     {
       name: "init-test-app",
       description: "Initializes a new test app project",
-      func: (_, __, args) => {
-        const path = require("path");
-        const plop = require("node-plop");
-        // @ts-ignore tsc doesn't think that "node-plop" returns a function
-        plop(path.join(__dirname, "plopfile.js"), {
-          destBasePath: args["destination"],
-        })
-          .getGenerator("app")
-          .runActions(args);
+      func: (argv, config, { destination, name, platform }) => {
+        require("./scripts/configure").configure({
+          name,
+          packagePath: destination,
+          testAppPath: __dirname,
+          platforms: sanitizePlatformChoice(platform),
+          flatten: true,
+          force: true,
+          init: true,
+        });
       },
       options: [
         {
