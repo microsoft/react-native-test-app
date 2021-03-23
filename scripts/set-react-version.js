@@ -55,6 +55,16 @@ function isValidVersion(v) {
   return Boolean(Object.prototype.hasOwnProperty.call(profiles, v));
 }
 
+/**
+ * Type-safe `Object.keys()`
+ * @template T
+ * @param {T} obj
+ * @returns {(keyof T)[]}
+ */
+function keys(obj) {
+  return /** @type {(keyof T)[]} */ (Object.keys(obj));
+}
+
 const path = require("path");
 
 const { [1]: scriptPath, [2]: version } = process.argv;
@@ -72,7 +82,7 @@ const { EOL } = require("os");
 ["package.json", "example/package.json"].forEach((manifestPath) => {
   const content = fs.readFileSync(manifestPath, { encoding: "utf-8" });
   const manifest = JSON.parse(content);
-  Object.keys(profile).forEach((packageName) => {
+  keys(profile).forEach((packageName) => {
     manifest["devDependencies"][packageName] = profile[packageName];
   });
 

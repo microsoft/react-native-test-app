@@ -8283,10 +8283,10 @@ parent-module@^1.0.0:
   dependencies:
     callsites "^3.0.0"
 
-parse-diff@^0.7.0:
-  version "0.7.1"
-  resolved "https://registry.npmjs.org/parse-diff/-/parse-diff-0.7.1.tgz#9b7a2451c3725baf2c87c831ba192d40ee2237d4"
-  integrity sha512-1j3l8IKcy4yRK2W4o9EYvJLSzpAVwz4DXqCewYyx2vEwk2gcf3DBPqc8Fj4XV3K33OYJ08A8fWwyu/ykD/HUSg==
+parse-diff@^0.8.0:
+  version "0.8.1"
+  resolved "https://registry.npmjs.org/parse-diff/-/parse-diff-0.8.1.tgz#d8d3d11a97da7a0dc6c657bbb72024c0738359cd"
+  integrity sha512-0QG0HqwXCC/zMohOlaxkQmV1igZq1LQ6xsv/ziex6TDbY0GFxr3TDJN+/aHjWH3s2WTysSW3Bhs9Yfh6DOelFA==
 
 parse-filepath@^1.0.1:
   version "1.0.2"
@@ -10126,13 +10126,13 @@ sudo-prompt@^9.0.0:
   integrity sha512-Mu7R0g4ig9TUuGSxJavny5Rv0egCEtpZRNMrZaYS1vxkiIxGiGUwoezU3LazIQ+KE04hTrTfNPgxU5gzi7F5Pw==
 
 suggestion-bot@^1.0.0:
-  version "1.1.7"
-  resolved "https://registry.npmjs.org/suggestion-bot/-/suggestion-bot-1.1.7.tgz#ae74ef2623b1b51645727394f81545e694f82eb5"
-  integrity sha512-41tl4aFPr7Rrw9+3cSszfnumr2jwq19PnNXOnKqgsq5QjF4mDqTa4N0gMAz+yqaR5YXscfD5PZthkHFEt9/d3A==
+  version "1.1.8"
+  resolved "https://registry.npmjs.org/suggestion-bot/-/suggestion-bot-1.1.8.tgz#cca04b31022b83b64b8f7194a63c0a88b1da2247"
+  integrity sha512-Yn2w49Qf0jb9gcnaTPR5cIOH7VbKTHgf6gEWODaAUt30oxF/nMZ60JE7zkXrcQnzMRAbv3f2PI24jZWlG7yvrA==
   dependencies:
     "@octokit/rest" "^18.0.0"
     azure-devops-node-api "^10.0.0"
-    parse-diff "^0.7.0"
+    parse-diff "^0.8.0"
 
 supports-color@^2.0.0:
   version "2.0.0"
