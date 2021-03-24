@@ -13,6 +13,7 @@
   },
   "include": [
     "plopfile.js",
+    "scripts/*.js",
     "test/*.test.js",
     "windows/test-app.js"
   ]
