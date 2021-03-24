@@ -11,6 +11,22 @@
  */
 
 /**
+ * Escapes tokens in specified file to prevent Handlebar from attempting to
+ * replace them.
+ *
+ * NOTE: This is a temporary workaround until we can deprecate the Plop template
+ * entirely.
+ *
+ * @param {string} file
+ * @returns {string}
+ */
+function escapeHandlebarTokens(file) {
+  const fs = require("fs");
+  const content = fs.readFileSync(file, { encoding: "utf-8" });
+  return content.replace(/\{\{/g, "\\{{");
+}
+
+/**
  * Returns whether the target platform is included.
  * @param {"all" | Platform} platform
  * @param {Platform} target
@@ -173,7 +189,9 @@ module.exports = (/** @type {import("plop").NodePlopAPI} */ plop) => {
         {
           type: "add",
           path: "App.js",
-          templateFile: require.resolve("react-native/template/App.js"),
+          template: escapeHandlebarTokens(
+            require.resolve("react-native/template/App.js")
+          ),
         },
         {
           type: "add",
