@@ -7,10 +7,11 @@
 "use strict";
 
 /**
- * @typedef {import('fs').NoParamCallback} NoParamCallback
- * @typedef {import('fs').PathLike} PathLike
- * @typedef {import('fs').Stats} Stats
- * @typedef {import('fs').WriteFileOptions} WriteFileOptions
+ * @typedef {import("fs").MakeDirectoryOptions} MakeDirectoryOptions
+ * @typedef {import("fs").NoParamCallback} NoParamCallback
+ * @typedef {import("fs").PathLike} PathLike
+ * @typedef {import("fs").Stats} Stats
+ * @typedef {import("fs").WriteFileOptions} WriteFileOptions
  */
 const fs = jest.createMockFromModule("fs");
 
@@ -31,13 +32,19 @@ fs.copyFile = (src, dest, callback) => {
     callback("copyFile() error");
   } else {
     mockFiles[dest] = mockFiles[src];
-    callback(undefined);
+    callback(null);
   }
 };
 
 /** @type {(path: PathLike | number) => boolean} */
 fs.existsSync = (path) =>
   mockFiles ? path in mockFiles : jest.requireActual("fs").existsSync(path);
+
+/** @type {(path: PathLike | number, callback: NoParamCallback) => void} */
+fs.lstat = (path, callback) => callback();
+
+/** @type {(path: PathLike | number, options: NoParamCallback, callback: NoParamCallback) => void} */
+fs.mkdir = (path, options, callback) => callback();
 
 /** @type {(path: PathLike | number) => string} */
 fs.readFileSync = (path) => mockFiles[path];
@@ -48,13 +55,30 @@ fs.statSync = (path) => ({
   mode: 644,
 });
 
-/** @type {(path: PathLike | number, data: string, options: WriteFileOptions, callback: NoParamCallback) => void} */
-fs.writeFile = (path, data, options, callback) => {
-  if (!path) {
-    callback("writeFile() error");
+/** @type {(path: PathLike | number, callback: NoParamCallback) => void} */
+fs.unlink = (path, callback) => {
+  if (path in mockFiles) {
+    delete mockFiles[path];
+    callback(null);
+  } else {
+    const error = new Error(`no such file or directory, unlink '${path}'`);
+    error.code = "ENOENT";
+    callback(error);
+  }
+};
+
+/** @type {(path: PathLike | number, data: string, optionsOrCallback: WriteFileOptions | NoParamCallback, callback: NoParamCallback) => void} */
+fs.writeFile = (
+  path,
+  data,
+  optionsOrCallback,
+  callback = optionsOrCallback
+) => {
+  if (!path || path === ".") {
+    callback(new Error("writeFile() error"));
   } else {
     mockFiles[path] = data;
-    callback(undefined);
+    callback(null);
   }
 };
 

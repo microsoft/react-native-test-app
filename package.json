@@ -6,6 +6,7 @@
     "email": "microsoftopensource@users.noreply.github.com"
   },
   "bin": {
+    "configure-test-app": "scripts/configure.js",
     "install-windows-test-app": "windows/test-app.js"
   },
   "repository": {
@@ -48,6 +49,7 @@
     "@react-native-community/cli-platform-ios": "^4.10.0",
     "chalk": "^4.1.0",
     "plop": "^2.6.0",
+    "rimraf": "^3.0.0",
     "yargs": "^16.0.0"
   },
   "peerDependencies": {
