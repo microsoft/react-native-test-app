@@ -37,21 +37,30 @@ to compile the test apps yourself.
 
 # Quick Start
 
-Install `react-native-test-app` as a dev dependency. We will use
-[Plop](https://plopjs.com/) to generate the test app:
+Install `react-native-test-app` as a dev dependency. We will use the wizard to
+generate your test app:
 
 ```bash
 yarn add react-native-test-app --dev
-yarn plop --plopfile node_modules/react-native-test-app/plopfile.js --dest sample
+yarn init-test-app
 ```
 
-`--dest` tells Plop where to generate the files. In this example, it will
-generate files under `sample` folder. Choose the appropriate place to store your
-test app, then answer a couple of questions:
+In this example, we will create a project named "sample" in `sample` with test
+apps for all platforms:
 
 ```console
-? What is the name of your test app? Sample
-? Which platforms do you need test apps for? all
+✔ What is the name of your test app? … sample
+? Which platforms do you need test apps for? ›
+Instructions:
+    ↑/↓: Highlight option
+    ←/→/[space]: Toggle selection
+    a: Toggle all
+    enter/return: Complete answer
+◉   Android
+◉   iOS
+◉   macOS
+◉   Windows
+✔ Where should we create the new project?? … sample
 ```
 
 Run `yarn` inside the new project folder:
