@@ -12,8 +12,8 @@
     "resolveJsonModule": true
   },
   "include": [
-    "scripts/*.js",
-    "test/*.test.js",
+    "scripts/**/*.js",
+    "test/**/*.test.js",
     "windows/test-app.js"
   ]
 }

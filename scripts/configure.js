@@ -272,7 +272,10 @@ const getConfig = (() => {
     /** @type {ConfigureParams} */ params,
     /** @type {Platform} */ platform
   ) => {
-    if (typeof configuration === "undefined") {
+    if (
+      typeof configuration === "undefined" ||
+      "JEST_WORKER_ID" in process.env // skip caching when testing
+    ) {
       const { name, testAppPath, init } = params;
       const testAppRelPath = projectRelativePath(params);
       const templateDir = path.relative(

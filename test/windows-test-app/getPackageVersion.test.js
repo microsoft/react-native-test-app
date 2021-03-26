@@ -8,10 +8,11 @@
 
 describe("getPackageVersion", () => {
   const path = require("path");
-  const { getPackageVersion } = require("../windows/test-app");
+  const { getPackageVersion } = require("../../windows/test-app");
 
-  const nodeModulesPath = path.join(
+  const nodeModulesPath = path.resolve(
     __dirname,
+    "..",
     "__fixtures__",
     "test_app",
     "node_modules"

@@ -7,7 +7,7 @@
 // @ts-check
 
 describe("replaceContent", () => {
-  const { replaceContent } = require("../windows/test-app");
+  const { replaceContent } = require("../../windows/test-app");
 
   test("returns same string with no replacements", () => {
     // @ts-ignore intentional use of `undefined`

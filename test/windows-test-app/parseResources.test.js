@@ -9,7 +9,7 @@
 jest.mock("fs");
 
 describe("parseResources", () => {
-  const { parseResources } = require("../windows/test-app");
+  const { parseResources } = require("../../windows/test-app");
 
   // @ts-ignore `__setMockFiles`
   afterEach(() => require("fs").__setMockFiles({}));

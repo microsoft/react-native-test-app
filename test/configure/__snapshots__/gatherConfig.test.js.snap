@@ -7,7 +7,7 @@ Object {
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "Podfile": "require_relative '../../../test_app'
+    "Podfile": "require_relative '../../test_app'
 
 use_flipper!({ 'Flipper-Folly' => '2.3.0' })
 
@@ -24,9 +24,14 @@ use_test_app!
     "metro.config.windows.js": Object {
       "source": "node_modules/@react-native-windows/cli/templates/metro.config.js",
     },
-    "react-native.config.js": Object {
-      "source": "../example/react-native.config.js",
-    },
+    "react-native.config.js": "module.exports = {
+  project: {
+    ios: {
+      project: \\"ReactTestApp-Dummy.xcodeproj\\"
+    }
+  }
+};
+",
   },
   "oldFiles": Array [
     "Podfile.lock",
