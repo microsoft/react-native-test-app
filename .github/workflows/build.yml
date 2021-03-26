@@ -4,11 +4,14 @@ on:
     branches:
       - master
   pull_request:
+  schedule:
+    # nightly builds against react-native#master at 4:00
+    - cron: 0 4 * * *
 jobs:
   lint-commit:
     name: "lint commit message"
     runs-on: ubuntu-latest
-    if: "${{ github.event_name == 'pull_request' }}"
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v1
@@ -32,7 +35,7 @@ jobs:
   lint-test:
     name: "lint + test"
     runs-on: macos-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v1
@@ -114,6 +117,10 @@ jobs:
         with:
           path: example/.yarn-offline-mirror
           key: ${{ hashFiles('example/yarn.lock') }}
+      - name: Set up react-native nightly
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          yarn set-react-version master
       - name: Install
         run: |
           yarn ci
@@ -135,7 +142,7 @@ jobs:
       matrix:
         template: [all, ios]
     runs-on: macos-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v1
@@ -199,7 +206,12 @@ jobs:
         with:
           path: example/.yarn-offline-mirror
           key: ${{ hashFiles('example/yarn.lock') }}
-      - name: Install
+      - name: Set up react-native nightly
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          yarn set-react-version master
+          echo "ANDROID_NDK_VERSION=20.1.5948944" >> example/android/gradle.properties
+      - name: Install /example
         run: |
           yarn ci
         working-directory: example
@@ -217,7 +229,7 @@ jobs:
         with:
           path: .yarn-offline-mirror
           key: ${{ hashFiles('yarn.lock') }}
-      - name: Install
+      - name: Install /
         if: ${{ matrix.os == 'macos-latest' }}
         run: |
           yarn ci
@@ -235,7 +247,7 @@ jobs:
         template: [all, android]
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -278,7 +290,7 @@ jobs:
   macos:
     name: "macOS"
     runs-on: macos-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v1
@@ -318,7 +330,7 @@ jobs:
       matrix:
         template: [all, macos]
     runs-on: macos-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v1
@@ -360,7 +372,7 @@ jobs:
   windows:
     name: "Windows"
     runs-on: windows-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     strategy:
       matrix:
         platform: [ARM, x64]
@@ -406,7 +418,7 @@ jobs:
   windows-template:
     name: "Windows [template]"
     runs-on: windows-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     strategy:
       matrix:
         template: [all, windows]
@@ -469,7 +481,7 @@ jobs:
         windows-template,
       ]
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v1
