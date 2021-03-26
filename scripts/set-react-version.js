@@ -39,7 +39,7 @@ const profiles = {
     react: "17.0.1",
     "react-native": "0.64.0",
     "react-native-macos": undefined,
-    "react-native-windows": undefined,
+    "react-native-windows": "0.64.1",
   },
   master: {
     "@react-native-community/cli": "^5.0.1-alpha.0",
