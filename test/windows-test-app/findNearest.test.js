@@ -8,7 +8,7 @@
 
 describe("findNearest", () => {
   const path = require("path");
-  const { findNearest } = require("../windows/test-app");
+  const { findNearest } = require("../../windows/test-app");
 
   test("returns null for non-existent files", () => {
     expect(findNearest("thisFileShouldNotExist")).toBeNull();

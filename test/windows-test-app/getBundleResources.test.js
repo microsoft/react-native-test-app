@@ -10,7 +10,7 @@ jest.mock("fs");
 
 describe("getBundleResources", () => {
   const path = require("path");
-  const { getBundleResources } = require("../windows/test-app");
+  const { getBundleResources } = require("../../windows/test-app");
 
   // @ts-ignore `__setMockFiles`
   afterEach(() => require("fs").__setMockFiles({}));

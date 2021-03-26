@@ -7,7 +7,7 @@
 // @ts-check
 
 describe("getVersionNumber", () => {
-  const { getVersionNumber } = require("../windows/test-app");
+  const { getVersionNumber } = require("../../windows/test-app");
 
   test("handles arbitrary version number formats", () => {
     expect(getVersionNumber("0")).toBe(0);

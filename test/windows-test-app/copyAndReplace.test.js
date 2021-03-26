@@ -9,7 +9,7 @@
 jest.mock("fs");
 
 describe("copyAndReplace", () => {
-  const { copyAndReplace } = require("../windows/test-app");
+  const { copyAndReplace } = require("../../windows/test-app");
 
   // @ts-ignore `__setMockFiles`
   afterEach(() => require("fs").__setMockFiles({}));

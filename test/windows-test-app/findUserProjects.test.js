@@ -8,7 +8,7 @@
 
 describe("findUserProjects", () => {
   const path = require("path");
-  const { findUserProjects } = require("../windows/test-app");
+  const { findUserProjects } = require("../../windows/test-app");
 
   test("finds all user projects, ignoring android/ios/macos/node_modules", () => {
     const projectPath = path.join("test", "__fixtures__", "windows_test_app");
@@ -63,7 +63,7 @@ describe("findUserProjects", () => {
 describe("toProjectEntry", () => {
   const os = require("os");
   const path = require("path");
-  const { toProjectEntry } = require("../windows/test-app");
+  const { toProjectEntry } = require("../../windows/test-app");
 
   test("returns solution entry for specified project", () => {
     expect(

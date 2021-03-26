@@ -10,7 +10,7 @@ jest.mock("fs");
 
 describe("generateSolution", () => {
   const path = require("path");
-  const { generateSolution } = require("../windows/test-app");
+  const { generateSolution } = require("../../windows/test-app");
 
   const cwd = process.cwd();
 

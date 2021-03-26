@@ -16,7 +16,7 @@
 const fs = jest.createMockFromModule("fs");
 
 /** @type {{ [filename: string]: string } | undefined} */
-let mockFiles = undefined;
+let mockFiles = Object.create(null);
 
 /** @type {(newMockFiles: { [filename: string]: string }) => void} */
 fs.__setMockFiles = (newMockFiles) => {
@@ -28,8 +28,8 @@ fs.__setMockFiles = (newMockFiles) => {
 
 /** @type {(src: PathLike, dest: PathLike, callback: NoParamCallback) => void} */
 fs.copyFile = (src, dest, callback) => {
-  if (!dest) {
-    callback("copyFile() error");
+  if (!(src in mockFiles) || !dest) {
+    callback(new Error("copyFile() error"));
   } else {
     mockFiles[dest] = mockFiles[src];
     callback(null);
