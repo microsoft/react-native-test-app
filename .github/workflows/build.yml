@@ -5,7 +5,7 @@ on:
       - master
   pull_request:
   schedule:
-    # nightly builds against react-native#master at 4:00
+    # nightly builds against react-native@nightly at 4:00
     - cron: 0 4 * * *
 jobs:
   lint-commit:
@@ -104,7 +104,7 @@ jobs:
   ios:
     name: "iOS"
     runs-on: macos-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v1
@@ -117,10 +117,10 @@ jobs:
         with:
           path: example/.yarn-offline-mirror
           key: ${{ hashFiles('example/yarn.lock') }}
-      - name: Set up react-native nightly
+      - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version master
+          yarn set-react-version nightly
       - name: Install
         run: |
           yarn ci
@@ -187,7 +187,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -206,22 +206,22 @@ jobs:
         with:
           path: example/.yarn-offline-mirror
           key: ${{ hashFiles('example/yarn.lock') }}
-      - name: Set up react-native nightly
+      - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version master
-          echo "ANDROID_NDK_VERSION=20.1.5948944" >> example/android/gradle.properties
+          yarn set-react-version nightly
+        shell: bash
       - name: Install /example
         run: |
           yarn ci
         working-directory: example
       - name: Build
-        shell: bash
         run: |
           set -eo pipefail
           yarn build:android || yarn build:android
           pushd android 1> /dev/null
           ./gradlew clean build check test
+        shell: bash
         working-directory: example
       - name: Cache /.yarn-offline-mirror
         if: ${{ matrix.os == 'macos-latest' }}
