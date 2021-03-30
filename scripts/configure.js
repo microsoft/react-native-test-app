@@ -182,7 +182,7 @@ function warn(message, tag = "[!]") {
  * @param {ConfigureParams} params
  * @returns {string | FileCopy}
  */
-function reactNativeConfig({ testAppPath, platforms, flatten }) {
+function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
   const shouldFlatten = platforms.length === 1 && flatten;
   if (shouldFlatten) {
     switch (platforms[0]) {
@@ -232,6 +232,7 @@ function reactNativeConfig({ testAppPath, platforms, flatten }) {
           "  project: {",
           "    windows: {",
           "      sourceDir,",
+          `      solutionFile: path.join(sourceDir, "${name}.sln"),`,
           "      project: {",
           "        projectFile: path.relative(",
           "          path.join(__dirname, sourceDir),",

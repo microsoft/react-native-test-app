@@ -2,6 +2,7 @@ const path = require("path");
 
 if (
   process.argv.includes("--config=metro.config.windows.js") ||
+  process.argv.includes("autolink-windows") ||
   process.argv.includes("run-windows")
 ) {
   const sourceDir = "windows";
@@ -9,6 +10,7 @@ if (
     project: {
       windows: {
         sourceDir,
+        solutionFile: path.join(sourceDir, "Example.sln"),
         project: {
           projectFile: path.relative(
             path.join(__dirname, sourceDir),

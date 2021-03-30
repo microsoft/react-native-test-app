@@ -327,17 +327,30 @@ function generateSolution(destPath, noAutolink) {
     .join(os.EOL);
 
   // The mustache template was introduced in 0.63
-  const solutionTemplatePath = findNearest(
-    path.join(
-      nodeModulesDir,
-      "@react-native-windows",
-      "cli",
-      "templates",
-      "cpp",
-      "proj",
-      "MyApp.sln"
-    )
-  );
+  const solutionTemplatePath =
+    findNearest(
+      // In 0.64, the template was moved into `react-native-windows`
+      path.join(
+        nodeModulesDir,
+        "react-native-windows",
+        "template",
+        "cpp-app",
+        "proj",
+        "MyApp.sln"
+      )
+    ) ||
+    findNearest(
+      // In 0.63, the template is in `@react-native-windows/cli`
+      path.join(
+        nodeModulesDir,
+        "@react-native-windows",
+        "cli",
+        "templates",
+        "cpp",
+        "proj",
+        "MyApp.sln"
+      )
+    );
 
   if (!solutionTemplatePath) {
     copyAndReplace(
@@ -387,19 +400,29 @@ function generateSolution(destPath, noAutolink) {
         encoding: "utf8",
         mode: 0o644,
       },
-      (e) => {
-        if (e) throw e;
+      (error) => {
+        if (error) {
+          throw error;
+        }
       }
     );
     if (!noAutolink) {
       Promise.all([...copyTasks, solutionTask]).then(() => {
         const { spawn } = require("child_process");
-        spawn(path.join(path.dirname(process.argv0), "npx.cmd"), [
-          "react-native",
-          "autolink-windows",
-          "--proj",
-          reactTestAppProjectPath,
-        ]);
+        spawn(
+          path.join(path.dirname(process.argv0), "npx.cmd"),
+          [
+            "react-native",
+            "autolink-windows",
+            "--proj",
+            reactTestAppProjectPath,
+          ],
+          { stdio: "inherit" }
+        ).on("close", (code) => {
+          if (code !== 0) {
+            process.exit(code);
+          }
+        });
       });
     }
   }

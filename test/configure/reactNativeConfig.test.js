@@ -59,7 +59,7 @@ describe("reactNativeConfig()", () => {
   test("throws when an unknown platform is specified", () => {
     // @ts-ignore intentional use of unsupported platform
     const params = mockParams({ platforms: ["nextstep"], flatten: true });
-    expect(() => reactNativeConfig(params)).toThrowError(
+    expect(() => reactNativeConfig(params)).toThrow(
       "Unknown platform: nextstep"
     );
   });
