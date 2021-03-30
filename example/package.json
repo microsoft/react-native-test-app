@@ -28,6 +28,6 @@
     "react-native": "0.63.4",
     "react-native-macos": "0.63.23",
     "react-native-test-app": "../",
-    "react-native-windows": "0.63.24"
+    "react-native-windows": "0.63.26"
   }
 }

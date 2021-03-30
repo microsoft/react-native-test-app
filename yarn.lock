@@ -1379,15 +1379,16 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
-"@react-native-windows/cli@0.63.10":
-  version "0.63.10"
-  resolved "https://registry.npmjs.org/@react-native-windows/cli/-/cli-0.63.10.tgz#d26f54003ebf6fa4909db57d07a765057b35f7b8"
-  integrity sha512-nCVCN6DKciOtmou71Sj3b30CvQfnD+t9TbSYa8uuGTguB57A3F2gOBl+6fS+r9cAQ5V5mMAX2LWg1YovT8sPcw==
+"@react-native-windows/cli@0.63.11":
+  version "0.63.11"
+  resolved "https://registry.npmjs.org/@react-native-windows/cli/-/cli-0.63.11.tgz#239c7d905c9198fbbb08b117acb6260d5ce94828"
+  integrity sha512-RRfeoBwFIIdctcvT8Ynrew7kdYCqnGY/35CrW6M2/G+f3ZVwHhTpdF8I5zyLAQskvFgztRE40MdMofylgcRI0Q==
   dependencies:
-    "@react-native-windows/telemetry" "^0.63.4"
+    "@react-native-windows/telemetry" "^0.63.5"
     chalk "^3.0.0"
     cli-spinners "^2.2.0"
     envinfo "^7.5.0"
+    find-up "^4.1.0"
     glob "^7.1.1"
     inquirer "^3.0.6"
     mustache "^4.0.1"
@@ -1398,13 +1399,13 @@
     username "^5.1.0"
     uuid "^3.3.2"
     xml-parser "^1.2.1"
-    xmldom "^0.3.0"
+    xmldom "^0.5.0"
     xpath "^0.0.27"
 
-"@react-native-windows/telemetry@^0.63.4":
-  version "0.63.4"
-  resolved "https://registry.npmjs.org/@react-native-windows/telemetry/-/telemetry-0.63.4.tgz#940cffe1cb890ac22c76ba04af2284e1412c7faa"
-  integrity sha512-jTCLw1JcKVaNbRYq6KJIu72VcJ61a80ZjT6++KDJcLROA6DyRxiX3LhW5anIbV4Ww9vA5CNlU0SUb2pAIw8Jpw==
+"@react-native-windows/telemetry@^0.63.5":
+  version "0.63.5"
+  resolved "https://registry.npmjs.org/@react-native-windows/telemetry/-/telemetry-0.63.5.tgz#77d3a490b26490a642e7d7ce21cd5c06b768f4be"
+  integrity sha512-Ifd54IIcGbPjwAGfjJkRfdk5+SNtc9oCWgKMrJszIrlJ1REYVUXBo+6Xw3taKyA1Jf1eCB7DWlb98/NbqdLgcg==
   dependencies:
     applicationinsights "^1.8.8"
 
@@ -8309,13 +8310,13 @@ react-native-macos@0.63.23:
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-react-native-windows@0.63.24:
-  version "0.63.24"
-  resolved "https://registry.npmjs.org/react-native-windows/-/react-native-windows-0.63.24.tgz#40d6aca2a748ef3985b5942b29d0b05631fecca7"
-  integrity sha512-N+C3NR4cYM7uOXbhx4sMT3QmjSJ7tPKEJBZOVlieEHJ1Bm0ZyP9Bv7ZKzLeouCA/z78/5NhixIwiJVJ1CPIjMA==
+react-native-windows@0.63.26:
+  version "0.63.26"
+  resolved "https://registry.npmjs.org/react-native-windows/-/react-native-windows-0.63.26.tgz#af5213c5a0f7ecfd013701531490e9120b9192e4"
+  integrity sha512-ZbxskcsR+7nJ8uqXnnuZgHHzBB8gZ7RJ556skiTUXlXKs1vh4/PODmSvvNroX/56UXw35/Zi/YtapT/sMqgPJQ==
   dependencies:
     "@babel/runtime" "^7.8.4"
-    "@react-native-windows/cli" "0.63.10"
+    "@react-native-windows/cli" "0.63.11"
     abort-controller "^3.0.0"
     anser "^1.4.9"
     base64-js "^1.1.2"
@@ -10487,10 +10488,10 @@ xmldom@0.1.x:
   resolved "https://registry.npmjs.org/xmldom/-/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
   integrity sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==
 
-xmldom@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/xmldom/-/xmldom-0.3.0.tgz#e625457f4300b5df9c2e1ecb776147ece47f3e5a"
-  integrity sha512-z9s6k3wxE+aZHgXYxSTpGDo7BYOUfJsIRyoZiX6HTjwpwfS2wpQBQKa2fD+ShLyPkqDYo5ud7KitmLZ2Cd6r0g==
+xmldom@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/xmldom/-/xmldom-0.5.0.tgz#193cb96b84aa3486127ea6272c4596354cb4962e"
+  integrity sha512-Foaj5FXVzgn7xFzsKeNIde9g6aFBxTPi37iwsno8QvApmtg7KYrr+OPyRHcJF7dud2a5nGRBXK3n0dL62Gf7PA==
 
 xpath@^0.0.27:
   version "0.0.27"

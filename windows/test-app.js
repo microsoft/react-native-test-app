@@ -246,10 +246,10 @@ function getVersionNumber(version) {
 /**
  * Generates Visual Studio solution.
  * @param {string} destPath Destination path.
- * @param {boolean} [noAutolink] Skip autolinking.
+ * @param {{ autolink: boolean; useNuGet: boolean; }} options
  * @returns {string | undefined} An error message; `undefined` otherwise.
  */
-function generateSolution(destPath, noAutolink) {
+function generateSolution(destPath, { autolink, useNuGet }) {
   if (!destPath) {
     throw "Missing or invalid destination path";
   }
@@ -295,13 +295,23 @@ function generateSolution(destPath, noAutolink) {
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
 
   const projectFilesReplacements = {
+    ...(useNuGet
+      ? {
+          "<UseExperimentalNuget>false</UseExperimentalNuget>":
+            "<UseExperimentalNuget>true</UseExperimentalNuget>",
+        }
+      : {
+          '\\s+<package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native" />':
+            "",
+          '\\s+<package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native" />':
+            "",
+        }),
+    "1000\\.0\\.0": rnWindowsVersion,
     "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${getVersionNumber(
       rnWindowsVersion
     )};`,
     "\\$\\(BundleDirContentPaths\\)": bundleDirContent,
     "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
-    "packages\\\\Microsoft\\.ReactNative\\.0\\.63\\.2\\\\build\\\\native\\\\Microsoft\\.ReactNative\\.targets": `packages\\Microsoft.ReactNative.${rnWindowsVersion}\\build\\native\\Microsoft.ReactNative.targets`,
-    "packages\\\\Microsoft\\.ReactNative\\.Cxx\\.0\\.63\\.2\\\\build\\\\native\\\\Microsoft\\.ReactNative\\.Cxx\\.targets": `packages\\Microsoft.ReactNative.Cxx.${rnWindowsVersion}\\build\\native\\Microsoft.ReactNative.Cxx.targets`,
   };
 
   const copyTasks = [
@@ -377,10 +387,10 @@ function generateSolution(destPath, noAutolink) {
     const solutionTask = fs.writeFile(
       path.join(destPath, `${appName}.sln`),
       mustache
-        .render(
-          fs.readFileSync(solutionTemplatePath, { encoding: "utf8" }),
-          templateView
-        )
+        .render(fs.readFileSync(solutionTemplatePath, { encoding: "utf8" }), {
+          ...templateView,
+          useExperimentalNuget: useNuGet,
+        })
         // The current version of this template (v0.63.18) assumes that
         // `react-native-windows` is always installed in
         // `..\node_modules\react-native-windows`.
@@ -406,7 +416,51 @@ function generateSolution(destPath, noAutolink) {
         }
       }
     );
-    if (!noAutolink) {
+    if (useNuGet) {
+      const nugetConfigPath =
+        findNearest(
+          // In 0.64, the template was moved into `react-native-windows`
+          path.join(
+            nodeModulesDir,
+            "react-native-windows",
+            "template",
+            "shared-app",
+            "proj",
+            "NuGet.Config"
+          )
+        ) ||
+        findNearest(
+          // In 0.63, the template is in `@react-native-windows/cli`
+          path.join(
+            nodeModulesDir,
+            "@react-native-windows",
+            "cli",
+            "templates",
+            "shared",
+            "proj",
+            "NuGet.Config"
+          )
+        );
+      if (nugetConfigPath) {
+        fs.writeFile(
+          path.join(destPath, "NuGet.Config"),
+          mustache.render(
+            fs.readFileSync(nugetConfigPath, { encoding: "utf8" }),
+            {}
+          ),
+          {
+            encoding: "utf8",
+            mode: 0o644,
+          },
+          (error) => {
+            if (error) {
+              throw error;
+            }
+          }
+        );
+      }
+    }
+    if (autolink) {
       Promise.all([...copyTasks, solutionTask]).then(() => {
         const { spawn } = require("child_process");
         spawn(
@@ -443,23 +497,32 @@ if (require.main === module) {
     "$0 [options]",
     "Generate a Visual Studio solution for React Test App",
     {
-      projectDirectory: {
+      "project-directory": {
         alias: "p",
         type: "string",
         description: "Directory where solution will be created",
         default: "windows",
       },
-      noAutolink: {
+      autolink: {
         type: "boolean",
-        description: "Skip autolinking",
+        description: "Run autolink after generating the solution",
+        default: true,
+      },
+      "use-nuget": {
+        type: "boolean",
+        description: "Use NuGet packages (experimental)",
         default: false,
       },
     },
-    ({ projectDirectory, noAutolink }) => {
-      const error = generateSolution(
-        path.resolve(projectDirectory),
-        noAutolink
-      );
+    ({
+      "project-directory": projectDirectory,
+      autolink,
+      "use-nuget": useNuGet,
+    }) => {
+      const error = generateSolution(path.resolve(projectDirectory), {
+        autolink,
+        useNuGet,
+      });
       if (error) {
         console.error(error);
         process.exit(1);
