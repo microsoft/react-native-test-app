@@ -120,7 +120,12 @@ jobs:
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version nightly
+          # `nightly` currently doesn't build due to use of version numbers that
+          # are incompatible with CocoaPods. See
+          # https://github.com/facebook/react-native/issues/30036 and
+          # https://github.com/microsoft/react-native-macos/issues/620 for more
+          # details.
+          yarn set-react-version master
       - name: Install
         run: |
           yarn ci
