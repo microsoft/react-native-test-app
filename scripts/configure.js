@@ -605,7 +605,6 @@ function isDestructive(packagePath, { files, oldFiles }) {
  */
 function removeAllFiles(files, destination) {
   /** @type {(p: string, cb: (error?: Error) => void) => void} */
-  // @ts-ignore
   const rimraf = require("rimraf");
 
   const rethrow = (/** @type {Error | undefined} */ error) => {

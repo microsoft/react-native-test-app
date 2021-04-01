@@ -9,7 +9,7 @@
 jest.mock("fs");
 
 describe("isDestructive()", () => {
-  const { mockFiles } = require("./mockFiles");
+  const { mockFiles } = require("../mockFiles");
   const { isDestructive } = require("../../scripts/configure");
 
   /**

@@ -166,7 +166,10 @@
         </Page>
     </ItemGroup>
     <ItemGroup>
-        <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest">
+        <AppxManifest Include="$(SolutionDir)$(ReactTestAppPackageManifest)" Condition="Exists('$(SolutionDir)$(ReactTestAppPackageManifest)')">
+            <SubType>Designer</SubType>
+        </AppxManifest>
+        <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" Condition="!Exists('$(SolutionDir)$(ReactTestAppPackageManifest)')">
             <SubType>Designer</SubType>
         </AppxManifest>
     </ItemGroup>

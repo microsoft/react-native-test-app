@@ -11,7 +11,7 @@ jest.mock("fs");
 const fs = require("fs");
 
 describe("removeAllFiles()", () => {
-  const { mockFiles } = require("./mockFiles");
+  const { mockFiles } = require("../mockFiles");
   const { removeAllFiles } = require("../../scripts/configure");
 
   beforeEach(() => {

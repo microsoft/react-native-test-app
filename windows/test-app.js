@@ -19,6 +19,8 @@ const templateView = {
 
 // Binary files in React Native Test App Windows project
 const binaryExtensions = [".png", ".pfx"];
+const textFileReadOptions = { encoding: "utf-8" };
+const textFileWriteOptions = { encoding: "utf-8", mode: 0o644 };
 
 /**
  * Finds nearest relative path to a file or directory from current path.
@@ -58,7 +60,7 @@ function findUserProjects(projectDir, projects = []) {
         findUserProjects(fullPath, projects);
       }
     } else if (fullPath.endsWith(".vcxproj")) {
-      const vcxproj = fs.readFileSync(fullPath, { encoding: "utf8" });
+      const vcxproj = fs.readFileSync(fullPath, textFileReadOptions);
       const guidMatch = vcxproj.match(
         /<ProjectGuid>({[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}})<\/ProjectGuid>/
       );
@@ -131,6 +133,16 @@ function replaceContent(content, replacements) {
 }
 
 /**
+ * Rethrows specified error.
+ * @param {Error | null} error
+ */
+function rethrow(error) {
+  if (error) {
+    throw error;
+  }
+}
+
+/**
  * Returns a solution entry for specified project.
  * @param {{ path: string; name: string; guid: string; }} project
  * @param {string} destPath
@@ -169,11 +181,11 @@ function copyAndReplace(srcPath, destPath, replacements = {}) {
     return fs.writeFile(
       destPath,
       replaceContent(
-        fs.readFileSync(srcPath, { encoding: "utf8" }),
+        fs.readFileSync(srcPath, textFileReadOptions),
         replacements
       ),
       {
-        encoding: "utf8",
+        encoding: "utf-8",
         mode: fs.statSync(srcPath).mode,
       },
       throwOnError
@@ -185,22 +197,36 @@ function copyAndReplace(srcPath, destPath, replacements = {}) {
  * Reads manifest file and and resolves paths to bundle resources.
  * @param {string | null} manifestFilePath Path to the closest manifest file.
  * @param {string} projectFilesDestPath Resolved paths will be relative to this path.
- * @return {[string, string, string]} Application name and paths to directories and files to include
+ * @return {{
+ *   appName: string;
+ *   appxManifest: string;
+ *   bundleDirContent: string;
+ *   bundleFileContent: string;
+ * }} Application name, and paths to directories and files to include.
  */
 function getBundleResources(manifestFilePath, projectFilesDestPath) {
-  // Default value if manifest or 'name' field doesn't exist
+  // Default value if manifest or 'name' field don't exist.
   const defaultName = "ReactTestApp";
+
+  // Default `Package.appxmanifest` path. The project will automatically use our
+  // fallback if there is no file at this path.
+  const defaultAppxManifest = "windows/Package.appxmanifest";
 
   if (manifestFilePath) {
     try {
-      const content = fs.readFileSync(manifestFilePath, { encoding: "utf8" });
-      const { name, resources } = JSON.parse(content);
+      const content = fs.readFileSync(manifestFilePath, textFileReadOptions);
+      const { name, resources, windows } = JSON.parse(content);
       const [bundleDirContent, bundleFileContent] = parseResources(
         resources,
         path.dirname(manifestFilePath),
         projectFilesDestPath
       );
-      return [name || defaultName, bundleDirContent, bundleFileContent];
+      return {
+        appName: name || defaultName,
+        appxManifest: (windows && windows.appxManifest) || defaultAppxManifest,
+        bundleDirContent,
+        bundleFileContent,
+      };
     } catch (e) {
       console.warn(`Could not parse 'app.json':\n${e.message}`);
     }
@@ -208,7 +234,12 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
     console.warn("Could not find 'app.json' file.");
   }
 
-  return [defaultName, "", ""];
+  return {
+    appName: defaultName,
+    appxManifest: defaultAppxManifest,
+    bundleDirContent: "",
+    bundleFileContent: "",
+  };
 }
 
 /**
@@ -218,9 +249,7 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
  */
 function getPackageVersion(packagePath) {
   const { version } = JSON.parse(
-    fs.readFileSync(path.join(packagePath, "package.json"), {
-      encoding: "utf8",
-    })
+    fs.readFileSync(path.join(packagePath, "package.json"), textFileReadOptions)
   );
   return version;
 }
@@ -287,10 +316,12 @@ function generateSolution(destPath, { autolink, useNuGet }) {
   fs.mkdirSync(destPath, { recursive: true });
 
   const manifestFilePath = findNearest("app.json");
-  const [appName, bundleDirContent, bundleFileContent] = getBundleResources(
-    manifestFilePath,
-    projectFilesDestPath
-  );
+  const {
+    appName,
+    appxManifest,
+    bundleDirContent,
+    bundleFileContent,
+  } = getBundleResources(manifestFilePath, projectFilesDestPath);
 
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
 
@@ -312,6 +343,9 @@ function generateSolution(destPath, { autolink, useNuGet }) {
     )};`,
     "\\$\\(BundleDirContentPaths\\)": bundleDirContent,
     "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
+    "\\$\\(ReactTestAppPackageManifest\\)": path.normalize(
+      path.relative(destPath, path.resolve(appxManifest))
+    ),
   };
 
   const copyTasks = [
@@ -387,7 +421,7 @@ function generateSolution(destPath, { autolink, useNuGet }) {
     const solutionTask = fs.writeFile(
       path.join(destPath, `${appName}.sln`),
       mustache
-        .render(fs.readFileSync(solutionTemplatePath, { encoding: "utf8" }), {
+        .render(fs.readFileSync(solutionTemplatePath, textFileReadOptions), {
           ...templateView,
           useExperimentalNuget: useNuGet,
         })
@@ -406,15 +440,8 @@ function generateSolution(destPath, { autolink, useNuGet }) {
           /EndProject\r?\nGlobal/,
           ["EndProject", additionalProjectEntries, "Global"].join(os.EOL)
         ),
-      {
-        encoding: "utf8",
-        mode: 0o644,
-      },
-      (error) => {
-        if (error) {
-          throw error;
-        }
-      }
+      textFileWriteOptions,
+      rethrow
     );
     if (useNuGet) {
       const nugetConfigPath =
@@ -445,18 +472,11 @@ function generateSolution(destPath, { autolink, useNuGet }) {
         fs.writeFile(
           path.join(destPath, "NuGet.Config"),
           mustache.render(
-            fs.readFileSync(nugetConfigPath, { encoding: "utf8" }),
+            fs.readFileSync(nugetConfigPath, textFileReadOptions),
             {}
           ),
-          {
-            encoding: "utf8",
-            mode: 0o644,
-          },
-          (error) => {
-            if (error) {
-              throw error;
-            }
-          }
+          textFileWriteOptions,
+          rethrow
         );
       }
     }

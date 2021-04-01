@@ -12,7 +12,7 @@ const fs = require("fs");
 const path = require("path");
 
 describe("writeAllFiles()", () => {
-  const { mockFiles } = require("./mockFiles");
+  const { mockFiles } = require("../mockFiles");
   const { writeAllFiles } = require("../../scripts/configure");
 
   afterEach(() => {

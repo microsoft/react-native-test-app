@@ -19,7 +19,10 @@ function mockFiles(...files) {
   // @ts-ignore `__setMockFiles`
   fs.__setMockFiles(
     Object.fromEntries(
-      files.map(([filename, content]) => [filename, JSON.stringify(content)])
+      files.map(([filename, content]) => [
+        filename,
+        typeof content === "string" ? content : JSON.stringify(content),
+      ])
     )
   );
 }
