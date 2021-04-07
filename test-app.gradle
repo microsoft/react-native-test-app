@@ -35,15 +35,17 @@ private static void apply(Settings settings) {
 def scriptDir = buildscript.sourceFile.getParent()
 
 apply from: "$scriptDir/android/test-app-util.gradle"
-apply from: "$scriptDir/android/test-app-native-modules.gradle"
+
+def cliAndroidDir = findNodeModulesPath(rootDir, "@react-native-community/cli-platform-android")
+apply from: "$cliAndroidDir/native_modules.gradle"
 
 ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
     apply(defaultSettings)
     applyNativeModulesSettingsGradle(defaultSettings)
 }
 
-ext.applyTestAppModule = { Project project, String packageName ->
-    applyNativeModulesAppBuildGradle(project, packageName)
+ext.applyTestAppModule = { Project project ->
+    applyNativeModulesAppBuildGradle(project)
 
     def isRntaProject = project.projectDir.getParent() != null &&
         (project.rootDir == file(project.projectDir.getParent()))

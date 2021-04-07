@@ -53,7 +53,7 @@ apply plugin: "kotlin-kapt"
 def testAppDir = file("$projectDir/../../")
 
 apply from: file("${testAppDir}/test-app.gradle")
-applyTestAppModule(project, "com.microsoft.reacttestapp")
+applyTestAppModule(project)
 
 project.ext.react = [
     appName      : getAppName(),
