@@ -15,7 +15,8 @@ buildscript {
     apply from: "$androidDir/dependencies.gradle"
 
     repositories {
-        jcenter()
+        google()
+        mavenCentral()
     }
 
     dependencies {
@@ -29,8 +30,21 @@ repositories {
     }
 
     google()
-    jcenter()
+    mavenCentral()
+
+    // TODO: Remove these when they've been published to Maven Central.
+    // See https://github.com/microsoft/react-native-test-app/issues/305
+    jcenter() {
+        content {
+            includeGroup("com.facebook.fbjni")
+            includeGroup("com.facebook.flipper")
+            includeGroup("com.facebook.fresco")
+            includeGroup("com.facebook.yoga")
+        }
+    }
 }
+
+apply from: "$projectDir/../force-resolve-trove4j.gradle"
 
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"

@@ -348,12 +348,14 @@ const getConfig = (() => {
         android: {
           files: {
             "build.gradle": join(
-              "buildscript {",
-              `    apply from: file("${testAppRelPath}/android/dependencies.gradle")`,
+              "buildscript { scriptHandler ->",
+              `    def androidTestAppDir = "${testAppRelPath}/android"`,
+              '    apply from: "$androidTestAppDir/dependencies.gradle"',
+              '    apply from: "$androidTestAppDir/force-resolve-trove4j.gradle", to: scriptHandler',
               "",
               "    repositories {",
-              "        jcenter()",
               "        google()",
+              "        mavenCentral()",
               "    }",
               "",
               "    dependencies {",

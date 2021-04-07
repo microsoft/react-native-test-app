@@ -1,12 +1,12 @@
 repositories {
-    jcenter()
     google()
+    mavenCentral()
 }
 
-apply plugin: "com.android.library"
-
 def androidDir = "${buildscript.sourceFile.getParent()}/../"
-apply from: "$androidDir/dependencies.gradle"
+apply from: "$androidDir/force-resolve-trove4j.gradle"
+
+apply plugin: "com.android.library"
 
 android {
     compileSdkVersion sdk.version
