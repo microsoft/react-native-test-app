@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200729.8\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200729.8\build\native\Microsoft.Windows.CppWinRT.props')" />
+    <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.props')" />
     <PropertyGroup Label="Globals">
         <CppWinRTOptimized>true</CppWinRTOptimized>
         <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -16,12 +16,16 @@
         <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
         <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.18362.0</WindowsTargetPlatformVersion>
         <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
+        <PackageCertificateKeyFile>ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+        <PackageCertificateThumbprint>4AC7A41A12F06BCFEDBADCE05ECFFDF546109B66</PackageCertificateThumbprint>
     </PropertyGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
     <PropertyGroup Label="ReactNativeWindowsProps">
         <ProjectRootDir Condition="'$(ProjectRootDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ProjectRootDir>
         <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
         <ReactTestAppDir Condition="'$(ReactTestAppDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows\ReactTestApp\</ReactTestAppDir>
+        <UseExperimentalNuget>false</UseExperimentalNuget>
+        <WinUI2xVersion>2.5.0</WinUI2xVersion>
     </PropertyGroup>
     <ItemGroup Label="ProjectConfigurations">
         <ProjectConfiguration Include="Debug|ARM">
@@ -65,8 +69,6 @@
         <BundleFileAssets>$(BundleFileContentPaths)</BundleFileAssets>
         <AssetsContentRoot>$(ReactTestAppDir)\Assets</AssetsContentRoot>
         <AssetsContent>$(AssetsContentRoot)\**\*</AssetsContent>
-        <PackageCertificateThumbprint>4AC7A41A12F06BCFEDBADCE05ECFFDF546109B66</PackageCertificateThumbprint>
-        <PackageCertificateKeyFile>ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
         <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -92,28 +94,28 @@
         <Import Project="$(SolutionDir)packages\$(WinUIPackageProps)" Condition="'$(WinUIPackageProps)' != '' And Exists('$(SolutionDir)packages\$(WinUIPackageProps)')" />
     </ImportGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ReactTestAppDir)</IncludePath>
+        <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ReactTestAppDir)</IncludePath>
+        <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ReactTestAppDir)</IncludePath>
+        <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ReactTestAppDir)</IncludePath>
+        <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ReactTestAppDir)</IncludePath>
+        <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ReactTestAppDir)</IncludePath>
+        <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ReactTestAppDir)</IncludePath>
+        <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-        <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ReactTestAppDir)</IncludePath>
+        <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
     </PropertyGroup>
     <ItemDefinitionGroup>
         <ClCompile>
@@ -229,24 +231,24 @@
     </ImportGroup>
     <Target Name="EnsureReactNativeWindowsTargets" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
-            <ErrorText>This project references targets in your node_modules\react-native-windows folder. The missing file is {0}.</ErrorText>
+            <ErrorText>This project references targets in your node_modules\react-native-windows folder that are missing. The missing file is {0}.</ErrorText>
         </PropertyGroup>
         <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.props')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.props'))" />
         <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets'))" />
     </Target>
     <ImportGroup Label="ExtensionTargets">
-        <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200729.8\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200729.8\build\native\Microsoft.Windows.CppWinRT.targets')" />
-        <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.0.63.2\build\native\Microsoft.ReactNative.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.ReactNative.0.63.2\build\native\Microsoft.ReactNative.targets')" />
-        <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.Cxx.0.63.2\build\native\Microsoft.ReactNative.Cxx.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.ReactNative.Cxx.0.63.2\build\native\Microsoft.ReactNative.Cxx.targets')" />
-        <Import Project="$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
+        <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets')" />
+        <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.1000.0.0\build\native\Microsoft.ReactNative.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.ReactNative.1000.0.0\build\native\Microsoft.ReactNative.targets')" />
+        <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.Cxx.1000.0.0\build\native\Microsoft.ReactNative.Cxx.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.ReactNative.Cxx.1000.0.0\build\native\Microsoft.ReactNative.Cxx.targets')" />
         <Import Project="$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets" Condition="Exists('$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets')" />
+        <Import Project="$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
     </ImportGroup>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
             <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
         </PropertyGroup>
-        <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200729.8\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200729.8\build\native\Microsoft.Windows.CppWinRT.props'))" />
-        <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200729.8\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200729.8\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+        <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.props'))" />
+        <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets'))" />
         <Error Condition="!Exists('$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets'))" />
     </Target>
 </Project>

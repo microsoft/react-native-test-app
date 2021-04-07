@@ -25,3 +25,4 @@ packages/
 
 **/Generated Files/**
 *.sln
+NuGet.Config
