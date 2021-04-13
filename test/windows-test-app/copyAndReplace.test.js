@@ -9,19 +9,19 @@
 jest.mock("fs");
 
 describe("copyAndReplace", () => {
+  const { mockFiles } = require("../mockFiles");
   const { copyAndReplace } = require("../../windows/test-app");
 
-  // @ts-ignore `__setMockFiles`
-  afterEach(() => require("fs").__setMockFiles({}));
+  afterEach(() => mockFiles());
 
   test("replaces text files only", () => {
+    mockFiles(
+      ["ReactTestApp_TemporaryKey.pfx", "binary"],
+      ["ReactTestApp.png", "binary"],
+      ["ReactTestApp.sln", "binary"]
+    );
+
     const fs = require("fs");
-    // @ts-ignore `__setMockFiles`
-    fs.__setMockFiles({
-      "ReactTestApp_TemporaryKey.pfx": "binary",
-      "ReactTestApp.png": "binary",
-      "ReactTestApp.sln": "binary",
-    });
 
     const replacements = { binary: "text" };
 

@@ -10,6 +10,7 @@ jest.mock("fs");
 
 describe("generateSolution", () => {
   const path = require("path");
+  const { mockFiles } = require("../mockFiles");
   const { generateSolution } = require("../../windows/test-app");
 
   const cwd = process.cwd();
@@ -24,8 +25,7 @@ describe("generateSolution", () => {
   });
 
   afterEach(() => {
-    // @ts-ignore `__setMockFiles`
-    require("fs").__setMockFiles({});
+    mockFiles();
     process.chdir(cwd);
   });
 
@@ -42,10 +42,7 @@ describe("generateSolution", () => {
   });
 
   test("exits if 'react-native-windows' folder cannot be found", () => {
-    // @ts-ignore `__setMockFiles`
-    require("fs").__setMockFiles({
-      [path.resolve("", "node_modules")]: "directory",
-    });
+    mockFiles([path.resolve("", "node_modules"), "directory"]);
 
     expect(generateSolution("test", options)).toBe(
       "Could not find 'react-native-windows'"
@@ -53,11 +50,10 @@ describe("generateSolution", () => {
   });
 
   test("exits if 'react-native-test-app' folder cannot be found", () => {
-    // @ts-ignore `__setMockFiles`
-    require("fs").__setMockFiles({
-      [path.resolve("", "node_modules")]: "directory",
-      [path.resolve("", "node_modules", "react-native-windows")]: "directory",
-    });
+    mockFiles(
+      [path.resolve("", "node_modules"), "directory"],
+      [path.resolve("", "node_modules", "react-native-windows"), "directory"]
+    );
 
     expect(generateSolution("test", options)).toBe(
       "Could not find 'react-native-test-app'"

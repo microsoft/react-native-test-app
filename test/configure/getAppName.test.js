@@ -9,7 +9,7 @@
 jest.mock("fs");
 
 describe("getAppName()", () => {
-  const { mockFiles } = require("./mockFiles");
+  const { mockFiles } = require("../mockFiles");
   const { getAppName } = require("../../scripts/configure");
 
   const consoleSpy = jest.spyOn(global.console, "warn");

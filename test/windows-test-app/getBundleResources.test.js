@@ -10,43 +10,74 @@ jest.mock("fs");
 
 describe("getBundleResources", () => {
   const path = require("path");
+  const { mockFiles } = require("../mockFiles");
   const { getBundleResources } = require("../../windows/test-app");
 
-  // @ts-ignore `__setMockFiles`
-  afterEach(() => require("fs").__setMockFiles({}));
+  afterEach(() => mockFiles());
 
   test("returns app name and bundle resources", () => {
     const assets = path.join("dist", "assets");
     const bundle = path.join("dist", "main.bundle");
-    // @ts-ignore `__setMockFiles`
-    require("fs").__setMockFiles({
-      "app.json": JSON.stringify({
-        name: "Example",
-        resources: [assets, bundle],
-      }),
-      [assets]: "directory",
-      [bundle]: "text",
-    });
-
-    const [appName, bundleDirContent, bundleFileContent] = getBundleResources(
-      "app.json",
-      path.resolve("")
+    mockFiles(
+      [
+        "app.json",
+        {
+          name: "Example",
+          resources: [assets, bundle],
+        },
+      ],
+      [assets, "directory"],
+      [bundle, "text"]
     );
 
+    const {
+      appName,
+      appxManifest,
+      bundleDirContent,
+      bundleFileContent,
+    } = getBundleResources("app.json", path.resolve(""));
+
     expect(appName).toBe("Example");
+    expect(appxManifest).toBe("windows/Package.appxmanifest");
     expect(bundleDirContent).toBe(`${assets}\\**\\*;`);
     expect(bundleFileContent).toBe(`${bundle};`);
+  });
+
+  test("returns package manifest", () => {
+    mockFiles([
+      "app.json",
+      {
+        windows: {
+          appxManifest: "windows/Example/Package.appxmanifest",
+        },
+      },
+    ]);
+
+    const {
+      appName,
+      appxManifest,
+      bundleDirContent,
+      bundleFileContent,
+    } = getBundleResources("app.json", path.resolve(""));
+
+    expect(appName).toBe("ReactTestApp");
+    expect(appxManifest).toBe("windows/Example/Package.appxmanifest");
+    expect(bundleDirContent).toBe("");
+    expect(bundleFileContent).toBe("");
   });
 
   test("handles missing manifest", () => {
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 
-    const [appName, bundleDirContent, bundleFileContent] = getBundleResources(
-      "",
-      ""
-    );
+    const {
+      appName,
+      appxManifest,
+      bundleDirContent,
+      bundleFileContent,
+    } = getBundleResources("", "");
 
     expect(appName).toBe("ReactTestApp");
+    expect(appxManifest).toBe("windows/Package.appxmanifest");
     expect(bundleDirContent).toBeFalsy();
     expect(bundleFileContent).toBeFalsy();
 
@@ -56,19 +87,19 @@ describe("getBundleResources", () => {
   });
 
   test("handles invalid manifest", () => {
-    // @ts-ignore `__setMockFiles`
-    require("fs").__setMockFiles({
-      "app.json": "-",
-    });
+    mockFiles(["app.json", "-"]);
 
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 
-    const [appName, bundleDirContent, bundleFileContent] = getBundleResources(
-      "app.json",
-      path.resolve("")
-    );
+    const {
+      appName,
+      appxManifest,
+      bundleDirContent,
+      bundleFileContent,
+    } = getBundleResources("app.json", path.resolve(""));
 
     expect(appName).toBe("ReactTestApp");
+    expect(appxManifest).toBe("windows/Package.appxmanifest");
     expect(bundleDirContent).toBeFalsy();
     expect(bundleFileContent).toBeFalsy();
 

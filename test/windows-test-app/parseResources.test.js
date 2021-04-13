@@ -9,10 +9,10 @@
 jest.mock("fs");
 
 describe("parseResources", () => {
+  const { mockFiles } = require("../mockFiles");
   const { parseResources } = require("../../windows/test-app");
 
-  // @ts-ignore `__setMockFiles`
-  afterEach(() => require("fs").__setMockFiles({}));
+  afterEach(() => mockFiles());
 
   test("returns empty strings for no resources", () => {
     expect(parseResources(undefined, "", "")).toEqual(["", ""]);
@@ -22,11 +22,7 @@ describe("parseResources", () => {
   });
 
   test("returns references to existing assets", () => {
-    // @ts-ignore `__setMockFiles`
-    require("fs").__setMockFiles({
-      "dist/assets": "directory",
-      "dist/main.jsbundle": "text",
-    });
+    mockFiles(["dist/assets", "directory"], ["dist/main.jsbundle", "text"]);
 
     expect(
       parseResources(

@@ -9,8 +9,6 @@
 
 #include "App.h"
 
-#include "MainPage.h"
-
 using winrt::ReactTestApp::implementation::App;
 using winrt::Windows::ApplicationModel::SuspendingEventArgs;
 using winrt::Windows::ApplicationModel::Activation::ApplicationExecutionState;
@@ -73,12 +71,10 @@ void App::OnLaunched(LaunchActivatedEventArgs const &e)
             // Ensure the current window is active
             Window::Current().Activate();
         }
-    } else {
-        if (!e.PrelaunchActivated()) {
-            NavigateToFirstPage(rootFrame, e);
-            // Ensure the current window is active
-            Window::Current().Activate();
-        }
+    } else if (!e.PrelaunchActivated()) {
+        NavigateToFirstPage(rootFrame, e);
+        // Ensure the current window is active
+        Window::Current().Activate();
     }
 }
 
@@ -110,6 +106,6 @@ void App::NavigateToFirstPage(Frame &rootFrame, LaunchActivatedEventArgs const &
         // When the navigation stack isn't restored navigate to the first page,
         // configuring the new page by passing required information as a navigation
         // parameter
-        rootFrame.Navigate(xaml_typename<ReactTestApp::MainPage>(), box_value(e.Arguments()));
+        rootFrame.Navigate(xaml_typename<MainPage>(), box_value(e.Arguments()));
     }
 }

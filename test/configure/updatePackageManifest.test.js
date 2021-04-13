@@ -9,7 +9,7 @@
 jest.mock("fs");
 
 describe("updatePackageManifest()", () => {
-  const { mockFiles } = require("./mockFiles");
+  const { mockFiles } = require("../mockFiles");
   const { updatePackageManifest } = require("../../scripts/configure");
 
   afterEach(() => mockFiles());

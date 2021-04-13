@@ -36,6 +36,7 @@
         </Text>
     </ItemGroup>
     <ItemGroup>
+        <AppxManifest Include="$(SolutionDir)$(ReactTestAppPackageManifest)" />
         <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" />
     </ItemGroup>
     <ItemGroup>
