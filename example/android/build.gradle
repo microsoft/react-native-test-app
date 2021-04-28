@@ -1,7 +1,6 @@
 buildscript { scriptHandler ->
     def androidTestAppDir = "../node_modules/react-native-test-app/android"
     apply from: "$androidTestAppDir/dependencies.gradle"
-    apply from: "$androidTestAppDir/force-resolve-trove4j.gradle", to: scriptHandler
 
     repositories {
         google()
