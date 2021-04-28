@@ -33,13 +33,16 @@ private static void apply(Settings settings) {
 }
 
 def scriptDir = buildscript.sourceFile.getParent()
-
 apply from: "$scriptDir/android/test-app-util.gradle"
 
 def cliAndroidDir = findNodeModulesPath(rootDir, "@react-native-community/cli-platform-android")
 apply from: "$cliAndroidDir/native_modules.gradle"
 
 ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
+    buildscript { scriptHandler ->        
+        apply from: "$scriptDir/android/force-resolve-trove4j.gradle", to: scriptHandler
+    }
+
     apply(defaultSettings)
     applyNativeModulesSettingsGradle(defaultSettings)
 }
