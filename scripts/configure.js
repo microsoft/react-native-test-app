@@ -425,11 +425,10 @@ const getConfig = (() => {
             Podfile: join(
               `require_relative '${testAppRelPath}/test_app'`,
               "",
-              // Make sure Flipper-Folly stays on an older version to prevent
-              // breaking build. This should be removed when the template is
-              // bumped to a later version. For more details, see this issue:
-              // https://github.com/facebook/react-native/issues/30836
-              "use_flipper!({ 'Flipper-Folly' => '2.3.0' })",
+              // Use a more recent version of Flipper to avoid build
+              // break in Xcode 12.5.
+              // See https://github.com/facebook/react-native/issues/31179.
+              "use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })",
               "",
               `workspace '${name}.xcworkspace'`,
               "",
