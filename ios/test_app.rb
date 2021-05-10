@@ -297,11 +297,13 @@ def use_test_app_internal!(target_platform, options)
 
   project dst_xcodeproj
 
+  react_native_post_install = nil
+
   target 'ReactTestApp' do
     pod 'QRCodeReader.swift' if target_platform == :ios
     pod 'SwiftLint'
 
-    use_react_native!(project_root, target_platform, options)
+    react_native_post_install = use_react_native!(project_root, target_platform, options)
 
     if (resources_pod_path = resources_pod(project_root, target_platform))
       pod 'ReactTestApp-Resources', :path => resources_pod_path
@@ -317,11 +319,7 @@ def use_test_app_internal!(target_platform, options)
   end
 
   post_install do |installer|
-    puts ''
-    puts 'NOTE'
-    puts "  `#{xcodeproj}` was sourced from `react-native-test-app`"
-    puts '  All modifications will be overwritten next time you run `pod install`'
-    puts ''
+    react_native_post_install&.call(installer)
 
     installer.pods_project.targets.each do |target|
       case target.name
@@ -331,10 +329,6 @@ def use_test_app_internal!(target_platform, options)
           config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
           config.build_settings.delete('MACOSX_DEPLOYMENT_TARGET')
         end
-      when 'YogaKit' # Flipper
-        target.build_configurations.each do |config|
-          config.build_settings['SWIFT_VERSION'] = '4.1'
-        end
       when /\AReact/
         target.build_configurations.each do |config|
           # Xcode 10.2 requires suppression of nullability for React
@@ -343,6 +337,11 @@ def use_test_app_internal!(target_platform, options)
         end
       end
     end
+
+    Pod::UI.notice(
+      "`#{xcodeproj}` was sourced from `react-native-test-app`. " \
+      'All modifications will be overwritten next time you run `pod install`.'
+    )
   end
 end
 
