@@ -15,14 +15,11 @@ import com.facebook.react.common.LifecycleState
 import com.facebook.react.devsupport.DevInternalSettings
 import com.facebook.react.devsupport.DevServerHelper
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
-import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatusProvider
 import com.facebook.react.devsupport.interfaces.DevSupportManager
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
 import java.util.concurrent.CountDownLatch
-import javax.inject.Inject
-import javax.inject.Singleton
 
 sealed class BundleSource {
     enum class Action {
@@ -45,8 +42,7 @@ sealed class BundleSource {
     }
 }
 
-@Singleton
-class TestAppReactNativeHost @Inject constructor(
+class TestAppReactNativeHost(
     application: Application,
     private val reactBundleNameProvider: ReactBundleNameProvider
 ) : ReactNativeHost(application) {
@@ -180,11 +176,11 @@ class TestAppReactNativeHost @Inject constructor(
     private fun isPackagerRunning(context: Context): Boolean {
         val latch = CountDownLatch(1)
         var packagerIsRunning = false
+
         DevServerHelper(
             DevInternalSettings(context) {},
-            context.packageName,
-            BundleStatusProvider { BundleStatus() }
-        ).isPackagerRunning {
+            context.packageName
+        ) { BundleStatus() }.isPackagerRunning {
             packagerIsRunning = it
             latch.countDown()
         }

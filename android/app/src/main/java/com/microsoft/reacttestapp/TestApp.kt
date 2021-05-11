@@ -1,37 +1,35 @@
 package com.microsoft.reacttestapp
 
 import android.app.Application
+import android.content.Context
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
-import com.microsoft.reacttestapp.di.DaggerTestAppComponent
+import com.microsoft.reacttestapp.manifest.ManifestProvider
+import com.microsoft.reacttestapp.react.ReactBundleNameProvider
 import com.microsoft.reacttestapp.react.TestAppReactNativeHost
 import com.microsoft.reacttestapp.support.ReactTestAppLifecycleEvents
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
 
-class TestApp : Application(), HasAndroidInjector, ReactApplication {
+val Context.testApp: TestApp
+    get() = applicationContext as TestApp
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-
-    @Inject
-    lateinit var reactNativeHostInternal: TestAppReactNativeHost
+class TestApp : Application(), ReactApplication {
+    private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
+    private lateinit var reactNativeHostInternal: TestAppReactNativeHost
+    private lateinit var manifestProviderInternal: ManifestProvider
 
     override fun onCreate() {
         super.onCreate()
+
+        reactNativeBundleNameProvider = ReactBundleNameProvider(this)
+        reactNativeHostInternal =
+            TestAppReactNativeHost(this, reactNativeBundleNameProvider)
+        manifestProviderInternal = ManifestProvider.create(this)
 
         val eventConsumers = PackageList(this).packages
             .filter { it is ReactTestAppLifecycleEvents }
             .map { it as ReactTestAppLifecycleEvents }
 
         eventConsumers.forEach { it.onTestAppInitialized() }
-
-        val testAppComponent = DaggerTestAppComponent.builder()
-            .binds(this)
-            .build()
-        testAppComponent.inject(this)
 
         reactNativeHostInternal.init(
             beforeReactNativeInit = {
@@ -43,7 +41,11 @@ class TestApp : Application(), HasAndroidInjector, ReactApplication {
         )
     }
 
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
+    val bundleNameProvider: ReactBundleNameProvider
+        get() = reactNativeBundleNameProvider
+
+    val manifestProvider: ManifestProvider
+        get() = manifestProviderInternal
 
     override fun getReactNativeHost() = reactNativeHostInternal
 }

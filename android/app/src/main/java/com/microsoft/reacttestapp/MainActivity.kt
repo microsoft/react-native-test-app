@@ -21,21 +21,9 @@ import com.microsoft.reacttestapp.component.ComponentBottomSheetDialogFragment
 import com.microsoft.reacttestapp.component.ComponentListAdapter
 import com.microsoft.reacttestapp.component.ComponentViewModel
 import com.microsoft.reacttestapp.manifest.Component
-import com.microsoft.reacttestapp.manifest.ManifestProvider
 import com.microsoft.reacttestapp.react.BundleSource
-import com.microsoft.reacttestapp.react.ReactBundleNameProvider
-import com.microsoft.reacttestapp.react.TestAppReactNativeHost
-import dagger.android.AndroidInjection
-import javax.inject.Inject
 
 class MainActivity : ReactActivity() {
-
-    @Inject
-    lateinit var manifestProvider: ManifestProvider
-
-    @Inject
-    lateinit var bundleNameProvider: ReactBundleNameProvider
-
     private var didInitialNavigation = false
 
     private val newComponentViewModel = { component: Component ->
@@ -65,25 +53,20 @@ class MainActivity : ReactActivity() {
         }
     }
 
-    private val testAppReactNativeHost: TestAppReactNativeHost
-        get() = reactNativeHost as TestAppReactNativeHost
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         didInitialNavigation = savedInstanceState?.getBoolean("didInitialNavigation", false) == true
 
-        val (manifest, checksum) = manifestProvider.fromResources()
+        val (manifest, checksum) = testApp.manifestProvider.fromResources()
             ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
 
         val index =
             if (manifest.components.count() == 1) 0 else session.lastOpenedComponent(checksum)
         index?.let {
             val component = newComponentViewModel(manifest.components[it])
-            testAppReactNativeHost.addReactInstanceEventListener {
+            testApp.reactNativeHost.addReactInstanceEventListener {
                 if (!didInitialNavigation) {
                     startComponent(component)
                 }
@@ -100,7 +83,7 @@ class MainActivity : ReactActivity() {
     }
 
     private fun reload(bundleSource: BundleSource) {
-        testAppReactNativeHost.reload(this, bundleSource)
+        testApp.reactNativeHost.reload(this, bundleSource)
     }
 
     private fun setupRecyclerView(manifestComponents: List<Component>, manifestChecksum: String) {
@@ -157,15 +140,16 @@ class MainActivity : ReactActivity() {
             }
         }
 
-        updateMenuItemState(toolbar, testAppReactNativeHost.source)
-        testAppReactNativeHost.onBundleSourceChanged = {
+        updateMenuItemState(toolbar, testApp.reactNativeHost.source)
+        testApp.reactNativeHost.onBundleSourceChanged = {
             updateMenuItemState(toolbar, it)
         }
     }
 
     private fun updateMenuItemState(toolbar: MaterialToolbar, bundleSource: BundleSource) {
         toolbar.menu.apply {
-            findItem(R.id.load_embedded_js_bundle).isEnabled = bundleNameProvider.bundleName != null
+            findItem(R.id.load_embedded_js_bundle).isEnabled =
+                testApp.bundleNameProvider.bundleName != null
             findItem(R.id.remember_last_component).isChecked = session.shouldRememberLastComponent
             findItem(R.id.show_dev_options).isEnabled = bundleSource == BundleSource.Server
         }

@@ -2,15 +2,21 @@ package com.microsoft.reacttestapp.manifest
 
 import android.content.Context
 import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import java.security.MessageDigest
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ManifestProvider @Inject constructor(
-    private val context: Context,
-    private val adapter: JsonAdapter<Manifest>
-) {
+class ManifestProvider(private val context: Context, private val adapter: JsonAdapter<Manifest>) {
+
+    companion object {
+        fun create(context: Context): ManifestProvider {
+            val moshi = Moshi.Builder()
+                .add(MoshiBundleAdapter())
+                .build()
+
+            return ManifestProvider(context, ManifestJsonAdapter(moshi))
+        }
+    }
+
     fun fromResources(): Pair<Manifest, String>? {
         val appIdentifier = context.resources
             .getIdentifier("raw/app", null, context.packageName)
