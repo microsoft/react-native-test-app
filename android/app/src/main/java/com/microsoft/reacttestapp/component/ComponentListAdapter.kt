@@ -28,7 +28,9 @@ class ComponentListAdapter(
 
     inner class ComponentViewHolder(private val view: TextView) : RecyclerView.ViewHolder(view) {
         init {
-            view.setOnClickListener { listener(components[bindingAdapterPosition], bindingAdapterPosition) }
+            view.setOnClickListener {
+                listener(components[bindingAdapterPosition], bindingAdapterPosition)
+            }
         }
 
         fun bindTo(component: ComponentViewModel) {
