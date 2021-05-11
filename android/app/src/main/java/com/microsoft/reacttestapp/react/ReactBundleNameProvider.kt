@@ -1,11 +1,8 @@
 package com.microsoft.reacttestapp.react
 
 import android.content.Context
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ReactBundleNameProvider @Inject constructor(private val context: Context) {
+class ReactBundleNameProvider(private val context: Context) {
     val bundleName: String? by lazy {
         val entryFileNames = listOf(
             "index.android",
