@@ -1,6 +1,6 @@
 ext {
-    androidPluginVersion = "4.0.2"
-    kotlinVersion = "1.4.20"
+    androidPluginVersion = "4.2.0"
+    kotlinVersion = "1.4.31"
 
     reactTestApp = [
         versionCode: 1,
@@ -8,8 +8,8 @@ ext {
     ]
 
     sdk = [
-        version          : 29,
+        version          : 30,
         minVersion       : 21,
-        buildToolsVersion: "29.0.3"
+        buildToolsVersion: "30.0.3"
     ]
 }
