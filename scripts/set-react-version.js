@@ -38,6 +38,18 @@ const profiles = {
     "react-native-macos": undefined,
     "react-native-windows": "^0.64.11",
   },
+  "canary-macos": {
+    react: "16.13.1",
+    "react-native": "^0.63.4",
+    "react-native-macos": "canary",
+    "react-native-windows": undefined,
+  },
+  "canary-windows": {
+    react: "17.0.2",
+    "react-native": "^0.64.2",
+    "react-native-macos": undefined,
+    "react-native-windows": "canary",
+  },
   master: {
     react: "17.0.2",
     "react-native": "facebook/react-native#master",

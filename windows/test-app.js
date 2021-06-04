@@ -261,7 +261,7 @@ function getPackageVersion(packagePath) {
  * @returns {number}
  */
 function getVersionNumber(version) {
-  const components = version.split(".");
+  const components = version.split("-")[0].split(".");
   const lastIndex = components.length - 1;
   return components.reduce(
     /** @type {(sum: number, value: string, index: number) => number} */

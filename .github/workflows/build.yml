@@ -304,7 +304,7 @@ jobs:
   macos:
     name: "macOS"
     runs-on: macos-latest
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2.1.5
@@ -317,6 +317,11 @@ jobs:
         with:
           path: example/.yarn-offline-mirror
           key: ${{ hashFiles('example/yarn.lock') }}
+      - name: Set up react-native@canary
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          yarn set-react-version canary-macos
+        shell: bash
       - name: Install
         run: |
           yarn ci
@@ -386,10 +391,10 @@ jobs:
   windows:
     name: "Windows"
     runs-on: windows-latest
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     strategy:
       matrix:
-        platform: [ARM, x64]
+        platform: [ARM64, x64]
         configuration: [Debug, Release]
     steps:
       - name: Set up MSBuild
@@ -407,6 +412,11 @@ jobs:
         with:
           path: example/.yarn-offline-mirror
           key: ${{ hashFiles('example/yarn.lock') }}
+      - name: Set up react-native@canary
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          yarn set-react-version canary-windows
+        shell: bash
       - name: Install
         run: |
           yarn ci
@@ -425,9 +435,10 @@ jobs:
           MSBuild Example.sln -t:Rebuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }}
         working-directory: example/windows
       - name: Test
+        if: ${{ matrix.platform == 'x64' }}
         run: |
           MSBuild ReactTestAppTests.vcxproj -t:Build -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }}
-          if ("${{ matrix.platform }}" -eq "x64") { VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll }
+          VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll
         working-directory: example/windows/ReactTestAppTests
   windows-template:
     name: "Windows [template]"

@@ -44,5 +44,7 @@ describe("getVersionNumber", () => {
     expect(getVersionNumber("1.1.0.1")).toBe(1010001);
     expect(getVersionNumber("1.1.1.0")).toBe(1010100);
     expect(getVersionNumber("1.1.1.1")).toBe(1010101);
+
+    expect(getVersionNumber("1.0.0-rc.1")).toBe(10000);
   });
 });
