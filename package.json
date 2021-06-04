@@ -46,15 +46,15 @@
     "test:rb": "bundle exec ruby -Ilib:test test/test_test_app.rb"
   },
   "dependencies": {
-    "@react-native-community/cli": "^4.10.0",
-    "@react-native-community/cli-platform-android": "^4.10.0",
-    "@react-native-community/cli-platform-ios": "^4.10.0",
     "chalk": "^4.1.0",
     "prompts": "^2.4.0",
     "rimraf": "^3.0.0",
     "yargs": "^16.0.0"
   },
   "peerDependencies": {
+    "@react-native-community/cli": ">=4.10.0",
+    "@react-native-community/cli-platform-android": ">=4.10.0",
+    "@react-native-community/cli-platform-ios": ">=4.10.0",
     "mustache": "^4.0.0",
     "react": "~16.8.6 || ~16.9.0 || ~16.11.0 || ~16.13.1 || ~17.0.1",
     "react-native": "^0.0.0-0 || ^0.60.6 || ^0.61.5 || ^0.62.2 || ^0.63.2 || ^0.64.0 || 1000.0.0",
@@ -76,6 +76,9 @@
     "@babel/core": "^7.0.0",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@react-native-community/cli": "^4.10.0",
+    "@react-native-community/cli-platform-android": "^4.10.0",
+    "@react-native-community/cli-platform-ios": "^4.10.0",
     "@types/jest": "^26.0.0",
     "@types/mustache": "^4.0.0",
     "@types/node": "^12.0.0",
