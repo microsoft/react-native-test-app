@@ -45,6 +45,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 64
+      - name: Deduplicate packages /
+        run: |
+          npx yarn-deduplicate --list --fail
+      - name: Deduplicate packages /example
+        run: |
+          npx yarn-deduplicate --list --fail
+        working-directory: example
       - name: Cache /.yarn-offline-mirror
         uses: actions/cache@v2
         with:
