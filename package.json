@@ -91,9 +91,9 @@
     "jest": "^26.5.0",
     "prettier": "2.1.2",
     "react": "16.13.1",
-    "react-native": "0.63.4",
-    "react-native-macos": "0.63.23",
-    "react-native-windows": "0.63.26",
+    "react-native": "^0.63.4",
+    "react-native-macos": "^0.63.33",
+    "react-native-windows": "^0.63.32",
     "semantic-release": "^17.0.0",
     "suggestion-bot": "^1.0.0",
     "typescript": "^4.0.0"

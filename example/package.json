@@ -25,9 +25,9 @@
     "@babel/core": "^7.0.0",
     "mkdirp": "^0.5.1",
     "react": "16.13.1",
-    "react-native": "0.63.4",
-    "react-native-macos": "0.63.23",
+    "react-native": "^0.63.4",
+    "react-native-macos": "^0.63.33",
     "react-native-test-app": "../",
-    "react-native-windows": "0.63.26"
+    "react-native-windows": "^0.63.32"
   }
 }
