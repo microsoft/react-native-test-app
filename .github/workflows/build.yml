@@ -204,7 +204,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.1.0
         with:
-          java-version: 1.8
+          distribution: adopt
+          java-version: 8
       - name: Set up Node.js
         uses: actions/setup-node@v2.1.5
         with:
@@ -264,7 +265,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.1.0
         with:
-          java-version: 1.8
+          distribution: adopt
+          java-version: 8
       - name: Set up Node.js
         uses: actions/setup-node@v2.1.5
         with:
