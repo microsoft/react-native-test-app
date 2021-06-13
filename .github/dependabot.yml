@@ -1,17 +1,21 @@
 version: 2
 updates:
-  - package-ecosystem: bundler
+  - package-ecosystem: "bundler"
     directory: "/"
     schedule:
-      interval: weekly
-    versioning-strategy: increase
-  - package-ecosystem: npm
+      interval: "weekly"
+    versioning-strategy: "increase"
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: weekly
-    versioning-strategy: lockfile-only
-  - package-ecosystem: npm
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: "lockfile-only"
+  - package-ecosystem: "npm"
     directory: "/example"
     schedule:
-      interval: weekly
-    versioning-strategy: lockfile-only
+      interval: "weekly"
+    versioning-strategy: "lockfile-only"
