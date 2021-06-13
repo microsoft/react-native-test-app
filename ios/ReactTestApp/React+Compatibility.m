@@ -38,13 +38,13 @@ IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
 
 // `RCTReloadCommand.h` is excluded from `react-native-macos`
 // See https://github.com/microsoft/react-native-macos/blob/v0.61.39/React-Core.podspec#L66
-#if REACT_NATIVE_VERSION >= 6200
+#if REACT_NATIVE_VERSION == 0 || REACT_NATIVE_VERSION >= 6200
 #import <React/RCTReloadCommand.h>
 #endif
 
 void RTATriggerReloadCommand(RCTBridge *bridge, NSString *reason)
 {
-#if REACT_NATIVE_VERSION < 6200
+#if REACT_NATIVE_VERSION > 0 && REACT_NATIVE_VERSION < 6200
     [bridge reload];
 #else
     RCTTriggerReloadCommandListeners(reason);
