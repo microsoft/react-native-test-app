@@ -91,8 +91,12 @@ void ReactInstance::LoadJSBundleFrom(JSBundleSource source)
     auto instanceSettings = reactNativeHost_.InstanceSettings();
     switch (source) {
         case JSBundleSource::DevServer:
+#if REACT_NATIVE_VERSION < 6400
             instanceSettings.JavaScriptMainModuleName(L"index");
             instanceSettings.JavaScriptBundleFile(L"");
+#else
+            instanceSettings.JavaScriptBundleFile(L"index");
+#endif
             break;
         case JSBundleSource::Embedded:
             instanceSettings.JavaScriptBundleFile(winrt::to_hstring(GetBundleName()));
