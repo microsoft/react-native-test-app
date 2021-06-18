@@ -10,6 +10,7 @@
 #include "MainPage.h"
 
 #include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.UI.Popups.h>
 #include <winrt/Windows.UI.ViewManagement.h>
 
 #include "MainPage.g.cpp"
@@ -26,6 +27,7 @@ using winrt::Windows::Foundation::IInspectable;
 using winrt::Windows::System::VirtualKey;
 using winrt::Windows::System::VirtualKeyModifiers;
 using winrt::Windows::UI::Colors;
+using winrt::Windows::UI::Popups::MessageDialog;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::Window;
@@ -143,7 +145,18 @@ void MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
 
 void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
 {
-    LoadJSBundleFrom(JSBundleSource::Embedded);
+    if (!LoadJSBundleFrom(JSBundleSource::Embedded)) {
+        std::string message{
+            "No JavaScript bundle with one of the following names was found in the app:\n\n"};
+        for (auto &&name : ::ReactTestApp::JSBundleNames) {
+            message += "    • " + name + ".bundle\n";
+        }
+        message +=
+            "\nPlease make sure the bundle has been built, is appropriately named, and that it has "
+            "been added to 'app.json'. You may have to run 'install-windows-test-app' again to "
+            "update the project files.";
+        MessageDialog(winrt::to_hstring(message)).ShowAsync();
+    }
 }
 
 void MainPage::ToggleRememberLastComponent(IInspectable const &sender, RoutedEventArgs)
@@ -199,10 +212,14 @@ IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
     LoadJSBundleFrom(devServerIsRunning ? JSBundleSource::DevServer : JSBundleSource::Embedded);
 }
 
-void MainPage::LoadJSBundleFrom(JSBundleSource source)
+bool MainPage::LoadJSBundleFrom(JSBundleSource source)
 {
-    reactInstance_.LoadJSBundleFrom(source);
+    if (!reactInstance_.LoadJSBundleFrom(source)) {
+        return false;
+    }
+
     InitializeDebugMenu();
+    return true;
 }
 
 void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)

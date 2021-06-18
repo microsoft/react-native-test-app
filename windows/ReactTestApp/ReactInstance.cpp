@@ -77,6 +77,15 @@ namespace
     winrt::Microsoft::ReactNative::ReactContext DevSettings::context_ = nullptr;
 }  // namespace
 
+const std::vector<std::string> ReactTestApp::JSBundleNames = {
+    "index.windows",
+    "main.windows",
+    "index.native",
+    "main.native",
+    "index",
+    "main",
+};
+
 ReactInstance::ReactInstance()
 {
     reactNativeHost_.PackageProviders().Append(winrt::make<ReactPackageProvider>());
@@ -84,7 +93,7 @@ ReactInstance::ReactInstance()
         reactNativeHost_.PackageProviders());
 }
 
-void ReactInstance::LoadJSBundleFrom(JSBundleSource source)
+bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
 {
     source_ = source;
 
@@ -99,11 +108,16 @@ void ReactInstance::LoadJSBundleFrom(JSBundleSource source)
 #endif
             break;
         case JSBundleSource::Embedded:
-            instanceSettings.JavaScriptBundleFile(winrt::to_hstring(GetBundleName()));
+            const auto bundleName = GetBundleName();
+            if (!bundleName.has_value()) {
+                return false;
+            }
+            instanceSettings.JavaScriptBundleFile(winrt::to_hstring(bundleName.value()));
             break;
     }
 
     Reload();
+    return true;
 }
 
 void ReactInstance::Reload()
@@ -184,23 +198,15 @@ void ReactInstance::UseWebDebugger(bool useWebDebugger)
     Reload();
 }
 
-std::string ReactTestApp::GetBundleName()
+std::optional<std::string> ReactTestApp::GetBundleName()
 {
-    auto entryFileNames = {"index.windows",
-                           "main.windows",
-                           "index.native",
-                           "main.native",
-                           "index"
-                           "main"};
-
-    for (std::string main : entryFileNames) {
-        std::string path = "Bundle\\" + main + ".bundle";
-        if (std::filesystem::exists(path)) {
+    for (auto &&main : JSBundleNames) {
+        if (std::filesystem::exists("Bundle\\" + main + ".bundle")) {
             return main;
         }
     }
 
-    return "";
+    return std::nullopt;
 }
 
 IAsyncOperation<bool> ReactTestApp::IsDevServerRunning()
