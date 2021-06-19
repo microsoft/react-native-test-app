@@ -232,7 +232,7 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
           "  project: {",
           "    windows: {",
           "      sourceDir,",
-          `      solutionFile: path.join(sourceDir, "${name}.sln"),`,
+          `      solutionFile: "${name}.sln",`,
           "      project: {",
           "        projectFile: path.relative(",
           "          path.join(__dirname, sourceDir),",
