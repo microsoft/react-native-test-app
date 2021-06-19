@@ -138,8 +138,17 @@ MainPage::MainPage()
     InitializeReactMenu();
 }
 
-void MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
+IAsyncAction MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
 {
+    bool const devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
+    if (!devServerIsRunning) {
+        auto const message =
+            L"Cannot connect to your development server. Please make sure that it is running and "
+            L"try again.";
+        MessageDialog(message).ShowAsync();
+        co_return;
+    }
+
     LoadJSBundleFrom(JSBundleSource::DevServer);
 }
 
@@ -154,7 +163,9 @@ void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
         message +=
             "\nPlease make sure the bundle has been built, is appropriately named, and that it has "
             "been added to 'app.json'. You may have to run 'install-windows-test-app' again to "
-            "update the project files.";
+            "update the project files.\n"
+            "\n"
+            "If you meant to use a development server, please make sure it is running.";
         MessageDialog(winrt::to_hstring(message)).ShowAsync();
     }
 }
@@ -208,8 +219,8 @@ IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
 {
     Base::OnNavigatedTo(e);
 
-    bool devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
-    LoadJSBundleFrom(devServerIsRunning ? JSBundleSource::DevServer : JSBundleSource::Embedded);
+    bool const devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
+    devServerIsRunning ? LoadFromDevServer({}, {}) : LoadFromJSBundle({}, {});
 }
 
 bool MainPage::LoadJSBundleFrom(JSBundleSource source)

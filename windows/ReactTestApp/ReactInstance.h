@@ -16,7 +16,7 @@
 
 namespace ReactTestApp
 {
-    extern const std::vector<std::string> JSBundleNames;
+    extern std::vector<std::string> const JSBundleNames;
 
     enum class JSBundleSource {
         DevServer,

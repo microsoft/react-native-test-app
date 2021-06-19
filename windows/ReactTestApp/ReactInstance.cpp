@@ -77,7 +77,7 @@ namespace
     winrt::Microsoft::ReactNative::ReactContext DevSettings::context_ = nullptr;
 }  // namespace
 
-const std::vector<std::string> ReactTestApp::JSBundleNames = {
+std::vector<std::string> const ReactTestApp::JSBundleNames = {
     "index.windows",
     "main.windows",
     "index.native",
@@ -108,7 +108,7 @@ bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
 #endif
             break;
         case JSBundleSource::Embedded:
-            const auto bundleName = GetBundleName();
+            auto const bundleName = GetBundleName();
             if (!bundleName.has_value()) {
                 return false;
             }
