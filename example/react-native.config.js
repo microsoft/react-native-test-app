@@ -10,7 +10,7 @@ if (
     project: {
       windows: {
         sourceDir,
-        solutionFile: path.join(sourceDir, "Example.sln"),
+        solutionFile: "Example.sln",
         project: {
           projectFile: path.relative(
             path.join(__dirname, sourceDir),
