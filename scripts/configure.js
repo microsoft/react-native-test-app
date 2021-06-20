@@ -711,13 +711,15 @@ function configure(params) {
   writeAllFiles(files, packagePath).then(() => {
     const packageManifest = path.join(packagePath, "package.json");
     const newPackageManifest = updatePackageManifest(packageManifest, config);
-    fs.writeFile(packageManifest, serialize(newPackageManifest), (
-      /** @type {Error | null} */ error
-    ) => {
-      if (error) {
-        throw error;
+    fs.writeFile(
+      packageManifest,
+      serialize(newPackageManifest),
+      (/** @type {Error | null} */ error) => {
+        if (error) {
+          throw error;
+        }
       }
-    });
+    );
   });
 
   removeAllFiles(oldFiles, packagePath);

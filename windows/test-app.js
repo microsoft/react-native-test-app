@@ -316,12 +316,8 @@ function generateSolution(destPath, { autolink, useNuGet }) {
   fs.mkdirSync(destPath, { recursive: true });
 
   const manifestFilePath = findNearest("app.json");
-  const {
-    appName,
-    appxManifest,
-    bundleDirContent,
-    bundleFileContent,
-  } = getBundleResources(manifestFilePath, projectFilesDestPath);
+  const { appName, appxManifest, bundleDirContent, bundleFileContent } =
+    getBundleResources(manifestFilePath, projectFilesDestPath);
 
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
 
