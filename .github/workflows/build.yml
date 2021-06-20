@@ -233,7 +233,7 @@ jobs:
           set -eo pipefail
           yarn build:android || yarn build:android
           pushd android 1> /dev/null
-          ./gradlew clean build check test
+          ./gradlew --gradle-user-home .gradle clean build check test
         shell: bash
         working-directory: example
       - name: Cache /.yarn-offline-mirror
@@ -253,6 +253,11 @@ jobs:
           api-level: 29
           script: cd android/ && ./gradlew clean build connectedCheck
           arch: x86_64
+      - name: Clean Gradle cache
+        run: |
+          GRADLE_USER_HOME=.gradle ../../scripts/gradle-clean-cache.sh
+        shell: bash
+        working-directory: example/android
   android-template:
     name: "Android [template]"
     strategy:
