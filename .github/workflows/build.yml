@@ -2,7 +2,7 @@ name: build
 on:
   push:
     branches:
-      - master
+      - trunk
   pull_request:
   schedule:
     # nightly builds against react-native@nightly at 4:00

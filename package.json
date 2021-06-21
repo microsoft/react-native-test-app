@@ -36,7 +36,7 @@
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml' 'test/**/*.json')",
     "format:swift": "swiftformat --swiftversion 5.3 ios macos",
-    "lint:commit": "git log --format='%s' origin/master..HEAD | tail -1 | commitlint",
+    "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | commitlint",
     "lint:js": "eslint $(git ls-files '*.js')",
     "lint:kt": "ktlint --relative --verbose 'android/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
@@ -149,6 +149,7 @@
     ]
   },
   "release": {
+    "branches": ["trunk"],
     "tagFormat": "${version}"
   }
 }
