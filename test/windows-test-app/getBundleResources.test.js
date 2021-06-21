@@ -30,12 +30,8 @@ describe("getBundleResources", () => {
       [bundle, "text"]
     );
 
-    const {
-      appName,
-      appxManifest,
-      bundleDirContent,
-      bundleFileContent,
-    } = getBundleResources("app.json", path.resolve(""));
+    const { appName, appxManifest, bundleDirContent, bundleFileContent } =
+      getBundleResources("app.json", path.resolve(""));
 
     expect(appName).toBe("Example");
     expect(appxManifest).toBe("windows/Package.appxmanifest");
@@ -53,12 +49,8 @@ describe("getBundleResources", () => {
       },
     ]);
 
-    const {
-      appName,
-      appxManifest,
-      bundleDirContent,
-      bundleFileContent,
-    } = getBundleResources("app.json", path.resolve(""));
+    const { appName, appxManifest, bundleDirContent, bundleFileContent } =
+      getBundleResources("app.json", path.resolve(""));
 
     expect(appName).toBe("ReactTestApp");
     expect(appxManifest).toBe("windows/Example/Package.appxmanifest");
@@ -69,12 +61,8 @@ describe("getBundleResources", () => {
   test("handles missing manifest", () => {
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 
-    const {
-      appName,
-      appxManifest,
-      bundleDirContent,
-      bundleFileContent,
-    } = getBundleResources("", "");
+    const { appName, appxManifest, bundleDirContent, bundleFileContent } =
+      getBundleResources("", "");
 
     expect(appName).toBe("ReactTestApp");
     expect(appxManifest).toBe("windows/Package.appxmanifest");
@@ -91,12 +79,8 @@ describe("getBundleResources", () => {
 
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 
-    const {
-      appName,
-      appxManifest,
-      bundleDirContent,
-      bundleFileContent,
-    } = getBundleResources("app.json", path.resolve(""));
+    const { appName, appxManifest, bundleDirContent, bundleFileContent } =
+      getBundleResources("app.json", path.resolve(""));
 
     expect(appName).toBe("ReactTestApp");
     expect(appxManifest).toBe("windows/Package.appxmanifest");
