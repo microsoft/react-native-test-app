@@ -73,16 +73,16 @@ Object {
       "source": "../example/android/gradle.properties",
     },
     "android/gradle/wrapper/gradle-wrapper.jar": Object {
-      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.jar",
+      "source": "../example/android/gradle/wrapper/gradle-wrapper.jar",
     },
     "android/gradle/wrapper/gradle-wrapper.properties": Object {
-      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.properties",
+      "source": "../example/android/gradle/wrapper/gradle-wrapper.properties",
     },
     "android/gradlew": Object {
-      "source": "node_modules/react-native/template/android/gradlew",
+      "source": "../example/android/gradlew",
     },
     "android/gradlew.bat": Object {
-      "source": "node_modules/react-native/template/android/gradlew.bat",
+      "source": "../example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
     repositories {
@@ -205,16 +205,16 @@ Object {
       "source": "../example/android/gradle.properties",
     },
     "android/gradle/wrapper/gradle-wrapper.jar": Object {
-      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.jar",
+      "source": "../example/android/gradle/wrapper/gradle-wrapper.jar",
     },
     "android/gradle/wrapper/gradle-wrapper.properties": Object {
-      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.properties",
+      "source": "../example/android/gradle/wrapper/gradle-wrapper.properties",
     },
     "android/gradlew": Object {
-      "source": "node_modules/react-native/template/android/gradlew",
+      "source": "../example/android/gradlew",
     },
     "android/gradlew.bat": Object {
-      "source": "node_modules/react-native/template/android/gradlew.bat",
+      "source": "../example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
     repositories {
@@ -310,16 +310,16 @@ Object {
       "source": "../example/android/gradle.properties",
     },
     "android/gradle/wrapper/gradle-wrapper.jar": Object {
-      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.jar",
+      "source": "../example/android/gradle/wrapper/gradle-wrapper.jar",
     },
     "android/gradle/wrapper/gradle-wrapper.properties": Object {
-      "source": "node_modules/react-native/template/android/gradle/wrapper/gradle-wrapper.properties",
+      "source": "../example/android/gradle/wrapper/gradle-wrapper.properties",
     },
     "android/gradlew": Object {
-      "source": "node_modules/react-native/template/android/gradlew",
+      "source": "../example/android/gradlew",
     },
     "android/gradlew.bat": Object {
-      "source": "node_modules/react-native/template/android/gradlew.bat",
+      "source": "../example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
     repositories {

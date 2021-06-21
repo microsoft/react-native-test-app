@@ -366,7 +366,8 @@ const getConfig = (() => {
             ),
             "gradle/wrapper/gradle-wrapper.jar": {
               source: path.join(
-                templateDir,
+                testAppPath,
+                "example",
                 "android",
                 "gradle",
                 "wrapper",
@@ -375,7 +376,8 @@ const getConfig = (() => {
             },
             "gradle/wrapper/gradle-wrapper.properties": {
               source: path.join(
-                templateDir,
+                testAppPath,
+                "example",
                 "android",
                 "gradle",
                 "wrapper",
@@ -391,10 +393,15 @@ const getConfig = (() => {
               ),
             },
             gradlew: {
-              source: path.join(templateDir, "android", "gradlew"),
+              source: path.join(testAppPath, "example", "android", "gradlew"),
             },
             "gradlew.bat": {
-              source: path.join(templateDir, "android", "gradlew.bat"),
+              source: path.join(
+                testAppPath,
+                "example",
+                "android",
+                "gradlew.bat"
+              ),
             },
             "settings.gradle": join(
               "pluginManagement {",
