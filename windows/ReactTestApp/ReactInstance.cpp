@@ -51,7 +51,7 @@ namespace
     // introduced in 0.63. `ReactContext` is needed to toggle element inspector.
     // We also need to be on a version with the fix for re-initializing native
     // modules when reloading.
-#if REACT_NATIVE_VERSION < 6305
+#if REACT_NATIVE_VERSION > 0 && REACT_NATIVE_VERSION < 6305
     constexpr bool kUseCustomDeveloperMenu = false;
 #else
     constexpr bool kUseCustomDeveloperMenu = true;
@@ -91,7 +91,7 @@ void ReactInstance::LoadJSBundleFrom(JSBundleSource source)
     auto instanceSettings = reactNativeHost_.InstanceSettings();
     switch (source) {
         case JSBundleSource::DevServer:
-#if REACT_NATIVE_VERSION < 6400
+#if REACT_NATIVE_VERSION > 0 && REACT_NATIVE_VERSION < 6400
             instanceSettings.JavaScriptMainModuleName(L"index");
             instanceSettings.JavaScriptBundleFile(L"");
 #else
