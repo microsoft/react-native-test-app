@@ -86,14 +86,6 @@ class ComponentActivity : ReactActivity() {
         return super.getSystemService(name)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        supportFragmentManager.fragments.forEach {
-            it.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (android.R.id.home == item.itemId) {
             onBackPressed()
