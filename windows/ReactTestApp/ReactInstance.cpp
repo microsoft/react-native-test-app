@@ -77,13 +77,13 @@ namespace
     winrt::Microsoft::ReactNative::ReactContext DevSettings::context_ = nullptr;
 }  // namespace
 
-std::vector<std::string> const ReactTestApp::JSBundleNames = {
-    "index.windows",
-    "main.windows",
-    "index.native",
-    "main.native",
-    "index",
-    "main",
+std::vector<std::wstring> const ReactTestApp::JSBundleNames = {
+    L"index.windows",
+    L"main.windows",
+    L"index.native",
+    L"main.native",
+    L"index",
+    L"main",
 };
 
 ReactInstance::ReactInstance()
@@ -112,7 +112,7 @@ bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
             if (!bundleName.has_value()) {
                 return false;
             }
-            instanceSettings.JavaScriptBundleFile(winrt::to_hstring(bundleName.value()));
+            instanceSettings.JavaScriptBundleFile(bundleName.value());
             break;
     }
 
@@ -198,10 +198,10 @@ void ReactInstance::UseWebDebugger(bool useWebDebugger)
     Reload();
 }
 
-std::optional<std::string> ReactTestApp::GetBundleName()
+std::optional<std::wstring> ReactTestApp::GetBundleName()
 {
     for (auto &&main : JSBundleNames) {
-        if (std::filesystem::exists("Bundle\\" + main + ".bundle")) {
+        if (std::filesystem::exists(L"Bundle\\" + main + L".bundle")) {
             return main;
         }
     }

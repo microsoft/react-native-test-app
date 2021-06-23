@@ -155,18 +155,18 @@ IAsyncAction MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
 void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
 {
     if (!LoadJSBundleFrom(JSBundleSource::Embedded)) {
-        std::string message{
-            "No JavaScript bundle with one of the following names was found in the app:\n\n"};
+        std::wstring message{
+            L"No JavaScript bundle with one of the following names was found in the app:\n\n"};
         for (auto &&name : ::ReactTestApp::JSBundleNames) {
-            message += "    • " + name + ".bundle\n";
+            message += L"    \u2022 " + name + L".bundle\n";
         }
         message +=
-            "\nPlease make sure the bundle has been built, is appropriately named, and that it has "
-            "been added to 'app.json'. You may have to run 'install-windows-test-app' again to "
-            "update the project files.\n"
-            "\n"
-            "If you meant to use a development server, please make sure it is running.";
-        MessageDialog(winrt::to_hstring(message)).ShowAsync();
+            L"\nPlease make sure the bundle has been built, is appropriately named, and that it "
+            L"has been added to 'app.json'. You may have to run 'install-windows-test-app' again "
+            L"to update the project files.\n"
+            L"\n"
+            L"If you meant to use a development server, please make sure it is running.";
+        MessageDialog(message).ShowAsync();
     }
 }
 

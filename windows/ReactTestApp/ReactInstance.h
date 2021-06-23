@@ -16,7 +16,7 @@
 
 namespace ReactTestApp
 {
-    extern std::vector<std::string> const JSBundleNames;
+    extern std::vector<std::wstring> const JSBundleNames;
 
     enum class JSBundleSource {
         DevServer,
@@ -67,7 +67,7 @@ namespace ReactTestApp
         JSBundleSource source_ = JSBundleSource::DevServer;
     };
 
-    std::optional<std::string> GetBundleName();
+    std::optional<std::wstring> GetBundleName();
     winrt::Windows::Foundation::IAsyncOperation<bool> IsDevServerRunning();
 
 }  // namespace ReactTestApp
