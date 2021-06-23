@@ -197,7 +197,7 @@ jobs:
     name: "Android"
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-11, windows-latest]
     runs-on: ${{ matrix.os }}
     if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
@@ -237,17 +237,17 @@ jobs:
         shell: bash
         working-directory: example
       - name: Cache /.yarn-offline-mirror
-        if: ${{ matrix.os == 'macos-latest' }}
+        if: ${{ matrix.os == 'macos-11' }}
         uses: actions/cache@v2
         with:
           path: .yarn-offline-mirror
           key: ${{ hashFiles('yarn.lock') }}
       - name: Install /
-        if: ${{ matrix.os == 'macos-latest' }}
+        if: ${{ matrix.os == 'macos-11' }}
         run: |
           yarn ci
       - name: Run instrumented tests
-        if: ${{ matrix.os == 'macos-latest' }}
+        if: ${{ matrix.os == 'macos-11' }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
