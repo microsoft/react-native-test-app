@@ -24,8 +24,8 @@ namespace winrt::ReactTestApp::implementation
 
         // React menu
 
-        void LoadFromDevServer(Windows::Foundation::IInspectable const &,
-                               Windows::UI::Xaml::RoutedEventArgs);
+        Windows::Foundation::IAsyncAction LoadFromDevServer(
+            Windows::Foundation::IInspectable const &, Windows::UI::Xaml::RoutedEventArgs);
         void LoadFromJSBundle(Windows::Foundation::IInspectable const &,
                               Windows::UI::Xaml::RoutedEventArgs);
         void ToggleRememberLastComponent(Windows::Foundation::IInspectable const &,
@@ -58,7 +58,7 @@ namespace winrt::ReactTestApp::implementation
         void InitializeReactMenu();
         void InitializeTitleBar();
 
-        void LoadJSBundleFrom(::ReactTestApp::JSBundleSource);
+        bool LoadJSBundleFrom(::ReactTestApp::JSBundleSource);
         void LoadReactComponent(::ReactTestApp::Component const &);
 
         void OnCoreTitleBarLayoutMetricsChanged(

@@ -10,6 +10,7 @@
 #include "MainPage.h"
 
 #include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.UI.Popups.h>
 #include <winrt/Windows.UI.ViewManagement.h>
 
 #include "MainPage.g.cpp"
@@ -26,6 +27,7 @@ using winrt::Windows::Foundation::IInspectable;
 using winrt::Windows::System::VirtualKey;
 using winrt::Windows::System::VirtualKeyModifiers;
 using winrt::Windows::UI::Colors;
+using winrt::Windows::UI::Popups::MessageDialog;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::Window;
@@ -136,14 +138,36 @@ MainPage::MainPage()
     InitializeReactMenu();
 }
 
-void MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
+IAsyncAction MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
 {
+    bool const devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
+    if (!devServerIsRunning) {
+        auto const message =
+            L"Cannot connect to your development server. Please make sure that it is running and "
+            L"try again.";
+        MessageDialog(message).ShowAsync();
+        co_return;
+    }
+
     LoadJSBundleFrom(JSBundleSource::DevServer);
 }
 
 void MainPage::LoadFromJSBundle(IInspectable const &, RoutedEventArgs)
 {
-    LoadJSBundleFrom(JSBundleSource::Embedded);
+    if (!LoadJSBundleFrom(JSBundleSource::Embedded)) {
+        std::wstring message{
+            L"No JavaScript bundle with one of the following names was found in the app:\n\n"};
+        for (auto &&name : ::ReactTestApp::JSBundleNames) {
+            message += L"    \u2022 " + name + L".bundle\n";
+        }
+        message +=
+            L"\nPlease make sure the bundle has been built, is appropriately named, and that it "
+            L"has been added to 'app.json'. You may have to run 'install-windows-test-app' again "
+            L"to update the project files.\n"
+            L"\n"
+            L"If you meant to use a development server, please make sure it is running.";
+        MessageDialog(message).ShowAsync();
+    }
 }
 
 void MainPage::ToggleRememberLastComponent(IInspectable const &sender, RoutedEventArgs)
@@ -195,14 +219,18 @@ IAsyncAction MainPage::OnNavigatedTo(NavigationEventArgs const &e)
 {
     Base::OnNavigatedTo(e);
 
-    bool devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
-    LoadJSBundleFrom(devServerIsRunning ? JSBundleSource::DevServer : JSBundleSource::Embedded);
+    bool const devServerIsRunning = co_await ::ReactTestApp::IsDevServerRunning();
+    devServerIsRunning ? LoadFromDevServer({}, {}) : LoadFromJSBundle({}, {});
 }
 
-void MainPage::LoadJSBundleFrom(JSBundleSource source)
+bool MainPage::LoadJSBundleFrom(JSBundleSource source)
 {
-    reactInstance_.LoadJSBundleFrom(source);
+    if (!reactInstance_.LoadJSBundleFrom(source)) {
+        return false;
+    }
+
     InitializeDebugMenu();
+    return true;
 }
 
 void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)

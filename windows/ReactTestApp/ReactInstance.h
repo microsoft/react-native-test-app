@@ -7,13 +7,17 @@
 
 #pragma once
 
+#include <optional>
 #include <string>
+#include <vector>
 
 #include <winrt/Microsoft.ReactNative.h>
 #include <winrt/Windows.Foundation.h>
 
 namespace ReactTestApp
 {
+    extern std::vector<std::wstring> const JSBundleNames;
+
     enum class JSBundleSource {
         DevServer,
         Embedded,
@@ -29,7 +33,7 @@ namespace ReactTestApp
             return reactNativeHost_;
         }
 
-        void LoadJSBundleFrom(JSBundleSource);
+        bool LoadJSBundleFrom(JSBundleSource);
         void Reload();
 
         bool BreakOnFirstLine() const;
@@ -63,7 +67,7 @@ namespace ReactTestApp
         JSBundleSource source_ = JSBundleSource::DevServer;
     };
 
-    std::string GetBundleName();
+    std::optional<std::wstring> GetBundleName();
     winrt::Windows::Foundation::IAsyncOperation<bool> IsDevServerRunning();
 
 }  // namespace ReactTestApp
