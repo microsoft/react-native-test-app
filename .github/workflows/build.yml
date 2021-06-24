@@ -181,6 +181,10 @@ jobs:
       - name: Install
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
+      - name: Init test app
+        run: |
+          yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
+        working-directory: template-example
       - name: Build
         run: |
           set -eo pipefail
@@ -293,6 +297,11 @@ jobs:
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
         shell: bash
+      - name: Init test app
+        run: |
+          yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
+        shell: bash
+        working-directory: template-example
       - name: Build
         run: |
           set -eo pipefail
@@ -376,6 +385,10 @@ jobs:
       - name: Install
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
+      - name: Init test app
+        run: |
+          yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
+        working-directory: template-example
       - name: Build
         run: |
           set -eo pipefail
@@ -476,6 +489,11 @@ jobs:
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
         shell: bash
+      - name: Init test app
+        run: |
+          yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
+        shell: bash
+        working-directory: template-example
       - name: Build bundle and create solution
         run: |
           yarn build:windows

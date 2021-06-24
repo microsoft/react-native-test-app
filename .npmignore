@@ -16,6 +16,8 @@ android/app/src/test/
 coverage/
 example/**/*
 !example/android/gradle.properties
+!example/android/gradle/wrapper/*
+!example/android/gradlew*
 !example/metro.config.js
 !example/react-native.config.js
 scripts/
