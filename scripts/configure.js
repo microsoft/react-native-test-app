@@ -295,17 +295,6 @@ const getConfig = (() => {
             "metro.config.js": {
               source: path.join(testAppPath, "example", "metro.config.js"),
             },
-            // This is Windows specific but it needs to live in the package root
-            "metro.config.windows.js": isInstalled("@react-native-windows/cli")
-              ? {
-                  source: path.relative(
-                    process.cwd(),
-                    require.resolve(
-                      "@react-native-windows/cli/templates/metro.config.js"
-                    )
-                  ),
-                }
-              : "",
             "react-native.config.js": reactNativeConfig(params),
             ...(!init
               ? undefined
@@ -491,9 +480,7 @@ const getConfig = (() => {
           ],
           scripts: {
             "build:windows":
-              "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist --config=metro.config.windows.js",
-            "start:windows":
-              "react-native start --config=metro.config.windows.js",
+              "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
             windows: `react-native run-windows --sln windows/${name}.sln`,
           },
           dependencies: {

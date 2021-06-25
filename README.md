@@ -124,7 +124,7 @@ open macos/Sample.xcworkspace
 # Bundle the JS first so the assets can
 # be included in the project.
 yarn build:windows
-yarn install-windows-test-app
+yarn install-windows-test-app --use-nuget
 yarn windows
 
 # Instead of `yarn windows`, you can
@@ -217,7 +217,7 @@ open macos/Example.xcworkspace
 # Bundle the JS first so the assets can
 # be included in the project.
 yarn build:windows
-yarn install-windows-test-app
+yarn install-windows-test-app --use-nuget
 
 # Finally, open 'Example.sln' in Visual
 # Studio.
