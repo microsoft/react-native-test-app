@@ -1,4 +1,16 @@
+const fs = require("fs");
 const path = require("path");
+
+const windowsProjectFile = path.relative(
+  path.join(__dirname, "windows"),
+  path.join(
+    "node_modules",
+    ".generated",
+    "windows",
+    "ReactTestApp",
+    "ReactTestApp.vcxproj"
+  )
+);
 
 module.exports = {
   project: {
@@ -19,20 +31,11 @@ module.exports = {
     ios: {
       project: "ios/ReactTestApp-Dummy.xcodeproj",
     },
-    windows: {
+    windows: fs.existsSync(windowsProjectFile) && {
       sourceDir: "windows",
       solutionFile: "Example.sln",
       project: {
-        projectFile: path.relative(
-          path.join(__dirname, "windows"),
-          path.join(
-            "node_modules",
-            ".generated",
-            "windows",
-            "ReactTestApp",
-            "ReactTestApp.vcxproj"
-          )
-        ),
+        projectFile: windowsProjectFile,
       },
     },
   },
