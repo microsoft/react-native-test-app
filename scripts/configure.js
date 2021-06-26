@@ -10,6 +10,7 @@
 const chalk = require("chalk");
 const fs = require("fs");
 const path = require("path");
+const semver = require("semver");
 
 /**
  * @typedef {{ source: string; }} FileCopy;
@@ -19,6 +20,7 @@ const path = require("path");
  *   oldFiles: string[];
  *   scripts: Record<string, string>;
  *   dependencies: Record<string, string>;
+ *   getDependencies?: (params: ConfigureParams) => Record<string, string> | undefined;
  * }} Configuration;
  *
  * @typedef {{
@@ -35,6 +37,7 @@ const path = require("path");
  *   name: string;
  *   packagePath: string;
  *   testAppPath: string;
+ *   targetVersion: string;
  *   platforms: Platform[];
  *   flatten: boolean;
  *   force: boolean;
@@ -175,6 +178,29 @@ function sortByKeys(obj) {
  */
 function warn(message, tag = "[!]") {
   console.warn(chalk.yellow(`${tag} ${message}`));
+}
+
+/**
+ * Returns platform package at target version if it satisfies version range.
+ * @param {string} packageName
+ * @param {string} targetVersion
+ * @param {string} versionRange
+ * @returns {Record<string, string> | undefined}
+ */
+function getPlatformPackage(packageName, targetVersion, versionRange) {
+  const v = semver.coerce(targetVersion);
+  if (!v) {
+    throw new Error(`Invalid ${packageName} version: ${targetVersion}`);
+  }
+
+  if (!semver.satisfies(v.version, versionRange)) {
+    warn(
+      `${packageName}@${v.major}.${v.minor} cannot be added because it does not exist or is unsupported`
+    );
+    return undefined;
+  }
+
+  return { [packageName]: `^${v.major}.${v.minor}.0` };
 }
 
 /**
@@ -334,6 +360,7 @@ const getConfig = (() => {
             start: "react-native start",
           },
           dependencies: {},
+          getDependencies: () => ({}),
         },
         android: {
           files: {
@@ -416,6 +443,7 @@ const getConfig = (() => {
               "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
           },
           dependencies: {},
+          getDependencies: () => ({}),
         },
         ios: {
           files: {
@@ -445,6 +473,7 @@ const getConfig = (() => {
             ios: "react-native run-ios",
           },
           dependencies: {},
+          getDependencies: () => ({}),
         },
         macos: {
           files: {
@@ -468,8 +497,13 @@ const getConfig = (() => {
               "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
             macos: `react-native run-macos --scheme ${name}`,
           },
-          dependencies: {
-            "react-native-macos": "^0.63.0",
+          dependencies: {},
+          getDependencies: ({ targetVersion }) => {
+            return getPlatformPackage(
+              "react-native-macos",
+              targetVersion,
+              "^0.0.0-0 || >=0.60.0 <0.64"
+            );
           },
         },
         windows: {
@@ -484,8 +518,13 @@ const getConfig = (() => {
               "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
             windows: `react-native run-windows --sln windows/${name}.sln`,
           },
-          dependencies: {
-            "react-native-windows": "^0.63.0",
+          dependencies: {},
+          getDependencies: ({ targetVersion }) => {
+            return getPlatformPackage(
+              "react-native-windows",
+              targetVersion,
+              "^0.0.0-0 || >=0.62.0 <0.66"
+            );
           },
         },
       };
@@ -502,26 +541,40 @@ const getConfig = (() => {
 function gatherConfig(params) {
   const { flatten, platforms } = params;
   const config = (() => {
-    if (platforms.length === 1 && flatten) {
-      return getConfig(params, platforms[0]);
-    }
+    const shouldFlatten = platforms.length === 1 && flatten;
 
     return platforms.reduce(
       (config, platform) => {
-        const platformConfig = getConfig(params, platform);
+        const { getDependencies, ...platformConfig } = getConfig(
+          params,
+          platform
+        );
+
+        const dependencies = getDependencies && getDependencies(params);
+        if (!dependencies) {
+          return config;
+        }
+
         return mergeConfig(config, {
           ...platformConfig,
-          files: Object.fromEntries(
-            // Map each file into its platform specific folder, e.g.
-            // `Podfile` -> `iod/Podfile`
-            Object.entries(platformConfig.files).map(([filename, content]) => [
-              path.join(platform, filename),
-              content,
-            ])
-          ),
-          oldFiles: platformConfig.oldFiles.map((file) => {
-            return path.join(platform, file);
-          }),
+          dependencies,
+          files: shouldFlatten
+            ? platformConfig.files
+            : Object.fromEntries(
+                // Map each file into its platform specific folder, e.g.
+                // `Podfile` -> `ios/Podfile`
+                Object.entries(platformConfig.files).map(
+                  ([filename, content]) => [
+                    path.join(platform, filename),
+                    content,
+                  ]
+                )
+              ),
+          oldFiles: shouldFlatten
+            ? platformConfig.oldFiles
+            : platformConfig.oldFiles.map((file) => {
+                return path.join(platform, file);
+              }),
         });
       },
       /** @type {Configuration} */ ({
@@ -532,6 +585,16 @@ function gatherConfig(params) {
       })
     );
   })();
+
+  if (
+    Object.keys(config.scripts).length === 0 &&
+    Object.keys(config.dependencies).length === 0 &&
+    Object.keys(config.files).length === 0 &&
+    config.oldFiles.length === 0
+  ) {
+    return config;
+  }
+
   return mergeConfig(config, getConfig(params, "common"));
 }
 
@@ -551,6 +614,16 @@ function getAppName(packagePath) {
   }
 
   return "ReactTestApp";
+}
+
+/**
+ * Retrieves the version of React Native to target.
+ * @returns {string}
+ */
+function getTargetReactNativeVersion() {
+  const manifestPath = require.resolve("react-native/package.json");
+  const { version } = readJSONFile(manifestPath);
+  return /** @type {string} */ (version);
 }
 
 /**
@@ -579,11 +652,11 @@ function isDestructive(packagePath, { files, oldFiles }) {
   if (modified.length > 0 || removed.length > 0) {
     if (modified.length > 0) {
       warn("The following files will be overwritten:");
-      modified.sort().forEach((file) => warn(file, "        "));
+      modified.sort().forEach((file) => warn(file, "    "));
     }
     if (removed.length > 0) {
       warn("The following files will be removed:");
-      removed.sort().forEach((file) => warn(file, "        "));
+      removed.sort().forEach((file) => warn(file, "    "));
     }
     return true;
   }
@@ -725,6 +798,7 @@ function configure(params) {
 if (require.main === module) {
   /** @type {Platform[]} */
   const platformChoices = ["android", "ios", "macos", "windows"];
+  const targetVersion = getTargetReactNativeVersion();
 
   require("yargs").usage(
     "$0 [options]",
@@ -772,6 +846,7 @@ if (require.main === module) {
         name: typeof name === "string" && name ? name : getAppName(packagePath),
         packagePath,
         testAppPath: path.resolve(__dirname, ".."),
+        targetVersion,
         platforms,
         flatten,
         force,
@@ -789,6 +864,8 @@ exports["error"] = error;
 exports["gatherConfig"] = gatherConfig;
 exports["getAppName"] = getAppName;
 exports["getConfig"] = getConfig;
+exports["getPlatformPackage"] = getPlatformPackage;
+exports["getTargetReactNativeVersion"] = getTargetReactNativeVersion;
 exports["isDestructive"] = isDestructive;
 exports["isInstalled"] = isInstalled;
 exports["join"] = join;

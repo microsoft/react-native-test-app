@@ -8,6 +8,9 @@
 // @ts-check
 
 (async () => {
+  const { configure, getTargetReactNativeVersion } = require("./configure");
+  const targetVersion = getTargetReactNativeVersion();
+
   /**
    * @type {{
    *   name?: string;
@@ -47,12 +50,12 @@
   }
 
   const path = require("path");
-  const { configure } = require("./configure");
 
   const result = configure({
     name,
     packagePath,
     testAppPath: path.resolve(__dirname, ".."),
+    targetVersion,
     platforms,
     flatten: true,
     force: true,
