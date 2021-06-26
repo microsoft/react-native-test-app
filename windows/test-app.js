@@ -82,6 +82,16 @@ function findUserProjects(projectDir, projects = []) {
 }
 
 /**
+ * Returns a NuGet package entry for specified package id and version.
+ * @param {string} id NuGet package id
+ * @param {string} version NuGet package version
+ * @returns {string}
+ */
+function nuGetPackage(id, version) {
+  return `<package id="${id}" version="${version}" targetFramework="native" />`;
+}
+
+/**
  * @param {string[] | { windows?: string[] } | undefined} resources
  * @param {string} projectPath
  * @param {string} vcxProjectPath
@@ -243,6 +253,22 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
 }
 
 /**
+ * Returns the version of Hermes that should be installed.
+ * @param {string} rnwPath Path to `react-native-windows`.
+ * @returns {string | null}
+ */
+function getHermesVersion(rnwPath) {
+  const jsEnginePropsPath = path.join(
+    rnwPath,
+    "PropertySheets",
+    "JSEngine.props"
+  );
+  const props = fs.readFileSync(jsEnginePropsPath, textFileReadOptions);
+  const m = props.match(/<HermesVersion.*?>([.\w]+)<\/HermesVersion>/);
+  return m && m[1];
+}
+
+/**
  * Returns the version number the package at specified path.
  * @param {string} packagePath
  * @returns {string}
@@ -275,10 +301,10 @@ function getVersionNumber(version) {
 /**
  * Generates Visual Studio solution.
  * @param {string} destPath Destination path.
- * @param {{ autolink: boolean; useNuGet: boolean; }} options
+ * @param {{ autolink: boolean; useHermes: boolean | undefined; useNuGet: boolean; }} options
  * @returns {string | undefined} An error message; `undefined` otherwise.
  */
-function generateSolution(destPath, { autolink, useNuGet }) {
+function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   if (!destPath) {
     throw "Missing or invalid destination path";
   }
@@ -320,23 +346,32 @@ function generateSolution(destPath, { autolink, useNuGet }) {
     getBundleResources(manifestFilePath, projectFilesDestPath);
 
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
+  const rnWindowsVersionNumber = getVersionNumber(rnWindowsVersion);
+  const hermesVersion = useHermes && getHermesVersion(rnWindowsPath);
 
   const projectFilesReplacements = {
+    ...(hermesVersion
+      ? {
+          '<!-- package id="ReactNative.Hermes.Windows" version="0.0.0" targetFramework="native" / -->':
+            nuGetPackage("ReactNative.Hermes.Windows", hermesVersion),
+        }
+      : undefined),
     ...(useNuGet
       ? {
+          '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native" / -->':
+            nuGetPackage("Microsoft.ReactNative", rnWindowsVersion),
+          '<!-- package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native" / -->':
+            nuGetPackage("Microsoft.ReactNative.Cxx", rnWindowsVersion),
+          '<!-- package id="Microsoft.UI.Xaml" version="2.5.0" targetFramework="native" / -->':
+            nuGetPackage("Microsoft.UI.Xaml", "2.5.0"),
           "<UseExperimentalNuget>false</UseExperimentalNuget>":
             "<UseExperimentalNuget>true</UseExperimentalNuget>",
+          "<WinUI2xVersionDisabled />":
+            "<WinUI2xVersion>2.5.0</WinUI2xVersion>",
         }
-      : {
-          '\\s+<package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native" />':
-            "",
-          '\\s+<package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native" />':
-            "",
-        }),
+      : undefined),
     "1000\\.0\\.0": rnWindowsVersion,
-    "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${getVersionNumber(
-      rnWindowsVersion
-    )};`,
+    "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
     "\\$\\(BundleDirContentPaths\\)": bundleDirContent,
     "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
     "\\$\\(ReactTestAppPackageManifest\\)": path.normalize(
@@ -439,6 +474,17 @@ function generateSolution(destPath, { autolink, useNuGet }) {
       textFileWriteOptions,
       rethrow
     );
+
+    copyAndReplace(
+      path.join(__dirname, "ExperimentalFeatures.props"),
+      path.join(destPath, "ExperimentalFeatures.props"),
+      {
+        ...(hermesVersion
+          ? { "<UseHermes>false</UseHermes>": `<UseHermes>true</UseHermes>` }
+          : undefined),
+      }
+    );
+
     if (useNuGet) {
       const nugetConfigPath =
         findNearest(
@@ -524,6 +570,10 @@ if (require.main === module) {
         description: "Run autolink after generating the solution",
         default: true,
       },
+      "use-hermes": {
+        type: "boolean",
+        description: "Use Hermes JavaScript engine (experimental)",
+      },
       "use-nuget": {
         type: "boolean",
         description: "Use NuGet packages (experimental)",
@@ -533,10 +583,12 @@ if (require.main === module) {
     ({
       "project-directory": projectDirectory,
       autolink,
+      "use-hermes": useHermes,
       "use-nuget": useNuGet,
     }) => {
       const error = generateSolution(path.resolve(projectDirectory), {
         autolink,
+        useHermes,
         useNuGet,
       });
       if (error) {
