@@ -257,9 +257,10 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
     }
   }
 
-  return {
-    source: path.join(testAppPath, "example", "react-native.config.js"),
-  };
+  const config = path.join(testAppPath, "example", "react-native.config.js");
+  return fs
+    .readFileSync(config, { encoding: "utf-8" })
+    .replace(/Example/g, name);
 }
 
 /**

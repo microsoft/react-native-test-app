@@ -7,7 +7,7 @@ Object {
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "Podfile": "require_relative '../../test_app'
+    "Podfile": "require_relative '../test_app'
 
 use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
 
@@ -19,7 +19,7 @@ use_test_app!
       "source": "node_modules/react-native/template/babel.config.js",
     },
     "metro.config.js": Object {
-      "source": "../example/metro.config.js",
+      "source": "example/metro.config.js",
     },
     "react-native.config.js": "module.exports = {
   project: {
@@ -52,7 +52,7 @@ Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
     "android/build.gradle": "buildscript { scriptHandler ->
-    def androidTestAppDir = \\"../../../android\\"
+    def androidTestAppDir = \\"../../android\\"
     apply from: \\"$androidTestAppDir/dependencies.gradle\\"
     apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
@@ -67,19 +67,19 @@ Object {
 }
 ",
     "android/gradle.properties": Object {
-      "source": "../example/android/gradle.properties",
+      "source": "example/android/gradle.properties",
     },
     "android/gradle/wrapper/gradle-wrapper.jar": Object {
-      "source": "../example/android/gradle/wrapper/gradle-wrapper.jar",
+      "source": "example/android/gradle/wrapper/gradle-wrapper.jar",
     },
     "android/gradle/wrapper/gradle-wrapper.properties": Object {
-      "source": "../example/android/gradle/wrapper/gradle-wrapper.properties",
+      "source": "example/android/gradle/wrapper/gradle-wrapper.properties",
     },
     "android/gradlew": Object {
-      "source": "../example/android/gradlew",
+      "source": "example/android/gradlew",
     },
     "android/gradlew.bat": Object {
-      "source": "../example/android/gradlew.bat",
+      "source": "example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
     repositories {
@@ -91,13 +91,13 @@ Object {
 
 rootProject.name='Test'
 
-apply from: file(\\"../../../test-app.gradle\\")
+apply from: file(\\"../../test-app.gradle\\")
 applyTestAppSettings(settings)
 ",
     "babel.config.js": Object {
       "source": "node_modules/react-native/template/babel.config.js",
     },
-    "ios/Podfile": "require_relative '../../../test_app'
+    "ios/Podfile": "require_relative '../../test_app'
 
 use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
 
@@ -106,11 +106,51 @@ workspace 'Test.xcworkspace'
 use_test_app!
 ",
     "metro.config.js": Object {
-      "source": "../example/metro.config.js",
+      "source": "example/metro.config.js",
     },
-    "react-native.config.js": Object {
-      "source": "../example/react-native.config.js",
+    "react-native.config.js": "const fs = require(\\"fs\\");
+const path = require(\\"path\\");
+
+const windowsProjectFile = path.relative(
+  path.join(__dirname, \\"windows\\"),
+  path.join(
+    \\"node_modules\\",
+    \\".generated\\",
+    \\"windows\\",
+    \\"ReactTestApp\\",
+    \\"ReactTestApp.vcxproj\\"
+  )
+);
+
+module.exports = {
+  project: {
+    android: {
+      sourceDir: \\"android\\",
+      manifestPath: path.relative(
+        path.join(__dirname, \\"android\\"),
+        path.join(
+          path.dirname(require.resolve(\\"react-native-test-app/package.json\\")),
+          \\"android\\",
+          \\"app\\",
+          \\"src\\",
+          \\"main\\",
+          \\"AndroidManifest.xml\\"
+        )
+      ),
     },
+    ios: {
+      project: \\"ios/ReactTestApp-Dummy.xcodeproj\\",
+    },
+    windows: fs.existsSync(windowsProjectFile) && {
+      sourceDir: \\"windows\\",
+      solutionFile: \\"Test.sln\\",
+      project: {
+        projectFile: windowsProjectFile,
+      },
+    },
+  },
+};
+",
   },
   "oldFiles": Array [
     "ios/Podfile.lock",
@@ -138,7 +178,7 @@ Object {
     "babel.config.js": Object {
       "source": "node_modules/react-native/template/babel.config.js",
     },
-    "ios/Podfile": "require_relative '../../../test_app'
+    "ios/Podfile": "require_relative '../../test_app'
 
 use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
 
@@ -147,11 +187,51 @@ workspace 'Test.xcworkspace'
 use_test_app!
 ",
     "metro.config.js": Object {
-      "source": "../example/metro.config.js",
+      "source": "example/metro.config.js",
     },
-    "react-native.config.js": Object {
-      "source": "../example/react-native.config.js",
+    "react-native.config.js": "const fs = require(\\"fs\\");
+const path = require(\\"path\\");
+
+const windowsProjectFile = path.relative(
+  path.join(__dirname, \\"windows\\"),
+  path.join(
+    \\"node_modules\\",
+    \\".generated\\",
+    \\"windows\\",
+    \\"ReactTestApp\\",
+    \\"ReactTestApp.vcxproj\\"
+  )
+);
+
+module.exports = {
+  project: {
+    android: {
+      sourceDir: \\"android\\",
+      manifestPath: path.relative(
+        path.join(__dirname, \\"android\\"),
+        path.join(
+          path.dirname(require.resolve(\\"react-native-test-app/package.json\\")),
+          \\"android\\",
+          \\"app\\",
+          \\"src\\",
+          \\"main\\",
+          \\"AndroidManifest.xml\\"
+        )
+      ),
     },
+    ios: {
+      project: \\"ios/ReactTestApp-Dummy.xcodeproj\\",
+    },
+    windows: fs.existsSync(windowsProjectFile) && {
+      sourceDir: \\"windows\\",
+      solutionFile: \\"Test.sln\\",
+      project: {
+        projectFile: windowsProjectFile,
+      },
+    },
+  },
+};
+",
   },
   "oldFiles": Array [
     "ios/Podfile.lock",
@@ -178,7 +258,7 @@ Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
     "android/build.gradle": "buildscript { scriptHandler ->
-    def androidTestAppDir = \\"../../../android\\"
+    def androidTestAppDir = \\"../../android\\"
     apply from: \\"$androidTestAppDir/dependencies.gradle\\"
     apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
@@ -193,19 +273,19 @@ Object {
 }
 ",
     "android/gradle.properties": Object {
-      "source": "../example/android/gradle.properties",
+      "source": "example/android/gradle.properties",
     },
     "android/gradle/wrapper/gradle-wrapper.jar": Object {
-      "source": "../example/android/gradle/wrapper/gradle-wrapper.jar",
+      "source": "example/android/gradle/wrapper/gradle-wrapper.jar",
     },
     "android/gradle/wrapper/gradle-wrapper.properties": Object {
-      "source": "../example/android/gradle/wrapper/gradle-wrapper.properties",
+      "source": "example/android/gradle/wrapper/gradle-wrapper.properties",
     },
     "android/gradlew": Object {
-      "source": "../example/android/gradlew",
+      "source": "example/android/gradlew",
     },
     "android/gradlew.bat": Object {
-      "source": "../example/android/gradlew.bat",
+      "source": "example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
     repositories {
@@ -217,13 +297,13 @@ Object {
 
 rootProject.name='Test'
 
-apply from: file(\\"../../../test-app.gradle\\")
+apply from: file(\\"../../test-app.gradle\\")
 applyTestAppSettings(settings)
 ",
     "babel.config.js": Object {
       "source": "node_modules/react-native/template/babel.config.js",
     },
-    "ios/Podfile": "require_relative '../../../test_app'
+    "ios/Podfile": "require_relative '../../test_app'
 
 use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
 
@@ -231,18 +311,58 @@ workspace 'Test.xcworkspace'
 
 use_test_app!
 ",
-    "macos/Podfile": "require_relative '../../../macos/test_app'
+    "macos/Podfile": "require_relative '../../macos/test_app'
 
 workspace 'Test.xcworkspace'
 
 use_test_app!
 ",
     "metro.config.js": Object {
-      "source": "../example/metro.config.js",
+      "source": "example/metro.config.js",
     },
-    "react-native.config.js": Object {
-      "source": "../example/react-native.config.js",
+    "react-native.config.js": "const fs = require(\\"fs\\");
+const path = require(\\"path\\");
+
+const windowsProjectFile = path.relative(
+  path.join(__dirname, \\"windows\\"),
+  path.join(
+    \\"node_modules\\",
+    \\".generated\\",
+    \\"windows\\",
+    \\"ReactTestApp\\",
+    \\"ReactTestApp.vcxproj\\"
+  )
+);
+
+module.exports = {
+  project: {
+    android: {
+      sourceDir: \\"android\\",
+      manifestPath: path.relative(
+        path.join(__dirname, \\"android\\"),
+        path.join(
+          path.dirname(require.resolve(\\"react-native-test-app/package.json\\")),
+          \\"android\\",
+          \\"app\\",
+          \\"src\\",
+          \\"main\\",
+          \\"AndroidManifest.xml\\"
+        )
+      ),
     },
+    ios: {
+      project: \\"ios/ReactTestApp-Dummy.xcodeproj\\",
+    },
+    windows: fs.existsSync(windowsProjectFile) && {
+      sourceDir: \\"windows\\",
+      solutionFile: \\"Test.sln\\",
+      project: {
+        projectFile: windowsProjectFile,
+      },
+    },
+  },
+};
+",
   },
   "oldFiles": Array [
     "ios/Podfile.lock",
@@ -279,7 +399,7 @@ Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
     "android/build.gradle": "buildscript { scriptHandler ->
-    def androidTestAppDir = \\"../../../android\\"
+    def androidTestAppDir = \\"../../android\\"
     apply from: \\"$androidTestAppDir/dependencies.gradle\\"
     apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
@@ -294,19 +414,19 @@ Object {
 }
 ",
     "android/gradle.properties": Object {
-      "source": "../example/android/gradle.properties",
+      "source": "example/android/gradle.properties",
     },
     "android/gradle/wrapper/gradle-wrapper.jar": Object {
-      "source": "../example/android/gradle/wrapper/gradle-wrapper.jar",
+      "source": "example/android/gradle/wrapper/gradle-wrapper.jar",
     },
     "android/gradle/wrapper/gradle-wrapper.properties": Object {
-      "source": "../example/android/gradle/wrapper/gradle-wrapper.properties",
+      "source": "example/android/gradle/wrapper/gradle-wrapper.properties",
     },
     "android/gradlew": Object {
-      "source": "../example/android/gradlew",
+      "source": "example/android/gradlew",
     },
     "android/gradlew.bat": Object {
-      "source": "../example/android/gradlew.bat",
+      "source": "example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
     repositories {
@@ -318,13 +438,13 @@ Object {
 
 rootProject.name='Test'
 
-apply from: file(\\"../../../test-app.gradle\\")
+apply from: file(\\"../../test-app.gradle\\")
 applyTestAppSettings(settings)
 ",
     "babel.config.js": Object {
       "source": "node_modules/react-native/template/babel.config.js",
     },
-    "ios/Podfile": "require_relative '../../../test_app'
+    "ios/Podfile": "require_relative '../../test_app'
 
 use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
 
@@ -333,11 +453,51 @@ workspace 'Test.xcworkspace'
 use_test_app!
 ",
     "metro.config.js": Object {
-      "source": "../example/metro.config.js",
+      "source": "example/metro.config.js",
     },
-    "react-native.config.js": Object {
-      "source": "../example/react-native.config.js",
+    "react-native.config.js": "const fs = require(\\"fs\\");
+const path = require(\\"path\\");
+
+const windowsProjectFile = path.relative(
+  path.join(__dirname, \\"windows\\"),
+  path.join(
+    \\"node_modules\\",
+    \\".generated\\",
+    \\"windows\\",
+    \\"ReactTestApp\\",
+    \\"ReactTestApp.vcxproj\\"
+  )
+);
+
+module.exports = {
+  project: {
+    android: {
+      sourceDir: \\"android\\",
+      manifestPath: path.relative(
+        path.join(__dirname, \\"android\\"),
+        path.join(
+          path.dirname(require.resolve(\\"react-native-test-app/package.json\\")),
+          \\"android\\",
+          \\"app\\",
+          \\"src\\",
+          \\"main\\",
+          \\"AndroidManifest.xml\\"
+        )
+      ),
     },
+    ios: {
+      project: \\"ios/ReactTestApp-Dummy.xcodeproj\\",
+    },
+    windows: fs.existsSync(windowsProjectFile) && {
+      sourceDir: \\"windows\\",
+      solutionFile: \\"Test.sln\\",
+      project: {
+        projectFile: windowsProjectFile,
+      },
+    },
+  },
+};
+",
   },
   "oldFiles": Array [
     "ios/Podfile.lock",

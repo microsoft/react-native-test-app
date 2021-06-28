@@ -12,7 +12,9 @@ describe("reactNativeConfig()", () => {
 
   test("returns generic config for all platforms", () => {
     const genericConfig = reactNativeConfig(mockParams());
-    expect(typeof genericConfig).toEqual("object");
+    expect(genericConfig).toContain("android: {");
+    expect(genericConfig).toContain("ios: {");
+    expect(genericConfig).toContain("windows: fs.exists");
 
     const withFlattenOnly = mockParams({ flatten: true });
     expect(reactNativeConfig(withFlattenOnly)).toEqual(genericConfig);
