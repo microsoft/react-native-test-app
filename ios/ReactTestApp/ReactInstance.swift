@@ -97,13 +97,6 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
     }
 
     func initReact(onDidInitialize: @escaping () -> Void) {
-        if bridge == nil {
-            NotificationCenter.default.post(
-                name: .ReactTestAppWillInitializeReactNative,
-                object: nil
-            )
-        }
-
         if let bridge = bridge {
             if remoteBundleURL == nil {
                 // When loading the embedded bundle, we must disable remote
@@ -112,18 +105,27 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
                 RCTDevSettings().isDebuggingRemotely = false
             }
             RTATriggerReloadCommand(bridge, "ReactTestApp")
-        } else if let bridge = RCTBridge(delegate: self, launchOptions: nil) {
-            self.bridge = bridge
-
-            NotificationCenter.default.post(
-                name: .ReactTestAppDidInitializeReactNative,
-                object: bridge
-            )
-
-            onDidInitialize()
-        } else {
-            assertionFailure("Failed to instantiate RCTBridge")
+            return
         }
+
+        NotificationCenter.default.post(
+            name: .ReactTestAppWillInitializeReactNative,
+            object: nil
+        )
+
+        guard let bridge = RCTBridge(delegate: self, launchOptions: nil) else {
+            assertionFailure("Failed to instantiate RCTBridge")
+            return
+        }
+
+        self.bridge = bridge
+
+        NotificationCenter.default.post(
+            name: .ReactTestAppDidInitializeReactNative,
+            object: bridge
+        )
+
+        onDidInitialize()
     }
 
     // MARK: - RCTBridgeDelegate details
