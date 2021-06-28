@@ -16,7 +16,7 @@ function mockParams(overrides) {
   return {
     name: "Test",
     packagePath: "test",
-    testAppPath: "..",
+    testAppPath: ".",
     platforms: ["android", "ios", "macos", "windows"],
     flatten: false,
     force: false,
