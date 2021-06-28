@@ -1,53 +1,42 @@
+const fs = require("fs");
 const path = require("path");
 
-if (
-  process.argv.includes("--config=metro.config.windows.js") ||
-  process.argv.includes("autolink-windows") ||
-  process.argv.includes("run-windows")
-) {
-  const sourceDir = "windows";
-  module.exports = {
-    project: {
-      windows: {
-        sourceDir,
-        solutionFile: "Example.sln",
-        project: {
-          projectFile: path.relative(
-            path.join(__dirname, sourceDir),
-            path.join(
-              "node_modules",
-              ".generated",
-              "windows",
-              "ReactTestApp",
-              "ReactTestApp.vcxproj"
-            )
-          ),
-        },
+const windowsProjectFile = path.relative(
+  path.join(__dirname, "windows"),
+  path.join(
+    "node_modules",
+    ".generated",
+    "windows",
+    "ReactTestApp",
+    "ReactTestApp.vcxproj"
+  )
+);
+
+module.exports = {
+  project: {
+    android: {
+      sourceDir: "android",
+      manifestPath: path.relative(
+        path.join(__dirname, "android"),
+        path.join(
+          path.dirname(require.resolve("react-native-test-app/package.json")),
+          "android",
+          "app",
+          "src",
+          "main",
+          "AndroidManifest.xml"
+        )
+      ),
+    },
+    ios: {
+      project: "ios/ReactTestApp-Dummy.xcodeproj",
+    },
+    windows: fs.existsSync(windowsProjectFile) && {
+      sourceDir: "windows",
+      solutionFile: "Example.sln",
+      project: {
+        projectFile: windowsProjectFile,
       },
     },
-    reactNativePath: "node_modules/react-native-windows",
-  };
-} else {
-  const sourceDir = "android";
-  module.exports = {
-    project: {
-      android: {
-        sourceDir,
-        manifestPath: path.relative(
-          path.join(__dirname, sourceDir),
-          path.join(
-            path.dirname(require.resolve("react-native-test-app/package.json")),
-            "android",
-            "app",
-            "src",
-            "main",
-            "AndroidManifest.xml"
-          )
-        ),
-      },
-      ios: {
-        project: "ios/ReactTestApp-Dummy.xcodeproj",
-      },
-    },
-  };
-}
+  },
+};

@@ -25,7 +25,6 @@ describe("isDestructive()", () => {
    *            ios/Podfile
    *            macos/Podfile
    *            metro.config.js
-   *            metro.config.windows.js
    *            react-native.config.js
    *   [!] The following files will be removed:
    *            ios/Podfile.lock

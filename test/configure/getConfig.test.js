@@ -17,7 +17,6 @@ describe("getConfig()", () => {
       ".watchmanconfig",
       "babel.config.js",
       "metro.config.js",
-      "metro.config.windows.js",
       "react-native.config.js",
     ]);
     expect(config.oldFiles).toEqual([]);
@@ -35,7 +34,6 @@ describe("getConfig()", () => {
       "babel.config.js",
       "index.js",
       "metro.config.js",
-      "metro.config.windows.js",
       "package.json",
       "react-native.config.js",
     ]);
@@ -100,7 +98,6 @@ describe("getConfig()", () => {
 
     expect(Object.keys(config.scripts).sort()).toEqual([
       "build:windows",
-      "start:windows",
       "windows",
     ]);
     expect(Object.keys(config.dependencies)).toEqual(["react-native-windows"]);
