@@ -17,6 +17,7 @@ describe("generateSolution", () => {
 
   const options = {
     autolink: false,
+    useHermes: false,
     useNuGet: false,
   };
 

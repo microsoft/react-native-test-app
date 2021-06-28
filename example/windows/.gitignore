@@ -25,4 +25,5 @@ packages/
 
 **/Generated Files/**
 *.sln
+ExperimentalFeatures.props
 NuGet.Config
