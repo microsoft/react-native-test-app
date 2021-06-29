@@ -38,7 +38,7 @@ use_test_app!
   ],
   "scripts": Object {
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --project-path .",
     "start": "react-native start",
   },
 }
