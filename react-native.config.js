@@ -70,11 +70,16 @@ module.exports = {
     {
       name: "init-test-app",
       description: "Initializes a new test app project",
-      func: (argv, config, { destination, name, platform }) => {
-        require("./scripts/configure").configure({
+      func: (_argv, _config, { destination, name, platform }) => {
+        const {
+          configure,
+          getTargetReactNativeVersion,
+        } = require("./scripts/configure");
+        configure({
           name,
           packagePath: destination,
           testAppPath: __dirname,
+          targetVersion: getTargetReactNativeVersion(),
           platforms: sanitizePlatformChoice(platform),
           flatten: true,
           force: true,
@@ -86,7 +91,7 @@ module.exports = {
           name: "--destination [string]",
           description:
             "Path to the directory where the test app should be created",
-          default: process.cwd(),
+          default: require("path").join(process.cwd(), "test-app"),
         },
         {
           name: "--name [string]",
