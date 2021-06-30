@@ -181,7 +181,7 @@ jobs:
       - name: Install
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
-      - name: Init test app
+      - name: react-native init-test-app
         run: |
           yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
         working-directory: template-example
@@ -196,6 +196,10 @@ jobs:
             pod install --project-directory=ios
             ../scripts/xcodebuild.sh ios/TemplateExample.xcworkspace build
           fi
+        working-directory: template-example
+      - name: react-native run-ios
+        run: |
+          ../test/react-native.js run-ios
         working-directory: template-example
   android:
     name: "Android"
@@ -297,7 +301,7 @@ jobs:
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
         shell: bash
-      - name: Init test app
+      - name: react-native init-test-app
         run: |
           yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
         shell: bash
@@ -309,6 +313,10 @@ jobs:
           [[ -d android ]] && pushd android 1> /dev/null
           ./gradlew clean build check test
         shell: bash
+        working-directory: template-example
+      - name: react-native run-android
+        run: |
+          ../test/react-native.js run-android
         working-directory: template-example
   macos:
     name: "macOS"

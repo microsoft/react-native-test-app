@@ -304,7 +304,8 @@ const getConfig = (() => {
       typeof configuration === "undefined" ||
       "JEST_WORKER_ID" in process.env // skip caching when testing
     ) {
-      const { name, testAppPath, init } = params;
+      const { name, testAppPath, flatten, init } = params;
+      const projectPathFlag = flatten ? " --project-path ." : "";
       const testAppRelPath = projectRelativePath(params);
       const templateDir = path.relative(
         process.cwd(),
@@ -470,7 +471,7 @@ const getConfig = (() => {
           scripts: {
             "build:ios":
               "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
-            ios: "react-native run-ios",
+            ios: `react-native run-ios${projectPathFlag}`,
           },
           dependencies: {},
           getDependencies: () => ({}),
@@ -495,7 +496,7 @@ const getConfig = (() => {
           scripts: {
             "build:macos":
               "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
-            macos: `react-native run-macos --scheme ${name}`,
+            macos: `react-native run-macos --scheme ${name}${projectPathFlag}`,
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
@@ -542,11 +543,11 @@ function gatherConfig(params) {
   const { flatten, platforms } = params;
   const config = (() => {
     const shouldFlatten = platforms.length === 1 && flatten;
-
+    const options = { ...params, flatten: shouldFlatten };
     return platforms.reduce(
       (config, platform) => {
         const { getDependencies, ...platformConfig } = getConfig(
-          params,
+          options,
           platform
         );
 
