@@ -132,7 +132,7 @@ jobs:
           # https://github.com/facebook/react-native/issues/30036 and
           # https://github.com/microsoft/react-native-macos/issues/620 for more
           # details.
-          yarn set-react-version master
+          yarn set-react-version main
       - name: Install
         run: |
           yarn ci

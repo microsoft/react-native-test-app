@@ -50,9 +50,9 @@ const profiles = {
     "react-native-macos": undefined,
     "react-native-windows": "canary",
   },
-  master: {
+  main: {
     react: "17.0.2",
-    "react-native": "facebook/react-native#master",
+    "react-native": "facebook/react-native",
     "react-native-macos": undefined,
     "react-native-windows": undefined,
   },
