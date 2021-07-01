@@ -144,6 +144,10 @@ jobs:
           pod install --project-directory=ios
           ../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
         working-directory: example
+      - name: Test `react-native config`
+        run: |
+          yarn jest
+        working-directory: example
       - name: Test
         run: |
           ../scripts/xcodebuild.sh ios/Example.xcworkspace test-without-building
@@ -235,6 +239,10 @@ jobs:
       - name: Install /example
         run: |
           yarn ci
+        working-directory: example
+      - name: Test `react-native config`
+        run: |
+          yarn jest
         working-directory: example
       - name: Build
         run: |
@@ -350,6 +358,10 @@ jobs:
           pod install --project-directory=macos
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
         working-directory: example
+      - name: Test `react-native config`
+        run: |
+          yarn jest
+        working-directory: example
       - name: Test
         run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
@@ -446,6 +458,10 @@ jobs:
         run: |
           yarn build:windows
           yarn install-windows-test-app --use-nuget
+        working-directory: example
+      - name: Test `react-native config`
+        run: |
+          yarn jest
         working-directory: example
       - name: Install NuGet packages
         run: |
