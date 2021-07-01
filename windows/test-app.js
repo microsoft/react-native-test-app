@@ -44,7 +44,7 @@ const templateView = {
 const uniqueFilterIdentifier = "e48dc53e-40b1-40cb-970a-f89935452892";
 
 // Binary files in React Native Test App Windows project
-const binaryExtensions = [".png", ".pfx"];
+const binaryExtensions = [".png"];
 
 /** @type {{ recursive: true, mode: 0o755 }} */
 const mkdirRecursiveOptions = { recursive: true, mode: 0o755 };
@@ -546,7 +546,6 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     "PropertySheet.props",
     "ReactTestApp.vcxproj",
     "ReactTestApp.vcxproj.filters",
-    "ReactTestApp_TemporaryKey.pfx",
     "packages.config",
   ].map((file) =>
     copyAndReplace(
