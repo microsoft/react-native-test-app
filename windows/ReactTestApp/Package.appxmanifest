@@ -4,12 +4,12 @@
          xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
          IgnorableNamespaces="mp uap">
   <Identity Name="40411fc5-8e92-4d46-b68d-b62df44b1366"
-            Publisher="CN=AnastasiaOrishchenko"
+            Publisher="CN=ReactTestApp"
             Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="40411fc5-8e92-4d46-b68d-b62df44b1366" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
     <DisplayName>ReactTestApp</DisplayName>
-    <PublisherDisplayName>AnastasiaOrishchenko</PublisherDisplayName>
+    <PublisherDisplayName>ReactTestApp</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
