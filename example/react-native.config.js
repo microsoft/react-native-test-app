@@ -1,15 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-const windowsProjectFile = path.relative(
-  path.join(__dirname, "windows"),
-  path.join(
-    "node_modules",
-    ".generated",
-    "windows",
-    "ReactTestApp",
-    "ReactTestApp.vcxproj"
-  )
+const windowsProjectFile = path.join(
+  "node_modules",
+  ".generated",
+  "windows",
+  "ReactTestApp",
+  "ReactTestApp.vcxproj"
 );
 
 module.exports = {
@@ -35,7 +32,10 @@ module.exports = {
       sourceDir: "windows",
       solutionFile: "Example.sln",
       project: {
-        projectFile: windowsProjectFile,
+        projectFile: path.relative(
+          path.join(__dirname, "windows"),
+          windowsProjectFile
+        ),
       },
     },
   },
