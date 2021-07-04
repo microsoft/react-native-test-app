@@ -625,7 +625,7 @@ function gatherConfig(params) {
     return config;
   }
 
-  return mergeConfig(config, getConfig(params, "common"));
+  return mergeConfig(getConfig(params, "common"), config);
 }
 
 /**
