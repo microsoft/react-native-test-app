@@ -95,6 +95,7 @@
     "react": "16.13.1",
     "react-native": "^0.63.4",
     "react-native-macos": "^0.63.33",
+    "react-native-test-app": "^0.6.10",
     "react-native-windows": "^0.63.32",
     "semantic-release": "^17.0.0",
     "suggestion-bot": "^1.0.0",

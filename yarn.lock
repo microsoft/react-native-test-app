@@ -7875,6 +7875,17 @@ react-native-macos@^0.63.33:
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
 
+react-native-test-app@^0.6.10:
+  version "0.6.10"
+  resolved "https://registry.npmjs.org/react-native-test-app/-/react-native-test-app-0.6.10.tgz#426670261c43d17a4a1e74419cba6f5691dce88f"
+  integrity sha512-QnG+A9oaf20qRCsmnWh2WYfebmu/kn8DGN3OAUaNRpLaIh6j9/t5HIaT+6cn5bEmNpELCPaN1hfgyl2KmtE3RA==
+  dependencies:
+    chalk "^4.1.0"
+    prompts "^2.4.0"
+    rimraf "^3.0.0"
+    semver "^7.3.5"
+    yargs "^16.0.0"
+
 react-native-windows@^0.63.32:
   version "0.63.35"
   resolved "https://registry.npmjs.org/react-native-windows/-/react-native-windows-0.63.35.tgz#ff32412bd4c567a44a698b01f13844323f321c03"
