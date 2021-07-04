@@ -290,7 +290,24 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
 }
 
 /**
- * Configuration for all platforms.
+ * Returns a {@link Configuration} object for specified platform.
+ *
+ * A {@link Configuration} object consists of four main parts:
+ *
+ * - `files`: A filename/content map of files to create. The content of a file
+ *   is either generated from {@link ConfigureParams}, or is copied from
+ *   somewhere. If the file is copied, the content is a {@link FileCopy} object
+ *   instead of a string.
+ * - `oldFiles`: A list of files that will be deleted if found.
+ * - `scripts`: Scripts that will be added to `package.json`.
+ * - `getDependencies`: A function that returns dependencies that will be added
+ *   to `package.json`. This function ensures that the returned dependencies are
+ *   correct for the specified {@link ConfigureParams}, e.g.
+ *   `react-native-macos`@^0.63 when the project is using `react-native`@0.63.4.
+ *
+ * There is a {@link Configuration} object for each supported platform.
+ * Additionally, there is a common {@link Configuration} object that is always
+ * included by {@link gatherConfig} during {@link configure}.
  */
 const getConfig = (() => {
   /** @type {PlatformConfiguration} */
