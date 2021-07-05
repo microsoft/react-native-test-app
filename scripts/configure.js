@@ -327,10 +327,6 @@ const getConfig = (() => {
               .readFileSync(path.join(testAppPath, "example", ".gitignore"),{
                 encoding: "utf-8",
               }),
-            ".gitignorewinodws":
-               fs.readFileSync(path.join(testAppPath, "example", "windows", ".gitignore"),{
-                encoding: "utf-8",
-              }),
             "react-native.config.js": reactNativeConfig(params),
             ...(!init
               ? undefined
@@ -516,7 +512,12 @@ const getConfig = (() => {
           },
         },
         windows: {
-          files: {},
+          files: {
+            ".gitignorewinodws":
+               fs.readFileSync(path.join(testAppPath, "example", "windows", ".gitignore"),{
+                encoding: "utf-8",
+              }),
+          },
           oldFiles: [
             `${name}.sln`,
             `${name}.vcxproj`,
