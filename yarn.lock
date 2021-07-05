@@ -7876,9 +7876,9 @@ react-native-macos@^0.63.33:
     whatwg-fetch "^3.0.0"
 
 react-native-windows@^0.63.32:
-  version "0.63.35"
-  resolved "https://registry.npmjs.org/react-native-windows/-/react-native-windows-0.63.35.tgz#ff32412bd4c567a44a698b01f13844323f321c03"
-  integrity sha512-E4J4PQbBV68c95ZZzjotuWOXfrHYJ1Npju9BxQjfvZFwE31cS6963LfSXc/MUeO2fEbyyJFE0CYoOv7B6FzZsg==
+  version "0.63.36"
+  resolved "https://registry.npmjs.org/react-native-windows/-/react-native-windows-0.63.36.tgz#ae0ed33c89c9e09dfd982da18bb1ecba35381841"
+  integrity sha512-Av7edpOu+YdKosMlpCWTGe8eXXNk0M4cd9zLKgeSiCOsTia/3qJM/xs/dZcP5gmjH6EWlAMSgtRC8frljPJnNQ==
   dependencies:
     "@babel/runtime" "^7.8.4"
     "@react-native-windows/cli" "0.63.12"
