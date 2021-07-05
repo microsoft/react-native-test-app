@@ -323,10 +323,9 @@ const getConfig = (() => {
             "metro.config.js": {
               source: path.join(testAppPath, "example", "metro.config.js"),
             },
-            ".gitignore": fs
-              .readFileSync(path.join(testAppPath, "example", ".gitignore"),{
-                encoding: "utf-8",
-              }),
+            ".gitignore": {
+              source: path.join(testAppPath, "example", ".gitignore"),
+            },
             "react-native.config.js": reactNativeConfig(params),
             ...(!init
               ? undefined
@@ -513,10 +512,9 @@ const getConfig = (() => {
         },
         windows: {
           files: {
-            ".gitignorewindows":
-               fs.readFileSync(path.join(testAppPath, "example", "windows", ".gitignore"),{
-                encoding: "utf-8",
-              }),
+            ".gitignore": {
+               source: path.join(testAppPath, "example","windows", ".gitignore")
+            },
           },
           oldFiles: [
             `${name}.sln`,
