@@ -513,7 +513,7 @@ const getConfig = (() => {
         },
         windows: {
           files: {
-            ".gitignorewinodws":
+            ".gitignorewindows":
                fs.readFileSync(path.join(testAppPath, "example", "windows", ".gitignore"),{
                 encoding: "utf-8",
               }),
