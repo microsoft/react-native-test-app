@@ -513,7 +513,12 @@ const getConfig = (() => {
         windows: {
           files: {
             ".gitignore": {
-               source: path.join(testAppPath, "example","windows", ".gitignore")
+              source: path.join(
+                testAppPath,
+                "example",
+                "windows",
+                ".gitignore"
+              ),
             },
           },
           oldFiles: [
