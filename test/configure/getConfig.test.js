@@ -120,9 +120,7 @@ describe("getConfig()", () => {
       "windows",
     ]);
     expect(getDependencies(config, params)).toEqual(["react-native-windows"]);
-    expect(Object.keys(config.files).sort()).toEqual([
-      ".gitignore"
-    ]);
+    expect(Object.keys(config.files).sort()).toEqual([".gitignore"]);
     expect(config.oldFiles.sort()).toEqual([
       "Test.sln",
       "Test.vcxproj",
