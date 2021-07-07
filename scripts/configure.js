@@ -340,6 +340,9 @@ const getConfig = (() => {
             "metro.config.js": {
               source: path.join(testAppPath, "example", "metro.config.js"),
             },
+            ".gitignore": {
+              source: path.join(testAppPath, "example", ".gitignore"),
+            },
             "react-native.config.js": reactNativeConfig(params),
             ...(!init
               ? undefined
@@ -525,7 +528,16 @@ const getConfig = (() => {
           },
         },
         windows: {
-          files: {},
+          files: {
+            ".gitignore": {
+              source: path.join(
+                testAppPath,
+                "example",
+                "windows",
+                ".gitignore"
+              ),
+            },
+          },
           oldFiles: [
             `${name}.sln`,
             `${name}.vcxproj`,

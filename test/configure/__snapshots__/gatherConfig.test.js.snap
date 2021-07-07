@@ -4,6 +4,9 @@ exports[`gatherConfig() flattens configuration for a single platform only 1`] = 
 Object {
   "dependencies": Object {},
   "files": Object {
+    ".gitignore": Object {
+      "source": "example/.gitignore",
+    },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
@@ -48,6 +51,9 @@ exports[`gatherConfig() flattens configuration for a single platform only 2`] = 
 Object {
   "dependencies": Object {},
   "files": Object {
+    ".gitignore": Object {
+      "source": "example/.gitignore",
+    },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
@@ -172,6 +178,9 @@ exports[`gatherConfig() returns configuration for a single platform 1`] = `
 Object {
   "dependencies": Object {},
   "files": Object {
+    ".gitignore": Object {
+      "source": "example/.gitignore",
+    },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
@@ -254,6 +263,9 @@ Object {
     "react-native-windows": "^0.63.0",
   },
   "files": Object {
+    ".gitignore": Object {
+      "source": "example/.gitignore",
+    },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
@@ -363,6 +375,9 @@ module.exports = {
   },
 };
 ",
+    "windows/.gitignore": Object {
+      "source": "example/windows/.gitignore",
+    },
   },
   "oldFiles": Array [
     "ios/Podfile.lock",
@@ -395,6 +410,9 @@ exports[`gatherConfig() returns configuration for arbitrary platforms 1`] = `
 Object {
   "dependencies": Object {},
   "files": Object {
+    ".gitignore": Object {
+      "source": "example/.gitignore",
+    },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },

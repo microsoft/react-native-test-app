@@ -24,3 +24,5 @@ scripts/
 template-example/
 test/
 tsconfig.json
+!example/.gitignore
+!example/windows/.gitignore
