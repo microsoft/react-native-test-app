@@ -26,6 +26,7 @@ describe("getConfig()", () => {
     const config = getConfig(params, "common");
 
     expect(Object.keys(config.files).sort()).toEqual([
+      ".gitignore",
       ".watchmanconfig",
       "babel.config.js",
       "metro.config.js",
@@ -41,6 +42,7 @@ describe("getConfig()", () => {
     const config = getConfig(params, "common");
 
     expect(Object.keys(config.files).sort()).toEqual([
+      ".gitignore",
       ".watchmanconfig",
       "App.js",
       "app.json",
@@ -118,7 +120,9 @@ describe("getConfig()", () => {
       "windows",
     ]);
     expect(getDependencies(config, params)).toEqual(["react-native-windows"]);
-    expect(Object.keys(config.files).sort()).toEqual([]);
+    expect(Object.keys(config.files).sort()).toEqual([
+      ".gitignore"
+    ]);
     expect(config.oldFiles.sort()).toEqual([
       "Test.sln",
       "Test.vcxproj",
