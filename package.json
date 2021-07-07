@@ -20,6 +20,21 @@
     "name": "Microsoft Open Source",
     "email": "microsoftopensource@users.noreply.github.com"
   },
+  "files": [
+    "/*.{gradle,js,md,podspec,rb}",
+    "/android/**/*.gradle",
+    "/android/app/src/{flipper,main}/*",
+    "/android/support/src/*",
+    "/example/.gitignore",
+    "/example/android/gradle*",
+    "/example/windows/.gitignore",
+    "/example/{metro,react-native}.config.js",
+    "/ios/*",
+    "/macos/*",
+    "/scripts/*",
+    "/windows/*.{js,props,sln}",
+    "/windows/ReactTestApp/*"
+  ],
   "bin": {
     "configure-test-app": "scripts/configure.js",
     "init-test-app": "scripts/init.js",

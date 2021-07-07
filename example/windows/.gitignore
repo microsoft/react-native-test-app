@@ -24,6 +24,11 @@ x86/
 packages/
 
 **/Generated Files/**
+*.binlog
+*.hprof
 *.sln
 ExperimentalFeatures.props
 NuGet.Config
+dist/
+msbuild.binlog
+node_modules/
