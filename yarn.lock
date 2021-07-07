@@ -7875,7 +7875,6 @@ react-native-macos@^0.63.33:
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-
 react-native-windows@^0.63.32:
   version "0.63.35"
   resolved "https://registry.npmjs.org/react-native-windows/-/react-native-windows-0.63.35.tgz#ff32412bd4c567a44a698b01f13844323f321c03"
