@@ -331,6 +331,9 @@ const getConfig = (() => {
       configuration = {
         common: {
           files: {
+            ".gitignore": {
+              source: path.join(testAppPath, "example", ".gitignore"),
+            },
             ".watchmanconfig": {
               source: path.join(templateDir, "_watchmanconfig"),
             },
@@ -339,9 +342,6 @@ const getConfig = (() => {
             },
             "metro.config.js": {
               source: path.join(testAppPath, "example", "metro.config.js"),
-            },
-            ".gitignore": {
-              source: path.join(testAppPath, "example", ".gitignore"),
             },
             "react-native.config.js": reactNativeConfig(params),
             ...(!init
