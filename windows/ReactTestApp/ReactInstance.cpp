@@ -133,6 +133,12 @@ void ReactInstance::Reload()
 
     instanceSettings.EnableDeveloperMenu(!kUseCustomDeveloperMenu);
 
+#ifdef _DEBUG
+    instanceSettings.UseDeveloperSupport(true);
+#else
+    instanceSettings.UseDeveloperSupport(false);
+#endif
+
     reactNativeHost_.ReloadInstance();
 }
 
