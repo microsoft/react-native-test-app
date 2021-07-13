@@ -110,10 +110,12 @@ jobs:
           swiftlint
           echo "::remove-matcher owner=swiftlint::"
       - name: /yarn.lock changes
+        if: ${{ github.event_name == 'pull_request' }}
         uses: Simek/yarn-lock-changes@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: /example/yarn.lock changes
+        if: ${{ github.event_name == 'pull_request' }}
         uses: Simek/yarn-lock-changes@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
