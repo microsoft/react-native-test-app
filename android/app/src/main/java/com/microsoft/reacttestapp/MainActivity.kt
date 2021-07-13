@@ -7,6 +7,8 @@
 
 package com.microsoft.reacttestapp
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.TextView
@@ -48,8 +50,21 @@ class MainActivity : ReactActivity() {
                     .show(supportFragmentManager, ComponentBottomSheetDialogFragment.TAG)
             }
             else -> {
-                startActivity(ComponentActivity.newIntent(this, component))
+                findActivityClass(component.name)?.let {
+                    startActivity(Intent(this, it))
+                } ?: startActivity(ComponentActivity.newIntent(this, component))
             }
+        }
+    }
+
+    private fun findActivityClass(name: String): Class<*>? {
+        return try {
+            val result = Class.forName(name)
+            val isActivity = Activity::class.java.isAssignableFrom(result)
+
+            return if (isActivity) result else null
+        } catch (e: ClassNotFoundException) {
+            null
         }
     }
 
