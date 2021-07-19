@@ -279,6 +279,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          emulator-build: 7425822 # https://github.com/ReactiveCircus/android-emulator-runner/issues/160
           working-directory: android
           script: ./gradlew clean build connectedCheck
   android-template:
