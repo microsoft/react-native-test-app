@@ -4,66 +4,18 @@
 ![build](https://github.com/microsoft/react-native-test-app/workflows/build/badge.svg)
 [![npm version](https://img.shields.io/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
 
+- [Quick Start](#quick-start)
+- [Configuring the Test App](#configuring-the-test-app)
+- [Known Issues](#known-issues)
+
 React Native Test App provides test apps for all platforms as a package. It
-handles the native bits for you so you can focus on what's important: Your
+handles the native bits for you so you can focus on what's important: your
 product.
 
-## Motivation
-
-Many of us have been there. We create a new React Native project with
-`react-native init`, write a few test screens for our library, and everything is
-seemingly fine and dandy. Until some time later, when a new version of React
-Native gets published. "Awesome!", you think, but when you try to upgrade to the
-latest version, something doesn't work. You need to look at
-[React Native Upgrade Helper](https://react-native-community.github.io/upgrade-helper/)
-and comb through all the files that need to be changed. Eventually, you get it
-working and everything is fine again. Then a new version of Xcode or iOS comes
-out, or a new version of Gradle is required, and things stop working again. If
-you're lucky, you get to do this N number of times for all the projects you
-maintain.
-
-`react-native-test-app` aims to take away a lot of these pains.
-
-- We want to make it easy to get started. `react-native-test-app` should provide
-  everything needed to get a cross-platform project set up and running in no
-  time.
-- We want to make it easy to upgrade and downgrade React Native without having
-  to deal with project files for every supported platform. Just change the
-  version numbers in `package.json`, and reinstall the dependencies.
-  - So you can quickly switch between versions of React Native to test
-    compatibility or reproduce difficult bugs.
-  - So your next React Native upgrade is a lot more painless. Especially if you
-    have to repeat the same process in a lot of projects.
-- We want to make it easy to add support for and maintain additional platforms,
-  such as macOS or Windows, without requiring the domain knowledge to do so.
-- We want to give you a consistent developer experience across all the projects
-  you maintain.
-
-You can find the full design document in
-[the wiki](https://github.com/microsoft/react-native-test-app/wiki/Design).
-
-## Dependencies
-
-`react-native-test-app` is published with source code only. You will still need
-to compile the test apps yourself.
-
-- **Android**:
-  - [Android Studio](https://developer.android.com/studio) 4.2 or later
-    - Android SDK Platform 29
-    - Android SDK Build-Tools 30.0.3
-    - To install the required SDKs, go into **Preferences** ❭ **Appearance &
-      Behavior** ❭ **System Settings** ❭ **Android SDK**.
-- **iOS/macOS**:
-  - [Xcode](https://apps.apple.com/app/xcode/id497799835?mt=12) 12 or later
-  - [CocoaPods](https://cocoapods.org/)
-- **Windows**:
-  - Ensure that
-    [Developer Mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development)
-    is turned on in Windows Settings app
-  - Install development dependencies as described in the
-    [React Native for Windows documentation](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies)
-  - [Google Chrome](https://www.google.com/chrome/) (optional, but recommended
-    for JS debugging)
+If you want to learn more about
+[the motivation](https://github.com/microsoft/react-native-test-app/wiki#motivation)
+or [the design](https://github.com/microsoft/react-native-test-app/wiki/Design)
+of this tool, you can refer to the wiki.
 
 ## Quick Start
 
