@@ -1,46 +1,28 @@
 # React Native Test App
 
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/microsoft/react-native-test-app)
 ![build](https://github.com/microsoft/react-native-test-app/workflows/build/badge.svg)
-[![npm version](https://badgen.net/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
+[![npm version](https://img.shields.io/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
 
-React Native Test App provides test apps for all platforms as a package. Bring
-your own JS bundle, and let us manage the native bits.
+- [Quick Start](#quick-start)
+- [Configuring the Test App](#configuring-the-test-app)
+- [Known Issues](#known-issues)
 
-This is a work in progress. You can read and discuss the RFC at
-[React Native: Discussions and Proposals](https://github.com/react-native-community/discussions-and-proposals/pull/204).
+React Native Test App provides test apps for all platforms as a package. It
+handles the native bits for you so you can focus on what's important: your
+product.
 
-For more details, please refer to the
-[wiki](https://github.com/microsoft/react-native-test-app/wiki).
+If you want to learn more about
+[the motivation](https://github.com/microsoft/react-native-test-app/wiki#motivation)
+or [the design](https://github.com/microsoft/react-native-test-app/wiki/Design)
+of this tool, you can refer to the wiki.
 
-## Dependencies
-
-`react-native-test-app` is published with source code only. You will still need
-to compile the test apps yourself.
-
-- **Android**:
-  - [Android Studio](https://developer.android.com/studio) 3.6 or later
-    - Android SDK Platform 29
-    - Android SDK Build-Tools 29.0.3
-    - To install the required SDKs, go into **Preferences** ❭ **Appearance &
-      Behavior** ❭ **System Settings** ❭ **Android SDK**.
-- **iOS/macOS**:
-  - [Xcode](https://apps.apple.com/app/xcode/id497799835?mt=12) 11.3 or later
-  - [CocoaPods](https://cocoapods.org/)
-- **Windows**:
-  - Ensure that
-    [Developer Mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development)
-    is turned on in Windows Settings app
-  - Install development dependencies as described in the
-    [React Native for Windows documentation](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies)
-  - [Google Chrome](https://www.google.com/chrome/) (optional, but recommended
-    for JS debugging)
-
-# Quick Start
+## Quick Start
 
 Install `react-native-test-app` as a dev dependency. We will use the wizard to
 generate your test app:
 
-```bash
+```sh
 yarn add react-native-test-app --dev
 yarn init-test-app
 ```
@@ -48,7 +30,7 @@ yarn init-test-app
 In this example, we will create a project named "sample" in `sample` with test
 apps for all platforms:
 
-```console
+```
 ✔ What is the name of your test app? … sample
 ? Which platforms do you need test apps for? ›
 Instructions:
@@ -65,7 +47,7 @@ Instructions:
 
 Run `yarn` inside the new project folder:
 
-```bash
+```sh
 cd sample
 yarn
 ```
@@ -73,161 +55,141 @@ yarn
 Once the dependencies are installed, follow the platform specific instructions
 below.
 
-## Android
+### Android
 
-```bash
-# Bundle the JS first so Gradle can find
-# the assets.
+Bundle the JS code and assets by running:
+
+```sh
 yarn build:android
-yarn android
-
-# Instead of `yarn android`, you can
-# also build and run `sample/android` in
-# Android Studio.
-
-# On macOS, you can open the project from
-# the terminal:
-open -a "Android Studio" android
 ```
 
-## iOS
+If you're going to use the development server, you can skip this step.
 
-```bash
-# Bundle the JS first so CocoaPods can
-# find the assets.
+To start the Android app, run:
+
+```sh
+yarn android
+```
+
+Alternatively, you can also run the app within Android Studio by pointing it to
+the `android` folder.
+
+### iOS
+
+Bundle the JS code and assets by running:
+
+```sh
 yarn build:ios
-pod install --project-directory=ios
-yarn ios
+```
 
-# Instead of `yarn ios`, you can also
-# build and run in Xcode.
+If you're going to use the development server, you can skip this step.
+
+Before you can run the iOS app, you must first install its native dependencies:
+
+```sh
+pod install --project-directory=ios
+```
+
+This command is also responsible for generating the Xcode project. To start the
+iOS app, run:
+
+```sh
+yarn ios
+```
+
+Alternatively, you can also run the app within Xcode by opening the Xcode
+workspace:
+
+```sh
 open ios/Sample.xcworkspace
 ```
 
-## macOS
+> **Note:** If you made changes to `app.json` or any other assets, you should
+> re-run `pod install` to make sure that the changes are included in the Xcode
+> project.
 
-```bash
-# Bundle the JS first so CocoaPods can
-# find the assets.
-yarn build:macos
+### macOS
+
+Bundle the JS code and assets by running:
+
+```sh
+yarn build:ios
+```
+
+If you're going to use the development server, you can skip this step.
+
+Before you can run the macOS app, you must first install its native
+dependencies:
+
+```sh
 pod install --project-directory=macos
-yarn macos
+```
 
-# Instead of `yarn macos`, you can also
-# build and run in Xcode.
+This command is also responsible for generating the Xcode project. To start the
+macOS app, run:
+
+```sh
+yarn macos
+```
+
+Alternatively, you can also run the app within Xcode by opening the Xcode
+workspace:
+
+```sh
 open macos/Sample.xcworkspace
 ```
 
-## Windows
+> **Note:** If you made changes to `app.json` or any other assets, you should
+> re-run `pod install` to make sure that the changes are included in the Xcode
+> project.
 
-```bash
-# Bundle the JS first so the assets can
-# be included in the project.
-yarn build:windows
-yarn install-windows-test-app --use-nuget
-yarn windows
+### Windows
 
-# Instead of `yarn windows`, you can
-# also build and run 'windows/Sample.sln'
-# in Visual Studio.
+Bundle the JS code and assets by running:
 
-# To run test app on your local machine,
-# remember to set platform to x64 (it is
-# set to ARM by default)
-```
-
-# Developing React Native Test App
-
-Additional dependencies:
-
-- [Node](https://nodejs.org/) 12 LTS
-- [Yarn](https://classic.yarnpkg.com/docs/install)
-- **macOS:** [Homebrew](https://brew.sh/)
-
-We'll be using the Example app for all development of the React Native Test App.
-Some platforms may require extra steps for the initial set up. Please follow the
-steps below, then jump to the appropriate section(s) for the final steps.
-
-Open a terminal and navigate to your clone of this repository:
-
-```bash
-cd react-native-test-app
-
-# This step only needs to be done once,
-# before we can install the Example app's
-# dependencies. It is stored in
-# `~/.config/yarn/link/react-native-test-app`.
-# You can run `unlink` if you need to
-# remove it later.
-yarn link
-
-# Install Example app's dependencies.
-cd example
-yarn
-
-# Now we use the link we created earlier.
-# This step needs to be run _after_
-# `yarn` otherwise it will be
-# overwritten.
-yarn link "react-native-test-app"
-```
-
-## Android
-
-```bash
-# Bundle the JS first so Gradle can find
-# the assets.
-yarn build:android
-
-# Finally, open the `android` folder in
-# Android Studio.
-
-# On macOS, you can open the project from
-# the terminal:
-open -a "Android Studio" android
-```
-
-## iOS
-
-```bash
-# Bundle the JS first so CocoaPods can
-# find the assets.
+```sh
 yarn build:ios
-pod install --project-directory=ios
-
-# Finally, open the Xcode workspace.
-open ios/Example.xcworkspace
 ```
 
-## macOS
+Before you can run the Windows app, you must first generate it:
 
-```bash
-# Bundle the JS first so CocoaPods can
-# find the assets.
-yarn build:macos
-pod install --project-directory=macos
-
-# Finally, open the Xcode workspace.
-open macos/Example.xcworkspace
-```
-
-## Windows
-
-```bash
-# Bundle the JS first so the assets can
-# be included in the project.
-yarn build:windows
+```sh
 yarn install-windows-test-app --use-nuget
-
-# Finally, open 'Example.sln' in Visual
-# Studio.
-
-# To run test app on your local machine,
-# remember to set platform to x64 (it is
-# set to ARM by default)
 ```
 
-# Known Issues
+To start the Windows app, run:
+
+```sh
+yarn windows
+```
+
+Alternatively, you can also run the app within Visual Studio by opening the
+solution file:
+
+```
+start windows/Sample.sln
+```
+
+If you choose to use Visual Studio, remember to first set the target platform to
+`x64`. It is set to `ARM` by default.
+
+> **Note:** If you made changes to `app.json` or any other assets, you should
+> re-run `install-windows-test-app` to make sure that the changes are included
+> in the Visual Studio project.
+
+## Configuring the Test App
+
+All configuration of the test app is done via `app.json` (otherwise known as the
+manifest). You can learn more about that in
+[the wiki](https://github.com/microsoft/react-native-test-app/wiki/Manifest-%28app.json%29).
+
+Additionally, you can find platform specific documentation below:
+
+- [Android](https://github.com/microsoft/react-native-test-app/wiki/Android-Specifics)
+- [iOS/macOS](https://github.com/microsoft/react-native-test-app/wiki/iOS-and-macOS-Specifics)
+- [Windows](https://github.com/microsoft/react-native-test-app/wiki/Windows-Specifics)
+
+## Known Issues
 
 For a list of known issues and workarounds, please go to the
 [Troubleshooting](https://github.com/microsoft/react-native-test-app/wiki/Troubleshooting)

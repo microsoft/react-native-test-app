@@ -9,8 +9,10 @@
     "build:macos": "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
     "build:windows": "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
     "ci": "yarn --use-yarnrc .yarnrc-offline --prefer-offline",
+    "clean": "yarn --cwd .. clean",
     "ios": "react-native run-ios",
     "macos": "react-native run-macos --scheme Example",
+    "set-react-version": "yarn --cwd .. set-react-version",
     "start": "react-native start",
     "windows": "react-native run-windows --sln windows/Example.sln"
   },
