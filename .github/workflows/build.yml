@@ -109,19 +109,6 @@ jobs:
           echo "::add-matcher::.github/swiftlint.json"
           swiftlint
           echo "::remove-matcher owner=swiftlint::"
-      - name: /yarn.lock changes
-        # Disabled until this issue is resolved: https://github.com/Simek/yarn-lock-changes/issues/26
-        if: ${{ github.event_name == 'disabled' }}
-        uses: Simek/yarn-lock-changes@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: /example/yarn.lock changes
-        # Disabled until this issue is resolved: https://github.com/Simek/yarn-lock-changes/issues/26
-        if: ${{ github.event_name == 'disabled' }}
-        uses: Simek/yarn-lock-changes@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: example/yarn.lock
   ios:
     name: "iOS"
     runs-on: macos-latest
@@ -585,15 +572,31 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npx semantic-release
-  label:
-    name: "Label"
+  autobot:
+    name: "Autobot"
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-      - uses: actions/labeler@v3.0.2
+      - name: Label
+        uses: actions/labeler@v3.0.2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           sync-labels: true
+        continue-on-error: true
+      - name: Checkout
+        uses: actions/checkout@v2
+        continue-on-error: true
+      - name: /yarn.lock changes
+        uses: Simek/yarn-lock-changes@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+      - name: /example/yarn.lock changes
+        uses: Simek/yarn-lock-changes@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: example/yarn.lock
+        continue-on-error: true
