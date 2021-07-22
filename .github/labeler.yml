@@ -16,6 +16,7 @@
   - ios/ReactTestApp/ReactTestApp-Bridging-Header.h
   - ios/ReactTestApp/Session.swift
   - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
+  - ios/use_react_native-*.rb
   - macos/**/*
 "platform: Windows":
   - example/windows/**/*

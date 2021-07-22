@@ -20,5 +20,17 @@ def include_react_native!(options)
     return ->(installer) { react_native_post_install(installer) }
   end
 
+  return ->(installer) {
+    begin
+      flipper_post_install(installer)
+    rescue TypeError
+      # In https://github.com/microsoft/react-native-macos/pull/803,
+      # `flipper_post_install` assumes that the Xcode project file lives next to
+      # the `Podfile`. Since the script isn't really do anything that we aren't
+      # already handling, and it doesn't like the change exists upstream, we'll
+      # ignore the error for now.
+    end
+  } if target_platform == :macos
+
   ->(installer) { flipper_post_install(installer) }
 end
