@@ -26,10 +26,10 @@ def include_react_native!(options)
         flipper_post_install(installer)
       rescue TypeError
         # In https://github.com/microsoft/react-native-macos/pull/803,
-        # `flipper_post_install` assumes that the Xcode project file lives next to
-        # the `Podfile`. Since the script isn't really do anything that we aren't
-        # already handling, and it doesn't like the change exists upstream, we'll
-        # ignore the error for now.
+        # `flipper_post_install` assumes that the Xcode project file lives next
+        # to the `Podfile`. Since the script isn't really do anything that we
+        # aren't already handling, and it doesn't look like the change exists
+        # upstream, we'll ignore the error for now.
       end
     }
   end
