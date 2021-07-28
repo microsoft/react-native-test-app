@@ -18,8 +18,3 @@ updates:
     schedule:
       interval: "weekly"
     versioning-strategy: "lockfile-only"
-  - package-ecosystem: "npm"
-    directory: "/example"
-    schedule:
-      interval: "weekly"
-    versioning-strategy: "lockfile-only"

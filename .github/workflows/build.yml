@@ -21,14 +21,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Cache /.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: .yarn-offline-mirror
+          path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
       - name: Install
         run: |
-          yarn ci
+          yarn
       - name: Lint commit message
         run: |
           yarn lint:commit
@@ -45,21 +45,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 64
-      - name: Deduplicate packages /
+      - name: Deduplicate packages
         run: |
-          npx yarn-deduplicate --list --fail
-      - name: Deduplicate packages /example
-        run: |
-          npx yarn-deduplicate --list --fail
-        working-directory: example
-      - name: Cache /.yarn-offline-mirror
+          yarn dedupe --check
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: .yarn-offline-mirror
+          path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
       - name: Install
         run: |
-          yarn ci
+          yarn
       - name: ClangFormat
         if: ${{ github.event_name == 'pull_request' }}
         env:
@@ -120,11 +116,11 @@ jobs:
           node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /example/.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: example/.yarn-offline-mirror
-          key: ${{ hashFiles('example/yarn.lock') }}
+          path: .yarn/cache
+          key: ${{ hashFiles('yarn.lock') }}
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -133,11 +129,10 @@ jobs:
           # https://github.com/facebook/react-native/issues/30036 and
           # https://github.com/microsoft/react-native-macos/issues/620 for more
           # details.
-          yarn set-react-version main
+          npm run set-react-version main
       - name: Install
         run: |
-          yarn ci
-        working-directory: example
+          yarn
       - name: Build
         run: |
           set -eo pipefail
@@ -167,22 +162,11 @@ jobs:
           node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: .yarn-offline-mirror
+          path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
-      - name: npm pack
-        run: |
-          npm pack
-        shell: bash
-      - name: Cache /template-example/.yarn-offline-mirror
-        uses: actions/cache@v2
-        with:
-          path: |
-            template-example/.yarn-offline-mirror
-            template-example/yarn.lock
-          key: ${{ matrix.template }}-${{ hashFiles('react-native-test-app-0.0.1-dev.tgz') }}
       - name: Install
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
@@ -227,20 +211,19 @@ jobs:
         uses: actions/checkout@v2
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Cache /example/.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: example/.yarn-offline-mirror
-          key: ${{ hashFiles('example/yarn.lock') }}
+          path: .yarn/cache
+          key: ${{ hashFiles('yarn.lock') }}
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version nightly
+          npm run set-react-version nightly
         shell: bash
-      - name: Install /example
+      - name: Install
         run: |
-          yarn ci
-        working-directory: example
+          yarn
       - name: Test `react-native config`
         run: |
           yarn jest
@@ -253,16 +236,6 @@ jobs:
           ./gradlew clean build check test
         shell: bash
         working-directory: example
-      - name: Cache /.yarn-offline-mirror
-        if: ${{ matrix.os == 'macos-11' }}
-        uses: actions/cache@v2
-        with:
-          path: .yarn-offline-mirror
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Install /
-        if: ${{ matrix.os == 'macos-11' }}
-        run: |
-          yarn ci
       - name: Run instrumented tests
         if: ${{ matrix.os == 'macos-11' }}
         uses: reactivecircus/android-emulator-runner@v2
@@ -292,22 +265,11 @@ jobs:
           node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: .yarn-offline-mirror
+          path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
-      - name: npm pack
-        run: |
-          npm pack
-        shell: bash
-      - name: Cache /template-example/.yarn-offline-mirror
-        uses: actions/cache@v2
-        with:
-          path: |
-            template-example/.yarn-offline-mirror
-            template-example/yarn.lock
-          key: ${{ matrix.template }}-${{ hashFiles('react-native-test-app-0.0.1-dev.tgz') }}
       - name: Install
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
@@ -340,20 +302,19 @@ jobs:
           node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /example/.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: example/.yarn-offline-mirror
-          key: ${{ hashFiles('example/yarn.lock') }}
+          path: .yarn/cache
+          key: ${{ hashFiles('yarn.lock') }}
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version canary-macos
+          npm run set-react-version canary-macos
         shell: bash
       - name: Install
         run: |
-          yarn ci
-        working-directory: example
+          yarn
       - name: Build
         run: |
           set -eo pipefail
@@ -389,22 +350,11 @@ jobs:
           node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: .yarn-offline-mirror
+          path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
-      - name: npm pack
-        run: |
-          npm pack
-        shell: bash
-      - name: Cache /template-example/.yarn-offline-mirror
-        uses: actions/cache@v2
-        with:
-          path: |
-            template-example/.yarn-offline-mirror
-            template-example/yarn.lock
-          key: ${{ matrix.template }}-${{ hashFiles('react-native-test-app-0.0.1-dev.tgz') }}
       - name: Install
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
@@ -443,20 +393,19 @@ jobs:
           node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /example/.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: example/.yarn-offline-mirror
-          key: ${{ hashFiles('example/yarn.lock') }}
+          path: .yarn/cache
+          key: ${{ hashFiles('yarn.lock') }}
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version canary-windows
+          npm run set-react-version canary-windows
         shell: bash
       - name: Install
         run: |
-          yarn ci
-        working-directory: example
+          yarn
       - name: Build bundle and create solution
         run: |
           yarn build:windows
@@ -496,22 +445,11 @@ jobs:
           node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: .yarn-offline-mirror
+          path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
-      - name: npm pack
-        run: |
-          npm pack
-        shell: bash
-      - name: Cache /template-example/.yarn-offline-mirror
-        uses: actions/cache@v2
-        with:
-          path: |
-            template-example/.yarn-offline-mirror
-            template-example/yarn.lock
-          key: ${{ matrix.template }}-${{ hashFiles('react-native-test-app-0.0.1-dev.tgz') }}
       - name: Install
         run: |
           scripts/install-test-template.sh ${{ matrix.template }}
@@ -559,14 +497,14 @@ jobs:
           node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn-offline-mirror
+      - name: Cache /.yarn/cache
         uses: actions/cache@v2
         with:
-          path: .yarn-offline-mirror
+          path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
       - name: Install
         run: |
-          yarn ci
+          yarn
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -594,10 +532,4 @@ jobs:
         uses: Simek/yarn-lock-changes@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
-      - name: /example/yarn.lock changes
-        uses: Simek/yarn-lock-changes@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: example/yarn.lock
         continue-on-error: true
