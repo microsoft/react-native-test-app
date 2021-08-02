@@ -40,8 +40,6 @@ describe("react-native config", () => {
           folder: expect.stringContaining(exampleRoot),
           manifestPath: expect.stringContaining(
             path.join(
-              exampleRoot,
-              "node_modules",
               "react-native-test-app",
               "android",
               "app",

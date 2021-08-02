@@ -547,12 +547,12 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
 }
 
 if (require.main === module) {
-  // Add the `node_modules` path whence the script was invoked. Without it, this
-  // script will fail to resolve any packages when `react-native-test-app` was
-  // linked using npm or yarn link.
-  const nodeModulesDir = process.argv[1].match(/(.*?[/\\]node_modules)[/\\]/);
-  if (nodeModulesDir) {
-    module.paths.push(nodeModulesDir[1]);
+  const localNodeModulesPath = path.join(process.cwd(), "node_modules");
+  if (!module.paths.includes(localNodeModulesPath)) {
+    // Add the `node_modules` path whence the script was invoked. Without it,
+    // this script will fail to resolve any packages when
+    // `react-native-test-app` was linked using npm or yarn link.
+    module.paths.push(localNodeModulesPath);
   }
 
   require("yargs").usage(
