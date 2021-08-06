@@ -6,8 +6,12 @@
 #
 
 def resolve_module(request)
+  @module_cache ||= {}
+  return @module_cache[request] if @module_cache.key?(request)
+
   script = "console.log(path.dirname(require.resolve('#{request}/package.json')));"
-  Pod::Executable.execute_command('node', ['-e', script], true).strip
+  path = Pod::Executable.execute_command('node', ['-e', script], true).strip
+  @module_cache[request] = path
 end
 
 def try_pod(name, podspec, project_root)

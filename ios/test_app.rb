@@ -144,7 +144,16 @@ def resources_pod(project_root, target_platform)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
+  app_dir = File.dirname(app_manifest)
   resources = resolve_resources(app_manifest(project_root), target_platform)
+
+  if resources.any? { |r| !File.exist?(File.join(app_dir, r)) }
+    Pod::UI.notice(
+      'One or more resources were not found and will not be included in the project. ' \
+      'If they are found later and you want to include them, run `pod install` again.'
+    )
+  end
+
   spec = {
     'name' => 'ReactTestApp-Resources',
     'version' => '1.0.0-dev',
@@ -160,7 +169,6 @@ def resources_pod(project_root, target_platform)
     'resources' => ['app.json', *resources],
   }
 
-  app_dir = File.dirname(app_manifest)
   podspec_path = File.join(app_dir, 'ReactTestApp-Resources.podspec.json')
   File.open(podspec_path, 'w') do |f|
     # Under certain conditions, the file doesn't get written to disk before it
