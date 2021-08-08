@@ -9,6 +9,13 @@ require('minitest/autorun')
 
 require_relative('../ios/test_app')
 
+class Pod
+  class UI
+    def self.notice(message)
+    end
+  end
+end
+
 def app_manifest_path(project_root, podspec_path)
   File.join(project_root, podspec_path, 'ReactTestApp-Resources.podspec.json')
 end

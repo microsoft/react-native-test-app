@@ -147,7 +147,7 @@ def resources_pod(project_root, target_platform)
   app_dir = File.dirname(app_manifest)
   resources = resolve_resources(app_manifest(project_root), target_platform)
 
-  if resources.any? { |r| !File.exist?(File.join(app_dir, r)) }
+  if !resources.nil? && resources.any? { |r| !File.exist?(File.join(app_dir, r)) }
     Pod::UI.notice(
       'One or more resources were not found and will not be included in the project. ' \
       'If they are found later and you want to include them, run `pod install` again.'
@@ -177,6 +177,7 @@ def resources_pod(project_root, target_platform)
     f.fsync
     ObjectSpace.define_finalizer(self, Remover.new(f))
   end
+
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
