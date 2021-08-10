@@ -39,7 +39,7 @@ def cliAndroidDir = findNodeModulesPath(rootDir, "@react-native-community/cli-pl
 apply from: "$cliAndroidDir/native_modules.gradle"
 
 ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
-    buildscript { scriptHandler ->        
+    buildscript { scriptHandler ->
         apply from: "$scriptDir/android/force-resolve-trove4j.gradle", to: scriptHandler
     }
 
