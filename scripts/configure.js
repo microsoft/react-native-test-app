@@ -150,6 +150,17 @@ function readJSONFile(path) {
 }
 
 /**
+ * Returns whether installed package satisfies specified version range.
+ * @param {string} pkg
+ * @param {string} versionRange
+ * @returns {boolean}
+ */
+function packageSatisfiesVersionRange(pkg, versionRange) {
+  const { version } = require(`${pkg}/package.json`);
+  return semver.satisfies(version, versionRange);
+}
+
+/**
  * Converts an object or value to a pretty JSON string.
  * @param {Record<string, unknown>} obj
  * @return {string}
@@ -239,10 +250,18 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
       case "macos":
       case "ios":
         return join(
+          "const {",
+          "  packageSatisfiesVersionRange,",
+          '} = require("react-native-test-app/scripts/configure");',
           "module.exports = {",
           "  project: {",
           "    ios: {",
-          `      project: "ReactTestApp-Dummy.xcodeproj"`,
+          "      project: packageSatisfiesVersionRange(",
+          '        "@react-native-community/cli-platform-ios",',
+          '        "<5.0.2"',
+          "      )",
+          '        ? "ReactTestApp-Dummy.xcodeproj"',
+          '        : "node_modules/.generated/ios/ReactTestApp.xcodeproj",',
           "    }",
           "  }",
           "};",
@@ -889,22 +908,23 @@ if (require.main === module) {
   ).argv;
 }
 
-exports["configure"] = configure;
-exports["error"] = error;
-exports["gatherConfig"] = gatherConfig;
-exports["getAppName"] = getAppName;
-exports["getConfig"] = getConfig;
-exports["getPlatformPackage"] = getPlatformPackage;
-exports["getTargetReactNativeVersion"] = getTargetReactNativeVersion;
-exports["isDestructive"] = isDestructive;
-exports["isInstalled"] = isInstalled;
-exports["join"] = join;
-exports["mergeConfig"] = mergeConfig;
-exports["projectRelativePath"] = projectRelativePath;
-exports["reactNativeConfig"] = reactNativeConfig;
-exports["readJSONFile"] = readJSONFile;
-exports["removeAllFiles"] = removeAllFiles;
-exports["sortByKeys"] = sortByKeys;
-exports["updatePackageManifest"] = updatePackageManifest;
-exports["warn"] = warn;
-exports["writeAllFiles"] = writeAllFiles;
+exports.configure = configure;
+exports.error = error;
+exports.gatherConfig = gatherConfig;
+exports.getAppName = getAppName;
+exports.getConfig = getConfig;
+exports.getPlatformPackage = getPlatformPackage;
+exports.getTargetReactNativeVersion = getTargetReactNativeVersion;
+exports.isDestructive = isDestructive;
+exports.isInstalled = isInstalled;
+exports.join = join;
+exports.mergeConfig = mergeConfig;
+exports.packageSatisfiesVersionRange = packageSatisfiesVersionRange;
+exports.projectRelativePath = projectRelativePath;
+exports.reactNativeConfig = reactNativeConfig;
+exports.readJSONFile = readJSONFile;
+exports.removeAllFiles = removeAllFiles;
+exports.sortByKeys = sortByKeys;
+exports.updatePackageManifest = updatePackageManifest;
+exports.warn = warn;
+exports.writeAllFiles = writeAllFiles;
