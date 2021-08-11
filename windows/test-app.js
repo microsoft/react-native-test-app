@@ -362,12 +362,12 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
             nuGetPackage("Microsoft.ReactNative", rnWindowsVersion),
           '<!-- package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native" / -->':
             nuGetPackage("Microsoft.ReactNative.Cxx", rnWindowsVersion),
-          '<!-- package id="Microsoft.UI.Xaml" version="2.5.0" targetFramework="native" / -->':
-            nuGetPackage("Microsoft.UI.Xaml", "2.5.0"),
+          '<!-- package id="Microsoft.UI.Xaml" version="2.6.0" targetFramework="native" / -->':
+            nuGetPackage("Microsoft.UI.Xaml", "2.6.0"),
           "<UseExperimentalNuget>false</UseExperimentalNuget>":
             "<UseExperimentalNuget>true</UseExperimentalNuget>",
           "<WinUI2xVersionDisabled />":
-            "<WinUI2xVersion>2.5.0</WinUI2xVersion>",
+            "<WinUI2xVersion>2.6.0</WinUI2xVersion>",
         }
       : undefined),
     "1000\\.0\\.0": rnWindowsVersion,
