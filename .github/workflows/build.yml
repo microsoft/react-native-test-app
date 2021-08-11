@@ -5,8 +5,8 @@ on:
       - trunk
   pull_request:
   schedule:
-    # nightly builds against react-native@nightly at 4:00
-    - cron: 0 4 * * *
+    # nightly builds against react-native@nightly at 5:00
+    - cron: 0 5 * * *
 jobs:
   lint-commit:
     name: "lint commit message"
@@ -269,6 +269,7 @@ jobs:
         with:
           api-level: 29
           target: google_apis # https://github.com/ReactiveCircus/android-emulator-runner/issues/168
+          emulator-build: 7425822 # https://github.com/ReactiveCircus/android-emulator-runner/issues/160
           working-directory: android
           script: ./gradlew clean build connectedCheck
   android-template:
