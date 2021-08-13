@@ -16,10 +16,13 @@ def assert(condition, message)
 end
 
 def app_manifest(project_root)
+  @app_manifest ||= {}
+  return @app_manifest[project_root] if @app_manifest.key?(project_root)
+
   manifest_path = find_file('app.json', project_root)
   return if manifest_path.nil?
 
-  JSON.parse(File.read(manifest_path))
+  @app_manifest[project_root] = JSON.parse(File.read(manifest_path))
 end
 
 def app_name(project_root)
