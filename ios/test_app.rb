@@ -30,23 +30,12 @@ def autolink_script_path
   File.join(package_path, 'native_modules')
 end
 
-def autolink_script_version
-  package_version(resolve_module('@react-native-community/cli-platform-ios'))
-end
-
 def platform_config(key, project_root, target_platform)
   manifest = app_manifest(project_root)
   return if manifest.nil?
 
   config = manifest[target_platform.to_s]
   return config[key] if !config.nil? && !config.empty?
-end
-
-def bundle_identifier(project_root, target_platform)
-  bundle_identifier = platform_config('bundleIdentifier', project_root, target_platform)
-  return bundle_identifier if bundle_identifier.is_a? String
-
-  @test_app_bundle_identifier
 end
 
 def find_project_root
@@ -58,8 +47,8 @@ def find_project_root
   Pathname.new(File.dirname(podfile_path.absolute_path))
 end
 
-def flipper_enabled?(react_native_version)
-  react_native_version >= 6200 && @flipper_versions != false
+def flipper_enabled?
+  @flipper_versions != false
 end
 
 def flipper_versions
@@ -100,10 +89,6 @@ def react_native_pods(version)
     'use_react_native-0.63'
   elsif v >= Gem::Version.new('0.62')
     'use_react_native-0.62'
-  elsif v >= Gem::Version.new('0.61')
-    'use_react_native-0.61'
-  elsif v >= Gem::Version.new('0.60')
-    'use_react_native-0.60'
   else
     raise "Unsupported React Native version: #{version}"
   end
@@ -155,27 +140,6 @@ def resources_pod(project_root, target_platform, platforms)
   end
 
   Pathname.new(app_dir).relative_path_from(project_root).to_s
-end
-
-def test_app_bundle_identifier(identifier)
-  warn <<~HEREDOC
-    Warning: test_app_bundle_identifier() is deprecated
-      Please set the bundle identifier in `app.json`, e.g.
-
-        {
-          "name": "Example",
-          "displayName": "Example",
-          "components": [],
-          "resources": {},
-          "ios": {
-            "bundleIdentifier": "#{identifier}"
-          },
-          "macos": {
-            "bundleIdentifier": "#{identifier}"
-          }
-        }
-  HEREDOC
-  @test_app_bundle_identifier = identifier
 end
 
 def use_flipper!(versions = {})
@@ -242,7 +206,7 @@ def make_project!(xcodeproj, project_root, target_platform)
   development_team = platform_config('developmentTeam', project_root, target_platform)
   build_settings['DEVELOPMENT_TEAM'] = development_team if development_team.is_a? String
 
-  product_bundle_identifier = bundle_identifier(project_root, target_platform)
+  product_bundle_identifier = platform_config('bundleIdentifier', project_root, target_platform)
   if product_bundle_identifier.is_a? String
     build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = product_bundle_identifier
   end
@@ -254,7 +218,7 @@ def make_project!(xcodeproj, project_root, target_platform)
                                              target.name
                                            end
 
-  supports_flipper = target_platform == :ios && flipper_enabled?(version)
+  supports_flipper = target_platform == :ios && flipper_enabled?
 
   app_project = Xcodeproj::Project.open(dst_xcodeproj)
   app_project.native_targets.each do |target|
@@ -328,11 +292,7 @@ def use_test_app_internal!(target_platform, options)
 
     yield ReactTestAppTargets.new(self) if block_given?
 
-    if autolink_script_version < Gem::Version.new('3.0')
-      use_native_modules! '.'
-    else
-      use_native_modules!
-    end
+    use_native_modules!
   end
 
   post_install do |installer|
