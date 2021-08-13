@@ -64,15 +64,6 @@ def react_native_from_manifest(project_root, target_platform)
   return react_native_path if react_native_path.is_a? String
 end
 
-def find_file(file_name, current_dir)
-  return if current_dir.expand_path.to_s == '/'
-
-  path = current_dir + file_name
-  return path if File.exist?(path)
-
-  find_file(file_name, current_dir.parent)
-end
-
 def find_project_root
   podfile_path = Thread.current.backtrace_locations.find do |location|
     File.basename(location.absolute_path) == 'Podfile'
