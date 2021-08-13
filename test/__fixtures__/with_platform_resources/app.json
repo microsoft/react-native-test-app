@@ -12,14 +12,14 @@
     "macos": ["dist-macos/assets", "dist-macos/main.jsbundle"]
   },
   "ios": {
-    "bundleIdentifier": "com.react.ReactTestApp-ios",
+    "bundleIdentifier": "bundleIdentifier-ios",
     "codeSignEntitlements": "codeSignEntitlements-ios",
     "codeSignIdentity": "codeSignIdentity-ios",
     "developmentTeam": "developmentTeam-ios",
     "reactNativePath": "reactNativePath-ios"
   },
   "macos": {
-    "bundleIdentifier": "com.react.ReactTestApp-macos",
+    "bundleIdentifier": "bundleIdentifier-macos",
     "codeSignEntitlements": "codeSignEntitlements-macos",
     "codeSignIdentity": "codeSignIdentity-macos",
     "developmentTeam": "developmentTeam-macos",
