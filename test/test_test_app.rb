@@ -30,26 +30,16 @@ class TestTestApp < Minitest::Test
     end
   end
 
-  def test_autolink_script_version
-    cli = fixture_path('test_app', 'node_modules', '@react-native-community', 'cli-platform-ios')
-    stub :resolve_module, cli do
-      assert_equal(Gem::Version.new('4.10.1'), autolink_script_version)
-    end
-  end
-
   def test_flipper_enabled?
-    refute(flipper_enabled?(6199))
-    assert(flipper_enabled?(6200))
+    assert(flipper_enabled?)
 
     use_flipper!(false)
 
-    refute(flipper_enabled?(6199))
-    refute(flipper_enabled?(6200))
+    refute(flipper_enabled?)
 
     use_flipper!
 
-    refute(flipper_enabled?(6199))
-    assert(flipper_enabled?(6200))
+    assert(flipper_enabled?)
   ensure
     use_flipper!(nil)
   end
@@ -104,27 +94,20 @@ class TestTestApp < Minitest::Test
     assert_equal('use_react_native-0.62', react_native_pods(Gem::Version.new('0.62.2')))
     assert_equal('use_react_native-0.62', react_native_pods(Gem::Version.new('0.62.0')))
 
-    assert_equal('use_react_native-0.61', react_native_pods(Gem::Version.new('0.61.5')))
-    assert_equal('use_react_native-0.61', react_native_pods(Gem::Version.new('0.61.0')))
-
-    assert_equal('use_react_native-0.60', react_native_pods(Gem::Version.new('0.60.6')))
-    assert_equal('use_react_native-0.60', react_native_pods(Gem::Version.new('0.60.0')))
-
     assert_raises(RuntimeError) do
-      react_native_pods(Gem::Version.new('0.59.10'))
+      react_native_pods(Gem::Version.new('0.61.5'))
     end
   end
 
   %i[ios macos].each do |target|
-    define_method("test_#{target}_bundle_identifier") do
-      assert_equal("com.react.ReactTestApp-#{target}",
-                   bundle_identifier(fixture_path('with_platform_resources'), target))
-      assert_nil(bundle_identifier(fixture_path('without_platform_resources'), target))
-      assert_nil(bundle_identifier(fixture_path('without_resources'), target))
-    end
-
     define_method("test_#{target}_project_settings") do
-      %w[codeSignEntitlements codeSignIdentity developmentTeam reactNativePath].each do |setting|
+      %w[
+        bundleIdentifier
+        codeSignEntitlements
+        codeSignIdentity
+        developmentTeam
+        reactNativePath
+      ].each do |setting|
         assert_equal("#{setting}-#{target}",
                      platform_config(setting, fixture_path('with_platform_resources'), target))
         assert_nil(platform_config(setting, fixture_path('without_platform_resources'), target))

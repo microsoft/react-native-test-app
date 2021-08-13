@@ -91,23 +91,6 @@ ext.getApplicationId = { baseDir ->
         }
     }
 
-    if (project.hasProperty('TEST_APP_IDENTIFIER')) {
-        def applicationId = project.getProperty('TEST_APP_IDENTIFIER')
-        logger.warn('WARNING: Setting TEST_APP_IDENTIFIER in `gradle.properties` is deprecated')
-        logger.warn('WARNING: Please set the application identifier in `app.json`, e.g.')
-        logger.warn('WARNING:')
-        logger.warn('WARNING:     {')
-        logger.warn('WARNING:       "name": "Example",')
-        logger.warn('WARNING:       "displayName": "Example",')
-        logger.warn('WARNING:       "components": [],')
-        logger.warn('WARNING:       "resources": {},')
-        logger.warn('WARNING:       "android": {')
-        logger.warn("WARNING:         \"package\": \"${applicationId}\"")
-        logger.warn('WARNING:       }')
-        logger.warn('WARNING:     }')
-        return applicationId
-    }
-
     return 'com.microsoft.reacttestapp'
 }
 
