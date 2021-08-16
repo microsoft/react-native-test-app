@@ -215,7 +215,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up JDK
-        uses: actions/setup-java@v2.1.0
+        uses: actions/setup-java@v2.2.0
         with:
           distribution: adopt
           java-version: 8
@@ -282,7 +282,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up JDK
-        uses: actions/setup-java@v2.1.0
+        uses: actions/setup-java@v2.2.0
         with:
           distribution: adopt
           java-version: 8
