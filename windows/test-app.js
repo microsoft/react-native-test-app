@@ -547,13 +547,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
 }
 
 if (require.main === module) {
-  const localNodeModulesPath = path.join(process.cwd(), "node_modules");
-  if (!module.paths.includes(localNodeModulesPath)) {
-    // Add the `node_modules` path whence the script was invoked. Without it,
-    // this script will fail to resolve any packages when
-    // `react-native-test-app` was linked using npm or yarn link.
-    module.paths.push(localNodeModulesPath);
-  }
+  require("../scripts/link")(module);
 
   require("yargs").usage(
     "$0 [options]",
