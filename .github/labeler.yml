@@ -10,13 +10,13 @@
 "platform: macOS":
   - ReactTestApp-DevSupport.podspec
   - example/macos/**/*
+  - ios/*.rb
   - ios/ReactTestApp/Manifest.swift
   - ios/ReactTestApp/React+Compatibility.{h,m}
   - ios/ReactTestApp/ReactInstance.swift
   - ios/ReactTestApp/ReactTestApp-Bridging-Header.h
   - ios/ReactTestApp/Session.swift
   - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
-  - ios/use_react_native-*.rb
   - macos/**/*
 "platform: Windows":
   - example/windows/**/*
