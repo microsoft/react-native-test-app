@@ -722,10 +722,10 @@ function isDestructive(packagePath, { files, oldFiles }) {
  * @returns {Promise<void[]>}
  */
 function removeAllFiles(files, destination) {
-  /** @type {(p: string, cb: (error?: Error) => void) => void} */
+  /** @type {(p: string, cb: (error?: Error | null) => void) => void} */
   const rimraf = require("rimraf");
 
-  const rethrow = (/** @type {Error | undefined} */ error) => {
+  const rethrow = (/** @type {Error | null | undefined} */ error) => {
     if (error) {
       throw error;
     }
