@@ -50,7 +50,6 @@ const profiles = {
     "hermes-engine": "~0.8.1",
     react: "17.0.2",
     "react-native": "^0.66.0-0",
-    "react-native-codegen": "0.0.7",
     "react-native-macos": undefined,
     "react-native-windows": undefined,
   },
