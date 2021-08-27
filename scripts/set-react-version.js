@@ -46,6 +46,13 @@ const profiles = {
     "react-native-macos": undefined,
     "react-native-windows": undefined,
   },
+  0.66: {
+    "hermes-engine": "~0.8.1",
+    react: "17.0.2",
+    "react-native": "^0.66.0-0",
+    "react-native-macos": undefined,
+    "react-native-windows": undefined,
+  },
   "canary-macos": {
     react: "16.13.1",
     "react-native": "^0.63.4",
