@@ -82,6 +82,15 @@ function findUserProjects(projectDir, projects = []) {
 }
 
 /**
+ * Returns whether specified object is Error-like.
+ * @param {unknown} e
+ * @returns {e is Error}
+ */
+function isErrorLike(e) {
+  return typeof e === "object" && e !== null && "name" in e && "message" in e;
+}
+
+/**
  * Returns a NuGet package entry for specified package id and version.
  * @param {string} id NuGet package id
  * @param {string} version NuGet package version
@@ -176,16 +185,9 @@ function toProjectEntry(project, destPath) {
  * @param {{ [pattern: string]: string }=} replacements e.g. {'TextToBeReplaced': 'Replacement'}
  */
 function copyAndReplace(srcPath, destPath, replacements = {}) {
-  /** @type {(e: NodeJS.ErrnoException | null) => void} */
-  const throwOnError = (e) => {
-    if (e) {
-      throw e;
-    }
-  };
-
   if (binaryExtensions.includes(path.extname(srcPath))) {
     // Binary file
-    return fs.copyFile(srcPath, destPath, throwOnError);
+    return fs.copyFile(srcPath, destPath, rethrow);
   } else {
     // Text file
     return fs.writeFile(
@@ -198,7 +200,7 @@ function copyAndReplace(srcPath, destPath, replacements = {}) {
         encoding: "utf-8",
         mode: fs.statSync(srcPath).mode,
       },
-      throwOnError
+      rethrow
     );
   }
 }
@@ -238,7 +240,11 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
         bundleFileContent,
       };
     } catch (e) {
-      console.warn(`Could not parse 'app.json':\n${e.message}`);
+      if (isErrorLike(e)) {
+        console.warn(`Could not parse 'app.json':\n${e.message}`);
+      } else {
+        throw e;
+      }
     }
   } else {
     console.warn("Could not find 'app.json' file.");
