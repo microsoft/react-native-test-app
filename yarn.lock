@@ -1538,10 +1538,10 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
-"@react-native-windows/cli@0.63.12":
-  version "0.63.12"
-  resolved "https://registry.npmjs.org/@react-native-windows/cli/-/cli-0.63.12.tgz#fff41cb8e0e039e133a8e3a29a25927fe77d5856"
-  integrity sha512-N8cD2SpDqJl8H4z+IvlYIibMEBlcA+KO/2fT80Qz3c303FibPJjxcz2OAYoXMwYXhSsfzJf5mSrCOrmFXTbw0g==
+"@react-native-windows/cli@0.63.13":
+  version "0.63.13"
+  resolved "https://registry.npmjs.org/@react-native-windows/cli/-/cli-0.63.13.tgz#11beef73eb0af785e6ab754364fad50eaffbfacf"
+  integrity sha512-ehQBaaqA3wHgqb616KF9Gg6RF389An0C2S8Z8UVomQgE5G5jzS2blYS0D7gcmr41oY/TuS3SHQldVCFkHKyOGA==
   dependencies:
     "@react-native-windows/telemetry" "^0.63.5"
     chalk "^3.0.0"
@@ -7896,12 +7896,12 @@ react-native-macos@^0.63.33:
     whatwg-fetch "^3.0.0"
 
 react-native-windows@^0.63.32:
-  version "0.63.36"
-  resolved "https://registry.npmjs.org/react-native-windows/-/react-native-windows-0.63.36.tgz#ae0ed33c89c9e09dfd982da18bb1ecba35381841"
-  integrity sha512-Av7edpOu+YdKosMlpCWTGe8eXXNk0M4cd9zLKgeSiCOsTia/3qJM/xs/dZcP5gmjH6EWlAMSgtRC8frljPJnNQ==
+  version "0.63.37"
+  resolved "https://registry.npmjs.org/react-native-windows/-/react-native-windows-0.63.37.tgz#a92fddd1907fbc5b93bd3afa4070836971d6d2f2"
+  integrity sha512-SZ7Q2C8hRaSclpzQKOj6N5PctetLUc6vgC/us8Qqw5EjLdXVAO46NSiQn6rqRHIg3Bwyq5lqRbps8MC8AfP20A==
   dependencies:
     "@babel/runtime" "^7.8.4"
-    "@react-native-windows/cli" "0.63.12"
+    "@react-native-windows/cli" "0.63.13"
     abort-controller "^3.0.0"
     anser "^1.4.9"
     base64-js "^1.1.2"
