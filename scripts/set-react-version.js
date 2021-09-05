@@ -51,7 +51,7 @@ const profiles = {
     react: "17.0.2",
     "react-native": "^0.66.0-0",
     "react-native-macos": undefined,
-    "react-native-windows": undefined,
+    "react-native-windows": "^0.66.0-0",
   },
   "canary-macos": {
     react: "16.13.1",
