@@ -37,6 +37,10 @@ final class ContentViewController: UITableViewController {
         static let settings = 1
     }
 
+    private var isVisible: Bool {
+        self == navigationController?.visibleViewController
+    }
+
     private let reactInstance: ReactInstance
     private var sections: [SectionData]
 
@@ -64,33 +68,40 @@ final class ContentViewController: UITableViewController {
             return
         }
 
-        let components = manifest.components
+        title = manifest.displayName
+
+        let components = manifest.components ?? []
+        if components.isEmpty {
+            NotificationCenter.default.addObserver(
+                forName: .ReactTestAppDidRegisterApps,
+                object: nil,
+                queue: .main,
+                using: { [weak self] note in
+                    guard let strongSelf = self,
+                          let appKeys = note.userInfo?["appKeys"] as? [String]
+                    else {
+                        return
+                    }
+
+                    let components = appKeys.map { Component(appKey: $0) }
+                    strongSelf.onComponentsRegistered(components, checksum: checksum)
+                }
+            )
+        }
+
+        onComponentsRegistered(components, checksum: checksum)
+
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.reactInstance.initReact {
-                if let index = components.count == 1 ? 0 : Session.lastOpenedComponent(checksum) {
+                if !components.isEmpty,
+                   let index = components.count == 1 ? 0 : Session.lastOpenedComponent(checksum)
+                {
                     DispatchQueue.main.async {
                         self?.navigate(to: components[index])
                     }
                 }
             }
         }
-
-        title = manifest.displayName
-
-        #if targetEnvironment(simulator)
-            let keyboardShortcut = " (⌃⌘Z)"
-        #else
-            let keyboardShortcut = ""
-        #endif
-        sections.append(SectionData(
-            items: components.enumerated().map { index, component in
-                NavigationLink(title: component.displayName ?? component.appKey) { [weak self] in
-                    self?.navigate(to: component)
-                    Session.storeComponent(index: index, checksum: checksum)
-                }
-            },
-            footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
-        ))
 
         let rememberLastComponentSwitch = UISwitch()
         rememberLastComponentSwitch.isOn = Session.shouldRememberLastComponent
@@ -198,7 +209,36 @@ final class ContentViewController: UITableViewController {
         }
     }
 
-    @objc private func rememberLastComponentSwitchDidChangeValue(_ sender: UISwitch) {
+    private func onComponentsRegistered(_ components: [Component], checksum: String) {
+        let items = components.enumerated().map { index, component in
+            NavigationLink(title: component.displayName ?? component.appKey) { [weak self] in
+                self?.navigate(to: component)
+                Session.storeComponent(index: index, checksum: checksum)
+            }
+        }
+
+        if sections.isEmpty {
+            #if targetEnvironment(simulator)
+                let keyboardShortcut = " (⌃⌘Z)"
+            #else
+                let keyboardShortcut = ""
+            #endif
+            sections.append(SectionData(
+                items: items,
+                footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
+            ))
+        } else {
+            sections[0].items = items
+            tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+
+            if components.count == 1, isVisible {
+                navigate(to: components[0])
+            }
+        }
+    }
+
+    @objc
+    private func rememberLastComponentSwitchDidChangeValue(_ sender: UISwitch) {
         Session.shouldRememberLastComponent = sender.isOn
     }
 
@@ -216,7 +256,8 @@ final class ContentViewController: UITableViewController {
         return "React Native version: \(version)"
     }
 
-    @objc private func scanForQRCode(_: Notification) {
+    @objc
+    private func scanForQRCode(_: Notification) {
         let builder = QRCodeReaderViewControllerBuilder {
             $0.reader = QRCodeReader(
                 metadataObjectTypes: [.qr],

@@ -22,6 +22,10 @@ struct Component: Decodable {
         case presentationStyle
     }
 
+    init(appKey: String) {
+        self.init(appKey: appKey, displayName: nil, initialProperties: nil, presentationStyle: nil)
+    }
+
     init(appKey: String,
          displayName: String?,
          initialProperties: [AnyHashable: Any]?,
@@ -50,7 +54,7 @@ struct Component: Decodable {
 struct Manifest: Decodable {
     let name: String
     let displayName: String
-    let components: [Component]
+    let components: [Component]?
 
     static func fromFile() -> (Manifest, String)? {
         guard let manifestURL = Bundle.main.url(forResource: "app", withExtension: "json"),

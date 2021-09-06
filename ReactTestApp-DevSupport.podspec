@@ -15,9 +15,12 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '12.0'
   s.osx.deployment_target = '10.14'
 
+  s.dependency 'React'
+
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
 
   s.source_files         = 'ios/ReactTestApp/Public/*.h',
-                           'ios/ReactTestApp/ReactTestApp-DevSupport.m'
+                           'ios/ReactTestApp/ReactTestApp-DevSupport.m',
+                           'ios/ReactTestApp/ReactTestAppAppRegistryModule.{h,mm}'
   s.public_header_files  = 'ios/ReactTestApp/Public/*.h'
 end

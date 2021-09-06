@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSNotificationName const ReactTestAppDidInitializeNotification;
 extern NSNotificationName const ReactTestAppWillInitializeReactNativeNotification;
 extern NSNotificationName const ReactTestAppDidInitializeReactNativeNotification;
+extern NSNotificationName const ReactTestAppDidRegisterAppsNotification;
 extern NSNotificationName const ReactTestAppSceneDidOpenURLNotification;
 
 NS_ASSUME_NONNULL_END
