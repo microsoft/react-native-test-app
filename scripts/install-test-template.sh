@@ -39,10 +39,10 @@ yarn react-native init-test-app --destination template-example --name TemplateEx
 
 pushd template-example 1> /dev/null
 
-echo 'yarnPath: ../.yarn/releases/yarn-3.0.0.cjs' >> .yarnrc.yml
 echo 'enableTelemetry: false' >> .yarnrc.yml
 echo 'nodeLinker: node-modules' >> .yarnrc.yml
 echo 'npmRegistryServer: "https://registry.npmjs.org"' >> .yarnrc.yml
+echo 'yarnPath: ../.yarn/releases/yarn-3.0.2.cjs' >> .yarnrc.yml
 
 script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/react-native-test-app-$version.tgz\"/"
 if sed --version &> /dev/null; then
