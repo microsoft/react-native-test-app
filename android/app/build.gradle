@@ -121,19 +121,19 @@ dependencies {
         implementation "com.facebook.react:react-native:+"
     }
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "androidx.appcompat:appcompat:1.3.0"
-    implementation "androidx.core:core-ktx:1.5.0"
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "com.google.android.material:material:1.3.0"
+    implementation libraries.kotlinStdlibJdk7
+    implementation libraries.androidAppCompat
+    implementation libraries.androidCoreKotlinExtensions
+    implementation libraries.androidRecyclerView
+    implementation libraries.androidSwipeRefreshLayout
+    implementation libraries.materialComponents
 
-    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
+    implementation libraries.moshiKotlin
+    kapt libraries.moshiKotlinCodegen
 
-    testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.2"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+    testImplementation libraries.junit
+    androidTestImplementation libraries.androidJUnit
+    androidTestImplementation libraries.androidEspressoCore
 
     if (project.ext.react.enableFlipper) {
         def flipperVersion = project.ext.react.enableFlipper
