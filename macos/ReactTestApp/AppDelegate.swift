@@ -205,8 +205,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func removeAllComponentsFromMenu() {
         let numberOfItems = reactMenu.numberOfItems
-        for i in 1 ... numberOfItems {
-            let index = numberOfItems - i
+        for reverseIndex in 1 ... numberOfItems {
+            let index = numberOfItems - reverseIndex
             guard let item = reactMenu.item(at: index) else {
                 preconditionFailure()
             }
