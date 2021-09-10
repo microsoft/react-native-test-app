@@ -11,9 +11,8 @@
 
 using facebook::jsi::Runtime;
 using facebook::jsi::String;
-using ReactTestApp::GetAppKeys;
 
-std::vector<std::string> GetAppKeys(Runtime &runtime)
+std::vector<std::string> ReactTestApp::GetAppKeys(Runtime &runtime)
 {
     std::vector<std::string> result;
 

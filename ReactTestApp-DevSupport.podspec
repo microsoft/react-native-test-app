@@ -19,8 +19,9 @@ Pod::Spec.new do |s|
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
 
-  s.source_files         = 'ios/ReactTestApp/Public/*.h',
-                           'ios/ReactTestApp/ReactTestApp-DevSupport.m',
-                           'ios/ReactTestApp/ReactTestAppAppRegistryModule.{h,mm}'
+  s.source_files         = 'common/AppRegistry.{cpp,h}',
+                           'ios/ReactTestApp/AppRegistryModule.{h,mm}',
+                           'ios/ReactTestApp/Public/*.h',
+                           'ios/ReactTestApp/ReactTestApp-DevSupport.m'
   s.public_header_files  = 'ios/ReactTestApp/Public/*.h'
 end

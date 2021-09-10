@@ -9,5 +9,5 @@
 
 #import <React/RCTBridgeModule.h>
 
-@interface ReactTestAppAppRegistryModule : NSObject <RCTBridgeModule>
+@interface RTAAppRegistryModule : NSObject <RCTBridgeModule>
 @end
