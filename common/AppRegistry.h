@@ -19,7 +19,7 @@ namespace facebook::jsi
 namespace ReactTestApp
 {
     /**
-     * Calls `AppRegistry.getAppKeys()` and returns the result.
+     * Returns app keys registered in `AppRegistry`.
      */
     std::vector<std::string> GetAppKeys(facebook::jsi::Runtime &runtime);
 }  // namespace ReactTestApp
