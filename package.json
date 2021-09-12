@@ -23,17 +23,18 @@
   "files": [
     "/*.{gradle,js,md,podspec,rb}",
     "/android/**/*.gradle",
-    "/android/app/src/{flipper,main}/*",
-    "/android/support/src/*",
+    "/android/app/src/{flipper,main}",
+    "/android/support/src",
+    "/common",
     "/example/.gitignore",
     "/example/android/gradle*",
     "/example/windows/.gitignore",
     "/example/{metro,react-native}.config.js",
-    "/ios/*",
-    "/macos/*",
-    "/scripts/*",
+    "/ios",
+    "/macos",
+    "/scripts",
     "/windows/*.{js,props,sln}",
-    "/windows/ReactTestApp/*"
+    "/windows/ReactTestApp"
   ],
   "bin": {
     "configure-test-app": "scripts/configure.js",
