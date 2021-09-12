@@ -5,6 +5,9 @@
 // LICENSE file in the root directory of this source tree.
 //
 
+#ifndef COMMON_APPREGISTRY_
+#define COMMON_APPREGISTRY_
+
 #include <string>
 #include <vector>
 
@@ -20,3 +23,5 @@ namespace ReactTestApp
      */
     std::vector<std::string> GetAppKeys(facebook::jsi::Runtime &runtime);
 }  // namespace ReactTestApp
+
+#endif  // COMMON_APPREGISTRY_

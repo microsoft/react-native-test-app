@@ -12,13 +12,21 @@
 #include <NativeModules.h>
 #include <filesystem>
 
+#if __has_include(<JSI/JsiApiContext.h>)
+#include <JSI/JsiApiContext.h>
+#endif
+
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Web.Http.Headers.h>
 
+#include "AppRegistry.h"
 #include "AutolinkedNativeModules.g.h"
 #include "ReactPackageProvider.h"
 
+using ReactTestApp::OnComponentsRegistered;
 using ReactTestApp::ReactInstance;
+using winrt::Microsoft::ReactNative::ReactContext;
+using winrt::Microsoft::ReactNative::ReactDispatcher;
 using winrt::ReactTestApp::implementation::ReactPackageProvider;
 using winrt::Windows::Foundation::IAsyncOperation;
 using winrt::Windows::Foundation::IInspectable;

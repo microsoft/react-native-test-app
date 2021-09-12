@@ -110,7 +110,8 @@ namespace ReactTestApp
     {
         m.name = j.at("name");
         m.displayName = j.at("displayName");
-        m.components = j.at("components").get<std::vector<Component>>();
+        m.components = get_optional<std::vector<Component>>(j, "components")
+                           .value_or(std::vector<Component>{});
     }
 
     std::optional<std::pair<Manifest, std::string>> GetManifest(std::string const &filename)

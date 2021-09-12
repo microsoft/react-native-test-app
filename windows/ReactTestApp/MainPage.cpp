@@ -9,6 +9,8 @@
 
 #include "MainPage.h"
 
+#include <algorithm>
+
 #include <winrt/Windows.ApplicationModel.Core.h>
 #include <winrt/Windows.UI.Popups.h>
 #include <winrt/Windows.UI.ViewManagement.h>
@@ -16,9 +18,11 @@
 #include "MainPage.g.cpp"
 #include "Session.h"
 
+using ReactTestApp::Component;
 using ReactTestApp::JSBundleSource;
 using ReactTestApp::Session;
 using winrt::Microsoft::ReactNative::IJSValueWriter;
+using winrt::Microsoft::ReactNative::ReactRootView;
 using winrt::ReactTestApp::implementation::MainPage;
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
 using winrt::Windows::ApplicationModel::Core::CoreApplicationViewTitleBar;
@@ -27,11 +31,13 @@ using winrt::Windows::Foundation::IInspectable;
 using winrt::Windows::System::VirtualKey;
 using winrt::Windows::System::VirtualKeyModifiers;
 using winrt::Windows::UI::Colors;
+using winrt::Windows::UI::Core::CoreDispatcherPriority;
 using winrt::Windows::UI::Popups::MessageDialog;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::Window;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
+using winrt::Windows::UI::Xaml::Controls::MenuFlyoutSeparator;
 using winrt::Windows::UI::Xaml::Controls::ToggleMenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Input::KeyboardAccelerator;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
@@ -101,12 +107,11 @@ namespace
         }
     }
 
-    void InitializeReactRootView(winrt::Microsoft::ReactNative::ReactRootView reactRootView,
-                                 ReactTestApp::Component const &component)
+    void InitializeReactRootView(ReactRootView reactRootView, Component const &component)
     {
         reactRootView.ComponentName(winrt::to_hstring(component.appKey));
         reactRootView.InitialProps(
-            [&initialProps = component.initialProperties](IJSValueWriter const &writer) {
+            [initialProps = component.initialProperties](IJSValueWriter const &writer) {
                 if (initialProps.has_value()) {
                     writer.WriteObjectBegin();
                     for (auto &&property : initialProps.value()) {
@@ -202,8 +207,7 @@ void MainPage::ToggleFastRefresh(IInspectable const &sender, RoutedEventArgs)
     reactInstance_.UseFastRefresh(useFastRefresh);
 }
 
-void MainPage::ToggleInspector(Windows::Foundation::IInspectable const &,
-                               Windows::UI::Xaml::RoutedEventArgs)
+void MainPage::ToggleInspector(IInspectable const &, RoutedEventArgs)
 {
     reactInstance_.ToggleElementInspector();
 }
@@ -233,7 +237,7 @@ bool MainPage::LoadJSBundleFrom(JSBundleSource source)
     return true;
 }
 
-void MainPage::LoadReactComponent(::ReactTestApp::Component const &component)
+void MainPage::LoadReactComponent(Component const &component)
 {
     auto title = to_hstring(component.displayName.value_or(component.appKey));
     auto &&presentationStyle = component.presentationStyle.value_or("");
@@ -290,22 +294,82 @@ void MainPage::InitializeReactMenu()
     auto &&[manifest, checksum] = result.value();
     manifestChecksum_ = std::move(checksum);
 
-    // If only one component is present load, it automatically. Otherwise, check
-    // whether we can reopen a component from previous session.
+    AppTitle().Text(to_hstring(manifest.displayName));
+
     auto &components = manifest.components;
-    auto index = components.size() == 1 ? 0 : Session::GetLastOpenedComponent(manifestChecksum_);
-    if (index.has_value()) {
-        Loaded([this, component = components[index.value()]](IInspectable const &,
-                                                             RoutedEventArgs const &) {
-            LoadReactComponent(component);
-        });
+    if (components.empty()) {
+        reactInstance_.SetComponentsRegisteredDelegate(
+            [this](const std::vector<std::string> &appKeys) {
+                std::vector<Component> components;
+                components.reserve(appKeys.size());
+                std::transform(std::begin(appKeys),
+                               std::end(appKeys),
+                               std::back_inserter(components),
+                               [](const std::string &appKey) { return Component{appKey}; });
+                OnComponentsRegistered(std::move(components));
+            });
     } else {
-        AppTitle().Text(to_hstring(manifest.displayName));
+        OnComponentsRegistered(std::move(components));
+    }
+}
+
+void MainPage::InitializeTitleBar()
+{
+    auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
+    coreTitleBar.LayoutMetricsChanged({this, &MainPage::OnCoreTitleBarLayoutMetricsChanged});
+    coreTitleBar.ExtendViewIntoTitleBar(true);
+
+    // Set close, minimize and maximize icons background to transparent
+    auto viewTitleBar = ApplicationView::GetForCurrentView().TitleBar();
+    viewTitleBar.ButtonBackgroundColor(Colors::Transparent());
+    viewTitleBar.ButtonInactiveBackgroundColor(Colors::Transparent());
+
+    Window::Current().SetTitleBar(AppTitleBar());
+}
+
+void MainPage::OnComponentsRegistered(std::vector<Component> components)
+{
+    auto coreDispatcher = CoreApplication::MainView().CoreWindow().Dispatcher();
+    if (!coreDispatcher.HasThreadAccess()) {
+        coreDispatcher.RunAsync(CoreDispatcherPriority::Normal,
+                                [this, components = std::move(components)]() {
+                                    OnComponentsRegistered(std::move(components));
+                                });
+        return;
+    }
+
+    if (IsLoaded()) {
+        if (components.size() == 1) {
+            coreDispatcher.RunAsync(
+                CoreDispatcherPriority::Normal,
+                [this, component = components[0]]() { LoadReactComponent(component); });
+        }
+    } else {
+        // If only one component is present, load it right away. Otherwise,
+        // check whether we can reopen a component from previous session.
+        auto index =
+            components.size() == 1 ? 0 : Session::GetLastOpenedComponent(manifestChecksum_);
+        if (index.has_value()) {
+            Loaded([this, component = components[index.value()]](IInspectable const &,
+                                                                 RoutedEventArgs const &) {
+                LoadReactComponent(component);
+            });
+        }
+    }
+
+    auto menuItems = ReactMenuBarItem().Items();
+    for (int i = menuItems.Size() - 1; i >= 0; --i) {
+        auto item = menuItems.GetAt(i);
+        if (item.try_as<MenuFlyoutSeparator>()) {
+            break;
+        }
+
+        menuItems.RemoveAtEnd();
     }
 
     auto keyboardAcceleratorKey = VirtualKey::Number1;
     for (int i = 0; i < static_cast<int>(components.size()); ++i) {
-        auto &&component = components[i];
+        auto &component = components[i];
 
         MenuFlyoutItem newMenuItem;
         newMenuItem.Text(winrt::to_hstring(component.displayName.value_or(component.appKey)));
@@ -334,20 +398,6 @@ void MainPage::InitializeReactMenu()
 
         menuItems.Append(newMenuItem);
     }
-}
-
-void MainPage::InitializeTitleBar()
-{
-    auto coreTitleBar = CoreApplication::GetCurrentView().TitleBar();
-    coreTitleBar.LayoutMetricsChanged({this, &MainPage::OnCoreTitleBarLayoutMetricsChanged});
-    coreTitleBar.ExtendViewIntoTitleBar(true);
-
-    // Set close, minimize and maximize icons background to transparent
-    auto viewTitleBar = ApplicationView::GetForCurrentView().TitleBar();
-    viewTitleBar.ButtonBackgroundColor(Colors::Transparent());
-    viewTitleBar.ButtonInactiveBackgroundColor(Colors::Transparent());
-
-    Window::Current().SetTitleBar(AppTitleBar());
 }
 
 // Adjust height of custom title bar to match close, minimize and maximize icons

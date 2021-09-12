@@ -7,6 +7,7 @@
 
 #include "AppRegistry.h"
 
+#if __has_include(<jsi/jsi.h>)
 #include <jsi/jsi.h>
 
 using facebook::jsi::Runtime;
@@ -54,3 +55,14 @@ std::vector<std::string> ReactTestApp::GetAppKeys(Runtime &runtime)
 
     return result;
 }
+
+#else
+
+using facebook::jsi::Runtime;
+
+std::vector<std::string> ReactTestApp::GetAppKeys(Runtime &)
+{
+    return {};
+}
+
+#endif
