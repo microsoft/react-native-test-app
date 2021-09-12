@@ -22,7 +22,7 @@ class ManifestTests: XCTestCase {
         XCTAssertEqual(manifest.displayName, "Example")
 
         guard let components = manifest.components else {
-            XCTFail()
+            XCTFail("Failed to parse 'components'")
             return
         }
 
@@ -91,7 +91,7 @@ class ManifestTests: XCTestCase {
         XCTAssertEqual(manifest.displayName, expected.displayName)
 
         guard let components = manifest.components else {
-            XCTFail()
+            XCTFail("Failed to parse 'components'")
             return
         }
 

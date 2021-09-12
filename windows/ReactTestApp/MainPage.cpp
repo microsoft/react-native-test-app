@@ -339,6 +339,8 @@ void MainPage::OnComponentsRegistered(std::vector<Component> components)
     }
 
     if (IsLoaded()) {
+        // When components are retrieved directly from `AppRegistry`, don't use
+        // session data as an invalid index may be stored.
         if (components.size() == 1) {
             coreDispatcher.RunAsync(
                 CoreDispatcherPriority::Normal,
