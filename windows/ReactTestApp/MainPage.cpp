@@ -299,13 +299,13 @@ void MainPage::InitializeReactMenu()
     auto &components = manifest.components;
     if (components.empty()) {
         reactInstance_.SetComponentsRegisteredDelegate(
-            [this](const std::vector<std::string> &appKeys) {
+            [this](std::vector<std::string> const &appKeys) {
                 std::vector<Component> components;
                 components.reserve(appKeys.size());
                 std::transform(std::begin(appKeys),
                                std::end(appKeys),
                                std::back_inserter(components),
-                               [](const std::string &appKey) { return Component{appKey}; });
+                               [](std::string const &appKey) { return Component{appKey}; });
                 OnComponentsRegistered(std::move(components));
             });
     } else {

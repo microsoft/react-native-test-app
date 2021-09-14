@@ -26,7 +26,7 @@ namespace ReactTestApp
         Embedded,
     };
 
-    using OnComponentsRegistered = std::function<void(const std::vector<std::string> &)>;
+    using OnComponentsRegistered = std::function<void(std::vector<std::string> const &)>;
 
     class ReactInstance
     {
