@@ -65,4 +65,4 @@ std::vector<std::string> ReactTestApp::GetAppKeys(Runtime &)
     return {};
 }
 
-#endif
+#endif  // __has_include(<jsi/jsi.h>)
