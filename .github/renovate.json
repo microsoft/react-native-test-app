@@ -1,0 +1,33 @@
+{
+  "extends": ["config:base", "schedule:earlyMondays"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "matchPackagePrefixes": ["@react-native-community/cli"],
+      "allowedVersions": "^4.10.0"
+    },
+    {
+      "matchPackageNames": ["hermes-engine"],
+      "allowedVersions": "~0.5.0"
+    },
+    {
+      "matchPackageNames": ["org.jetbrains.intellij.deps:trove4j"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["react"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": [
+        "react-native",
+        "react-native-macos",
+        "react-native-windows"
+      ],
+      "allowedVersions": "^0.63.0"
+    }
+  ],
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "rangeStrategy": "update-lockfile",
+  "timezone": "Europe/Oslo"
+}
