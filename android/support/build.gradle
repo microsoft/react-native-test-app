@@ -1,19 +1,16 @@
-buildscript {
-    def androidDir = "${buildscript.sourceFile.getParent()}/../"
-    apply from: "$androidDir/dependencies.gradle"
+plugins {
+    id("com.android.library")
 }
 
 repositories {
-    google()
     mavenCentral()
+    google()
 }
 
-def androidDir = "${buildscript.sourceFile.getParent()}/../"
-apply from: "$androidDir/force-resolve-trove4j.gradle"
-
-apply plugin: "com.android.library"
-
 android {
+    def androidDir = "${buildscript.sourceFile.getParent()}/../"
+    apply(from: "$androidDir/dependencies.gradle")
+
     compileSdkVersion project.ext.compileSdkVersion
     buildToolsVersion project.ext.buildToolsVersion
 

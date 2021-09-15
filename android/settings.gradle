@@ -1,2 +1,10 @@
-rootProject.name='react-test-app'
-include ':app', ':support'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}
+
+rootProject.name = "react-test-app"
+include ":app", ":support"

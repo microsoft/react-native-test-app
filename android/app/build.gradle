@@ -1,3 +1,15 @@
+buildscript {
+    def androidDir = "${buildscript.sourceFile.getParent()}/../"
+    apply(from: "$androidDir/test-app-util.gradle")
+    apply(from: "$androidDir/dependencies.gradle")
+}
+
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-kapt")
+}
+
 // `react-native run-android` is hard-coded to look for the output APK at a very
 // specific location. See
 // https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
@@ -5,24 +17,13 @@ buildDir = "$rootDir/$name/build"
 
 def reactNativeDir = findNodeModulesPath(rootDir, "react-native")
 
-buildscript {
-    def androidDir = "${buildscript.sourceFile.getParent()}/../"
-    apply from: "$androidDir/test-app-util.gradle"
-    apply from: "$androidDir/dependencies.gradle"
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
 repositories {
     maven {
-        url("${reactNativeDir}/android")
+        url = uri("${reactNativeDir}/android")
     }
 
-    google()
     mavenCentral()
+    google()
 
     // TODO: Remove these when they've been published to Maven Central.
     // See https://github.com/microsoft/react-native-test-app/issues/305
@@ -38,19 +39,11 @@ repositories {
 
     // https://github.com/AzureAD/microsoft-authentication-library-for-android#step-1-declare-dependency-on-msal
     maven {
-        url 'https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1'
+        url = uri("https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1")
     }
 }
 
-apply from: "$projectDir/../force-resolve-trove4j.gradle"
-
-apply plugin: "com.android.application"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-kapt"
-
-def testAppDir = file("$projectDir/../../")
-
-apply from: file("${testAppDir}/test-app.gradle")
+apply(from: "$projectDir/../../test-app.gradle")
 applyTestAppModule(project)
 
 project.ext.react = [
@@ -91,7 +84,7 @@ android {
         def recommendedFlipperVersion = getFlipperRecommendedVersion(rootDir)
         buildConfigField "String",
                          "ReactTestApp_recommendedFlipperVersion",
-                         recommendedFlipperVersion ? "\"${recommendedFlipperVersion}\"" : '"0"'
+                         recommendedFlipperVersion ? "\"${recommendedFlipperVersion}\"" : "\"0\""
 
         resValue "string", "app_name", project.ext.react.appName
 
@@ -107,7 +100,7 @@ android {
 
     sourceSets {
         if (project.ext.react.enableFlipper) {
-            debug.java.srcDirs += 'src/flipper/java'
+            debug.java.srcDirs += "src/flipper/java"
         }
     }
 }
@@ -129,7 +122,7 @@ dependencies {
     }
 
     if (buildReactNativeFromSource(rootDir)) {
-        implementation project(':ReactAndroid')
+        implementation project(":ReactAndroid")
     } else {
         implementation "com.facebook.react:react-native:+"
     }
@@ -137,6 +130,7 @@ dependencies {
     implementation libraries.kotlinStdlibJdk7
     implementation libraries.kotlinStdlibJdk8
     implementation libraries.kotlinReflect
+
     implementation libraries.androidAppCompat
     implementation libraries.androidCoreKotlinExtensions
     implementation libraries.androidRecyclerView
@@ -155,13 +149,13 @@ dependencies {
     if (project.ext.react.enableFlipper) {
         def flipperVersion = project.ext.react.enableFlipper
         debugImplementation("com.facebook.flipper:flipper:${flipperVersion}") {
-            exclude group: 'com.facebook.fbjni'
+            exclude(group: "com.facebook.fbjni")
         }
         debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${flipperVersion}") {
-            exclude group: 'com.facebook.flipper'
+            exclude(group: "com.facebook.flipper")
         }
         debugImplementation("com.facebook.flipper:flipper-network-plugin:${flipperVersion}") {
-            exclude group: 'com.facebook.flipper'
+            exclude(group: "com.facebook.flipper")
         }
     }
 }
