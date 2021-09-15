@@ -11,10 +11,6 @@
       "allowedVersions": "~0.5.0"
     },
     {
-      "matchPackageNames": ["org.jetbrains.intellij.deps:trove4j"],
-      "enabled": false
-    },
-    {
       "matchPackageNames": ["react"],
       "enabled": false
     },

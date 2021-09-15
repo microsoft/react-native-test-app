@@ -1,7 +1,6 @@
 buildscript { scriptHandler ->
     def buildscriptDir = buildscript.sourceFile.getParent()
     apply from: "$buildscriptDir/dependencies.gradle"
-    apply from: "$buildscriptDir/force-resolve-trove4j.gradle", to: scriptHandler
 
     repositories {
         google()

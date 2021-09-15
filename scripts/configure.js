@@ -410,7 +410,6 @@ const getConfig = (() => {
               "buildscript { scriptHandler ->",
               `    def androidTestAppDir = "${testAppRelPath}/android"`,
               '    apply from: "$androidTestAppDir/dependencies.gradle"',
-              '    apply from: "$androidTestAppDir/force-resolve-trove4j.gradle", to: scriptHandler',
               "",
               "    repositories {",
               "        google()",

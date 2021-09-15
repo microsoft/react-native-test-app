@@ -8,9 +8,6 @@ repositories {
     mavenCentral()
 }
 
-def androidDir = "${buildscript.sourceFile.getParent()}/../"
-apply from: "$androidDir/force-resolve-trove4j.gradle"
-
 apply plugin: "com.android.library"
 
 android {

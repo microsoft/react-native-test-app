@@ -68,7 +68,6 @@ Object {
     "android/build.gradle": "buildscript { scriptHandler ->
     def androidTestAppDir = \\"../../android\\"
     apply from: \\"$androidTestAppDir/dependencies.gradle\\"
-    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
     repositories {
         google()
@@ -318,7 +317,6 @@ Object {
     "android/build.gradle": "buildscript { scriptHandler ->
     def androidTestAppDir = \\"../../android\\"
     apply from: \\"$androidTestAppDir/dependencies.gradle\\"
-    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
     repositories {
         google()
@@ -484,7 +482,6 @@ Object {
     "android/build.gradle": "buildscript { scriptHandler ->
     def androidTestAppDir = \\"../../android\\"
     apply from: \\"$androidTestAppDir/dependencies.gradle\\"
-    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
 
     repositories {
         google()
