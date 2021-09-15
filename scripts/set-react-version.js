@@ -98,13 +98,11 @@ function keys(obj) {
   return /** @type {(keyof T)[]} */ (Object.keys(obj));
 }
 
-const path = require("path");
-
-const { [1]: scriptPath, [2]: version } = process.argv;
+const { [2]: version } = process.argv;
 if (!isValidVersion(version)) {
-  const script = path.basename(scriptPath);
+  const script = require("path").basename(__filename);
   console.log(`Usage: ${script} [${Object.keys(profiles).join(" | ")}]`);
-  process.exit();
+  process.exit(1);
 }
 
 const profile = profiles[version];
