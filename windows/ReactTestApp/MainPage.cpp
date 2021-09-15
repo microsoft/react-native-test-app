@@ -14,6 +14,8 @@
 #include <winrt/Windows.ApplicationModel.Core.h>
 #include <winrt/Windows.UI.Popups.h>
 #include <winrt/Windows.UI.ViewManagement.h>
+#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
+#include <winrt/Windows.UI.Xaml.Automation.Provider.h>
 
 #include "MainPage.g.cpp"
 #include "Session.h"
@@ -36,6 +38,7 @@ using winrt::Windows::UI::Popups::MessageDialog;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::Window;
+using winrt::Windows::UI::Xaml::Automation::Peers::MenuBarItemAutomationPeer;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutSeparator;
 using winrt::Windows::UI::Xaml::Controls::ToggleMenuFlyoutItem;
@@ -307,9 +310,12 @@ void MainPage::InitializeReactMenu()
                                std::back_inserter(components),
                                [](std::string const &appKey) { return Component{appKey}; });
                 OnComponentsRegistered(std::move(components));
+                PresentReactMenu();
             });
     } else {
         OnComponentsRegistered(std::move(components));
+        reactInstance_.SetComponentsRegisteredDelegate(
+            [this](std::vector<std::string> const &) { PresentReactMenu(); });
     }
 }
 
@@ -325,6 +331,11 @@ void MainPage::InitializeTitleBar()
     viewTitleBar.ButtonInactiveBackgroundColor(Colors::Transparent());
 
     Window::Current().SetTitleBar(AppTitleBar());
+}
+
+bool MainPage::IsPresenting()
+{
+    return !ReactRootView().ComponentName().empty();
 }
 
 void MainPage::OnComponentsRegistered(std::vector<Component> components)
@@ -408,4 +419,14 @@ void MainPage::OnCoreTitleBarLayoutMetricsChanged(CoreApplicationViewTitleBar co
 {
     AppTitleBar().Height(sender.Height());
     AppMenuBar().Height(sender.Height());
+}
+
+void MainPage::PresentReactMenu()
+{
+    CoreApplication::MainView().CoreWindow().Dispatcher().RunAsync(
+        CoreDispatcherPriority::Low, [this]() {
+            if (!IsPresenting()) {
+                MenuBarItemAutomationPeer(ReactMenuBarItem()).Invoke();
+            }
+        });
 }
