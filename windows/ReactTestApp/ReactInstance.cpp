@@ -26,6 +26,10 @@ using winrt::Windows::Foundation::Uri;
 using winrt::Windows::Storage::ApplicationData;
 using winrt::Windows::Web::Http::HttpClient;
 
+#if REACT_NATIVE_VERSION >= 6400
+using winrt::Microsoft::ReactNative::InstanceLoadedEventArgs;
+#endif  // REACT_NATIVE_VERSION >= 6400
+
 namespace
 {
     winrt::hstring const kBreakOnFirstLine = L"breakOnFirstLine";
@@ -46,35 +50,6 @@ namespace
         auto values = localSettings.Values();
         values.Insert(key, PropertyValue::CreateBoolean(value));
     }
-
-    // The `DevSettings` module override used to get the `ReactContext` was
-    // introduced in 0.63. `ReactContext` is needed to toggle element inspector.
-    // We also need to be on a version with the fix for re-initializing native
-    // modules when reloading.
-#if REACT_NATIVE_VERSION > 0 && REACT_NATIVE_VERSION < 6305
-    constexpr bool kUseCustomDeveloperMenu = false;
-#else
-    constexpr bool kUseCustomDeveloperMenu = true;
-
-    REACT_MODULE(DevSettings)
-#endif
-    struct DevSettings {
-        REACT_INIT(Initialize)
-        void Initialize(winrt::Microsoft::ReactNative::ReactContext const &reactContext) noexcept
-        {
-            context_ = reactContext;
-        }
-
-        static void ToggleElementInspector() noexcept
-        {
-            context_.CallJSFunction(L"RCTDeviceEventEmitter", L"emit", L"toggleElementInspector");
-        }
-
-    private:
-        static winrt::Microsoft::ReactNative::ReactContext context_;
-    };
-
-    winrt::Microsoft::ReactNative::ReactContext DevSettings::context_ = nullptr;
 }  // namespace
 
 std::vector<std::wstring> const ReactTestApp::JSBundleNames = {
@@ -91,6 +66,13 @@ ReactInstance::ReactInstance()
     reactNativeHost_.PackageProviders().Append(winrt::make<ReactPackageProvider>());
     winrt::Microsoft::ReactNative::RegisterAutolinkedNativeModulePackages(
         reactNativeHost_.PackageProviders());
+
+#if REACT_NATIVE_VERSION >= 6400
+    reactNativeHost_.InstanceSettings().InstanceLoaded(
+        [this](winrt::IInspectable const & /*sender*/, InstanceLoadedEventArgs const &args) {
+            context_ = args.Context();
+        });
+#endif  // REACT_NATIVE_VERSION >= 6400
 }
 
 bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
@@ -131,7 +113,7 @@ void ReactInstance::Reload()
     instanceSettings.UseFastRefresh(useFastRefresh);
     instanceSettings.UseLiveReload(useFastRefresh);
 
-    instanceSettings.EnableDeveloperMenu(!kUseCustomDeveloperMenu);
+    instanceSettings.EnableDeveloperMenu(!UseCustomDeveloperMenu());
 
 #ifdef _DEBUG
     instanceSettings.UseDeveloperSupport(true);
@@ -155,12 +137,24 @@ void ReactInstance::BreakOnFirstLine(bool breakOnFirstLine)
 
 void ReactInstance::ToggleElementInspector() const
 {
-    DevSettings::ToggleElementInspector();
+    if (!context_) {
+        return;
+    }
+
+    context_.CallJSFunction(L"RCTDeviceEventEmitter", L"emit", L"toggleElementInspector");
 }
 
 bool ReactInstance::UseCustomDeveloperMenu() const
 {
-    return kUseCustomDeveloperMenu;
+    // `ReactInstanceSettings::InstanceLoaded` was introduced in 0.64. Before
+    // then, the only other way to retrieve `ReactContext` is by overriding the
+    // `DevSettings` module, but this breaks web debugging. `ReactContext` is
+    // needed for being able to toggle the element inspector.
+#if REACT_NATIVE_VERSION >= 6400
+    return true;
+#else
+    return false;
+#endif  // REACT_NATIVE_VERSION >= 6400
 }
 
 bool ReactInstance::UseDirectDebugger() const
@@ -180,7 +174,7 @@ void ReactInstance::UseDirectDebugger(bool useDirectDebugger)
 
 bool ReactInstance::UseFastRefresh() const
 {
-    return isFastRefreshAvailable() && RetrieveLocalSetting(kUseFastRefresh, true);
+    return IsFastRefreshAvailable() && RetrieveLocalSetting(kUseFastRefresh, true);
 }
 
 void ReactInstance::UseFastRefresh(bool useFastRefresh)
@@ -191,7 +185,7 @@ void ReactInstance::UseFastRefresh(bool useFastRefresh)
 
 bool ReactInstance::UseWebDebugger() const
 {
-    return isWebDebuggerAvailable() && RetrieveLocalSetting(kUseWebDebugger, false);
+    return IsWebDebuggerAvailable() && RetrieveLocalSetting(kUseWebDebugger, false);
 }
 
 void ReactInstance::UseWebDebugger(bool useWebDebugger)

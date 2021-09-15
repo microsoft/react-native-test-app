@@ -262,13 +262,13 @@ void MainPage::InitializeDebugMenu()
     }
 
     SetWebDebuggerMenuItem(WebDebuggerMenuItem(), reactInstance_.UseWebDebugger());
-    WebDebuggerMenuItem().IsEnabled(reactInstance_.isWebDebuggerAvailable());
+    WebDebuggerMenuItem().IsEnabled(reactInstance_.IsWebDebuggerAvailable());
 
     SetDirectDebuggerMenuItem(DirectDebuggingMenuItem(), reactInstance_.UseDirectDebugger());
     SetBreakOnFirstLineMenuItem(BreakOnFirstLineMenuItem(), reactInstance_.BreakOnFirstLine());
 
     SetFastRefreshMenuItem(FastRefreshMenuItem(), reactInstance_.UseFastRefresh());
-    FastRefreshMenuItem().IsEnabled(reactInstance_.isFastRefreshAvailable());
+    FastRefreshMenuItem().IsEnabled(reactInstance_.IsFastRefreshAvailable());
 
     DebugMenuBarItem().IsEnabled(true);
 }
