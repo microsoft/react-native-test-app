@@ -1,15 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+
+    "noEmit": true,
+
     "allowJs": true,
     "checkJs": true,
-    "noEmit": true,
-    "strict": true,
-    "moduleResolution": "Node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "resolveJsonModule": true
+
+    "forceConsistentCasingInFileNames": true,
+
+    "target": "ESNext"
   },
   "include": [
     "react-native.config.js",
