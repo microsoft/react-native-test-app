@@ -21,6 +21,7 @@
 using ReactTestApp::ReactInstance;
 using winrt::ReactTestApp::implementation::ReactPackageProvider;
 using winrt::Windows::Foundation::IAsyncOperation;
+using winrt::Windows::Foundation::IInspectable;
 using winrt::Windows::Foundation::PropertyValue;
 using winrt::Windows::Foundation::Uri;
 using winrt::Windows::Storage::ApplicationData;
@@ -69,7 +70,7 @@ ReactInstance::ReactInstance()
 
 #if REACT_NATIVE_VERSION >= 6400
     reactNativeHost_.InstanceSettings().InstanceLoaded(
-        [this](winrt::IInspectable const & /*sender*/, InstanceLoadedEventArgs const &args) {
+        [this](IInspectable const & /*sender*/, InstanceLoadedEventArgs const &args) {
             context_ = args.Context();
         });
 #endif  // REACT_NATIVE_VERSION >= 6400
