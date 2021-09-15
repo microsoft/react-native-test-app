@@ -14,6 +14,8 @@
 #include <winrt/Microsoft.ReactNative.h>
 #include <winrt/Windows.Foundation.h>
 
+#include <ReactContext.h>
+
 namespace ReactTestApp
 {
     extern std::vector<std::wstring> const JSBundleNames;
@@ -39,12 +41,12 @@ namespace ReactTestApp
         bool BreakOnFirstLine() const;
         void BreakOnFirstLine(bool);
 
-        bool isFastRefreshAvailable() const
+        bool IsFastRefreshAvailable() const
         {
             return source_ == JSBundleSource::DevServer;
         }
 
-        bool isWebDebuggerAvailable() const
+        bool IsWebDebuggerAvailable() const
         {
             return source_ == JSBundleSource::DevServer;
         }
@@ -64,6 +66,7 @@ namespace ReactTestApp
 
     private:
         winrt::Microsoft::ReactNative::ReactNativeHost reactNativeHost_;
+        winrt::Microsoft::ReactNative::ReactContext context_;
         JSBundleSource source_ = JSBundleSource::DevServer;
     };
 
