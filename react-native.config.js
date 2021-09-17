@@ -71,15 +71,13 @@ module.exports = {
       name: "init-test-app",
       description: "Initializes a new test app project",
       func: (_argv, _config, { destination, name, platform }) => {
-        const {
-          configure,
-          getTargetReactNativeVersion,
-        } = require("./scripts/configure");
+        const { version: targetVersion } = require("react-native/package.json");
+        const { configure } = require("./scripts/configure");
         configure({
           name,
           packagePath: destination,
           testAppPath: __dirname,
-          targetVersion: getTargetReactNativeVersion(),
+          targetVersion,
           platforms: sanitizePlatformChoice(platform),
           flatten: true,
           force: true,
