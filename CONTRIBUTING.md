@@ -37,31 +37,18 @@ Open a terminal and navigate to your clone of this repository:
 cd react-native-test-app
 ```
 
-The first thing we have to do is to tell Yarn that we'd like to link this
-package in another project. This only needs to be done once.
+The first thing we have to do is to install the npm dependencies:
 
 ```sh
-yarn link
-```
-
-You can read more about the command in Yarn's
-[documentation](https://classic.yarnpkg.com/en/docs/cli/link/). Once the link is
-set up, we can go into the Example app folder and install npm dependencies:
-
-```sh
-cd example
 yarn
 ```
 
-Once Yarn is done installing dependencies, we need to tell Yarn to link in
-`react-native-test-app`:
+Once Yarn is done installing dependencies, we need to navigate to the `example`
+folder:
 
 ```sh
-yarn link "react-native-test-app"
+cd example
 ```
-
-Note that this step must be run _after_ having run `yarn`, otherwise it will be
-overwritten.
 
 Now we should be ready to start the app. Jump to the appropriate section below
 for further instructions.

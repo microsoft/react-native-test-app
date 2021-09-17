@@ -1,2 +1,3 @@
-* text=auto
-*.pbxproj -text
+*                  text=auto
+*.pbxproj          -text
+/.yarn/releases/*  binary

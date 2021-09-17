@@ -6,7 +6,8 @@
 .idea/
 .vs/
 .watchman-*
-.yarn-offline-mirror/
+.yarn/*
+!.yarn/releases/
 Pods/
 android/**/build/
 clang-format-diff.py
