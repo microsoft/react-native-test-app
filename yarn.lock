@@ -2346,10 +2346,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^12.0.0":
-  version: 12.20.24
-  resolution: "@types/node@npm:12.20.24"
-  checksum: e7a13460e2f5b0b5a32c0f3af7daf1a05201552a66d542d3cc3b1ea8b52d4730250f9eb1961d755e31cfe5d03c78340911a6242657a0a9a17d6f7e341fc9f366
+"@types/node@npm:^14.0.0":
+  version: 14.17.17
+  resolution: "@types/node@npm:14.17.17"
+  checksum: ec17a5662e8e4dafbf5c7b577b390811f521ea984525c8fae3b90b14222a61832161c74c9a335abe8ef01a59adba578498298a9ccee0d84d71285680f5bc135a
   languageName: node
   linkType: hard
 
@@ -10489,7 +10489,7 @@ fsevents@^2.3.2:
     "@react-native-community/cli-platform-ios": ^4.10.0
     "@types/jest": ^26.0.0
     "@types/mustache": ^4.0.0
-    "@types/node": ^12.0.0
+    "@types/node": ^14.0.0
     "@types/prompts": ~2.0.0
     "@types/rimraf": ^3.0.0
     "@types/semver": ^7.3.6
