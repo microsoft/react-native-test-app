@@ -19,7 +19,11 @@ const templateView = {
 
 // Binary files in React Native Test App Windows project
 const binaryExtensions = [".png", ".pfx"];
+
+/** @type {{ encoding: "utf-8" }} */
 const textFileReadOptions = { encoding: "utf-8" };
+
+/** @type {{ encoding: "utf-8", mode: 0o644 }} */
 const textFileWriteOptions = { encoding: "utf-8", mode: 0o644 };
 
 /**
@@ -542,7 +546,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
           { stdio: "inherit" }
         ).on("close", (code) => {
           if (code !== 0) {
-            process.exit(code);
+            process.exit(code || 1);
           }
         });
       });
