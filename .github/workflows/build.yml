@@ -130,7 +130,9 @@ jobs:
           # https://github.com/microsoft/react-native-macos/issues/620 for more
           # details.
           npm run set-react-version main
+          yarn --no-immutable
       - name: Install
+        if: ${{ github.event_name != 'schedule' }}
         run: |
           yarn
       - name: Build
@@ -220,8 +222,10 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           npm run set-react-version nightly
+          yarn --no-immutable
         shell: bash
       - name: Install
+        if: ${{ github.event_name != 'schedule' }}
         run: |
           yarn
       - name: Test `react-native config`
@@ -311,8 +315,10 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           npm run set-react-version canary-macos
+          yarn --no-immutable
         shell: bash
       - name: Install
+        if: ${{ github.event_name != 'schedule' }}
         run: |
           yarn
       - name: Build
@@ -402,8 +408,10 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           npm run set-react-version canary-windows
+          yarn --no-immutable
         shell: bash
       - name: Install
+        if: ${{ github.event_name != 'schedule' }}
         run: |
           yarn
       - name: Build bundle and create solution
