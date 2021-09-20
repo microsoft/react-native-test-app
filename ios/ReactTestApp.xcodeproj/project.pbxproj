@@ -223,8 +223,8 @@
 		19ECD0CA232ED425003D8557 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1250;
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					19ECD0D1232ED425003D8557 = {
