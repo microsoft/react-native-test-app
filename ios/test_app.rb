@@ -332,6 +332,11 @@ def use_test_app_internal!(target_platform, options)
           config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
           config.build_settings.delete('MACOSX_DEPLOYMENT_TARGET')
         end
+      when /\AFlipper/, 'libevent'
+        target.build_configurations.each do |config|
+          # Flipper and its dependencies log too many warnings
+          config.build_settings['WARNING_CFLAGS'] ||= ['"-w"']
+        end
       when /\AReact/
         target.build_configurations.each do |config|
           # Xcode 10.2 requires suppression of nullability for React
