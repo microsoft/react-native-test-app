@@ -603,6 +603,7 @@ function gatherConfig(params) {
 
         const dependencies = getDependencies && getDependencies(params);
         if (!dependencies) {
+          /* istanbul ignore next */
           return config;
         }
 
@@ -665,16 +666,6 @@ function getAppName(packagePath) {
   }
 
   return "ReactTestApp";
-}
-
-/**
- * Retrieves the version of React Native to target.
- * @returns {string}
- */
-function getTargetReactNativeVersion() {
-  const manifestPath = require.resolve("react-native/package.json");
-  const { version } = readJSONFile(manifestPath);
-  return /** @type {string} */ (version);
 }
 
 /**
@@ -849,7 +840,7 @@ function configure(params) {
 if (require.main === module) {
   /** @type {Platform[]} */
   const platformChoices = ["android", "ios", "macos", "windows"];
-  const targetVersion = getTargetReactNativeVersion();
+  const { version: targetVersion } = require("react-native/package.json");
 
   require("yargs").usage(
     "$0 [options]",
@@ -916,7 +907,6 @@ exports.gatherConfig = gatherConfig;
 exports.getAppName = getAppName;
 exports.getConfig = getConfig;
 exports.getPlatformPackage = getPlatformPackage;
-exports.getTargetReactNativeVersion = getTargetReactNativeVersion;
 exports.isDestructive = isDestructive;
 exports.isInstalled = isInstalled;
 exports.join = join;

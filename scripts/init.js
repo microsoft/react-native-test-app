@@ -8,8 +8,8 @@
 // @ts-check
 
 (async () => {
-  const { configure, getTargetReactNativeVersion } = require("./configure");
-  const targetVersion = getTargetReactNativeVersion();
+  const { version: targetVersion } = require("react-native/package.json");
+  const { configure } = require("./configure");
 
   /**
    * @type {{

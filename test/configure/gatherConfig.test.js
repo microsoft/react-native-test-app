@@ -14,6 +14,12 @@ describe("gatherConfig()", () => {
     expect(gatherConfig(mockParams())).toMatchSnapshot();
   });
 
+  test("returns common configuration", () => {
+    expect(
+      gatherConfig(mockParams({ platforms: ["common"] }))
+    ).toMatchSnapshot();
+  });
+
   test("returns configuration for a single platform", () => {
     expect(gatherConfig(mockParams({ platforms: ["ios"] }))).toMatchSnapshot();
   });

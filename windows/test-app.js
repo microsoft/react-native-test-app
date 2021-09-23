@@ -274,7 +274,7 @@ function getHermesVersion(rnwPath) {
     "JSEngine.props"
   );
   const props = fs.readFileSync(jsEnginePropsPath, textFileReadOptions);
-  const m = props.match(/<HermesVersion.*?>([.\w]+)<\/HermesVersion>/);
+  const m = props.match(/<HermesVersion.*?>(.+?)<\/HermesVersion>/);
   return m && m[1];
 }
 
@@ -602,14 +602,15 @@ if (require.main === module) {
     }
   ).argv;
 } else {
-  exports["copyAndReplace"] = copyAndReplace;
-  exports["findNearest"] = findNearest;
-  exports["findUserProjects"] = findUserProjects;
-  exports["generateSolution"] = generateSolution;
-  exports["getBundleResources"] = getBundleResources;
-  exports["getPackageVersion"] = getPackageVersion;
-  exports["getVersionNumber"] = getVersionNumber;
-  exports["parseResources"] = parseResources;
-  exports["replaceContent"] = replaceContent;
-  exports["toProjectEntry"] = toProjectEntry;
+  exports.copyAndReplace = copyAndReplace;
+  exports.findNearest = findNearest;
+  exports.findUserProjects = findUserProjects;
+  exports.generateSolution = generateSolution;
+  exports.getBundleResources = getBundleResources;
+  exports.getHermesVersion = getHermesVersion;
+  exports.getPackageVersion = getPackageVersion;
+  exports.getVersionNumber = getVersionNumber;
+  exports.parseResources = parseResources;
+  exports.replaceContent = replaceContent;
+  exports.toProjectEntry = toProjectEntry;
 }
