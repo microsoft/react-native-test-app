@@ -203,8 +203,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.3.0
         with:
-          distribution: adopt
-          java-version: 8
+          distribution: temurin
+          java-version: 11
       - name: Set up Node.js
         uses: actions/setup-node@v2.4.0
         with:
@@ -261,8 +261,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.3.0
         with:
-          distribution: adopt
-          java-version: 8
+          distribution: temurin
+          java-version: 11
       - name: Set up Node.js
         uses: actions/setup-node@v2.4.0
         with:
