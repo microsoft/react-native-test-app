@@ -13,17 +13,19 @@ val Context.testApp: TestApp
     get() = applicationContext as TestApp
 
 class TestApp : Application(), ReactApplication {
+    private lateinit var manifestProviderInternal: ManifestProvider
     private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
     private lateinit var reactNativeHostInternal: TestAppReactNativeHost
-    private lateinit var manifestProviderInternal: ManifestProvider
 
     override fun onCreate() {
         super.onCreate()
 
-        reactNativeBundleNameProvider = ReactBundleNameProvider(this)
+        manifestProviderInternal = ManifestProvider.create(this)
+        val (manifest, _) = manifestProvider.fromResources()
+
+        reactNativeBundleNameProvider = ReactBundleNameProvider(this, manifest.bundleRoot)
         reactNativeHostInternal =
             TestAppReactNativeHost(this, reactNativeBundleNameProvider)
-        manifestProviderInternal = ManifestProvider.create(this)
 
         val eventConsumers = PackageList(this).packages
             .filter { it is ReactTestAppLifecycleEvents }

@@ -91,8 +91,9 @@ final class ContentViewController: UITableViewController {
 
         onComponentsRegistered(components, checksum: checksum)
 
+        let bundleRoot = manifest.bundleRoot
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.reactInstance.initReact {
+            self?.reactInstance.initReact(bundleRoot: bundleRoot) {
                 if !components.isEmpty,
                    let index = components.count == 1 ? 0 : Session.lastOpenedComponent(checksum)
                 {

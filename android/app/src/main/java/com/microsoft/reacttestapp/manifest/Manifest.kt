@@ -14,6 +14,7 @@ import com.squareup.moshi.JsonClass
 data class Manifest(
     val name: String,
     val displayName: String,
+    val bundleRoot: String?,
     val components: List<Component>
 )
 

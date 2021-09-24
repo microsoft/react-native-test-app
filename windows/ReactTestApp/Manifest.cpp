@@ -110,11 +110,12 @@ namespace ReactTestApp
     {
         m.name = j.at("name");
         m.displayName = j.at("displayName");
+        m.bundleRoot = get_optional<std::string>(j, "bundleRoot");
         m.components = get_optional<std::vector<Component>>(j, "components")
                            .value_or(std::vector<Component>{});
     }
 
-    std::optional<std::pair<Manifest, std::string>> GetManifest(std::string const &filename)
+    std::optional<Manifest> GetManifest(std::string const &filename)
     {
         std::FILE *stream = nullptr;
         if (fopen_s(&stream, filename.c_str(), "rb") != 0) {
@@ -134,6 +135,8 @@ namespace ReactTestApp
             return std::nullopt;
         }
 
-        return std::make_pair(j.get<Manifest>(), checksum(json));
+        auto manifest = j.get<Manifest>();
+        manifest.checksum = checksum(json);
+        return manifest;
     }
 }  // namespace ReactTestApp

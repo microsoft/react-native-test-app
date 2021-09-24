@@ -20,11 +20,12 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 
     var remoteBundleURL: URL? {
         didSet {
-            initReact(onDidInitialize: { /* noop */ })
+            initReact(bundleRoot: bundleRoot, onDidInitialize: { /* noop */ })
         }
     }
 
     private(set) var bridge: RCTBridge?
+    private var bundleRoot: String?
 
     override init() {
         #if DEBUG
@@ -96,7 +97,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         assert(forTestingPurposesOnly)
     }
 
-    func initReact(onDidInitialize: @escaping () -> Void) {
+    func initReact(bundleRoot: String?, onDidInitialize: @escaping () -> Void) {
         if let bridge = bridge {
             if remoteBundleURL == nil {
                 // When loading the embedded bundle, we must disable remote
@@ -107,6 +108,8 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             RTATriggerReloadCommand(bridge, "ReactTestApp")
             return
         }
+
+        self.bundleRoot = bundleRoot
 
         NotificationCenter.default.post(
             name: .ReactTestAppWillInitializeReactNative,
@@ -135,29 +138,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             return remoteBundleURL
         }
 
-        #if os(iOS)
-            let possibleEntryFiles = [
-                "index.ios",
-                "main.ios",
-                "index.mobile",
-                "main.mobile",
-                "index.native",
-                "main.native",
-                "index",
-                "main",
-            ]
-        #elseif os(macOS)
-            let possibleEntryFiles = [
-                "index.macos",
-                "main.macos",
-                "index.native",
-                "main.native",
-                "index",
-                "main",
-            ]
-        #endif
-
-        let jsBundleURL = possibleEntryFiles
+        let jsBundleURL = entryFiles()
             .lazy
             .map {
                 Bundle.main.url(
@@ -175,7 +156,25 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 
     // MARK: - Private
 
-    @objc private func onJavaScriptLoaded(_ notification: Notification) {
+    private func entryFiles() -> [String] {
+        #if os(iOS)
+            let extensions = [".ios", ".mobile", ".native", ""]
+        #elseif os(macOS)
+            let extensions = [".macos", ".native", ""]
+        #endif
+
+        guard let bundleRoot = bundleRoot else {
+            return extensions.reduce(into: []) { files, ext in
+                files.append("index" + ext)
+                files.append("main" + ext)
+            }
+        }
+
+        return extensions.map { bundleRoot + $0 }
+    }
+
+    @objc
+    private func onJavaScriptLoaded(_ notification: Notification) {
         guard let bridge = notification.userInfo?["bridge"] as? RCTBridge,
               let currentBundleURL = bridge.bundleURL
         else {
@@ -217,7 +216,8 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         }
     }
 
-    @objc private func onJavaScriptLoading(_ notification: Notification) {
+    @objc
+    private func onJavaScriptLoading(_ notification: Notification) {
         guard self.bridge != nil else {
             // This is a cold boot. The bridge will be set in initReact(onDidInitialize:).
             return
@@ -229,7 +229,8 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         }
     }
 
-    @objc private func onRemoteBundleURLReceived(_ notification: Notification) {
+    @objc
+    private func onRemoteBundleURLReceived(_ notification: Notification) {
         guard let value = notification.userInfo?["value"] as? String,
               var urlComponents = URLComponents(string: value)
         else {

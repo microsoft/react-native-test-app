@@ -11,7 +11,6 @@
 #include <map>
 #include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 
 namespace ReactTestApp
@@ -26,9 +25,11 @@ namespace ReactTestApp
     struct Manifest {
         std::string name;
         std::string displayName;
+        std::optional<std::string> bundleRoot;
         std::vector<Component> components;
+        std::string checksum;
     };
 
-    std::optional<std::pair<Manifest, std::string>> GetManifest(std::string const &filename);
+    std::optional<Manifest> GetManifest(std::string const &filename);
 
 }  // namespace ReactTestApp

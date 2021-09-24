@@ -140,7 +140,17 @@ MainPage::MainPage()
 {
     InitializeComponent();
     InitializeTitleBar();
-    InitializeReactMenu();
+
+    auto manifest = ::ReactTestApp::GetManifest("app.json");
+    if (manifest.has_value()) {
+        auto &m = manifest.value();
+        reactInstance_.BundleRoot(m.bundleRoot.has_value()
+                                      ? std::make_optional(to_hstring(m.bundleRoot.value()))
+                                      : std::nullopt);
+        manifestChecksum_ = std::move(m.checksum);
+    }
+
+    InitializeReactMenu(std::move(manifest));
 }
 
 IAsyncAction MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
@@ -247,7 +257,7 @@ void MainPage::LoadReactComponent(Component const &component)
         }
 
         InitializeReactRootView(DialogReactRootView(), component);
-        ContentDialog().Title(winrt::box_value(title));
+        ContentDialog().Title(box_value(title));
         ContentDialog().ShowAsync();
     } else {
         if (ReactRootView().ReactNativeHost() == nullptr) {
@@ -277,13 +287,12 @@ void MainPage::InitializeDebugMenu()
     DebugMenuBarItem().IsEnabled(true);
 }
 
-void MainPage::InitializeReactMenu()
+void MainPage::InitializeReactMenu(std::optional<::ReactTestApp::Manifest> manifest)
 {
     RememberLastComponentMenuItem().IsChecked(Session::ShouldRememberLastComponent());
 
-    auto result = ::ReactTestApp::GetManifest("app.json");
     auto menuItems = ReactMenuBarItem().Items();
-    if (!result.has_value()) {
+    if (!manifest.has_value()) {
         MenuFlyoutItem newMenuItem;
         newMenuItem.Text(L"Couldn't parse 'app.json'");
         newMenuItem.IsEnabled(false);
@@ -291,12 +300,9 @@ void MainPage::InitializeReactMenu()
         return;
     }
 
-    auto &&[manifest, checksum] = result.value();
-    manifestChecksum_ = std::move(checksum);
+    AppTitle().Text(to_hstring(manifest->displayName));
 
-    AppTitle().Text(to_hstring(manifest.displayName));
-
-    auto &components = manifest.components;
+    auto &components = manifest->components;
     if (components.empty()) {
         reactInstance_.SetComponentsRegisteredDelegate(
             [this](std::vector<std::string> const &appKeys) {
@@ -374,7 +380,7 @@ void MainPage::OnComponentsRegistered(std::vector<Component> components)
         auto &component = components[i];
 
         MenuFlyoutItem newMenuItem;
-        newMenuItem.Text(winrt::to_hstring(component.displayName.value_or(component.appKey)));
+        newMenuItem.Text(to_hstring(component.displayName.value_or(component.appKey)));
         newMenuItem.Click(
             [this, component = std::move(component), i](IInspectable const &, RoutedEventArgs) {
                 LoadReactComponent(component);

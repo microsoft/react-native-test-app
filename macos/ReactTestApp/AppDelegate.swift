@@ -69,8 +69,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         onComponentsRegistered(components, enable: false)
 
+        let bundleRoot = manifest.bundleRoot
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.reactInstance.initReact {
+            self?.reactInstance.initReact(bundleRoot: bundleRoot) {
                 DispatchQueue.main.async { [weak self] in
                     guard let strongSelf = self, !components.isEmpty else {
                         return
