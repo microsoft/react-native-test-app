@@ -13,6 +13,7 @@
     <ItemGroup>
         <ClCompile Include="$(ReactTestAppDir)\pch.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\App.cpp" />
+        <ClCompile Include="$(ReactTestAppDir)\..\..\common\AppRegistry.cpp" />
         <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp" />
         <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
@@ -23,6 +24,7 @@
     <ItemGroup>
         <ClInclude Include="$(ReactTestAppDir)\pch.h" />
         <ClInclude Include="$(ReactTestAppDir)\App.h" />
+        <ClInclude Include="$(ReactTestAppDir)\..\..\common\AppRegistry.h" />
         <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
         <ClInclude Include="$(ReactTestAppDir)\MainPage.h" />
         <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />

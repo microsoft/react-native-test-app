@@ -14,6 +14,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private(set) lazy var reactInstance = ReactInstance()
 
+    private var isPresenting: Bool {
+        !(mainWindow?.contentViewController is ViewController)
+    }
+
     private weak var mainWindow: NSWindow?
     private var manifestChecksum: String?
 
@@ -41,24 +45,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        manifest.components.enumerated().forEach { index, component in
-            let title = component.displayName ?? component.appKey
-            let item = reactMenu.addItem(
-                withTitle: title,
-                action: #selector(onComponentSelected),
-                keyEquivalent: index < 9 ? String(index + 1) : ""
+        let components = manifest.components ?? []
+        if components.isEmpty {
+            NotificationCenter.default.addObserver(
+                forName: .ReactTestAppDidRegisterApps,
+                object: nil,
+                queue: .main,
+                using: { [weak self] note in
+                    guard let strongSelf = self,
+                          let appKeys = note.userInfo?["appKeys"] as? [String]
+                    else {
+                        return
+                    }
+
+                    let components = appKeys.map { Component(appKey: $0) }
+                    strongSelf.onComponentsRegistered(components, enable: true)
+                    if components.count == 1, !strongSelf.isPresenting {
+                        strongSelf.present(components[0])
+                    }
+                }
             )
-            item.tag = index
-            item.keyEquivalentModifierMask = [.shift, .command]
-            item.isEnabled = false
-            item.representedObject = component
         }
 
-        let components = manifest.components
+        onComponentsRegistered(components, enable: false)
+
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.reactInstance.initReact {
-                DispatchQueue.main.async {
-                    guard let strongSelf = self else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let strongSelf = self, !components.isEmpty else {
                         return
                     }
 
@@ -124,6 +138,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         static let modalSize = CGSize(width: 586, height: 326)
     }
 
+    private func onComponentsRegistered(_ components: [Component], enable: Bool) {
+        removeAllComponentsFromMenu()
+        components.enumerated().forEach { index, component in
+            let title = component.displayName ?? component.appKey
+            let item = reactMenu.addItem(
+                withTitle: title,
+                action: #selector(onComponentSelected),
+                keyEquivalent: index < 9 ? String(index + 1) : ""
+            )
+            item.tag = index
+            item.keyEquivalentModifierMask = [.shift, .command]
+            item.isEnabled = enable
+            item.representedObject = component
+        }
+    }
+
     private func present(_ component: Component) {
         guard let window = mainWindow,
               let bridge = reactInstance.bridge
@@ -170,6 +200,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let frame = window.contentViewController?.view.frame
             viewController.view.frame = frame ?? NSRect(size: WindowSize.defaultSize)
             window.contentViewController = viewController
+        }
+    }
+
+    private func removeAllComponentsFromMenu() {
+        let numberOfItems = reactMenu.numberOfItems
+        for reverseIndex in 1 ... numberOfItems {
+            let index = numberOfItems - reverseIndex
+            guard let item = reactMenu.item(at: index) else {
+                preconditionFailure()
+            }
+            if item.isSeparatorItem == true {
+                break
+            }
+            reactMenu.removeItem(at: index)
         }
     }
 }

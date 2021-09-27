@@ -61,6 +61,8 @@ namespace winrt::ReactTestApp::implementation
         bool LoadJSBundleFrom(::ReactTestApp::JSBundleSource);
         void LoadReactComponent(::ReactTestApp::Component const &);
 
+        void OnComponentsRegistered(std::vector<::ReactTestApp::Component>);
+
         void OnCoreTitleBarLayoutMetricsChanged(
             Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &,
             Windows::Foundation::IInspectable const &);

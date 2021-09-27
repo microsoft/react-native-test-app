@@ -12,12 +12,18 @@
 #include <NativeModules.h>
 #include <filesystem>
 
+#if __has_include(<JSI/JsiApiContext.h>)
+#include <JSI/JsiApiContext.h>
+#endif
+
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Web.Http.Headers.h>
 
+#include "AppRegistry.h"
 #include "AutolinkedNativeModules.g.h"
 #include "ReactPackageProvider.h"
 
+using facebook::jsi::Runtime;
 using ReactTestApp::ReactInstance;
 using winrt::ReactTestApp::implementation::ReactPackageProvider;
 using winrt::Windows::Foundation::IAsyncOperation;
@@ -72,6 +78,24 @@ ReactInstance::ReactInstance()
     reactNativeHost_.InstanceSettings().InstanceLoaded(
         [this](IInspectable const & /*sender*/, InstanceLoadedEventArgs const &args) {
             context_ = args.Context();
+
+#if __has_include(<JSI/JsiApiContext.h>)
+            if (!onComponentsRegistered_) {
+                return;
+            }
+
+            winrt::Microsoft::ReactNative::ExecuteJsi(context_, [this](Runtime &runtime) noexcept {
+                try {
+                    onComponentsRegistered_(ReactTestApp::GetAppKeys(runtime));
+                } catch ([[maybe_unused]] std::exception const &e) {
+#if defined(_DEBUG) && !defined(DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION)
+                    if (IsDebuggerPresent()) {
+                        __debugbreak();
+                    }
+#endif  // defined(_DEBUG) && !defined(DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION)
+                }
+            });
+#endif  // __has_include(<JSI/JsiApiContext.h>)
         });
 #endif  // REACT_NATIVE_VERSION >= 6400
 }

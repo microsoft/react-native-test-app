@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <functional>
 #include <optional>
 #include <string>
 #include <vector>
@@ -24,6 +25,8 @@ namespace ReactTestApp
         DevServer,
         Embedded,
     };
+
+    using OnComponentsRegistered = std::function<void(std::vector<std::string> const &)>;
 
     class ReactInstance
     {
@@ -51,6 +54,12 @@ namespace ReactTestApp
             return source_ == JSBundleSource::DevServer;
         }
 
+        template <typename F>
+        void SetComponentsRegisteredDelegate(F &&f)
+        {
+            onComponentsRegistered_ = std::forward<F>(f);
+        }
+
         void ToggleElementInspector() const;
 
         bool UseCustomDeveloperMenu() const;
@@ -68,6 +77,7 @@ namespace ReactTestApp
         winrt::Microsoft::ReactNative::ReactNativeHost reactNativeHost_;
         winrt::Microsoft::ReactNative::ReactContext context_;
         JSBundleSource source_ = JSBundleSource::DevServer;
+        OnComponentsRegistered onComponentsRegistered_;
     };
 
     std::optional<std::wstring> GetBundleName();

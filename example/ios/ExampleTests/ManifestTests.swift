@@ -20,15 +20,21 @@ class ManifestTests: XCTestCase {
 
         XCTAssertEqual(manifest.name, "Example")
         XCTAssertEqual(manifest.displayName, "Example")
-        XCTAssertEqual(manifest.components.count, 2)
 
-        let component = manifest.components[0]
+        guard let components = manifest.components else {
+            XCTFail("Failed to parse 'components'")
+            return
+        }
+
+        XCTAssertEqual(components.count, 2)
+
+        let component = components[0]
         XCTAssertEqual(component.appKey, "Example")
         XCTAssertEqual(component.displayName, "App")
         XCTAssertNil(component.presentationStyle)
         XCTAssertNil(component.initialProperties)
 
-        let modalComponent = manifest.components[1]
+        let modalComponent = components[1]
         XCTAssertEqual(modalComponent.appKey, "Example")
         XCTAssertEqual(modalComponent.displayName, "App (modal)")
         XCTAssertEqual(modalComponent.presentationStyle, "modal")
@@ -36,23 +42,24 @@ class ManifestTests: XCTestCase {
     }
 
     func testMultipleComponents() {
+        let expectedComponents = [
+            Component(
+                appKey: "0",
+                displayName: nil,
+                initialProperties: ["key": "value"],
+                presentationStyle: nil
+            ),
+            Component(
+                appKey: "1",
+                displayName: "1",
+                initialProperties: nil,
+                presentationStyle: nil
+            ),
+        ]
         let expected = Manifest(
             name: "Name",
             displayName: "Display Name",
-            components: [
-                Component(
-                    appKey: "0",
-                    displayName: nil,
-                    initialProperties: ["key": "value"],
-                    presentationStyle: nil
-                ),
-                Component(
-                    appKey: "1",
-                    displayName: "1",
-                    initialProperties: nil,
-                    presentationStyle: nil
-                ),
-            ]
+            components: expectedComponents
         )
 
         let json = """
@@ -61,12 +68,12 @@ class ManifestTests: XCTestCase {
                 "displayName": "\(expected.displayName)",
                 "components": [
                     {
-                        "appKey": "\(expected.components[0].appKey)",
+                        "appKey": "\(expectedComponents[0].appKey)",
                         "initialProperties": { "key": "value" }
                     },
                     {
-                        "appKey": "\(expected.components[1].appKey)",
-                        "displayName": "\(expected.components[1].displayName!)"
+                        "appKey": "\(expectedComponents[1].appKey)",
+                        "displayName": "\(expectedComponents[1].displayName!)"
                     }
                 ]
             }
@@ -82,21 +89,23 @@ class ManifestTests: XCTestCase {
 
         XCTAssertEqual(manifest.name, expected.name)
         XCTAssertEqual(manifest.displayName, expected.displayName)
-        XCTAssertEqual(manifest.components.count, expected.components.count)
 
-        XCTAssertEqual(manifest.components[0].appKey,
-                       expected.components[0].appKey)
-        XCTAssertEqual(manifest.components[0].displayName,
-                       expected.components[0].displayName)
-        XCTAssertEqual(manifest.components[0].initialProperties!["key"] as! String,
-                       expected.components[0].initialProperties!["key"] as! String)
+        guard let components = manifest.components else {
+            XCTFail("Failed to parse 'components'")
+            return
+        }
 
-        XCTAssertEqual(manifest.components[1].appKey,
-                       expected.components[1].appKey)
-        XCTAssertEqual(manifest.components[1].displayName,
-                       expected.components[1].displayName)
-        XCTAssertNil(manifest.components[1].initialProperties)
-        XCTAssertNil(expected.components[1].initialProperties)
+        XCTAssertEqual(components.count, expectedComponents.count)
+
+        XCTAssertEqual(components[0].appKey, expectedComponents[0].appKey)
+        XCTAssertEqual(components[0].displayName, expectedComponents[0].displayName)
+        XCTAssertEqual(components[0].initialProperties!["key"] as! String,
+                       expectedComponents[0].initialProperties!["key"] as! String)
+
+        XCTAssertEqual(components[1].appKey, expectedComponents[1].appKey)
+        XCTAssertEqual(components[1].displayName, expectedComponents[1].displayName)
+        XCTAssertNil(components[1].initialProperties)
+        XCTAssertNil(expectedComponents[1].initialProperties)
     }
 
     func testComplexInitialProperties() {
@@ -141,7 +150,7 @@ class ManifestTests: XCTestCase {
 
         guard let data = json.data(using: .utf8),
               let (manifest, _) = Manifest.from(data: data),
-              let component = manifest.components.first,
+              let component = manifest.components?.first,
               let initialProperties = component.initialProperties else {
             XCTFail("Failed to read manifest")
             return
