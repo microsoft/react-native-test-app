@@ -10481,8 +10481,8 @@ fsevents@^2.3.2:
   linkType: soft
 
 "react-native-windows@npm:^0.63.32":
-  version: 0.63.37
-  resolution: "react-native-windows@npm:0.63.37"
+  version: 0.63.38
+  resolution: "react-native-windows@npm:0.63.38"
   dependencies:
     "@babel/runtime": ^7.8.4
     "@react-native-windows/cli": 0.63.13
@@ -10506,7 +10506,7 @@ fsevents@^2.3.2:
   peerDependencies:
     react: 16.13.1
     react-native: ^0.63.0-0
-  checksum: fa0d780dd5d9677a09bf43e94c25eb7a2f380d90b37f3bb65b5d1b6e9719bdc0ae810f075b11ba7ed0569bb5c92c285c2af129d09c386ecb2f105e6d2773b245
+  checksum: 6d02c258aa2544e9f0303c9c5e90e3bffeb4186a8944e9004a22a65e642f63c814be7507b60a73ed445383ec2ee81b4846868d7e62f00d0e8f3e1bc19055541a
   languageName: node
   linkType: hard
 
