@@ -45,7 +45,7 @@ namespace ReactTestAppTests
                 Assert::Fail(L"Couldn't read manifest file");
             }
 
-            auto&& [manifest, checksum] = result.value();
+            auto &manifest = result.value();
 
             Assert::AreEqual(manifest.name, {"Example"});
             Assert::AreEqual(manifest.displayName, {"Example"});
@@ -61,7 +61,7 @@ namespace ReactTestAppTests
                 Assert::Fail(L"Couldn't read manifest file");
             }
 
-            auto&& [manifest, checksum] = result.value();
+            auto &manifest = result.value();
 
             Assert::AreEqual(manifest.name, {"Example"});
             Assert::AreEqual(manifest.displayName, {"Example"});
@@ -86,7 +86,7 @@ namespace ReactTestAppTests
                 Assert::Fail(L"Couldn't read manifest file");
             }
 
-            auto&& [manifest, checksum] = result.value();
+            auto &manifest = result.value();
 
             Assert::AreEqual(manifest.name, {"Name"});
             Assert::AreEqual(manifest.displayName, {"Display Name"});

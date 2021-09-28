@@ -10,6 +10,7 @@
 #include <functional>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <winrt/Microsoft.ReactNative.h>
@@ -19,7 +20,7 @@
 
 namespace ReactTestApp
 {
-    extern std::vector<std::wstring> const JSBundleNames;
+    extern std::vector<std::wstring_view> const JSBundleNames;
 
     enum class JSBundleSource {
         DevServer,
@@ -43,6 +44,16 @@ namespace ReactTestApp
 
         bool BreakOnFirstLine() const;
         void BreakOnFirstLine(bool);
+
+        auto const &BundleRoot() const
+        {
+            return bundleRoot_;
+        }
+
+        void BundleRoot(std::optional<winrt::hstring> bundleRoot)
+        {
+            bundleRoot_ = std::move(bundleRoot);
+        }
 
         bool IsFastRefreshAvailable() const
         {
@@ -76,11 +87,12 @@ namespace ReactTestApp
     private:
         winrt::Microsoft::ReactNative::ReactNativeHost reactNativeHost_;
         winrt::Microsoft::ReactNative::ReactContext context_;
+        std::optional<winrt::hstring> bundleRoot_;
         JSBundleSource source_ = JSBundleSource::DevServer;
         OnComponentsRegistered onComponentsRegistered_;
     };
 
-    std::optional<std::wstring> GetBundleName();
+    std::optional<winrt::hstring> GetBundleName(std::optional<winrt::hstring> const &bundleRoot);
     winrt::Windows::Foundation::IAsyncOperation<bool> IsDevServerRunning();
 
 }  // namespace ReactTestApp

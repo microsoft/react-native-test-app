@@ -55,7 +55,7 @@ namespace winrt::ReactTestApp::implementation
         std::string manifestChecksum_;
 
         void InitializeDebugMenu();
-        void InitializeReactMenu();
+        void InitializeReactMenu(std::optional<::ReactTestApp::Manifest>);
         void InitializeTitleBar();
 
         bool LoadJSBundleFrom(::ReactTestApp::JSBundleSource);

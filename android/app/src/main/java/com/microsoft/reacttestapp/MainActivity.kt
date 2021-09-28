@@ -75,8 +75,6 @@ class MainActivity : ReactActivity() {
         didInitialNavigation = savedInstanceState?.getBoolean("didInitialNavigation", false) == true
 
         val (manifest, checksum) = testApp.manifestProvider.fromResources()
-            ?: throw IllegalStateException("app.json is not provided or TestApp is misconfigured")
-
         val index =
             if (manifest.components.count() == 1) 0 else session.lastOpenedComponent(checksum)
         index?.let {

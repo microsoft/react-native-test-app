@@ -17,20 +17,26 @@ class ManifestProvider(private val context: Context, private val adapter: JsonAd
         }
     }
 
-    fun fromResources(): Pair<Manifest, String>? {
+    private val manifestAndChecksum: Pair<Manifest, String> by lazy {
         val appIdentifier = context.resources
             .getIdentifier("raw/app", null, context.packageName)
 
-        return if (appIdentifier == 0) {
-            null
-        } else {
-            val json = context.resources
-                .openRawResource(appIdentifier)
-                .bufferedReader()
-                .use { it.readText() }
-            val manifest = adapter.fromJson(json)
-            return if (manifest == null) null else Pair(manifest, json.checksum("SHA-256"))
+        if (appIdentifier == 0) {
+            throw IllegalStateException("Could not find `app.json` in the app bundle")
         }
+
+        val json = context.resources
+            .openRawResource(appIdentifier)
+            .bufferedReader()
+            .use { it.readText() }
+        val manifest = adapter.fromJson(json)
+            ?: throw IllegalStateException("Could not parse `app.json`")
+
+        Pair(manifest, json.checksum("SHA-256"))
+    }
+
+    fun fromResources(): Pair<Manifest, String> {
+        return manifestAndChecksum
     }
 }
 

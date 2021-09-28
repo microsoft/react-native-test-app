@@ -54,6 +54,7 @@ struct Component: Decodable {
 struct Manifest: Decodable {
     let name: String
     let displayName: String
+    let bundleRoot: String?
     let components: [Component]?
 
     static func fromFile() -> (Manifest, String)? {

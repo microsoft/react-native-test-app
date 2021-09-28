@@ -59,6 +59,7 @@ class ManifestTests: XCTestCase {
         let expected = Manifest(
             name: "Name",
             displayName: "Display Name",
+            bundleRoot: nil,
             components: expectedComponents
         )
 

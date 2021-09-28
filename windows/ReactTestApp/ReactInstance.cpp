@@ -59,7 +59,7 @@ namespace
     }
 }  // namespace
 
-std::vector<std::wstring> const ReactTestApp::JSBundleNames = {
+std::vector<std::wstring_view> const ReactTestApp::JSBundleNames = {
     L"index.windows",
     L"main.windows",
     L"index.native",
@@ -115,7 +115,7 @@ bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
 #endif
             break;
         case JSBundleSource::Embedded:
-            auto const bundleName = GetBundleName();
+            auto const &bundleName = GetBundleName(bundleRoot_);
             if (!bundleName.has_value()) {
                 return false;
             }
@@ -223,11 +223,26 @@ void ReactInstance::UseWebDebugger(bool useWebDebugger)
     Reload();
 }
 
-std::optional<std::wstring> ReactTestApp::GetBundleName()
+std::optional<winrt::hstring>
+ReactTestApp::GetBundleName(std::optional<winrt::hstring> const &bundleRoot)
 {
-    for (auto &&main : JSBundleNames) {
-        if (std::filesystem::exists(L"Bundle\\" + main + L".bundle")) {
-            return main;
+    constexpr std::wstring_view const bundleExtension = L".bundle";
+
+    std::filesystem::path bundlePath{L"Bundle\\"};
+    if (bundleRoot.has_value()) {
+        std::wstring_view root = bundleRoot.value();
+        for (auto &&ext : {L".windows", L".native", L""}) {
+            bundlePath.replace_filename(root).replace_extension(ext) += bundleExtension;
+            if (std::filesystem::exists(bundlePath)) {
+                return winrt::hstring{bundlePath.stem().wstring()};
+            }
+        }
+    } else {
+        for (auto &&main : JSBundleNames) {
+            bundlePath.replace_filename(main) += bundleExtension;
+            if (std::filesystem::exists(bundlePath)) {
+                return winrt::hstring{main};
+            }
         }
     }
 

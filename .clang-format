@@ -16,7 +16,7 @@ IncludeCategories:
     Priority: 4
   - Regex: '^<React'
     Priority: 4
-  - Regex: '^<[.a-z]+>'
+  - Regex: '^<[._a-z]+>'
     Priority: 2
   - Regex: '^<'
     Priority: 3
