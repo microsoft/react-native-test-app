@@ -22,6 +22,7 @@ fs.copyFile = (...args) => vol.copyFile(...args);
 fs.existsSync = (...args) => vol.existsSync(...args);
 fs.lstat = (...args) => vol.lstat(...args);
 fs.mkdir = (...args) => vol.mkdir(...args);
+fs.readFile = (...args) => vol.readFile(...args);
 fs.readFileSync = (...args) => vol.readFileSync(...args);
 fs.readdirSync = (...args) => vol.readdirSync(...args);
 fs.statSync = (...args) => vol.statSync(...args);

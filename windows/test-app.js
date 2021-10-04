@@ -10,6 +10,30 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const uuidv5 = (() => {
+  try {
+    // @ts-ignore uuid@3.x
+    return require("uuid/v5");
+  } catch (_) {
+    // uuid@7.x and above
+    const { v5 } = require("uuid");
+    return v5;
+  }
+})();
+
+/**
+ * @typedef {{
+ *   assetItems: string[];
+ *   assetItemFilters: string[];
+ *   assetFilters: string[];
+ * }} AssetItems;
+ *
+ * @typedef {{
+ *   assetItems: string;
+ *   assetItemFilters: string;
+ *   assetFilters: string;
+ * }} Assets;
+ */
 
 const templateView = {
   name: "ReactTestApp",
@@ -17,14 +41,40 @@ const templateView = {
   useExperimentalNuget: false,
 };
 
+const uniqueFilterIdentifier = "e48dc53e-40b1-40cb-970a-f89935452892";
+
 // Binary files in React Native Test App Windows project
 const binaryExtensions = [".png", ".pfx"];
+
+/** @type {{ recursive: true, mode: 0o755 }} */
+const mkdirRecursiveOptions = { recursive: true, mode: 0o755 };
 
 /** @type {{ encoding: "utf-8" }} */
 const textFileReadOptions = { encoding: "utf-8" };
 
 /** @type {{ encoding: "utf-8", mode: 0o644 }} */
 const textFileWriteOptions = { encoding: "utf-8", mode: 0o644 };
+
+/**
+ * Copies the specified directory.
+ * @param {string} src
+ * @param {string} dest
+ */
+function copy(src, dest) {
+  fs.mkdir(dest, mkdirRecursiveOptions, (err) => {
+    rethrow(err);
+    fs.readdir(src, { withFileTypes: true }, (err, files) => {
+      rethrow(err);
+      files.forEach((file) => {
+        const source = path.join(src, file.name);
+        const target = path.join(dest, file.name);
+        file.isDirectory()
+          ? copy(source, target)
+          : fs.copyFile(source, target, rethrow);
+      });
+    });
+  });
+}
 
 /**
  * Finds nearest relative path to a file or directory from current path.
@@ -95,6 +145,15 @@ function isErrorLike(e) {
 }
 
 /**
+ * Normalizes specified path.
+ * @param {string} p
+ * @returns {string}
+ */
+function normalizePath(p) {
+  return p.replace(/[/\\]+/g, "\\");
+}
+
+/**
  * Returns a NuGet package entry for specified package id and version.
  * @param {string} id NuGet package id
  * @param {string} version NuGet package version
@@ -105,40 +164,112 @@ function nuGetPackage(id, version) {
 }
 
 /**
- * @param {string[] | { windows?: string[] } | undefined} resources
+ * @param {string[]} resources
  * @param {string} projectPath
- * @param {string} vcxProjectPath
- * @returns {[string, string]} [bundleDirContent, bundleFileContent]
+ * @param {AssetItems} assets
+ * @param {string} currentFilter
+ * @param {string} source
+ * @returns {AssetItems}
  */
-function parseResources(resources, projectPath, vcxProjectPath) {
-  if (!Array.isArray(resources)) {
-    if (resources && resources.windows) {
-      return parseResources(resources.windows, projectPath, vcxProjectPath);
-    }
-    return ["", ""];
-  }
-
-  let bundleDirContent = "";
-  let bundleFileContent = "";
+function generateContentItems(
+  resources,
+  projectPath,
+  assets = { assetFilters: [], assetItemFilters: [], assetItems: [] },
+  currentFilter = "Assets",
+  source = ""
+) {
+  const { assetFilters, assetItemFilters, assetItems } = assets;
   for (const resource of resources) {
+    if (path.basename(resource) === "app.json") {
+      // `app.json` is always included
+      continue;
+    }
+
     const resourcePath = path.relative(projectPath, resource);
     if (!fs.existsSync(resourcePath)) {
       console.warn(`warning: resource with path '${resource}' was not found`);
       continue;
     }
 
-    const relativeResourcePath = path.relative(vcxProjectPath, resourcePath);
     if (fs.statSync(resourcePath).isDirectory()) {
-      bundleDirContent = bundleDirContent.concat(
-        relativeResourcePath,
-        "\\**\\*;"
+      const filter =
+        "Assets\\" +
+        normalizePath(
+          source ? path.relative(source, resource) : path.basename(resource)
+        );
+      const id = uuidv5(filter, uniqueFilterIdentifier);
+      assetFilters.push(
+        `<Filter Include="${filter}">`,
+        `  <UniqueIdentifier>{${id}}</UniqueIdentifier>`,
+        `</Filter>`
+      );
+
+      const files = fs
+        .readdirSync(resourcePath)
+        .map((file) => path.join(resource, file));
+      generateContentItems(
+        files,
+        projectPath,
+        assets,
+        filter,
+        source || path.dirname(resource)
       );
     } else {
-      bundleFileContent = bundleFileContent.concat(relativeResourcePath, ";");
+      const assetPath = normalizePath(path.relative(projectPath, resourcePath));
+      /**
+       * When a resources folder is included in the manifest, the directory
+       * structure within the folder must be maintained. For example, given
+       * `dist/assets`, we must output:
+       *
+       *     `<DestinationFolders>$(OutDir)\\Bundle\\assets\\...</DestinationFolders>`
+       *     `<DestinationFolders>$(OutDir)\\Bundle\\assets\\node_modules\\...</DestinationFolders>`
+       *     ...
+       *
+       * Resource paths are always prefixed with `$(OutDir)\\Bundle`.
+       */
+      const destination =
+        source &&
+        `\\${normalizePath(path.relative(source, path.dirname(resource)))}`;
+      assetItems.push(
+        `<CopyFileToFolders Include="$(ProjectRootDir)\\${assetPath}">`,
+        `  <DestinationFolders>$(OutDir)\\Bundle${destination}</DestinationFolders>`,
+        "</CopyFileToFolders>"
+      );
+      assetItemFilters.push(
+        `<CopyFileToFolders Include="$(ProjectRootDir)\\${assetPath}">`,
+        `  <Filter>${currentFilter}</Filter>`,
+        "</CopyFileToFolders>"
+      );
     }
   }
 
-  return [bundleDirContent, bundleFileContent];
+  return assets;
+}
+
+/**
+ * @param {string[] | { windows?: string[] } | undefined} resources
+ * @param {string} projectPath
+ * @param {string} vcxProjectPath
+ * @returns {Assets}
+ */
+function parseResources(resources, projectPath, vcxProjectPath) {
+  if (!Array.isArray(resources)) {
+    if (resources && resources.windows) {
+      return parseResources(resources.windows, projectPath, vcxProjectPath);
+    }
+    return { assetItems: "", assetItemFilters: "", assetFilters: "" };
+  }
+
+  const { assetItems, assetItemFilters, assetFilters } = generateContentItems(
+    resources,
+    projectPath
+  );
+
+  return {
+    assetItems: assetItems.join("\n    "),
+    assetItemFilters: assetItemFilters.join("\n    "),
+    assetFilters: assetFilters.join("\n    "),
+  };
 }
 
 /**
@@ -196,22 +327,28 @@ function copyAndReplace(
   callback = rethrow
 ) {
   if (binaryExtensions.includes(path.extname(srcPath))) {
-    // Binary file
-    return fs.copyFile(srcPath, destPath, callback);
+    // Treat as binary file
+    fs.copyFile(srcPath, destPath, callback);
+    return;
+  }
+
+  const stat = fs.statSync(srcPath);
+  if (stat.isDirectory()) {
+    copy(srcPath, destPath);
   } else {
-    // Text file
-    return fs.writeFile(
-      destPath,
-      replaceContent(
-        fs.readFileSync(srcPath, textFileReadOptions),
-        replacements
-      ),
-      {
-        encoding: "utf-8",
-        mode: fs.statSync(srcPath).mode,
-      },
-      callback
-    );
+    // Treat as text file
+    fs.readFile(srcPath, textFileReadOptions, (err, data) => {
+      rethrow(err);
+      fs.writeFile(
+        destPath,
+        replaceContent(data, replacements),
+        {
+          encoding: "utf-8",
+          mode: stat.mode,
+        },
+        callback
+      );
+    });
   }
 }
 
@@ -219,11 +356,12 @@ function copyAndReplace(
  * Reads manifest file and and resolves paths to bundle resources.
  * @param {string | null} manifestFilePath Path to the closest manifest file.
  * @param {string} projectFilesDestPath Resolved paths will be relative to this path.
- * @return {{
+ * @returns {{
  *   appName: string;
  *   appxManifest: string;
- *   bundleDirContent: string;
- *   bundleFileContent: string;
+ *   assetItems: string;
+ *   assetItemFilters: string;
+ *   assetFilters: string;
  * }} Application name, and paths to directories and files to include.
  */
 function getBundleResources(manifestFilePath, projectFilesDestPath) {
@@ -238,16 +376,14 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
     try {
       const content = fs.readFileSync(manifestFilePath, textFileReadOptions);
       const { name, resources, windows } = JSON.parse(content);
-      const [bundleDirContent, bundleFileContent] = parseResources(
-        resources,
-        path.dirname(manifestFilePath),
-        projectFilesDestPath
-      );
       return {
         appName: name || defaultName,
         appxManifest: (windows && windows.appxManifest) || defaultAppxManifest,
-        bundleDirContent,
-        bundleFileContent,
+        ...parseResources(
+          resources,
+          path.dirname(manifestFilePath),
+          projectFilesDestPath
+        ),
       };
     } catch (e) {
       if (isErrorLike(e)) {
@@ -263,8 +399,9 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
   return {
     appName: defaultName,
     appxManifest: defaultAppxManifest,
-    bundleDirContent: "",
-    bundleFileContent: "",
+    assetItems: "",
+    assetItemFilters: "",
+    assetFilters: "",
   };
 }
 
@@ -358,7 +495,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   fs.mkdirSync(destPath, { recursive: true });
 
   const manifestFilePath = findNearest("app.json");
-  const { appName, appxManifest, bundleDirContent, bundleFileContent } =
+  const { appName, appxManifest, assetItems, assetItemFilters, assetFilters } =
     getBundleResources(manifestFilePath, projectFilesDestPath);
 
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
@@ -388,14 +525,16 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       : undefined),
     "1000\\.0\\.0": rnWindowsVersion,
     "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
-    "\\$\\(BundleDirContentPaths\\)": bundleDirContent,
-    "\\$\\(BundleFileContentPaths\\)": bundleFileContent,
+    "<!-- ReactTestApp asset items -->": assetItems,
+    "<!-- ReactTestApp asset item filters -->": assetItemFilters,
+    "<!-- ReactTestApp asset filters -->": assetFilters,
     "\\$\\(ReactTestAppPackageManifest\\)": path.normalize(
       path.relative(destPath, path.resolve(appxManifest))
     ),
   };
 
   const copyTasks = [
+    "Assets",
     "AutolinkedNativeModules.g.cpp",
     "AutolinkedNativeModules.g.props",
     "AutolinkedNativeModules.g.targets",
