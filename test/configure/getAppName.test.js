@@ -24,19 +24,21 @@ describe("getAppName()", () => {
   });
 
   test("retrieves name from the app manifest", () => {
-    mockFiles(["app.json", { name: "Example" }]);
+    mockFiles({ "app.json": `{ "name": "Example" }` });
     expect(getAppName(".")).toBe("Example");
     expect(consoleSpy).not.toHaveBeenCalled();
   });
 
   test("falls back to 'ReactTestApp' if `name` is missing or empty", () => {
-    mockFiles(["app.json", {}]);
+    mockFiles({ "app.json": "{}" });
     expect(getAppName(".")).toBe("ReactTestApp");
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
 
-    mockFiles(["app.json", { name: "" }]);
+    consoleSpy.mockReset();
+
+    mockFiles({ "app.json": `{ name: "" }` });
     expect(getAppName(".")).toBe("ReactTestApp");
-
-    expect(consoleSpy).not.toHaveBeenCalled();
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 
   test("falls back to 'ReactTestApp' if the app manifest is missing", () => {

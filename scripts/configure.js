@@ -662,9 +662,10 @@ function getAppName(packagePath) {
       return name;
     }
   } catch (_) {
-    warn("Could not determine app name; using 'ReactTestApp'");
+    // No name? Use fallback.
   }
 
+  warn("Could not determine app name; using 'ReactTestApp'");
   return "ReactTestApp";
 }
 
@@ -715,14 +716,20 @@ function isDestructive(packagePath, { files, oldFiles }) {
 function removeAllFiles(files, destination) {
   /** @type {(p: string, cb: (error?: Error | null) => void) => void} */
   const rimraf = require("rimraf");
-
-  const rethrow = (/** @type {Error | null | undefined} */ error) => {
-    if (error) {
-      throw error;
-    }
-  };
   return Promise.all(
-    files.map((filename) => rimraf(path.join(destination, filename), rethrow))
+    files.map(
+      /** @type {(filename: string) => Promise<void>} */
+      (filename) =>
+        new Promise((resolve, reject) => {
+          rimraf(path.join(destination, filename), (error) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
+          });
+        })
+    )
   );
 }
 

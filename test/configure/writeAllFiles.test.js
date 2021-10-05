@@ -20,7 +20,7 @@ describe("writeAllFiles()", () => {
   });
 
   test("writes all files to disk", async () => {
-    mockFiles(["file-on-disk", 0]);
+    mockFiles({ "file-on-disk": "0" });
     await writeAllFiles(
       {
         file0: { source: "file-on-disk" },
@@ -30,9 +30,9 @@ describe("writeAllFiles()", () => {
       "test"
     );
 
-    expect(fs.readFileSync(path.join("test", "file0"))).toBe("0");
-    expect(fs.readFileSync(path.join("test", "file1"))).toBe("1");
-    expect(fs.readFileSync(path.join("test", "file2"))).toBe("2");
+    expect(fs.readFileSync(path.join("test", "file0"), "utf-8")).toBe("0");
+    expect(fs.readFileSync(path.join("test", "file1"), "utf-8")).toBe("1");
+    expect(fs.readFileSync(path.join("test", "file2"), "utf-8")).toBe("2");
   });
 
   test("ignores files with no content", async () => {
@@ -45,9 +45,9 @@ describe("writeAllFiles()", () => {
       "."
     );
 
-    expect(fs.readFileSync("file1")).toBe("1");
-    expect(fs.readFileSync("file2")).toBe("2");
-    expect(fs.readFileSync("file3")).toBeUndefined();
+    expect(fs.readFileSync("file1", "utf-8")).toBe("1");
+    expect(fs.readFileSync("file2", "utf-8")).toBe("2");
+    expect(() => fs.readFileSync("file3")).toThrowError("ENOENT");
   });
 
   test("rethrows write exceptions", async () => {
@@ -76,8 +76,8 @@ describe("writeAllFiles()", () => {
       )
     ).rejects.toThrow();
 
-    expect(fs.readFileSync("file1")).toBe("1");
-    expect(fs.readFileSync("file2")).toBe("2");
-    expect(fs.readFileSync("")).toBeUndefined();
+    expect(fs.readFileSync("file1", "utf-8")).toBe("1");
+    expect(fs.readFileSync("file2", "utf-8")).toBe("2");
+    expect(() => fs.readFileSync("")).toThrowError("EISDIR");
   });
 });

@@ -186,12 +186,18 @@ function toProjectEntry(project, destPath) {
  * Copies a file to given destination, replacing parts of its contents.
  * @param {string} srcPath Path to the file to be copied.
  * @param {string} destPath Destination path.
- * @param {{ [pattern: string]: string }=} replacements e.g. {'TextToBeReplaced': 'Replacement'}
+ * @param {{ [pattern: string]: string }} replacements e.g. {'TextToBeReplaced': 'Replacement'}
+ * @param {(error: Error | null) => void} callback Callback for when the copy operation is done.
  */
-function copyAndReplace(srcPath, destPath, replacements = {}) {
+function copyAndReplace(
+  srcPath,
+  destPath,
+  replacements = {},
+  callback = rethrow
+) {
   if (binaryExtensions.includes(path.extname(srcPath))) {
     // Binary file
-    return fs.copyFile(srcPath, destPath, rethrow);
+    return fs.copyFile(srcPath, destPath, callback);
   } else {
     // Text file
     return fs.writeFile(
@@ -204,7 +210,7 @@ function copyAndReplace(srcPath, destPath, replacements = {}) {
         encoding: "utf-8",
         mode: fs.statSync(srcPath).mode,
       },
-      rethrow
+      callback
     );
   }
 }

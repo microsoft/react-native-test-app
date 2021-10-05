@@ -105,6 +105,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.21.0",
     "jest": "^27.0.0",
+    "memfs": "^3.3.0",
     "prettier": "^2.3.1",
     "react": "16.13.1",
     "react-native": "^0.63.4",
