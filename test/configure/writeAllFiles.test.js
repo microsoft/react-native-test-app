@@ -47,7 +47,7 @@ describe("writeAllFiles()", () => {
 
     expect(fs.readFileSync("file1", "utf-8")).toBe("1");
     expect(fs.readFileSync("file2", "utf-8")).toBe("2");
-    expect(() => fs.readFileSync("file3")).toThrowError("ENOENT");
+    expect(() => fs.readFileSync("file3")).toThrow("ENOENT");
   });
 
   test("rethrows write exceptions", async () => {
@@ -78,6 +78,6 @@ describe("writeAllFiles()", () => {
 
     expect(fs.readFileSync("file1", "utf-8")).toBe("1");
     expect(fs.readFileSync("file2", "utf-8")).toBe("2");
-    expect(() => fs.readFileSync("")).toThrowError("EISDIR");
+    expect(() => fs.readFileSync("")).toThrow("EISDIR");
   });
 });
