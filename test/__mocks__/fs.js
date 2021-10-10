@@ -6,13 +6,6 @@
 //
 "use strict";
 
-/**
- * @typedef {import("fs").MakeDirectoryOptions} MakeDirectoryOptions
- * @typedef {import("fs").NoParamCallback} NoParamCallback
- * @typedef {import("fs").PathLike} PathLike
- * @typedef {import("fs").Stats} Stats
- * @typedef {import("fs").WriteFileOptions} WriteFileOptions
- */
 const fs = jest.createMockFromModule("fs");
 
 const { vol } = require("memfs");
