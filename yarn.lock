@@ -10385,8 +10385,8 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native-macos@npm:^0.63.33":
-  version: 0.63.37
-  resolution: "react-native-macos@npm:0.63.37"
+  version: 0.63.40
+  resolution: "react-native-macos@npm:0.63.40"
   dependencies:
     "@babel/runtime": ^7.0.0
     "@react-native-community/cli": ^4.10.0
@@ -10419,7 +10419,7 @@ fsevents@^2.3.2:
     react: 16.13.1
   bin:
     react-native-macos: cli.js
-  checksum: 1d159949a8e63925e7f36d3e7cedb2c663640608609e6d946f6844a68be28caed0048bae370bdd7cedf9d6a6b9c006086f98c546972b8333185d2c0b004dfade
+  checksum: 2e70d480bb36e7450ded75999837072dffb7523d65fccd663b454e6b0eb07192fed7a7615d578bad3fc1856fd56da55f0d500b2b27bedcd68d6407327afa7050
   languageName: node
   linkType: hard
 
