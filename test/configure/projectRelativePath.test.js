@@ -15,7 +15,7 @@ describe("projectRelativePath()", () => {
       packagePath: "/MyAwesomeLib/example-app",
       testAppPath: "/MyAwesomeLib/node_modules/react-native-test-app",
     });
-    expect(projectRelativePath(params)).toEqual(
+    expect(projectRelativePath(params)).toBe(
       "../../node_modules/react-native-test-app"
     );
   });
@@ -26,7 +26,7 @@ describe("projectRelativePath()", () => {
       testAppPath: "/MyAwesomeLib/node_modules/react-native-test-app",
       flatten: true,
     });
-    expect(projectRelativePath(params)).toEqual(
+    expect(projectRelativePath(params)).toBe(
       "../../node_modules/react-native-test-app"
     );
   });
@@ -38,7 +38,7 @@ describe("projectRelativePath()", () => {
       platforms: ["ios"],
       flatten: true,
     });
-    expect(projectRelativePath(params)).toEqual(
+    expect(projectRelativePath(params)).toBe(
       "../node_modules/react-native-test-app"
     );
   });
@@ -50,7 +50,7 @@ describe("projectRelativePath()", () => {
       flatten: true,
       init: true,
     });
-    expect(projectRelativePath(params)).toEqual(
+    expect(projectRelativePath(params)).toBe(
       "../node_modules/react-native-test-app"
     );
   });
@@ -61,7 +61,7 @@ describe("projectRelativePath()", () => {
       testAppPath: "/MyAwesomeLib/node_modules/react-native-test-app",
       init: true,
     });
-    expect(projectRelativePath(params)).toEqual(
+    expect(projectRelativePath(params)).toBe(
       "../node_modules/react-native-test-app"
     );
   });
@@ -74,7 +74,7 @@ describe("projectRelativePath()", () => {
       flatten: true,
       init: true,
     });
-    expect(projectRelativePath(params)).toEqual(
+    expect(projectRelativePath(params)).toBe(
       "node_modules/react-native-test-app"
     );
   });
