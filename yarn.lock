@@ -2042,11 +2042,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/cli@npm:0.63.13":
-  version: 0.63.13
-  resolution: "@react-native-windows/cli@npm:0.63.13"
+"@react-native-windows/cli@npm:0.63.14":
+  version: 0.63.14
+  resolution: "@react-native-windows/cli@npm:0.63.14"
   dependencies:
     "@react-native-windows/telemetry": ^0.63.5
+    "@xmldom/xmldom": ^0.7.5
     chalk: ^3.0.0
     cli-spinners: ^2.2.0
     envinfo: ^7.5.0
@@ -2061,9 +2062,8 @@ __metadata:
     username: ^5.1.0
     uuid: ^3.3.2
     xml-parser: ^1.2.1
-    xmldom: ^0.5.0
     xpath: ^0.0.27
-  checksum: 5ca3f374fb941467256301b1e567c56a5392004256df398327a4774a120af32b4c6386e002550b90a0b8efb8e0b958d05e279e62af878f6eaff6c1ba04bd3220
+  checksum: 980a4d8b64630046950e1655ff64152e84ddcb875e67d71ca3e783c71db989dec180b089ad001e637d5ac9f78d625ba174d7c49755bdbfb6b35f5b2ddf69c9f3
   languageName: node
   linkType: hard
 
@@ -2508,6 +2508,13 @@ __metadata:
     "@typescript-eslint/types": 4.31.1
     eslint-visitor-keys: ^2.0.0
   checksum: 14a86bf96a41a81feba32f5acbb72539345a33f250b2f17968dc7b9f4ae9eca00209a11dd208b9c6305f5a841a9f809713027c0ed969465e2d62a042d116bdc9
+  languageName: node
+  linkType: hard
+
+"@xmldom/xmldom@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "@xmldom/xmldom@npm:0.7.5"
+  checksum: 8d7ec35c1ef6183b4f621df08e01d7e61f244fb964a4719025e65fe6ac06fac418919be64fb40fe5908e69158ef728f2d936daa082db326fe04603012b5f2a84
   languageName: node
   linkType: hard
 
@@ -10481,11 +10488,11 @@ fsevents@^2.3.2:
   linkType: soft
 
 "react-native-windows@npm:^0.63.32":
-  version: 0.63.39
-  resolution: "react-native-windows@npm:0.63.39"
+  version: 0.63.40
+  resolution: "react-native-windows@npm:0.63.40"
   dependencies:
     "@babel/runtime": ^7.8.4
-    "@react-native-windows/cli": 0.63.13
+    "@react-native-windows/cli": 0.63.14
     abort-controller: ^3.0.0
     anser: ^1.4.9
     base64-js: ^1.1.2
@@ -10506,7 +10513,7 @@ fsevents@^2.3.2:
   peerDependencies:
     react: 16.13.1
     react-native: ^0.63.0-0
-  checksum: ea5db96b59430f658d4ccb6f2feb552f6f70d3fa55aa7b6ef6ddaacfe9912063c933fea984b9dc9840da9216c5e84b303856e14e184390f25ae084cde9f00789
+  checksum: 54b44e1d764a8d7a84150ed3251ba9a79713123103e730759802860bd297509bd299f57193ef34e5826830ee9888bcb96bdc3f306b753c9a419a523cff9459d8
   languageName: node
   linkType: hard
 
@@ -13058,13 +13065,6 @@ typescript@^4.0.0:
   dependencies:
     sax: ^1.2.1
   checksum: ada5101e8221e87e3cf0f339a1bec213a7c91ad56fe453c27fc0f5b88feee67437a5604a08484f72041cd6104e23cf86c5000bc9bf658a01176b01b6daded429
-  languageName: node
-  linkType: hard
-
-"xmldom@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "xmldom@npm:0.5.0"
-  checksum: 6afbfc9f4de847d1e12a3a95e393750a55f6b074881cd3c6192c99421a8548b0687b7851113d6318ff0121615674d3b064924f1c478da1c840757626bdfe4c18
   languageName: node
   linkType: hard
 
