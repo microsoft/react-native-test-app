@@ -51,7 +51,7 @@
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml' 'test/**/*.json')",
     "format:swift": "swiftformat --swiftversion 5.3 ios macos",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | commitlint",
-    "lint:js": "eslint $(git ls-files '*.js') && yarn tsc",
+    "lint:js": "eslint $(git ls-files '*.js') && tsc",
     "lint:kt": "ktlint --relative --verbose 'android/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
     "lint:swift": "swiftlint",
