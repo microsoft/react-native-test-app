@@ -236,7 +236,8 @@ def make_project!(xcodeproj, project_root, target_platform)
   # Shared code lives in `ios/ReactTestApp/`
   if target_platform != :ios
     source = File.expand_path('ReactTestApp', __dir__)
-    FileUtils.ln_sf(source, File.join(destination, 'ReactTestAppShared'))
+    shared_path = File.join(destination, 'ReactTestAppShared')
+    FileUtils.ln_sf(source, shared_path) unless File.exist?(shared_path)
   end
 
   react_native = react_native_path(project_root, target_platform)
