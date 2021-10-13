@@ -4,10 +4,6 @@
 buildDir = "$rootDir/$name/build"
 
 def reactNativeDir = findNodeModulesPath(rootDir, "react-native")
-def hermesEngineDir =
-    findNodeModulesPath(file(reactNativeDir), "hermes-engine")
-        ?: findNodeModulesPath(file(reactNativeDir), "hermesvm")
-def hermesAndroidDir = "$hermesEngineDir/android"
 
 buildscript {
     def androidDir = "${buildscript.sourceFile.getParent()}/../"
@@ -112,8 +108,18 @@ android {
 dependencies {
     implementation project(":support")
 
-    releaseImplementation files("$hermesAndroidDir/hermes-release.aar")
-    debugImplementation files("$hermesAndroidDir/hermes-debug.aar")
+    if (project.ext.react.enableHermes) {
+        def hermesEngineDir =
+            findNodeModulesPath(file(reactNativeDir), "hermes-engine")
+                ?: findNodeModulesPath(file(reactNativeDir), "hermesvm")
+        if (hermesEngineDir == null) {
+            throw new GradleException("Could not find 'hermes-engine'. Please make sure you've added it to 'package.json'.")
+        }
+
+        def hermesAndroidDir = "$hermesEngineDir/android"
+        releaseImplementation files("$hermesAndroidDir/hermes-release.aar")
+        debugImplementation files("$hermesAndroidDir/hermes-debug.aar")
+    }
 
     if (buildReactNativeFromSource(rootDir)) {
         implementation project(':ReactAndroid')
