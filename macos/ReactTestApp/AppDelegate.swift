@@ -26,6 +26,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_: Notification) {
+        defer {
+            NotificationCenter.default.post(
+                name: .ReactTestAppDidInitialize,
+                object: nil
+            )
+        }
+
         // `keyWindow` might be `nil` while loading or when the window is not
         // active. Use `identifier` to find our main window.
         let windows = NSApplication.shared.windows
