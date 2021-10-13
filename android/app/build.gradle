@@ -128,6 +128,7 @@ dependencies {
     }
 
     implementation libraries.kotlinStdlibJdk7
+    implementation libraries.kotlinReflect
     implementation libraries.androidAppCompat
     implementation libraries.androidCoreKotlinExtensions
     implementation libraries.androidRecyclerView
