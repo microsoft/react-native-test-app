@@ -32,7 +32,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 object: nil
             )
         }
-         
+
         // `keyWindow` might be `nil` while loading or when the window is not
         // active. Use `identifier` to find our main window.
         let windows = NSApplication.shared.windows
