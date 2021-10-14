@@ -19,7 +19,7 @@
 #import <React/RCTVersion.h>
 #pragma clang diagnostic pop
 
-#import <ReactTestApp-DevSupport/ReactTestApp-DevSupport.h>
+@import ReactTestApp_DevSupport;
 
 #if USE_FLIPPER
 #import <FlipperKit/FlipperClient.h>
