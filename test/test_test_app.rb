@@ -127,11 +127,26 @@ class TestTestApp < Minitest::Test
       assert_nil(bundle_identifier(fixture_path('without_resources'), target))
     end
 
+    define_method("test_#{target}_code_sign_settings") do
+      %w[codeSignEntitlements codeSignIdentity developmentTeam].each do |setting|
+        assert_equal("#{setting}-#{target}",
+                     platform_config(setting, fixture_path('with_platform_resources'), target))
+        assert_nil(platform_config(setting, fixture_path('without_platform_resources'), target))
+        assert_nil(platform_config(setting, fixture_path('without_resources'), target))
+      end
+    end
+
     define_method("test_#{target}_react_native_path") do
       assert_equal("react-native-#{target}",
-                   react_native_from_manifest(fixture_path('with_platform_resources'), target))
-      assert_nil(react_native_from_manifest(fixture_path('without_platform_resources'), target))
-      assert_nil(react_native_from_manifest(fixture_path('without_resources'), target))
+                   platform_config('reactNativePath',
+                                   fixture_path('with_platform_resources'),
+                                   target))
+      assert_nil(platform_config('reactNativePath',
+                                 fixture_path('without_platform_resources'),
+                                 target))
+      assert_nil(platform_config('reactNativePath',
+                                 fixture_path('without_resources'),
+                                 target))
     end
 
     define_method("test_#{target}_resources_pod_returns_spec_path") do

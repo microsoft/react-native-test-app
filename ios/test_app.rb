@@ -56,11 +56,6 @@ def bundle_identifier(project_root, target_platform)
   @test_app_bundle_identifier
 end
 
-def react_native_from_manifest(project_root, target_platform)
-  react_native_path = platform_config('reactNativePath', project_root, target_platform)
-  return react_native_path if react_native_path.is_a? String
-end
-
 def find_project_root
   podfile_path = Thread.current.backtrace_locations.find do |location|
     File.basename(location.absolute_path) == 'Podfile'
@@ -95,8 +90,8 @@ def project_path(file, target_platform)
 end
 
 def react_native_path(project_root, target_platform)
-  react_native_path = react_native_from_manifest(project_root, target_platform)
-  return Pathname.new(resolve_module(react_native_path)) unless react_native_path.nil?
+  react_native_path = platform_config('reactNativePath', project_root, target_platform)
+  return Pathname.new(resolve_module(react_native_path)) if react_native_path.is_a? String
 
   react_native = case target_platform
                  when :ios then 'react-native'
@@ -282,8 +277,8 @@ def make_project!(xcodeproj, project_root, target_platform)
         "USE_FLIPPER=#{use_flipper ? 1 : 0}",
       ]
 
-      build_settings.each do |key, value|
-        config.build_settings[key] = value
+      build_settings.each do |setting, value|
+        config.build_settings[setting] = value
       end
 
       next unless use_flipper
