@@ -34,9 +34,9 @@ const profiles = {
   },
   0.64: {
     react: "17.0.1",
-    "react-native": "^0.64.2",
-    "react-native-macos": undefined,
-    "react-native-windows": "^0.64.11",
+    "react-native": "^0.64.3",
+    "react-native-macos": "^0.64.6",
+    "react-native-windows": "^0.64.25",
   },
   0.65: {
     "hermes-engine": "~0.8.1",
