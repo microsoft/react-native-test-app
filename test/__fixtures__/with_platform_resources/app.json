@@ -16,13 +16,13 @@
     "codeSignEntitlements": "codeSignEntitlements-ios",
     "codeSignIdentity": "codeSignIdentity-ios",
     "developmentTeam": "developmentTeam-ios",
-    "reactNativePath": "react-native-ios"
+    "reactNativePath": "reactNativePath-ios"
   },
   "macos": {
     "bundleIdentifier": "com.react.ReactTestApp-macos",
     "codeSignEntitlements": "codeSignEntitlements-macos",
     "codeSignIdentity": "codeSignIdentity-macos",
     "developmentTeam": "developmentTeam-macos",
-    "reactNativePath": "react-native-macos"
+    "reactNativePath": "reactNativePath-macos"
   }
 }
