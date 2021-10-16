@@ -41,29 +41,23 @@ def autolink_script_version
   package_version(resolve_module('@react-native-community/cli-platform-ios'))
 end
 
-def platform_config(project_root, target_platform)
+def platform_config(key, project_root, target_platform)
   manifest = app_manifest(project_root)
   return if manifest.nil?
 
   config = manifest[target_platform.to_s]
-  return config if !config.nil? && !config.empty?
+  return config[key] if !config.nil? && !config.empty?
 end
 
 def bundle_identifier(project_root, target_platform)
-  config = platform_config(project_root, target_platform)
-  return if config.nil?
-
-  bundle_identifier = config['bundleIdentifier']
+  bundle_identifier = platform_config('bundleIdentifier', project_root, target_platform)
   return bundle_identifier if bundle_identifier.is_a? String
 
   @test_app_bundle_identifier
 end
 
 def react_native_from_manifest(project_root, target_platform)
-  config = platform_config(project_root, target_platform)
-  return if config.nil?
-
-  react_native_path = config['reactNativePath']
+  react_native_path = platform_config('reactNativePath', project_root, target_platform)
   return react_native_path if react_native_path.is_a? String
 end
 
@@ -245,8 +239,33 @@ def make_project!(xcodeproj, project_root, target_platform)
   version = version[0] * 10_000 + version[1] * 100 + version[2]
   version_macro = "REACT_NATIVE_VERSION=#{version}"
 
+  build_settings = {}
+
+  code_sign_entitlements = platform_config('codeSignEntitlements', project_root, target_platform)
+  if code_sign_entitlements.is_a? String
+    package_root = File.dirname(find_file('app.json', project_root))
+    entitlements = Pathname.new(File.join(package_root, code_sign_entitlements))
+    build_settings['CODE_SIGN_ENTITLEMENTS'] = entitlements.relative_path_from(destination).to_s
+  end
+
+  code_sign_identity = platform_config('codeSignIdentity', project_root, target_platform)
+  build_settings['CODE_SIGN_IDENTITY'] = code_sign_identity if code_sign_identity.is_a? String
+
+  development_team = platform_config('developmentTeam', project_root, target_platform)
+  build_settings['DEVELOPMENT_TEAM'] = development_team if development_team.is_a? String
+
   product_bundle_identifier = bundle_identifier(project_root, target_platform)
+  if product_bundle_identifier.is_a? String
+    build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = product_bundle_identifier
+  end
+
   product_name = display_name || name
+  build_settings['PRODUCT_DISPLAY_NAME'] = if product_name.is_a? String
+                                             product_name
+                                           else
+                                             target.name
+                                           end
+
   supports_flipper = target_platform == :ios && flipper_enabled?(version)
 
   app_project = Xcodeproj::Project.open(dst_xcodeproj)
@@ -263,15 +282,9 @@ def make_project!(xcodeproj, project_root, target_platform)
         "USE_FLIPPER=#{use_flipper ? 1 : 0}",
       ]
 
-      if product_bundle_identifier.is_a? String
-        config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = product_bundle_identifier
+      build_settings.each do |key, value|
+        config.build_settings[key] = value
       end
-
-      config.build_settings['PRODUCT_DISPLAY_NAME'] = if product_name.is_a? String
-                                                        product_name
-                                                      else
-                                                        target.name
-                                                      end
 
       next unless use_flipper
 
