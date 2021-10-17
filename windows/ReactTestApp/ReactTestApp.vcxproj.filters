@@ -1,54 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <ItemGroup>
-        <ApplicationDefinition Include="$(ReactTestAppDir)\App.xaml" />
-    </ItemGroup>
-    <ItemGroup>
-        <Page Include="$(ReactTestAppDir)\MainPage.xaml" />
-    </ItemGroup>
-    <ItemGroup>
-        <Midl Include="$(ReactTestAppDir)\App.idl" />
-        <Midl Include="$(ReactTestAppDir)\MainPage.idl" />
-    </ItemGroup>
-    <ItemGroup>
-        <ClCompile Include="$(ReactTestAppDir)\pch.cpp" />
-        <ClCompile Include="$(ReactTestAppDir)\App.cpp" />
-        <ClCompile Include="$(ReactTestAppDir)\..\..\common\AppRegistry.cpp" />
-        <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
-        <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp" />
-        <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
-        <ClCompile Include="$(ReactTestAppDir)\ReactInstance.cpp" />
-        <ClCompile Include="$(ReactTestAppDir)\ReactPackageProvider.cpp" />
-        <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    </ItemGroup>
-    <ItemGroup>
-        <ClInclude Include="$(ReactTestAppDir)\pch.h" />
-        <ClInclude Include="$(ReactTestAppDir)\App.h" />
-        <ClInclude Include="$(ReactTestAppDir)\..\..\common\AppRegistry.h" />
-        <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
-        <ClInclude Include="$(ReactTestAppDir)\MainPage.h" />
-        <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />
-        <ClInclude Include="$(ReactTestAppDir)\ReactInstance.h" />
-        <ClInclude Include="$(ReactTestAppDir)\ReactPackageProvider.h" />
-        <ClInclude Include="$(ReactTestAppDir)\Session.h" />
-    </ItemGroup>
-    <ItemGroup>
-        <Text Include="$(ProjectRootDir)\app.json">
-            <Filter>Assets</Filter>
-        </Text>
-    </ItemGroup>
-    <ItemGroup>
-        <AppxManifest Include="$(SolutionDir)$(ReactTestAppPackageManifest)" />
-        <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" />
-    </ItemGroup>
-    <ItemGroup>
-        <Filter Include="Assets">
-            <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
-        </Filter>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="PropertySheet.props" />
-        <None Include="packages.config" />
-        <None Include="ReactTestApp_TemporaryKey.pfx" />
-    </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(ReactTestAppDir)\App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(ReactTestAppDir)\MainPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="$(ReactTestAppDir)\App.idl" />
+    <Midl Include="$(ReactTestAppDir)\MainPage.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(ReactTestAppDir)\pch.cpp" />
+    <ClCompile Include="$(ReactTestAppDir)\App.cpp" />
+    <ClCompile Include="$(ReactTestAppDir)\..\..\common\AppRegistry.cpp" />
+    <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
+    <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp" />
+    <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
+    <ClCompile Include="$(ReactTestAppDir)\ReactInstance.cpp" />
+    <ClCompile Include="$(ReactTestAppDir)\ReactPackageProvider.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(ReactTestAppDir)\pch.h" />
+    <ClInclude Include="$(ReactTestAppDir)\App.h" />
+    <ClInclude Include="$(ReactTestAppDir)\..\..\common\AppRegistry.h" />
+    <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
+    <ClInclude Include="$(ReactTestAppDir)\MainPage.h" />
+    <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />
+    <ClInclude Include="$(ReactTestAppDir)\ReactInstance.h" />
+    <ClInclude Include="$(ReactTestAppDir)\ReactPackageProvider.h" />
+    <ClInclude Include="$(ReactTestAppDir)\Session.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Text Include="$(ProjectRootDir)\app.json">
+      <Filter>Assets</Filter>
+    </Text>
+    <!-- ReactTestApp asset item filters -->
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="$(SolutionDir)$(ReactTestAppPackageManifest)" />
+    <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
+    </Filter>
+    <!-- ReactTestApp asset filters -->
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PropertySheet.props" />
+    <None Include="packages.config" />
+    <None Include="ReactTestApp_TemporaryKey.pfx" />
+  </ItemGroup>
 </Project>

@@ -2423,6 +2423,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^8.3.1":
+  version: 8.3.1
+  resolution: "@types/uuid@npm:8.3.1"
+  checksum: b41bdc5e86c6f0f1899306be10455636da0f2168c9489b869edd6837ddeb7c0e501b1ff7d857402462986bada2a379125743dd895fa801d03437cd632116a373
+  languageName: node
+  linkType: hard
+
 "@types/yargs-parser@npm:*":
   version: 20.2.1
   resolution: "@types/yargs-parser@npm:20.2.1"
@@ -10490,6 +10497,7 @@ fsevents@^2.3.2:
     "@types/prompts": ~2.0.0
     "@types/rimraf": ^3.0.0
     "@types/semver": ^7.3.6
+    "@types/uuid": ^8.3.1
     chalk: ^4.1.0
     eslint: ^8.0.0
     eslint-plugin-jest: ^25.0.0
@@ -10508,6 +10516,7 @@ fsevents@^2.3.2:
     semver: ^7.3.5
     suggestion-bot: ^1.0.0
     typescript: ^4.0.0
+    uuid: ^8.3.2
     yargs: ^16.0.0
   peerDependencies:
     "@react-native-community/cli": ">=4.10.0"
@@ -12762,6 +12771,15 @@ resolve@^2.0.0-next.3:
   bin:
     uuid: ./bin/uuid
   checksum: 58de2feed61c59060b40f8203c0e4ed7fd6f99d42534a499f1741218a1dd0c129f4aa1de797bcf822c8ea5da7e4137aa3673431a96dae729047f7aca7b27866f
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^8.3.2":
+  version: 8.3.2
+  resolution: "uuid@npm:8.3.2"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
   languageName: node
   linkType: hard
 
