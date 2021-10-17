@@ -338,7 +338,11 @@ function copyAndReplace(
   } else {
     // Treat as text file
     fs.readFile(srcPath, textFileReadOptions, (err, data) => {
-      rethrow(err);
+      if (err) {
+        callback(err)
+        return;
+      }
+
       fs.writeFile(
         destPath,
         replaceContent(data, replacements),
