@@ -190,4 +190,19 @@ class TestTestApp < Minitest::Test
       GC.enable
     end
   end
+
+  def test_macos_project_cannot_set_development_team
+    # Xcode expects the development team used for code signing to exist when
+    # targeting macOS. Unlike when targeting iOS, the warnings are treated as
+    # errors.
+    require 'xcodeproj'
+
+    project = Xcodeproj::Project.open('macos/ReactTestApp.xcodeproj')
+    test_app = project.targets.detect { |target| target.name == 'ReactTestApp' }
+    assert(test_app)
+    test_app.build_configurations.each do |config|
+      assert_equal('-', config.build_settings['CODE_SIGN_IDENTITY'])
+      assert_nil(config.build_settings['DEVELOPMENT_TEAM'])
+    end
+  end
 end
