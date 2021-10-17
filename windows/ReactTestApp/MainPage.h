@@ -58,6 +58,8 @@ namespace winrt::ReactTestApp::implementation
         void InitializeReactMenu(std::optional<::ReactTestApp::Manifest>);
         void InitializeTitleBar();
 
+        bool IsPresenting();
+
         bool LoadJSBundleFrom(::ReactTestApp::JSBundleSource);
         void LoadReactComponent(::ReactTestApp::Component const &);
 
@@ -66,6 +68,8 @@ namespace winrt::ReactTestApp::implementation
         void OnCoreTitleBarLayoutMetricsChanged(
             Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &,
             Windows::Foundation::IInspectable const &);
+
+        void PresentReactMenu();
     };
 }  // namespace winrt::ReactTestApp::implementation
 
