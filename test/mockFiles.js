@@ -13,18 +13,11 @@ const fs = require("fs");
 
 /**
  * Adds mock files.
- * @param {...[string, unknown]} files
+ * @param {Record<string, string>} files
  */
-function mockFiles(...files) {
+function mockFiles(files = {}) {
   // @ts-ignore `__setMockFiles`
-  fs.__setMockFiles(
-    Object.fromEntries(
-      files.map(([filename, content]) => [
-        filename,
-        typeof content === "string" ? content : JSON.stringify(content),
-      ])
-    )
-  );
+  fs.__setMockFiles(files);
 }
 
 exports.mockFiles = mockFiles;

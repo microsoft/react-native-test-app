@@ -15,7 +15,7 @@ describe("updatePackageManifest()", () => {
   afterEach(() => mockFiles());
 
   test("adds `scripts` field if missing", () => {
-    mockFiles(["package.json", { key: "value" }]);
+    mockFiles({ "package.json": `{ "key": "value" }` });
 
     const config = {
       scripts: {
@@ -40,15 +40,14 @@ describe("updatePackageManifest()", () => {
   });
 
   test("adds to existing `scripts` field", () => {
-    mockFiles([
-      "package.json",
-      {
+    mockFiles({
+      "package.json": JSON.stringify({
         key: "value",
         scripts: {
           test: "jest",
         },
-      },
-    ]);
+      }),
+    });
 
     const config = {
       scripts: {

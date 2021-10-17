@@ -68,7 +68,7 @@ describe("isDestructive()", () => {
     expect(isDestructive(".", config)).toBe(false);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
 
-    mockFiles(["metro.config.js", ""]);
+    mockFiles({ "metro.config.js": "" });
 
     expect(isDestructive(".", config)).toBe(true);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
@@ -87,7 +87,7 @@ describe("isDestructive()", () => {
     expect(isDestructive(".", config)).toBe(false);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
 
-    mockFiles(["Podfile.lock", ""]);
+    mockFiles({ "Podfile.lock": "" });
 
     expect(isDestructive(".", config)).toBe(true);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
@@ -108,11 +108,11 @@ describe("isDestructive()", () => {
     expect(isDestructive(".", config)).toBe(false);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
 
-    mockFiles(
-      ["Podfile.lock", ""],
-      ["babel.config.js", ""],
-      ["metro.config.js", ""]
-    );
+    mockFiles({
+      "Podfile.lock": "",
+      "babel.config.js": "",
+      "metro.config.js": "",
+    });
 
     expect(isDestructive(".", config)).toBe(true);
     expect(consoleSpy).toHaveBeenCalledTimes(5);

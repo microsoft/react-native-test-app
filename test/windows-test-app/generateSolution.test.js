@@ -43,7 +43,7 @@ describe("generateSolution", () => {
   });
 
   test("exits if 'react-native-windows' folder cannot be found", () => {
-    mockFiles([path.resolve("", "node_modules"), "directory"]);
+    mockFiles({ [path.resolve("", "node_modules", ".bin")]: "directory" });
 
     expect(generateSolution("test", options)).toBe(
       "Could not find 'react-native-windows'"
@@ -51,10 +51,14 @@ describe("generateSolution", () => {
   });
 
   test("exits if 'react-native-test-app' folder cannot be found", () => {
-    mockFiles(
-      [path.resolve("", "node_modules"), "directory"],
-      [path.resolve("", "node_modules", "react-native-windows"), "directory"]
-    );
+    mockFiles({
+      [path.resolve(
+        "",
+        "node_modules",
+        "react-native-windows",
+        "package.json"
+      )]: "{}",
+    });
 
     expect(generateSolution("test", options)).toBe(
       "Could not find 'react-native-test-app'"

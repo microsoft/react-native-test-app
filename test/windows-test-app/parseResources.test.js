@@ -22,7 +22,10 @@ describe("parseResources", () => {
   });
 
   test("returns references to existing assets", () => {
-    mockFiles(["dist/assets", "directory"], ["dist/main.jsbundle", "text"]);
+    mockFiles({
+      "dist/assets/app.json": "{}",
+      "dist/main.jsbundle": "'use strict';",
+    });
 
     expect(
       parseResources(

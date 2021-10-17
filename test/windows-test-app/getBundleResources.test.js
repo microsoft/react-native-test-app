@@ -18,17 +18,14 @@ describe("getBundleResources", () => {
   test("returns app name and bundle resources", () => {
     const assets = path.join("dist", "assets");
     const bundle = path.join("dist", "main.bundle");
-    mockFiles(
-      [
-        "app.json",
-        {
-          name: "Example",
-          resources: [assets, bundle],
-        },
-      ],
-      [assets, "directory"],
-      [bundle, "text"]
-    );
+    mockFiles({
+      "app.json": JSON.stringify({
+        name: "Example",
+        resources: [assets, bundle],
+      }),
+      [path.join(assets, "app.json")]: "{}",
+      [bundle]: "'use strict';",
+    });
 
     const { appName, appxManifest, bundleDirContent, bundleFileContent } =
       getBundleResources("app.json", path.resolve(""));
@@ -40,14 +37,13 @@ describe("getBundleResources", () => {
   });
 
   test("returns package manifest", () => {
-    mockFiles([
-      "app.json",
-      {
+    mockFiles({
+      "app.json": JSON.stringify({
         windows: {
           appxManifest: "windows/Example/Package.appxmanifest",
         },
-      },
-    ]);
+      }),
+    });
 
     const { appName, appxManifest, bundleDirContent, bundleFileContent } =
       getBundleResources("app.json", path.resolve(""));
@@ -75,7 +71,7 @@ describe("getBundleResources", () => {
   });
 
   test("handles invalid manifest", () => {
-    mockFiles(["app.json", "-"]);
+    mockFiles({ "app.json": "-" });
 
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 

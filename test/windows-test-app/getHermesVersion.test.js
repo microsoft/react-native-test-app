@@ -33,10 +33,10 @@ describe("getHermesVersion", () => {
 
   test("returns the required Hermes version", () => {
     ["0.7.2", "0.8.0-ms.0", "0.9.0-ms.1"].forEach((version) => {
-      mockFiles([
-        path.join("react-native-windows", "PropertySheets", "JSEngine.props"),
-        jsEngineProps(version),
-      ]);
+      mockFiles({
+        [path.join("react-native-windows", "PropertySheets", "JSEngine.props")]:
+          jsEngineProps(version),
+      });
       expect(getHermesVersion("react-native-windows")).toBe(version);
     });
   });

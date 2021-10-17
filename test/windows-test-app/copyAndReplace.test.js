@@ -9,23 +9,26 @@
 jest.mock("fs");
 
 describe("copyAndReplace", () => {
+  const fs = require("fs");
+  const { promisify } = require("util");
   const { mockFiles } = require("../mockFiles");
   const { copyAndReplace } = require("../../windows/test-app");
 
+  const copyAndReplaceAsync = promisify(copyAndReplace);
+
   afterEach(() => mockFiles());
 
-  test("replaces text files only", () => {
-    mockFiles(
-      ["ReactTestApp_TemporaryKey.pfx", "binary"],
-      ["ReactTestApp.png", "binary"],
-      ["ReactTestApp.sln", "binary"]
-    );
-
-    const fs = require("fs");
+  test("replaces text files only", async () => {
+    mockFiles({
+      "ReactTestApp_TemporaryKey.pfx": "binary",
+      "ReactTestApp.png": "binary",
+      "ReactTestApp.sln": "binary",
+      "test/.placeholder": "",
+    });
 
     const replacements = { binary: "text" };
 
-    copyAndReplace(
+    await copyAndReplaceAsync(
       "ReactTestApp_TemporaryKey.pfx",
       "test/ReactTestApp_TemporaryKey.pfx",
       replacements
@@ -36,14 +39,22 @@ describe("copyAndReplace", () => {
       })
     ).toBe("binary");
 
-    copyAndReplace("ReactTestApp.png", "test/ReactTestApp.png", replacements);
+    await copyAndReplaceAsync(
+      "ReactTestApp.png",
+      "test/ReactTestApp.png",
+      replacements
+    );
     expect(
       fs.readFileSync("test/ReactTestApp.png", {
         encoding: "utf8",
       })
     ).toBe("binary");
 
-    copyAndReplace("ReactTestApp.sln", "test/ReactTestApp.sln", replacements);
+    await copyAndReplaceAsync(
+      "ReactTestApp.sln",
+      "test/ReactTestApp.sln",
+      replacements
+    );
     expect(
       fs.readFileSync("test/ReactTestApp.sln", {
         encoding: "utf8",
@@ -51,12 +62,16 @@ describe("copyAndReplace", () => {
     ).toBe("text");
   });
 
-  test("throws on error", () => {
-    expect(() => copyAndReplace("ReactTestApp.png", "")).toThrow(
-      "copyFile() error"
+  test("throws on error", async () => {
+    await expect(
+      copyAndReplaceAsync("ReactTestApp.png", "", {})
+    ).rejects.toEqual(
+      expect.objectContaining({ message: expect.stringContaining("ENOENT") })
     );
-    expect(() => copyAndReplace("ReactTestApp.sln", "")).toThrow(
-      "writeFile() error"
+    await expect(
+      copyAndReplaceAsync("ReactTestApp.sln", "", {})
+    ).rejects.toEqual(
+      expect.objectContaining({ message: expect.stringContaining("ENOENT") })
     );
   });
 });

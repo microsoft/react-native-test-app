@@ -15,21 +15,33 @@ describe("removeAllFiles()", () => {
   const { removeAllFiles } = require("../../scripts/configure");
 
   beforeEach(() => {
-    mockFiles(
-      ["babel.config.js", "module.exports = {};"],
-      ["metro.config.js", "module.exports = {};"]
-    );
+    mockFiles({
+      "babel.config.js": "module.exports = {};",
+      "metro.config.js": "module.exports = {};",
+    });
   });
 
-  test("removes all specified files", () => {
-    removeAllFiles(["babel.config.js", "metro.config.js"], ".");
-    expect(fs.readFileSync("babel.config.js")).toBeUndefined();
-    expect(fs.readFileSync("metro.config.js")).toBeUndefined();
+  afterAll(() => {
+    mockFiles();
   });
 
-  test("ignores non-existent files", () => {
-    removeAllFiles(["babel.config.js", "react-native.config.js"], ".");
-    expect(fs.readFileSync("babel.config.js")).toBeUndefined();
-    expect(fs.readFileSync("metro.config.js")).toBeDefined();
+  test("removes all specified files", async () => {
+    expect(fs.existsSync("babel.config.js")).toBe(true);
+    expect(fs.existsSync("metro.config.js")).toBe(true);
+
+    await removeAllFiles(["babel.config.js", "metro.config.js"], ".");
+
+    expect(fs.existsSync("babel.config.js")).toBe(false);
+    expect(fs.existsSync("metro.config.js")).toBe(false);
+  });
+
+  test("ignores non-existent files", async () => {
+    expect(fs.existsSync("babel.config.js")).toBe(true);
+    expect(fs.existsSync("metro.config.js")).toBe(true);
+
+    await removeAllFiles(["babel.config.js", "react-native.config.js"], ".");
+
+    expect(fs.existsSync("babel.config.js")).toBe(false);
+    expect(fs.existsSync("metro.config.js")).toBe(true);
   });
 });
