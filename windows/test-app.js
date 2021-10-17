@@ -339,7 +339,7 @@ function copyAndReplace(
     // Treat as text file
     fs.readFile(srcPath, textFileReadOptions, (err, data) => {
       if (err) {
-        callback(err)
+        callback(err);
         return;
       }
 
