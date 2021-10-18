@@ -127,11 +127,13 @@ class TestTestApp < Minitest::Test
       assert_nil(bundle_identifier(fixture_path('without_resources'), target))
     end
 
-    define_method("test_#{target}_react_native_path") do
-      assert_equal("react-native-#{target}",
-                   react_native_from_manifest(fixture_path('with_platform_resources'), target))
-      assert_nil(react_native_from_manifest(fixture_path('without_platform_resources'), target))
-      assert_nil(react_native_from_manifest(fixture_path('without_resources'), target))
+    define_method("test_#{target}_project_settings") do
+      %w[codeSignEntitlements codeSignIdentity developmentTeam reactNativePath].each do |setting|
+        assert_equal("#{setting}-#{target}",
+                     platform_config(setting, fixture_path('with_platform_resources'), target))
+        assert_nil(platform_config(setting, fixture_path('without_platform_resources'), target))
+        assert_nil(platform_config(setting, fixture_path('without_resources'), target))
+      end
     end
 
     define_method("test_#{target}_resources_pod_returns_spec_path") do
@@ -186,6 +188,21 @@ class TestTestApp < Minitest::Test
       end
 
       GC.enable
+    end
+  end
+
+  def test_macos_project_cannot_set_development_team
+    # Xcode expects the development team used for code signing to exist when
+    # targeting macOS. Unlike when targeting iOS, the warnings are treated as
+    # errors.
+    require 'xcodeproj'
+
+    project = Xcodeproj::Project.open('macos/ReactTestApp.xcodeproj')
+    test_app = project.targets.detect { |target| target.name == 'ReactTestApp' }
+    assert(test_app)
+    test_app.build_configurations.each do |config|
+      assert_equal('-', config.build_settings['CODE_SIGN_IDENTITY'])
+      assert_nil(config.build_settings['DEVELOPMENT_TEAM'])
     end
   end
 end
