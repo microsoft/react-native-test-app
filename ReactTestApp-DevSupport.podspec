@@ -33,7 +33,10 @@ Pod::Spec.new do |s|
   s.dependency 'React-Core'
   s.dependency 'React-jsi'
 
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+  s.pod_target_xcconfig = {
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
+    'DEFINES_MODULE' => 'YES',
+  }
 
   s.source_files         = 'common/AppRegistry.{cpp,h}',
                            'ios/ReactTestApp/AppRegistryModule.{h,mm}',
