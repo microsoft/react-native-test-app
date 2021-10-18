@@ -123,7 +123,7 @@ def resolve_resources(manifest, target_platform)
   resources.instance_of?(Array) ? resources : resources[target_platform.to_s]
 end
 
-def resources_pod(project_root, target_platform)
+def resources_pod(project_root, target_platform, platforms)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
@@ -146,8 +146,8 @@ def resources_pod(project_root, target_platform)
     'authors' => '@microsoft/react-native-test-app',
     'source' => { 'git' => 'https://github.com/microsoft/react-native-test-app.git' },
     'platforms' => {
-      'ios' => '12.0',
-      'osx' => '10.14',
+      'ios' => platforms[:ios],
+      'osx' => platforms[:macos],
     },
     'resources' => ['app.json', *resources],
   }
@@ -292,7 +292,14 @@ def make_project!(xcodeproj, project_root, target_platform)
   end
   app_project.save
 
-  dst_xcodeproj
+  config = app_project.build_configurations[0]
+  {
+    :xcodeproj_path => dst_xcodeproj,
+    :platforms => {
+      :ios => config.resolve_build_setting('IPHONEOS_DEPLOYMENT_TARGET'),
+      :macos => config.resolve_build_setting('MACOSX_DEPLOYMENT_TARGET'),
+    },
+  }
 end
 
 def use_test_app_internal!(target_platform, options)
@@ -300,12 +307,18 @@ def use_test_app_internal!(target_platform, options)
 
   xcodeproj = 'ReactTestApp.xcodeproj'
   project_root = find_project_root
-  dst_xcodeproj = make_project!(xcodeproj, project_root, target_platform)
+  dst_xcodeproj, platforms = make_project!(xcodeproj, project_root, target_platform).values_at(
+    :xcodeproj_path, :platforms
+  )
 
   require_relative(autolink_script_path)
 
-  platform :ios, '12.0' if target_platform == :ios
-  platform :osx, '10.14' if target_platform == :macos
+  begin
+    platform :ios, platforms[:ios] if target_platform == :ios
+    platform :osx, platforms[:macos] if target_platform == :macos
+  rescue StandardError
+    # Allow platform deployment target to be overridden
+  end
 
   project dst_xcodeproj
 
@@ -317,7 +330,7 @@ def use_test_app_internal!(target_platform, options)
 
     react_native_post_install = use_react_native!(project_root, target_platform, options)
 
-    if (resources_pod_path = resources_pod(project_root, target_platform))
+    if (resources_pod_path = resources_pod(project_root, target_platform, platforms))
       pod 'ReactTestApp-Resources', :path => resources_pod_path
     end
 

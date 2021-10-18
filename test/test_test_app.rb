@@ -137,22 +137,20 @@ class TestTestApp < Minitest::Test
     end
 
     define_method("test_#{target}_resources_pod_returns_spec_path") do
-      assert_nil(resources_pod(Pathname.new('/'), target))
-      assert_nil(resources_pod(Pathname.new('.'), target))
+      platforms = { :ios => '14.0', :macos => '11.0' }
 
-      assert_equal('.', resources_pod(fixture_path('without_resources'), target))
-      assert_equal('..', resources_pod(fixture_path('without_resources', target.to_s), target))
+      assert_nil(resources_pod(Pathname.new('/'), target, platforms))
+      assert_nil(resources_pod(Pathname.new('.'), target, platforms))
 
-      assert_equal('.', resources_pod(fixture_path('without_platform_resources'), target))
-      assert_equal('..',
-                   resources_pod(fixture_path('without_platform_resources', target.to_s), target))
-
-      assert_equal('.', resources_pod(fixture_path('with_resources'), target))
-      assert_equal('..', resources_pod(fixture_path('with_resources', target.to_s), target))
-
-      assert_equal('.', resources_pod(fixture_path('with_platform_resources'), target))
-      assert_equal('..',
-                   resources_pod(fixture_path('with_platform_resources', target.to_s), target))
+      %w[
+        without_resources
+        without_platform_resources
+        with_resources
+        with_platform_resources
+      ].each do |fixture|
+        assert_equal('.', resources_pod(fixture_path(fixture), target, platforms))
+        assert_equal('..', resources_pod(fixture_path(fixture, target.to_s), target, platforms))
+      end
     end
 
     define_method("test_#{target}_resources_pod_writes_podspec") do
@@ -161,6 +159,7 @@ class TestTestApp < Minitest::Test
       # variances.
       GC.disable
 
+      platforms = { :ios => '14.0', :macos => '11.0' }
       resources = %w[app.json dist/assets dist/main.jsbundle]
       platform_resources = ['app.json', "dist-#{target}/assets", "dist-#{target}/main.jsbundle"]
 
@@ -174,7 +173,7 @@ class TestTestApp < Minitest::Test
         fixture_path('without_resources'),
         fixture_path('without_resources', target.to_s),
       ].each do |project_root|
-        podspec_path = resources_pod(project_root, target)
+        podspec_path = resources_pod(project_root, target, platforms)
         manifest_path = app_manifest_path(project_root, podspec_path)
         manifest = JSON.parse(File.read(manifest_path))
 
