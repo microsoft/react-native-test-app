@@ -196,7 +196,7 @@ jobs:
     name: "Android"
     strategy:
       matrix:
-        os: [macos-11, windows-latest]
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
@@ -241,7 +241,7 @@ jobs:
         shell: bash
         working-directory: example
       - name: Run instrumented tests
-        if: ${{ matrix.os == 'macos-11' }}
+        if: ${{ matrix.os != 'windows-latest' }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
