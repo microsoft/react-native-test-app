@@ -55,34 +55,30 @@ class ManifestTest {
             }
         """
 
-        val mockedBundle = mockBundle()
-        val mockedArguments = mockArguments()
+        useMocks {
+            val manifest = adapter.fromJson(json)
+            assertNotNull(manifest)
 
-        val manifest = adapter.fromJson(json)
-        assertNotNull(manifest)
+            manifest?.apply {
+                assertEquals(2, components.size)
 
-        manifest?.apply {
-            assertEquals(2, components.size)
+                val componentOne = components[0]
+                assertEquals("Example", componentOne.appKey)
+                assertEquals("App", componentOne.displayName)
 
-            val componentOne = components[0]
-            assertEquals("Example", componentOne.appKey)
-            assertEquals("App", componentOne.displayName)
+                val propsOne = componentOne.initialProperties
+                assertNotNull(propsOne)
+                assertEquals("value_1", propsOne?.get("prop_1").toString())
 
-            val propsOne = componentOne.initialProperties
-            assertNotNull(propsOne)
-            assertEquals("value_1", propsOne?.get("prop_1").toString())
+                val componentTwo = components[1]
+                assertEquals("Example2", componentTwo.appKey)
+                assertEquals("App2", componentTwo.displayName)
 
-            val componentTwo = components[1]
-            assertEquals("Example2", componentTwo.appKey)
-            assertEquals("App2", componentTwo.displayName)
-
-            val propsTwo = componentTwo.initialProperties
-            assertNotNull(propsTwo)
-            assertEquals("value_2", propsTwo?.get("prop_2").toString())
+                val propsTwo = componentTwo.initialProperties
+                assertNotNull(propsTwo)
+                assertEquals("value_2", propsTwo?.get("prop_2").toString())
+            }
         }
-
-        mockedArguments.close()
-        mockedBundle.close()
     }
 
     private fun mockArguments(): MockedStatic<Arguments> {
@@ -112,6 +108,14 @@ class ManifestTest {
             }.`when`(mock).putString(Mockito.anyString(), Mockito.any())
 
             Mockito.doAnswer { map.toString() }.`when`(mock).toString()
+        }
+    }
+
+    private fun useMocks(test: () -> Unit) {
+        mockBundle().use {
+            mockArguments().use {
+                test()
+            }
         }
     }
 }
