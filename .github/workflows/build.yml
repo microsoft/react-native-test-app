@@ -196,7 +196,7 @@ jobs:
     name: "Android"
     strategy:
       matrix:
-        os: [macos-11, windows-latest]
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
@@ -232,7 +232,7 @@ jobs:
         run: |
           yarn jest
         working-directory: example
-      - name: Build
+      - name: Build + Test
         run: |
           set -eo pipefail
           yarn build:android || yarn build:android
@@ -240,21 +240,12 @@ jobs:
           ./gradlew clean build check test
         shell: bash
         working-directory: example
-      - name: Run instrumented tests
-        if: ${{ matrix.os == 'macos-11' }}
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          target: google_apis # https://github.com/ReactiveCircus/android-emulator-runner/issues/168
-          working-directory: android
-          script: ./gradlew clean build connectedCheck
-        continue-on-error: true
   android-template:
     name: "Android [template]"
     strategy:
       matrix:
         template: [all, android]
-        os: [macos-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
