@@ -111,14 +111,18 @@ ext.getApplicationId = { baseDir ->
     return 'com.microsoft.reacttestapp'
 }
 
-ext.getFlipperVersion = { baseDir ->
+ext.getFlipperRecommendedVersion = { baseDir ->
     def reactNativePath = findNodeModulesPath(baseDir, 'react-native')
     def props = new Properties()
     file("${reactNativePath}/template/android/gradle.properties").withInputStream {
         props.load(it)
     }
 
-    def recommendedFlipperVersion = props.getProperty('FLIPPER_VERSION')
+    return props.getProperty('FLIPPER_VERSION')
+}
+
+ext.getFlipperVersion = { baseDir ->
+    def recommendedFlipperVersion = getFlipperRecommendedVersion(baseDir)
     if (recommendedFlipperVersion == null) {
         // Current React Native version doesn't support Flipper
         return null

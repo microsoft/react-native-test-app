@@ -86,6 +86,11 @@ android {
         versionCode reactTestApp.versionCode
         versionName reactTestApp.versionName
 
+        def recommendedFlipperVersion = getFlipperRecommendedVersion(rootDir)
+        buildConfigField "String",
+                         "ReactTestApp_recommendedFlipperVersion",
+                         recommendedFlipperVersion ? "\"${recommendedFlipperVersion}\"" : '"0"'
+
         resValue "string", "app_name", project.ext.react.appName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
