@@ -90,8 +90,8 @@ class TestAppReactNativeHost(
                     Log.i(
                         "ReactTestApp",
                         "To use Flipper, define `FLIPPER_VERSION` in your `gradle.properties`. " +
-                            "Since you're using React Native ${major}.${minor}, we recommend " +
-                            "setting `FLIPPER_VERSION=${flipperVersion}`."
+                            "Since you're using React Native $major.$minor, we recommend setting " +
+                            "`FLIPPER_VERSION=$flipperVersion`."
                     )
                 }
             }
