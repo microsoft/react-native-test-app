@@ -16,6 +16,7 @@ import com.facebook.react.devsupport.DevInternalSettings
 import com.facebook.react.devsupport.DevServerHelper
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
 import com.facebook.react.devsupport.interfaces.DevSupportManager
+import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
@@ -82,12 +83,17 @@ class TestAppReactNativeHost(
                     .getMethod("initialize", Context::class.java, ReactInstanceManager::class.java)
                     .invoke(null, application, reactInstanceManager)
             } catch (e: ClassNotFoundException) {
-                Log.i(
-                    "ReactTestApp",
-                    "To use Flipper, define `FLIPPER_VERSION` in your `gradle.properties`. " +
-                        "If you're using React Native 0.63, you should use " +
-                        "`FLIPPER_VERSION=0.54.0`."
-                )
+                val flipperVersion = BuildConfig.ReactTestApp_recommendedFlipperVersion
+                if (flipperVersion != "0") {
+                    val major = ReactNativeVersion.VERSION["major"] as Int
+                    val minor = ReactNativeVersion.VERSION["minor"] as Int
+                    Log.i(
+                        "ReactTestApp",
+                        "To use Flipper, define `FLIPPER_VERSION` in your `gradle.properties`. " +
+                            "Since you're using React Native $major.$minor, we recommend setting " +
+                            "`FLIPPER_VERSION=$flipperVersion`."
+                    )
+                }
             }
         }
     }
