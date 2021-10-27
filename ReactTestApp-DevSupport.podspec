@@ -1,5 +1,20 @@
 require 'json'
 
+# For some reason, functions defined here are not visible in the Podspec:
+#     undefined method `deployment_target' for Pod:Module.
+# But procedures and lambdas work fine.
+deployment_target = lambda do |target_platform|
+  xcodeproj = File.join(__dir__, target_platform, 'ReactTestApp.xcodeproj')
+  project = Xcodeproj::Project.open(xcodeproj)
+  setting = case target_platform
+            when 'ios'
+              'IPHONEOS_DEPLOYMENT_TARGET'
+            when 'macos'
+              'MACOSX_DEPLOYMENT_TARGET'
+            end
+  project.build_configurations[0].resolve_build_setting(setting)
+end
+
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 version = package['version']
 
@@ -12,8 +27,8 @@ Pod::Spec.new do |s|
   s.source    = { :git => package['repository']['url'], :tag => version }
   s.summary   = package['description']
 
-  s.ios.deployment_target = '12.0'
-  s.osx.deployment_target = '10.14'
+  s.ios.deployment_target = deployment_target.call('ios')
+  s.osx.deployment_target = deployment_target.call('macos')
 
   s.dependency 'React-Core'
   s.dependency 'React-jsi'

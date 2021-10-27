@@ -441,8 +441,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
-  Example-Tests: 01d78c8a632185acbdb2d5de901be86fc11494e5
+  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  Example-Tests: e3a0c1aa41706608d102daa2239aa6d79fcb6e51
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
@@ -453,7 +453,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: 127954abe8b162fcaf68d2134d34dc2bd7076154
   FlipperKit: 8a20b5c5fcf9436cac58551dc049867247f64b00
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
-  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
@@ -477,7 +477,7 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  ReactTestApp-DevSupport: ec05fb157fa71580397d7a6a9c3ee10202235c02
+  ReactTestApp-DevSupport: 84b7cc35cf707c9ceb3aae756f098354f5641cd8
   ReactTestApp-Resources: 74a1cf509f4e7962b16361ea4e73cba3648fff5d
   SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
