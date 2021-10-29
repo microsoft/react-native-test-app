@@ -195,17 +195,18 @@ function warn(message, tag = "[!]") {
 
 /**
  * Returns platform package at target version if it satisfies version range.
- * @param {string} packageName
+ * @param {"react-native" | "react-native-macos" | "react-native-windows"} packageName
  * @param {string} targetVersion
- * @param {string} versionRange
  * @returns {Record<string, string> | undefined}
  */
-function getPlatformPackage(packageName, targetVersion, versionRange) {
+function getPlatformPackage(packageName, targetVersion) {
   const v = semver.coerce(targetVersion);
   if (!v) {
     throw new Error(`Invalid ${packageName} version: ${targetVersion}`);
   }
 
+  const { peerDependencies } = require("../package.json");
+  const versionRange = peerDependencies[packageName];
   if (!semver.satisfies(v.version, versionRange)) {
     warn(
       `${packageName}@${v.major}.${v.minor} cannot be added because it does not exist or is unsupported`
@@ -541,11 +542,7 @@ const getConfig = (() => {
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
-            return getPlatformPackage(
-              "react-native-macos",
-              targetVersion,
-              "^0.0.0-0 || >=0.60.0 <0.64"
-            );
+            return getPlatformPackage("react-native-macos", targetVersion);
           },
         },
         windows: {
@@ -571,11 +568,7 @@ const getConfig = (() => {
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
-            return getPlatformPackage(
-              "react-native-windows",
-              targetVersion,
-              "^0.0.0-0 || >=0.62.0 <0.66"
-            );
+            return getPlatformPackage("react-native-windows", targetVersion);
           },
         },
       };
