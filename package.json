@@ -95,6 +95,7 @@
     "@react-native-community/cli": "^4.10.0",
     "@react-native-community/cli-platform-android": "^4.10.0",
     "@react-native-community/cli-platform-ios": "^4.10.0",
+    "@rnx-kit/eslint-plugin": "^0.1.0",
     "@types/jest": "^27.0.0",
     "@types/mustache": "^4.0.0",
     "@types/node": "^14.0.0",
@@ -104,8 +105,6 @@
     "@types/uuid": "^8.3.1",
     "eslint": "^8.0.0",
     "eslint-plugin-jest": "^25.0.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.21.0",
     "jest": "^27.0.0",
     "memfs": "^3.3.0",
     "prettier": "^2.3.1",
@@ -127,43 +126,13 @@
     ]
   },
   "eslintConfig": {
-    "env": {
-      "es6": true,
-      "node": true
-    },
     "extends": [
-      "eslint:recommended",
+      "plugin:@rnx-kit/recommended",
       "plugin:jest/recommended",
-      "plugin:jest/style",
-      "plugin:react/recommended"
-    ],
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "ecmaVersion": 2018,
-      "sourceType": "module"
-    },
-    "plugins": [
-      "prettier"
+      "plugin:jest/style"
     ],
     "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "endOfLine": "auto"
-        }
-      ],
-      "react/prop-types": "off"
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
+      "@typescript-eslint/ban-ts-comment": "off"
     }
   },
   "jest": {
