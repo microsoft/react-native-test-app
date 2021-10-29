@@ -195,7 +195,7 @@ function warn(message, tag = "[!]") {
 
 /**
  * Returns platform package at target version if it satisfies version range.
- * @param {string} packageName
+ * @param {"react-native" | "react-native-macos" | "react-native-windows"} packageName
  * @param {string} targetVersion
  * @returns {Record<string, string> | undefined}
  */
@@ -205,7 +205,8 @@ function getPlatformPackage(packageName, targetVersion) {
     throw new Error(`Invalid ${packageName} version: ${targetVersion}`);
   }
 
-  const versionRange = require("../package.json").peerDependencies[packageName];
+  const { peerDependencies } = require("../package.json");
+  const versionRange = peerDependencies[packageName];
   if (!semver.satisfies(v.version, versionRange)) {
     warn(
       `${packageName}@${v.major}.${v.minor} cannot be added because it does not exist or is unsupported`
