@@ -90,8 +90,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@commitlint/cli": "^13.0.0",
-    "@commitlint/config-conventional": "^13.0.0",
+    "@commitlint/cli": "^14.0.0",
+    "@commitlint/config-conventional": "^14.0.0",
     "@react-native-community/cli": "^4.10.0",
     "@react-native-community/cli-platform-android": "^4.10.0",
     "@react-native-community/cli-platform-ios": "^4.10.0",
