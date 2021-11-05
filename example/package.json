@@ -26,11 +26,11 @@
     "@types/jest": "^27.0.0",
     "jest": "^27.0.0",
     "mkdirp": "^1.0.0",
-    "react": "16.13.1",
-    "react-native": "^0.63.4",
-    "react-native-macos": "^0.63.33",
+    "react": "17.0.1",
+    "react-native": "^0.64.3",
+    "react-native-macos": "^0.64.6",
     "react-native-test-app": "workspace:.",
-    "react-native-windows": "^0.63.32"
+    "react-native-windows": "^0.64.25"
   },
   "jest": {
     "roots": [
