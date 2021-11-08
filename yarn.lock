@@ -11912,8 +11912,8 @@ resolve@^2.0.0-next.3:
   linkType: hard
 
 "suggestion-bot@npm:^1.0.0":
-  version: 1.2.6
-  resolution: "suggestion-bot@npm:1.2.6"
+  version: 1.2.7
+  resolution: "suggestion-bot@npm:1.2.7"
   dependencies:
     "@octokit/rest": ^18.0.0
     azure-devops-node-api: ^11.0.0
@@ -11921,7 +11921,7 @@ resolve@^2.0.0-next.3:
     parse-diff: ^0.8.0
   bin:
     suggestion-bot: cli.js
-  checksum: 45d32cdac3581985d46a2e38dcc4ac7235f8dece411436c229f1b55aab8657e0bbc46e3c354068d95d4afa71c777503bd26c71bc2406e48cade409814fc6127e
+  checksum: b55d366f25001c259b18329761683ab17ae4c2cca7bfa26ba3577d9e16f8951fe753655333568d0b59f3d6d16d89d6ad3ce5bdbb40764ee2c0669f955f66407f
   languageName: node
   linkType: hard
 
