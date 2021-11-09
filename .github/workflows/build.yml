@@ -131,6 +131,7 @@ jobs:
           # details.
           npm run set-react-version main
           yarn --no-immutable
+          rm example/ios/Podfile.lock
       - name: Install
         if: ${{ github.event_name != 'schedule' }}
         run: |
@@ -307,6 +308,7 @@ jobs:
         run: |
           npm run set-react-version canary-macos
           yarn --no-immutable
+          rm example/macos/Podfile.lock
         shell: bash
       - name: Install
         if: ${{ github.event_name != 'schedule' }}
