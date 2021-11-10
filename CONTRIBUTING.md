@@ -17,6 +17,16 @@ For more information see the
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
+## Commit messages
+
+This repository adheres to the [conventional commit format](https://conventionalcommits.org) via [commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint). Commit messages must match the pattern:
+
+```sh
+type(scope?): subject  #scope is optional; multiple scopes are supported (current delimiter options: "/", "\" and ",")
+```
+
+Following this is necessary to pass CI.
+
 ## Additional Dependencies
 
 - Node LTS (see [releases](https://nodejs.org/en/about/releases/) for specific
