@@ -191,7 +191,9 @@ async function getProfile(v) {
 const { [2]: version } = process.argv;
 if (!isValidVersion(version)) {
   const script = require("path").basename(__filename);
-  console.log(`Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`);
+  console.log(
+    `Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`
+  );
   process.exit(1);
 }
 
