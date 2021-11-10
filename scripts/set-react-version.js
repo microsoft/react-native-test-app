@@ -7,85 +7,27 @@
 //
 // @ts-check
 
-const profiles = {
-  "0.60": {
-    react: "16.8.6",
-    "react-native": "^0.60.6",
-    "react-native-macos": "^0.60.0-microsoft.79",
-    "react-native-windows": undefined,
-  },
-  0.61: {
-    react: "16.9.0",
-    "react-native": "^0.61.5",
-    "react-native-macos": "^0.61.65",
-    "react-native-windows": undefined,
-  },
-  0.62: {
-    react: "16.11.0",
-    "react-native": "^0.62.3",
-    "react-native-macos": "^0.62.35",
-    "react-native-windows": "^0.62.22",
-  },
-  0.63: {
-    react: "16.13.1",
-    "react-native": "^0.63.4",
-    "react-native-macos": "^0.63.33",
-    "react-native-windows": "^0.63.32",
-  },
-  0.64: {
-    react: "17.0.1",
-    "react-native": "^0.64.3",
-    "react-native-macos": "^0.64.6",
-    "react-native-windows": "^0.64.25",
-  },
-  0.65: {
-    "hermes-engine": "~0.8.1",
-    react: "17.0.2",
-    "react-native": "^0.65.0",
-    "react-native-codegen": "0.0.7",
-    "react-native-macos": undefined,
-    "react-native-windows": "^0.65.0",
-  },
-  0.66: {
-    "hermes-engine": "~0.8.1",
-    react: "17.0.2",
-    "react-native": "^0.66.0-0",
-    "react-native-macos": undefined,
-    "react-native-windows": "^0.66.0-0",
-  },
-  "canary-macos": {
-    react: "17.0.1",
-    "react-native": "^0.64.3",
-    "react-native-macos": "canary",
-    "react-native-windows": undefined,
-  },
-  "canary-windows": {
-    react: "17.0.2",
-    "react-native": "^0.67.0-0",
-    "react-native-macos": undefined,
-    "react-native-windows": "canary",
-  },
-  main: {
-    react: "17.0.2",
-    "react-native": "facebook/react-native",
-    "react-native-macos": undefined,
-    "react-native-windows": undefined,
-  },
-  nightly: {
-    react: "17.0.2",
-    "react-native": "nightly",
-    "react-native-macos": undefined,
-    "react-native-windows": undefined,
-  },
+/**
+ * @typedef {{
+ *   version?: string;
+ *   dependencies: Record<string, string>;
+ *   peerDependencies: Record<string, string>;
+ * }} Manifest
+ */
+
+const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];
+const REACT_NATIVE_VERSIONS = {
+  "canary-macos": "^0.64",
+  "canary-windows": "^0.67.0-0",
 };
 
 /**
- * Coerces string value to version literal.
+ * Returns specified string is a valid version.
  * @param {string} v
- * @return {v is keyof profiles}
+ * @return {boolean}
  */
 function isValidVersion(v) {
-  return Boolean(Object.prototype.hasOwnProperty.call(profiles, v));
+  return /^\d+\.\d+$/.test(v) || VALID_TAGS.includes(v);
 }
 
 /**
@@ -98,35 +40,190 @@ function keys(obj) {
   return /** @type {(keyof T)[]} */ (Object.keys(obj));
 }
 
-const { [2]: version } = process.argv;
-if (!isValidVersion(version)) {
-  const script = require("path").basename(__filename);
-  console.log(`Usage: ${script} [${Object.keys(profiles).join(" | ")}]`);
-  process.exit(1);
-}
+/**
+ * Fetches the latest package information.
+ * @param {string} pkg
+ * @return {Promise<Manifest>}
+ */
+function fetchPackageInfo(pkg) {
+  return new Promise((resolve) => {
+    /** @type {string[]} */
+    const result = [];
 
-const profile = profiles[version];
-
-const fs = require("fs");
-const { EOL } = require("os");
-
-["package.json", "example/package.json"].forEach((manifestPath) => {
-  const content = fs.readFileSync(manifestPath, { encoding: "utf-8" });
-  const manifest = JSON.parse(content);
-  keys(profile).forEach((packageName) => {
-    manifest["devDependencies"][packageName] = profile[packageName];
-  });
-
-  const tmpFile = `${manifestPath}.tmp`;
-  fs.writeFile(tmpFile, JSON.stringify(manifest, undefined, 2) + EOL, (err) => {
-    if (err) {
-      throw err;
-    }
-
-    fs.rename(tmpFile, manifestPath, (err) => {
-      if (err) {
-        throw err;
+    const fetch = require("child_process").spawn("npm", [
+      "view",
+      "--json",
+      pkg,
+    ]);
+    fetch.stdout.on("data", (data) => {
+      result.push(data);
+    });
+    fetch.on("close", (code) => {
+      if (code !== 0 || result.length === 0) {
+        resolve({
+          version: undefined,
+          dependencies: {},
+          peerDependencies: {},
+        });
+      } else {
+        const list = JSON.parse(result.join(""));
+        const latest = Array.isArray(list) ? list[list.length - 1] : list;
+        resolve({
+          version: latest.version,
+          dependencies: latest.dependencies,
+          peerDependencies: latest.peerDependencies,
+        });
       }
     });
   });
-});
+}
+
+/**
+ * Returns a profile for specified version.
+ * @param {string} v
+ * @return {Promise<Record<string, string | undefined>>}
+ */
+async function getProfile(v) {
+  switch (v) {
+    case "canary-macos": {
+      const { dependencies, peerDependencies } = await fetchPackageInfo(
+        "react-native-macos@canary"
+      );
+      return {
+        "@react-native-community/cli":
+          dependencies["@react-native-community/cli"],
+        "@react-native-community/cli-platform-android":
+          dependencies["@react-native-community/cli-platform-android"],
+        "@react-native-community/cli-platform-ios":
+          dependencies["@react-native-community/cli-platform-ios"],
+        "hermes-engine": dependencies["hermes-engine"],
+        react: peerDependencies["react"],
+        "react-native": REACT_NATIVE_VERSIONS[v],
+        "react-native-macos": "canary",
+        "react-native-windows": undefined,
+      };
+    }
+
+    case "canary-windows": {
+      const { dependencies, peerDependencies } = await fetchPackageInfo(
+        "react-native-windows@canary"
+      );
+      return {
+        "@react-native-community/cli":
+          dependencies["@react-native-community/cli"],
+        "@react-native-community/cli-platform-android":
+          dependencies["@react-native-community/cli-platform-android"],
+        "@react-native-community/cli-platform-ios":
+          dependencies["@react-native-community/cli-platform-ios"],
+        "hermes-engine": dependencies["hermes-engine"],
+        react: peerDependencies["react"],
+        "react-native": REACT_NATIVE_VERSIONS[v],
+        "react-native-macos": undefined,
+        "react-native-windows": "canary",
+      };
+    }
+
+    case "main": {
+      const { dependencies, peerDependencies } = await fetchPackageInfo(
+        "react-native@nightly"
+      );
+      return {
+        "@react-native-community/cli":
+          dependencies["@react-native-community/cli"],
+        "@react-native-community/cli-platform-android":
+          dependencies["@react-native-community/cli-platform-android"],
+        "@react-native-community/cli-platform-ios":
+          dependencies["@react-native-community/cli-platform-ios"],
+        "hermes-engine": dependencies["hermes-engine"],
+        react: peerDependencies["react"],
+        "react-native": "facebook/react-native",
+        "react-native-macos": undefined,
+        "react-native-windows": undefined,
+      };
+    }
+
+    case "nightly": {
+      const { dependencies, peerDependencies } = await fetchPackageInfo(
+        "react-native@nightly"
+      );
+      return {
+        "@react-native-community/cli":
+          dependencies["@react-native-community/cli"],
+        "@react-native-community/cli-platform-android":
+          dependencies["@react-native-community/cli-platform-android"],
+        "@react-native-community/cli-platform-ios":
+          dependencies["@react-native-community/cli-platform-ios"],
+        "hermes-engine": dependencies["hermes-engine"],
+        react: peerDependencies["react"],
+        "react-native": "nightly",
+        "react-native-macos": undefined,
+        "react-native-windows": undefined,
+      };
+    }
+
+    default: {
+      const [
+        { version: rnVersion, dependencies, peerDependencies },
+        { version: rnmVersion },
+        { version: rnwVersion },
+      ] = await Promise.all([
+        fetchPackageInfo(`react-native@^${v}.0-0`),
+        fetchPackageInfo(`react-native-macos@^${v}.0-0`),
+        fetchPackageInfo(`react-native-windows@^${v}.0-0`),
+      ]);
+      return {
+        "@react-native-community/cli":
+          dependencies["@react-native-community/cli"],
+        "@react-native-community/cli-platform-android":
+          dependencies["@react-native-community/cli-platform-android"],
+        "@react-native-community/cli-platform-ios":
+          dependencies["@react-native-community/cli-platform-ios"],
+        "hermes-engine": dependencies["hermes-engine"],
+        react: peerDependencies["react"],
+        "react-native": rnVersion,
+        "react-native-macos": rnmVersion,
+        "react-native-windows": rnwVersion,
+      };
+    }
+  }
+}
+
+const { [2]: version } = process.argv;
+if (!isValidVersion(version)) {
+  const script = require("path").basename(__filename);
+  console.log(`Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`);
+  process.exit(1);
+}
+
+(async () => {
+  const profile = await getProfile(version);
+  console.log(profile);
+
+  const fs = require("fs");
+  const { EOL } = require("os");
+
+  ["package.json", "example/package.json"].forEach((manifestPath) => {
+    const content = fs.readFileSync(manifestPath, { encoding: "utf-8" });
+    const manifest = JSON.parse(content);
+    keys(profile).forEach((packageName) => {
+      manifest["devDependencies"][packageName] = profile[packageName];
+    });
+
+    const tmpFile = `${manifestPath}.tmp`;
+    fs.writeFile(
+      tmpFile,
+      JSON.stringify(manifest, undefined, 2) + EOL,
+      (err) => {
+        if (err) {
+          throw err;
+        }
+
+        fs.rename(tmpFile, manifestPath, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    );
+  });
+})();
