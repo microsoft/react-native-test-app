@@ -12,7 +12,10 @@ React Native Test App provides test apps for all platforms as a package. It
 handles the native bits for you so you can focus on what's important: your
 product.
 
-If you want to learn how RNTA is used at Microsoft, and see a demo of how to add it to an existing library - you can watch the ["Improve all the repos – exploring Microsoft’s DevExp"](https://www.youtube.com/watch?v=DAEnPV78rQc) talk by @kelset and @tido64 from React Native Europe 2021.
+If you want to learn how RNTA is used at Microsoft, and see a demo of how to add
+it to an existing library - you can watch the
+["Improve all the repos – exploring Microsoft’s DevExp"](https://youtu.be/DAEnPV78rQc?t=499)
+talk by @kelset and @tido64 from React Native Europe 2021.
 
 For more about
 [the motivation](https://github.com/microsoft/react-native-test-app/wiki#motivation)

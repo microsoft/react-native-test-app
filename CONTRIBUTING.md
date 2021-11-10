@@ -19,7 +19,10 @@ additional questions or comments.
 
 ## Commit messages
 
-This repository adheres to the [conventional commit format](https://conventionalcommits.org) via [commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint). Commit messages must match the pattern:
+This repository adheres to the
+[conventional commit format](https://conventionalcommits.org) via
+[commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint).
+Commit messages must match the pattern:
 
 ```sh
 type(scope?): subject  #scope is optional; multiple scopes are supported (current delimiter options: "/", "\" and ",")
