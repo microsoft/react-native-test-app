@@ -79,6 +79,24 @@ function fetchPackageInfo(pkg) {
 }
 
 /**
+ * Returns an object with common dependencies.
+ * @param {Manifest["dependencies"]} dependencies
+ * @param {Manifest["peerDependencies"]} peerDependencies
+ * @return {Record<string, string | undefined>}
+ */
+function pickCommonDependencies(dependencies, peerDependencies) {
+  return {
+    "@react-native-community/cli": dependencies["@react-native-community/cli"],
+    "@react-native-community/cli-platform-android":
+      dependencies["@react-native-community/cli-platform-android"],
+    "@react-native-community/cli-platform-ios":
+      dependencies["@react-native-community/cli-platform-ios"],
+    "hermes-engine": dependencies["hermes-engine"],
+    react: peerDependencies["react"],
+  };
+}
+
+/**
  * Returns a profile for specified version.
  * @param {string} v
  * @return {Promise<Record<string, string | undefined>>}
@@ -90,14 +108,7 @@ async function getProfile(v) {
         "react-native-macos@canary"
       );
       return {
-        "@react-native-community/cli":
-          dependencies["@react-native-community/cli"],
-        "@react-native-community/cli-platform-android":
-          dependencies["@react-native-community/cli-platform-android"],
-        "@react-native-community/cli-platform-ios":
-          dependencies["@react-native-community/cli-platform-ios"],
-        "hermes-engine": dependencies["hermes-engine"],
-        react: peerDependencies["react"],
+        ...pickCommonDependencies(dependencies, peerDependencies),
         "react-native": REACT_NATIVE_VERSIONS[v],
         "react-native-macos": "canary",
         "react-native-windows": undefined,
@@ -109,14 +120,7 @@ async function getProfile(v) {
         "react-native-windows@canary"
       );
       return {
-        "@react-native-community/cli":
-          dependencies["@react-native-community/cli"],
-        "@react-native-community/cli-platform-android":
-          dependencies["@react-native-community/cli-platform-android"],
-        "@react-native-community/cli-platform-ios":
-          dependencies["@react-native-community/cli-platform-ios"],
-        "hermes-engine": dependencies["hermes-engine"],
-        react: peerDependencies["react"],
+        ...pickCommonDependencies(dependencies, peerDependencies),
         "react-native": REACT_NATIVE_VERSIONS[v],
         "react-native-macos": undefined,
         "react-native-windows": "canary",
@@ -128,14 +132,7 @@ async function getProfile(v) {
         "react-native@nightly"
       );
       return {
-        "@react-native-community/cli":
-          dependencies["@react-native-community/cli"],
-        "@react-native-community/cli-platform-android":
-          dependencies["@react-native-community/cli-platform-android"],
-        "@react-native-community/cli-platform-ios":
-          dependencies["@react-native-community/cli-platform-ios"],
-        "hermes-engine": dependencies["hermes-engine"],
-        react: peerDependencies["react"],
+        ...pickCommonDependencies(dependencies, peerDependencies),
         "react-native": "facebook/react-native",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
@@ -147,14 +144,7 @@ async function getProfile(v) {
         "react-native@nightly"
       );
       return {
-        "@react-native-community/cli":
-          dependencies["@react-native-community/cli"],
-        "@react-native-community/cli-platform-android":
-          dependencies["@react-native-community/cli-platform-android"],
-        "@react-native-community/cli-platform-ios":
-          dependencies["@react-native-community/cli-platform-ios"],
-        "hermes-engine": dependencies["hermes-engine"],
-        react: peerDependencies["react"],
+        ...pickCommonDependencies(dependencies, peerDependencies),
         "react-native": "nightly",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
@@ -172,14 +162,7 @@ async function getProfile(v) {
         fetchPackageInfo(`react-native-windows@^${v}.0-0`),
       ]);
       return {
-        "@react-native-community/cli":
-          dependencies["@react-native-community/cli"],
-        "@react-native-community/cli-platform-android":
-          dependencies["@react-native-community/cli-platform-android"],
-        "@react-native-community/cli-platform-ios":
-          dependencies["@react-native-community/cli-platform-ios"],
-        "hermes-engine": dependencies["hermes-engine"],
-        react: peerDependencies["react"],
+        ...pickCommonDependencies(dependencies, peerDependencies),
         "react-native": rnVersion,
         "react-native-macos": rnmVersion,
         "react-native-windows": rnwVersion,
