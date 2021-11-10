@@ -22,7 +22,7 @@ const REACT_NATIVE_VERSIONS = {
 };
 
 /**
- * Returns specified string is a valid version.
+ * Returns whether specified string is a valid version number.
  * @param {string} v
  * @return {boolean}
  */
