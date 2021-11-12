@@ -7,6 +7,8 @@
 //
 // @ts-check
 
+const os = require("os");
+
 /**
  * @typedef {{
  *   version?: string;
@@ -50,7 +52,8 @@ function fetchPackageInfo(pkg) {
     /** @type {string[]} */
     const result = [];
 
-    const fetch = require("child_process").spawn("npm", [
+    const npm = os.platform() === "win32" ? "npm.cmd" : "npm";
+    const fetch = require("child_process").spawn(npm, [
       "view",
       "--json",
       pkg,
@@ -185,7 +188,6 @@ if (!isValidVersion(version)) {
   console.log(profile);
 
   const fs = require("fs");
-  const { EOL } = require("os");
 
   ["package.json", "example/package.json"].forEach((manifestPath) => {
     const content = fs.readFileSync(manifestPath, { encoding: "utf-8" });
@@ -197,7 +199,7 @@ if (!isValidVersion(version)) {
     const tmpFile = `${manifestPath}.tmp`;
     fs.writeFile(
       tmpFile,
-      JSON.stringify(manifest, undefined, 2) + EOL,
+      JSON.stringify(manifest, undefined, 2) + os.EOL,
       (err) => {
         if (err) {
           throw err;
