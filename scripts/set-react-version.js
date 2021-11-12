@@ -53,11 +53,7 @@ function fetchPackageInfo(pkg) {
     const result = [];
 
     const npm = os.platform() === "win32" ? "npm.cmd" : "npm";
-    const fetch = require("child_process").spawn(npm, [
-      "view",
-      "--json",
-      pkg,
-    ]);
+    const fetch = require("child_process").spawn(npm, ["view", "--json", pkg]);
     fetch.stdout.on("data", (data) => {
       result.push(data);
     });
