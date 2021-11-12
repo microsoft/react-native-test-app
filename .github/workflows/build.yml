@@ -398,15 +398,10 @@ jobs:
           path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
       - name: Set up react-native@canary
-        if: ${{ github.event_name == 'schedule' }}
         run: |
           npm run set-react-version canary-windows
           yarn --no-immutable
         shell: bash
-      - name: Install
-        if: ${{ github.event_name != 'schedule' }}
-        run: |
-          yarn
       - name: Build bundle and create solution
         run: |
           yarn build:windows
