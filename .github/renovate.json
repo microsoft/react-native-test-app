@@ -4,11 +4,16 @@
   "packageRules": [
     {
       "matchPackagePrefixes": ["@react-native-community/cli"],
-      "allowedVersions": "^4.10.0"
+      "allowedVersions": "^5.0.0"
     },
     {
       "matchPackageNames": ["hermes-engine"],
-      "allowedVersions": "~0.5.0"
+      "allowedVersions": "~0.7.0"
+    },
+    {
+      "groupName": "Kotlin",
+      "matchDatasources": ["maven"],
+      "matchPackagePrefixes": ["org.jetbrains.kotlin"]
     },
     {
       "matchPackageNames": ["org.jetbrains.intellij.deps:trove4j"],
@@ -24,7 +29,7 @@
         "react-native-macos",
         "react-native-windows"
       ],
-      "allowedVersions": "^0.63.0"
+      "allowedVersions": "^0.64.0"
     }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
