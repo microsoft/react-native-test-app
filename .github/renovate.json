@@ -13,7 +13,7 @@
     {
       "groupName": "Kotlin",
       "matchDatasources": ["maven"],
-      "matchPackagePrefixes": ["org.jetbrains.kotlin"]
+      "matchPackagePrefixes": ["org.jetbrains.kotlin:"]
     },
     {
       "matchPackageNames": ["org.jetbrains.intellij.deps:trove4j"],
