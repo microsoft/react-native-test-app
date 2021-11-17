@@ -420,6 +420,7 @@ const getConfig = (() => {
               "",
               "    dependencies {",
               `        classpath "com.android.tools.build:gradle:$androidPluginVersion"`,
+              `        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"`,
               "    }",
               "}",
               ""
