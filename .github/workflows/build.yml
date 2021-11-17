@@ -35,7 +35,7 @@ jobs:
   lint-test:
     name: "lint + test"
     runs-on: macos-latest
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2.4.1
@@ -108,7 +108,6 @@ jobs:
   ios:
     name: "iOS"
     runs-on: macos-latest
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2.4.1
@@ -157,7 +156,7 @@ jobs:
       matrix:
         template: [all, ios]
     runs-on: macos-latest
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2.4.1
@@ -199,7 +198,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Set up JDK
         uses: actions/setup-java@v2.3.1
@@ -248,7 +247,7 @@ jobs:
         template: [all, android]
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Set up JDK
         uses: actions/setup-java@v2.3.1
@@ -290,7 +289,6 @@ jobs:
   macos:
     name: "macOS"
     runs-on: macos-latest
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2.4.1
@@ -341,7 +339,7 @@ jobs:
       matrix:
         template: [all, macos]
     runs-on: macos-latest
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2.4.1
@@ -376,7 +374,6 @@ jobs:
   windows:
     name: "Windows"
     runs-on: windows-latest
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     strategy:
       matrix:
         platform: [ARM64, x64]
@@ -433,7 +430,7 @@ jobs:
   windows-template:
     name: "Windows [template]"
     runs-on: windows-latest
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
         template: [all, windows]
@@ -490,7 +487,7 @@ jobs:
         windows-template,
       ]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'schedule' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2.4.1
