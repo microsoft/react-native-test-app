@@ -59,8 +59,8 @@ project.ext.react = [
 ]
 
 android {
-    compileSdkVersion sdk.version
-    buildToolsVersion sdk.buildToolsVersion
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
 
     // We need only set `ndkVersion` when building react-native from source.
     if (hasProperty("ANDROID_NDK_VERSION")) {
@@ -81,8 +81,8 @@ android {
 
     defaultConfig {
         applicationId project.ext.react.applicationId
-        minSdkVersion sdk.minVersion
-        targetSdkVersion sdk.version
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
         versionCode reactTestApp.versionCode
         versionName reactTestApp.versionName
 
