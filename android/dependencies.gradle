@@ -8,11 +8,10 @@ ext {
         versionName: "1.0"
     ]
 
-    sdk = [
-        version          : 29,
-        minVersion       : 21,
-        buildToolsVersion: "30.0.3"
-    ]
+    compileSdkVersion = 29
+    buildToolsVersion = "30.0.3"
+    minSdkVersion = 21
+    targetSdkVersion = 29
 
     /**
      * Dependabot requires a `dependencies.gradle` to evaluate Java

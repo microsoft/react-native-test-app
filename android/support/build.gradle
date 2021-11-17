@@ -14,12 +14,12 @@ apply from: "$androidDir/force-resolve-trove4j.gradle"
 apply plugin: "com.android.library"
 
 android {
-    compileSdkVersion sdk.version
-    buildToolsVersion sdk.buildToolsVersion
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion sdk.minVersion
-        targetSdkVersion sdk.version
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
         versionCode reactTestApp.versionCode
         versionName reactTestApp.versionName
     }
