@@ -34,5 +34,6 @@
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
   "rangeStrategy": "update-lockfile",
+  "stabilityDays": 7,
   "timezone": "Europe/Oslo"
 }
