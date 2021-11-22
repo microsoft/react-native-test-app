@@ -231,7 +231,7 @@ def make_project!(xcodeproj, project_root, target_platform)
 
   react_native = react_native_path(project_root, target_platform)
   version = package_version(react_native.to_s).segments
-  version = version[0] * 10_000 + version[1] * 100 + version[2]
+  version = (version[0] * 10_000) + (version[1] * 100) + version[2]
   version_macro = "REACT_NATIVE_VERSION=#{version}"
 
   build_settings = {}
