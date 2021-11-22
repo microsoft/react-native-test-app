@@ -45,6 +45,7 @@ jobs:
         uses: ruby/setup-ruby@v1.86.0
         with:
           ruby-version: '3.0'
+          bundler: Gemfile.lock
           bundler-cache: true
       - name: Checkout
         uses: actions/checkout@v2
