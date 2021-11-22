@@ -41,6 +41,11 @@ jobs:
         uses: actions/setup-node@v2.4.1
         with:
           node-version: 14
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1.86.0
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -67,7 +72,6 @@ jobs:
           scripts/clang-format-diff.sh || true
       - name: CocoaPods
         run: |
-          bundle install
           echo "::add-matcher::.github/rubocop.json"
           bundle exec rubocop
           echo "::remove-matcher owner=rubocop::"
