@@ -3,7 +3,7 @@ import org.gradle.initialization.DefaultSettings
 
 import java.nio.file.Paths
 
-private static void apply(Settings settings) {
+private static void applySettings(Settings settings) {
     def projectDir = settings.findNodeModulesPath(settings.rootDir, "react-native-test-app")
 
     if (settings.buildReactNativeFromSource(settings.rootDir)) {
@@ -43,7 +43,7 @@ ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
         apply from: "$scriptDir/android/force-resolve-trove4j.gradle", to: scriptHandler
     }
 
-    apply(defaultSettings)
+    applySettings(defaultSettings)
     applyNativeModulesSettingsGradle(defaultSettings)
 }
 
