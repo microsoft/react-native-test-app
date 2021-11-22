@@ -47,6 +47,7 @@ jobs:
           ruby-version: '3.0'
           bundler: Gemfile.lock
           bundler-cache: true
+          working-directory: .
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -73,6 +74,7 @@ jobs:
           scripts/clang-format-diff.sh || true
       - name: CocoaPods
         run: |
+          bundle install
           echo "::add-matcher::.github/rubocop.json"
           bundle exec rubocop
           echo "::remove-matcher owner=rubocop::"
