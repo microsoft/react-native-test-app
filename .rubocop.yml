@@ -1,5 +1,8 @@
 AllCops:
   NewCops: enable
+  Include:
+    - "**/*.rb"
+    - Gemfile
   Exclude:
     - "**/node_modules/**/*"
   TargetRubyVersion: 2.6
