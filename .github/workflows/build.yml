@@ -53,6 +53,12 @@ jobs:
         with:
           path: .yarn/cache
           key: ${{ hashFiles('yarn.lock') }}
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1.86.0
+        with:
+          ruby-version: '3.0'
+          bundler: Gemfile.lock
+          bundler-cache: true
       - name: Install
         run: |
           yarn
@@ -67,7 +73,6 @@ jobs:
           scripts/clang-format-diff.sh || true
       - name: CocoaPods
         run: |
-          bundle install
           echo "::add-matcher::.github/rubocop.json"
           bundle exec rubocop
           echo "::remove-matcher owner=rubocop::"
