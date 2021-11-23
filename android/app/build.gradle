@@ -14,10 +14,6 @@ buildscript {
         google()
         mavenCentral()
     }
-
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    }
 }
 
 repositories {
@@ -30,6 +26,7 @@ repositories {
 
     // TODO: Remove these when they've been published to Maven Central.
     // See https://github.com/microsoft/react-native-test-app/issues/305
+    // noinspection JcenterRepositoryObsolete
     jcenter() {
         content {
             includeGroup("com.facebook.fbjni")
