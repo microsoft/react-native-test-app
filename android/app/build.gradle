@@ -35,6 +35,11 @@ repositories {
             includeGroup("com.facebook.yoga")
         }
     }
+
+    // https://github.com/AzureAD/microsoft-authentication-library-for-android#step-1-declare-dependency-on-msal
+    maven {
+        url 'https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1'
+    }
 }
 
 apply from: "$projectDir/../force-resolve-trove4j.gradle"
