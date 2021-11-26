@@ -101,11 +101,14 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
       }
 
       const m = data.toString().match(pattern);
-      if (m) {
-        isResolved = true;
-        resolve(`react-native-windows@${m[1]}`);
-        list.kill();
+      if (!m) {
+        return;
       }
+
+      isResolved = true;
+      resolve(`react-native-windows@${m[1]}`);
+
+      list.kill();
     });
   }).then(fetchPackageInfo);
 }
