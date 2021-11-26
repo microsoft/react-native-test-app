@@ -1,0 +1,31 @@
+name: Setup toolchain
+description: Sets up the toolchain for the project
+inputs:
+  platform:
+    description: The target platform to set up toolchain for
+runs:
+  using: composite
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v2.4.1
+      with:
+        node-version: 14
+    - name: Set up JDK
+      if: ${{ inputs.platform == 'android' }}
+      uses: actions/setup-java@v2.3.1
+      with:
+        distribution: temurin
+        java-version: 11
+    - name: Set up MSBuild
+      if: ${{ inputs.platform == 'windows' }}
+      uses: microsoft/setup-msbuild@v1.0.3
+    - name: Set up Ruby
+      if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' }}
+      uses: ruby/setup-ruby@v1.86.0
+      with:
+        ruby-version: "3.0"
+        bundler: Gemfile.lock
+        bundler-cache: true
+    - name: Set up VSTest.console.exe
+      if: ${{ inputs.platform == 'windows' }}
+      uses: darenm/Setup-VSTest@v1

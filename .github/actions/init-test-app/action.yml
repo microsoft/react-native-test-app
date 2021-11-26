@@ -1,0 +1,23 @@
+name: Create React Native Test App
+description: Initializes a new test app
+inputs:
+  platform:
+    description: The platform to create a test app for
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Cache /.yarn/cache
+      uses: actions/cache@v2
+      with:
+        path: .yarn/cache
+        key: ${{ hashFiles('yarn.lock') }}
+    - name: Install
+      run: |
+        scripts/install-test-template.sh ${{ inputs.platform }}
+      shell: bash
+    - name: react-native init-test-app
+      run: |
+        yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ inputs.platform }}
+      shell: bash
+      working-directory: template-example
