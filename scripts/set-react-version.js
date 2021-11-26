@@ -7,6 +7,7 @@
 //
 // @ts-check
 
+const { spawn } = require("child_process");
 const os = require("os");
 
 /**
@@ -53,7 +54,7 @@ function fetchPackageInfo(pkg) {
     const result = [];
 
     const npm = os.platform() === "win32" ? "npm.cmd" : "npm";
-    const fetch = require("child_process").spawn(npm, ["view", "--json", pkg]);
+    const fetch = spawn(npm, ["view", "--json", pkg]);
     fetch.stdout.on("data", (data) => {
       result.push(data);
     });
@@ -75,6 +76,41 @@ function fetchPackageInfo(pkg) {
       }
     });
   });
+}
+
+/**
+ * Fetches the latest react-native-windows@canary information via NuGet.
+ * @return {Promise<Manifest>}
+ */
+function fetchReactNativeWindowsCanaryInfoViaNuGet() {
+  return new Promise((resolve) => {
+    const pattern = /Microsoft\.ReactNative\.Cxx ([-.\d]*canary[-.\d]*)/;
+
+    let isResolved = false;
+    const list = spawn("nuget.exe", [
+      "list",
+      "Microsoft.ReactNative.Cxx",
+      "-Source",
+      "https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json",
+      "-AllVersions",
+      "-Prerelease",
+    ]);
+    list.stdout.on("data", (data) => {
+      if (isResolved) {
+        return;
+      }
+
+      const m = data.toString().match(pattern);
+      if (!m) {
+        return;
+      }
+
+      isResolved = true;
+      resolve(`react-native-windows@${m[1]}`);
+
+      list.kill();
+    });
+  }).then(fetchPackageInfo);
 }
 
 /**
@@ -115,14 +151,14 @@ async function getProfile(v) {
     }
 
     case "canary-windows": {
-      const { dependencies, peerDependencies } = await fetchPackageInfo(
-        "react-native-windows@canary"
-      );
+      const { version, dependencies, peerDependencies } = process.env["CI"]
+        ? await fetchReactNativeWindowsCanaryInfoViaNuGet()
+        : await fetchPackageInfo("react-native-windows@canary");
       return {
         ...pickCommonDependencies(dependencies, peerDependencies),
         "react-native": REACT_NATIVE_VERSIONS[v],
         "react-native-macos": undefined,
-        "react-native-windows": "canary",
+        "react-native-windows": version,
       };
     }
 
