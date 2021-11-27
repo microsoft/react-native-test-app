@@ -1,8 +1,8 @@
 name: Reminder to Renew Self-signed Test Certificate
 on:
   schedule:
-    # 04:05 on Monday in June
-    - cron: 5 4 * 6 1
+    # 04:05 on Monday in January and June
+    - cron: 5 4 * 1,6 1
 jobs:
   create_issue:
     name: Create reminder
@@ -18,6 +18,6 @@ jobs:
           body: |
             The self-signed test certificate for ReactTestApp on Windows is about to expire. For more information about renewing certificates, see http://go.microsoft.com/fwlink/?LinkID=241478. For a concrete example, have a look at \#385.
 
-            Remember to _not_ set a password when creating the certificate. You must also update [.github/workflows/renew-windows-certificate.yml](https://github.com/microsoft/react-native-test-app/blob/HEAD/.github/workflows/renew-windows-certificate.yml) so that a new issue is created a month before the new certificate expires.
+            Remember to _not_ set a password when creating the certificate.
           labels: "platform: Windows"
           assignees: "tido64"
