@@ -13,22 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
-        with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Install
-        run: |
-          yarn
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
       - name: Lint commit message
         run: |
           yarn lint:commit
@@ -37,31 +29,19 @@ jobs:
     runs-on: macos-latest
     if: ${{ github.event_name != 'schedule' }}
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 64
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+        with:
+          platform: macos
       - name: Deduplicate packages
         run: |
           yarn dedupe --check
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
-        with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1.86.0
-        with:
-          ruby-version: "3.0"
-          bundler: Gemfile.lock
-          bundler-cache: true
-      - name: Install
-        run: |
-          yarn
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
       - name: ClangFormat
         if: ${{ github.event_name == 'pull_request' }}
         env:
@@ -101,7 +81,6 @@ jobs:
       - name: SwiftFormat
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          brew install swiftformat
           echo "::add-matcher::.github/swiftformat.json"
           yarn format:swift --lint
           echo "::remove-matcher owner=swiftformat::"
@@ -114,17 +93,10 @@ jobs:
     name: "iOS"
     runs-on: macos-latest
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
-        with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -134,17 +106,23 @@ jobs:
           # https://github.com/microsoft/react-native-macos/issues/620 for more
           # details.
           npm run set-react-version main
-          yarn --no-immutable
           rm example/ios/Podfile.lock
-      - name: Install
-        if: ${{ github.event_name != 'schedule' }}
-        run: |
-          yarn
-      - name: Build
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
+        with:
+          immutable: ${{ github.event_name != 'schedule' }}
+      - name: Bundle JavaScript
         run: |
           set -eo pipefail
           yarn build:ios || yarn build:ios
-          pod install --project-directory=ios
+        working-directory: example
+      - name: Install Pods
+        uses: ./.github/actions/cocoapods
+        with:
+          project-directory: ios
+          working-directory: example
+      - name: Build
+        run: |
           ../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test `react-native config`
@@ -163,35 +141,34 @@ jobs:
     runs-on: macos-latest
     if: ${{ github.event_name != 'schedule' }}
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+      - name: Initialize test app
+        uses: ./.github/actions/init-test-app
         with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Install
-        run: |
-          scripts/install-test-template.sh ${{ matrix.template }}
-      - name: react-native init-test-app
-        run: |
-          yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
-        working-directory: template-example
-      - name: Build
+          platform: ${{ matrix.template }}
+      - name: Bundle JavaScript
         run: |
           set -eo pipefail
           yarn build:ios || yarn build:ios
+        working-directory: template-example
+      - name: Determine project directory
+        id: configure
+        run: |
           if [[ ${{ matrix.template }} == ios ]]; then
-            pod install
-            ../scripts/xcodebuild.sh TemplateExample.xcworkspace build
+            echo '::set-output name=project-directory::.'
           else
-            pod install --project-directory=ios
-            ../scripts/xcodebuild.sh ios/TemplateExample.xcworkspace build
+            echo '::set-output name=project-directory::ios'
           fi
+      - name: Install Pods
+        run: |
+          pod install --project-directory=${{ steps.configure.outputs.project-directory }}
+        working-directory: template-example
+      - name: Build
+        run: |
+          ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
       - name: react-native run-ios
         run: |
@@ -205,46 +182,38 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
-      - name: Set up JDK
-        uses: actions/setup-java@v2.3.1
-        with:
-          distribution: temurin
-          java-version: 11
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+        with:
+          platform: android
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
-        with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
           npm run set-react-version nightly
-          yarn --no-immutable
         shell: bash
-      - name: Install
-        if: ${{ github.event_name != 'schedule' }}
-        run: |
-          yarn
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
+        with:
+          immutable: ${{ github.event_name != 'schedule' }}
       - name: Test `react-native config`
         run: |
           yarn jest
         working-directory: example
-      - name: Build + Test
+      - name: Bundle JavaScript
         run: |
           set -eo pipefail
           yarn build:android || yarn build:android
-          pushd android 1> /dev/null
-          ./gradlew clean build check test
         shell: bash
         working-directory: example
+      - name: Build
+        run: |
+          ./gradlew clean build check test
+        shell: bash
+        working-directory: example/android
   android-template:
     name: "Android [template]"
     strategy:
@@ -254,35 +223,24 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
-      - name: Set up JDK
-        uses: actions/setup-java@v2.3.1
-        with:
-          distribution: temurin
-          java-version: 11
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
         with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Install
+          platform: android
+      - name: Initialize test app
+        uses: ./.github/actions/init-test-app
+        with:
+          platform: ${{ matrix.template }}
+      - name: Bundle JavaScript
         run: |
-          scripts/install-test-template.sh ${{ matrix.template }}
-        shell: bash
-      - name: react-native init-test-app
-        run: |
-          yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
+          set -eo pipefail
+          yarn build:android || yarn build:android
         shell: bash
         working-directory: template-example
       - name: Build
         run: |
-          set -eo pipefail
-          yarn build:android || yarn build:android
           [[ -d android ]] && pushd android 1> /dev/null
           ./gradlew clean build check test
         shell: bash
@@ -295,33 +253,31 @@ jobs:
     name: "macOS"
     runs-on: macos-latest
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
-        with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
           npm run set-react-version canary-macos
-          yarn --no-immutable
           rm example/macos/Podfile.lock
-        shell: bash
-      - name: Install
-        if: ${{ github.event_name != 'schedule' }}
-        run: |
-          yarn
-      - name: Build
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
+        with:
+          immutable: ${{ github.event_name != 'schedule' }}
+      - name: Bundle JavaScript
         run: |
           set -eo pipefail
           yarn build:macos || yarn build:macos
-          pod install --project-directory=macos
+        working-directory: example
+      - name: Install Pods
+        uses: ./.github/actions/cocoapods
+        with:
+          project-directory: macos
+          working-directory: example
+      - name: Build
+        run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test `react-native config`
@@ -334,7 +290,6 @@ jobs:
         working-directory: example
       - name: Build ARM
         run: |
-          set -eo pipefail
           ../scripts/xcodebuild.sh macos/Example.xcworkspace clean
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
         working-directory: example
@@ -346,35 +301,34 @@ jobs:
     runs-on: macos-latest
     if: ${{ github.event_name != 'schedule' }}
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+      - name: Initialize test app
+        uses: ./.github/actions/init-test-app
         with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Install
-        run: |
-          scripts/install-test-template.sh ${{ matrix.template }}
-      - name: Init test app
-        run: |
-          yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
-        working-directory: template-example
-      - name: Build
+          platform: ${{ matrix.template }}
+      - name: Bundle JavaScript
         run: |
           set -eo pipefail
           yarn build:macos || yarn build:macos
+        working-directory: template-example
+      - name: Determine project directory
+        id: configure
+        run: |
           if [[ ${{ matrix.template }} == macos ]]; then
-            pod install
-            ../scripts/xcodebuild.sh TemplateExample.xcworkspace build
+            echo '::set-output name=project-directory::.'
           else
-            pod install --project-directory=macos
-            ../scripts/xcodebuild.sh macos/TemplateExample.xcworkspace build
+            echo '::set-output name=project-directory::macos'
           fi
+      - name: Install Pods
+        run: |
+          pod install --project-directory=${{ steps.configure.outputs.project-directory }}
+        working-directory: template-example
+      - name: Build
+        run: |
+          ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
   windows:
     name: "Windows"
@@ -384,31 +338,21 @@ jobs:
         platform: [ARM64, x64]
         configuration: [Debug, Release]
     steps:
-      - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v1.0.3
-      - name: Set up VSTest.console.exe
-        uses: darenm/Setup-VSTest@v1
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
         with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
+          platform: windows
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
           npm run set-react-version canary-windows
-          yarn --no-immutable
         shell: bash
-      - name: Install
-        if: ${{ github.event_name != 'schedule' }}
-        run: |
-          yarn
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
+        with:
+          immutable: ${{ github.event_name != 'schedule' }}
       - name: Build bundle and create solution
         run: |
           yarn build:windows
@@ -440,28 +384,16 @@ jobs:
       matrix:
         template: [all, windows]
     steps:
-      - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v1.0.3
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
         with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Install
-        run: |
-          scripts/install-test-template.sh ${{ matrix.template }}
-        shell: bash
-      - name: Init test app
-        run: |
-          yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ matrix.template }}
-        shell: bash
-        working-directory: template-example
+          platform: windows
+      - name: Initialize test app
+        uses: ./.github/actions/init-test-app
+        with:
+          platform: ${{ matrix.template }}
       - name: Build bundle and create solution
         run: |
           yarn build:windows
@@ -494,20 +426,12 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'schedule' }}
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: 14
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache /.yarn/cache
-        uses: actions/cache@v2
-        with:
-          path: .yarn/cache
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Install
-        run: |
-          yarn
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
