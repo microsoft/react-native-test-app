@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
+import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.google.android.material.appbar.MaterialToolbar
 import com.microsoft.reacttestapp.component.ComponentActivity
@@ -79,10 +80,14 @@ class MainActivity : ReactActivity() {
             if (manifest.components.count() == 1) 0 else session.lastOpenedComponent(checksum)
         index?.let {
             val component = newComponentViewModel(manifest.components[it])
-            testApp.reactNativeHost.addReactInstanceEventListener {
+            val startInitialComponent = { _: ReactContext ->
                 if (!didInitialNavigation) {
                     startComponent(component)
                 }
+            }
+            testApp.reactNativeHost.apply {
+                addReactInstanceEventListener(startInitialComponent)
+                reactInstanceManager.currentReactContext?.let(startInitialComponent)
             }
         }
 
