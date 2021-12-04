@@ -110,7 +110,7 @@ jobs:
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
         with:
-          immutable: ${{ github.event_name != 'schedule' }}
+          immutable: ${{ github.event_name == 'schedule' }}
       - name: Bundle JavaScript
         run: |
           set -eo pipefail
