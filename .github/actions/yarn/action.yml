@@ -11,12 +11,12 @@ runs:
       uses: actions/cache@v2
       with:
         path: .yarn/cache
-        key: ${{ hashFiles('yarn.lock') }}
+        key: yarn-${{ inputs.immutable }}-${{ hashFiles('yarn.lock') }}
     - name: Install npm dependencies
-      if: ${{ inputs.immutable }}
+      if: ${{ inputs.immutable == 'true' }}
       run: yarn
       shell: bash
     - name: Install npm dependencies (ignore lockfile changes)
-      if: ${{ !inputs.immutable }}
+      if: ${{ inputs.immutable != 'true' }}
       run: yarn --no-immutable
       shell: bash
