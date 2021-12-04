@@ -7,11 +7,15 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Generate cache key
+      id: cache-key-generator
+      run: echo "::set-output name=cache-key::$(node scripts/shasum.js yarn.lock)"
+      shell: bash
     - name: Cache /.yarn/cache
       uses: actions/cache@v2
       with:
         path: .yarn/cache
-        key: yarn-${{ inputs.immutable }}-${{ hashFiles('yarn.lock') }}
+        key: yarn-${{ inputs.immutable }}-${{ steps.cache-key-generator.outputs.cache-key }}
     - name: Install npm dependencies
       if: ${{ inputs.immutable == 'true' }}
       run: yarn
