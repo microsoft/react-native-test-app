@@ -12,13 +12,19 @@ runs:
   steps:
     - name: Generate cache key
       id: cache-key-generator
-      run: echo '::set-output name=cache-key::${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock'
+      run: |
+        if [[ -f ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock ]]; then
+          echo "::set-output name=cache-key::$(node scripts/shasum.js ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock)"
+        else
+          echo '::set-output name=cache-key::false'
+        fi
       shell: bash
     - name: Cache /${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
+      if: ${{ steps.cache-key-generator.outputs.cache-key != 'false' }}
       uses: actions/cache@v2
       with:
         path: ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
-        key: ${{ hashFiles(steps.cache-key-generator.outputs.cache-key) }}
+        key: ${{ steps.cache-key-generator.outputs.cache-key }}
     - name: Install Pods
       run: |
         pod install --project-directory=${{ inputs.project-directory }}
