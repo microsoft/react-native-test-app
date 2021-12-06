@@ -113,7 +113,6 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Bundle JavaScript
         run: |
-          set -eo pipefail
           yarn build:ios || yarn build:ios
         working-directory: example
       - name: Install Pods
@@ -151,7 +150,6 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          set -eo pipefail
           yarn build:ios || yarn build:ios
         working-directory: template-example
       - name: Determine project directory
@@ -205,7 +203,6 @@ jobs:
         working-directory: example
       - name: Bundle JavaScript
         run: |
-          set -eo pipefail
           yarn build:android || yarn build:android
         shell: bash
         working-directory: example
@@ -235,7 +232,6 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          set -eo pipefail
           yarn build:android || yarn build:android
         shell: bash
         working-directory: template-example
@@ -268,7 +264,6 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Bundle JavaScript
         run: |
-          set -eo pipefail
           yarn build:macos || yarn build:macos
         working-directory: example
       - name: Install Pods
@@ -311,7 +306,6 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          set -eo pipefail
           yarn build:macos || yarn build:macos
         working-directory: template-example
       - name: Determine project directory
