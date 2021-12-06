@@ -121,11 +121,6 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
  */
 function pickCommonDependencies(dependencies, peerDependencies) {
   return {
-    "@react-native-community/cli": dependencies["@react-native-community/cli"],
-    "@react-native-community/cli-platform-android":
-      dependencies["@react-native-community/cli-platform-android"],
-    "@react-native-community/cli-platform-ios":
-      dependencies["@react-native-community/cli-platform-ios"],
     "hermes-engine": dependencies["hermes-engine"],
     react: peerDependencies["react"],
   };
