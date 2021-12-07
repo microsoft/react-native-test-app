@@ -10427,8 +10427,8 @@ __metadata:
   linkType: soft
 
 "react-native-windows@npm:^0.64.25":
-  version: 0.64.26
-  resolution: "react-native-windows@npm:0.64.26"
+  version: 0.64.27
+  resolution: "react-native-windows@npm:0.64.27"
   dependencies:
     "@babel/runtime": ^7.0.0
     "@jest/create-cache-key-function": ^26.5.0
@@ -10467,7 +10467,7 @@ __metadata:
   peerDependencies:
     react: 17.0.1
     react-native: ^0.64.0
-  checksum: eb56c12f922a67c4e7a2ab76930cbe757a19037a6d0435d48aa42afd734b21edb6f6e53a63a13adb28e8a76f916722a3bed15992dc60a8bd0a8097e61fc36f27
+  checksum: 8823dbb139087c31d4e960f264a8d050abcbd78d62dfeba892bf03ee9c51d9971c7b30acee0e7771ccdac3042cbfe4437d3941d6d7de23986582a12f257e28ae
   languageName: node
   linkType: hard
 
