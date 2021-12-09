@@ -16,6 +16,11 @@
       "matchPackagePrefixes": ["org.jetbrains.kotlin:"]
     },
     {
+      "groupName": "Moshi",
+      "matchDatasources": ["maven"],
+      "matchPackagePrefixes": ["com.squareup.moshi:"]
+    },
+    {
       "matchPackageNames": ["org.jetbrains.intellij.deps:trove4j"],
       "enabled": false
     },
