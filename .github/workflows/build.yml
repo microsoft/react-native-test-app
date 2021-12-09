@@ -29,7 +29,8 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Run `react-native doctor`
         run: |
-          yarn react-native doctor --fix
+          yes | yarn react-native doctor --fix
+        shell: bash
         working-directory: example
       - name: Azure PowerShell Action
         uses: Azure/powershell@v1
