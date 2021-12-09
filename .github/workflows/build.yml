@@ -31,3 +31,9 @@ jobs:
         run: |
           yarn react-native doctor
         working-directory: example
+      - name: Azure PowerShell Action
+        uses: Azure/powershell@v1
+        with:
+          inlineScript: yarn react-native doctor
+          azPSVersion: latest
+          failOnStandardError: true
