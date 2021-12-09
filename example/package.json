@@ -23,14 +23,17 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@react-native-community/cli": "^6.0.0",
+    "@react-native-community/cli-platform-android": "^6.0.0",
+    "@react-native-community/cli-platform-ios": "^6.0.0",
     "@types/jest": "^27.0.0",
+    "hermes-engine": "~0.9.0",
     "jest": "^27.0.0",
     "mkdirp": "^1.0.0",
-    "react": "17.0.1",
-    "react-native": "^0.64.3",
-    "react-native-macos": "^0.64.6",
+    "react": "17.0.2",
+    "react-native": "0.66.3",
     "react-native-test-app": "workspace:.",
-    "react-native-windows": "^0.64.25"
+    "react-native-windows": "0.66.5"
   },
   "jest": {
     "roots": [
