@@ -18,7 +18,7 @@
     <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.19041.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
     <PackageCertificateKeyFile>ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>CF5E09A17EC338910A836B9975B2E95912A8D8F1</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>BFE553028D3AE56476C35B494FD52102871D41FB</PackageCertificateThumbprint>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="ReactNativeWindowsProps">
