@@ -1,6 +1,8 @@
 import groovy.json.JsonSlurper
-import java.nio.file.Paths
+import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.initialization.DefaultSettings
+
+import java.nio.file.Paths
 
 private static void applySettings(Settings settings) {
     def projectDir = settings.findNodeModulesPath(settings.rootDir, "react-native-test-app")
@@ -32,16 +34,12 @@ private static void applySettings(Settings settings) {
 }
 
 def scriptDir = buildscript.sourceFile.getParent()
-apply from: "$scriptDir/android/test-app-util.gradle"
+apply from: "${scriptDir}/android/test-app-util.gradle"
 
 def cliAndroidDir = findNodeModulesPath(rootDir, "@react-native-community/cli-platform-android")
-apply from: "$cliAndroidDir/native_modules.gradle"
+apply from: "${cliAndroidDir}/native_modules.gradle"
 
 ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
-    buildscript { scriptHandler ->
-        apply from: "$scriptDir/android/force-resolve-trove4j.gradle", to: scriptHandler
-    }
-
     applySettings(defaultSettings)
     applyNativeModulesSettingsGradle(defaultSettings)
 }
@@ -59,7 +57,6 @@ ext.applyTestAppModule = { Project project ->
     }
 
     def manifest = new JsonSlurper().parseText(manifestFile.text)
-
     def resources = manifest["resources"]
 
     def androidResources = null
@@ -73,11 +70,12 @@ ext.applyTestAppModule = { Project project ->
     }
 
     def projectRoot = manifestFile.getParent()
-    def androidResourceFiles = androidResources
-        .collect { file("$projectRoot/$it") }
-
-    def androidResDir = androidResourceFiles
-        .find { it.isDirectory() && it.name == "res" }
+    def androidResourceFiles = androidResources.collect {
+        file("${projectRoot}/${it}")
+    }
+    def androidResDir = androidResourceFiles.find {
+        it.isDirectory() && it.name == "res"
+    }
 
     if (androidResDir != null) {
         androidResourceFiles.remove(androidResDir)
@@ -89,32 +87,54 @@ ext.applyTestAppModule = { Project project ->
     def generatedResDir = file("${buildDir}/generated/rncli/src/main/res/")
     generatedResDir.mkdirs()
 
-    task copyAssets(type: Copy) {
+    def generatedRawDir = file("${generatedResDir}/raw")
+    generatedRawDir.mkdirs()
+
+    def validateManifest = tasks.register("validateManifest", Exec) {
+        workingDir(projectRoot)
+
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            commandLine("node.exe", "-e", "\"require('react-native-test-app/scripts/validate-manifest')\"")
+        } else {
+            def result = exec {
+                commandLine("bash", "-l", "-c", "command -v node")
+                ignoreExitValue = true
+                standardOutput = new ByteArrayOutputStream()
+            }
+            if (result.getExitValue() == 0) {
+                commandLine("node", "-e", "require('react-native-test-app/scripts/validate-manifest')")
+            } else {
+                logger.warn("Could not validate manifest because `node` was not found")
+                commandLine("true")
+            }
+        }
+    }
+
+    preBuild.dependsOn(tasks.register("copyManifest", Copy) {
+        dependsOn(validateManifest)
+
+        from(manifestFile)
+        into(generatedRawDir)
+    })
+
+    preBuild.dependsOn(tasks.register("copyAssets", Copy) {
+        dependsOn(validateManifest)
+
         androidResourceFiles.each {
-            from it
+            from(it)
         }
 
-        into generatedAssetsDir
-    }
+        into(generatedAssetsDir)
+    })
 
-    task copyManifest(type: Copy) {
-        def generatedRawDir = file("$generatedResDir/raw")
-        generatedRawDir.mkdirs()
+    preBuild.dependsOn(tasks.register("copyResources", Copy) {
+        dependsOn(validateManifest)
 
-        from manifestFile
-        into generatedRawDir
-    }
-
-    task copyResources(type: Copy) {
         if (androidResDir != null) {
-            from androidResDir
-            into generatedResDir
+            from(androidResDir)
+            into(generatedResDir)
         }
-    }
-
-    preBuild.dependsOn(copyManifest)
-    preBuild.dependsOn(copyAssets)
-    preBuild.dependsOn(copyResources)
+    })
 
     android {
         sourceSets {

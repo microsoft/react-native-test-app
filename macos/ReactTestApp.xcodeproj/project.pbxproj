@@ -158,6 +158,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 193EF085247A736300BE8C79 /* Build configuration list for PBXNativeTarget "ReactTestApp" */;
 			buildPhases = (
+				19E2AE7C27693278007B06CA /* Validate manifest */,
 				19482473248280F7001B8381 /* Run SwiftLint */,
 				193EF05B247A736100BE8C79 /* Sources */,
 				193EF05C247A736100BE8C79 /* Frameworks */,
@@ -215,7 +216,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1320;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					193EF05E247A736100BE8C79 = {
@@ -298,6 +299,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint || exit 0\n";
+		};
+		19E2AE7C27693278007B06CA /* Validate manifest */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Validate manifest";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if command -v node >/dev/null 2>&1; then\n  node -e 'require(\"react-native-test-app/scripts/validate-manifest\")'\nelse\n  echo 'Could not validate manifest because `node` was not found'\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
