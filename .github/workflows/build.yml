@@ -362,12 +362,12 @@ jobs:
         working-directory: example/windows
       - name: Build
         run: |
-          MSBuild Example.sln -t:Rebuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }}
+          ../../scripts/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} Example.sln
         working-directory: example/windows
       - name: Test
         if: ${{ matrix.platform == 'x64' }}
         run: |
-          MSBuild ReactTestAppTests.vcxproj -t:Build -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }}
+          ../../../scripts/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactTestAppTests.vcxproj
           VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll
         working-directory: example/windows/ReactTestAppTests
   windows-template:
@@ -401,8 +401,8 @@ jobs:
         working-directory: template-example
       - name: Build
         run: |
-          if ("${{ matrix.template }}" -eq "all") { MSBuild windows/TemplateExample.sln -t:Rebuild -p:Platform=x64 }
-          else { MSBuild TemplateExample.sln -t:Rebuild -p:Platform=x64 }
+          if ("${{ matrix.template }}" -eq "all") { ../scripts/MSBuild.ps1 windows/TemplateExample.sln }
+          else { ../scripts/MSBuild.ps1 TemplateExample.sln }
         working-directory: template-example
   release:
     needs:

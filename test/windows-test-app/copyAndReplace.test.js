@@ -20,24 +20,12 @@ describe("copyAndReplace", () => {
 
   test("replaces text files only", async () => {
     mockFiles({
-      "ReactTestApp_TemporaryKey.pfx": "binary",
       "ReactTestApp.png": "binary",
       "ReactTestApp.sln": "binary",
       "test/.placeholder": "",
     });
 
     const replacements = { binary: "text" };
-
-    await copyAndReplaceAsync(
-      "ReactTestApp_TemporaryKey.pfx",
-      "test/ReactTestApp_TemporaryKey.pfx",
-      replacements
-    );
-    expect(
-      fs.readFileSync("test/ReactTestApp_TemporaryKey.pfx", {
-        encoding: "utf8",
-      })
-    ).toBe("binary");
 
     await copyAndReplaceAsync(
       "ReactTestApp.png",
