@@ -17,7 +17,6 @@ MSBuild `
     -maxCpuCount `
     -property:Configuration=$Configuration `
     -property:Platform=$Platform `
-    -property:AppxPackageSigningEnabled=false `
     -property:UseBundle=false `
     -target:$Target `
     $ProjectFile
