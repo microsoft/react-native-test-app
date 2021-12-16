@@ -1,18 +1,18 @@
 #!/bin/bash
 set -eo pipefail
 
-all_args=("$@")
 workspace=$1
 action=$2
-xcconfig_overrides=("${all_args[@]:2}")
+shift 2
 
 platform=$(grep -o '\w\+/ReactTestApp.xcodeproj' "$workspace/contents.xcworkspacedata")
 
 if [[ $platform == ios/* ]]; then
-  device_name=${3:-'iPhone 11'}
+  device_name=${1:-'iPhone 11'}
   device=$(xcrun simctl list devices "${device_name}" available | grep "${device_name} (")
   re='\(([-0-9A-Fa-f]+)\)'
   [[ $device =~ $re ]] || exit 1
+  shift || true
 
   destination="-destination \"platform=iOS Simulator,id=${BASH_REMATCH[1]}\""
   skip_testing='-skip-testing:ReactTestAppTests/ReactNativePerformanceTests'
@@ -26,19 +26,19 @@ fi
 
 build_cmd=$(
   echo xcodebuild \
-    -workspace $workspace \
+    -workspace "$workspace" \
     -scheme ReactTestApp \
-    $destination \
-    $skip_testing \
+    "$destination" \
+    "$skip_testing" \
     CODE_SIGNING_ALLOWED=NO \
     COMPILER_INDEX_STORE_ENABLE=NO \
-    $action \
-    $xcconfig_overrides \
+    "$action" \
+    "$@" \
 
 )
 
 if command -v xcpretty >/dev/null 2>&1; then
-  eval $build_cmd | xcpretty
+  eval "$build_cmd" | xcpretty
 else
-  eval $build_cmd
+  eval "$build_cmd"
 fi
