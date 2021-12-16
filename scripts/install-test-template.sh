@@ -6,7 +6,7 @@ platforms=(all android ios macos windows)
 version=$(node -e 'console.log(require("./package.json").version)')
 
 function print_usage {
-  echo "usage: $(basename $0) [-u] <$(IFS=\|; echo "${platforms[*]}")>"
+  echo "usage: $(basename "$0") [-u] <$(IFS=\|; echo "${platforms[*]}")>"
 }
 
 while true; do
@@ -20,8 +20,8 @@ while true; do
       shift
       ;;
     *)
-      if [[ ! " ${platforms[@]} " =~ " $1 " ]]; then
-        [[ ! -z "$1" ]] && echo "invalid platform: $1"
+      if [[ ! " ${platforms[*]} " =~ " $1 " ]]; then
+        [[ -n "$1" ]] && echo "invalid platform: $1"
         print_usage
         exit 1
       fi
@@ -35,14 +35,16 @@ done
 npm pack
 
 yarn
-yarn react-native init-test-app --destination template-example --name TemplateExample --platform $platform
+yarn react-native init-test-app --destination template-example --name TemplateExample --platform "$platform"
 
 pushd template-example 1> /dev/null
 
-echo 'enableTelemetry: false' >> .yarnrc.yml
-echo 'nodeLinker: node-modules' >> .yarnrc.yml
-echo 'npmRegistryServer: "https://registry.npmjs.org"' >> .yarnrc.yml
-echo 'yarnPath: ../.yarn/releases/yarn-3.0.2.cjs' >> .yarnrc.yml
+{
+  echo 'enableTelemetry: false'
+  echo 'nodeLinker: node-modules'
+  echo 'npmRegistryServer: "https://registry.npmjs.org"'
+  echo 'yarnPath: ../.yarn/releases/yarn-3.0.2.cjs'
+} >> .yarnrc.yml
 
 script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/react-native-test-app-$version.tgz\"/"
 if sed --version &> /dev/null; then
