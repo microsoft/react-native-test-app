@@ -137,3 +137,11 @@ ext.getFlipperVersion = { baseDir ->
     // Use the recommended Flipper version
     return recommendedFlipperVersion
 }
+
+ext.getReactNativeVersionNumber = { baseDir ->
+    def reactNativePath = findNodeModulesPath(baseDir, "react-native")
+    def packageJson = file("${reactNativePath}/package.json")
+    def manifest = new JsonSlurper().parseText(packageJson.text)
+    def (major, minor, patch) = manifest["version"].tokenize(".")
+    return (major as int) * 10000 + (minor as int) * 100 + (patch as int)
+}
