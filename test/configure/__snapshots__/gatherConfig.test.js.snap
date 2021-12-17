@@ -65,14 +65,13 @@ Object {
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "android/build.gradle": "buildscript { scriptHandler ->
+    "android/build.gradle": "buildscript {
     def androidTestAppDir = \\"../../android\\"
-    apply from: \\"$androidTestAppDir/dependencies.gradle\\"
-    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
+    apply(from: \\"\${androidTestAppDir}/dependencies.gradle\\")
 
     repositories {
-        google()
         mavenCentral()
+        google()
     }
 
     dependencies {
@@ -104,9 +103,9 @@ Object {
     }
 }
 
-rootProject.name='Test'
+rootProject.name = \\"Test\\"
 
-apply from: file(\\"../../test-app.gradle\\")
+apply(from: \\"../../test-app.gradle\\")
 applyTestAppSettings(settings)
 ",
     "babel.config.js": Object {
@@ -476,14 +475,13 @@ Object {
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "android/build.gradle": "buildscript { scriptHandler ->
+    "android/build.gradle": "buildscript {
     def androidTestAppDir = \\"../../android\\"
-    apply from: \\"$androidTestAppDir/dependencies.gradle\\"
-    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
+    apply(from: \\"\${androidTestAppDir}/dependencies.gradle\\")
 
     repositories {
-        google()
         mavenCentral()
+        google()
     }
 
     dependencies {
@@ -515,9 +513,9 @@ Object {
     }
 }
 
-rootProject.name='Test'
+rootProject.name = \\"Test\\"
 
-apply from: file(\\"../../test-app.gradle\\")
+apply(from: \\"../../test-app.gradle\\")
 applyTestAppSettings(settings)
 ",
     "babel.config.js": Object {
@@ -643,14 +641,13 @@ Object {
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "android/build.gradle": "buildscript { scriptHandler ->
+    "android/build.gradle": "buildscript {
     def androidTestAppDir = \\"../../android\\"
-    apply from: \\"$androidTestAppDir/dependencies.gradle\\"
-    apply from: \\"$androidTestAppDir/force-resolve-trove4j.gradle\\", to: scriptHandler
+    apply(from: \\"\${androidTestAppDir}/dependencies.gradle\\")
 
     repositories {
-        google()
         mavenCentral()
+        google()
     }
 
     dependencies {
@@ -682,9 +679,9 @@ Object {
     }
 }
 
-rootProject.name='Test'
+rootProject.name = \\"Test\\"
 
-apply from: file(\\"../../test-app.gradle\\")
+apply(from: \\"../../test-app.gradle\\")
 applyTestAppSettings(settings)
 ",
     "babel.config.js": Object {
