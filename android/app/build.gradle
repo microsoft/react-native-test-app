@@ -25,15 +25,18 @@ repositories {
     mavenCentral()
     google()
 
-    // TODO: Remove these when they've been published to Maven Central.
-    // See https://github.com/microsoft/react-native-test-app/issues/305
-    // noinspection JcenterRepositoryObsolete
-    jcenter() {
-        content {
-            includeGroup("com.facebook.fbjni")
-            includeGroup("com.facebook.flipper")
-            includeGroup("com.facebook.fresco")
-            includeGroup("com.facebook.yoga")
+    // TODO: Remove this block when we drop support for 0.64.
+    if (getReactNativeVersionNumber(rootDir) < 6500) {
+        // Artifacts for 0.65+ are published to Maven Central. If we're on an
+        // older version, we still need to use JCenter.
+        // noinspection JcenterRepositoryObsolete
+        jcenter() {
+            content {
+                includeGroup("com.facebook.fbjni")
+                    includeGroup("com.facebook.flipper")
+                    includeGroup("com.facebook.fresco")
+                    includeGroup("com.facebook.yoga")
+            }
         }
     }
 
