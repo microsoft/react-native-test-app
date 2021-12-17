@@ -32,6 +32,7 @@
     "/example/{metro,react-native}.config.js",
     "/ios",
     "/macos",
+    "/schema.json",
     "/scripts",
     "/windows/*.{js,props,sln}",
     "/windows/ReactTestApp"
@@ -39,7 +40,8 @@
   "bin": {
     "configure-test-app": "scripts/configure.js",
     "init-test-app": "scripts/init.js",
-    "install-windows-test-app": "windows/test-app.js"
+    "install-windows-test-app": "windows/test-app.js",
+    "validate-app-json": "scripts/validate-manifest.js"
   },
   "repository": {
     "type": "git",
@@ -60,6 +62,7 @@
     "test:rb": "bundle exec ruby -Ilib:test test/test_test_app.rb"
   },
   "dependencies": {
+    "ajv": "^8.0.0",
     "chalk": "^4.1.0",
     "prompts": "^2.4.0",
     "rimraf": "^3.0.0",
