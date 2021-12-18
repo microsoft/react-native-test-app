@@ -5136,6 +5136,7 @@ __metadata:
     "@babel/core": ^7.0.0
     "@types/jest": ^27.0.0
     jest: ^27.0.0
+    metro-react-native-babel-preset: ^0.64.0
     mkdirp: ^1.0.0
     react: 17.0.1
     react-native: ^0.64.3
@@ -8487,7 +8488,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-react-native-babel-preset@npm:0.64.0":
+"metro-react-native-babel-preset@npm:0.64.0, metro-react-native-babel-preset@npm:^0.64.0":
   version: 0.64.0
   resolution: "metro-react-native-babel-preset@npm:0.64.0"
   dependencies:

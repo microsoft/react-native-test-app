@@ -127,6 +127,8 @@ function pickCommonDependencies(dependencies, peerDependencies) {
     "@react-native-community/cli-platform-ios":
       dependencies["@react-native-community/cli-platform-ios"],
     "hermes-engine": dependencies["hermes-engine"],
+    "metro-react-native-babel-preset":
+      dependencies["metro-react-native-babel-transformer"],
     react: peerDependencies["react"],
   };
 }
