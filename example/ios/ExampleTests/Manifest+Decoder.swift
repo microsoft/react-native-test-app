@@ -1,0 +1,1 @@
+../../../ios/ReactTestApp/Manifest+Decoder.swift

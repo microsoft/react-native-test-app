@@ -45,6 +45,16 @@ jobs:
           yarn dedupe --check
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
+      - name: Validate generated files
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          yarn codegen
+          if [[ -n "$GITHUB_TOKEN" ]]; then
+            git diff | yarn suggestion-bot
+          fi
+          git diff --exit-code
       - name: ClangFormat
         if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
         env:

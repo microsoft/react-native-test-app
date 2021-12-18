@@ -1,5 +1,5 @@
 {
-  "definitions": {
+  "$defs": {
     "component": {
       "type": "object",
       "properties": {
@@ -18,29 +18,36 @@
         "presentationStyle": {
           "description": "The style in which to present your component.",
           "type": "string",
-          "enum": ["modal"]
+          "enum": ["default", "modal"]
         }
       },
       "required": ["appKey"]
+    },
+    "manifest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "bundleRoot": {
+          "description": "Specifies the root of the bundle file name. E.g., if the bundle file is `index.&lt;platform&gt;.bundle`, `index` is the bundle root. Defaults to `index` and `main`.",
+          "type": "string"
+        },
+        "components": {
+          "description": "All components that should be accessible from the home screen should be declared under this property. Each component must have `appKey` set, i.e. the name that you passed to `AppRegistry.registerComponent`.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/component" }
+        }
+      },
+      "required": ["name", "displayName"]
     }
   },
+  "allOf": [{ "$ref": "#/$defs/manifest" }],
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string"
-    },
-    "displayName": {
-      "type": "string"
-    },
-    "bundleRoot": {
-      "description": "Specifies the root of the bundle file name. E.g., if the bundle file is `index.&lt;platform&gt;.bundle`, `index` is the bundle root. Defaults to `index` and `main`.",
-      "type": "string"
-    },
-    "components": {
-      "description": "All components that should be accessible from the home screen should be declared under this property. Each component must have `appKey` set, i.e. the name that you passed to `AppRegistry.registerComponent`.",
-      "type": "array",
-      "items": { "$ref": "#/definitions/component" }
-    },
     "resources": {
       "description": "Here you should declare all resources that should be bundled with the app. The property can be a list of paths to resources or an object with platform specific resources using platform names as key. A path must be relative to the path of `app.json`, and can point to both a file or a directory.",
       "oneOf": [
@@ -148,6 +155,5 @@
         }
       }
     }
-  },
-  "required": ["name", "displayName"]
+  }
 }
