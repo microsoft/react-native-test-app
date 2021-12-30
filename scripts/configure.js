@@ -136,9 +136,10 @@ function projectRelativePath({
     return `${prefix}node_modules/react-native-test-app`;
   }
 
-  return path.relative(
-    shouldFlatten ? packagePath : path.join(packagePath, "platform"),
-    testAppPath
+  const normalizedPackagePath = packagePath.replace(/\\/g, "/");
+  return path.posix.relative(
+    shouldFlatten ? normalizedPackagePath : normalizedPackagePath + "/platform",
+    testAppPath.replace(/\\/g, "/")
   );
 }
 

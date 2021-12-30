@@ -66,10 +66,11 @@ describe("toProjectEntry", () => {
   const { toProjectEntry } = require("../../windows/test-app");
 
   test("returns solution entry for specified project", () => {
+    const projectPath = path.join("windows", "ReactTestApp.vcxproj");
     expect(
       toProjectEntry(
         {
-          path: "windows/ReactTestApp.vcxproj",
+          path: projectPath,
           name: "ReactTestApp",
           guid: "{00000000-0000-0000-0000-000000000000}",
         },
@@ -77,7 +78,7 @@ describe("toProjectEntry", () => {
       )
     ).toBe(
       [
-        `Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReactTestApp", "windows/ReactTestApp.vcxproj", "{00000000-0000-0000-0000-000000000000}"`,
+        `Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReactTestApp", "${projectPath}", "{00000000-0000-0000-0000-000000000000}"`,
         "\tProjectSection(ProjectDependencies) = postProject",
         `\t\t{B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D} = {B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D}`,
         "\tEndProjectSection",
