@@ -12,8 +12,6 @@ IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '"pch\.h"'
     Priority: -1
-  - Regex: '^<QRCodeReader'
-    Priority: 4
   - Regex: '^<React'
     Priority: 4
   - Regex: '^<[._a-z]+>'

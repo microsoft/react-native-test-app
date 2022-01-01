@@ -325,7 +325,6 @@ def use_test_app_internal!(target_platform, options)
   react_native_post_install = nil
 
   target 'ReactTestApp' do
-    pod 'QRCodeReader.swift' if target_platform == :ios
     pod 'SwiftLint'
 
     react_native_post_install = use_react_native!(project_root, target_platform, options)
