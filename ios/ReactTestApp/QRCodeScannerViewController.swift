@@ -24,7 +24,7 @@ final class QRCodeScannerViewController: UIViewController, AVCaptureMetadataOutp
 
         view.backgroundColor = .black
 
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video),
+        guard let videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
               let videoInput = try? AVCaptureDeviceInput(device: videoCaptureDevice),
               captureSession.canAddInput(videoInput)
         else {
