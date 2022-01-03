@@ -231,9 +231,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 
     @objc
     private func onRemoteBundleURLReceived(_ notification: Notification) {
-        guard let value = notification.userInfo?["value"] as? String,
-              var urlComponents = URLComponents(string: value)
-        else {
+        guard var urlComponents = notification.userInfo?["url"] as? URLComponents else {
             return
         }
 

@@ -62,7 +62,6 @@ PODS:
   - glog (0.3.5)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.180)
-  - QRCodeReader.swift (10.1.0)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -354,7 +353,6 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (~> 0.75.1)
   - FlipperKit/SKIOSNetworkPlugin (~> 0.75.1)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - QRCodeReader.swift
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -398,7 +396,6 @@ SPEC REPOS:
     - FlipperKit
     - libevent
     - OpenSSL-Universal
-    - QRCodeReader.swift
     - SwiftLint
     - YogaKit
 
@@ -483,7 +480,6 @@ SPEC CHECKSUMS:
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c
   RCTTypeSafety: 8dab4933124ed39bb0c1d88d74d61b1eb950f28f

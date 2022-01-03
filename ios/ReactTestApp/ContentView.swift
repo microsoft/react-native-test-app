@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-import QRCodeReader
+import AVFoundation
 import UIKit
 
 private struct NavigationLink {
@@ -43,9 +43,6 @@ final class ContentViewController: UITableViewController {
 
     private let reactInstance: ReactInstance
     private var sections: [SectionData]
-
-    // swiftlint:disable:next weak_delegate
-    private lazy var qrCodeReaderDelegate = QRCodeReaderDelegate()
 
     public init() {
         reactInstance = ReactInstance()
@@ -256,20 +253,51 @@ final class ContentViewController: UITableViewController {
         }()
         return "React Native version: \(version)"
     }
+}
 
+extension ContentViewController {
     @objc
     private func scanForQRCode(_: Notification) {
-        let builder = QRCodeReaderViewControllerBuilder {
-            $0.reader = QRCodeReader(
-                metadataObjectTypes: [.qr],
-                captureDevicePosition: .back
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                if granted {
+                    DispatchQueue.main.async {
+                        self?.navigationController?.present(QRCodeScannerViewController(), animated: true)
+                    }
+                }
+            }
+
+        case .restricted:
+            let alert = UIAlertController(
+                title: "Restricted Camera Access",
+                message: """
+                You've been restricted from using the camera on this device. \
+                Without camera access, this feature won't work. Please contact \
+                the device owner so they can give you access.
+                """,
+                preferredStyle: .alert
             )
-            $0.showSwitchCameraButton = false
-            $0.showOverlayView = true
-            $0.rectOfInterest = CGRect(x: 0.2, y: 0.3, width: 0.6, height: 0.4)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            navigationController?.present(alert, animated: true)
+
+        case .denied:
+            let alert = UIAlertController(
+                title: "Camera Access Needed",
+                message: "To scan QR codes, please enable camera access in Settings.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            })
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            navigationController?.present(alert, animated: true)
+
+        case .authorized:
+            navigationController?.present(QRCodeScannerViewController(), animated: true)
+
+        @unknown default:
+            fatalError()
         }
-        let viewController = QRCodeReaderViewController(builder: builder)
-        viewController.delegate = qrCodeReaderDelegate
-        present(viewController, animated: true)
     }
 }
