@@ -379,8 +379,10 @@ def use_test_app_internal!(target_platform, options)
         # Ensure `ENABLE_TESTING_SEARCH_PATHS` is always set otherwise Xcode may
         # fail to properly import XCTest
         unless test_dependencies.assoc(target.name).nil?
+          key = 'ENABLE_TESTING_SEARCH_PATHS'
           target.build_configurations.each do |config|
-            config.build_settings['ENABLE_TESTING_SEARCH_PATHS'] = 'YES'
+            setting = config.resolve_build_setting(key)
+            config.build_settings[key] = 'YES' if setting.nil?
           end
         end
       end
