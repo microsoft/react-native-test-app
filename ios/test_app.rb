@@ -346,6 +346,16 @@ def use_test_app_internal!(target_platform, options)
   post_install do |installer|
     react_native_post_install&.call(installer)
 
+    test_dependencies = {}
+    %w[ReactTestAppTests ReactTestAppUITests].each do |target|
+      definition = target_definitions[target]
+      next if definition.nil?
+
+      definition.non_inherited_dependencies.each do |dependency|
+        test_dependencies[dependency.name] = dependency
+      end
+    end
+
     installer.pods_project.targets.each do |target|
       case target.name
       when 'SwiftLint'
@@ -364,6 +374,16 @@ def use_test_app_internal!(target_platform, options)
           # Xcode 10.2 requires suppression of nullability for React
           # https://stackoverflow.com/questions/37691049/xcode-compile-flag-to-suppress-nullability-warnings-not-working
           config.build_settings['WARNING_CFLAGS'] ||= ['"-Wno-nullability-completeness"']
+        end
+      else
+        # Ensure `ENABLE_TESTING_SEARCH_PATHS` is always set otherwise Xcode may
+        # fail to properly import XCTest
+        unless test_dependencies.assoc(target.name).nil?
+          key = 'ENABLE_TESTING_SEARCH_PATHS'
+          target.build_configurations.each do |config|
+            setting = config.resolve_build_setting(key)
+            config.build_settings[key] = 'YES' if setting.nil?
+          end
         end
       end
     end
