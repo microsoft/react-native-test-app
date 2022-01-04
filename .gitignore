@@ -2,6 +2,7 @@
 *.tgz
 *.xcworkspace/
 .DS_Store
+.android-test-*
 .gradle/
 .idea/
 .vs/
