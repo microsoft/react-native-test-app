@@ -55,6 +55,7 @@ jobs:
             git diff | yarn suggestion-bot
           fi
           git diff --exit-code
+        shell: bash
       - name: ClangFormat
         if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
         env:
