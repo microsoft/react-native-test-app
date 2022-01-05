@@ -40,10 +40,11 @@ yarn react-native init-test-app --destination template-example --name TemplateEx
 pushd template-example 1> /dev/null
 
 {
+  echo 'enableScripts: false'
   echo 'enableTelemetry: false'
   echo 'nodeLinker: node-modules'
   echo 'npmRegistryServer: "https://registry.npmjs.org"'
-  echo 'yarnPath: ../.yarn/releases/yarn-3.0.2.cjs'
+  echo 'yarnPath: ../.yarn/releases/yarn-3.1.1.cjs'
 } >> .yarnrc.yml
 
 script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/react-native-test-app-$version.tgz\"/"
