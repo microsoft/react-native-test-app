@@ -11,7 +11,6 @@ runs:
       with:
         node-version: 14
     - name: Set up JDK
-      if: ${{ inputs.platform == 'android' }}
       uses: actions/setup-java@v2.5.0
       with:
         distribution: temurin
