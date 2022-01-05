@@ -2,6 +2,7 @@
 "use strict";
 
 describe("getConfig()", () => {
+  const path = require("path");
   const { mockParams } = require("./mockParams");
   const { getConfig } = require("../../scripts/configure");
 
@@ -119,7 +120,7 @@ describe("getConfig()", () => {
     expect(config.oldFiles.sort()).toEqual([
       "Test.sln",
       "Test.vcxproj",
-      "Test/Test.vcxproj",
+      path.join("Test", "Test.vcxproj"),
     ]);
   });
 });

@@ -745,6 +745,7 @@ if (require.main === module) {
     }
   ).argv;
 } else {
+  exports.copy = copy;
   exports.copyAndReplace = copyAndReplace;
   exports.findNearest = findNearest;
   exports.findUserProjects = findUserProjects;
@@ -753,6 +754,7 @@ if (require.main === module) {
   exports.getHermesVersion = getHermesVersion;
   exports.getPackageVersion = getPackageVersion;
   exports.getVersionNumber = getVersionNumber;
+  exports.nuGetPackage = nuGetPackage;
   exports.parseResources = parseResources;
   exports.replaceContent = replaceContent;
   exports.toProjectEntry = toProjectEntry;

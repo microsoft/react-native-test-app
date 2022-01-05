@@ -26,7 +26,10 @@ jobs:
           yarn lint:commit
   lint-test:
     name: "lint + test"
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        platform: [macos, windows]
+    runs-on: ${{ matrix.platform }}-latest
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -36,14 +39,14 @@ jobs:
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
-          platform: macos
+          platform: ${{ matrix.platform }}
       - name: Deduplicate packages
         run: |
           yarn dedupe --check
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
       - name: ClangFormat
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -52,6 +55,7 @@ jobs:
           #       account.
           scripts/clang-format-diff.sh || true
       - name: CocoaPods
+        if: ${{ matrix.platform == 'macos' }}
         run: |
           echo "::add-matcher::.github/rubocop.json"
           bundle exec rubocop
@@ -73,18 +77,20 @@ jobs:
           yarn tsc
           yarn test:js --ci
       - name: ktlint
+        if: ${{ matrix.platform == 'macos' }}
         run: |
           brew install ktlint
           echo "::add-matcher::.github/ktlint.json"
           yarn lint:kt
           echo "::remove-matcher owner=ktlint::"
       - name: SwiftFormat
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
         run: |
           echo "::add-matcher::.github/swiftformat.json"
           yarn format:swift --lint
           echo "::remove-matcher owner=swiftformat::"
       - name: SwiftLint
+        if: ${{ matrix.platform == 'macos' }}
         run: |
           echo "::add-matcher::.github/swiftlint.json"
           swiftlint
