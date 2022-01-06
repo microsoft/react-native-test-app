@@ -56,7 +56,31 @@ project.ext.react = [
     enableHermes : true,
 ]
 
+def signingDebug = getSigningConfigs()['debug']
+def signingRelease = getSigningConfigs()['release']
+
 android {
+    if (signingDebug || signingRelease) {
+        signingConfigs {
+            if (signingDebug) {
+                debug {
+                    keyAlias signingDebug['keyAlias']
+                    keyPassword signingDebug['keyPassword']
+                    storeFile signingDebug['storeFile']
+                    storePassword signingDebug['storePassword']
+                }
+            }
+            if (signingRelease) {
+                release {
+                    keyAlias signingRelease['keyAlias']
+                    keyPassword signingRelease['keyPassword']
+                    storeFile signingRelease['storeFile']
+                    storePassword signingRelease['storePassword']
+                }
+            }
+        }
+    }
+
     compileSdkVersion project.ext.compileSdkVersion
     buildToolsVersion project.ext.buildToolsVersion
 

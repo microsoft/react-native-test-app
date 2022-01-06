@@ -83,6 +83,38 @@
         "package": {
           "description": "Use this property to set the application ID of the APK. The value is set to `applicationId` in `build.gradle`.",
           "type": "string"
+        },
+        "signingConfigs": {
+          "description": "Use this to set the signing configurations for the app",
+          "type": "object",
+          "debug": {
+            "keyAlias": {
+              "type": "string"
+            },
+            "keyPassword": {
+              "type": "string"
+            },
+            "storeFile": {
+              "type": "string"
+            },
+            "storePassword": {
+              "type": "string"
+            }
+          },
+          "release": {
+            "keyAlias": {
+              "type": "string"
+            },
+            "keyPassword": {
+              "type": "string"
+            },
+            "storeFile": {
+              "type": "string"
+            },
+            "storePassword": {
+              "type": "string"
+            }
+          }
         }
       }
     },

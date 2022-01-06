@@ -145,3 +145,41 @@ ext.getReactNativeVersionNumber = { baseDir ->
     def (major, minor, patch) = manifest["version"].findAll(/\d+/)
     return (major as int) * 10000 + (minor as int) * 100 + (patch as int)
 }
+
+ext.getSigningConfigs = { baseDir ->
+    def safeSetMap = { varName, map, prop, defaultVal ->
+        map[varName] = prop.containsKey(varName) ? prop.get(varName) : defaultVal
+    }
+
+    def definedConfigs = new LinkedHashMap<String, Object>()
+    def manifestFile = findFile('app.json')
+    if (manifestFile != null) {
+        def manifest = new JsonSlurper().parseText(manifestFile.text)
+
+        if (!manifest['android']) {
+            return definedConfigs
+        }
+
+        def signingConfigs = manifest['android']['signingConfigs']
+        if (signingConfigs) {
+            signingConfigs.each { config ->
+                def configName = config.key
+                def props = config.value
+                def pathStoreFile = props.containsKey('storeFile') ?
+                    Paths.get(rootDir.toString(), props.get('storeFile')).normalize().toAbsolutePath() : null
+                if (pathStoreFile == null || !file(pathStoreFile).exists() || !file(pathStoreFile).isFile()) {
+                    throw new FileNotFoundException("Signing storeFile for flavor ${configName} is missing: " + pathStoreFile)
+                }
+
+                def signConfig = new LinkedHashMap<String, Object>()
+                safeSetMap('keyAlias', signConfig, props, 'androiddebugkey')
+                safeSetMap('keyPassword', signConfig, props, 'android')
+                safeSetMap('storePassword', signConfig, props, 'android')
+                signConfig['storeFile'] = pathStoreFile.toFile()
+                definedConfigs[configName] = signConfig
+            }
+        }
+    }
+
+    return definedConfigs
+}
