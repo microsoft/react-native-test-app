@@ -255,6 +255,6 @@ describe("test-app-util", () => {
     });
 
     expect(status).toBe(0);
-    expect(stdout).toContain("getSigningConfigs() = [release:[keyAlias:androiddebugkey");
+    expect(stdout).toMatch(/getSigningConfigs\(\) = \[release:\[keyAlias:androiddebugkey, keyPassword:android, storePassword:android, storeFile:.*\]\]/);
   });
 });
