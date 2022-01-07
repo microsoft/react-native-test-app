@@ -233,4 +233,28 @@ describe("test-app-util", () => {
     expect(status).toBe(0);
     expect(stdout).toContain(`getReactNativeVersionNumber() = 10203`);
   });
+
+  test("getSigningConfigs() returns release signing config", async () => {
+    const { status, stdout } = await runGradle({
+      "app.json": JSON.stringify({
+        name: "AppName",
+        displayName: "AppDisplayName",
+        resources: ["dist/res", "dist/main.android.jsbundle"],
+        android: {
+          signingConfigs: {
+            release: {
+              storeFile: "../README.md"
+            }
+          }
+        }
+      }),
+      "build.gradle": [
+        ...buildGradle,
+        'println("getSigningConfigs() = " + ext.getSigningConfigs())',
+      ],
+    });
+
+    expect(status).toBe(0);
+    expect(stdout).toContain("getSigningConfigs() = [release:[keyAlias:androiddebugkey");
+  });
 });
