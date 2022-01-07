@@ -83,6 +83,58 @@
         "package": {
           "description": "Use this property to set the application ID of the APK. The value is set to `applicationId` in `build.gradle`.",
           "type": "string"
+        },
+        "signingConfigs": {
+          "description": "Use this to set the signing configurations for the app",
+          "type": "object",
+          "properties": {
+            "debug": {
+              "description": "Use this property for the debug signing config for the app. The value `storeFile` is required. Android defaults will be provided for other properties.",
+              "type": "object",
+              "properties": {
+                "keyAlias": {
+                  "description": "Use this property to specify the alias of key to use in the store",
+                  "type": "string"
+                },
+                "keyPassword": {
+                  "description": "Use this property to specify the password of key in the store",
+                  "type": "string"
+                },
+                "storeFile": {
+                  "description": "Use this property to specify the relative file path to the key store file",
+                  "type": "string"
+                },
+                "storePassword": {
+                  "description": "Use this property to specify the password of the key store",
+                  "type": "string"
+                }
+              },
+              "required": ["storeFile"]
+            },
+            "release": {
+              "description": "Use this property for the release signing config for the app. The value `storeFile` is required. Android defaults will be provided for other properties.",
+              "type": "object",
+              "properties": {
+                "keyAlias": {
+                  "description": "Use this property to specify the alias of key to use in the store",
+                  "type": "string"
+                },
+                "keyPassword": {
+                  "description": "Use this property to specify the password of key in the store",
+                  "type": "string"
+                },
+                "storeFile": {
+                  "description": "Use this property to specify the relative file path to the key store file",
+                  "type": "string"
+                },
+                "storePassword": {
+                  "description": "Use this property to specify the password of the key store",
+                  "type": "string"
+                }
+              },
+              "required": ["storeFile"]
+            }
+          }
         }
       }
     },
