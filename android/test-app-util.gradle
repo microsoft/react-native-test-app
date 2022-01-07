@@ -166,7 +166,7 @@ ext.getSigningConfigs = { baseDir ->
                 def configName = config.key
                 def props = config.value
                 def pathStoreFile = props.containsKey("storeFile")
-                    ? Paths.get(rootDir.toString(), props.get("storeFile")).normalize().toAbsolutePath()
+                    ? Paths.get(manifestFile.getParent(), props.get("storeFile")).normalize().toAbsolutePath()
                     : null
                 if (pathStoreFile == null || !file(pathStoreFile).exists() || !file(pathStoreFile).isFile()) {
                     throw new FileNotFoundException("Signing storeFile for flavor ${configName} is missing: " + pathStoreFile)
