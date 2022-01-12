@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="UnusedResources">
+        <ignore path="**/generated/rncli/src/main/res/raw/app.json" />
+    </issue>
+</lint>
