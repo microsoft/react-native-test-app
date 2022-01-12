@@ -234,6 +234,68 @@ describe("test-app-util", () => {
     expect(stdout).toContain(`getReactNativeVersionNumber() = 10203`);
   });
 
+  test("getSigningConfigs() fails if `storeFile` is missing", async () => {
+    const { status, stderr } = await runGradle({
+      "app.json": JSON.stringify({
+        name: "AppName",
+        displayName: "AppDisplayName",
+        resources: ["dist/res", "dist/main.android.jsbundle"],
+        android: { signingConfigs: { debug: {} } },
+      }),
+      "build.gradle": [
+        ...buildGradle,
+        'println("getSigningConfigs() = " + ext.getSigningConfigs())',
+      ],
+    });
+
+    expect(status).toBe(1);
+    expect(stderr).toMatch(/storeFile .* is missing/);
+  });
+
+  test("getSigningConfigs() skips empty `signingConfigs` config", async () => {
+    const { status, stdout } = await runGradle({
+      "app.json": JSON.stringify({
+        name: "AppName",
+        displayName: "AppDisplayName",
+        resources: ["dist/res", "dist/main.android.jsbundle"],
+        android: { signingConfigs: {} },
+      }),
+      "build.gradle": [
+        ...buildGradle,
+        'println("getSigningConfigs() = " + ext.getSigningConfigs())',
+      ],
+    });
+
+    expect(status).toBe(0);
+    expect(stdout).toContain("getSigningConfigs() = [:]");
+  });
+
+  test("getSigningConfigs() returns debug signing config", async () => {
+    const { status, stdout } = await runGradle({
+      "app.json": JSON.stringify({
+        name: "AppName",
+        displayName: "AppDisplayName",
+        resources: ["dist/res", "dist/main.android.jsbundle"],
+        android: {
+          signingConfigs: {
+            debug: {
+              storeFile: "../README.md",
+            },
+          },
+        },
+      }),
+      "build.gradle": [
+        ...buildGradle,
+        'println("getSigningConfigs() = " + ext.getSigningConfigs())',
+      ],
+    });
+
+    expect(status).toBe(0);
+    expect(stdout).toMatch(
+      /getSigningConfigs\(\) = \[debug:\[keyAlias:androiddebugkey, keyPassword:android, storePassword:android, storeFile:.*\]\]/
+    );
+  });
+
   test("getSigningConfigs() returns release signing config", async () => {
     const { status, stdout } = await runGradle({
       "app.json": JSON.stringify({
@@ -243,10 +305,10 @@ describe("test-app-util", () => {
         android: {
           signingConfigs: {
             release: {
-              storeFile: "../README.md"
-            }
-          }
-        }
+              storeFile: "../README.md",
+            },
+          },
+        },
       }),
       "build.gradle": [
         ...buildGradle,
@@ -255,6 +317,8 @@ describe("test-app-util", () => {
     });
 
     expect(status).toBe(0);
-    expect(stdout).toMatch(/getSigningConfigs\(\) = \[release:\[keyAlias:androiddebugkey, keyPassword:android, storePassword:android, storeFile:.*\]\]/);
+    expect(stdout).toMatch(
+      /getSigningConfigs\(\) = \[release:\[keyAlias:androiddebugkey, keyPassword:android, storePassword:android, storeFile:.*\]\]/
+    );
   });
 });

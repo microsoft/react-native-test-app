@@ -103,11 +103,12 @@ async function runGradleWithProject(name, platforms, setupFiles = {}) {
   const projectPath = await makeProject(name, platforms, setupFiles);
   const result = runGradle(projectPath);
   const stdout = joinStrings(result.stdout);
+  const stderr = joinStrings(result.stderr);
   if (result.stderr) {
     console.log(stdout);
-    console.error(joinStrings(result.stderr));
+    console.error(stderr);
   }
-  return { ...result, stdout };
+  return { ...result, stdout, stderr };
 }
 
 exports.removeProject = removeProject;
