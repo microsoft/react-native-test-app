@@ -213,10 +213,9 @@ jobs:
         shell: bash
         working-directory: example
       - name: Build
-        run: |
-          ./gradlew clean build check test
-        shell: bash
-        working-directory: example/android
+        uses: ./.github/actions/gradle
+        with:
+          project-root: example
   android-template:
     name: "Android [template]"
     strategy:
@@ -242,11 +241,9 @@ jobs:
         shell: bash
         working-directory: template-example
       - name: Build
-        run: |
-          [[ -d android ]] && pushd android 1> /dev/null
-          ./gradlew clean build check test
-        shell: bash
-        working-directory: template-example
+        uses: ./.github/actions/gradle
+        with:
+          project-root: template-example
       - name: react-native run-android
         run: |
           ../test/react-native.js run-android
