@@ -58,7 +58,6 @@ project.ext.react = [
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
 
     // We need only set `ndkVersion` when building react-native from source.
     if (hasProperty("ANDROID_NDK_VERSION")) {
@@ -92,6 +91,10 @@ android {
         resValue "string", "app_name", project.ext.react.appName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        lintConfig file("lint.xml")
     }
 
     packagingOptions {

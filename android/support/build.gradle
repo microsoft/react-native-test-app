@@ -12,7 +12,6 @@ android {
     apply(from: "$androidDir/dependencies.gradle")
 
     compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
