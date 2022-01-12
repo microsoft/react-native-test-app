@@ -214,7 +214,7 @@ jobs:
         working-directory: example
       - name: Build
         run: |
-          ./gradlew clean build check test
+          ./gradlew --no-daemon -Dorg.gradle.jvmargs='-Xmx2g -XX:MaxPermSize=512m' clean build check test
         shell: bash
         working-directory: example/android
   android-template:
@@ -244,7 +244,7 @@ jobs:
       - name: Build
         run: |
           [[ -d android ]] && pushd android 1> /dev/null
-          ./gradlew clean build check test
+          ./gradlew --no-daemon -Dorg.gradle.jvmargs='-Xmx2g -XX:MaxPermSize=512m' clean build check test
         shell: bash
         working-directory: template-example
       - name: react-native run-android
