@@ -9,7 +9,7 @@ runs:
     - name: Set up Node.js
       uses: actions/setup-node@v2.5.1
       with:
-        node-version: 14
+        node-version: 16
     - name: Set up JDK
       uses: actions/setup-java@v2.5.0
       with:
