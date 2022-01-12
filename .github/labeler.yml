@@ -1,11 +1,13 @@
 "platform: Android":
   - android/**/*
   - example/android/**/*
+  - test/android-test-app/**/*
   - test-app.gradle
 "platform: iOS":
   - ReactTestApp-DevSupport.podspec
   - example/ios/**/*
   - ios/**/*
+  - test/*.rb
   - test_app.rb
 "platform: macOS":
   - ReactTestApp-DevSupport.podspec
@@ -18,6 +20,8 @@
   - ios/ReactTestApp/Session.swift
   - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
   - macos/**/*
+  - test/*.rb
 "platform: Windows":
   - example/windows/**/*
+  - test/windows-test-app/**/*
   - windows/**/*
