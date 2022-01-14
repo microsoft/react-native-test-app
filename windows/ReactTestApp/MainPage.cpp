@@ -137,16 +137,17 @@ MainPage::MainPage()
     InitializeComponent();
     InitializeTitleBar();
 
-    auto manifest = ::ReactTestApp::GetManifest("app.json");
-    if (manifest.has_value()) {
-        auto &m = manifest.value();
-        reactInstance_.BundleRoot(m.bundleRoot.has_value()
-                                      ? std::make_optional(to_hstring(m.bundleRoot.value()))
+    auto result = ::ReactTestApp::GetManifest("app.json");
+    if (result.has_value()) {
+        auto &[manifest, checksum] = result.value();
+        reactInstance_.BundleRoot(manifest.bundleRoot.has_value()
+                                      ? std::make_optional(to_hstring(manifest.bundleRoot.value()))
                                       : std::nullopt);
-        manifestChecksum_ = std::move(m.checksum);
+        manifestChecksum_ = std::move(checksum);
+        InitializeReactMenu(std::move(manifest));
+    } else {
+        InitializeReactMenu(std::nullopt);
     }
-
-    InitializeReactMenu(std::move(manifest));
 }
 
 IAsyncAction MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
@@ -299,7 +300,7 @@ void MainPage::InitializeReactMenu(std::optional<::ReactTestApp::Manifest> manif
     AppTitle().Text(to_hstring(manifest->displayName));
 
     auto &components = manifest->components;
-    if (components.empty()) {
+    if (!components.has_value() || components->empty()) {
         reactInstance_.SetComponentsRegisteredDelegate(
             [this](std::vector<std::string> const &appKeys) {
                 std::vector<Component> components;
@@ -312,7 +313,7 @@ void MainPage::InitializeReactMenu(std::optional<::ReactTestApp::Manifest> manif
                 PresentReactMenu();
             });
     } else {
-        OnComponentsRegistered(std::move(components));
+        OnComponentsRegistered(std::move(components.value()));
         reactInstance_.SetComponentsRegisteredDelegate(
             [this](std::vector<std::string> const &) { PresentReactMenu(); });
     }

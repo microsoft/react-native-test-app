@@ -108,7 +108,7 @@ namespace ReactTestApp
                            .value_or(std::vector<Component>{});
     }
 
-    std::optional<Manifest> GetManifest(std::string const &filename)
+    std::optional<std::tuple<Manifest, std::string>> GetManifest(std::string const &filename)
     {
         std::FILE *stream = nullptr;
         if (fopen_s(&stream, filename.c_str(), "rb") != 0) {
@@ -128,8 +128,6 @@ namespace ReactTestApp
             return std::nullopt;
         }
 
-        auto manifest = j.get<Manifest>();
-        manifest.checksum = checksum(json);
-        return manifest;
+        return std::make_tuple(j.get<Manifest>(), checksum(json));
     }
 }  // namespace ReactTestApp

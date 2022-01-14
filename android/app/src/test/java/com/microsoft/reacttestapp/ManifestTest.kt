@@ -60,6 +60,7 @@ class ManifestTest {
             assertNotNull(manifest)
 
             manifest?.apply {
+                val components = components ?: listOf()
                 assertEquals(2, components.size)
 
                 val componentOne = components[0]

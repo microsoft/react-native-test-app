@@ -69,23 +69,25 @@ class MainActivity : ReactActivity() {
         didInitialNavigation = savedInstanceState?.getBoolean("didInitialNavigation", false) == true
 
         val (manifest, checksum) = testApp.manifestProvider.fromResources()
-        val index =
-            if (manifest.components.count() == 1) 0 else session.lastOpenedComponent(checksum)
-        index?.let {
-            val component = newComponentViewModel(manifest.components[it])
-            val startInitialComponent = { _: ReactContext ->
-                if (!didInitialNavigation) {
-                    startComponent(component)
+        val components = manifest.components ?: listOf()
+        if (components.count() > 0) {
+            val index = if (components.count() == 1) 0 else session.lastOpenedComponent(checksum)
+            index?.let {
+                val component = newComponentViewModel(components[it])
+                val startInitialComponent = { _: ReactContext ->
+                    if (!didInitialNavigation) {
+                        startComponent(component)
+                    }
                 }
-            }
-            testApp.reactNativeHost.apply {
-                addReactInstanceEventListener(startInitialComponent)
-                reactInstanceManager.currentReactContext?.let(startInitialComponent)
+                testApp.reactNativeHost.apply {
+                    addReactInstanceEventListener(startInitialComponent)
+                    reactInstanceManager.currentReactContext?.let(startInitialComponent)
+                }
             }
         }
 
         setupToolbar(manifest.displayName)
-        setupRecyclerView(manifest.components, checksum)
+        setupRecyclerView(components, checksum)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
