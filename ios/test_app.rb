@@ -96,7 +96,9 @@ end
 
 def react_native_pods(version)
   v = version.release
-  if v == Gem::Version.new('0.0.0') || v >= Gem::Version.new('0.63')
+  if v == Gem::Version.new('0.0.0') || v >= Gem::Version.new('0.64')
+    'use_react_native-0.64'
+  elsif v >= Gem::Version.new('0.63')
     'use_react_native-0.63'
   elsif v >= Gem::Version.new('0.62')
     'use_react_native-0.62'

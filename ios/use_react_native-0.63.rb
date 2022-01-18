@@ -8,11 +8,6 @@ def include_react_native!(options)
   use_flipper!(flipper_versions) if target_platform == :ios && flipper_versions
   use_react_native!(options)
 
-  # In 0.64, `react_native_post_install` should be called instead
-  if defined?(react_native_post_install)
-    return ->(installer) { react_native_post_install(installer) }
-  end
-
   if target_platform == :macos
     return lambda { |installer|
       begin
