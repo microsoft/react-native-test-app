@@ -33,9 +33,9 @@ repositories {
         jcenter() {
             content {
                 includeGroup("com.facebook.fbjni")
-                    includeGroup("com.facebook.flipper")
-                    includeGroup("com.facebook.fresco")
-                    includeGroup("com.facebook.yoga")
+                includeGroup("com.facebook.flipper")
+                includeGroup("com.facebook.fresco")
+                includeGroup("com.facebook.yoga")
             }
         }
     }

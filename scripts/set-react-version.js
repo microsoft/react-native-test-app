@@ -15,7 +15,7 @@ const os = require("os");
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];
 const REACT_NATIVE_VERSIONS = {
-  "canary-macos": "^0.64",
+  "canary-macos": "^0.66",
   "canary-windows": "^0.67.0-0",
 };
 
