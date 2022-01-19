@@ -274,7 +274,7 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
-  - SwiftLint (0.44.0)
+  - SwiftLint (0.45.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -416,7 +416,7 @@ SPEC CHECKSUMS:
   ReactCommon: c710dabcfbc8f09c20e98aa03e8a98965b88f6dd
   ReactTestApp-DevSupport: 84b7cc35cf707c9ceb3aae756f098354f5641cd8
   ReactTestApp-Resources: bb546b3a5dca4b7931bee423d4ef28cd94b346cf
-  SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
+  SwiftLint: 06ac37e4d38c7068e0935bb30cda95f093bec761
   Yoga: 3b0ecc1a0ddf03b4363ea73cc42e10d76b052007
 
 PODFILE CHECKSUM: 39314e677d5ddf7e1e4c81e5e81f66cddabd661a
