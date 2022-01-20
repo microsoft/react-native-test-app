@@ -47,11 +47,14 @@ function validateManifest(manifestPath = findAppManifest()) {
     console.error(
       `${manifestPath}: error: ${APP_JSON} is not a valid app manifest`
     );
-    validate.errors?.map(({ instancePath, message }) =>
-      console.error(
-        `${manifestPath}: error: ${instancePath || "<root>"} ${message}`
-      )
-    );
+    const errors = validate.errors;
+    if (errors) {
+      errors.map(({ instancePath, message }) =>
+        console.error(
+          `${manifestPath}: error: ${instancePath || "<root>"} ${message}`
+        )
+      );
+    }
     process.exit(1);
   }
 }
