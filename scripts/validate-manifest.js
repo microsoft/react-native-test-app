@@ -54,8 +54,8 @@ function validateManifest(manifestPath = findAppManifest()) {
           `${manifestPath}: error: ${instancePath || "<root>"} ${message}`
         )
       );
-      process.exit(1);
     }
+    process.exit(1);
   }
 }
 
