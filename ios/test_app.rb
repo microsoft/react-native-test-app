@@ -49,15 +49,6 @@ def bundle_identifier(project_root, target_platform)
   @test_app_bundle_identifier
 end
 
-def find_project_root
-  podfile_path = Thread.current.backtrace_locations.find do |location|
-    File.basename(location.absolute_path) == 'Podfile'
-  end
-  assert(!podfile_path.nil?, "Could not find 'Podfile'")
-
-  Pathname.new(File.dirname(podfile_path.absolute_path))
-end
-
 def flipper_enabled?(react_native_version)
   react_native_version >= 6200 && @flipper_versions != false
 end
@@ -301,7 +292,7 @@ def use_test_app_internal!(target_platform, options)
   assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
 
   xcodeproj = 'ReactTestApp.xcodeproj'
-  project_root = find_project_root
+  project_root = Pod::Config.instance.installation_root
   dst_xcodeproj, platforms = make_project!(xcodeproj, project_root, target_platform).values_at(
     :xcodeproj_path, :platforms
   )
