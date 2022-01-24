@@ -285,7 +285,7 @@ jobs:
         with:
           project-directory: macos
           working-directory: example
-      - name: Build
+      - name: Build x86
         run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
         working-directory: example
@@ -294,6 +294,7 @@ jobs:
           yarn jest
         working-directory: example
       - name: Test
+        if: ${{ github.event_name != 'schedule' }}
         run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
         working-directory: example
