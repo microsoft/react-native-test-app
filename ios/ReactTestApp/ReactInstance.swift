@@ -5,10 +5,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         NSNotification.Name("ReactInstance.scanForQRCodeNotification")
 
     static func jsBundleURL() -> URL? {
-        RCTBundleURLProvider.sharedSettings().jsBundleURL(
-            forBundleRoot: "index",
-            fallbackResource: nil
-        )
+        RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index") { nil }
     }
 
     var remoteBundleURL: URL? {
@@ -131,7 +128,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             return remoteBundleURL
         }
 
-        let jsBundleURL = entryFiles()
+        let embeddedBundleURL = entryFiles()
             .lazy
             .map {
                 Bundle.main.url(
@@ -140,7 +137,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
                 )
             }
             .first(where: { $0 != nil })
-        return jsBundleURL ?? ReactInstance.jsBundleURL()
+        return embeddedBundleURL ?? ReactInstance.jsBundleURL()
     }
 
     func extraModules(for _: RCTBridge!) -> [RCTBridgeModule] {
