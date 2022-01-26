@@ -74,6 +74,13 @@ jobs:
           echo "::add-matcher::.github/minitest.json"
           bundle exec ruby -Ilib:test test/test_test_app.rb
           echo "::remove-matcher owner=minitest::"
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Populate Gradle cache
+        uses: ./.github/actions/gradle
+        with:
+          arguments: clean
+          project-root: example
       - name: JavaScript
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -203,8 +210,6 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: android
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |

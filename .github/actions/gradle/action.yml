@@ -1,6 +1,9 @@
 name: Gradle Build
 description: Executes a Gradle build
 inputs:
+  arguments:
+    description: Gradle will execute a build with the provided arguments
+    default: --no-daemon clean build check test
   project-root:
     description: The path to the root of the project
     required: true
@@ -27,5 +30,5 @@ runs:
       uses: gradle/gradle-build-action@v2.1.0
       with:
         gradle-version: wrapper
-        arguments: --no-daemon clean build check test
+        arguments: ${{ inputs.arguments }}
         build-root-directory: ${{ steps.build-root-directory-finder.outputs.build-root-directory }}
