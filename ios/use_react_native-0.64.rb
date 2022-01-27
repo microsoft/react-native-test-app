@@ -19,6 +19,14 @@ def include_react_native!(options)
     react_native_post_install(installer)
     if defined?(__apply_Xcode_12_5_M1_post_install_workaround)
       __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+      # The path to `Time.h` is hard-coded in 0.66.0 - 0.67.1, and does not take
+      # `--project-directory` into consideration. Re-applying the "patch" here
+      # in case we missed it the first time.
+      time_header = "#{installer.sandbox.root}/RCT-Folly/folly/portability/Time.h"
+      if File.exist?(time_header)
+        `sed -i -e $'s/VERSION_MIN_REQUIRED </VERSION_MIN_REQUIRED >=/' #{time_header}`
+      end
     end
   }
 end
