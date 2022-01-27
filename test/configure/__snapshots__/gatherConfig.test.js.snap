@@ -12,7 +12,7 @@ Object {
     },
     "Podfile": "require_relative '../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
@@ -113,7 +113,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
@@ -376,7 +376,7 @@ Object {
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
@@ -523,7 +523,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
@@ -689,7 +689,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
