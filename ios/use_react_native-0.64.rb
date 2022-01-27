@@ -25,9 +25,7 @@ def include_react_native!(options)
       # in case we missed it the first time.
       time_header = "#{installer.sandbox.root}/RCT-Folly/folly/portability/Time.h"
       if File.exist?(time_header)
-        # rubocop:disable Layout/LineLength
-        `sed -i -e  $'s/__IPHONE_OS_VERSION_MIN_REQUIRED </__IPHONE_OS_VERSION_MIN_REQUIRED >=/' #{time_header}`
-        # rubocop:enable Layout/LineLength
+        `sed -i -e $'s/VERSION_MIN_REQUIRED </VERSION_MIN_REQUIRED >=/' #{time_header}`
       end
     end
   }
