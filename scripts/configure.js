@@ -489,7 +489,10 @@ const getConfig = (() => {
             Podfile: join(
               `require_relative '${testAppRelPath}/test_app'`,
               "",
-              semver.satisfies(targetVersion, "<0.66")
+              semver.satisfies(
+                semver.coerce(targetVersion) || "0.0.0",
+                "> 0.0.0 < 0.66"
+              )
                 ? // Use a more recent version of Flipper to avoid build
                   // break in Xcode 12.5.
                   // See https://github.com/facebook/react-native/issues/31179.
