@@ -504,18 +504,16 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   const projectFilesReplacements = {
     ...(hermesVersion
       ? {
-          '<!-- package id="ReactNative.Hermes.Windows" version="0.0.0" targetFramework="native" / -->':
+          '<!-- package id="ReactNative.Hermes.Windows" version="0.0.0" targetFramework="native"/ -->':
             nuGetPackage("ReactNative.Hermes.Windows", hermesVersion),
         }
       : undefined),
     ...(useNuGet
       ? {
-          '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native" / -->':
+          '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native"/ -->':
             nuGetPackage("Microsoft.ReactNative", rnWindowsVersion),
-          '<!-- package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native" / -->':
+          '<!-- package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native"/ -->':
             nuGetPackage("Microsoft.ReactNative.Cxx", rnWindowsVersion),
-          '<!-- package id="Microsoft.UI.Xaml" version="2.6.0" targetFramework="native" / -->':
-            nuGetPackage("Microsoft.UI.Xaml", "2.6.0"),
           "<UseExperimentalNuget>false</UseExperimentalNuget>":
             "<UseExperimentalNuget>true</UseExperimentalNuget>",
           "<WinUI2xVersionDisabled />":
