@@ -84,6 +84,7 @@ jobs:
       - name: JavaScript
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JVM_ARGS: org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
         run: |
           # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
           #       Ignore errors until we can create a GitHub PAT from a system
