@@ -34,7 +34,7 @@ private static void applySettings(Settings settings) {
 }
 
 // TODO: Remove when `@react-native-community/cli` 6.0+ is required. See also
-// https://github.com/react-native-community/cli/commit/fa0d09b2c9be144bbdff526bb14f171d7ddca88e.
+// https://github.com/react-native-community/cli/commit/fa0d09b2c9be144bbdff526bb14f171d7ddca88e
 private static void patchArgumentTypeMismatchError(String cliAndroidDir) {
     def script = new File("${cliAndroidDir}/native_modules.gradle")
     def patched = script.text.replace(
