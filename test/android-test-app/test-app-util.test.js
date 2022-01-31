@@ -47,6 +47,10 @@ describe("test-app-util", () => {
     removeProject(defaultTestProject);
   });
 
+  // TODO: Figure out why Windows CI keeps running out of Java heap space.
+  const test =
+    process.env["CI"] && require("os").platform() === "win32" ? it.skip : it;
+
   test("getAppName() returns `name` if `displayName` is omitted", async () => {
     const { status, stdout } = await runGradle({
       "app.json": JSON.stringify({
