@@ -9,7 +9,7 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:$androidPluginVersion"
-        classpath 'de.undercouch:gradle-download-task:4.1.2'
+        classpath 'de.undercouch:gradle-download-task:5.0.1'
     }
 }
 
