@@ -48,6 +48,7 @@ describe("test-app-util", () => {
   });
 
   // TODO: Figure out why Windows CI keeps running out of Java heap space.
+  // https://github.com/microsoft/react-native-test-app/issues/738
   const test =
     process.env["CI"] && require("os").platform() === "win32" ? it.skip : it;
 
