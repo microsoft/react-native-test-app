@@ -24,6 +24,7 @@
     "/*.{gradle,js,md,podspec,rb}",
     "/android/**/*.gradle",
     "/android/app/lint.xml",
+    "/android/app/src/**/compat",
     "/android/app/src/{flipper,main}",
     "/android/support/src",
     "/common",

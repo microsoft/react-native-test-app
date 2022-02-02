@@ -20,6 +20,7 @@ import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
+import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 import java.util.concurrent.CountDownLatch
 
 sealed class BundleSource {
@@ -61,7 +62,7 @@ class TestAppReactNativeHost(
             error("init() can only be called once on startup")
         }
 
-        val reactInstanceListener = object : ReactInstanceManager.ReactInstanceEventListener {
+        val reactInstanceListener = object : ReactInstanceEventListener {
             override fun onReactContextInitialized(context: ReactContext?) {
                 afterReactNativeInit()
 

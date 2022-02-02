@@ -1,7 +1,7 @@
 buildscript {
     def androidDir = "${buildscript.sourceFile.getParent()}/../"
-    apply(from: "$androidDir/test-app-util.gradle")
-    apply(from: "$androidDir/dependencies.gradle")
+    apply(from: "${androidDir}/test-app-util.gradle")
+    apply(from: "${androidDir}/dependencies.gradle")
 }
 
 plugins {
@@ -13,7 +13,7 @@ plugins {
 // `react-native run-android` is hard-coded to look for the output APK at a very
 // specific location. See
 // https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
-buildDir = "$rootDir/$name/build"
+buildDir = "${rootDir}/${name}/build"
 
 def reactNativeDir = findNodeModulesPath(rootDir, "react-native")
 
@@ -46,7 +46,7 @@ repositories {
     }
 }
 
-apply(from: "$projectDir/../../test-app.gradle")
+apply(from: "${projectDir}/../../test-app.gradle")
 applyTestAppModule(project)
 
 project.ext.react = [
@@ -59,29 +59,6 @@ project.ext.react = [
 project.ext.signingConfigs = getSigningConfigs()
 
 android {
-    def signingDebug = project.ext.signingConfigs["debug"]
-    def signingRelease = project.ext.signingConfigs["release"]
-    if (signingDebug || signingRelease) {
-        signingConfigs {
-            if (signingDebug) {
-                debug {
-                    keyAlias signingDebug["keyAlias"]
-                    keyPassword signingDebug["keyPassword"]
-                    storeFile signingDebug["storeFile"]
-                    storePassword signingDebug["storePassword"]
-                }
-            }
-            if (signingRelease) {
-                release {
-                    keyAlias signingRelease["keyAlias"]
-                    keyPassword signingRelease["keyPassword"]
-                    storeFile signingRelease["storeFile"]
-                    storePassword signingRelease["storePassword"]
-                }
-            }
-        }
-    }
-
     compileSdkVersion project.ext.compileSdkVersion
 
     // We need only set `ndkVersion` when building react-native from source.
@@ -129,9 +106,40 @@ android {
         pickFirst "lib/x86/libc++_shared.so"
     }
 
+    def signingDebug = project.ext.signingConfigs["debug"]
+    def signingRelease = project.ext.signingConfigs["release"]
+    if (signingDebug || signingRelease) {
+        signingConfigs {
+            if (signingDebug) {
+                debug {
+                    keyAlias signingDebug["keyAlias"]
+                    keyPassword signingDebug["keyPassword"]
+                    storeFile signingDebug["storeFile"]
+                    storePassword signingDebug["storePassword"]
+                }
+            }
+            if (signingRelease) {
+                release {
+                    keyAlias signingRelease["keyAlias"]
+                    keyPassword signingRelease["keyPassword"]
+                    storeFile signingRelease["storeFile"]
+                    storePassword signingRelease["storePassword"]
+                }
+            }
+        }
+    }
+
     sourceSets {
         if (project.ext.react.enableFlipper) {
             debug.java.srcDirs += "src/flipper/java"
+        }
+
+        // TODO: Remove this block when we drop support for 0.67.
+        // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
+        if (getReactNativeVersionNumber(rootDir) < 6800) {
+            main.java.srcDirs += "src/reactinstanceeventlistener-pre-0.68/java"
+        } else {
+            main.java.srcDirs += "src/reactinstanceeventlistener-0.68/java"
         }
     }
 }
@@ -147,9 +155,9 @@ dependencies {
             throw new GradleException("Could not find 'hermes-engine'. Please make sure you've added it to 'package.json'.")
         }
 
-        def hermesAndroidDir = "$hermesEngineDir/android"
-        releaseImplementation files("$hermesAndroidDir/hermes-release.aar")
-        debugImplementation files("$hermesAndroidDir/hermes-debug.aar")
+        def hermesAndroidDir = "${hermesEngineDir}/android"
+        releaseImplementation files("${hermesAndroidDir}/hermes-release.aar")
+        debugImplementation files("${hermesAndroidDir}/hermes-debug.aar")
     }
 
     if (buildReactNativeFromSource(rootDir)) {
