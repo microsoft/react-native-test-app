@@ -1,7 +1,15 @@
 // @ts-check
 
-const loadConfig =
-  require("@react-native-community/cli/build/tools/config").default;
+const loadConfig = (() => {
+  try {
+    // `loadConfig` was made public in 7.0:
+    // https://github.com/react-native-community/cli/pull/1464
+    return require("@react-native-community/cli").loadConfig;
+  } catch (_) {
+    return require("@react-native-community/cli/build/tools/config").default;
+  }
+})();
+
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
