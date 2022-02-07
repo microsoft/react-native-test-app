@@ -8,7 +8,7 @@ shift 2
 platform=$(grep -o '\w\+/ReactTestApp.xcodeproj' "$workspace/contents.xcworkspacedata")
 
 if [[ $platform == ios/* ]]; then
-  device_name=${1:-'iPhone 11'}
+  device_name=${1:-'iPhone 13'}
   device=$(xcrun simctl list devices "${device_name}" available | grep "${device_name} (")
   re='\(([-0-9A-Fa-f]+)\)'
   [[ $device =~ $re ]] || exit 1
@@ -29,6 +29,7 @@ build_cmd=$(
     -workspace "$workspace" \
     -scheme ReactTestApp \
     "$destination" \
+    -derivedDataPath $(dirname $workspace)/build \
     "$skip_testing" \
     CODE_SIGNING_ALLOWED=NO \
     COMPILER_INDEX_STORE_ENABLE=NO \
@@ -37,4 +38,14 @@ build_cmd=$(
 
 )
 
+ccache_libexec="/usr/local/opt/ccache/libexec"
+if [[ ! -d "$ccache_libexec" ]]; then
+  brew install ccache
+fi
+
+export CC="$(git rev-parse --show-toplevel)/scripts/clang"
+export CCACHE_DIR="$(git rev-parse --show-toplevel)/.ccache"
+
+ccache --zero-stats 1> /dev/null
 eval "$build_cmd"
+ccache --show-stats --verbose

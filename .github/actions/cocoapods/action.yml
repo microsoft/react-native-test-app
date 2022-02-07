@@ -24,7 +24,7 @@ runs:
       uses: actions/cache@v2
       with:
         path: ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
-        key: ${{ steps.cache-key-generator.outputs.cache-key }}
+        key: ${{ runner.os }}-pods-${{ steps.cache-key-generator.outputs.cache-key }}
     - name: Install Pods
       run: |
         pod install --project-directory=${{ inputs.project-directory }}

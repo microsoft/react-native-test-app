@@ -3,6 +3,8 @@
 *.xcworkspace/
 .DS_Store
 .android-test-*
+.ccache/*
+!.ccache/ccache.conf
 .gradle/
 .idea/
 .vs/
@@ -14,7 +16,7 @@ android/**/build/
 clang-format-diff.py
 coverage/
 dist/
-example/android/build/
+example/*/build/
 local.properties
 msbuild.binlog
 node_modules/
