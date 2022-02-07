@@ -2,14 +2,13 @@
 // @ts-check
 "use strict";
 
-const { spawn } = require("child_process");
-const os = require("os");
+const pacote = require("pacote");
 
 /**
  * @typedef {{
  *   version?: string;
- *   dependencies: Record<string, string>;
- *   peerDependencies: Record<string, string>;
+ *   dependencies?: Record<string, string>;
+ *   peerDependencies?: Record<string, string>;
  * }} Manifest
  */
 
@@ -44,33 +43,11 @@ function keys(obj) {
  * @return {Promise<Manifest>}
  */
 function fetchPackageInfo(pkg) {
-  return new Promise((resolve) => {
-    /** @type {string[]} */
-    const result = [];
-
-    const npm = os.platform() === "win32" ? "npm.cmd" : "npm";
-    const fetch = spawn(npm, ["view", "--json", pkg]);
-    fetch.stdout.on("data", (data) => {
-      result.push(data);
-    });
-    fetch.on("close", (code) => {
-      if (code !== 0 || result.length === 0) {
-        resolve({
-          version: undefined,
-          dependencies: {},
-          peerDependencies: {},
-        });
-      } else {
-        const list = JSON.parse(result.join(""));
-        const latest = Array.isArray(list) ? list[list.length - 1] : list;
-        resolve({
-          version: latest.version,
-          dependencies: latest.dependencies,
-          peerDependencies: latest.peerDependencies,
-        });
-      }
-    });
-  });
+  return pacote.manifest(pkg).catch(() => ({
+    version: undefined,
+    dependencies: {},
+    peerDependencies: {},
+  }));
 }
 
 /**
@@ -80,6 +57,8 @@ function fetchPackageInfo(pkg) {
 function fetchReactNativeWindowsCanaryInfoViaNuGet() {
   return new Promise((resolve) => {
     const pattern = /Microsoft\.ReactNative\.Cxx ([-.\d]*canary[-.\d]*)/;
+
+    const { spawn } = require("child_process");
 
     let isResolved = false;
     const list = spawn("nuget.exe", [
@@ -116,15 +95,16 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
  */
 function pickCommonDependencies(dependencies, peerDependencies) {
   return {
-    "@react-native-community/cli": dependencies["@react-native-community/cli"],
+    "@react-native-community/cli":
+      dependencies?.["@react-native-community/cli"],
     "@react-native-community/cli-platform-android":
-      dependencies["@react-native-community/cli-platform-android"],
+      dependencies?.["@react-native-community/cli-platform-android"],
     "@react-native-community/cli-platform-ios":
-      dependencies["@react-native-community/cli-platform-ios"],
-    "hermes-engine": dependencies["hermes-engine"],
+      dependencies?.["@react-native-community/cli-platform-ios"],
+    "hermes-engine": dependencies?.["hermes-engine"],
     "metro-react-native-babel-preset":
-      dependencies["metro-react-native-babel-transformer"],
-    react: peerDependencies["react"],
+      dependencies?.["metro-react-native-babel-transformer"],
+    react: peerDependencies?.["react"],
   };
 }
 
@@ -217,6 +197,7 @@ if (!isValidVersion(version)) {
   console.log(profile);
 
   const fs = require("fs");
+  const { EOL } = require("os");
 
   ["package.json", "example/package.json"].forEach((manifestPath) => {
     const content = fs.readFileSync(manifestPath, { encoding: "utf-8" });
@@ -228,7 +209,7 @@ if (!isValidVersion(version)) {
     const tmpFile = `${manifestPath}.tmp`;
     fs.writeFile(
       tmpFile,
-      JSON.stringify(manifest, undefined, 2) + os.EOL,
+      JSON.stringify(manifest, undefined, 2) + EOL,
       (err) => {
         if (err) {
           throw err;
