@@ -113,6 +113,7 @@ jobs:
           echo "::add-matcher::.github/swiftlint.json"
           swiftlint
           echo "::remove-matcher owner=swiftlint::"
+    timeout-minutes: 60
   ios:
     name: "iOS"
     runs-on: macos-latest
@@ -156,6 +157,7 @@ jobs:
         run: |
           ../scripts/xcodebuild.sh ios/Example.xcworkspace test-without-building
         working-directory: example
+    timeout-minutes: 60
   ios-template:
     name: "iOS [template]"
     strategy:
@@ -196,6 +198,7 @@ jobs:
         run: |
           ../test/react-native.js run-ios
         working-directory: template-example
+    timeout-minutes: 60
   android:
     name: "Android"
     strategy:
@@ -232,6 +235,7 @@ jobs:
         uses: ./.github/actions/gradle
         with:
           project-root: example
+    timeout-minutes: 60
   android-template:
     name: "Android [template]"
     strategy:
@@ -264,6 +268,7 @@ jobs:
         run: |
           ../test/react-native.js run-android
         working-directory: template-example
+    timeout-minutes: 60
   macos:
     name: "macOS"
     runs-on: macos-latest
@@ -308,6 +313,7 @@ jobs:
           ../scripts/xcodebuild.sh macos/Example.xcworkspace clean
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
         working-directory: example
+    timeout-minutes: 60
   macos-template:
     name: "macOS [template]"
     strategy:
@@ -344,6 +350,7 @@ jobs:
         run: |
           ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
+    timeout-minutes: 60
   windows:
     name: "Windows"
     runs-on: windows-latest
@@ -390,6 +397,7 @@ jobs:
           ../../../scripts/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactTestAppTests.vcxproj
           VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll
         working-directory: example/windows/ReactTestAppTests
+    timeout-minutes: 60
   windows-template:
     name: "Windows [template]"
     runs-on: windows-latest
@@ -424,6 +432,7 @@ jobs:
           if ("${{ matrix.template }}" -eq "all") { ../scripts/MSBuild.ps1 windows/TemplateExample.sln }
           else { ../scripts/MSBuild.ps1 TemplateExample.sln }
         working-directory: template-example
+    timeout-minutes: 60
   release:
     needs:
       [
@@ -465,12 +474,4 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           sync-labels: true
-        continue-on-error: true
-      - name: Checkout
-        uses: actions/checkout@v2
-        continue-on-error: true
-      - name: /yarn.lock changes
-        uses: Simek/yarn-lock-changes@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
