@@ -36,7 +36,7 @@ ext {
         kotlinStdlibJdk7            : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31",
         kotlinStdlibJdk8            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31",
         materialComponents          : "com.google.android.material:material:1.5.0",
-        mockitoInline               : "org.mockito:mockito-inline:4.2.0",
+        mockitoInline               : "org.mockito:mockito-inline:4.3.1",
         moshiKotlin                 : "com.squareup.moshi:moshi-kotlin:1.12.0",
         moshiKotlinCodegen          : "com.squareup.moshi:moshi-kotlin-codegen:1.12.0",
     ]
