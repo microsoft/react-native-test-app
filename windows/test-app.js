@@ -38,9 +38,6 @@ const templateView = {
 
 const uniqueFilterIdentifier = "e48dc53e-40b1-40cb-970a-f89935452892";
 
-// Binary files in React Native Test App Windows project
-const binaryExtensions = [".png"];
-
 /** @type {{ recursive: true, mode: 0o755 }} */
 const mkdirRecursiveOptions = { recursive: true, mode: 0o755 };
 
@@ -155,7 +152,44 @@ function normalizePath(p) {
  * @returns {string}
  */
 function nuGetPackage(id, version) {
-  return `<package id="${id}" version="${version}" targetFramework="native" />`;
+  return `<package id="${id}" version="${version}" targetFramework="native"/>`;
+}
+
+/**
+ * @param {{
+ *   certificateKeyFile?: string;
+ *   certificateThumbprint?: string;
+ *   certificatePassword?: string;
+ * }} certificate
+ * @param {string} projectPath
+ * @returns {string}
+ */
+function generateCertificateItems(
+  { certificateKeyFile, certificateThumbprint, certificatePassword },
+  projectPath
+) {
+  const items = [];
+  if (typeof certificateKeyFile === "string") {
+    items.push(
+      "<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>",
+      `<PackageCertificateKeyFile>$(ProjectRootDir)\\${normalizePath(
+        path.isAbsolute(certificateKeyFile)
+          ? path.relative(projectPath, certificateKeyFile)
+          : certificateKeyFile
+      )}</PackageCertificateKeyFile>`
+    );
+  }
+  if (typeof certificateThumbprint === "string") {
+    items.push(
+      `<PackageCertificateThumbprint>${certificateThumbprint}</PackageCertificateThumbprint>`
+    );
+  }
+  if (typeof certificatePassword === "string") {
+    items.push(
+      `<PackageCertificatePassword>${certificatePassword}</PackageCertificatePassword>`
+    );
+  }
+  return items.join("\n    ");
 }
 
 /**
@@ -180,7 +214,9 @@ function generateContentItems(
       continue;
     }
 
-    const resourcePath = path.relative(projectPath, resource);
+    const resourcePath = path.isAbsolute(resource)
+      ? path.relative(projectPath, resource)
+      : resource;
     if (!fs.existsSync(resourcePath)) {
       console.warn(`warning: resource with path '${resource}' was not found`);
       continue;
@@ -312,24 +348,15 @@ function toProjectEntry(project, destPath) {
  * Copies a file to given destination, replacing parts of its contents.
  * @param {string} srcPath Path to the file to be copied.
  * @param {string} destPath Destination path.
- * @param {{ [pattern: string]: string }} replacements e.g. {'TextToBeReplaced': 'Replacement'}
- * @param {(error: Error | null) => void} callback Callback for when the copy operation is done.
+ * @param {Record<string, string> | undefined} replacements e.g. {'TextToBeReplaced': 'Replacement'}
+ * @param {(error: Error | null) => void=} callback Callback for when the copy operation is done.
  */
-function copyAndReplace(
-  srcPath,
-  destPath,
-  replacements = {},
-  callback = rethrow
-) {
-  if (binaryExtensions.includes(path.extname(srcPath))) {
-    // Treat as binary file
-    fs.copyFile(srcPath, destPath, callback);
-    return;
-  }
-
+function copyAndReplace(srcPath, destPath, replacements, callback = rethrow) {
   const stat = fs.statSync(srcPath);
   if (stat.isDirectory()) {
     copy(srcPath, destPath);
+  } else if (!replacements) {
+    fs.copyFile(srcPath, destPath, callback);
   } else {
     // Treat as text file
     fs.readFile(srcPath, textFileReadOptions, (err, data) => {
@@ -361,6 +388,7 @@ function copyAndReplace(
  *   assetItems: string;
  *   assetItemFilters: string;
  *   assetFilters: string;
+ *   packageCertificate: string;
  * }} Application name, and paths to directories and files to include.
  */
 function getBundleResources(manifestFilePath, projectFilesDestPath) {
@@ -375,14 +403,15 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
     try {
       const content = fs.readFileSync(manifestFilePath, textFileReadOptions);
       const { name, resources, windows } = JSON.parse(content);
+      const projectPath = path.dirname(manifestFilePath);
       return {
         appName: name || defaultName,
         appxManifest: (windows && windows.appxManifest) || defaultAppxManifest,
-        ...parseResources(
-          resources,
-          path.dirname(manifestFilePath),
-          projectFilesDestPath
+        packageCertificate: generateCertificateItems(
+          windows || {},
+          projectPath
         ),
+        ...parseResources(resources, projectPath, projectFilesDestPath),
       };
     } catch (e) {
       if (isErrorLike(e)) {
@@ -401,6 +430,7 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
     assetItems: "",
     assetItemFilters: "",
     assetFilters: "",
+    packageCertificate: "",
   };
 }
 
@@ -494,57 +524,89 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   fs.mkdirSync(destPath, { recursive: true });
 
   const manifestFilePath = findNearest("app.json", destPath);
-  const { appName, appxManifest, assetItems, assetItemFilters, assetFilters } =
-    getBundleResources(manifestFilePath, projectFilesDestPath);
+  const {
+    appName,
+    appxManifest,
+    assetItems,
+    assetItemFilters,
+    assetFilters,
+    packageCertificate,
+  } = getBundleResources(manifestFilePath, projectFilesDestPath);
 
+  const appxManifestPath = path.normalize(
+    path.relative(destPath, path.resolve(appxManifest))
+  );
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
   const rnWindowsVersionNumber = getVersionNumber(rnWindowsVersion);
   const hermesVersion = useHermes && getHermesVersion(rnWindowsPath);
+  const xamlVersion = rnWindowsVersionNumber < 6700 ? "2.6.0" : "2.7.0";
 
-  const projectFilesReplacements = {
-    ...(hermesVersion
-      ? {
-          '<!-- package id="ReactNative.Hermes.Windows" version="0.0.0" targetFramework="native"/ -->':
-            nuGetPackage("ReactNative.Hermes.Windows", hermesVersion),
-        }
-      : undefined),
-    ...(useNuGet
-      ? {
-          '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native"/ -->':
-            nuGetPackage("Microsoft.ReactNative", rnWindowsVersion),
-          '<!-- package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native"/ -->':
-            nuGetPackage("Microsoft.ReactNative.Cxx", rnWindowsVersion),
-          "<UseExperimentalNuget>false</UseExperimentalNuget>":
-            "<UseExperimentalNuget>true</UseExperimentalNuget>",
-          "<WinUI2xVersionDisabled />":
-            "<WinUI2xVersion>2.6.0</WinUI2xVersion>",
-        }
-      : undefined),
-    "1000\\.0\\.0": rnWindowsVersion,
-    "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
-    "<!-- ReactTestApp asset items -->": assetItems,
-    "<!-- ReactTestApp asset item filters -->": assetItemFilters,
-    "<!-- ReactTestApp asset filters -->": assetFilters,
-    "\\$\\(ReactTestAppPackageManifest\\)": path.normalize(
-      path.relative(destPath, path.resolve(appxManifest))
-    ),
-  };
+  /** @type {[string, Record<string, string>?][]} */
+  const projectFiles = [
+    ["Assets"],
+    ["AutolinkedNativeModules.g.cpp"],
+    ["AutolinkedNativeModules.g.props"],
+    ["AutolinkedNativeModules.g.targets"],
+    ["Package.appxmanifest"],
+    ["PropertySheet.props"],
+    [
+      "ReactTestApp.vcxproj",
+      {
+        "1000\\.0\\.0": rnWindowsVersion,
+        "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
+        "<!-- ReactTestApp asset items -->": assetItems,
+        "\\$\\(ReactTestAppPackageManifest\\)": appxManifestPath,
+        ...(useNuGet
+          ? {
+              "<UseExperimentalNuget>false</UseExperimentalNuget>":
+                "<UseExperimentalNuget>true</UseExperimentalNuget>",
+              "<WinUI2xVersionDisabled />": `<WinUI2xVersion>${xamlVersion}</WinUI2xVersion>`,
+            }
+          : undefined),
+        ...(packageCertificate
+          ? {
+              "<AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>":
+                packageCertificate,
+            }
+          : undefined),
+      },
+    ],
+    [
+      "ReactTestApp.vcxproj.filters",
+      {
+        "<!-- ReactTestApp asset item filters -->": assetItemFilters,
+        "<!-- ReactTestApp asset filters -->": assetFilters,
+        "\\$\\(ReactTestAppPackageManifest\\)": appxManifestPath,
+      },
+    ],
+    [
+      "packages.config",
+      {
+        '<package id="Microsoft.UI.Xaml" version="0.0.0" targetFramework="native"/>':
+          nuGetPackage("Microsoft.UI.Xaml", xamlVersion),
+        ...(useNuGet
+          ? {
+              '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native"/ -->':
+                nuGetPackage("Microsoft.ReactNative", rnWindowsVersion),
+              '<!-- package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native"/ -->':
+                nuGetPackage("Microsoft.ReactNative.Cxx", rnWindowsVersion),
+            }
+          : undefined),
+        ...(hermesVersion
+          ? {
+              '<!-- package id="ReactNative.Hermes.Windows" version="0.0.0" targetFramework="native"/ -->':
+                nuGetPackage("ReactNative.Hermes.Windows", hermesVersion),
+            }
+          : undefined),
+      },
+    ],
+  ];
 
-  const copyTasks = [
-    "Assets",
-    "AutolinkedNativeModules.g.cpp",
-    "AutolinkedNativeModules.g.props",
-    "AutolinkedNativeModules.g.targets",
-    "Package.appxmanifest",
-    "PropertySheet.props",
-    "ReactTestApp.vcxproj",
-    "ReactTestApp.vcxproj.filters",
-    "packages.config",
-  ].map((file) =>
+  const copyTasks = projectFiles.map(([file, replacements]) =>
     copyAndReplace(
       path.join(__dirname, projDir, file),
       path.join(projectFilesDestPath, file),
-      projectFilesReplacements
+      replacements
     )
   );
 
