@@ -13,9 +13,9 @@ import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.react.ReactInstanceManager
-import com.facebook.react.ReactInstanceManager.ReactInstanceEventListener
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.network.NetworkingModule
+import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 
 @Suppress("unused")
 object ReactNativeFlipper {
