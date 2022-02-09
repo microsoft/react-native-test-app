@@ -13,5 +13,7 @@ GCC_NO_COMMON_BLOCKS = YES
 GCC_TREAT_WARNINGS_AS_ERRORS = YES
 MACOSX_DEPLOYMENT_TARGET = 10.15
 MTL_FAST_MATH = YES
+OTHER_CFLAGS = $(inherited) -fstack-protector-strong
+OTHER_LDFLAGS = $(inherited) -fstack-protector-strong
 SDKROOT = macosx
 WARNING_CFLAGS = -Wall
