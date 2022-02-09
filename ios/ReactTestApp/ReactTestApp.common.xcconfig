@@ -18,4 +18,3 @@ OTHER_LDFLAGS = $(inherited) -fstack-protector-strong
 SDKROOT = iphoneos
 SWIFT_TREAT_WARNINGS_AS_ERRORS = YES
 WARNING_CFLAGS = -Wall
-
