@@ -130,6 +130,7 @@ jobs:
           # https://github.com/facebook/react-native/issues/30036 and
           # https://github.com/microsoft/react-native-macos/issues/620 for more
           # details.
+          yarn
           npm run set-react-version main
           rm example/ios/Podfile.lock
       - name: Install npm dependencies
@@ -216,6 +217,7 @@ jobs:
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
+          yarn
           npm run set-react-version nightly
         shell: bash
       - name: Install npm dependencies
@@ -280,6 +282,7 @@ jobs:
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
+          yarn
           npm run set-react-version canary-macos
           rm example/macos/Podfile.lock
       - name: Install npm dependencies
@@ -368,6 +371,7 @@ jobs:
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
+          yarn
           npm run set-react-version canary-windows
         shell: bash
       - name: Install npm dependencies
