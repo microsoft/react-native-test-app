@@ -493,7 +493,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   fs.mkdirSync(projectFilesDestPath, { recursive: true });
   fs.mkdirSync(destPath, { recursive: true });
 
-  const manifestFilePath = findNearest("app.json");
+  const manifestFilePath = findNearest("app.json", destPath);
   const { appName, appxManifest, assetItems, assetItemFilters, assetFilters } =
     getBundleResources(manifestFilePath, projectFilesDestPath);
 
