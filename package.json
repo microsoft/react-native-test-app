@@ -107,6 +107,7 @@
     "@babel/core": "^7.0.0",
     "@commitlint/cli": "^16.0.0",
     "@commitlint/config-conventional": "^16.0.0",
+    "@microsoft/eslint-plugin-sdl": "^0.1.9",
     "@react-native-community/cli": "^5.0.0",
     "@react-native-community/cli-platform-android": "^5.0.0",
     "@react-native-community/cli-platform-ios": "^5.0.0",
@@ -135,6 +136,7 @@
   },
   "packageManager": "yarn@3.1.1",
   "resolutions": {
+    "eslint-plugin-react": "^7.26.0",
     "npm/chalk": "^4.1.0"
   },
   "workspaces": [
@@ -147,6 +149,7 @@
   },
   "eslintConfig": {
     "extends": [
+      "plugin:@microsoft/sdl/required",
       "plugin:@rnx-kit/recommended",
       "plugin:jest/recommended",
       "plugin:jest/style"
