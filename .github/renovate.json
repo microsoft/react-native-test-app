@@ -1,8 +1,6 @@
 {
   "extends": ["config:base", "schedule:earlyMondays"],
   "labels": ["dependencies"],
-  "allowPostUpgradeCommandTemplating": true,
-  "allowedPostUpgradeCommands": ["^yarn", "^cd example$", "^pod install"],
   "packageRules": [
     {
       "matchPackagePrefixes": ["@react-native-community/cli"],
@@ -16,6 +14,11 @@
       "groupName": "Kotlin",
       "matchDatasources": ["maven"],
       "matchPackagePrefixes": ["org.jetbrains.kotlin:"]
+    },
+    {
+      "groupName": "Metro",
+      "matchSourceUrlPrefixes": ["https://github.com/facebook/metro"],
+      "allowedVersions": "^0.64.0"
     },
     {
       "groupName": "Moshi",
@@ -33,28 +36,6 @@
         "react-native-windows"
       ],
       "allowedVersions": "^0.64.0"
-    },
-    {
-      "matchPackageNames": ["react-native"],
-      "postUpgradeTasks": {
-        "commands": [
-          "yarn --no-immutable",
-          "cd example",
-          "pod install --project-directory=ios"
-        ],
-        "fileFilters": ["example/ios/Podfile.lock"]
-      }
-    },
-    {
-      "matchPackageNames": ["react-native-macos"],
-      "postUpgradeTasks": {
-        "commands": [
-          "yarn --no-immutable",
-          "cd example",
-          "pod install --project-directory=macos"
-        ],
-        "fileFilters": ["example/macos/Podfile.lock"]
-      }
     }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
