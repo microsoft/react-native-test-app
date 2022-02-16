@@ -12,3 +12,14 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
+
+allprojects {
+    repositories {
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url("${rootDir}/../node_modules/react-native/android")
+        }
+        mavenCentral()
+        google()
+    }
+}

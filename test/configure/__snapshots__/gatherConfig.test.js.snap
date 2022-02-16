@@ -79,6 +79,17 @@ Object {
         classpath \\"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion\\"
     }
 }
+
+allprojects {
+    repositories {
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url(\\"\${rootDir}/../react-native/android\\")
+        }
+        mavenCentral()
+        google()
+    }
+}
 ",
     "android/gradle.properties": Object {
       "source": "example/android/gradle.properties",
@@ -489,6 +500,17 @@ Object {
         classpath \\"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion\\"
     }
 }
+
+allprojects {
+    repositories {
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url(\\"\${rootDir}/../react-native/android\\")
+        }
+        mavenCentral()
+        google()
+    }
+}
 ",
     "android/gradle.properties": Object {
       "source": "example/android/gradle.properties",
@@ -653,6 +675,17 @@ Object {
     dependencies {
         classpath \\"com.android.tools.build:gradle:$androidPluginVersion\\"
         classpath \\"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion\\"
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url(\\"\${rootDir}/../react-native/android\\")
+        }
+        mavenCentral()
+        google()
     }
 }
 ",

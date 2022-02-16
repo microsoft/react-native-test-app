@@ -418,6 +418,17 @@ const getConfig = (() => {
               `        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"`,
               "    }",
               "}",
+              "",
+              "allprojects {",
+              "    repositories {",
+              "        maven {",
+              "            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm",
+              `            url("\${rootDir}/${path.join(path.dirname(testAppRelPath), "react-native")}/android")`,
+              "        }",
+              "        mavenCentral()",
+              "        google()",
+              "    }",
+              "}",
               ""
             ),
             "gradle/wrapper/gradle-wrapper.jar": {
