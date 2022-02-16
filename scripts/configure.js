@@ -423,7 +423,10 @@ const getConfig = (() => {
               "    repositories {",
               "        maven {",
               "            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm",
-              `            url("\${rootDir}/${path.join(path.dirname(testAppRelPath), "react-native")}/android")`,
+              `            url("\${rootDir}/${path.posix.join(
+                path.dirname(testAppRelPath),
+                "react-native"
+              )}/android")`,
               "        }",
               "        mavenCentral()",
               "        google()",
