@@ -9,37 +9,48 @@ describe("copyAndReplace", () => {
   const { mockFiles } = require("../mockFiles");
   const { copyAndReplace } = require("../../windows/test-app");
 
+  const copyFileSpy = jest.spyOn(fs, "copyFile");
+
   const copyAndReplaceAsync = promisify(copyAndReplace);
 
-  afterEach(() => mockFiles());
+  afterEach(() => {
+    mockFiles();
+    copyFileSpy.mockReset();
+  });
 
-  test("replaces text files only", async () => {
+  test("copies files if no modifications are needed", async () => {
     mockFiles({
       "ReactTestApp.png": "binary",
-      "ReactTestApp.sln": "binary",
       "test/.placeholder": "",
     });
-
-    const replacements = { binary: "text" };
 
     await copyAndReplaceAsync(
       "ReactTestApp.png",
       "test/ReactTestApp.png",
-      replacements
+      undefined
     );
+
+    expect(copyFileSpy).toHaveBeenCalledTimes(1);
     expect(
       fs.readFileSync("test/ReactTestApp.png", {
         encoding: "utf8",
       })
     ).toBe("binary");
+  });
 
-    await copyAndReplaceAsync(
-      "ReactTestApp.sln",
-      "test/ReactTestApp.sln",
-      replacements
-    );
+  test("replaces file content", async () => {
+    mockFiles({
+      "ReactTestApp.png": "binary",
+      "test/.placeholder": "",
+    });
+
+    await copyAndReplaceAsync("ReactTestApp.png", "test/ReactTestApp.png", {
+      binary: "text",
+    });
+
+    expect(copyFileSpy).not.toHaveBeenCalled();
     expect(
-      fs.readFileSync("test/ReactTestApp.sln", {
+      fs.readFileSync("test/ReactTestApp.png", {
         encoding: "utf8",
       })
     ).toBe("text");

@@ -33,15 +33,15 @@ describe("getBundleResources", () => {
     expect(appName).toBe("Example");
     expect(appxManifest).toBe("windows/Package.appxmanifest");
     expect(assetItems).toMatchInlineSnapshot(`
-"<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
-      <DestinationFolders>$(OutDir)\\\\Bundle</DestinationFolders>
-    </CopyFileToFolders>"
-`);
+      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
+            <DestinationFolders>$(OutDir)\\\\Bundle</DestinationFolders>
+          </CopyFileToFolders>"
+    `);
     expect(assetItemFilters).toMatchInlineSnapshot(`
-"<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
-      <Filter>Assets</Filter>
-    </CopyFileToFolders>"
-`);
+      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
+            <Filter>Assets</Filter>
+          </CopyFileToFolders>"
+    `);
     expect(assetFilters).toEqual(
       expect.stringMatching(
         /^<Filter Include="Assets\\assets">\s+<UniqueIdentifier>{[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}}<\/UniqueIdentifier>\s+<\/Filter>$/
@@ -64,6 +64,7 @@ describe("getBundleResources", () => {
       assetItems: "",
       assetItemFilters: "",
       assetFilters: "",
+      packageCertificate: "",
     });
   });
 
@@ -76,6 +77,7 @@ describe("getBundleResources", () => {
       assetItems: "",
       assetItemFilters: "",
       assetFilters: "",
+      packageCertificate: "",
     });
 
     expect(warnSpy).toHaveBeenCalledWith("Could not find 'app.json' file.");
@@ -94,6 +96,7 @@ describe("getBundleResources", () => {
       assetItems: "",
       assetItemFilters: "",
       assetFilters: "",
+      packageCertificate: "",
     });
 
     expect(warnSpy).toHaveBeenCalledWith(
@@ -101,5 +104,28 @@ describe("getBundleResources", () => {
     );
 
     warnSpy.mockRestore();
+  });
+
+  test("returns package certificate", () => {
+    mockFiles({
+      "app.json": JSON.stringify({
+        windows: {
+          certificateKeyFile: "windows/ReactTestApp_TemporaryKey.pfx",
+          certificateThumbprint: "thumbprint",
+          certificatePassword: "password",
+        },
+      }),
+    });
+
+    const { packageCertificate } = getBundleResources(
+      "app.json",
+      path.resolve("")
+    );
+    expect(packageCertificate).toMatchInlineSnapshot(`
+      "<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
+          <PackageCertificateKeyFile>$(ProjectRootDir)\\\\windows\\\\ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+          <PackageCertificateThumbprint>thumbprint</PackageCertificateThumbprint>
+          <PackageCertificatePassword>password</PackageCertificatePassword>"
+    `);
   });
 });
