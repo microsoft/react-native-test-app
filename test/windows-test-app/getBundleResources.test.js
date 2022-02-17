@@ -31,7 +31,7 @@ describe("getBundleResources", () => {
     } = getBundleResources("app.json", path.resolve(""));
 
     expect(appName).toBe("Example");
-    expect(appxManifest).toBe("windows/Package.appxmanifest");
+    expect(appxManifest).toBe("windows\\Package.appxmanifest");
     expect(assetItems).toMatchInlineSnapshot(`
       "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
             <DestinationFolders>$(OutDir)\\\\Bundle</DestinationFolders>
@@ -60,7 +60,7 @@ describe("getBundleResources", () => {
 
     expect(getBundleResources("app.json", path.resolve(""))).toEqual({
       appName: "ReactTestApp",
-      appxManifest: "windows/Example/Package.appxmanifest",
+      appxManifest: "windows\\Example\\Package.appxmanifest",
       assetItems: "",
       assetItemFilters: "",
       assetFilters: "",
