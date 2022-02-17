@@ -57,7 +57,7 @@
     <!-- ReactTestApp asset item filters -->
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="$(SolutionDir)$(ReactTestAppPackageManifest)" />
+    <AppxManifest Include="$(ProjectRootDir)\$(ReactTestAppPackageManifest)" />
     <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" />
   </ItemGroup>
   <ItemGroup>

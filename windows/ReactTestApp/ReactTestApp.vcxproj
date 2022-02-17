@@ -164,10 +164,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="$(SolutionDir)$(ReactTestAppPackageManifest)" Condition="Exists('$(SolutionDir)$(ReactTestAppPackageManifest)')">
+    <AppxManifest Include="$(ProjectRootDir)\$(ReactTestAppPackageManifest)" Condition="Exists('$(ProjectRootDir)\$(ReactTestAppPackageManifest)')">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" Condition="!Exists('$(SolutionDir)$(ReactTestAppPackageManifest)')">
+    <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" Condition="!Exists('$(ProjectRootDir)\$(ReactTestAppPackageManifest)')">
       <SubType>Designer</SubType>
     </AppxManifest>
   </ItemGroup>

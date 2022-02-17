@@ -172,10 +172,9 @@ function generateCertificateItems(
   if (typeof certificateKeyFile === "string") {
     items.push(
       "<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>",
-      `<PackageCertificateKeyFile>$(ProjectRootDir)\\${normalizePath(
-        path.isAbsolute(certificateKeyFile)
-          ? path.relative(projectPath, certificateKeyFile)
-          : certificateKeyFile
+      `<PackageCertificateKeyFile>$(ProjectRootDir)\\${projectRelativePath(
+        projectPath,
+        certificateKeyFile
       )}</PackageCertificateKeyFile>`
     );
   }
@@ -304,6 +303,20 @@ function parseResources(resources, projectPath, vcxProjectPath) {
 }
 
 /**
+ * Returns path to the specified asset relative to the project path.
+ * @param {string} projectPath
+ * @param {string} assetPath
+ * @returns {string}
+ */
+function projectRelativePath(projectPath, assetPath) {
+  return normalizePath(
+    path.isAbsolute(assetPath)
+      ? path.relative(projectPath, assetPath)
+      : assetPath
+  );
+}
+
+/**
  * Replaces parts in specified content.
  * @param {string} content Content to be replaced.
  * @param {{ [pattern: string]: string }} replacements e.g. {'TextToBeReplaced': 'Replacement'}
@@ -406,7 +419,10 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
       const projectPath = path.dirname(manifestFilePath);
       return {
         appName: name || defaultName,
-        appxManifest: (windows && windows.appxManifest) || defaultAppxManifest,
+        appxManifest: projectRelativePath(
+          projectPath,
+          (windows && windows.appxManifest) || defaultAppxManifest
+        ),
         packageCertificate: generateCertificateItems(
           windows || {},
           projectPath
@@ -533,9 +549,6 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     packageCertificate,
   } = getBundleResources(manifestFilePath, projectFilesDestPath);
 
-  const appxManifestPath = path.normalize(
-    path.relative(destPath, path.resolve(appxManifest))
-  );
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
   const rnWindowsVersionNumber = getVersionNumber(rnWindowsVersion);
   const hermesVersion = useHermes && getHermesVersion(rnWindowsPath);
@@ -555,7 +568,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
         "1000\\.0\\.0": rnWindowsVersion,
         "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
         "<!-- ReactTestApp asset items -->": assetItems,
-        "\\$\\(ReactTestAppPackageManifest\\)": appxManifestPath,
+        "\\$\\(ReactTestAppPackageManifest\\)": appxManifest,
         ...(useNuGet
           ? {
               "<UseExperimentalNuget>false</UseExperimentalNuget>":
@@ -576,7 +589,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       {
         "<!-- ReactTestApp asset item filters -->": assetItemFilters,
         "<!-- ReactTestApp asset filters -->": assetFilters,
-        "\\$\\(ReactTestAppPackageManifest\\)": appxManifestPath,
+        "\\$\\(ReactTestAppPackageManifest\\)": appxManifest,
       },
     ],
     [
