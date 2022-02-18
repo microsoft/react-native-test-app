@@ -356,7 +356,7 @@ jobs:
     timeout-minutes: 60
   windows:
     name: "Windows"
-    runs-on: windows-2022
+    runs-on: windows-latest
     strategy:
       matrix:
         platform: [ARM64, x64]
