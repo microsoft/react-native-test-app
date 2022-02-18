@@ -4,7 +4,7 @@ workspace 'Example.xcworkspace'
 
 use_flipper! false if ENV['DISABLE_FLIPPER']
 
-use_test_app! :hermes_enabled => false do |target|
+use_test_app! :fabric_enabled => false, :hermes_enabled => false do |target|
   target.tests do
     pod 'Example-Tests', :path => '..'
   end

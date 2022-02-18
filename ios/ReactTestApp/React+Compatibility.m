@@ -106,4 +106,4 @@ static void (*orig_displayLayer)(id, SEL, CALayer *);
 
 @end
 
-#endif
+#endif  // !TARGET_OS_OSX && REACT_NATIVE_VERSION < 6302

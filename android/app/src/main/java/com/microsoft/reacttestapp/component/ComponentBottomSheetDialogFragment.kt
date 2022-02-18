@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactRootView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.microsoft.reacttestapp.BuildConfig
 
 class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -36,6 +37,7 @@ class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
     ): View {
         val reactApplication = requireActivity().application as ReactApplication
         return ReactRootView(context).apply {
+            setIsFabric(BuildConfig.ReactTestApp_useFabric)
             startReactApplication(
                 reactApplication.reactNativeHost.reactInstanceManager,
                 requireArguments().getString(NAME),

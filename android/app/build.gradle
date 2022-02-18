@@ -52,6 +52,7 @@ applyTestAppModule(project)
 project.ext.react = [
     appName      : getAppName(),
     applicationId: getApplicationId(),
+    enableFabric : isFabricEnabled(rootDir),
     enableFlipper: getFlipperVersion(rootDir),
     enableHermes : true,
 ]
@@ -84,6 +85,8 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode reactTestApp.versionCode
         versionName reactTestApp.versionName
+
+        buildConfigField "boolean", "ReactTestApp_useFabric", project.ext.react.enableFabric.toString()
 
         def recommendedFlipperVersion = getFlipperRecommendedVersion(rootDir)
         buildConfigField "String",

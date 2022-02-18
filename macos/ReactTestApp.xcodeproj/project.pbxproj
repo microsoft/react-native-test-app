@@ -15,6 +15,7 @@
 		193EF093247A830200BE8C79 /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */; };
 		193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF097247B130700BE8C79 /* ReactInstance.swift */; };
 		1960F339258C97C400AEC7A2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1960F338258C97C400AEC7A2 /* Session.swift */; };
+		1963A06527C82F7E0013D276 /* React+Fabric.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1963A06427C82F7E0013D276 /* React+Fabric.mm */; };
 		196C22652490CBAB00449D3C /* React+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 196C22632490CBAB00449D3C /* React+Compatibility.m */; };
 		19C4C89327710D8500157870 /* Manifest+Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C4C89227710D8500157870 /* Manifest+Decoder.swift */; };
 		19E791C024B08E1400FA6468 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E791BF24B08E1400FA6468 /* ReactTestAppTests.swift */; };
@@ -56,6 +57,8 @@
 		193EF094247A84DA00BE8C79 /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ReactTestApp-Bridging-Header.h"; path = "../ReactTestAppShared/ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		193EF097247B130700BE8C79 /* ReactInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReactInstance.swift; path = ../ReactTestAppShared/ReactInstance.swift; sourceTree = "<group>"; };
 		1960F338258C97C400AEC7A2 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = ../ReactTestAppShared/Session.swift; sourceTree = "<group>"; };
+		1963A06327C82F7E0013D276 /* React+Fabric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "React+Fabric.h"; path = "../ReactTestAppShared/React+Fabric.h"; sourceTree = "<group>"; };
+		1963A06427C82F7E0013D276 /* React+Fabric.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "React+Fabric.mm"; path = "../ReactTestAppShared/React+Fabric.mm"; sourceTree = "<group>"; };
 		196C22632490CBAB00449D3C /* React+Compatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "React+Compatibility.m"; path = "../ReactTestAppShared/React+Compatibility.m"; sourceTree = "<group>"; };
 		196C22642490CBAB00449D3C /* React+Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "React+Compatibility.h"; path = "../ReactTestAppShared/React+Compatibility.h"; sourceTree = "<group>"; };
 		19B368BC24B12C24002CCEFF /* ReactTestApp.common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.common.xcconfig; sourceTree = "<group>"; };
@@ -123,6 +126,8 @@
 				193EF094247A84DA00BE8C79 /* ReactTestApp-Bridging-Header.h */,
 				196C22642490CBAB00449D3C /* React+Compatibility.h */,
 				196C22632490CBAB00449D3C /* React+Compatibility.m */,
+				1963A06327C82F7E0013D276 /* React+Fabric.h */,
+				1963A06427C82F7E0013D276 /* React+Fabric.mm */,
 				193EF092247A830200BE8C79 /* UIViewController+ReactTestApp.h */,
 				193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */,
 				193EF066247A736300BE8C79 /* Assets.xcassets */,
@@ -332,6 +337,7 @@
 				193EF08F247A799D00BE8C79 /* Manifest.swift in Sources */,
 				19C4C89327710D8500157870 /* Manifest+Decoder.swift in Sources */,
 				196C22652490CBAB00449D3C /* React+Compatibility.m in Sources */,
+				1963A06527C82F7E0013D276 /* React+Fabric.mm in Sources */,
 				193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */,
 				1960F339258C97C400AEC7A2 /* Session.swift in Sources */,
 				193EF065247A736200BE8C79 /* ViewController.swift in Sources */,

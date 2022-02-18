@@ -183,10 +183,10 @@ final class ContentViewController: UITableViewController {
             }
 
             let viewController = UIViewController(nibName: nil, bundle: nil)
-            viewController.view = RCTRootView(
-                bridge: bridge,
-                moduleName: component.appKey,
-                initialProperties: component.initialProperties
+            viewController.view = RTACreateReactRootView(
+                bridge,
+                component.appKey,
+                component.initialProperties
             )
             viewController.view.backgroundColor = UIColor.systemBackground
             return viewController
