@@ -1,7 +1,7 @@
 # React Native Test App
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/microsoft/react-native-test-app)
-![build](https://github.com/microsoft/react-native-test-app/workflows/build/badge.svg)
+[![build](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml/badge.svg)](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml)
 [![npm version](https://img.shields.io/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
 
 - [Quick Start](#quick-start)

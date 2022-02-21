@@ -37,8 +37,4 @@ build_cmd=$(
 
 )
 
-if command -v xcpretty >/dev/null 2>&1; then
-  eval "$build_cmd" | xcpretty
-else
-  eval "$build_cmd"
-fi
+eval "$build_cmd"
