@@ -39,7 +39,7 @@ jobs:
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
-          platform: ${{ matrix.platform }}
+          platform: node
       - name: Deduplicate packages
         run: |
           yarn dedupe --check
@@ -122,6 +122,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
+        with:
+          platform: ios
+          variant: example
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -171,6 +174,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
+        with:
+          platform: ios
+          variant: template-${{ matrix.template }}
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
@@ -279,6 +285,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
+        with:
+          platform: macos
+          variant: example
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -313,7 +322,7 @@ jobs:
         working-directory: example
       - name: Build ARM
         run: |
-          ../scripts/xcodebuild.sh macos/Example.xcworkspace clean
+          rm -fr macos/build
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
         working-directory: example
     timeout-minutes: 60
@@ -329,6 +338,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
+        with:
+          platform: macos
+          variant: template-${{ matrix.template }}
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:

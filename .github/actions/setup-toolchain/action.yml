@@ -3,6 +3,8 @@ description: Sets up the toolchain for the project
 inputs:
   platform:
     description: The target platform to set up toolchain for
+  variant:
+    description: Whether we're building from example, template, etc.
 runs:
   using: composite
   steps:
@@ -19,7 +21,7 @@ runs:
       if: ${{ inputs.platform == 'windows' }}
       uses: microsoft/setup-msbuild@v1.1
     - name: Set up Ruby
-      if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' }}
+      if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' || inputs.platform == 'node' }}
       uses: ruby/setup-ruby@v1.99.0
       with:
         ruby-version: "3.0"
@@ -28,3 +30,19 @@ runs:
     - name: Set up VSTest.console.exe
       if: ${{ inputs.platform == 'windows' }}
       uses: darenm/Setup-VSTest@v1
+    - name: Generate cache key
+      id: cache-key-generator
+      run: |
+        if [[ -f example/${{ inputs.platform }}/Podfile.lock ]]; then
+          echo "::set-output name=cache-key::$(node scripts/shasum.js example/${{ inputs.platform }}/Podfile.lock)"
+        else
+          echo '::set-output name=cache-key::false'
+        fi
+      shell: bash
+    - name: Cache /.ccache
+      if: ${{ steps.cache-key-generator.outputs.cache-key != 'false' }}
+      uses: actions/cache@v2
+      with:
+        path: .ccache
+        key: ${{ runner.os }}-${{ inputs.variant }}-ccache-${{ steps.cache-key-generator.outputs.cache-key }}
+        restore-keys: ${{ runner.os }}-${{ inputs.variant }}-ccache-
