@@ -38,14 +38,20 @@ build_cmd=$(
 
 )
 
-ccache_libexec="/usr/local/opt/ccache/libexec"
-if [[ ! -d "$ccache_libexec" ]]; then
-  brew install ccache
+if [[ "$CCACHE_DISABLE" != "1" ]]; then
+  ccache_libexec="/usr/local/opt/ccache/libexec"
+  if [[ ! -d "$ccache_libexec" ]]; then
+    brew install ccache
+  fi
+
+  export CC="$(git rev-parse --show-toplevel)/scripts/clang"
+  export CCACHE_DIR="$(git rev-parse --show-toplevel)/.ccache"
+
+  ccache --zero-stats 1> /dev/null
 fi
 
-export CC="$(git rev-parse --show-toplevel)/scripts/clang"
-export CCACHE_DIR="$(git rev-parse --show-toplevel)/.ccache"
-
-ccache --zero-stats 1> /dev/null
 eval "$build_cmd"
-ccache --show-stats --verbose
+
+if [[ "$CCACHE_DISABLE" != "1" ]]; then
+  ccache --show-stats --verbose
+fi
