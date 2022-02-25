@@ -25,7 +25,7 @@
     "/android/**/*.gradle",
     "/android/app/lint.xml",
     "/android/app/src/**/compat",
-    "/android/app/src/{flipper,main}",
+    "/android/app/src/{fabric,flipper,main,no-fabric}",
     "/android/support/src",
     "/common",
     "/example/.gitignore",

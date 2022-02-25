@@ -137,6 +137,13 @@ android {
             debug.java.srcDirs += "src/flipper/java"
         }
 
+        // TODO: Remove this block when we drop support for 0.63.
+        if (project.ext.react.enableFabric) {
+            main.java.srcDirs += "src/fabric/java"
+        } else {
+            main.java.srcDirs += "src/no-fabric/java"
+        }
+
         // TODO: Remove this block when we drop support for 0.67.
         // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
         if (getReactNativeVersionNumber(rootDir) < 6800) {

@@ -9,28 +9,20 @@ import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.JSIModulePackage
-import com.facebook.react.bridge.JSIModuleProvider
-import com.facebook.react.bridge.JSIModuleSpec
-import com.facebook.react.bridge.JSIModuleType
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMarker
 import com.facebook.react.bridge.ReactMarkerConstants
-import com.facebook.react.bridge.UIManager
 import com.facebook.react.common.LifecycleState
 import com.facebook.react.devsupport.DevInternalSettings
 import com.facebook.react.devsupport.DevServerHelper
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
 import com.facebook.react.devsupport.interfaces.DevSupportManager
-import com.facebook.react.fabric.ComponentFactory
-import com.facebook.react.fabric.CoreComponentsRegistry
-import com.facebook.react.fabric.FabricJSIModuleProvider
-import com.facebook.react.fabric.ReactNativeConfig
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
-import com.facebook.react.uimanager.ViewManagerRegistry
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
 import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
+import com.microsoft.reacttestapp.fabric.FabricJSIModulePackage
 import java.util.concurrent.CountDownLatch
 
 sealed class BundleSource {
@@ -161,34 +153,7 @@ class TestAppReactNativeHost(
 
     override fun getJSIModulePackage(): JSIModulePackage? {
         return if (BuildConfig.ReactTestApp_useFabric) {
-            JSIModulePackage { reactApplicationContext, _ ->
-                arrayListOf<JSIModuleSpec<*>>(object : JSIModuleSpec<UIManager?> {
-                    override fun getJSIModuleType(): JSIModuleType = JSIModuleType.UIManager
-
-                    override fun getJSIModuleProvider(): JSIModuleProvider<UIManager?> {
-                        val componentFactory = ComponentFactory()
-                        CoreComponentsRegistry.register(componentFactory)
-
-                        val viewManagerRegistry = ViewManagerRegistry(
-                            reactInstanceManager.getOrCreateViewManagers(
-                                reactApplicationContext
-                            )
-                        )
-
-                        return FabricJSIModuleProvider(
-                            reactApplicationContext,
-                            componentFactory,
-                            object : ReactNativeConfig {
-                                override fun getBool(param: String): Boolean = false
-                                override fun getInt64(param: String): Int = 0
-                                override fun getString(param: String): String = ""
-                                override fun getDouble(param: String): Double = 0.0
-                            },
-                            viewManagerRegistry
-                        )
-                    }
-                })
-            }
+            FabricJSIModulePackage(this)
         } else {
             null
         }
