@@ -244,7 +244,12 @@ final class ContentViewController: UITableViewController {
             let patch = version[RCTVersionPatch] ?? "0"
             return "\(major).\(minor).\(patch)"
         }()
-        return "React Native version: \(version)"
+        #if USE_FABRIC
+            let fabric = " (Fabric)"
+        #else
+            let fabric = ""
+        #endif
+        return "React Native version: \(version)\(fabric)"
     }
 }
 
