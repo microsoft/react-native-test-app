@@ -711,6 +711,22 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       }
     );
 
+    // TODO: Remove when we drop support for 0.67.
+    // Patch building with Visual Studio 2022. For more details, see
+    // https://github.com/microsoft/react-native-windows/issues/9559
+    if (rnWindowsVersionNumber < 6800) {
+      const dispatchQueue = path.join(
+        rnWindowsPath,
+        "Mso",
+        "dispatchQueue",
+        "dispatchQueue.h"
+      );
+      copyAndReplace(dispatchQueue, dispatchQueue, {
+        "template <typename T>\\s*inline void MustBeNoExceptVoidFunctor\\(\\) {\\s*static_assert\\(false":
+          "namespace details {\n  template <typename>\n  constexpr bool always_false = false;\n}\n\ntemplate <typename T>\ninline void MustBeNoExceptVoidFunctor() {\n  static_assert(details::always_false<T>",
+      });
+    }
+
     if (useNuGet) {
       const nugetConfigPath =
         findNearest(
