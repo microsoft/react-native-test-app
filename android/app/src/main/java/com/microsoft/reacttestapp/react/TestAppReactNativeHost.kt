@@ -6,8 +6,6 @@ import android.content.Context
 import android.util.Log
 import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
-import com.facebook.react.ReactNativeHost
-import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.JSIModulePackage
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMarker
@@ -22,6 +20,7 @@ import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
 import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
+import com.microsoft.reacttestapp.compat.ReactNativeHostCompat
 import com.microsoft.reacttestapp.fabric.FabricJSIModulePackage
 import java.util.concurrent.CountDownLatch
 
@@ -49,7 +48,7 @@ sealed class BundleSource {
 class TestAppReactNativeHost(
     application: Application,
     private val reactBundleNameProvider: ReactBundleNameProvider
-) : ReactNativeHost(application) {
+) : ReactNativeHostCompat(application) {
     var source: BundleSource =
         if (reactBundleNameProvider.bundleName == null || isPackagerRunning(application)) {
             BundleSource.Server
@@ -166,7 +165,7 @@ class TestAppReactNativeHost(
 
     override fun getUseDeveloperSupport() = source == BundleSource.Server
 
-    override fun getPackages(): List<ReactPackage> = PackageList(application).packages
+    override fun getPackages() = PackageList(application).packages
 
     private fun addCustomDevOptions(devSupportManager: DevSupportManager) {
         val bundleOption = application.resources.getString(

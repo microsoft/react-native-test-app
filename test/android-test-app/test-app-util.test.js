@@ -16,8 +16,8 @@ describe("test-app-util", () => {
     "    }",
     "",
     "    dependencies {",
-    '        classpath "com.android.tools.build:gradle:$androidPluginVersion"',
-    '        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"',
+    '        classpath("com.android.tools.build:gradle:${androidPluginVersion}")',
+    '        classpath("de.undercouch:gradle-download-task:5.1.0")',
     "    }",
     "}",
     "",
@@ -39,7 +39,7 @@ describe("test-app-util", () => {
    * @returns
    */
   function toVersionNumber(version) {
-    const [major, minor, patch] = version.split(".");
+    const [major, minor, patch] = version.split("-")[0].split(".");
     return Number(major) * 10000 + Number(minor) * 100 + Number(patch);
   }
 
@@ -203,11 +203,11 @@ describe("test-app-util", () => {
     expect(stdout).toContain("getFlipperVersion() = null");
   });
 
-  test("getReactNativeVersionNumber() returns react-native version as a number", async () => {
+  test("getPackageVersionNumber() returns `react-native` version as a number", async () => {
     const { status, stdout } = await runGradle({
       "build.gradle": [
         ...buildGradle,
-        'println("getReactNativeVersionNumber() = " + ext.getReactNativeVersionNumber(rootDir))',
+        'println("getPackageVersionNumber() = " + ext.getPackageVersionNumber("react-native", rootDir))',
       ],
     });
 
@@ -216,22 +216,22 @@ describe("test-app-util", () => {
     const { version } = require("react-native/package.json");
 
     expect(stdout).toContain(
-      `getReactNativeVersionNumber() = ${toVersionNumber(version)}`
+      `getPackageVersionNumber() = ${toVersionNumber(version)}`
     );
   });
 
-  test("getReactNativeVersionNumber() handles pre-release identifiers", async () => {
+  test("getPackageVersionNumber() handles pre-release identifiers", async () => {
     const { status, stdout } = await runGradle({
       "build.gradle": [
         ...buildGradle,
-        'println("getReactNativeVersionNumber() = " + ext.getReactNativeVersionNumber(file("${rootDir}/pre-release-version")))',
+        'println("getPackageVersionNumber() = " + ext.getPackageVersionNumber("react-native", file("${rootDir}/pre-release-version")))',
       ],
       "pre-release-version/node_modules/react-native/package.json":
         JSON.stringify({ name: "react-native", version: "1.2.3-053c2b4be" }),
     });
 
     expect(status).toBe(0);
-    expect(stdout).toContain(`getReactNativeVersionNumber() = 10203`);
+    expect(stdout).toContain(`getPackageVersionNumber() = 10203`);
   });
 
   test("getSigningConfigs() fails if `storeFile` is missing", async () => {

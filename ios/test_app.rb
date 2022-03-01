@@ -248,7 +248,8 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   build_settings['PRODUCT_BUILD_NUMBER'] = build_number || '1'
 
   supports_flipper = target_platform == :ios && flipper_enabled?
-  use_fabric = options[:fabric_enabled] && rn_version >= 6800
+  use_fabric = fabric_enabled?(options, rn_version)
+  use_turbomodule = new_architecture_enabled?(options, rn_version)
 
   app_project = Xcodeproj::Project.open(xcodeproj_dst)
   app_project.native_targets.each do |target|
@@ -264,6 +265,11 @@ def make_project!(xcodeproj, project_root, target_platform, options)
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FB_SONARKIT_ENABLED=1'
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FLIPPER=1'
         end
+        if use_turbomodule
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'RCT_NEW_ARCH_ENABLED=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_TURBOMODULE=1'
+        end
 
         build_settings.each do |setting, value|
           config.build_settings[setting] = value
@@ -275,6 +281,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
           config.build_settings['OTHER_SWIFT_FLAGS'] << '-DFB_SONARKIT_ENABLED'
           config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FLIPPER'
         end
+        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_TURBOMODULE' if use_turbomodule
         if single_app.is_a? String
           config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
         end
@@ -302,6 +309,8 @@ def make_project!(xcodeproj, project_root, target_platform, options)
       :ios => config.resolve_build_setting('IPHONEOS_DEPLOYMENT_TARGET'),
       :macos => config.resolve_build_setting('MACOSX_DEPLOYMENT_TARGET'),
     },
+    :use_fabric => use_fabric,
+    :use_turbomodule => use_turbomodule,
   }
 end
 
@@ -312,6 +321,8 @@ def use_test_app_internal!(target_platform, options)
   project_root = Pod::Config.instance.installation_root
   project_target = make_project!(xcodeproj, project_root, target_platform, options)
   xcodeproj_dst, platforms = project_target.values_at(:xcodeproj_path, :platforms)
+
+  install! 'cocoapods', :deterministic_uuids => false if project_target[:use_turbomodule]
 
   require_relative(autolink_script_path)
 

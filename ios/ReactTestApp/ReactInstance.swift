@@ -18,6 +18,10 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
     private(set) var bridge: RCTBridge?
     private var bundleRoot: String?
 
+    #if USE_TURBOMODULE
+        private lazy var turboModuleManagerDelegate = RTATurboModuleManagerDelegate(bridgeDelegate: self)
+    #endif
+
     override init() {
         #if DEBUG
             remoteBundleURL = ReactInstance.jsBundleURL()
@@ -25,8 +29,9 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 
         super.init()
 
-        // Turbo Modules is incompatible with remote JS debugging
-        RCTEnableTurboModule(false)
+        #if USE_TURBOMODULE
+            RCTEnableTurboModule(true)
+        #endif
 
         RCTSetFatalHandler { (error: Error?) in
             guard let error = error else {
@@ -114,10 +119,17 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             object: nil
         )
 
-        guard let bridge = RCTBridge(delegate: self, launchOptions: nil) else {
-            assertionFailure("Failed to instantiate RCTBridge")
-            return
-        }
+        #if USE_TURBOMODULE
+            guard let bridge = RCTBridge(delegate: turboModuleManagerDelegate, launchOptions: nil) else {
+                assertionFailure("Failed to instantiate RCTBridge with TurboModule")
+                return
+            }
+        #else
+            guard let bridge = RCTBridge(delegate: self, launchOptions: nil) else {
+                assertionFailure("Failed to instantiate RCTBridge")
+                return
+            }
+        #endif // USE_TURBOMODULE
 
         surfacePresenterBridgeAdapter = RTACreateSurfacePresenterBridgeAdapter(bridge)
         self.bridge = bridge

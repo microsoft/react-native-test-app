@@ -27,4 +27,5 @@
 
 #import "React+Compatibility.h"
 #import "React+Fabric.h"
+#import "React+TurboModule.h"
 #import "UIViewController+ReactTestApp.h"

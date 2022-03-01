@@ -34,6 +34,8 @@ class FabricJSIModulePackage(reactNativeHost: ReactNativeHost) : JSIModulePackag
                 val componentFactory = ComponentFactory()
                 CoreComponentsRegistry.register(componentFactory)
 
+                ComponentsRegistry.register(componentFactory)
+
                 return FabricJSIModuleProvider(
                     reactApplicationContext,
                     componentFactory,

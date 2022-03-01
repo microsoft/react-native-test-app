@@ -5514,6 +5514,7 @@ __metadata:
     react: 17.0.2
     react-native: ^0.68.2
     react-native-macos: ^0.68.3
+    react-native-safe-area-context: ^4.3.1
     react-native-test-app: "workspace:."
     react-native-windows: ^0.68.8
   peerDependencies:
@@ -10689,6 +10690,16 @@ fsevents@^2.3.2:
   bin:
     react-native-macos: cli.js
   checksum: c6d34871a6612b88b9821e9d1d0bc5674e35714e1daa7f11f80ef57066f82439d4028686b060e578d98f24265f75ca6acb7368f56406ec0f7a2eff2f1b395b99
+  languageName: node
+  linkType: hard
+
+"react-native-safe-area-context@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "react-native-safe-area-context@npm:4.3.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 34a4bc60448b0bc6bfa3e952b00a12754cc30ce48c07540a6618179f2c170aa2db0919ac452376322778ed34c4c56fc5d40e17c2b74157c9a134d2b766143ca3
   languageName: node
   linkType: hard
 

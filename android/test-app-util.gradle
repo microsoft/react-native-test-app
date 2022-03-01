@@ -5,7 +5,7 @@ import java.nio.file.Paths
 ext.manifest = null
 
 ext.buildReactNativeFromSource = { baseDir ->
-    def reactNativePath = findNodeModulesPath(baseDir, "react-native")
+    def reactNativePath = findNodeModulesPath("react-native", baseDir)
     return !file("${reactNativePath}/android").exists()
 }
 
@@ -47,7 +47,7 @@ ext.findFile = { fileName ->
  * The search begins at the given base directory (a File object). The returned
  * path is a string.
  */
-ext.findNodeModulesPath = { baseDir, packageName ->
+ext.findNodeModulesPath = { packageName, baseDir ->
     def basePath = baseDir.toPath().normalize()
 
     // Node's module resolution algorithm searches up to the root directory,
@@ -94,7 +94,7 @@ ext.getApplicationId = {
 }
 
 ext.getFlipperRecommendedVersion = { baseDir ->
-    def reactNativePath = findNodeModulesPath(baseDir, "react-native")
+    def reactNativePath = findNodeModulesPath("react-native", baseDir)
     def props = new Properties()
     file("${reactNativePath}/template/android/gradle.properties").withInputStream {
         props.load(it)
@@ -132,9 +132,9 @@ ext.getManifest = {
     return manifest
 }
 
-ext.getReactNativeVersionNumber = { baseDir ->
-    def reactNativePath = findNodeModulesPath(baseDir, "react-native")
-    def packageJson = file("${reactNativePath}/package.json")
+ext.getPackageVersionNumber = { packageName, baseDir ->
+    def packagePath = findNodeModulesPath(packageName, baseDir)
+    def packageJson = file("${packagePath}/package.json")
     def manifest = new JsonSlurper().parseText(packageJson.text)
     def (major, minor, patch) = manifest["version"].findAll(/\d+/)
     return (major as int) * 10000 + (minor as int) * 100 + (patch as int)
@@ -215,8 +215,17 @@ ext.getVersionName = {
     return "1.0"
 }
 
-ext.isFabricEnabled = { baseDir ->
-    return project.hasProperty("USE_FABRIC") &&
-        project.getProperty("USE_FABRIC") == "1" &&
-        getReactNativeVersionNumber(baseDir) >= 6800
+ext.isFabricEnabled = { project ->
+    return isNewArchitectureEnabled(project) ||
+        (isPropertySet(project, "USE_FABRIC", "1") &&
+            getPackageVersionNumber("react-native", project.rootDir) >= 6800)
+}
+
+ext.isNewArchitectureEnabled = { project ->
+    return isPropertySet(project, "newArchEnabled", "true") &&
+        getPackageVersionNumber("react-native", project.rootDir) >= 6800
+}
+
+ext.isPropertySet = { project, propertyName, value ->
+    return project.hasProperty(propertyName) && project.getProperty(propertyName) == value
 }

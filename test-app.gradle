@@ -4,35 +4,6 @@ import org.gradle.initialization.DefaultSettings
 
 import java.nio.file.Paths
 
-private static void applySettings(Settings settings) {
-    def projectDir = settings.findNodeModulesPath(settings.rootDir, "react-native-test-app")
-
-    if (settings.buildReactNativeFromSource(settings.rootDir)) {
-        def buildFile = Paths.get("${projectDir}/android/react-native-build.gradle")
-        settings.rootProject.buildFileName = settings.rootDir.toPath().relativize(buildFile)
-
-        def reactNativeDir = settings.findNodeModulesPath(settings.rootDir, "react-native")
-        settings.include(":ReactAndroid")
-        settings.project(":ReactAndroid")
-            .projectDir = new File("${reactNativeDir}/ReactAndroid")
-
-        settings.include(":packages:react-native-codegen:android")
-        settings.project(":packages:react-native-codegen:android")
-            .projectDir = new File("${reactNativeDir}/packages/react-native-codegen/android")
-
-        settings.includeBuild("${reactNativeDir}/packages/react-native-codegen/android")
-        settings.includeBuild("${reactNativeDir}/packages/react-native-gradle-plugin")
-    }
-
-    settings.include(":app")
-    settings.include(":support")
-
-    settings.project(":app")
-        .projectDir = new File("${projectDir}/android/app")
-    settings.project(":support")
-        .projectDir = new File("${projectDir}/android/support")
-}
-
 // TODO: Remove when `@react-native-community/cli` 6.0+ is required. See also
 // https://github.com/react-native-community/cli/commit/fa0d09b2c9be144bbdff526bb14f171d7ddca88e
 private static void patchArgumentTypeMismatchError(String testAppDir, File rootDir) {
@@ -47,19 +18,62 @@ apply(from: "${testAppDir}/android/test-app-util.gradle")
 
 patchArgumentTypeMismatchError(testAppDir, rootDir)
 
-def cliAndroidDir = findNodeModulesPath(rootDir, "@react-native-community/cli-platform-android")
+def cliAndroidDir = findNodeModulesPath("@react-native-community/cli-platform-android", rootDir)
 apply(from: "${cliAndroidDir}/native_modules.gradle")
 
-ext.applyTestAppSettings = { DefaultSettings defaultSettings ->
-    applySettings(defaultSettings)
-    applyNativeModulesSettingsGradle(defaultSettings)
+ext.applyTestAppSettings = { DefaultSettings settings ->
+    if (settings.buildReactNativeFromSource(settings.rootDir)) {
+        def buildFile = Paths.get("${testAppDir}/android/react-native-build.gradle")
+        settings.rootProject.buildFileName = settings.rootDir.toPath().relativize(buildFile)
+
+        def reactNativeDir = findNodeModulesPath("react-native", settings.rootDir)
+        settings.include(":ReactAndroid")
+        settings.project(":ReactAndroid")
+            .projectDir = file("${reactNativeDir}/ReactAndroid")
+
+        settings.include(":packages:react-native-codegen:android")
+        settings.project(":packages:react-native-codegen:android")
+            .projectDir = file("${reactNativeDir}/packages/react-native-codegen/android")
+
+        settings.includeBuild("${reactNativeDir}/packages/react-native-codegen/android")
+        settings.includeBuild("${reactNativeDir}/packages/react-native-gradle-plugin")
+    }
+
+    settings.include(":app")
+    settings.include(":support")
+
+    settings.project(":app")
+        .projectDir = file("${testAppDir}/android/app")
+    settings.project(":support")
+        .projectDir = file("${testAppDir}/android/support")
+
+    def reactNativeGradlePlugin =
+        findNodeModulesPath("react-native-gradle-plugin", settings.rootDir)
+    if (reactNativeGradlePlugin != null) {
+        settings.includeBuild(reactNativeGradlePlugin)
+    }
+
+    if (isNewArchitectureEnabled(settings)) {
+        def reactNativeDir = findNodeModulesPath("react-native", settings.rootDir)
+
+        settings.include(":ReactAndroid")
+        settings.project(":ReactAndroid")
+            .projectDir = file("${reactNativeDir}/ReactAndroid")
+
+        settings.include(":ReactAndroid:hermes-engine")
+        settings.project(":ReactAndroid:hermes-engine")
+            .projectDir = file("${reactNativeDir}/ReactAndroid/hermes-engine")
+    }
+
+    applyNativeModulesSettingsGradle(settings)
 }
 
 ext.applyTestAppModule = { Project project ->
     applyNativeModulesAppBuildGradle(project)
 
-    def isRntaProject = project.projectDir.getParent() != null &&
-        (project.rootDir == file(project.projectDir.getParent()))
+    def isRntaProject =
+        project.projectDir.getParent() != null &&
+        project.rootDir == file(project.projectDir.getParent())
 
     def manifestFile = findFile("app.json")
     if (isRntaProject && manifestFile == null) {
@@ -76,8 +90,10 @@ ext.applyTestAppModule = { Project project ->
     } else if (resources.containsKey("android")) {
         androidResources = resources["android"]
     } else {
-        throw new IllegalArgumentException("The \"resources\" property of the app.json has " +
-            "to be either a list of paths, or must contain a nested list with the \"android\" key")
+        throw new IllegalArgumentException(
+            "The `resources` property in `app.json` has to be either a list " +
+            "of paths, or must contain a nested list with the `android` key"
+        )
     }
 
     def projectRoot = manifestFile.getParent()

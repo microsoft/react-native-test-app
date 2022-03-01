@@ -1,3 +1,9 @@
+def fabric_enabled?(options, react_native_version)
+  return true if new_architecture_enabled?(options, react_native_version)
+
+  react_native_version >= 6800 && options[:fabric_enabled]
+end
+
 def find_file(file_name, current_dir)
   return if current_dir.expand_path.to_s == '/'
 
@@ -5,6 +11,10 @@ def find_file(file_name, current_dir)
   return path if File.exist?(path)
 
   find_file(file_name, current_dir.parent)
+end
+
+def new_architecture_enabled?(options, react_native_version)
+  react_native_version >= 6800 && ENV.fetch('RCT_NEW_ARCH_ENABLED', options[:turbomodule_enabled])
 end
 
 def resolve_module(request)
