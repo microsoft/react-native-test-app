@@ -88,14 +88,14 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
     }
 
     func initReact(bundleRoot: String?, onDidInitialize: @escaping () -> Void) {
-        if let bridge = bridge {
+        if bridge != nil {
             if remoteBundleURL == nil {
                 // When loading the embedded bundle, we must disable remote
                 // debugging to prevent the bridge from getting stuck in
                 // -[RCTWebSocketExecutor executeApplicationScript:sourceURL:onComplete:]
                 RCTDevSettings().isDebuggingRemotely = false
             }
-            RTATriggerReloadCommand(bridge, "ReactTestApp")
+            RCTTriggerReloadCommandListeners("ReactTestApp")
             return
         }
 

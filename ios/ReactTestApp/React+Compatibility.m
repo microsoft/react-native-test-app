@@ -27,23 +27,6 @@ IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
     return originalImpl;
 }
 
-// MARK: - [0.62] RCTTriggerReloadCommandListeners replaces -[RCTBridge reload]
-
-// `RCTReloadCommand.h` is excluded from `react-native-macos`
-// See https://github.com/microsoft/react-native-macos/blob/v0.61.39/React-Core.podspec#L66
-#if REACT_NATIVE_VERSION == 0 || REACT_NATIVE_VERSION >= 6200
-#import <React/RCTReloadCommand.h>
-#endif
-
-void RTATriggerReloadCommand(RCTBridge *bridge, NSString *reason)
-{
-#if REACT_NATIVE_VERSION > 0 && REACT_NATIVE_VERSION < 6200
-    [bridge reload];
-#else
-    RCTTriggerReloadCommandListeners(reason);
-#endif
-}
-
 // MARK: - [0.63.2] Images do not render on iOS 14
 // See https://github.com/facebook/react-native/pull/29420
 

@@ -7,6 +7,7 @@
 #import <React/RCTDevSettings.h>
 #import <React/RCTEventEmitter.h>
 #import <React/RCTLog.h>
+#import <React/RCTReloadCommand.h>
 #import <React/RCTRootView.h>
 #import <React/RCTUtils.h>
 #import <React/RCTVersion.h>
