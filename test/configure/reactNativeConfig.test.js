@@ -23,34 +23,30 @@ describe("reactNativeConfig()", () => {
 
   test("returns Android specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["android"], flatten: true });
-    expect(reactNativeConfig(params)).toContain("AndroidManifest.xml");
-    expect(reactNativeConfig(params)).not.toContain(
-      "ReactTestApp-Dummy.xcodeproj"
-    );
-    expect(reactNativeConfig(params)).not.toContain("ReactTestApp.vcxproj");
+    expect(reactNativeConfig(params)).toContain("androidManifestPath");
+    expect(reactNativeConfig(params)).not.toContain("iosProjectPath");
+    expect(reactNativeConfig(params)).not.toContain("windowsProjectPath");
   });
 
   test("returns iOS specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["ios"], flatten: true });
-    expect(reactNativeConfig(params)).not.toContain("AndroidManifest.xml");
-    expect(reactNativeConfig(params)).toContain("ReactTestApp-Dummy.xcodeproj");
-    expect(reactNativeConfig(params)).not.toContain("ReactTestApp.vcxproj");
+    expect(reactNativeConfig(params)).not.toContain("androidManifestPath");
+    expect(reactNativeConfig(params)).toContain("iosProjectPath");
+    expect(reactNativeConfig(params)).not.toContain("windowsProjectPath");
   });
 
   test("returns macOS specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["macos"], flatten: true });
-    expect(reactNativeConfig(params)).not.toContain("AndroidManifest.xml");
-    expect(reactNativeConfig(params)).toContain("ReactTestApp-Dummy.xcodeproj");
-    expect(reactNativeConfig(params)).not.toContain("ReactTestApp.vcxproj");
+    expect(reactNativeConfig(params)).not.toContain("androidManifestPath");
+    expect(reactNativeConfig(params)).toContain("iosProjectPath");
+    expect(reactNativeConfig(params)).not.toContain("windowsProjectPath");
   });
 
   test("returns Windows specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["windows"], flatten: true });
-    expect(reactNativeConfig(params)).not.toContain("AndroidManifest.xml");
-    expect(reactNativeConfig(params)).not.toContain(
-      "ReactTestApp-Dummy.xcodeproj"
-    );
-    expect(reactNativeConfig(params)).toContain("ReactTestApp.vcxproj");
+    expect(reactNativeConfig(params)).not.toContain("androidManifestPath");
+    expect(reactNativeConfig(params)).not.toContain("iosProjectPath");
+    expect(reactNativeConfig(params)).toContain("windowsProjectPath");
   });
 
   test("throws when an unknown platform is specified", () => {
