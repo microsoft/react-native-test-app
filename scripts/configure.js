@@ -214,6 +214,64 @@ function getPlatformPackage(packageName, targetVersion) {
 }
 
 /**
+ * @param {string} sourceDir
+ * @returns {string}
+ */
+function androidManifestPath(sourceDir) {
+  return path.relative(
+    sourceDir,
+    path.join(
+      path.dirname(require.resolve("../package.json")),
+      "android",
+      "app",
+      "src",
+      "main",
+      "AndroidManifest.xml"
+    )
+  );
+}
+
+/**
+ * @param {string} sourceDir
+ * @returns {string}
+ */
+function iosProjectPath(sourceDir) {
+  const useOldWorkaround = packageSatisfiesVersionRange(
+    "@react-native-community/cli-platform-ios",
+    "<5.0.2"
+  );
+  if (useOldWorkaround) {
+    // Prior to @react-native-community/cli-platform-ios v5.0.0, `project` was
+    // only used to infer `sourceDir` and `podfile`.
+    return path.join(sourceDir, "ReactTestApp-Dummy.xcodeproj");
+  }
+
+  // `sourceDir` and `podfile` detection was fixed in
+  // @react-native-community/cli-platform-ios v5.0.2 (see
+  // https://github.com/react-native-community/cli/pull/1444).
+  return "node_modules/.generated/ios/ReactTestApp.xcodeproj";
+}
+
+/**
+ * @param {string} sourceDir
+ * @returns {{ projectFile: string }}
+ */
+function windowsProjectPath(sourceDir) {
+  return {
+    projectFile: path.relative(
+      sourceDir,
+      path.join(
+        "node_modules",
+        ".generated",
+        "windows",
+        "ReactTestApp",
+        "ReactTestApp.vcxproj"
+      )
+    ),
+  };
+}
+
+/**
  * Returns the appropriate `react-native.config.js` for specified parameters.
  * @param {ConfigureParams} params
  * @returns {string | FileCopy}
@@ -224,22 +282,12 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
     switch (platforms[0]) {
       case "android":
         return join(
-          'const path = require("path");',
+          'const { androidManifestPath } = require("react-native-test-app");',
           "module.exports = {",
           "  project: {",
           "    android: {",
           '      sourceDir: ".",',
-          "      manifestPath: path.relative(",
-          "        __dirname,",
-          "        path.join(",
-          '          path.dirname(require.resolve("react-native-test-app/package.json")),',
-          '          "android",',
-          '          "app",',
-          '          "src",',
-          '          "main",',
-          '          "AndroidManifest.xml"',
-          "        )",
-          "      ),",
+          "      manifestPath: androidManifestPath(__dirname),",
           "    },",
           "  },",
           "};",
@@ -249,18 +297,11 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
       case "macos":
       case "ios":
         return join(
-          "const {",
-          "  packageSatisfiesVersionRange,",
-          '} = require("react-native-test-app/scripts/configure");',
+          'const { iosProjectPath } = require("react-native-test-app");',
           "module.exports = {",
           "  project: {",
           "    ios: {",
-          "      project: packageSatisfiesVersionRange(",
-          '        "@react-native-community/cli-platform-ios",',
-          '        "<5.0.2"',
-          "      )",
-          '        ? "ReactTestApp-Dummy.xcodeproj"',
-          '        : "node_modules/.generated/ios/ReactTestApp.xcodeproj",',
+          '      project: iosProjectPath("."),',
           "    }",
           "  }",
           "};",
@@ -270,6 +311,7 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
       case "windows":
         return join(
           'const path = require("path");',
+          'const { windowsProjectPath } = require("react-native-test-app");',
           "",
           'const sourceDir = "windows";',
           "module.exports = {",
@@ -277,18 +319,7 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
           "    windows: {",
           "      sourceDir,",
           `      solutionFile: "${name}.sln",`,
-          "      project: {",
-          "        projectFile: path.relative(",
-          "          path.join(__dirname, sourceDir),",
-          "          path.join(",
-          '            "node_modules",',
-          '            ".generated",',
-          '            "windows",',
-          '            "ReactTestApp",',
-          '            "ReactTestApp.vcxproj"',
-          "          )",
-          "        ),",
-          "      },",
+          "      project: windowsProjectPath(path.join(__dirname, sourceDir)),",
           "    },",
           "  },",
           '  reactNativePath: "node_modules/react-native-windows",',
@@ -902,7 +933,7 @@ if (require.main === module) {
       const result = configure({
         name: typeof name === "string" && name ? name : getAppName(packagePath),
         packagePath,
-        testAppPath: path.resolve(__dirname, ".."),
+        testAppPath: path.dirname(require.resolve("../package.json")),
         targetVersion,
         platforms,
         flatten,
@@ -916,12 +947,14 @@ if (require.main === module) {
   ).argv;
 }
 
+exports.androidManifestPath = androidManifestPath;
 exports.configure = configure;
 exports.error = error;
 exports.gatherConfig = gatherConfig;
 exports.getAppName = getAppName;
 exports.getConfig = getConfig;
 exports.getPlatformPackage = getPlatformPackage;
+exports.iosProjectPath = iosProjectPath;
 exports.isDestructive = isDestructive;
 exports.isInstalled = isInstalled;
 exports.join = join;
@@ -934,4 +967,5 @@ exports.removeAllFiles = removeAllFiles;
 exports.sortByKeys = sortByKeys;
 exports.updatePackageManifest = updatePackageManifest;
 exports.warn = warn;
+exports.windowsProjectPath = windowsProjectPath;
 exports.writeAllFiles = writeAllFiles;
