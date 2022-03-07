@@ -2215,16 +2215,17 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/eslint-plugin@npm:^0.2.0":
-  version: 0.2.10
-  resolution: "@rnx-kit/eslint-plugin@npm:0.2.10"
+  version: 0.2.11
+  resolution: "@rnx-kit/eslint-plugin@npm:0.2.11"
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
     enhanced-resolve: ^5.8.3
     eslint-plugin-react: ^7.26.0
+    eslint-plugin-react-hooks: ^4.3.0
   peerDependencies:
     eslint: ">=6.0.0"
-  checksum: 985bb70be1cdcc8d6a6347a299e118601cb6a4c69ec305dae196e5ccc85cbd72f34f38619162a0d065f9e910ee2eef43932c4b194c00efb6bf9ceffb02b7fceb
+  checksum: 7548bb3d4116a3a784ec973e3805b10813f537c9f68edd55da89ac7ee8d01a4a58e04cbcd9d92482396b701cfa5cb599b0c0c59ac51ade85c4e6504a6b341766
   languageName: node
   linkType: hard
 
@@ -5173,6 +5174,15 @@ __metadata:
   peerDependencies:
     eslint: ">=5.16.0"
   checksum: 5804c4f8a6e721f183ef31d46fbe3b4e1265832f352810060e0502aeac7de034df83352fc88643b19641bb2163f2587f1bd4119aff0fd21e8d98c57c450e013b
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react-hooks@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "eslint-plugin-react-hooks@npm:4.3.0"
+  peerDependencies:
+    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+  checksum: 0ba1566ba0780bbc75a5921f49188edf232db2085ab32c8d3889592f0db9d6fadc97fcf639775e0101dec6b5409ca3c803ec44213b90c8bacaf0bdf921871c2e
   languageName: node
   linkType: hard
 
