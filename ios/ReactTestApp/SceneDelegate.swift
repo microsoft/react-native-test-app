@@ -61,6 +61,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        for context in URLContexts {
+            RCTLinkingManager.application(
+                UIApplication.shared,
+                open: context.url,
+                options: context.options.dictionary()
+            )
+        }
+
         NotificationCenter.default.post(
             name: .ReactTestAppSceneDidOpenURL,
             object: [
@@ -68,5 +76,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 "URLContexts": URLContexts,
             ]
         )
+    }
+}
+
+extension UIScene.OpenURLOptions {
+    func dictionary() -> [UIApplication.OpenURLOptionsKey: Any] {
+        var options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+
+        if let sourceApplication = sourceApplication {
+            options[.sourceApplication] = sourceApplication
+        }
+
+        if let annotation = annotation {
+            options[.annotation] = annotation
+        }
+
+        options[.openInPlace] = openInPlace
+
+        if #available(iOS 14.5, *) {
+            if let eventAttribution = eventAttribution {
+                options[.eventAttribution] = eventAttribution
+            }
+        }
+
+        return options
     }
 }
