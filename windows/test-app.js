@@ -701,15 +701,22 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       rethrow
     );
 
-    copyAndReplace(
-      path.join(__dirname, "ExperimentalFeatures.props"),
-      path.join(destPath, "ExperimentalFeatures.props"),
-      {
-        ...(hermesVersion
-          ? { "<UseHermes>false</UseHermes>": `<UseHermes>true</UseHermes>` }
-          : undefined),
-      }
+    const experimentalFeaturesPropsFilename = "ExperimentalFeatures.props";
+    const experimentalFeaturesPropsPath = path.join(
+      destPath,
+      experimentalFeaturesPropsFilename
     );
+    if (!fs.existsSync(experimentalFeaturesPropsPath)) {
+      copyAndReplace(
+        path.join(__dirname, experimentalFeaturesPropsFilename),
+        experimentalFeaturesPropsPath,
+        {
+          ...(hermesVersion
+            ? { "<UseHermes>false</UseHermes>": `<UseHermes>true</UseHermes>` }
+            : undefined),
+        }
+      );
+    }
 
     // TODO: Remove when we drop support for 0.67.
     // Patch building with Visual Studio 2022. For more details, see
