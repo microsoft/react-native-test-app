@@ -67,6 +67,13 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
                 name: .didReceiveRemoteBundleURL,
                 object: nil
             )
+        #else
+            NSAppleEventManager.shared().setEventHandler(
+                RCTLinkingManager.self,
+                andSelector: #selector(RCTLinkingManager.getUrlEventHandler(_:withReplyEvent:)),
+                forEventClass: AEEventClass(kInternetEventClass),
+                andEventID: AEEventID(kAEGetURL)
+            )
         #endif
 
         #if USE_FLIPPER
