@@ -3,7 +3,7 @@ import groovy.json.JsonSlurper
 import java.nio.file.Paths
 
 ext.buildReactNativeFromSource = { baseDir ->
-    def reactNativePath = findNodeModulesPath(baseDir, 'react-native')
+    def reactNativePath = findNodeModulesPath(baseDir, "react-native")
     return !file("${reactNativePath}/android").exists()
 }
 
@@ -51,7 +51,7 @@ ext.findNodeModulesPath = { baseDir, packageName ->
     // Node's module resolution algorithm searches up to the root directory,
     // after which the base path will be null
     while (basePath) {
-        def candidatePath = Paths.get(basePath.toString(), 'node_modules', packageName)
+        def candidatePath = Paths.get(basePath.toString(), "node_modules", packageName)
         if (candidatePath.toFile().exists()) {
             return candidatePath.toString()
         }
@@ -63,16 +63,16 @@ ext.findNodeModulesPath = { baseDir, packageName ->
 }
 
 ext.getAppName = { baseDir ->
-    def manifestFile = findFile('app.json')
+    def manifestFile = findFile("app.json")
     if (manifestFile != null) {
         def manifest = new JsonSlurper().parseText(manifestFile.text)
 
-        def displayName = manifest['displayName']
+        def displayName = manifest["displayName"]
         if (displayName instanceof String) {
             return displayName
         }
 
-        def name = manifest['name']
+        def name = manifest["name"]
         if (name instanceof String) {
             return name
         }
@@ -82,26 +82,26 @@ ext.getAppName = { baseDir ->
 }
 
 ext.getApplicationId = { baseDir ->
-    def manifestFile = findFile('app.json')
+    def manifestFile = findFile("app.json")
     if (manifestFile != null) {
         def manifest = new JsonSlurper().parseText(manifestFile.text)
-        def config = manifest['android']
-        if (config instanceof Object && config.containsKey('package')) {
-            return config['package']
+        def config = manifest["android"]
+        if (config instanceof Object && config.containsKey("package")) {
+            return config["package"]
         }
     }
 
-    return 'com.microsoft.reacttestapp'
+    return "com.microsoft.reacttestapp"
 }
 
 ext.getFlipperRecommendedVersion = { baseDir ->
-    def reactNativePath = findNodeModulesPath(baseDir, 'react-native')
+    def reactNativePath = findNodeModulesPath(baseDir, "react-native")
     def props = new Properties()
     file("${reactNativePath}/template/android/gradle.properties").withInputStream {
         props.load(it)
     }
 
-    return props.getProperty('FLIPPER_VERSION')
+    return props.getProperty("FLIPPER_VERSION")
 }
 
 ext.getFlipperVersion = { baseDir ->
@@ -112,9 +112,9 @@ ext.getFlipperVersion = { baseDir ->
     }
 
     // Prefer user specified Flipper version
-    if (project.hasProperty('FLIPPER_VERSION')) {
-        def flipperVersion = project.getProperty('FLIPPER_VERSION')
-        return flipperVersion == 'false' ? null : flipperVersion
+    if (project.hasProperty("FLIPPER_VERSION")) {
+        def flipperVersion = project.getProperty("FLIPPER_VERSION")
+        return flipperVersion == "false" ? null : flipperVersion
     }
 
     // Use the recommended Flipper version
@@ -166,4 +166,10 @@ ext.getSigningConfigs = { baseDir ->
     }
 
     return definedConfigs
+}
+
+ext.isFabricEnabled = { baseDir ->
+    return project.hasProperty("USE_FABRIC") &&
+        project.getProperty("USE_FABRIC") == "1" &&
+        getReactNativeVersionNumber(baseDir) >= 6800
 }

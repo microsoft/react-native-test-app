@@ -7,6 +7,8 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
+import com.facebook.react.ReactRootView
+import com.microsoft.reacttestapp.BuildConfig
 
 class ComponentActivity : ReactActivity() {
 
@@ -16,6 +18,12 @@ class ComponentActivity : ReactActivity() {
     ) : ReactActivityDelegate(activity, mainComponentName) {
         override fun getLaunchOptions(): Bundle? {
             return intent.extras?.getBundle(COMPONENT_INITIAL_PROPERTIES)
+        }
+
+        override fun createRootView(): ReactRootView {
+            val rootView = super.createRootView()
+            rootView.setIsFabric(BuildConfig.ReactTestApp_useFabric)
+            return rootView
         }
     }
 

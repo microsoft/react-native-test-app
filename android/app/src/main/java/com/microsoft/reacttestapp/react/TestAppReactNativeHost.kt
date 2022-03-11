@@ -8,6 +8,7 @@ import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
+import com.facebook.react.bridge.JSIModulePackage
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMarker
 import com.facebook.react.bridge.ReactMarkerConstants
@@ -21,6 +22,7 @@ import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
 import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
+import com.microsoft.reacttestapp.fabric.FabricJSIModulePackage
 import java.util.concurrent.CountDownLatch
 
 sealed class BundleSource {
@@ -147,6 +149,14 @@ class TestAppReactNativeHost(
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_END)
         addCustomDevOptions(reactInstanceManager.devSupportManager)
         return reactInstanceManager
+    }
+
+    override fun getJSIModulePackage(): JSIModulePackage? {
+        return if (BuildConfig.ReactTestApp_useFabric) {
+            FabricJSIModulePackage(this)
+        } else {
+            null
+        }
     }
 
     override fun getJSMainModuleName() = "index"

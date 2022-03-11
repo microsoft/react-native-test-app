@@ -183,10 +183,10 @@ final class ContentViewController: UITableViewController {
             }
 
             let viewController = UIViewController(nibName: nil, bundle: nil)
-            viewController.view = RCTRootView(
-                bridge: bridge,
-                moduleName: component.appKey,
-                initialProperties: component.initialProperties
+            viewController.view = RTACreateReactRootView(
+                bridge,
+                component.appKey,
+                component.initialProperties
             )
             viewController.view.backgroundColor = UIColor.systemBackground
             return viewController
@@ -244,7 +244,12 @@ final class ContentViewController: UITableViewController {
             let patch = version[RCTVersionPatch] ?? "0"
             return "\(major).\(minor).\(patch)"
         }()
-        return "React Native version: \(version)"
+        #if USE_FABRIC
+            let fabric = " (Fabric)"
+        #else
+            let fabric = ""
+        #endif
+        return "React Native version: \(version)\(fabric)"
     }
 }
 

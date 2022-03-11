@@ -23,7 +23,8 @@
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 #import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
-#endif
+#endif  // USE_FLIPPER
 
 #import "React+Compatibility.h"
+#import "React+Fabric.h"
 #import "UIViewController+ReactTestApp.h"

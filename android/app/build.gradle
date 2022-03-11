@@ -52,6 +52,7 @@ applyTestAppModule(project)
 project.ext.react = [
     appName      : getAppName(),
     applicationId: getApplicationId(),
+    enableFabric : isFabricEnabled(rootDir),
     enableFlipper: getFlipperVersion(rootDir),
     enableHermes : true,
 ]
@@ -84,6 +85,8 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode reactTestApp.versionCode
         versionName reactTestApp.versionName
+
+        buildConfigField "boolean", "ReactTestApp_useFabric", project.ext.react.enableFabric.toString()
 
         def recommendedFlipperVersion = getFlipperRecommendedVersion(rootDir)
         buildConfigField "String",
@@ -132,6 +135,13 @@ android {
     sourceSets {
         if (project.ext.react.enableFlipper) {
             debug.java.srcDirs += "src/flipper/java"
+        }
+
+        // TODO: Remove this block when we drop support for 0.63.
+        if (project.ext.react.enableFabric) {
+            main.java.srcDirs += "src/fabric/java"
+        } else {
+            main.java.srcDirs += "src/no-fabric/java"
         }
 
         // TODO: Remove this block when we drop support for 0.67.

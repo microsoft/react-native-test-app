@@ -14,6 +14,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         }
     }
 
+    private var surfacePresenterBridgeAdapter: NSObject?
     private(set) var bridge: RCTBridge?
     private var bundleRoot: String?
 
@@ -118,6 +119,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             return
         }
 
+        surfacePresenterBridgeAdapter = RTACreateSurfacePresenterBridgeAdapter(bridge)
         self.bridge = bridge
 
         NotificationCenter.default.post(

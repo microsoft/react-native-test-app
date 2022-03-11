@@ -171,31 +171,37 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
             let viewController = NSViewController(nibName: nil, bundle: nil)
             viewController.title = title
-            viewController.view = RCTRootView(
-                bridge: bridge,
-                moduleName: component.appKey,
-                initialProperties: component.initialProperties
+            viewController.view = RTACreateReactRootView(
+                bridge,
+                component.appKey,
+                component.initialProperties
             )
             return viewController
         }()
 
         switch component.presentationStyle {
         case "modal":
+            let rootView = viewController.view
             let modalFrame = NSRect(size: WindowSize.modalSize)
-            viewController.view.frame = modalFrame
-            if let rootView = viewController.view as? RCTRootView {
-                var token: NSObjectProtocol?
-                token = NotificationCenter.default.addObserver(
-                    forName: .RCTContentDidAppear,
-                    object: rootView,
-                    queue: nil,
-                    using: { _ in
-                        rootView.contentView.frame = modalFrame
-                        NotificationCenter.default.removeObserver(token!)
-                    }
-                )
-            }
+            rootView.frame = modalFrame
+
+            var token: NSObjectProtocol?
+            token = NotificationCenter.default.addObserver(
+                forName: .RCTContentDidAppear,
+                object: rootView,
+                queue: nil,
+                using: { _ in
+                    #if USE_FABRIC
+                        rootView.frame = modalFrame
+                    #else
+                        (rootView as? RCTRootView)?.contentView.frame = modalFrame
+                    #endif
+                    NotificationCenter.default.removeObserver(token!)
+                }
+            )
+
             window.contentViewController?.presentAsModalWindow(viewController)
+
         default:
             window.title = title
             let frame = window.contentViewController?.view.frame

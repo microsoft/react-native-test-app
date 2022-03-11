@@ -76,7 +76,9 @@ end
 
 def react_native_pods(version)
   v = version.release
-  if v == Gem::Version.new('0.0.0') || v >= Gem::Version.new('0.64')
+  if v == Gem::Version.new('0.0.0') || v >= Gem::Version.new('0.68')
+    'use_react_native-0.68'
+  elsif v >= Gem::Version.new('0.64')
     'use_react_native-0.64'
   elsif v >= Gem::Version.new('0.63')
     'use_react_native-0.63'
@@ -146,13 +148,14 @@ def use_react_native!(project_root, target_platform, options)
   require_relative(react_native_pods(version))
 
   include_react_native!(**options,
+                        app_path: find_file('package.json', project_root).parent,
                         path: react_native.relative_path_from(project_root).to_s,
                         rta_flipper_versions: flipper_versions,
                         rta_project_root: project_root,
                         rta_target_platform: target_platform)
 end
 
-def make_project!(xcodeproj, project_root, target_platform)
+def make_project!(xcodeproj, project_root, target_platform, options)
   src_xcodeproj = project_path(xcodeproj, target_platform)
   destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
   dst_xcodeproj = File.join(destination, xcodeproj)
@@ -212,6 +215,7 @@ def make_project!(xcodeproj, project_root, target_platform)
                                            end
 
   supports_flipper = target_platform == :ios && flipper_enabled?
+  use_fabric = options[:fabric_enabled] && version >= 6800
 
   app_project = Xcodeproj::Project.open(dst_xcodeproj)
   app_project.native_targets.each do |target|
@@ -220,24 +224,24 @@ def make_project!(xcodeproj, project_root, target_platform)
     target.build_configurations.each do |config|
       use_flipper = config.name == 'Debug' && supports_flipper
 
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
-        '$(inherited)',
-        version_macro,
-        "FB_SONARKIT_ENABLED=#{use_flipper ? 1 : 0}",
-        "USE_FLIPPER=#{use_flipper ? 1 : 0}",
-      ]
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << version_macro
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1' if use_fabric
+      if use_flipper
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FB_SONARKIT_ENABLED=1'
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FLIPPER=1'
+      end
 
       build_settings.each do |setting, value|
         config.build_settings[setting] = value
       end
 
-      next unless use_flipper
-
-      config.build_settings['OTHER_SWIFT_FLAGS'] ||= [
-        '$(inherited)',
-        '-DFB_SONARKIT_ENABLED',
-        '-DUSE_FLIPPER',
-      ]
+      config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
+      config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FABRIC' if use_fabric
+      if use_flipper
+        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DFB_SONARKIT_ENABLED'
+        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FLIPPER'
+      end
     end
   end
   app_project.save
@@ -257,9 +261,8 @@ def use_test_app_internal!(target_platform, options)
 
   xcodeproj = 'ReactTestApp.xcodeproj'
   project_root = Pod::Config.instance.installation_root
-  dst_xcodeproj, platforms = make_project!(xcodeproj, project_root, target_platform).values_at(
-    :xcodeproj_path, :platforms
-  )
+  project_target = make_project!(xcodeproj, project_root, target_platform, options)
+  dst_xcodeproj, platforms = project_target.values_at(:xcodeproj_path, :platforms)
 
   require_relative(autolink_script_path)
 
@@ -312,13 +315,14 @@ def use_test_app_internal!(target_platform, options)
       when /\AFlipper/, 'libevent'
         target.build_configurations.each do |config|
           # Flipper and its dependencies log too many warnings
-          config.build_settings['WARNING_CFLAGS'] ||= ['"-w"']
+          config.build_settings['WARNING_CFLAGS'] = ['-w']
         end
       when /\AReact/
         target.build_configurations.each do |config|
           # Xcode 10.2 requires suppression of nullability for React
           # https://stackoverflow.com/questions/37691049/xcode-compile-flag-to-suppress-nullability-warnings-not-working
-          config.build_settings['WARNING_CFLAGS'] ||= ['"-Wno-nullability-completeness"']
+          config.build_settings['WARNING_CFLAGS'] ||= ['$(inherited)']
+          config.build_settings['WARNING_CFLAGS'] << '-Wno-nullability-completeness'
         end
       else
         # Ensure `ENABLE_TESTING_SEARCH_PATHS` is always set otherwise Xcode may
