@@ -14,7 +14,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set up toolchain
@@ -33,7 +33,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 64
       - name: Set up toolchain
@@ -119,7 +119,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -171,7 +171,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -215,7 +215,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -254,7 +254,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -282,7 +282,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -335,7 +335,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -375,7 +375,7 @@ jobs:
         configuration: [Debug, Release]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -423,7 +423,7 @@ jobs:
         template: [all, windows]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -466,7 +466,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
       - name: Install npm dependencies
