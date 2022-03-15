@@ -486,7 +486,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Label
-        uses: actions/labeler@v3.1.0
+        uses: actions/labeler@v4.0.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           sync-labels: true
