@@ -65,6 +65,7 @@
 		19B368BD24B12C24002CCEFF /* ReactTestApp.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.debug.xcconfig; sourceTree = "<group>"; };
 		19B368BE24B12C24002CCEFF /* ReactTestApp.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.release.xcconfig; sourceTree = "<group>"; };
 		19C4C89227710D8500157870 /* Manifest+Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Manifest+Decoder.swift"; path = "../ReactTestAppShared/Manifest+Decoder.swift"; sourceTree = "<group>"; };
+		19E0B90C27E9F8FD006FD558 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../Localizations/en.lproj/Main.strings; sourceTree = "<group>"; };
 		19E791BF24B08E1400FA6468 /* ReactTestAppTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTestAppTests.swift; sourceTree = "<group>"; };
 		19E791C224B08E4D00FA6468 /* ReactTestAppUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTestAppUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -381,6 +382,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				193EF069247A736300BE8C79 /* Base */,
+				19E0B90C27E9F8FD006FD558 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

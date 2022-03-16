@@ -211,14 +211,16 @@ async function generate(output) {
   }
 
   Object.entries(schema.$defs).forEach(([key, definition]) => {
-    lines.push(
-      ...generateType(
-        typename(key),
-        /** @type {SchemaObjectProperty} */ (definition),
-        lang
-      ),
-      ""
-    );
+    if (!("exclude-from-codegen" in definition)) {
+      lines.push(
+        ...generateType(
+          typename(key),
+          /** @type {SchemaObjectProperty} */ (definition),
+          lang
+        ),
+        ""
+      );
+    }
     return lines;
   });
 

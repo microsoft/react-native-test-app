@@ -17,6 +17,7 @@ using ReactTestApp::Component;
 using ReactTestApp::JSBundleSource;
 using ReactTestApp::Session;
 using winrt::Microsoft::ReactNative::IJSValueWriter;
+using winrt::Microsoft::ReactNative::ReactNativeHost;
 using winrt::Microsoft::ReactNative::ReactRootView;
 using winrt::ReactTestApp::implementation::MainPage;
 using winrt::Windows::ApplicationModel::Core::CoreApplication;
@@ -30,6 +31,7 @@ using winrt::Windows::UI::Core::CoreDispatcherPriority;
 using winrt::Windows::UI::Popups::MessageDialog;
 using winrt::Windows::UI::ViewManagement::ApplicationView;
 using winrt::Windows::UI::Xaml::RoutedEventArgs;
+using winrt::Windows::UI::Xaml::Visibility;
 using winrt::Windows::UI::Xaml::Window;
 using winrt::Windows::UI::Xaml::Automation::Peers::MenuBarItemAutomationPeer;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
@@ -40,6 +42,13 @@ using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
 
 namespace
 {
+#ifdef _DEBUG
+    constexpr bool kDebug = true;
+#else
+    constexpr bool kDebug = false;
+#endif  // _DEBUG
+    constexpr bool kSingleAppMode = static_cast<bool>(ENABLE_SINGLE_APP_MODE);
+
     void SetMenuItemText(IInspectable const &sender,
                          bool const isEnabled,
                          winrt::hstring const &enableText,
@@ -103,8 +112,14 @@ namespace
         }
     }
 
-    void InitializeReactRootView(ReactRootView reactRootView, Component const &component)
+    void InitializeReactRootView(ReactNativeHost const &reactNativeHost,
+                                 ReactRootView reactRootView,
+                                 Component const &component)
     {
+        if (reactRootView.ReactNativeHost() == nullptr) {
+            reactRootView.ReactNativeHost(reactNativeHost);
+        }
+
         reactRootView.ComponentName(winrt::to_hstring(component.appKey));
         reactRootView.InitialProps(
             [initialProps = component.initialProperties](IJSValueWriter const &writer) {
@@ -140,10 +155,27 @@ MainPage::MainPage()
     auto result = ::ReactTestApp::GetManifest("app.json");
     if (result.has_value()) {
         auto &[manifest, checksum] = result.value();
+
+        manifestChecksum_ = std::move(checksum);
+
+        AppTitle().Text(to_hstring(manifest.displayName));
         reactInstance_.BundleRoot(manifest.bundleRoot.has_value()
                                       ? std::make_optional(to_hstring(manifest.bundleRoot.value()))
                                       : std::nullopt);
-        manifestChecksum_ = std::move(checksum);
+
+        if constexpr (kSingleAppMode) {
+            assert(manifest.singleApp.has_value() ||
+                   !"`ENABLE_SINGLE_APP_MODE` shouldn't have been true");
+            assert(manifest.components.has_value() || !"At least one component must be declared");
+
+            for (auto &component : *manifest.components) {
+                if (component.slug == *manifest.singleApp) {
+                    InitializeReactRootView(reactInstance_.ReactHost(), ReactRootView(), component);
+                    break;
+                }
+            }
+        }
+
         InitializeReactMenu(std::move(manifest));
     } else {
         InitializeReactMenu(std::nullopt);
@@ -249,73 +281,71 @@ void MainPage::LoadReactComponent(Component const &component)
     auto title = to_hstring(component.displayName.value_or(component.appKey));
     auto &&presentationStyle = component.presentationStyle.value_or("");
     if (presentationStyle == "modal") {
-        if (DialogReactRootView().ReactNativeHost() == nullptr) {
-            DialogReactRootView().ReactNativeHost(reactInstance_.ReactHost());
-        }
-
-        InitializeReactRootView(DialogReactRootView(), component);
+        InitializeReactRootView(reactInstance_.ReactHost(), DialogReactRootView(), component);
         ContentDialog().Title(box_value(title));
         ContentDialog().ShowAsync();
     } else {
-        if (ReactRootView().ReactNativeHost() == nullptr) {
-            ReactRootView().ReactNativeHost(reactInstance_.ReactHost());
-        }
-
-        InitializeReactRootView(ReactRootView(), component);
+        InitializeReactRootView(reactInstance_.ReactHost(), ReactRootView(), component);
         AppTitle().Text(title);
     }
 }
 
 void MainPage::InitializeDebugMenu()
 {
-    if (!reactInstance_.UseCustomDeveloperMenu()) {
-        return;
+    if constexpr (kDebug || !kSingleAppMode) {
+        if (!reactInstance_.UseCustomDeveloperMenu()) {
+            return;
+        }
+
+        SetWebDebuggerMenuItem(WebDebuggerMenuItem(), reactInstance_.UseWebDebugger());
+        WebDebuggerMenuItem().IsEnabled(reactInstance_.IsWebDebuggerAvailable());
+
+        SetDirectDebuggerMenuItem(DirectDebuggingMenuItem(), reactInstance_.UseDirectDebugger());
+        SetBreakOnFirstLineMenuItem(BreakOnFirstLineMenuItem(), reactInstance_.BreakOnFirstLine());
+
+        SetFastRefreshMenuItem(FastRefreshMenuItem(), reactInstance_.UseFastRefresh());
+        FastRefreshMenuItem().IsEnabled(reactInstance_.IsFastRefreshAvailable());
+
+        DebugMenuBarItem().IsEnabled(true);
     }
-
-    SetWebDebuggerMenuItem(WebDebuggerMenuItem(), reactInstance_.UseWebDebugger());
-    WebDebuggerMenuItem().IsEnabled(reactInstance_.IsWebDebuggerAvailable());
-
-    SetDirectDebuggerMenuItem(DirectDebuggingMenuItem(), reactInstance_.UseDirectDebugger());
-    SetBreakOnFirstLineMenuItem(BreakOnFirstLineMenuItem(), reactInstance_.BreakOnFirstLine());
-
-    SetFastRefreshMenuItem(FastRefreshMenuItem(), reactInstance_.UseFastRefresh());
-    FastRefreshMenuItem().IsEnabled(reactInstance_.IsFastRefreshAvailable());
-
-    DebugMenuBarItem().IsEnabled(true);
 }
 
 void MainPage::InitializeReactMenu(std::optional<::ReactTestApp::Manifest> manifest)
 {
-    RememberLastComponentMenuItem().IsChecked(Session::ShouldRememberLastComponent());
+    if constexpr (kDebug || !kSingleAppMode) {
+        AppMenuBar().Visibility(Visibility::Visible);
 
-    auto menuItems = ReactMenuBarItem().Items();
-    if (!manifest.has_value()) {
-        MenuFlyoutItem newMenuItem;
-        newMenuItem.Text(L"Couldn't parse 'app.json'");
-        newMenuItem.IsEnabled(false);
-        menuItems.Append(newMenuItem);
-        return;
-    }
+        RememberLastComponentMenuItem().IsChecked(Session::ShouldRememberLastComponent());
 
-    AppTitle().Text(to_hstring(manifest->displayName));
+        auto menuItems = ReactMenuBarItem().Items();
+        if (!manifest.has_value()) {
+            MenuFlyoutItem newMenuItem;
+            newMenuItem.Text(L"Couldn't parse 'app.json'");
+            newMenuItem.IsEnabled(false);
+            menuItems.Append(newMenuItem);
+            return;
+        }
 
-    auto &components = manifest->components;
-    if (!components.has_value() || components->empty()) {
-        reactInstance_.SetComponentsRegisteredDelegate(
-            [this](std::vector<std::string> const &appKeys) {
-                std::vector<Component> components;
-                components.reserve(appKeys.size());
-                std::transform(std::begin(appKeys),
-                               std::end(appKeys),
-                               std::back_inserter(components),
-                               [](std::string const &appKey) { return Component{appKey}; });
-                OnComponentsRegistered(std::move(components));
-                PresentReactMenu();
-            });
-    } else {
-        OnComponentsRegistered(std::move(components.value()));
-        reactInstance_.SetComponentsRegisteredDelegate(
-            [this](std::vector<std::string> const &) { PresentReactMenu(); });
+        if constexpr (!kSingleAppMode) {
+            auto &components = manifest->components;
+            if (!components.has_value() || components->empty()) {
+                reactInstance_.SetComponentsRegisteredDelegate(
+                    [this](std::vector<std::string> const &appKeys) {
+                        std::vector<Component> components;
+                        components.reserve(appKeys.size());
+                        std::transform(std::begin(appKeys),
+                                       std::end(appKeys),
+                                       std::back_inserter(components),
+                                       [](std::string const &appKey) { return Component{appKey}; });
+                        OnComponentsRegistered(std::move(components));
+                        PresentReactMenu();
+                    });
+            } else {
+                OnComponentsRegistered(std::move(components.value()));
+                reactInstance_.SetComponentsRegisteredDelegate(
+                    [this](std::vector<std::string> const &) { PresentReactMenu(); });
+            }
+        }
     }
 }
 
@@ -411,6 +441,8 @@ void MainPage::OnComponentsRegistered(std::vector<Component> components)
 
         menuItems.Append(newMenuItem);
     }
+
+    RememberLastComponentMenuItem().IsEnabled(components.size() > 1);
 }
 
 // Adjust height of custom title bar to match close, minimize and maximize icons

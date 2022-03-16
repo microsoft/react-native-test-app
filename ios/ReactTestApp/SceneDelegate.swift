@@ -1,35 +1,10 @@
 import Foundation
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
-    var isRunningTests: Bool {
-        let environment = ProcessInfo.processInfo.environment
-        return environment["XCInjectBundleInto"] != nil
-    }
-
-    func scene(_ scene: UIScene,
-               willConnectTo _: UISceneSession,
-               options _: UIScene.ConnectionOptions)
-    {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene
-        // `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see
-        // `application:configurationForConnectingSceneSession` instead).
-
-        guard !isRunningTests else {
-            return
-        }
-
-        if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UINavigationController(rootViewController: ContentViewController())
-            self.window = window
-            window.makeKeyAndVisible()
-        }
-    }
+    private lazy var reactInstance = ReactInstance()
 
     func sceneDidDisconnect(_: UIScene) {
         // Called as the scene is being released by the system.
@@ -78,6 +53,79 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
     }
 }
+
+// MARK: - Multi-app extensions
+
+#if !ENABLE_SINGLE_APP_MODE
+
+    extension SceneDelegate {
+        var isRunningTests: Bool {
+            let environment = ProcessInfo.processInfo.environment
+            return environment["XCInjectBundleInto"] != nil
+        }
+
+        func scene(_ scene: UIScene,
+                   willConnectTo _: UISceneSession,
+                   options _: UIScene.ConnectionOptions)
+        {
+            // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene
+            // `scene`.
+            // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+            // This delegate does not imply the connecting scene or session are new (see
+            // `application:configurationForConnectingSceneSession` instead).
+
+            guard !isRunningTests else {
+                return
+            }
+
+            if let windowScene = scene as? UIWindowScene {
+                let window = UIWindow(windowScene: windowScene)
+                window.rootViewController = UINavigationController(
+                    rootViewController: ContentViewController(reactInstance: reactInstance)
+                )
+                self.window = window
+                window.makeKeyAndVisible()
+            }
+        }
+    }
+
+#endif // !ENABLE_SINGLE_APP_MODE
+
+// MARK: - Single-app extensions
+
+#if ENABLE_SINGLE_APP_MODE
+
+    extension SceneDelegate {
+        func scene(_ scene: UIScene,
+                   willConnectTo _: UISceneSession,
+                   options _: UIScene.ConnectionOptions)
+        {
+            guard let windowScene = scene as? UIWindowScene else {
+                assertionFailure("Default scene configuration should have been loaded by now")
+                return
+            }
+
+            guard let (rootView, _) = createReactRootView(reactInstance) else {
+                assertionFailure()
+                return
+            }
+
+            rootView.backgroundColor = UIColor.systemBackground
+
+            let viewController = UIViewController(nibName: nil, bundle: nil)
+            viewController.view = rootView
+
+            let window = UIWindow(windowScene: windowScene)
+            window.rootViewController = viewController
+            self.window = window
+
+            window.makeKeyAndVisible()
+        }
+    }
+
+#endif // ENABLE_SINGLE_APP_MODE
+
+// MARK: - UIScene.OpenURLOptions extensions
 
 extension UIScene.OpenURLOptions {
     func dictionary() -> [UIApplication.OpenURLOptionsKey: Any] {

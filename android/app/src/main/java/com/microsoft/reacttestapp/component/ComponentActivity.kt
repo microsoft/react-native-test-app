@@ -51,11 +51,14 @@ class ComponentActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        @Suppress("SENSELESS_COMPARISON")
+        if (BuildConfig.ReactTestApp_singleApp === null) {
+            supportActionBar?.setHomeButtonEnabled(true)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
 
         val componentName = intent.extras?.getString(COMPONENT_NAME, null)
-            ?: throw IllegalArgumentException("Class name has to be provided.")
+            ?: throw IllegalArgumentException("Component name must be provided.")
         title = intent.extras?.getString(COMPONENT_DISPLAY_NAME, componentName)
 
         findClass(componentName)?.let {
