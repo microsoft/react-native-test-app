@@ -21,7 +21,7 @@ runs:
       shell: bash
     - name: Cache /${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
       if: ${{ steps.cache-key-generator.outputs.cache-key != 'false' }}
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
         key: ${{ runner.os }}-pods-${{ steps.cache-key-generator.outputs.cache-key }}
