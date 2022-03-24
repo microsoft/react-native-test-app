@@ -33,6 +33,8 @@ using winrt::Microsoft::ReactNative::InstanceLoadedEventArgs;
 namespace
 {
     winrt::hstring const kBreakOnFirstLine = L"breakOnFirstLine";
+    winrt::hstring const kBundlerHost = L"bundlerHost";
+    winrt::hstring const kBundlerPort = L"bundlerPort";
     winrt::hstring const kUseDirectDebugger = L"useDirectDebugger";
     winrt::hstring const kUseFastRefresh = L"useFastRefresh";
     winrt::hstring const kUseWebDebugger = L"useWebDebugger";
@@ -139,6 +141,12 @@ void ReactInstance::Reload()
     instanceSettings.UseDeveloperSupport(false);
 #endif
 
+#ifdef REACT_NATIVE_VERSION >= 6300
+    auto [host, port] = BundlerAddress();
+    instanceSettings.SourceBundleHost(host);
+    instanceSettings.SourceBundlePort(port);
+#endif  // REACT_NATIVE_VERSION >= 6300
+
     reactNativeHost_.ReloadInstance();
 }
 
@@ -150,6 +158,35 @@ bool ReactInstance::BreakOnFirstLine() const
 void ReactInstance::BreakOnFirstLine(bool breakOnFirstLine)
 {
     StoreLocalSetting(kBreakOnFirstLine, breakOnFirstLine);
+    Reload();
+}
+
+std::tuple<winrt::hstring, int> ReactInstance::BundlerAddress() const
+{
+    auto localSettings = ApplicationData::Current().LocalSettings();
+    auto values = localSettings.Values();
+    auto host = winrt::unbox_value_or<winrt::hstring>(values.Lookup(kBundlerHost), {});
+    auto port = winrt::unbox_value_or<int>(values.Lookup(kBundlerPort), 0);
+    return {host, port};
+}
+
+void ReactInstance::BundlerAddress(winrt::hstring host, int port)
+{
+    auto localSettings = ApplicationData::Current().LocalSettings();
+    auto values = localSettings.Values();
+
+    if (host.empty()) {
+        values.Remove(kBundlerHost);
+    } else {
+        values.Insert(kBundlerHost, PropertyValue::CreateString(host));
+    }
+
+    if (port <= 0) {
+        values.Remove(kBundlerPort);
+    } else {
+        values.Insert(kBundlerPort, PropertyValue::CreateInt32(port));
+    }
+
     Reload();
 }
 
