@@ -18,12 +18,18 @@
             <Grid x:Name="AppTitleBar" Background="Transparent">
                 <TextBlock x:Name="AppTitle" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
-            <MenuBar x:Name="AppMenuBar" HorizontalAlignment="Left" VerticalContentAlignment="Stretch" Width="Auto">
+            <MenuBar
+                x:Name="AppMenuBar"
+                HorizontalAlignment="Left"
+                VerticalContentAlignment="Stretch"
+                Width="Auto"
+                Visibility="Collapsed">
                 <MenuBarItem x:Name="ReactMenuBarItem" Title="React" AccessKey="R">
                     <MenuFlyoutItem Text="Load from JS bundle" Click="LoadFromJSBundle" AccessKey="E"/>
                     <MenuFlyoutItem Text="Load from dev server" Click="LoadFromDevServer" AccessKey="D"/>
                     <ToggleMenuFlyoutItem
                         x:Name="RememberLastComponentMenuItem"
+                        IsEnabled="false"
                         Text="Remember last opened component"
                         Click="ToggleRememberLastComponent"
                         AccessKey="R"

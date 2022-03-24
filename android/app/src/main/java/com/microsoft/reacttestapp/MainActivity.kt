@@ -64,30 +64,51 @@ class MainActivity : ReactActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        didInitialNavigation = savedInstanceState?.getBoolean("didInitialNavigation", false) == true
 
         val (manifest, checksum) = testApp.manifestProvider.fromResources()
         val components = manifest.components ?: listOf()
-        if (components.count() > 0) {
-            val index = if (components.count() == 1) 0 else session.lastOpenedComponent(checksum)
-            index?.let {
-                val component = newComponentViewModel(components[it])
-                val startInitialComponent = { _: ReactContext ->
-                    if (!didInitialNavigation) {
-                        startComponent(component)
+
+        @Suppress("SENSELESS_COMPARISON")
+        when {
+            BuildConfig.ReactTestApp_singleApp === null -> {
+                setContentView(R.layout.activity_main)
+
+                didInitialNavigation =
+                    savedInstanceState?.getBoolean("didInitialNavigation", false) == true
+
+                if (components.count() > 0) {
+                    val index =
+                        if (components.count() == 1) 0 else session.lastOpenedComponent(checksum)
+                    index?.let {
+                        val component = newComponentViewModel(components[it])
+                        val startInitialComponent = { _: ReactContext ->
+                            if (!didInitialNavigation) {
+                                startComponent(component)
+                            }
+                        }
+                        testApp.reactNativeHost.apply {
+                            addReactInstanceEventListener(startInitialComponent)
+                            reactInstanceManager.currentReactContext?.let(startInitialComponent)
+                        }
                     }
                 }
-                testApp.reactNativeHost.apply {
-                    addReactInstanceEventListener(startInitialComponent)
-                    reactInstanceManager.currentReactContext?.let(startInitialComponent)
-                }
-            }
-        }
 
-        setupToolbar(manifest.displayName)
-        setupRecyclerView(components, checksum)
+                setupToolbar(manifest.displayName)
+                setupRecyclerView(components, checksum)
+            }
+
+            components.count() > 0 -> {
+                val slug = BuildConfig.ReactTestApp_singleApp
+                val component = components.find { it.slug == slug }
+                    ?: throw IllegalArgumentException("No component with slug: $slug")
+                val intent = ComponentActivity.newIntent(this, newComponentViewModel(component))
+                intent.flags = Intent.FLAG_ACTIVITY_TASK_ON_HOME or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+            }
+
+            else -> throw IllegalArgumentException("At least one component must be declared")
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

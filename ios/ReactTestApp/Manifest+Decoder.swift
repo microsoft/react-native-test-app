@@ -8,10 +8,17 @@ extension Component {
         case displayName
         case initialProperties
         case presentationStyle
+        case slug
     }
 
     init(appKey: String) {
-        self.init(appKey: appKey, displayName: nil, initialProperties: nil, presentationStyle: nil)
+        self.init(
+            appKey: appKey,
+            displayName: nil,
+            initialProperties: nil,
+            presentationStyle: nil,
+            slug: nil
+        )
     }
 
     init(from decoder: Decoder) throws {
@@ -25,6 +32,7 @@ extension Component {
             return try? [AnyHashable: Any].decode(from: decoder)
         }()
         presentationStyle = try container.decodeIfPresent(String.self, forKey: .presentationStyle)
+        slug = try container.decodeIfPresent(String.self, forKey: .slug)
     }
 }
 
@@ -39,11 +47,13 @@ extension Manifest {
     }
 
     static func from(data: Data) -> (Manifest, String)? {
-        guard let manifest = try? JSONDecoder().decode(self, from: data) else {
+        do {
+            let manifest = try JSONDecoder().decode(self, from: data)
+            return (manifest, data.sha256)
+        } catch {
+            assertionFailure("Failed to load manifest: \(error)")
             return nil
         }
-
-        return (manifest, data.sha256)
     }
 }
 

@@ -41,19 +41,22 @@ class ManifestTests: XCTestCase {
                 appKey: "0",
                 displayName: nil,
                 initialProperties: ["key": "value"],
-                presentationStyle: nil
+                presentationStyle: nil,
+                slug: nil
             ),
             Component(
                 appKey: "1",
                 displayName: "1",
                 initialProperties: nil,
-                presentationStyle: nil
+                presentationStyle: nil,
+                slug: nil
             ),
         ]
         let expected = Manifest(
             name: "Name",
             displayName: "Display Name",
             bundleRoot: nil,
+            singleApp: nil,
             components: expectedComponents
         )
 

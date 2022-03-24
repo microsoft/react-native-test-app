@@ -238,3 +238,36 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         remoteBundleURL = urlComponents.url
     }
 }
+
+#if os(iOS)
+    typealias RTAView = UIView
+#else
+    typealias RTAView = NSView
+#endif
+
+func createReactRootView(_ reactInstance: ReactInstance) -> (RTAView, String)? {
+    guard let (manifest, _) = Manifest.fromFile(),
+          let slug = manifest.singleApp
+    else {
+        assertionFailure("Failed to load manifest")
+        return nil
+    }
+
+    guard let component = manifest.components?.first(where: { $0.slug == slug }) else {
+        assertionFailure("Failed to find component with slug: \(slug)")
+        return nil
+    }
+
+    reactInstance.initReact(bundleRoot: manifest.bundleRoot) {}
+    guard let bridge = reactInstance.bridge else {
+        assertionFailure("Failed to initialize React")
+        return nil
+    }
+
+    let view = RTACreateReactRootView(
+        bridge,
+        component.appKey,
+        component.initialProperties
+    )
+    return (view, component.displayName ?? component.appKey)
+}

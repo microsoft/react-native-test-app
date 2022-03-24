@@ -18,12 +18,14 @@ namespace ReactTestApp
         std::optional<std::string> displayName;
         std::optional<std::map<std::string, std::any>> initialProperties;
         std::optional<std::string> presentationStyle;
+        std::optional<std::string> slug;
     };
 
     struct Manifest {
         std::string name;
         std::string displayName;
         std::optional<std::string> bundleRoot;
+        std::optional<std::string> singleApp;
         std::optional<std::vector<Component>> components;
     };
 

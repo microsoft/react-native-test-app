@@ -6,11 +6,13 @@ struct Component: Decodable {
     let displayName: String?
     let initialProperties: [AnyHashable: Any]?
     let presentationStyle: String?
+    let slug: String?
 }
 
 struct Manifest: Decodable {
     let name: String
     let displayName: String
     let bundleRoot: String?
+    let singleApp: String?
     let components: [Component]?
 }

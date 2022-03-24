@@ -17,10 +17,18 @@ def fixture_path(*args)
 end
 
 class TestTestApp < Minitest::Test
-  def test_app_name
-    name, display_name = app_name(fixture_path('with_resources'))
+  def test_app_config
+    name, display_name, single_app = app_config(fixture_path('with_resources'))
     assert_equal(name, 'TestFixture')
     assert_equal(display_name, 'Test Fixture')
+    assert_nil(single_app)
+  end
+
+  def test_app_config_single_app
+    name, display_name, single_app = app_config(fixture_path('single_app_mode'))
+    assert_equal(name, 'TestFixture')
+    assert_equal(display_name, 'Test Fixture')
+    assert_equal(single_app, 'test-fixture')
   end
 
   def test_autolink_script_path

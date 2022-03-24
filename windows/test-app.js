@@ -402,6 +402,7 @@ function copyAndReplace(srcPath, destPath, replacements, callback = rethrow) {
  *   assetItemFilters: string;
  *   assetFilters: string;
  *   packageCertificate: string;
+ *   singleApp?: string;
  * }} Application name, and paths to directories and files to include.
  */
 function getBundleResources(manifestFilePath, projectFilesDestPath) {
@@ -415,10 +416,11 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
   if (manifestFilePath) {
     try {
       const content = fs.readFileSync(manifestFilePath, textFileReadOptions);
-      const { name, resources, windows } = JSON.parse(content);
+      const { name, singleApp, resources, windows } = JSON.parse(content);
       const projectPath = path.dirname(manifestFilePath);
       return {
         appName: name || defaultName,
+        singleApp,
         appxManifest: projectRelativePath(
           projectPath,
           (windows && windows.appxManifest) || defaultAppxManifest
@@ -547,6 +549,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     assetItemFilters,
     assetFilters,
     packageCertificate,
+    singleApp,
   } = getBundleResources(manifestFilePath, projectFilesDestPath);
 
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
@@ -569,6 +572,9 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
         "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
         "<!-- ReactTestApp asset items -->": assetItems,
         "\\$\\(ReactTestAppPackageManifest\\)": appxManifest,
+        ...(typeof singleApp === "string"
+          ? { "ENABLE_SINGLE_APP_MODE=0;": "ENABLE_SINGLE_APP_MODE=1;" }
+          : undefined),
         ...(useNuGet
           ? {
               "<UseExperimentalNuget>false</UseExperimentalNuget>":

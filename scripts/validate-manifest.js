@@ -27,8 +27,18 @@ function findAppManifest(cwd = process.cwd()) {
 }
 
 function makeValidator() {
-  const { default: Ajv } = require("ajv");
+  const { default: Ajv, _ } = require("ajv");
   const ajv = new Ajv({ allErrors: true });
+  ajv.addKeyword({
+    keyword: "exclude-from-codegen",
+    type: "object",
+    schemaType: "boolean",
+    code: (cxt) => {
+      const { data, schema } = cxt;
+      const op = schema ? _`!==` : _`===`;
+      cxt.fail(_`${data} %2 ${op} 0`);
+    },
+  });
   return ajv.compile(require(`${__dirname}/../schema.json`));
 }
 

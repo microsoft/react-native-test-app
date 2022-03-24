@@ -12,6 +12,7 @@ data class Component(
     val displayName: String?,
     val initialProperties: Bundle?,
     val presentationStyle: String?,
+    val slug: String?,
 )
 
 @JsonClass(generateAdapter = true)
@@ -19,5 +20,6 @@ data class Manifest(
     val name: String,
     val displayName: String,
     val bundleRoot: String?,
+    val singleApp: String?,
     val components: List<Component>?,
 )
