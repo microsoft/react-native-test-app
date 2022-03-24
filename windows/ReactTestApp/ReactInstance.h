@@ -4,6 +4,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <vector>
 
 #include <winrt/Microsoft.ReactNative.h>
@@ -25,6 +26,8 @@ namespace ReactTestApp
     class ReactInstance
     {
     public:
+        static constexpr uint32_t Version = REACT_NATIVE_VERSION;
+
         ReactInstance();
 
         auto const &ReactHost() const
@@ -47,6 +50,9 @@ namespace ReactTestApp
         {
             bundleRoot_ = std::move(bundleRoot);
         }
+
+        std::tuple<winrt::hstring, int> BundlerAddress() const;
+        void BundlerAddress(winrt::hstring host, int port);
 
         bool IsFastRefreshAvailable() const
         {

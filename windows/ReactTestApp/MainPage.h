@@ -26,6 +26,15 @@ namespace winrt::ReactTestApp::implementation
 
         // Debug menu
 
+        void ConfigureBundler(Windows::Foundation::IInspectable const &,
+                              Windows::UI::Xaml::RoutedEventArgs);
+        void ConfigureBundlerDialog_Apply(
+            Windows::Foundation::IInspectable const &,
+            Windows::UI::Xaml::Controls::ContentDialogButtonClickEventArgs const);
+        void ConfigureBundlerDialog_Reset(
+            Windows::Foundation::IInspectable const &,
+            Windows::UI::Xaml::Controls::ContentDialogButtonClickEventArgs const);
+
         void Reload(Windows::Foundation::IInspectable const &, Windows::UI::Xaml::RoutedEventArgs);
         void ToggleBreakOnFirstLine(Windows::Foundation::IInspectable const &,
                                     Windows::UI::Xaml::RoutedEventArgs);

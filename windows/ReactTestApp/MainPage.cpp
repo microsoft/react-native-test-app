@@ -15,6 +15,7 @@
 
 using ReactTestApp::Component;
 using ReactTestApp::JSBundleSource;
+using ReactTestApp::ReactInstance;
 using ReactTestApp::Session;
 using winrt::Microsoft::ReactNative::IJSValueWriter;
 using winrt::Microsoft::ReactNative::ReactNativeHost;
@@ -34,8 +35,10 @@ using winrt::Windows::UI::Xaml::RoutedEventArgs;
 using winrt::Windows::UI::Xaml::Visibility;
 using winrt::Windows::UI::Xaml::Window;
 using winrt::Windows::UI::Xaml::Automation::Peers::MenuBarItemAutomationPeer;
+using winrt::Windows::UI::Xaml::Controls::ContentDialogButtonClickEventArgs;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Controls::MenuFlyoutSeparator;
+using winrt::Windows::UI::Xaml::Controls::TextBoxBeforeTextChangingEventArgs;
 using winrt::Windows::UI::Xaml::Controls::ToggleMenuFlyoutItem;
 using winrt::Windows::UI::Xaml::Input::KeyboardAccelerator;
 using winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs;
@@ -220,7 +223,34 @@ void MainPage::ToggleRememberLastComponent(IInspectable const &sender, RoutedEve
     Session::ShouldRememberLastComponent(item.IsChecked());
 }
 
-void MainPage::Reload(Windows::Foundation::IInspectable const &, Windows::UI::Xaml::RoutedEventArgs)
+void MainPage::ConfigureBundler(IInspectable const &, RoutedEventArgs)
+{
+    auto [host, port] = reactInstance_.BundlerAddress();
+    if (!host.empty()) {
+        BundlerHost().Text(host);
+    }
+    if (port != 0) {
+        BundlerPort().Value(port);
+    }
+
+    ConfigureBundlerDialog().ShowAsync();
+}
+
+void MainPage::ConfigureBundlerDialog_Apply(IInspectable const &,
+                                            ContentDialogButtonClickEventArgs const)
+{
+    auto const rawValue = BundlerPort().Value();
+    auto const port = std::isnan(rawValue) ? 0 : static_cast<int>(rawValue);
+    reactInstance_.BundlerAddress(BundlerHost().Text(), port);
+}
+
+void MainPage::ConfigureBundlerDialog_Reset(IInspectable const &,
+                                            ContentDialogButtonClickEventArgs const)
+{
+    reactInstance_.BundlerAddress({}, 0);
+}
+
+void MainPage::Reload(IInspectable const &, RoutedEventArgs)
 {
     reactInstance_.Reload();
 }
@@ -305,6 +335,10 @@ void MainPage::InitializeDebugMenu()
 
         SetFastRefreshMenuItem(FastRefreshMenuItem(), reactInstance_.UseFastRefresh());
         FastRefreshMenuItem().IsEnabled(reactInstance_.IsFastRefreshAvailable());
+
+        if constexpr (ReactInstance::Version < 6300) {
+            ConfigureBundlerMenuItem().Visibility(Visibility::Collapsed);
+        }
 
         DebugMenuBarItem().IsEnabled(true);
     }

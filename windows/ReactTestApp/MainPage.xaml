@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:react="using:Microsoft.ReactNative">
 
     <Grid Background="{StaticResource SystemControlAcrylicWindowBrush}">
@@ -45,6 +46,7 @@
                     <MenuFlyoutItem x:Name="BreakOnFirstLineMenuItem" Click="ToggleBreakOnFirstLine" AccessKey="B"/>
                     <MenuFlyoutItem x:Name="FastRefreshMenuItem" Click="ToggleFastRefresh" AccessKey="F"/>
                     <MenuFlyoutItem Text="Toggle Inspector" Click="ToggleInspector" AccessKey="I"/>
+                    <MenuFlyoutItem x:Name="ConfigureBundlerMenuItem" Text="Configure Bundler…" Click="ConfigureBundler" AccessKey="C"/>
                 </MenuBarItem>
             </MenuBar>
         </Grid>
@@ -53,6 +55,31 @@
 
         <ContentDialog x:Name="ContentDialog" CloseButtonText="OK">
             <react:ReactRootView x:Name="DialogReactRootView" MinWidth="320" MinHeight="200"/>
+        </ContentDialog>
+
+        <ContentDialog
+            x:Name="ConfigureBundlerDialog"
+            Title="Configure Bundler"
+            PrimaryButtonClick="ConfigureBundlerDialog_Apply"
+            PrimaryButtonText="Apply Changes"
+            SecondaryButtonClick="ConfigureBundlerDialog_Reset"
+            SecondaryButtonText="Reset to Default"
+            CloseButtonText="Cancel">
+
+            <StackPanel Spacing="12" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <TextBlock TextWrapping="Wrap">
+                    Provide a custom bundler address and port.
+                </TextBlock>
+                <TextBox x:Name="BundlerHost" Header="Host" PlaceholderText="0.0.0.0"/>
+                <muxc:NumberBox
+                    x:Name="BundlerPort"
+                    Header="Port"
+                    Minimum="0"
+                    Maximum="65535"
+                    PlaceholderText="8081"
+                />
+            </StackPanel>
+
         </ContentDialog>
     </Grid>
 </Page>
