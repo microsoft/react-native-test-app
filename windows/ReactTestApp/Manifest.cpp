@@ -97,6 +97,7 @@ namespace ReactTestApp
         c.displayName = get_optional<std::string>(j, "displayName");
         c.initialProperties = parseInitialProps(j);
         c.presentationStyle = get_optional<std::string>(j, "presentationStyle");
+        c.slug = get_optional<std::string>(j, "slug");
     }
 
     void from_json(const nlohmann::json &j, Manifest &m)
@@ -104,6 +105,7 @@ namespace ReactTestApp
         m.name = j.at("name");
         m.displayName = j.at("displayName");
         m.bundleRoot = get_optional<std::string>(j, "bundleRoot");
+        m.singleApp = get_optional<std::string>(j, "singleApp");
         m.components = get_optional<std::vector<Component>>(j, "components")
                            .value_or(std::vector<Component>{});
     }

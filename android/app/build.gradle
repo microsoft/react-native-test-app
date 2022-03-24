@@ -93,6 +93,9 @@ android {
                          "ReactTestApp_recommendedFlipperVersion",
                          recommendedFlipperVersion ? "\"${recommendedFlipperVersion}\"" : "\"0\""
 
+        def singleApp = getSingleAppMode()
+        buildConfigField "String", "ReactTestApp_singleApp", singleApp ? "\"${singleApp}\"" : "null"
+
         resValue "string", "app_name", project.ext.react.appName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

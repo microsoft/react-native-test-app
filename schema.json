@@ -19,6 +19,10 @@
           "description": "The style in which to present your component.",
           "type": "string",
           "enum": ["default", "modal"]
+        },
+        "slug": {
+          "description": "URL slug that uniquely identifies this component. Used for deep linking.",
+          "type": "string"
         }
       },
       "required": ["appKey"]
@@ -36,6 +40,10 @@
           "description": "Specifies the root of the bundle file name. E.g., if the bundle file is `index.&lt;platform&gt;.bundle`, `index` is the bundle root. Defaults to `index` and `main`.",
           "type": "string"
         },
+        "singleApp": {
+          "description": "In single-app mode, the component with the specified slug gets launched automatically, essentially behaving as a normal app. Defaults to multi-app mode.",
+          "type": "string"
+        },
         "components": {
           "description": "All components that should be accessible from the home screen should be declared under this property. Each component must have `appKey` set, i.e. the name that you passed to `AppRegistry.registerComponent`.",
           "type": "array",
@@ -43,6 +51,29 @@
         }
       },
       "required": ["name", "displayName"]
+    },
+    "signingConfig": {
+      "type": "object",
+      "properties": {
+        "keyAlias": {
+          "description": "Use this property to specify the alias of key to use in the store",
+          "type": "string"
+        },
+        "keyPassword": {
+          "description": "Use this property to specify the password of key in the store",
+          "type": "string"
+        },
+        "storeFile": {
+          "description": "Use this property to specify the relative file path to the key store file",
+          "type": "string"
+        },
+        "storePassword": {
+          "description": "Use this property to specify the password of the key store",
+          "type": "string"
+        }
+      },
+      "required": ["storeFile"],
+      "exclude-from-codegen": true
     }
   },
   "allOf": [{ "$ref": "#/$defs/manifest" }],
@@ -97,49 +128,13 @@
           "properties": {
             "debug": {
               "description": "Use this property for the debug signing config for the app. The value `storeFile` is required. Android defaults will be provided for other properties.",
-              "type": "object",
-              "properties": {
-                "keyAlias": {
-                  "description": "Use this property to specify the alias of key to use in the store",
-                  "type": "string"
-                },
-                "keyPassword": {
-                  "description": "Use this property to specify the password of key in the store",
-                  "type": "string"
-                },
-                "storeFile": {
-                  "description": "Use this property to specify the relative file path to the key store file",
-                  "type": "string"
-                },
-                "storePassword": {
-                  "description": "Use this property to specify the password of the key store",
-                  "type": "string"
-                }
-              },
-              "required": ["storeFile"]
+              "allOf": [{ "$ref": "#/$defs/signingConfig" }],
+              "type": "object"
             },
             "release": {
               "description": "Use this property for the release signing config for the app. The value `storeFile` is required. Android defaults will be provided for other properties.",
-              "type": "object",
-              "properties": {
-                "keyAlias": {
-                  "description": "Use this property to specify the alias of key to use in the store",
-                  "type": "string"
-                },
-                "keyPassword": {
-                  "description": "Use this property to specify the password of key in the store",
-                  "type": "string"
-                },
-                "storeFile": {
-                  "description": "Use this property to specify the relative file path to the key store file",
-                  "type": "string"
-                },
-                "storePassword": {
-                  "description": "Use this property to specify the password of the key store",
-                  "type": "string"
-                }
-              },
-              "required": ["storeFile"]
+              "allOf": [{ "$ref": "#/$defs/signingConfig" }],
+              "type": "object"
             }
           }
         }

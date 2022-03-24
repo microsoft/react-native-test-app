@@ -37,8 +37,8 @@ final class ContentViewController: UITableViewController {
     private let reactInstance: ReactInstance
     private var sections: [SectionData]
 
-    public init() {
-        reactInstance = ReactInstance()
+    public init(reactInstance: ReactInstance) {
+        self.reactInstance = reactInstance
         sections = []
 
         super.init(style: .grouped)

@@ -2,6 +2,8 @@ import groovy.json.JsonSlurper
 
 import java.nio.file.Paths
 
+ext.manifest = null
+
 ext.buildReactNativeFromSource = { baseDir ->
     def reactNativePath = findNodeModulesPath(baseDir, "react-native")
     return !file("${reactNativePath}/android").exists()
@@ -62,11 +64,9 @@ ext.findNodeModulesPath = { baseDir, packageName ->
     return null
 }
 
-ext.getAppName = { baseDir ->
-    def manifestFile = findFile("app.json")
-    if (manifestFile != null) {
-        def manifest = new JsonSlurper().parseText(manifestFile.text)
-
+ext.getAppName = {
+    def manifest = getManifest()
+    if (manifest != null) {
         def displayName = manifest["displayName"]
         if (displayName instanceof String) {
             return displayName
@@ -81,10 +81,9 @@ ext.getAppName = { baseDir ->
     return "ReactTestApp"
 }
 
-ext.getApplicationId = { baseDir ->
-    def manifestFile = findFile("app.json")
-    if (manifestFile != null) {
-        def manifest = new JsonSlurper().parseText(manifestFile.text)
+ext.getApplicationId = {
+    def manifest = getManifest()
+    if (manifest != null) {
         def config = manifest["android"]
         if (config instanceof Object && config.containsKey("package")) {
             return config["package"]
@@ -121,6 +120,18 @@ ext.getFlipperVersion = { baseDir ->
     return recommendedFlipperVersion
 }
 
+ext.getManifest = {
+    if (manifest == null) {
+        def manifestFile = findFile("app.json")
+        if (manifestFile == null) {
+            return null
+        }
+
+        manifest = new JsonSlurper().parseText(manifestFile.text)
+    }
+    return manifest
+}
+
 ext.getReactNativeVersionNumber = { baseDir ->
     def reactNativePath = findNodeModulesPath(baseDir, "react-native")
     def packageJson = file("${reactNativePath}/package.json")
@@ -129,7 +140,7 @@ ext.getReactNativeVersionNumber = { baseDir ->
     return (major as int) * 10000 + (minor as int) * 100 + (patch as int)
 }
 
-ext.getSigningConfigs = { baseDir ->
+ext.getSigningConfigs = {
     def safeSetMap = { varName, map, prop, defaultVal ->
         map[varName] = prop.containsKey(varName) ? prop.get(varName) : defaultVal
     }
@@ -166,6 +177,18 @@ ext.getSigningConfigs = { baseDir ->
     }
 
     return definedConfigs
+}
+
+ext.getSingleAppMode = {
+    def manifest = getManifest()
+    if (manifest != null) {
+        def singleApp = manifest["singleApp"]
+        if (singleApp instanceof String) {
+            return singleApp
+        }
+    }
+
+    return false
 }
 
 ext.isFabricEnabled = { baseDir ->

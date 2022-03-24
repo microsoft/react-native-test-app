@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -370,7 +369,7 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="React" id="f0Z-7n-fql">
+                            <menuItem title="React" hidden="YES" id="f0Z-7n-fql">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="React" autoenablesItems="NO" id="nwF-AT-VY9">
                                     <items>
@@ -386,7 +385,7 @@
                                                 <action selector="onLoadFromDevServerSelected:" target="Voe-Tx-rLC" id="FOl-Nq-cWc"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Remember Last Opened Component" id="lzS-xk-P1D">
+                                        <menuItem title="Remember Last Opened Component" enabled="NO" id="lzS-xk-P1D">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="onRememberLastComponentSelected:" target="Voe-Tx-rLC" id="TFw-gh-YQX"/>

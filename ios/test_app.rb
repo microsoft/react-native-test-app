@@ -18,11 +18,11 @@ def app_manifest(project_root)
   @app_manifest[project_root] = JSON.parse(File.read(manifest_path))
 end
 
-def app_name(project_root)
+def app_config(project_root)
   manifest = app_manifest(project_root)
-  return [nil, nil] if manifest.nil?
+  return [nil, nil, nil] if manifest.nil?
 
-  [manifest['name'], manifest['displayName']]
+  [manifest['name'], manifest['displayName'], manifest['singleApp']]
 end
 
 def autolink_script_path
@@ -156,16 +156,16 @@ def use_react_native!(project_root, target_platform, options)
 end
 
 def make_project!(xcodeproj, project_root, target_platform, options)
-  src_xcodeproj = project_path(xcodeproj, target_platform)
+  xcodeproj_src = project_path(xcodeproj, target_platform)
   destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
-  dst_xcodeproj = File.join(destination, xcodeproj)
+  xcodeproj_dst = File.join(destination, xcodeproj)
 
   # Copy Xcode project files
   FileUtils.mkdir_p(destination)
-  FileUtils.cp_r(src_xcodeproj, destination)
-  name, display_name = app_name(project_root)
+  FileUtils.cp_r(xcodeproj_src, destination)
+  name, display_name, single_app = app_config(project_root)
   unless name.nil?
-    xcschemes_path = File.join(dst_xcodeproj, 'xcshareddata', 'xcschemes')
+    xcschemes_path = File.join(xcodeproj_dst, 'xcshareddata', 'xcschemes')
     FileUtils.cp(File.join(xcschemes_path, 'ReactTestApp.xcscheme'),
                  File.join(xcschemes_path, "#{name}.xcscheme"))
   end
@@ -180,6 +180,32 @@ def make_project!(xcodeproj, project_root, target_platform, options)
     source = File.expand_path('ReactTestApp', __dir__)
     shared_path = File.join(destination, 'ReactTestAppShared')
     FileUtils.ln_sf(source, shared_path) unless File.exist?(shared_path)
+  end
+
+  # Copy localization files and replace instances of `ReactTestApp` with app display name
+  product_name = display_name || name
+  product_name = if product_name.is_a? String
+                   product_name
+                 else
+                   target.name
+                 end
+  localizations_src = project_path('Localizations', target_platform)
+  if File.exist?(localizations_src)
+    main_strings = 'Main.strings'
+    localizations_dst = File.join(destination, 'Localizations')
+
+    Dir.entries(localizations_src).each do |entry|
+      next if entry.start_with?('.')
+
+      lproj = File.join(localizations_dst, entry)
+      FileUtils.mkdir_p(lproj)
+
+      File.open(File.join(lproj, main_strings), 'w') do |f|
+        File.foreach(File.join(localizations_src, entry, main_strings)) do |line|
+          f.write(line.sub('ReactTestApp', product_name))
+        end
+      end
+    end
   end
 
   react_native = react_native_path(project_root, target_platform)
@@ -207,17 +233,12 @@ def make_project!(xcodeproj, project_root, target_platform, options)
     build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = product_bundle_identifier
   end
 
-  product_name = display_name || name
-  build_settings['PRODUCT_DISPLAY_NAME'] = if product_name.is_a? String
-                                             product_name
-                                           else
-                                             target.name
-                                           end
+  build_settings['PRODUCT_DISPLAY_NAME'] = display_name
 
   supports_flipper = target_platform == :ios && flipper_enabled?
   use_fabric = options[:fabric_enabled] && version >= 6800
 
-  app_project = Xcodeproj::Project.open(dst_xcodeproj)
+  app_project = Xcodeproj::Project.open(xcodeproj_dst)
   app_project.native_targets.each do |target|
     next if target.name != 'ReactTestApp'
 
@@ -242,13 +263,16 @@ def make_project!(xcodeproj, project_root, target_platform, options)
         config.build_settings['OTHER_SWIFT_FLAGS'] << '-DFB_SONARKIT_ENABLED'
         config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FLIPPER'
       end
+      if single_app.is_a? String
+        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
+      end
     end
   end
   app_project.save
 
   config = app_project.build_configurations[0]
   {
-    :xcodeproj_path => dst_xcodeproj,
+    :xcodeproj_path => xcodeproj_dst,
     :platforms => {
       :ios => config.resolve_build_setting('IPHONEOS_DEPLOYMENT_TARGET'),
       :macos => config.resolve_build_setting('MACOSX_DEPLOYMENT_TARGET'),
@@ -262,7 +286,7 @@ def use_test_app_internal!(target_platform, options)
   xcodeproj = 'ReactTestApp.xcodeproj'
   project_root = Pod::Config.instance.installation_root
   project_target = make_project!(xcodeproj, project_root, target_platform, options)
-  dst_xcodeproj, platforms = project_target.values_at(:xcodeproj_path, :platforms)
+  xcodeproj_dst, platforms = project_target.values_at(:xcodeproj_path, :platforms)
 
   require_relative(autolink_script_path)
 
@@ -273,7 +297,7 @@ def use_test_app_internal!(target_platform, options)
     # Allow platform deployment target to be overridden
   end
 
-  project dst_xcodeproj
+  project xcodeproj_dst
 
   react_native_post_install = nil
 
