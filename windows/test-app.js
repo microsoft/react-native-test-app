@@ -765,9 +765,10 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
             "NuGet.Config"
           )
         );
-      if (nugetConfigPath) {
+      const nugetConfigDestPath = path.join(destPath, "NuGet.Config");
+      if (nugetConfigPath && !fs.existsSync(nugetConfigDestPath)) {
         fs.writeFile(
-          path.join(destPath, "NuGet.Config"),
+          nugetConfigDestPath,
           mustache.render(
             fs.readFileSync(nugetConfigPath, textFileReadOptions),
             {}
