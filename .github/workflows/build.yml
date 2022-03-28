@@ -401,7 +401,8 @@ jobs:
         working-directory: example
       - name: Install NuGet packages
         run: |
-          nuget restore -Source "https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json;https://api.nuget.org/v3/index.json"
+          nuget sources Add -Name react-native -Source https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json -ConfigFile NuGet.Config
+          nuget restore
         working-directory: example/windows
       - name: Build
         run: |
