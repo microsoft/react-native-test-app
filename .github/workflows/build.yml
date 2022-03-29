@@ -399,14 +399,18 @@ jobs:
         run: |
           yarn jest
         working-directory: example
-      - name: Install NuGet packages
+      - name: Set up NuGet sources
+        if: ${{ github.event_name == 'schedule' }}
         run: |
-          nuget sources Add -Name react-native -Source https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json -ConfigFile NuGet.Config
-          nuget restore
+          nuget sources Add -Name react-native-windows -Source https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json -ConfigFile NuGet.Config
         working-directory: example/windows
       - name: Build
         run: |
-          ../../scripts/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} Example.sln
+          if ("${{ matrix.configuration }}" -eq "Release") {
+            yarn ci:windows --release --arch ${{ matrix.platform }}
+          } else {
+            yarn ci:windows --arch ${{ matrix.platform }}
+          }
         working-directory: example/windows
       - name: Test
         if: ${{ matrix.platform == 'x64' }}
@@ -439,15 +443,13 @@ jobs:
           if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app }
           else { yarn install-windows-test-app --project-directory=. }
         working-directory: template-example
-      - name: Install NuGet packages
-        run: |
-          if ("${{ matrix.template }}" -eq "all") { cd windows }
-          nuget restore
-        working-directory: template-example
       - name: Build
         run: |
-          if ("${{ matrix.template }}" -eq "all") { ../scripts/MSBuild.ps1 windows/TemplateExample.sln }
-          else { ../scripts/MSBuild.ps1 TemplateExample.sln }
+          if ("${{ matrix.template }}" -eq "all") {
+            yarn react-native run-windows --logging --no-packager --no-launch --no-deploy
+          } else {
+            yarn react-native run-windows --logging --no-packager --no-launch --no-deploy --sln TemplateExample.sln
+          }
         working-directory: template-example
     timeout-minutes: 60
   release:
