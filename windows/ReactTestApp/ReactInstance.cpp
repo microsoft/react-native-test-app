@@ -141,10 +141,10 @@ void ReactInstance::Reload()
     instanceSettings.UseDeveloperSupport(false);
 #endif
 
-#ifdef REACT_NATIVE_VERSION >= 6300
+#if REACT_NATIVE_VERSION >= 6300
     auto [host, port] = BundlerAddress();
     instanceSettings.SourceBundleHost(host);
-    instanceSettings.SourceBundlePort(port);
+    instanceSettings.SourceBundlePort(static_cast<uint16_t>(port));
 #endif  // REACT_NATIVE_VERSION >= 6300
 
     reactNativeHost_.ReloadInstance();
