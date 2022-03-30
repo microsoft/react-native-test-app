@@ -15,7 +15,6 @@ const pacote = require("pacote");
 const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];
 const REACT_NATIVE_VERSIONS = {
   "canary-macos": "^0.66",
-  "canary-windows": "^0.67.0-0",
 };
 
 /**
@@ -61,7 +60,7 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
     const { spawn } = require("child_process");
 
     let isResolved = false;
-    const list = spawn("nuget.exe", [
+    const list = spawn(process.env["NUGET_EXE"] || "nuget.exe", [
       "list",
       "Microsoft.ReactNative.Cxx",
       "-Source",
@@ -128,12 +127,13 @@ async function getProfile(v) {
     }
 
     case "canary-windows": {
-      const { version, dependencies, peerDependencies } = process.env["CI"]
-        ? await fetchReactNativeWindowsCanaryInfoViaNuGet()
-        : await fetchPackageInfo("react-native-windows@canary");
+      const { version, dependencies, peerDependencies } =
+        process.env["CI"] || process.env["NUGET_EXE"]
+          ? await fetchReactNativeWindowsCanaryInfoViaNuGet()
+          : await fetchPackageInfo("react-native-windows@canary");
       return {
         ...pickCommonDependencies(dependencies, peerDependencies),
-        "react-native": REACT_NATIVE_VERSIONS[v],
+        "react-native": peerDependencies?.["react-native"] || "^0.0.0-0",
         "react-native-macos": undefined,
         "react-native-windows": version,
       };

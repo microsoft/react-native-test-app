@@ -555,7 +555,12 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
   const rnWindowsVersionNumber = getVersionNumber(rnWindowsVersion);
   const hermesVersion = useHermes && getHermesVersion(rnWindowsPath);
-  const xamlVersion = rnWindowsVersionNumber < 6700 ? "2.6.0" : "2.7.0";
+  const usePackageReferences =
+    rnWindowsVersionNumber === 0 || rnWindowsVersionNumber >= 6800;
+  const xamlVersion =
+    rnWindowsVersionNumber > 0 && rnWindowsVersionNumber < 6700
+      ? "2.6.0"
+      : "2.7.0";
 
   /** @type {[string, Record<string, string>?][]} */
   const projectFiles = [
@@ -603,7 +608,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       {
         '<package id="Microsoft.UI.Xaml" version="0.0.0" targetFramework="native"/>':
           nuGetPackage("Microsoft.UI.Xaml", xamlVersion),
-        ...(useNuGet
+        ...(useNuGet && !usePackageReferences
           ? {
               '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native"/ -->':
                 nuGetPackage("Microsoft.ReactNative", rnWindowsVersion),
@@ -611,7 +616,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
                 nuGetPackage("Microsoft.ReactNative.Cxx", rnWindowsVersion),
             }
           : undefined),
-        ...(hermesVersion
+        ...(hermesVersion && !usePackageReferences
           ? {
               '<!-- package id="ReactNative.Hermes.Windows" version="0.0.0" targetFramework="native"/ -->':
                 nuGetPackage("ReactNative.Hermes.Windows", hermesVersion),
