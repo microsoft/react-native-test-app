@@ -108,7 +108,7 @@
     "@babel/core": "^7.0.0",
     "@commitlint/cli": "^16.0.0",
     "@commitlint/config-conventional": "^16.0.0",
-    "@microsoft/eslint-plugin-sdl": "^0.1.9",
+    "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^6.0.0",
     "@react-native-community/cli-platform-android": "^6.0.0",
     "@react-native-community/cli-platform-ios": "^6.0.0",

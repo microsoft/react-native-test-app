@@ -1612,14 +1612,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/eslint-plugin-sdl@npm:^0.1.9":
-  version: 0.1.9
-  resolution: "@microsoft/eslint-plugin-sdl@npm:0.1.9"
+"@microsoft/eslint-plugin-sdl@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@microsoft/eslint-plugin-sdl@npm:0.2.0"
   dependencies:
     eslint-plugin-node: 11.1.0
     eslint-plugin-react: 7.24.0
     eslint-plugin-security: 1.4.0
-  checksum: 871f6aa8696b7d1ca5cbbb731a8f86d0d30a1e2f0257be6631755bb189d9aec94ea7f2432912d445585a9df415b10c382196f5117d1f9c34df87fa3f2f17bd26
+  checksum: 44fd7a0d29ebed48fc935d0b0f96394dea4e3a055467b0b53173c76ce44fb33ddf2b5913db6920e92cc5da1974b5c4e7942500f5f22f60f36f8fe1a3b2eae6c6
   languageName: node
   linkType: hard
 
@@ -10595,7 +10595,7 @@ __metadata:
     "@babel/core": ^7.0.0
     "@commitlint/cli": ^16.0.0
     "@commitlint/config-conventional": ^16.0.0
-    "@microsoft/eslint-plugin-sdl": ^0.1.9
+    "@microsoft/eslint-plugin-sdl": ^0.2.0
     "@react-native-community/cli": ^6.0.0
     "@react-native-community/cli-platform-android": ^6.0.0
     "@react-native-community/cli-platform-ios": ^6.0.0
