@@ -27,11 +27,14 @@ use_test_app!
     "react-native.config.js": "const project = (() => {
   try {
     const { iosProjectPath } = require(\\"react-native-test-app\\");
-    return {
-      ios: {
-        project: iosProjectPath(\\".\\"),
-      },
-    };
+    const project = iosProjectPath(\\".\\");
+    return project
+      ? {
+          ios: {
+            project,
+          },
+        }
+      : undefined;
   } catch (_) {
     return undefined;
   }
@@ -143,19 +146,18 @@ use_test_app!
       iosProjectPath,
       windowsProjectPath,
     } = require(\\"react-native-test-app\\");
+    const iosProject = iosProjectPath(\\"ios\\");
     return {
       android: {
         sourceDir: \\"android\\",
         manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
-      },
-      ios: {
-        project: iosProjectPath(\\"ios\\"),
       },
       windows: fs.existsSync(\\"windows/Test.sln\\") && {
         sourceDir: \\"windows\\",
         solutionFile: \\"Test.sln\\",
         project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
       },
+      ...(iosProject ? { ios: { project: iosProject } } : undefined),
     };
   } catch (_) {
     return undefined;
@@ -217,19 +219,18 @@ Object {
       iosProjectPath,
       windowsProjectPath,
     } = require(\\"react-native-test-app\\");
+    const iosProject = iosProjectPath(\\"ios\\");
     return {
       android: {
         sourceDir: \\"android\\",
         manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
-      },
-      ios: {
-        project: iosProjectPath(\\"ios\\"),
       },
       windows: fs.existsSync(\\"windows/Test.sln\\") && {
         sourceDir: \\"windows\\",
         solutionFile: \\"Test.sln\\",
         project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
       },
+      ...(iosProject ? { ios: { project: iosProject } } : undefined),
     };
   } catch (_) {
     return undefined;
@@ -252,19 +253,18 @@ module.exports = {
       iosProjectPath,
       windowsProjectPath,
     } = require(\\"react-native-test-app\\");
+    const iosProject = iosProjectPath(\\"ios\\");
     return {
       android: {
         sourceDir: \\"android\\",
         manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
-      },
-      ios: {
-        project: iosProjectPath(\\"ios\\"),
       },
       windows: fs.existsSync(\\"windows/Test.sln\\") && {
         sourceDir: \\"windows\\",
         solutionFile: \\"Test.sln\\",
         project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
       },
+      ...(iosProject ? { ios: { project: iosProject } } : undefined),
     };
   } catch (_) {
     return undefined;
@@ -316,19 +316,18 @@ use_test_app!
       iosProjectPath,
       windowsProjectPath,
     } = require(\\"react-native-test-app\\");
+    const iosProject = iosProjectPath(\\"ios\\");
     return {
       android: {
         sourceDir: \\"android\\",
         manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
-      },
-      ios: {
-        project: iosProjectPath(\\"ios\\"),
       },
       windows: fs.existsSync(\\"windows/Test.sln\\") && {
         sourceDir: \\"windows\\",
         solutionFile: \\"Test.sln\\",
         project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
       },
+      ...(iosProject ? { ios: { project: iosProject } } : undefined),
     };
   } catch (_) {
     return undefined;
@@ -450,19 +449,18 @@ use_test_app!
       iosProjectPath,
       windowsProjectPath,
     } = require(\\"react-native-test-app\\");
+    const iosProject = iosProjectPath(\\"ios\\");
     return {
       android: {
         sourceDir: \\"android\\",
         manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
-      },
-      ios: {
-        project: iosProjectPath(\\"ios\\"),
       },
       windows: fs.existsSync(\\"windows/Test.sln\\") && {
         sourceDir: \\"windows\\",
         solutionFile: \\"Test.sln\\",
         project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
       },
+      ...(iosProject ? { ios: { project: iosProject } } : undefined),
     };
   } catch (_) {
     return undefined;
@@ -591,19 +589,18 @@ use_test_app!
       iosProjectPath,
       windowsProjectPath,
     } = require(\\"react-native-test-app\\");
+    const iosProject = iosProjectPath(\\"ios\\");
     return {
       android: {
         sourceDir: \\"android\\",
         manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
-      },
-      ios: {
-        project: iosProjectPath(\\"ios\\"),
       },
       windows: fs.existsSync(\\"windows/Test.sln\\") && {
         sourceDir: \\"windows\\",
         solutionFile: \\"Test.sln\\",
         project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
       },
+      ...(iosProject ? { ios: { project: iosProject } } : undefined),
     };
   } catch (_) {
     return undefined;

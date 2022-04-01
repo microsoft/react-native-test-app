@@ -7,19 +7,18 @@ const project = (() => {
       iosProjectPath,
       windowsProjectPath,
     } = require("react-native-test-app");
+    const iosProject = iosProjectPath("ios");
     return {
       android: {
         sourceDir: "android",
         manifestPath: androidManifestPath(path.join(__dirname, "android")),
-      },
-      ios: {
-        project: iosProjectPath("ios"),
       },
       windows: fs.existsSync("windows/Example.sln") && {
         sourceDir: "windows",
         solutionFile: "Example.sln",
         project: windowsProjectPath(path.join(__dirname, "windows")),
       },
+      ...(iosProject ? { ios: { project: iosProject } } : undefined),
     };
   } catch (_) {
     return undefined;
