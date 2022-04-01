@@ -233,23 +233,33 @@ function androidManifestPath(sourceDir) {
 
 /**
  * @param {string} sourceDir
- * @returns {string}
+ * @returns {string | undefined}
  */
 function iosProjectPath(sourceDir) {
-  const useOldWorkaround = packageSatisfiesVersionRange(
-    "@react-native-community/cli-platform-ios",
+  const cliPlatformIOS = "@react-native-community/cli-platform-ios";
+
+  const needsDummyProject = packageSatisfiesVersionRange(
+    cliPlatformIOS,
     "<5.0.2"
   );
-  if (useOldWorkaround) {
+  if (needsDummyProject) {
     // Prior to @react-native-community/cli-platform-ios v5.0.0, `project` was
     // only used to infer `sourceDir` and `podfile`.
     return path.join(sourceDir, "ReactTestApp-Dummy.xcodeproj");
   }
 
-  // `sourceDir` and `podfile` detection was fixed in
-  // @react-native-community/cli-platform-ios v5.0.2 (see
-  // https://github.com/react-native-community/cli/pull/1444).
-  return "node_modules/.generated/ios/ReactTestApp.xcodeproj";
+  const needsProjectPath = packageSatisfiesVersionRange(
+    cliPlatformIOS,
+    "<8.0.0"
+  );
+  if (needsProjectPath) {
+    // `sourceDir` and `podfile` detection was fixed in
+    // @react-native-community/cli-platform-ios v5.0.2 (see
+    // https://github.com/react-native-community/cli/pull/1444).
+    return "node_modules/.generated/ios/ReactTestApp.xcodeproj";
+  }
+
+  return undefined;
 }
 
 /**
@@ -308,11 +318,14 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
           "const project = (() => {",
           "  try {",
           '    const { iosProjectPath } = require("react-native-test-app");',
-          "    return {",
-          "      ios: {",
-          '        project: iosProjectPath("."),',
-          "      },",
-          "    };",
+          '    const project = iosProjectPath(".");',
+          "    return project",
+          "      ? {",
+          "          ios: {",
+          "            project,",
+          "          },",
+          "        }",
+          "      : undefined;",
           "  } catch (_) {",
           "    return undefined;",
           "  }",
