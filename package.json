@@ -137,7 +137,9 @@
   },
   "packageManager": "yarn@3.1.1",
   "resolutions": {
-    "eslint-plugin-react": "^7.26.0",
+    "@commitlint/is-ignored/semver": "^7.3.5",
+    "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
+    "core-js-compat/semver": "^7.3.5",
     "npm/chalk": "^4.1.0"
   },
   "workspaces": [
