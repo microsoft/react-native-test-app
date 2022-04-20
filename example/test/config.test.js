@@ -14,6 +14,11 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
+const {
+  version: cliVersion,
+} = require("@react-native-community/cli/package.json");
+const cliMajorVersion = cliVersion.split(".")[0];
+
 describe("react-native config", () => {
   const exampleRoot = path.sep + path.join("react-native-test-app", "example");
   const reactNativePath = path.join(
@@ -22,7 +27,11 @@ describe("react-native config", () => {
     "react-native"
   );
 
-  test("contains Android config", () => {
+  test("contains Android config (@react-native-community/cli@<8.0.0)", () => {
+    if (cliMajorVersion >= 8) {
+      return;
+    }
+
     const sourceDir = path.join(exampleRoot, "android");
 
     expect(loadConfig()).toMatchObject({
@@ -69,8 +78,41 @@ describe("react-native config", () => {
     });
   });
 
-  test("contains iOS config", () => {
-    if (os.platform() === "win32") {
+  test("contains Android config (@react-native-community/cli@>=8.0.0)", () => {
+    if (cliMajorVersion < 8) {
+      return;
+    }
+
+    const sourceDir = path.join(exampleRoot, "android");
+
+    expect(loadConfig()).toMatchObject({
+      root: expect.stringContaining(exampleRoot),
+      reactNativePath: expect.stringContaining(reactNativePath),
+      dependencies: expect.objectContaining({
+        "react-native-test-app": expect.objectContaining({
+          name: "react-native-test-app",
+        }),
+      }),
+      commands: expect.arrayContaining([
+        expect.objectContaining({
+          name: "init-test-app",
+        }),
+      ]),
+      platforms: expect.objectContaining({
+        android: expect.anything(),
+      }),
+      project: expect.objectContaining({
+        android: {
+          sourceDir: expect.stringContaining(sourceDir),
+          appName: "app",
+          packageName: "com.microsoft.reacttestapp",
+        },
+      }),
+    });
+  });
+
+  test("contains iOS config (@react-native-community/cli@<8.0.0)", () => {
+    if (os.platform() === "win32" || cliMajorVersion >= 8) {
       return;
     }
 
@@ -102,6 +144,41 @@ describe("react-native config", () => {
             path.join(exampleRoot, "Example-Tests.podspec")
           ),
         }),
+      }),
+    });
+  });
+
+  test("contains iOS config (@react-native-community/cli@>=8.0.0)", () => {
+    if (os.platform() === "win32" || cliMajorVersion < 8) {
+      return;
+    }
+
+    const sourceDir = path.join(exampleRoot, "ios");
+
+    expect(loadConfig()).toMatchObject({
+      root: expect.stringContaining(exampleRoot),
+      reactNativePath: expect.stringContaining(reactNativePath),
+      dependencies: expect.objectContaining({
+        "react-native-test-app": expect.objectContaining({
+          name: "react-native-test-app",
+        }),
+      }),
+      commands: expect.arrayContaining([
+        expect.objectContaining({
+          name: "init-test-app",
+        }),
+      ]),
+      platforms: expect.objectContaining({
+        ios: expect.anything(),
+      }),
+      project: expect.objectContaining({
+        ios: {
+          sourceDir: expect.stringContaining(sourceDir),
+          xcodeProject: {
+            name: "Example.xcworkspace",
+            isWorkspace: true,
+          },
+        },
       }),
     });
   });
