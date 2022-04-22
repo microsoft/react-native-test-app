@@ -403,6 +403,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           nuget sources Add -Name react-native-windows -Source https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json -ConfigFile NuGet.Config
+          cp NuGet.Config ../node_modules/.generated/windows/ReactTestApp
         working-directory: example/windows
       - name: Build
         run: |
