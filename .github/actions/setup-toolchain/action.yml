@@ -22,7 +22,7 @@ runs:
       uses: microsoft/setup-msbuild@v1.1
     - name: Set up Ruby
       if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' || inputs.platform == 'node' }}
-      uses: ruby/setup-ruby@v1.102.0
+      uses: ruby/setup-ruby@v1.103.0
       with:
         ruby-version: "3.0"
         bundler: Gemfile.lock
