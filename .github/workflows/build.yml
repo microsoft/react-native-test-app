@@ -23,7 +23,7 @@ jobs:
         uses: ./.github/actions/yarn
       - name: Lint commit message
         run: |
-          yarn lint:commit
+          npm run lint:commit
   lint-test:
     name: "lint + test"
     strategy:
@@ -50,9 +50,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          yarn codegen
+          npm run codegen
           if [[ -n "$GITHUB_TOKEN" ]]; then
-            git diff | yarn suggestion-bot
+            git diff | npx suggestion-bot
           fi
           git diff --exit-code
         shell: bash
@@ -90,22 +90,22 @@ jobs:
           #       account.
           scripts/prettier-diff.js $(git ls-files '*.js' '*.yml' 'test/**/*.json') || true
           echo "::add-matcher::.github/eslint-stylish.json"
-          yarn lint:js
+          npm run lint:js
           echo "::remove-matcher owner=eslint-stylish::"
-          yarn tsc
-          yarn test:js --ci
+          npx tsc
+          npm run test:js -- --ci
       - name: ktlint
         if: ${{ matrix.platform == 'macos' }}
         run: |
           brew install ktlint
           echo "::add-matcher::.github/ktlint.json"
-          yarn lint:kt
+          npm run lint:kt
           echo "::remove-matcher owner=ktlint::"
       - name: SwiftFormat
         if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
         run: |
           echo "::add-matcher::.github/swiftformat.json"
-          yarn format:swift --lint
+          npm run format:swift -- --lint
           echo "::remove-matcher owner=swiftformat::"
       - name: SwiftLint
         if: ${{ matrix.platform == 'macos' }}
@@ -134,7 +134,7 @@ jobs:
           # https://github.com/microsoft/react-native-macos/issues/620 for more
           # details.
           yarn
-          npm run set-react-version main
+          npm run set-react-version -- main
           rm example/ios/Podfile.lock
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -142,7 +142,7 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Bundle JavaScript
         run: |
-          yarn build:ios || yarn build:ios
+          npm run build:ios || npm run build:ios
         working-directory: example
       - name: Install Pods
         uses: ./.github/actions/cocoapods
@@ -155,7 +155,7 @@ jobs:
         working-directory: example
       - name: Test `react-native config`
         run: |
-          yarn jest
+          npx jest
         working-directory: example
       - name: Test
         run: |
@@ -183,7 +183,7 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          yarn build:ios || yarn build:ios
+          npm run build:ios || npm run build:ios
         working-directory: template-example
       - name: Determine project directory
         id: configure
@@ -224,7 +224,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           yarn
-          npm run set-react-version nightly
+          npm run set-react-version -- nightly
         shell: bash
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -232,10 +232,12 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Test `react-native config`
         run: |
-          yarn jest
+          npx jest
         working-directory: example
       - name: Bundle JavaScript
         run: |
+          # `npm run` fails with "Workspaces not supported for global packages"
+          # on Windows if we don't use `yarn` here. ¯\_(ツ)_/¯
           yarn build:android || yarn build:android
         shell: bash
         working-directory: example
@@ -292,7 +294,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           yarn
-          npm run set-react-version canary-macos
+          npm run set-react-version -- canary-macos
           rm example/macos/Podfile.lock
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -300,7 +302,7 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Bundle JavaScript
         run: |
-          yarn build:macos || yarn build:macos
+          npm run build:macos || npm run build:macos
         working-directory: example
       - name: Install Pods
         uses: ./.github/actions/cocoapods
@@ -313,7 +315,7 @@ jobs:
         working-directory: example
       - name: Test `react-native config`
         run: |
-          yarn jest
+          npx jest
         working-directory: example
       - name: Test
         if: ${{ github.event_name != 'schedule' }}
@@ -347,7 +349,7 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          yarn build:macos || yarn build:macos
+          npm run build:macos || npm run build:macos
         working-directory: template-example
       - name: Determine project directory
         id: configure
@@ -384,7 +386,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           yarn
-          npm run set-react-version canary-windows
+          npm run set-react-version -- canary-windows
         shell: bash
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -392,12 +394,12 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Build bundle and create solution
         run: |
-          yarn build:windows
-          yarn install-windows-test-app --use-nuget
+          npm run build:windows
+          npx install-windows-test-app --use-nuget
         working-directory: example
       - name: Test `react-native config`
         run: |
-          yarn jest
+          npx jest
         working-directory: example
       - name: Set up NuGet sources
         if: ${{ github.event_name == 'schedule' }}
@@ -408,9 +410,9 @@ jobs:
       - name: Build
         run: |
           if ("${{ matrix.configuration }}" -eq "Release") {
-            yarn ci:windows --release --arch ${{ matrix.platform }}
+            npm run ci:windows -- --release --arch ${{ matrix.platform }}
           } else {
-            yarn ci:windows --arch ${{ matrix.platform }}
+            npm run ci:windows -- --arch ${{ matrix.platform }}
           }
         working-directory: example/windows
       - name: Test
@@ -440,16 +442,16 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Build bundle and create solution
         run: |
-          yarn build:windows
-          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app }
-          else { yarn install-windows-test-app --project-directory=. }
+          npm run build:windows
+          if ("${{ matrix.template }}" -eq "all") { npx install-windows-test-app }
+          else { npx install-windows-test-app --project-directory=. }
         working-directory: template-example
       - name: Build
         run: |
           if ("${{ matrix.template }}" -eq "all") {
-            yarn react-native run-windows --logging --no-packager --no-launch --no-deploy
+            npx react-native run-windows --logging --no-packager --no-launch --no-deploy
           } else {
-            yarn react-native run-windows --logging --no-packager --no-launch --no-deploy --sln TemplateExample.sln
+            npx react-native run-windows --logging --no-packager --no-launch --no-deploy --sln TemplateExample.sln
           }
         working-directory: template-example
     timeout-minutes: 60

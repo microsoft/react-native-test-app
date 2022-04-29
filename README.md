@@ -159,7 +159,7 @@ yarn build:ios
 Before you can run the Windows app, you must first generate it:
 
 ```sh
-yarn install-windows-test-app --use-nuget
+npx install-windows-test-app --use-nuget
 ```
 
 To start the Windows app, run:

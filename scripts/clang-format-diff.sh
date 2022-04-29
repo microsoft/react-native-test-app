@@ -7,4 +7,4 @@ if [[ -z $DEBUG ]]; then
 fi
 git diff --unified=0 --no-color @^ \
   | python clang-format-diff.py -p1 -regex '.*\.(cpp|cc|c\+\+|cxx|c|cl|h|hh|hpp|m|mm|inc)' -sort-includes \
-  | yarn suggestion-bot
+  | npx suggestion-bot
