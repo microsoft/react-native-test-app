@@ -93,7 +93,7 @@ jobs:
           npm run lint:js
           echo "::remove-matcher owner=eslint-stylish::"
           npx tsc
-          npm run test:js --ci
+          npm run test:js -- --ci
       - name: ktlint
         if: ${{ matrix.platform == 'macos' }}
         run: |
@@ -105,7 +105,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
         run: |
           echo "::add-matcher::.github/swiftformat.json"
-          npm run format:swift --lint
+          npm run format:swift -- --lint
           echo "::remove-matcher owner=swiftformat::"
       - name: SwiftLint
         if: ${{ matrix.platform == 'macos' }}
@@ -134,7 +134,7 @@ jobs:
           # https://github.com/microsoft/react-native-macos/issues/620 for more
           # details.
           yarn
-          npm run set-react-version main
+          npm run set-react-version -- main
           rm example/ios/Podfile.lock
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -224,7 +224,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           yarn
-          npm run set-react-version nightly
+          npm run set-react-version -- nightly
         shell: bash
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -236,7 +236,9 @@ jobs:
         working-directory: example
       - name: Bundle JavaScript
         run: |
-          npm run build:android || npm run build:android
+          # `npm run` fails with "Workspaces not supported for global packages"
+          # on Windows if we don't use `yarn` here. ¯\_(ツ)_/¯
+          yarn build:android || yarn build:android
         shell: bash
         working-directory: example
       - name: Build
@@ -265,7 +267,7 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          npm run build:android || npm run build:android
+          yarn build:android || yarn build:android
         shell: bash
         working-directory: template-example
       - name: Build
@@ -292,7 +294,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           yarn
-          npm run set-react-version canary-macos
+          npm run set-react-version -- canary-macos
           rm example/macos/Podfile.lock
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -384,7 +386,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           yarn
-          npm run set-react-version canary-windows
+          npm run set-react-version -- canary-windows
         shell: bash
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -408,9 +410,9 @@ jobs:
       - name: Build
         run: |
           if ("${{ matrix.configuration }}" -eq "Release") {
-            npm run ci:windows --release --arch ${{ matrix.platform }}
+            npm run ci:windows -- --release --arch ${{ matrix.platform }}
           } else {
-            npm run ci:windows --arch ${{ matrix.platform }}
+            npm run ci:windows -- --arch ${{ matrix.platform }}
           }
         working-directory: example/windows
       - name: Test
