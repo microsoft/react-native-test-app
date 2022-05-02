@@ -113,7 +113,7 @@ allprojects {
     "android/settings.gradle": "pluginManagement {
     repositories {
         gradlePluginPortal()
-        mavenLocal()
+        mavenCentral()
         google()
     }
 }
@@ -410,7 +410,7 @@ allprojects {
     "android/settings.gradle": "pluginManagement {
     repositories {
         gradlePluginPortal()
-        mavenLocal()
+        mavenCentral()
         google()
     }
 }
@@ -556,7 +556,7 @@ allprojects {
     "android/settings.gradle": "pluginManagement {
     repositories {
         gradlePluginPortal()
-        mavenLocal()
+        mavenCentral()
         google()
     }
 }

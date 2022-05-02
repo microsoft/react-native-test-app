@@ -544,7 +544,7 @@ const getConfig = (() => {
               "pluginManagement {",
               "    repositories {",
               "        gradlePluginPortal()",
-              "        mavenLocal()",
+              "        mavenCentral()",
               "        google()",
               "    }",
               "}",

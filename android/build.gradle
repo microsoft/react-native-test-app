@@ -1,8 +1,0 @@
-plugins {
-    apply(from: "${buildscript.sourceFile.getParent()}/dependencies.gradle")
-
-    id("com.android.application") version "${androidPluginVersion}" apply false
-    id("com.android.library") version "${androidPluginVersion}" apply false
-    id("kotlin-android") version "${kotlinVersion}" apply false
-    id("kotlin-kapt") version "${kotlinVersion}" apply false
-}
