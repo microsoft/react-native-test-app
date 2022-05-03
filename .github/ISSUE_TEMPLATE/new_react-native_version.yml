@@ -1,0 +1,54 @@
+name: "New `react-native` version \U0000269B"
+description: Add support for the latest version of `react-native`
+title: "Add support for `react-native` <version>"
+labels: [enhancement]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of `react-native` needs to be added?
+      placeholder: "Example: 0.69.0"
+    validations:
+      required: true
+  - type: input
+    id: discussion
+    attributes:
+      label: Discussion
+      description: Where is this release discussed?
+      placeholder: "Example: https://github.com/reactwg/react-native-releases/discussions/21"
+    validations:
+      required: true
+  - type: checkboxes
+    id: platforms
+    attributes:
+      label: What platforms will be updated?
+      description: "Select all that apply:"
+      options:
+        - label: Android
+        - label: iOS
+        - label: macOS
+        - label: Windows
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Leave these unchecked. Combinations of configurations that have been tested.
+      options:
+        - label: "Android - Fabric: disabled"
+        - label: "Android - Fabric: **enabled**"
+        - label: "iOS - Fabric: disabled / Hermes: disabled"
+        - label: "iOS - Fabric: disabled / Hermes: **enabled**"
+        - label: "iOS - Fabric: **enabled** / Hermes: disabled"
+        - label: "iOS - Fabric: **enabled** / Hermes: **enabled**"
+        - label: "macOS"
+        - label: "Windows - NuGet: disabled"
+        - label: "Windows - NuGet: **enabled**"
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/microsoft/react-native-test-app/blob/trunk/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
