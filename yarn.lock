@@ -8554,11 +8554,11 @@ __metadata:
   linkType: hard
 
 "memfs@npm:^3.3.0":
-  version: 3.4.1
-  resolution: "memfs@npm:3.4.1"
+  version: 3.4.3
+  resolution: "memfs@npm:3.4.3"
   dependencies:
     fs-monkey: 1.0.3
-  checksum: 6d2f49d447d1be24ff9c747618933784eeb059189bc6a0d77b7a51c7daf06e2d3a74674a2e2ff1520e2c312bf91e719ed37144cf05087379b3ba0aef0b6aa062
+  checksum: c947ef46e2036524ba120cb42fa502fd75dae8d49d0c53e818d3d3780b9a3a47845705cd1cf51eec04c70f1db590ca7b6c7f78dd5a65883bb253fcedf86f412c
   languageName: node
   linkType: hard
 
