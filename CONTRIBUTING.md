@@ -161,10 +161,10 @@ If you choose to use Visual Studio, remember to first set the target platform to
 ### Testing Other React Native Versions
 
 `react-native-test-app` supports multiple versions of React Native. Use
-`set-react-version` to set the version, e.g. to use 0.64:
+`set-react-version` to set the version, e.g. to use 0.68:
 
 ```sh
-yarn set-react-version 0.64
+npm run set-react-version 0.68
 ```
 
 This will modify both `package.json` and `example/package.json` to use packages
