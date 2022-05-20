@@ -2536,16 +2536,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-fetch@npm:^2.5.12":
-  version: 2.5.12
-  resolution: "@types/node-fetch@npm:2.5.12"
-  dependencies:
-    "@types/node": "*"
-    form-data: ^3.0.0
-  checksum: ad63c85ba6a9477b8e057ec8682257738130d98e8ece4e31141789bd99df9d9147985cc8bc0cb5c8983ed5aa6bb95d46df23d1e055f4ad5cf8b82fc69cf626c7
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:*, @types/node@npm:>=12, @types/node@npm:^16.0.0":
   version: 16.11.36
   resolution: "@types/node@npm:16.11.36"
@@ -2557,45 +2547,6 @@ __metadata:
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
   checksum: e87bccbf11f95035c89a132b52b79ce69a1e3652fe55962363063c9c0dae0fe2477ebc585e03a9652adc6f381d24ba5589cc5e51849df4ced3d3e004a7d40ed5
-  languageName: node
-  linkType: hard
-
-"@types/npm-package-arg@npm:*":
-  version: 6.1.1
-  resolution: "@types/npm-package-arg@npm:6.1.1"
-  checksum: b7027893d3dee6c265d5904c441648db741788e35541a628886326d8f6049d3e31b121b881c245cde81806b76ca5356449a9d12d738bc77d056dba6b3e5af724
-  languageName: node
-  linkType: hard
-
-"@types/npm-registry-fetch@npm:*":
-  version: 8.0.3
-  resolution: "@types/npm-registry-fetch@npm:8.0.3"
-  dependencies:
-    "@types/node": "*"
-    "@types/node-fetch": ^2.5.12
-    "@types/npm-package-arg": "*"
-    "@types/npmlog": "*"
-    "@types/ssri": "*"
-  checksum: 22c97cda275b1e0716267bd2495170b7ca4e671db17b6f4662c3e8c4d3df871af07632803bc741c2f072c4894b14d8982aed9863b2747f0a1210bc35fe0633e7
-  languageName: node
-  linkType: hard
-
-"@types/npmlog@npm:*":
-  version: 4.1.4
-  resolution: "@types/npmlog@npm:4.1.4"
-  checksum: 740f7431ccfc0e127aa8d162fe05c6ce8aa71290be020d179b2824806d19bd2c706c7e0c9a3c9963cefcdf2ceacb1dec6988c394c3694451387759dafe0aa927
-  languageName: node
-  linkType: hard
-
-"@types/pacote@npm:^11.0.0":
-  version: 11.1.3
-  resolution: "@types/pacote@npm:11.1.3"
-  dependencies:
-    "@types/node": "*"
-    "@types/npm-registry-fetch": "*"
-    "@types/npmlog": "*"
-    "@types/ssri": "*"
-  checksum: b726ebe9b44838d7ac19b0d21113c3028f0d98842822a3c87b8084ea15b04fc14ed7305bda702b2a6794c84f274a0cfadbcfbfd370c408c96ad32cb76f59aa52
   languageName: node
   linkType: hard
 
@@ -2643,15 +2594,6 @@ __metadata:
   version: 7.3.9
   resolution: "@types/semver@npm:7.3.9"
   checksum: 60bfcfdfa7f937be2c6f4b37ddb6714fb0f27b05fe4cbdfdd596a97d35ed95d13ee410efdd88e72a66449d0384220bf20055ab7d6b5df10de4990fbd20e5cbe0
-  languageName: node
-  linkType: hard
-
-"@types/ssri@npm:*":
-  version: 7.1.1
-  resolution: "@types/ssri@npm:7.1.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: 0327eb212a8d52e09f0fe4df5e0f580db9daaf2e03fc9dbbc5c1356c92fd870084588e5b0b9b58546e1a5cae9a825097a74100c463b241f38dafb49043569de3
   languageName: node
   linkType: hard
 
@@ -10051,7 +9993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pacote@npm:*, pacote@npm:^11.0.0, pacote@npm:^11.1.11, pacote@npm:^11.2.6, pacote@npm:^11.3.0, pacote@npm:^11.3.1, pacote@npm:^11.3.5":
+"pacote@npm:*, pacote@npm:^11.1.11, pacote@npm:^11.2.6, pacote@npm:^11.3.0, pacote@npm:^11.3.1, pacote@npm:^11.3.5":
   version: 11.3.5
   resolution: "pacote@npm:11.3.5"
   dependencies:
@@ -10609,7 +10551,6 @@ __metadata:
     "@types/jest": ^27.0.0
     "@types/mustache": ^4.0.0
     "@types/node": ^16.0.0
-    "@types/pacote": ^11.0.0
     "@types/prompts": ~2.0.0
     "@types/rimraf": ^3.0.0
     "@types/semver": ^7.3.6
@@ -10620,7 +10561,6 @@ __metadata:
     eslint-plugin-jest: ^26.0.0
     jest: ^27.0.0
     memfs: ^3.3.0
-    pacote: ^11.0.0
     prettier: ^2.3.1
     prompts: ^2.4.0
     react: 17.0.2

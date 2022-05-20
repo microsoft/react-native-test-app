@@ -2,7 +2,15 @@
 // @ts-check
 "use strict";
 
-const pacote = require("pacote");
+/**
+ * Reminder that this script is meant to be runnable without installing
+ * dependencies. It can therefore not rely on any external libraries.
+ */
+import { spawn } from "node:child_process";
+import * as fs from "node:fs";
+import { EOL } from "node:os";
+import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 
 /**
  * @typedef {{
@@ -42,11 +50,34 @@ function keys(obj) {
  * @return {Promise<Manifest>}
  */
 function fetchPackageInfo(pkg) {
-  return pacote.manifest(pkg).catch(() => ({
-    version: undefined,
-    dependencies: {},
-    peerDependencies: {},
-  }));
+  return new Promise((resolve, reject) => {
+    const buffers = [];
+    const npmView = spawn("npm", ["view", "--json", pkg]);
+    npmView.stdout.on("data", (data) => {
+      buffers.push(data);
+    });
+    npmView.on("close", (exitCode) => {
+      if (exitCode !== 0) {
+        reject();
+      } else if (buffers.length === 0) {
+        resolve({
+          version: undefined,
+          dependencies: {},
+          peerDependencies: {},
+        });
+      } else {
+        const json = Buffer.concat(buffers).toString().trim();
+        const result = JSON.parse(json);
+        if (Array.isArray(result)) {
+          // If there are multiple packages matching the version range, pick
+          // the last (latest) one.
+          resolve(result[result.length - 1]);
+        } else {
+          resolve(result);
+        }
+      }
+    });
+  });
 }
 
 /**
@@ -56,8 +87,6 @@ function fetchPackageInfo(pkg) {
 function fetchReactNativeWindowsCanaryInfoViaNuGet() {
   return new Promise((resolve) => {
     const pattern = /Microsoft\.ReactNative\.Cxx ([-.\d]*canary[-.\d]*)/;
-
-    const { spawn } = require("child_process");
 
     let isResolved = false;
     const list = spawn(process.env["NUGET_EXE"] || "nuget.exe", [
@@ -185,7 +214,7 @@ async function getProfile(v) {
 
 const { [2]: version } = process.argv;
 if (!isValidVersion(version)) {
-  const script = require("path").basename(__filename);
+  const script = path.basename(fileURLToPath(import.meta.url));
   console.log(
     `Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`
   );
@@ -195,9 +224,6 @@ if (!isValidVersion(version)) {
 (async () => {
   const profile = await getProfile(version);
   console.log(profile);
-
-  const fs = require("fs");
-  const { EOL } = require("os");
 
   ["package.json", "example/package.json"].forEach((manifestPath) => {
     const content = fs.readFileSync(manifestPath, { encoding: "utf-8" });
