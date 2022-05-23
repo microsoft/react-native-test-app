@@ -8,7 +8,7 @@
  */
 import { spawn } from "node:child_process";
 import * as fs from "node:fs";
-import { EOL } from "node:os";
+import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -24,6 +24,15 @@ const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];
 const REACT_NATIVE_VERSIONS = {
   "canary-macos": "^0.66",
 };
+
+/**
+ * Escapes given string for use in Command Prompt.
+ * @param {string} str
+ * @returns
+ */
+function cmdEscape(str) {
+  return str.replace(/([\^])/g, "^^^$1");
+}
 
 /**
  * Returns whether specified string is a valid version number.
@@ -49,10 +58,17 @@ function keys(obj) {
  * @param {string} pkg
  * @return {Promise<Manifest>}
  */
-function fetchPackageInfo(pkg) {
+export function fetchPackageInfo(pkg) {
   return new Promise((resolve, reject) => {
     const buffers = [];
-    const npmView = spawn("npm", ["view", "--json", pkg]);
+    const npmView =
+      os.platform() === "win32"
+        ? spawn(
+            "cmd.exe",
+            ["/d", "/s", "/c", cmdEscape(`"npm view --json ${pkg}"`)],
+            { windowsVerbatimArguments: true }
+          )
+        : spawn("npm", ["view", "--json", pkg]);
     npmView.stdout.on("data", (data) => {
       buffers.push(data);
     });
@@ -235,7 +251,7 @@ if (!isValidVersion(version)) {
     const tmpFile = `${manifestPath}.tmp`;
     fs.writeFile(
       tmpFile,
-      JSON.stringify(manifest, undefined, 2) + EOL,
+      JSON.stringify(manifest, undefined, 2) + os.EOL,
       (err) => {
         if (err) {
           throw err;
