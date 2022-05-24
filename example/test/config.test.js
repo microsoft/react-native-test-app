@@ -210,7 +210,6 @@ describe("react-native config", () => {
           name: "init-test-app",
         }),
       ]),
-      assets: [],
       platforms: expect.objectContaining({
         windows: expect.objectContaining({
           npmPackageName: "react-native-windows",
