@@ -7,7 +7,7 @@
  * dependencies. It can therefore not rely on any external libraries.
  */
 import { spawn } from "node:child_process";
-import * as fs from "node:fs";
+import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -188,8 +188,12 @@ async function getProfile(v) {
       const { dependencies, peerDependencies } = await fetchPackageInfo(
         "react-native@nightly"
       );
+      const codegen = await fetchPackageInfo(
+        "react-native-codegen@" + dependencies["react-native-codegen"]
+      );
       return {
         ...pickCommonDependencies(dependencies, peerDependencies),
+        ...codegen.dependencies,
         "react-native": "facebook/react-native",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
@@ -241,28 +245,19 @@ if (!isValidVersion(version)) {
   const profile = await getProfile(version);
   console.log(profile);
 
-  ["package.json", "example/package.json"].forEach((manifestPath) => {
-    const content = fs.readFileSync(manifestPath, { encoding: "utf-8" });
+  const manifests = ["package.json", "example/package.json"];
+  for (const manifestPath of manifests) {
+    const content = await fs.readFile(manifestPath, { encoding: "utf-8" });
     const manifest = JSON.parse(content);
-    keys(profile).forEach((packageName) => {
+    for (const packageName of keys(profile)) {
       manifest["devDependencies"][packageName] = profile[packageName];
-    });
+    }
 
     const tmpFile = `${manifestPath}.tmp`;
-    fs.writeFile(
+    await fs.writeFile(
       tmpFile,
-      JSON.stringify(manifest, undefined, 2) + os.EOL,
-      (err) => {
-        if (err) {
-          throw err;
-        }
-
-        fs.rename(tmpFile, manifestPath, (err) => {
-          if (err) {
-            throw err;
-          }
-        });
-      }
+      JSON.stringify(manifest, undefined, 2) + os.EOL
     );
-  });
+    await fs.rename(tmpFile, manifestPath);
+  }
 })();
