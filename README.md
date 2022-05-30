@@ -1,7 +1,7 @@
 # React Native Test App
 
 [![Open in Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&color=007acc&labelColor=444444&logoColor=007acc)](https://vscode.dev/github/microsoft/react-native-test-app)
-[![build](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml/badge.svg)](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml)
+[![build](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml)
 [![npm version](https://img.shields.io/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
 
 - [Quick Start](#quick-start)
