@@ -8496,11 +8496,11 @@ __metadata:
   linkType: hard
 
 "memfs@npm:^3.3.0":
-  version: 3.4.3
-  resolution: "memfs@npm:3.4.3"
+  version: 3.4.4
+  resolution: "memfs@npm:3.4.4"
   dependencies:
     fs-monkey: 1.0.3
-  checksum: c947ef46e2036524ba120cb42fa502fd75dae8d49d0c53e818d3d3780b9a3a47845705cd1cf51eec04c70f1db590ca7b6c7f78dd5a65883bb253fcedf86f412c
+  checksum: c91d5a3f7e57c6b4a7ddbb28b4ccbce9f6ba15c478d2257d9c495f05ef8ca16ebbe18c8bc0f89dc79aeaba9854c89ac72a09ebfd99aeeeae1d9cd13a57cf4573
   languageName: node
   linkType: hard
 
