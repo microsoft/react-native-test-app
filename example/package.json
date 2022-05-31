@@ -34,6 +34,18 @@
     "react-native-test-app": "workspace:.",
     "react-native-windows": "^0.66.11"
   },
+  "eslintConfig": {
+    "rules": {
+      "jest/no-standalone-expect": [
+        "error",
+        {
+          "additionalTestBlockFunctions": [
+            "testIf"
+          ]
+        }
+      ]
+    }
+  },
   "jest": {
     "roots": [
       "test"
