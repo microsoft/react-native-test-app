@@ -50,7 +50,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm run codegen
+          npm run generate:code
+          npm run generate:schema
           if [[ -n "$GITHUB_TOKEN" ]]; then
             git diff | npx suggestion-bot
           fi
