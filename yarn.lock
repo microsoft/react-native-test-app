@@ -2529,9 +2529,9 @@ __metadata:
   linkType: hard
 
 "@types/mustache@npm:^4.0.0":
-  version: 4.1.2
-  resolution: "@types/mustache@npm:4.1.2"
-  checksum: 1f37849aae39b3188dbeac71734393586db80faa798795ea730db8e40d393c1d4d6a65ad8735a5ccf6dfc8b920d0792af1e6ef13e3ed2e02d204259678545240
+  version: 4.1.3
+  resolution: "@types/mustache@npm:4.1.3"
+  checksum: dd54ef4d26c3bb8389ed23590ec1cf23fcb51cf0d4d574dbabb294142c8d5bd3ce6d98ecc0fc9f91bcfd5e017b04e4aedac505989f51de22752caaffcc0ee352
   languageName: node
   linkType: hard
 
