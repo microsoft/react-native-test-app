@@ -5,19 +5,19 @@ import { readFileSync } from "fs";
 
 /**
  * @typedef {{
- *   description?: string;
+ *   markdownDescription?: string;
  *   type: "array";
  *   items: { $ref: string; };
  * }} SchemaArrayProperty
  *
  * @typedef {{
- *   description?: string;
+ *   markdownDescription?: string;
  *   type: "string";
  *   enum?: string[];
  * }} SchemaStringProperty
  *
  * @typedef {{
- *   description?: string;
+ *   markdownDescription?: string;
  *   allOf?: { $ref: string; }[];
  *   type: "object";
  *   properties: Record<string, SchemaArrayProperty | SchemaObjectProperty | SchemaStringProperty>;
@@ -55,8 +55,8 @@ function render(definition, lines, scope = "") {
   })();
 
   for (const [key, def] of Object.entries(definition.properties)) {
-    const { description, type } = def;
-    if (description) {
+    const { markdownDescription, type } = def;
+    if (markdownDescription) {
       const anchor =
         breadcrumb.length < 2
           ? `<a name="${scope
@@ -67,7 +67,7 @@ function render(definition, lines, scope = "") {
           : "";
       lines.push("<tr>");
       lines.push(`<td valign='baseline'>${anchor}${breadcrumb}${key}</td>`);
-      lines.push(`<td>\n\n${description}\n\n</td>`);
+      lines.push(`<td>\n\n${markdownDescription}\n</td>`);
       lines.push("</tr>");
     }
     if (type === "object") {
