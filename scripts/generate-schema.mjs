@@ -2,6 +2,7 @@
 // @ts-check
 
 import * as fs from "node:fs/promises";
+import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,10 +21,18 @@ function extractBrief(content) {
  * @param {string} name
  * @returns {Promise<string>}
  */
-function readMarkdown(name) {
+async function readMarkdown(name) {
   const filename = path.join(docsDir, name + ".md");
-  return fs.readFile(filename, { encoding: "utf-8" });
+  const md = await fs.readFile(filename, { encoding: "utf-8" });
+  return trimCarriageReturn(md);
 }
+
+/**
+ * @param {string} str
+ * @returns {string}
+ */
+const trimCarriageReturn =
+  os.EOL === "\r\n" ? (str) => str.replace(/\r/g, "") : (str) => str;
 
 async function main() {
   const docs = {
@@ -297,7 +306,7 @@ async function main() {
 
   return fs.writeFile(
     "schema.json",
-    JSON.stringify(schema, undefined, 2) + "\n"
+    trimCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n"
   );
 }
 
