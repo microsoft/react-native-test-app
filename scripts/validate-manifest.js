@@ -39,6 +39,7 @@ function makeValidator() {
       cxt.fail(_`${data} %2 ${op} 0`);
     },
   });
+  ajv.addKeyword({ keyword: "markdownDescription" });
   return ajv.compile(require(`${__dirname}/../schema.json`));
 }
 
