@@ -6,7 +6,8 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const docsDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "docs");
+const thisScript = fileURLToPath(import.meta.url);
+const docsDir = path.join(path.dirname(thisScript), "docs");
 
 /**
  * @param {string} content
@@ -34,7 +35,7 @@ async function readMarkdown(name) {
 const trimCarriageReturn =
   os.EOL === "\r\n" ? (str) => str.replace(/\r/g, "") : (str) => str;
 
-async function main() {
+export async function generateSchema() {
   const docs = {
     bundleRoot: null,
     components: null,
@@ -53,7 +54,7 @@ async function main() {
     docs[key] = readMarkdown(key);
   }
 
-  const schema = {
+  return {
     $defs: {
       component: {
         type: "object",
@@ -303,11 +304,14 @@ async function main() {
       },
     },
   };
-
-  return fs.writeFile(
-    "schema.json",
-    trimCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n"
-  );
 }
 
-main().catch(console.error);
+if (process.argv[1] === thisScript) {
+  generateSchema()
+    .then(
+      (schema) =>
+        trimCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n"
+    )
+    .then((schema) => fs.writeFile("schema.json", schema))
+    .catch(console.error);
+}
