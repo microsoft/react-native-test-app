@@ -22,8 +22,8 @@ import { generateSchema } from "./generate-schema.mjs";
  *   structEnd: string;
  * }} Language
  *
- * @typedef {Awaited<ReturnType<typeof generateSchema>>} Schema
- * @typedef {Schema["$defs"][keyof Schema["$defs"]]} SchemaObjectProperty
+ * @typedef {import("./generate-schema.mjs").Schema} Schema
+ * @typedef {import("./generate-schema.mjs").SchemaDefinition} SchemaDefinition
  */
 const thisScript = fileURLToPath(import.meta.url);
 
@@ -151,7 +151,7 @@ function getLanguage(output) {
 /**
  * Generates a data model from the specified schema definition.
  * @param {string} name
- * @param {SchemaObjectProperty} definition
+ * @param {SchemaDefinition} definition
  * @param {Language} lang
  * @returns {string[]}
  */
@@ -206,7 +206,7 @@ async function generate(schema, output) {
       lines.push(
         ...generateType(
           typename(key),
-          /** @type {SchemaObjectProperty} */ (definition),
+          /** @type {SchemaDefinition} */ (definition),
           lang
         ),
         ""

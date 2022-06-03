@@ -3,16 +3,21 @@
 
 import { generateSchema } from "./generate-schema.mjs";
 
+/**
+ * @typedef {import("./generate-schema.mjs").Schema} Schema
+ * @typedef {import("./generate-schema.mjs").SchemaDefinition} SchemaDefinition
+ */
+
 async function generateManifestDocs() {
   const schema = await generateSchema();
 
   /**
    * Renders the specified JSON object schema.
-   * @param {Awaited<ReturnType<typeof generateSchema>>} definition
+   * @param {Schema | SchemaDefinition} definition
    * @param {string[]} lines
    * @param {string} scope
    */
-  function render(definition, lines, scope = "") {
+  const render = (definition, lines, scope = "") => {
     definition.allOf?.forEach(({ $ref }) => {
       render(schema.$defs[$ref.replace("#/$defs/", "")], lines, scope);
     });
@@ -52,7 +57,7 @@ async function generateManifestDocs() {
         render(def, lines, scope + `/${key}`);
       }
     }
-  }
+  };
 
   const lines = ["<table>"];
   render(schema, lines);

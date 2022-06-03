@@ -6,6 +6,11 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
+/**
+ * @typedef {Awaited<ReturnType<typeof generateSchema>>} Schema
+ * @typedef {Schema["$defs"][keyof Schema["$defs"]]} SchemaDefinition
+ */
+
 const thisScript = fileURLToPath(import.meta.url);
 const docsDir = path.join(path.dirname(thisScript), "docs");
 
@@ -308,10 +313,9 @@ export async function generateSchema() {
 
 if (process.argv[1] === thisScript) {
   generateSchema()
-    .then(
-      (schema) =>
-        trimCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n"
-    )
+    .then((schema) => {
+      return trimCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n";
+    })
     .then((schema) => fs.writeFile("schema.json", schema))
     .catch(console.error);
 }
