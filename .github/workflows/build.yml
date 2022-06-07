@@ -50,7 +50,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm run codegen
+          npm run generate:code
+          npm run generate:schema
           if [[ -n "$GITHUB_TOKEN" ]]; then
             git diff | npx suggestion-bot
           fi
@@ -88,12 +89,15 @@ jobs:
           # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
           #       Ignore errors until we can create a GitHub PAT from a system
           #       account.
-          scripts/prettier-diff.js $(git ls-files '*.js' '*.yml' 'test/**/*.json') || true
-          echo "::add-matcher::.github/eslint-stylish.json"
-          npm run lint:js
-          echo "::remove-matcher owner=eslint-stylish::"
+          if [[ ${{ matrix.platform }} == macos ]]; then
+            scripts/prettier-diff.js $(git ls-files '*.js' '*.yml' 'test/**/*.json') || true
+            echo "::add-matcher::.github/eslint-stylish.json"
+            npm run lint:js
+            echo "::remove-matcher owner=eslint-stylish::"
+          fi
           npx tsc
           npm run test:js -- --ci
+        shell: bash
       - name: ktlint
         if: ${{ matrix.platform == 'macos' }}
         run: |

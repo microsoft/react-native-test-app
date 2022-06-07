@@ -52,10 +52,11 @@
   },
   "scripts": {
     "clean": "git clean -dfqx --exclude=.yarn/cache",
-    "codegen": "node scripts/generate-manifest.js",
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml' 'test/**/*.json')",
     "format:swift": "swiftformat --swiftversion 5.5 ios macos",
+    "generate:code": "node scripts/generate-manifest.mjs",
+    "generate:schema": "node scripts/generate-schema.mjs",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | commitlint",
     "lint:js": "eslint $(git ls-files '*.js') && tsc",
     "lint:kt": "ktlint --relative --verbose 'android/app/src/**/*.kt'",
