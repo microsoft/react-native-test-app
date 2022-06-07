@@ -748,6 +748,17 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     if (useNuGet) {
       const nugetConfigPath =
         findNearest(
+          // In 0.70, the template was renamed from `NuGet.Config` to `NuGet_Config`
+          path.join(
+            nodeModulesDir,
+            "react-native-windows",
+            "template",
+            "shared-app",
+            "proj",
+            "NuGet_Config"
+          )
+        ) ||
+        findNearest(
           // In 0.64, the template was moved into `react-native-windows`
           path.join(
             nodeModulesDir,
