@@ -11,9 +11,14 @@
       "allowedVersions": "~0.9.0"
     },
     {
+      "groupName": "Android",
+      "matchDatasources": ["maven"],
+      "matchPackagePrefixes": ["com.android."]
+    },
+    {
       "groupName": "Kotlin",
       "matchDatasources": ["maven"],
-      "matchPackagePrefixes": ["org.jetbrains.kotlin:"]
+      "matchPackagePrefixes": ["org.jetbrains.kotlin"]
     },
     {
       "groupName": "Metro",
@@ -23,7 +28,7 @@
     {
       "groupName": "Moshi",
       "matchDatasources": ["maven"],
-      "matchPackagePrefixes": ["com.squareup.moshi:"]
+      "matchPackagePrefixes": ["com.squareup.moshi"]
     },
     {
       "matchPackageNames": ["react"],
