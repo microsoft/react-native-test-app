@@ -16,6 +16,7 @@ plugins {
 buildDir = "${rootDir}/${name}/build"
 
 def reactNativeDir = findNodeModulesPath(rootDir, "react-native")
+def reactNativeVersion = getReactNativeVersionNumber(rootDir)
 
 repositories {
     maven {
@@ -26,7 +27,7 @@ repositories {
     google()
 
     // TODO: Remove this block when we drop support for 0.64.
-    if (getReactNativeVersionNumber(rootDir) < 6500) {
+    if (reactNativeVersion < 6500) {
         // Artifacts for 0.65+ are published to Maven Central. If we're on an
         // older version, we still need to use JCenter.
         // noinspection JcenterRepositoryObsolete
@@ -69,14 +70,20 @@ android {
 
     // TODO: Remove this block when minSdkVersion >= 24. See
     // https://stackoverflow.com/q/53402639 for details.
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    if (reactNativeVersion < 6900) {
+        compileOptions {
+            sourceCompatibility(JavaVersion.VERSION_1_8)
+            targetCompatibility(JavaVersion.VERSION_1_8)
+        }
     }
 
     kotlinOptions {
         allWarningsAsErrors = true
-        jvmTarget = JavaVersion.VERSION_1_8
+        if (reactNativeVersion < 6900) {
+            jvmTarget = JavaVersion.VERSION_1_8
+        } else {
+            jvmTarget = JavaVersion.VERSION_11
+        }
     }
 
     defaultConfig {
@@ -149,7 +156,7 @@ android {
 
         // TODO: Remove this block when we drop support for 0.67.
         // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
-        if (getReactNativeVersionNumber(rootDir) < 6800) {
+        if (reactNativeVersion < 6800) {
             main.java.srcDirs += "src/reactinstanceeventlistener-pre-0.68/java"
         } else {
             main.java.srcDirs += "src/reactinstanceeventlistener-0.68/java"
@@ -161,16 +168,23 @@ dependencies {
     implementation project(":support")
 
     if (project.ext.react.enableHermes) {
-        def hermesEngineDir =
-            findNodeModulesPath(file(reactNativeDir), "hermes-engine")
-                ?: findNodeModulesPath(file(reactNativeDir), "hermesvm")
-        if (hermesEngineDir == null) {
-            throw new GradleException("Could not find 'hermes-engine'. Please make sure you've added it to 'package.json'.")
-        }
+        // TODO: Remove this block when we drop support for 0.68.
+        if (reactNativeVersion < 6900) {
+            def hermesEngineDir =
+                findNodeModulesPath(file(reactNativeDir), "hermes-engine")
+                    ?: findNodeModulesPath(file(reactNativeDir), "hermesvm")
+            if (hermesEngineDir == null) {
+                throw new GradleException("Could not find 'hermes-engine'. Please make sure you've added it to 'package.json'.")
+            }
 
-        def hermesAndroidDir = "${hermesEngineDir}/android"
-        releaseImplementation files("${hermesAndroidDir}/hermes-release.aar")
-        debugImplementation files("${hermesAndroidDir}/hermes-debug.aar")
+            def hermesAndroidDir = "${hermesEngineDir}/android"
+            releaseImplementation files("${hermesAndroidDir}/hermes-release.aar")
+            debugImplementation files("${hermesAndroidDir}/hermes-debug.aar")
+        } else {
+            implementation("com.facebook.react:hermes-engine:+") {
+                exclude(group: "com.facebook.fbjni")
+            }
+        }
     }
 
     if (buildReactNativeFromSource(rootDir)) {
