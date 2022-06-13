@@ -17,7 +17,7 @@ For more information see the
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-## Commit messages
+## Commit Messages
 
 This repository adheres to the
 [conventional commit format](https://conventionalcommits.org) via
@@ -25,8 +25,11 @@ This repository adheres to the
 Commit messages must match the pattern:
 
 ```sh
-type(scope?): subject  #scope is optional; multiple scopes are supported (current delimiter options: "/", "\" and ",")
+type(scope?): subject
 ```
+
+Scope is optional. You can also specify multiple scopes using `/` or `,` as
+delimiters.
 
 Following this is necessary to pass CI.
 
@@ -158,7 +161,18 @@ If you choose to use Visual Studio, remember to first set the target platform to
 > re-run `install-windows-test-app` to make sure that the changes are included
 > in the Visual Studio project.
 
-### Testing Other React Native Versions
+## Adding New Files
+
+When adding new files, please make sure they are published (or not if it's for
+internal use only). To get a list of files that get published, you can run:
+
+```sh
+npm pack --dry-run --verbose
+```
+
+If your files are missing, you can modify the `files` section in `package.json`.
+
+## Testing Specific React Native Versions
 
 `react-native-test-app` supports multiple versions of React Native. Use
 `set-react-version` to set the version, e.g. to use 0.68:

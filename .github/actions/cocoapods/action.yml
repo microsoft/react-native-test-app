@@ -14,7 +14,7 @@ runs:
       id: cache-key-generator
       run: |
         if [[ -f ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock ]]; then
-          echo "::set-output name=cache-key::$(node scripts/shasum.js ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock)"
+          echo "::set-output name=cache-key::$(node scripts/shasum.mjs ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock)"
         else
           echo '::set-output name=cache-key::false'
         fi

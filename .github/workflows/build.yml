@@ -90,7 +90,7 @@ jobs:
           #       Ignore errors until we can create a GitHub PAT from a system
           #       account.
           if [[ ${{ matrix.platform }} == macos ]]; then
-            scripts/prettier-diff.js $(git ls-files '*.js' '*.yml' 'test/**/*.json') || true
+            scripts/prettier-diff.mjs $(git ls-files '*.js' '*.yml' 'test/**/*.json') || true
             echo "::add-matcher::.github/eslint-stylish.json"
             npm run lint:js
             echo "::remove-matcher owner=eslint-stylish::"

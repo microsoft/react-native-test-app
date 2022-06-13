@@ -35,7 +35,7 @@
     "/ios",
     "/macos",
     "/schema.json",
-    "/scripts",
+    "/scripts/*.js",
     "/windows/*.{js,props,sln}",
     "/windows/ReactTestApp"
   ],
