@@ -10498,7 +10498,7 @@ __metadata:
     react-native-macos: ^0.66.14
     react-native-windows: ^0.66.11
     rimraf: ^3.0.0
-    semantic-release: ^19.0.0
+    semantic-release: ^19.0.3
     semver: ^7.3.5
     suggestion-bot: ^1.0.0
     typescript: ^4.0.0
@@ -11199,9 +11199,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:^19.0.0":
-  version: 19.0.2
-  resolution: "semantic-release@npm:19.0.2"
+"semantic-release@npm:^19.0.3":
+  version: 19.0.3
+  resolution: "semantic-release@npm:19.0.3"
   dependencies:
     "@semantic-release/commit-analyzer": ^9.0.2
     "@semantic-release/error": ^3.0.0
@@ -11233,7 +11233,7 @@ resolve@^2.0.0-next.3:
     yargs: ^16.2.0
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: 0807cae8c57445793d3181a15cd587950aaf6b9c6ea9f4b7876b85a4ac78d1cd8d53f309512fe53eca2a8ed48600dd4d5483ac403bb42bfcf1c88a2c2340cf65
+  checksum: 89afc3bba5b7addc503e92387de76274bf7f8b6c955ea4338760719f91ed730df9774ccfc58b28a0c739eb1eb3bed1f9c9bef393dda1156c4481197bb6671760
   languageName: node
   linkType: hard
 
