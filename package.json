@@ -138,6 +138,7 @@
   "resolutions": {
     "@commitlint/is-ignored/semver": "^7.3.5",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
+    "@react-native-community/cli-tools/shell-quote": "^1.7.3",
     "core-js-compat/semver": "^7.3.5",
     "npm/chalk": "^4.1.0"
   },
