@@ -17,7 +17,9 @@ class ComponentListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         return ComponentViewHolder(
             layoutInflater.inflate(
-                R.layout.recyclerview_item_component, parent, false
+                R.layout.recyclerview_item_component,
+                parent,
+                false
             ) as TextView
         )
     }

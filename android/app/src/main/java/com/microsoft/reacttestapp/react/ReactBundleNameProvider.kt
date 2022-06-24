@@ -18,7 +18,7 @@ class ReactBundleNameProvider(private val context: Context, private val bundleRo
             ".native.bundle",
             ".native.jsbundle",
             ".bundle",
-            ".jsbundle",
+            ".jsbundle"
         )
 
         if (bundleRoot == null) {

@@ -6,6 +6,8 @@ package com.microsoft.reacttestapp.manifest
 import android.os.Bundle
 import com.squareup.moshi.JsonClass
 
+/* ktlint-disable trailing-comma */
+
 @JsonClass(generateAdapter = true)
 data class Component(
     val appKey: String,

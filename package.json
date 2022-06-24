@@ -59,7 +59,7 @@
     "generate:schema": "node scripts/generate-schema.mjs",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | commitlint",
     "lint:js": "eslint $(git ls-files '*.js') && tsc",
-    "lint:kt": "ktlint --relative --verbose 'android/app/src/**/*.kt'",
+    "lint:kt": "ktlint --android --relative 'android/app/src/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
     "lint:swift": "swiftlint",
     "set-react-version": "node scripts/set-react-version.mjs",

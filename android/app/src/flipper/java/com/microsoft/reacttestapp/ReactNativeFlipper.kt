@@ -52,7 +52,8 @@ object ReactNativeFlipper {
                             client.addPlugin(FrescoFlipperPlugin())
                         }
                     }
-                })
+                }
+            )
         } else {
             client.addPlugin(FrescoFlipperPlugin())
         }
