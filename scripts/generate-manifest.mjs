@@ -104,6 +104,8 @@ function getLanguage(output) {
             "import android.os.Bundle",
             "import com.squareup.moshi.JsonClass",
             "",
+            "/* ktlint-disable trailing-comma */",
+            "",
           ].join("\n"),
         },
         arrayProperty: (name, type, required) => {
