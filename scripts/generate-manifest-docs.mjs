@@ -38,21 +38,20 @@ async function generateManifestDocs() {
     })();
 
     for (const [key, def] of Object.entries(definition.properties)) {
-      const { markdownDescription, type } = def;
-      if (markdownDescription) {
-        const anchor =
-          breadcrumb.length < 2
-            ? `<a name="${scope
-                .split("/")
-                .slice(1, 3)
-                .concat([key])
-                .join(".")}" />`
-            : "";
-        lines.push("<tr>");
-        lines.push(`<td valign='baseline'>${anchor}${breadcrumb}${key}</td>`);
-        lines.push(`<td>\n\n${markdownDescription}\n</td>`);
-        lines.push("</tr>");
-      }
+      const { description, markdownDescription, type } = def;
+      const text = markdownDescription || description;
+      const anchor =
+        breadcrumb.length < 2
+          ? `<a name="${scope
+              .split("/")
+              .slice(1, 3)
+              .concat([key])
+              .join(".")}" />`
+          : "";
+      lines.push("<tr>");
+      lines.push(`<td valign='baseline'>${anchor}${breadcrumb}${key}</td>`);
+      lines.push(`<td>\n\n${text}\n</td>`);
+      lines.push("</tr>");
       if (type === "object") {
         render(def, lines, scope + `/${key}`);
       }
