@@ -402,6 +402,6 @@ class Remover
     return if @pid != Process.pid
 
     @tmpfile.close
-    File.unlink(@tmpfile.path) if File.exist?(@tmpfile.path)
+    FileUtils.rm_rf(@tmpfile.path)
   end
 end
