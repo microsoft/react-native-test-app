@@ -5519,7 +5519,7 @@ __metadata:
   peerDependencies:
     react: ~16.11.0 || ~16.13.1 || ~17.0.1 || ~17.0.2 || ~18.0.0
     react-native: ^0.0.0-0 || 0.62 - 0.69 || 1000.0.0
-    react-native-macos: ^0.0.0-0 || 0.62 - 0.68
+    react-native-macos: ^0.0.0-0 || 0.62 - 0.64 || ^0.66 || ^0.68
     react-native-windows: ^0.0.0-0 || 0.62 - 0.69
   languageName: unknown
   linkType: soft
@@ -10737,7 +10737,7 @@ fsevents@^2.3.2:
     mustache: ^4.0.0
     react: ~16.11.0 || ~16.13.1 || ~17.0.1 || ~17.0.2 || ~18.0.0
     react-native: ^0.0.0-0 || 0.62 - 0.69 || 1000.0.0
-    react-native-macos: ^0.0.0-0 || 0.62 - 0.68
+    react-native-macos: ^0.0.0-0 || 0.62 - 0.64 || ^0.66 || ^0.68
     react-native-windows: ^0.0.0-0 || 0.62 - 0.69
   peerDependenciesMeta:
     "@react-native-community/cli":
