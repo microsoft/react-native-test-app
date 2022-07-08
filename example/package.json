@@ -19,20 +19,20 @@
   "peerDependencies": {
     "react": "~16.11.0 || ~16.13.1 || ~17.0.1 || ~17.0.2 || ~18.0.0",
     "react-native": "^0.0.0-0 || 0.62 - 0.69 || 1000.0.0",
-    "react-native-macos": "^0.0.0-0 || 0.62 - 0.66",
+    "react-native-macos": "^0.0.0-0 || 0.62 - 0.64 || ^0.66 || ^0.68",
     "react-native-windows": "^0.0.0-0 || 0.62 - 0.69"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@types/jest": "^27.0.0",
     "jest": "^27.0.0",
-    "metro-react-native-babel-preset": "^0.66.2",
+    "metro-react-native-babel-preset": "^0.67.0",
     "mkdirp": "^1.0.0",
     "react": "17.0.2",
-    "react-native": "^0.66.4",
-    "react-native-macos": "^0.66.14",
+    "react-native": "^0.68.2",
+    "react-native-macos": "^0.68.3",
     "react-native-test-app": "workspace:.",
-    "react-native-windows": "^0.66.11"
+    "react-native-windows": "^0.68.8"
   },
   "eslintConfig": {
     "rules": {
