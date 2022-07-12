@@ -214,6 +214,8 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   version_macro = "REACT_NATIVE_VERSION=#{version}"
 
   build_settings = {}
+  tests_build_settings = {}
+  uitests_build_settings = {}
 
   code_sign_entitlements = platform_config('codeSignEntitlements', project_root, target_platform)
   if code_sign_entitlements.is_a? String
@@ -226,11 +228,17 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   build_settings['CODE_SIGN_IDENTITY'] = code_sign_identity if code_sign_identity.is_a? String
 
   development_team = platform_config('developmentTeam', project_root, target_platform)
-  build_settings['DEVELOPMENT_TEAM'] = development_team if development_team.is_a? String
+  if development_team.is_a? String
+    build_settings['DEVELOPMENT_TEAM'] = development_team
+    tests_build_settings['DEVELOPMENT_TEAM'] = development_team
+    uitests_build_settings['DEVELOPMENT_TEAM'] = development_team
+  end
 
   product_bundle_identifier = platform_config('bundleIdentifier', project_root, target_platform)
   if product_bundle_identifier.is_a? String
     build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = product_bundle_identifier
+    tests_build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = "#{product_bundle_identifier}Tests"
+    uitests_build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = "#{product_bundle_identifier}UITests"
   end
 
   build_settings['PRODUCT_DISPLAY_NAME'] = display_name
@@ -240,31 +248,44 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
   app_project = Xcodeproj::Project.open(xcodeproj_dst)
   app_project.native_targets.each do |target|
-    next if target.name != 'ReactTestApp'
+    case target.name
+    when 'ReactTestApp'
+      target.build_configurations.each do |config|
+        use_flipper = config.name == 'Debug' && supports_flipper
 
-    target.build_configurations.each do |config|
-      use_flipper = config.name == 'Debug' && supports_flipper
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << version_macro
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1' if use_fabric
+        if use_flipper
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FB_SONARKIT_ENABLED=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FLIPPER=1'
+        end
 
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << version_macro
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1' if use_fabric
-      if use_flipper
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FB_SONARKIT_ENABLED=1'
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FLIPPER=1'
+        build_settings.each do |setting, value|
+          config.build_settings[setting] = value
+        end
+
+        config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
+        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FABRIC' if use_fabric
+        if use_flipper
+          config.build_settings['OTHER_SWIFT_FLAGS'] << '-DFB_SONARKIT_ENABLED'
+          config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FLIPPER'
+        end
+        if single_app.is_a? String
+          config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
+        end
       end
-
-      build_settings.each do |setting, value|
-        config.build_settings[setting] = value
+    when 'ReactTestAppTests'
+      target.build_configurations.each do |config|
+        tests_build_settings.each do |setting, value|
+          config.build_settings[setting] = value
+        end
       end
-
-      config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
-      config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FABRIC' if use_fabric
-      if use_flipper
-        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DFB_SONARKIT_ENABLED'
-        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FLIPPER'
-      end
-      if single_app.is_a? String
-        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
+    when 'ReactTestAppUITests'
+      target.build_configurations.each do |config|
+        uitests_build_settings.each do |setting, value|
+          config.build_settings[setting] = value
+        end
       end
     end
   end
