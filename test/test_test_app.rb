@@ -25,9 +25,10 @@ class TestTestApp < Minitest::Test
   end
 
   def test_app_config_single_app
-    name, display_name, single_app = app_config(fixture_path('single_app_mode'))
+    name, display_name, version, single_app = app_config(fixture_path('single_app_mode'))
     assert_equal(name, 'TestFixture')
     assert_equal(display_name, 'Test Fixture')
+    assert_equal(version, '1.0.0')
     assert_equal(single_app, 'test-fixture')
   end
 

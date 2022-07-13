@@ -22,7 +22,7 @@ def app_config(project_root)
   manifest = app_manifest(project_root)
   return [nil, nil, nil] if manifest.nil?
 
-  [manifest['name'], manifest['displayName'], manifest['singleApp']]
+  [manifest['name'], manifest['displayName'], manifest['version'], manifest['singleApp']]
 end
 
 def autolink_script_path
@@ -163,7 +163,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   # Copy Xcode project files
   FileUtils.mkdir_p(destination)
   FileUtils.cp_r(xcodeproj_src, destination)
-  name, display_name, single_app = app_config(project_root)
+  name, display_name, version, single_app = app_config(project_root)
   unless name.nil?
     xcschemes_path = File.join(xcodeproj_dst, 'xcshareddata', 'xcschemes')
     FileUtils.cp(File.join(xcschemes_path, 'ReactTestApp.xcscheme'),
@@ -209,9 +209,9 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   end
 
   react_native = react_native_path(project_root, target_platform)
-  version = package_version(react_native.to_s).segments
-  version = (version[0] * 10_000) + (version[1] * 100) + version[2]
-  version_macro = "REACT_NATIVE_VERSION=#{version}"
+  rn_version = package_version(react_native.to_s).segments
+  rn_version = (rn_version[0] * 10_000) + (rn_version[1] * 100) + rn_version[2]
+  version_macro = "REACT_NATIVE_VERSION=#{rn_version}"
 
   build_settings = {}
   tests_build_settings = {}
@@ -242,9 +242,13 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   end
 
   build_settings['PRODUCT_DISPLAY_NAME'] = display_name
+  build_settings['PRODUCT_VERSION'] = version || '1.0'
+
+  build_number = platform_config('buildNumber', project_root, target_platform)
+  build_settings['PRODUCT_BUILD_NUMBER'] = build_number || '1'
 
   supports_flipper = target_platform == :ios && flipper_enabled?
-  use_fabric = options[:fabric_enabled] && version >= 6800
+  use_fabric = options[:fabric_enabled] && rn_version >= 6800
 
   app_project = Xcodeproj::Project.open(xcodeproj_dst)
   app_project.native_targets.each do |target|

@@ -3,11 +3,6 @@ static String versionOf(String spec) {
 }
 
 ext {
-    reactTestApp = [
-        versionCode: 1,
-        versionName: "1.0"
-    ]
-
     compileSdkVersion = 31
     minSdkVersion = 23
     targetSdkVersion = 29

@@ -21,6 +21,7 @@ data class Component(
 data class Manifest(
     val name: String,
     val displayName: String,
+    val version: String?,
     val bundleRoot: String?,
     val singleApp: String?,
     val components: List<Component>?,

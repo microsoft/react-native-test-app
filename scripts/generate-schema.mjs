@@ -20,7 +20,7 @@ const docsDir = path.join(path.dirname(thisScript), "docs");
  */
 function extractBrief(content) {
   const endBrief = content.indexOf("\n\n");
-  return content.substring(0, endBrief);
+  return endBrief > 0 ? content.substring(0, endBrief) : content;
 }
 
 /**
@@ -30,7 +30,7 @@ function extractBrief(content) {
 async function readMarkdown(name) {
   const filename = path.join(docsDir, name + ".md");
   const md = await fs.readFile(filename, { encoding: "utf-8" });
-  return trimCarriageReturn(md);
+  return trimCarriageReturn(md).trim();
 }
 
 /**
@@ -46,7 +46,10 @@ export async function generateSchema() {
     components: null,
     resources: null,
     singleApp: null,
+    version: null,
     "android.signingConfigs": null,
+    "android.versionCode": null,
+    "ios.buildNumber": null,
     "ios.codeSignEntitlements": null,
     "ios.codeSignIdentity": null,
     "ios.developmentTeam": null,
@@ -98,6 +101,11 @@ export async function generateSchema() {
           },
           displayName: {
             type: "string",
+          },
+          version: {
+            type: "string",
+            description: extractBrief(await docs.version),
+            markdownDescription: await docs.version,
           },
           bundleRoot: {
             description: extractBrief(await docs.bundleRoot),
@@ -194,6 +202,11 @@ export async function generateSchema() {
               "Use this property to set the <a href='https://developer.android.com/studio/build/application-id'>application ID</a> of the APK. The value is set to `applicationId` in `build.gradle`.",
             type: "string",
           },
+          versionCode: {
+            description: extractBrief(await docs["android.versionCode"]),
+            markdownDescription: await docs["android.versionCode"],
+            type: "string",
+          },
           signingConfigs: {
             description: extractBrief(await docs["android.signingConfigs"]),
             markdownDescription: await docs["android.signingConfigs"],
@@ -222,6 +235,11 @@ export async function generateSchema() {
           bundleIdentifier: {
             description:
               "Use this property to set the bundle identifier of the final app bundle. This is the same as setting `PRODUCT_BUNDLE_IDENTIFIER` in Xcode.",
+            type: "string",
+          },
+          buildNumber: {
+            description: extractBrief(await docs["ios.buildNumber"]),
+            markdownDescription: await docs["ios.buildNumber"],
             type: "string",
           },
           codeSignEntitlements: {
@@ -253,6 +271,11 @@ export async function generateSchema() {
           bundleIdentifier: {
             description:
               "Use this property to set the bundle identifier of the final app bundle. This is the same as setting `PRODUCT_BUNDLE_IDENTIFIER` in Xcode.",
+            type: "string",
+          },
+          buildNumber: {
+            description: extractBrief(await docs["ios.buildNumber"]),
+            markdownDescription: await docs["ios.buildNumber"],
             type: "string",
           },
           codeSignEntitlements: {

@@ -90,8 +90,8 @@ android {
         applicationId project.ext.react.applicationId
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-        versionCode reactTestApp.versionCode
-        versionName reactTestApp.versionName
+        versionCode getVersionCode()
+        versionName getVersionName()
 
         buildConfigField "boolean", "ReactTestApp_useFabric", project.ext.react.enableFabric.toString()
 
