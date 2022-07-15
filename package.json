@@ -79,8 +79,8 @@
     "@react-native-community/cli-platform-android": ">=4.10.0",
     "@react-native-community/cli-platform-ios": ">=4.10.0",
     "mustache": "^4.0.0",
-    "react": "~16.11.0 || ~16.13.1 || ~17.0.1 || ~17.0.2 || ~18.0.0",
-    "react-native": "^0.0.0-0 || 0.62 - 0.69 || 1000.0.0",
+    "react": "~16.11.0 || ~16.13.1 || ~17.0.1 || ~18.0.0 || ~18.1.0",
+    "react-native": "^0.0.0-0 || 0.62 - 0.70 || 1000.0.0",
     "react-native-macos": "^0.0.0-0 || 0.62 - 0.64 || ^0.66 || ^0.68",
     "react-native-windows": "^0.0.0-0 || 0.62 - 0.69"
   },
@@ -137,9 +137,7 @@
   "resolutions": {
     "@commitlint/is-ignored/semver": "^7.3.5",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
-    "@react-native-community/cli-tools/shell-quote": "^1.7.3",
-    "core-js-compat/semver": "^7.3.5",
-    "npm/chalk": "^4.1.0"
+    "core-js-compat/semver": "^7.3.5"
   },
   "workspaces": [
     "example"

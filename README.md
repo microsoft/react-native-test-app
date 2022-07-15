@@ -9,14 +9,15 @@
 - [Migrate an Existing Test App](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)
 - [Known Issues](#known-issues)
 
-React Native Test App (RNTA) provides test apps for all platforms as a package. It
-handles the native bits for you so you can focus on what's important: your
+React Native Test App (RNTA) provides test apps for all platforms as a package.
+It handles the native bits for you so you can focus on what's important: your
 product.
 
 If you want to learn how RNTA is used at Microsoft, and see a demo of how to add
 it to an existing library - you can watch the
 ["Improve all the repos – exploring Microsoft’s DevExp"](https://youtu.be/DAEnPV78rQc?t=499)
-talk by [@kelset](https://github.com/kelset) and [@tido64](https://github.com/tido64) from React Native Europe 2021.
+talk by [@kelset](https://github.com/kelset) and
+[@tido64](https://github.com/tido64) from React Native Europe 2021.
 
 In the wiki, you can read more about
 [the motivation](https://github.com/microsoft/react-native-test-app/wiki#motivation)
@@ -25,7 +26,8 @@ of this tool.
 
 ## Quick Start
 
-*If you want to migrate an existing test app for a library, follow the [dedicated guide in the wiki](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App).*
+_If you want to migrate an existing test app for a library, follow the
+[dedicated guide in the wiki](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)._
 
 Install `react-native-test-app` as a dev dependency. We will use the wizard to
 generate your test app:
@@ -60,7 +62,9 @@ cd sample
 yarn
 ```
 
-Once the dependencies are installed, follow the [platform specific instructions](https://github.com/microsoft/react-native-test-app/wiki/Quick-Start#platform-specific-instructions) in the wiki.
+Once the dependencies are installed, follow the
+[platform specific instructions](https://github.com/microsoft/react-native-test-app/wiki/Quick-Start#platform-specific-instructions)
+in the wiki.
 
 ## Configuring the Test App
 
@@ -81,7 +85,8 @@ For a list of known issues and workarounds, please refer to the
 
 ## Contributing
 
-Thank you for your interest in this project! We welcome all contributions and suggestions!
+Thank you for your interest in this project! We welcome all contributions and
+suggestions!
 
 Take a look at [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 

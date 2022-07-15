@@ -5578,8 +5578,8 @@ __metadata:
     react-native-test-app: "workspace:."
     react-native-windows: ^0.68.8
   peerDependencies:
-    react: ~16.11.0 || ~16.13.1 || ~17.0.1 || ~17.0.2 || ~18.0.0
-    react-native: ^0.0.0-0 || 0.62 - 0.69 || 1000.0.0
+    react: ~16.11.0 || ~16.13.1 || ~17.0.1 || ~18.0.0 || ~18.1.0
+    react-native: ^0.0.0-0 || 0.62 - 0.70 || 1000.0.0
     react-native-macos: ^0.0.0-0 || 0.62 - 0.64 || ^0.66 || ^0.68
     react-native-windows: ^0.0.0-0 || 0.62 - 0.69
   languageName: unknown
@@ -10816,8 +10816,8 @@ fsevents@^2.3.2:
     "@react-native-community/cli-platform-android": ">=4.10.0"
     "@react-native-community/cli-platform-ios": ">=4.10.0"
     mustache: ^4.0.0
-    react: ~16.11.0 || ~16.13.1 || ~17.0.1 || ~17.0.2 || ~18.0.0
-    react-native: ^0.0.0-0 || 0.62 - 0.69 || 1000.0.0
+    react: ~16.11.0 || ~16.13.1 || ~17.0.1 || ~18.0.0 || ~18.1.0
+    react-native: ^0.0.0-0 || 0.62 - 0.70 || 1000.0.0
     react-native-macos: ^0.0.0-0 || 0.62 - 0.64 || ^0.66 || ^0.68
     react-native-windows: ^0.0.0-0 || 0.62 - 0.69
   peerDependenciesMeta:
