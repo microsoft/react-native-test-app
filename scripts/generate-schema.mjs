@@ -27,7 +27,7 @@ function extractBrief(content) {
  * @param {string} name
  * @returns {Promise<string>}
  */
-async function readMarkdown(name) {
+export async function readMarkdown(name) {
   const filename = path.join(docsDir, name + ".md");
   const md = await fs.readFile(filename, { encoding: "utf-8" });
   return trimCarriageReturn(md).trim();
