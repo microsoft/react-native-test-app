@@ -191,6 +191,30 @@ ext.getSingleAppMode = {
     return false
 }
 
+ext.getVersionCode = {
+    def manifest = getManifest()
+    if (manifest != null) {
+        def config = manifest["android"]
+        if (config instanceof Object && config.containsKey("versionCode")) {
+            return config["versionCode"]
+        }
+    }
+
+    return 1
+}
+
+ext.getVersionName = {
+    def manifest = getManifest()
+    if (manifest != null) {
+        def version = manifest["version"]
+        if (version instanceof String) {
+            return version
+        }
+    }
+
+    return "1.0"
+}
+
 ext.isFabricEnabled = { baseDir ->
     return project.hasProperty("USE_FABRIC") &&
         project.getProperty("USE_FABRIC") == "1" &&

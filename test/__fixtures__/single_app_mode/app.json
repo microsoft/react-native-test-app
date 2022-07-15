@@ -1,5 +1,6 @@
 {
   "name": "TestFixture",
   "displayName": "Test Fixture",
+  "version": "1.0.0",
   "singleApp": "test-fixture"
 }

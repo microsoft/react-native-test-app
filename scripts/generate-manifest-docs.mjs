@@ -50,7 +50,7 @@ async function generateManifestDocs() {
           : "";
       lines.push("<tr>");
       lines.push(`<td valign='baseline'>${anchor}${breadcrumb}${key}</td>`);
-      lines.push(`<td>\n\n${text}\n</td>`);
+      lines.push(`<td>\n\n${text}\n\n</td>`);
       lines.push("</tr>");
       if (type === "object") {
         render(def, lines, scope + `/${key}`);

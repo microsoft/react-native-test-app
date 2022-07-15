@@ -12,6 +12,7 @@ struct Component: Decodable {
 struct Manifest: Decodable {
     let name: String
     let displayName: String
+    let version: String?
     let bundleRoot: String?
     let singleApp: String?
     let components: [Component]?

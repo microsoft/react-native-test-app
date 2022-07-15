@@ -24,6 +24,7 @@ namespace ReactTestApp
     struct Manifest {
         std::string name;
         std::string displayName;
+        std::optional<std::string> version;
         std::optional<std::string> bundleRoot;
         std::optional<std::string> singleApp;
         std::optional<std::vector<Component>> components;

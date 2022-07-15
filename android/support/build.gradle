@@ -9,15 +9,16 @@ repositories {
 
 android {
     def androidDir = "${buildscript.sourceFile.getParent()}/../"
-    apply(from: "$androidDir/dependencies.gradle")
+    apply(from: "${androidDir}/dependencies.gradle")
+    apply(from: "${androidDir}/test-app-util.gradle")
 
     compileSdkVersion project.ext.compileSdkVersion
 
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-        versionCode reactTestApp.versionCode
-        versionName reactTestApp.versionName
+        versionCode getVersionCode()
+        versionName getVersionName()
     }
 
     compileOptions {
