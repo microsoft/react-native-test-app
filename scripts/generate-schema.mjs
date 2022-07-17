@@ -27,7 +27,7 @@ function extractBrief(content) {
  * @param {string} name
  * @returns {Promise<string>}
  */
-async function readMarkdown(name) {
+export async function readMarkdown(name) {
   const filename = path.join(docsDir, name + ".md");
   const md = await fs.readFile(filename, { encoding: "utf-8" });
   return trimCarriageReturn(md).trim();
@@ -41,22 +41,23 @@ const trimCarriageReturn =
   os.EOL === "\r\n" ? (str) => str.replace(/\r/g, "") : (str) => str;
 
 export async function generateSchema() {
+  const dummy = Promise.resolve("");
   const docs = {
-    bundleRoot: null,
-    components: null,
-    resources: null,
-    singleApp: null,
-    version: null,
-    "android.signingConfigs": null,
-    "android.versionCode": null,
-    "ios.buildNumber": null,
-    "ios.codeSignEntitlements": null,
-    "ios.codeSignIdentity": null,
-    "ios.developmentTeam": null,
-    "windows.appxManifest": null,
-    "windows.certificateKeyFile": null,
-    "windows.certificatePassword": null,
-    "windows.certificateThumbprint": null,
+    bundleRoot: dummy,
+    components: dummy,
+    resources: dummy,
+    singleApp: dummy,
+    version: dummy,
+    "android.signingConfigs": dummy,
+    "android.versionCode": dummy,
+    "ios.buildNumber": dummy,
+    "ios.codeSignEntitlements": dummy,
+    "ios.codeSignIdentity": dummy,
+    "ios.developmentTeam": dummy,
+    "windows.appxManifest": dummy,
+    "windows.certificateKeyFile": dummy,
+    "windows.certificatePassword": dummy,
+    "windows.certificateThumbprint": dummy,
   };
   for (const key of Object.keys(docs)) {
     docs[key] = readMarkdown(key);

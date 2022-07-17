@@ -13,3 +13,6 @@ integers, such as 1.3.11.
   how to use a custom
   [app package manifest](https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/appx-package-manifest)
   instead.
+
+Introduced in
+<a href='//github.com/microsoft/react-native-test-app/releases/tag/1.4.0'>1.4.0</a>.

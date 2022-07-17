@@ -44,7 +44,7 @@
         "version": {
           "type": "string",
           "description": "The app version shown to users. The required format is three period-separated\nintegers, such as 1.3.11.",
-          "markdownDescription": "The app version shown to users. The required format is three period-separated\nintegers, such as 1.3.11.\n\n- **Android**: Equivalent to setting\n  [`versionName`](https://developer.android.com/studio/publish/versioning#appversioning).\n- **iOS**: This is the same as setting\n  [`CFBundleShortVersionString`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring)\n  in `Info.plist`.\n- **macOS**: This is the same as setting\n  [`CFBundleShortVersionString`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring)\n  in `Info.plist`.\n- **Windows**: Please see [`windows.appxmanifest`](#windows.appxmanifest) for\n  how to use a custom\n  [app package manifest](https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/appx-package-manifest)\n  instead."
+          "markdownDescription": "The app version shown to users. The required format is three period-separated\nintegers, such as 1.3.11.\n\n- **Android**: Equivalent to setting\n  [`versionName`](https://developer.android.com/studio/publish/versioning#appversioning).\n- **iOS**: This is the same as setting\n  [`CFBundleShortVersionString`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring)\n  in `Info.plist`.\n- **macOS**: This is the same as setting\n  [`CFBundleShortVersionString`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring)\n  in `Info.plist`.\n- **Windows**: Please see [`windows.appxmanifest`](#windows.appxmanifest) for\n  how to use a custom\n  [app package manifest](https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/appx-package-manifest)\n  instead.\n\nIntroduced in\n<a href='//github.com/microsoft/react-native-test-app/releases/tag/1.4.0'>1.4.0</a>."
         },
         "bundleRoot": {
           "description": "Specifies the root of the bundle file name. E.g., if the bundle file is\n`index.[platform].bundle`, `index` is the bundle root.",
@@ -159,7 +159,7 @@
         },
         "versionCode": {
           "description": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).",
-          "markdownDescription": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).",
+          "markdownDescription": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).\n\nIntroduced in\n<a href='//github.com/microsoft/react-native-test-app/releases/tag/1.4.0'>1.4.0</a>.",
           "type": "string"
         },
         "signingConfigs": {
@@ -199,7 +199,7 @@
         },
         "buildNumber": {
           "description": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store. The equivalent key in `Info.plist` is\n[`CFBundleVersion`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion).",
-          "markdownDescription": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store. The equivalent key in `Info.plist` is\n[`CFBundleVersion`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion).",
+          "markdownDescription": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store. The equivalent key in `Info.plist` is\n[`CFBundleVersion`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion).\n\nIntroduced in\n<a href='//github.com/microsoft/react-native-test-app/releases/tag/1.4.0'>1.4.0</a>.",
           "type": "string"
         },
         "codeSignEntitlements": {
@@ -233,7 +233,7 @@
         },
         "buildNumber": {
           "description": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store. The equivalent key in `Info.plist` is\n[`CFBundleVersion`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion).",
-          "markdownDescription": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store. The equivalent key in `Info.plist` is\n[`CFBundleVersion`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion).",
+          "markdownDescription": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store. The equivalent key in `Info.plist` is\n[`CFBundleVersion`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion).\n\nIntroduced in\n<a href='//github.com/microsoft/react-native-test-app/releases/tag/1.4.0'>1.4.0</a>.",
           "type": "string"
         },
         "codeSignEntitlements": {
