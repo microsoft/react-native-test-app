@@ -122,7 +122,7 @@ def resources_pod(project_root, target_platform, platforms)
       'ios' => platforms[:ios],
       'osx' => platforms[:macos],
     },
-    'resources' => ['app.json', *resources],
+    'resources' => [*resources],
   }
 
   podspec_path = File.join(app_dir, 'ReactTestApp-Resources.podspec.json')
@@ -208,6 +208,13 @@ def make_project!(xcodeproj, project_root, target_platform, options)
     end
   end
 
+  # Note the location of Node so we can use it later in script phases
+  File.open(File.join(destination, '.env'), 'w') do |f|
+    node_bin = `dirname $(which node)`
+    node_bin.strip!
+    f.write("export PATH=#{node_bin}:$PATH\n")
+  end
+
   react_native = react_native_path(project_root, target_platform)
   rn_version = package_version(react_native.to_s).segments
   rn_version = (rn_version[0] * 10_000) + (rn_version[1] * 100) + rn_version[2]
@@ -278,6 +285,9 @@ def make_project!(xcodeproj, project_root, target_platform, options)
         if single_app.is_a? String
           config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
         end
+
+        config.build_settings['USER_HEADER_SEARCH_PATHS'] ||= []
+        config.build_settings['USER_HEADER_SEARCH_PATHS'] << File.dirname(destination)
       end
     when 'ReactTestAppTests'
       target.build_configurations.each do |config|
@@ -327,8 +337,6 @@ def use_test_app_internal!(target_platform, options)
   react_native_post_install = nil
 
   target 'ReactTestApp' do
-    pod 'SwiftLint'
-
     react_native_post_install = use_react_native!(project_root, target_platform, options)
 
     if (resources_pod_path = resources_pod(project_root, target_platform, platforms))

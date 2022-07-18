@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <DisableFastUpToDateCheck>True</DisableFastUpToDateCheck>
-    <ValidateManifestCommand>node -e "require('react-native-test-app/scripts/validate-manifest')"</ValidateManifestCommand>
+    <ValidateManifestCommand>node -e "require('react-native-test-app/scripts/validate-manifest').validate('file')"</ValidateManifestCommand>
   </PropertyGroup>
   <Target Name="ValidateManifest" BeforeTargets="PrepareForBuild">
     <Exec Command="$(ValidateManifestCommand)" WorkingDirectory="$(SolutionDir)" />

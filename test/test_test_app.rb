@@ -155,8 +155,8 @@ class TestTestApp < Minitest::Test
       GC.disable
 
       platforms = { :ios => '14.0', :macos => '11.0' }
-      resources = %w[app.json dist/assets dist/main.jsbundle]
-      platform_resources = ['app.json', "dist-#{target}/assets", "dist-#{target}/main.jsbundle"]
+      resources = %w[dist/assets dist/main.jsbundle]
+      platform_resources = ["dist-#{target}/assets", "dist-#{target}/main.jsbundle"]
 
       [
         fixture_path('with_platform_resources'),
@@ -173,7 +173,7 @@ class TestTestApp < Minitest::Test
         manifest = JSON.parse(File.read(manifest_path))
 
         if project_root.to_s.include?('without')
-          assert_equal(['app.json'], manifest['resources'])
+          assert_equal([], manifest['resources'])
         elsif project_root.to_s.include?('with_platform_resources')
           assert_equal(platform_resources, manifest['resources'].sort)
         else

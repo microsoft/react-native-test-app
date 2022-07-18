@@ -155,7 +155,7 @@ MainPage::MainPage()
     InitializeComponent();
     InitializeTitleBar();
 
-    auto result = ::ReactTestApp::GetManifest("app.json");
+    auto result = ::ReactTestApp::GetManifest();
     if (result.has_value()) {
         auto &[manifest, checksum] = result.value();
 

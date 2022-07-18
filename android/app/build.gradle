@@ -93,7 +93,9 @@ android {
         versionCode getVersionCode()
         versionName getVersionName()
 
-        buildConfigField "boolean", "ReactTestApp_useFabric", project.ext.react.enableFabric.toString()
+        def (appManifest, checksum) = validateManifest(rootDir)
+        buildConfigField "String", "ReactTestApp_appManifest", "\"${appManifest}\""
+        buildConfigField "String", "ReactTestApp_appManifestChecksum", "\"${checksum}\""
 
         def recommendedFlipperVersion = getFlipperRecommendedVersion(rootDir)
         buildConfigField "String",
@@ -102,6 +104,8 @@ android {
 
         def singleApp = getSingleAppMode()
         buildConfigField "String", "ReactTestApp_singleApp", singleApp ? "\"${singleApp}\"" : "null"
+
+        buildConfigField "boolean", "ReactTestApp_useFabric", project.ext.react.enableFabric.toString()
 
         resValue "string", "app_name", project.ext.react.appName
 

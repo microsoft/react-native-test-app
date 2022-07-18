@@ -355,7 +355,6 @@ PODS:
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
   - SocketRocket (0.6.0)
-  - SwiftLint (0.47.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -418,7 +417,6 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactTestApp-DevSupport (from `../..`)
   - ReactTestApp-Resources (from `..`)
-  - SwiftLint
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -437,7 +435,6 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
-    - SwiftLint
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -556,9 +553,8 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: b960b687d2dfef0d3761fbb187e01812ebab8b23
   ReactCommon: 095366164a276d91ea704ce53cb03825c487a3f2
   ReactTestApp-DevSupport: 19f2e33511690a213253175a9ca541d10456cb95
-  ReactTestApp-Resources: 74a1cf509f4e7962b16361ea4e73cba3648fff5d
+  ReactTestApp-Resources: ff5f151e465e890010b417ce65ca6c5de6aeccbb
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
-  SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{D2B221C0-0781-4D20-8BF1-D88684662A5D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ReactTestAppTests</RootNamespace>
+    <ProjectSubType>NativeUnitTestProject</ProjectSubType>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet">
+    <ResolveNuGetPackages>false</ResolveNuGetPackages>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|ARM">
       <Configuration>Debug</Configuration>
@@ -34,14 +45,6 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{D2B221C0-0781-4D20-8BF1-D88684662A5D}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ReactTestAppTests</RootNamespace>
-    <ProjectSubType>NativeUnitTestProject</ProjectSubType>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>

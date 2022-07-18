@@ -13,7 +13,7 @@
   <ItemGroup>
     <ClCompile Include="$(ReactTestAppDir)\pch.cpp" />
     <ClCompile Include="$(ReactTestAppDir)\App.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\..\..\common\AppRegistry.cpp" />
+    <ClCompile Include="$(ReactTestAppCommonDir)\AppRegistry.cpp" />
     <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
     <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp" />
     <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
@@ -24,7 +24,7 @@
   <ItemGroup>
     <ClInclude Include="$(ReactTestAppDir)\pch.h" />
     <ClInclude Include="$(ReactTestAppDir)\App.h" />
-    <ClInclude Include="$(ReactTestAppDir)\..\..\common\AppRegistry.h" />
+    <ClInclude Include="$(ReactTestAppCommonDir)\AppRegistry.h" />
     <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
     <ClInclude Include="$(ReactTestAppDir)\MainPage.h" />
     <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />
@@ -51,9 +51,6 @@
     <Image Include="Assets\StoreLogo.png">
       <Filter>Assets</Filter>
     </Image>
-    <Text Include="$(ProjectRootDir)\app.json">
-      <Filter>Assets</Filter>
-    </Text>
     <!-- ReactTestApp asset item filters -->
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +64,7 @@
     <!-- ReactTestApp asset filters -->
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(ProjectRootDir)\app.json" />
     <None Include="PropertySheet.props" />
     <None Include="packages.config" />
   </ItemGroup>

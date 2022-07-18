@@ -1,6 +1,8 @@
 import groovy.json.JsonSlurper
 
+import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
+import java.security.MessageDigest
 
 ext.manifest = null
 
@@ -13,7 +15,7 @@ ext.findFile = { fileName ->
     def currentDirPath = rootDir == null ? null : rootDir.toString()
 
     while (currentDirPath != null) {
-        def currentDir = file(currentDirPath);
+        def currentDir = file(currentDirPath)
         def requestedFile = Paths.get(currentDirPath, fileName).toFile()
 
         if (requestedFile.exists()) {
@@ -219,4 +221,23 @@ ext.isFabricEnabled = { baseDir ->
     return project.hasProperty("USE_FABRIC") &&
         project.getProperty("USE_FABRIC") == "1" &&
         getReactNativeVersionNumber(baseDir) >= 6800
+}
+
+ext.validateManifest = { baseDir ->
+    String[] cmd = ["node", "-e", "require('react-native-test-app/scripts/validate-manifest').validate('stdout')"]
+    def process = Runtime.runtime.exec(cmd, null, baseDir)
+    process.waitFor()
+
+    def inputStream = process.getInputStream()
+    def output = new ByteArrayOutputStream()
+    def buffer = new byte[1024]
+    def length = inputStream.read(buffer)
+    while (length > 0) {
+        output.write(buffer, 0, length)
+        length = inputStream.read(buffer)
+    }
+
+    def result = output.toString(StandardCharsets.UTF_8.name()).trim()
+    def checksum = MessageDigest.getInstance("SHA-256").digest(output.toByteArray())
+    return [result, checksum.encodeHex().toString()]
 }

@@ -25,7 +25,9 @@
   <PropertyGroup Label="ReactNativeWindowsProps">
     <ProjectRootDir Condition="'$(ProjectRootDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ProjectRootDir>
     <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
-    <ReactTestAppDir Condition="'$(ReactTestAppDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows\ReactTestApp\</ReactTestAppDir>
+    <ReactTestAppDir Condition="'$(ReactTestAppDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows\ReactTestApp</ReactTestAppDir>
+    <ReactTestAppCommonDir Condition="'$(ReactTestAppCommonDir)' == ''">$(ReactTestAppDir)\..\..\common</ReactTestAppCommonDir>
+    <ReactTestAppGeneratedDir Condition="'$(ReactTestAppGeneratedDir)' == ''">$(MSBuildProjectDirectory)\..\..</ReactTestAppGeneratedDir>
     <WinUI2xVersionDisabled />
   </PropertyGroup>
   <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props')" />
@@ -92,28 +94,28 @@
     <Import Project="$(SolutionDir)packages\$(WinUIPackageProps)" Condition="'$(WinUIPackageProps)' != '' And Exists('$(SolutionDir)packages\$(WinUIPackageProps)')" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppDir)\..\..\common;$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppDir)\..\..\common;$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppDir)\..\..\common;$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppDir)\..\..\common;$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppDir)\..\..\common;$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppDir)\..\..\common;$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppDir)\..\..\common;$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppDir)\..\..\common;$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -145,7 +147,7 @@
     <ClInclude Include="$(ReactTestAppDir)\App.h">
       <DependentUpon>$(ReactTestAppDir)\App.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="$(ReactTestAppDir)\..\..\common\AppRegistry.h" />
+    <ClInclude Include="$(ReactTestAppCommonDir)\AppRegistry.h" />
     <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
     <ClInclude Include="$(ReactTestAppDir)\MainPage.h">
       <DependentUpon>$(ReactTestAppDir)\MainPage.xaml</DependentUpon>
@@ -178,7 +180,6 @@
     <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Image Include="Assets\SplashScreen.scale-200.png" />
     <Image Include="Assets\StoreLogo.png" />
-    <Text Include="$(ProjectRootDir)\app.json" />
     <!-- ReactTestApp asset items -->
   </ItemGroup>
   <ItemGroup>
@@ -188,7 +189,7 @@
     <ClCompile Include="$(ReactTestAppDir)\App.cpp">
       <DependentUpon>$(ReactTestAppDir)\App.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="$(ReactTestAppDir)\..\..\common\AppRegistry.cpp">
+    <ClCompile Include="$(ReactTestAppCommonDir)\AppRegistry.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AutolinkedNativeModules.g.cpp" />
@@ -209,6 +210,7 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(ProjectRootDir)\app.json" />
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
   </ItemGroup>

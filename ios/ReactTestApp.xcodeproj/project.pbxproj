@@ -175,8 +175,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 19ECD0FC232ED428003D8557 /* Build configuration list for PBXNativeTarget "ReactTestApp" */;
 			buildPhases = (
-				1936CB1C2768EC280085FD98 /* Validate manifest */,
-				196C722C2330D28A006556ED /* Run SwiftLint */,
+				1936CB1C2768EC280085FD98 /* Validate Manifest */,
 				19ECD0CE232ED425003D8557 /* Sources */,
 				19ECD0CF232ED425003D8557 /* Frameworks */,
 				19ECD0D0232ED425003D8557 /* Resources */,
@@ -232,8 +231,8 @@
 		19ECD0CA232ED425003D8557 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1320;
+				LastSwiftUpdateCheck = 1341;
+				LastUpgradeCheck = 1341;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					19ECD0D1232ED425003D8557 = {
@@ -297,7 +296,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1936CB1C2768EC280085FD98 /* Validate manifest */ = {
+		1936CB1C2768EC280085FD98 /* Validate Manifest */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -306,33 +305,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Validate manifest";
+			name = "Validate Manifest";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if command -v node >/dev/null 2>&1; then\n  node -e 'require(\"react-native-test-app/scripts/validate-manifest\")'\nelse\n  echo 'Could not validate manifest because `node` was not found'\nfi\n";
-		};
-		196C722C2330D28A006556ED /* Run SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run SwiftLint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint || exit 0\n";
-			showEnvVarsInLog = 0;
+			shellScript = "source .env\nnode -e 'require(\"react-native-test-app/scripts/validate-manifest\").validate(\"file\")'\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -20,7 +20,6 @@ describe("parseResources", () => {
 
   test("returns references to existing assets", () => {
     mockFiles({
-      "dist/assets/app.json": "{}",
       "dist/assets/node_modules/arnold/portrait.png": "{}",
       "dist/assets/splash.png": "{}",
       "dist/main.jsbundle": "'use strict';",
