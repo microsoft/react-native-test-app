@@ -102,6 +102,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 return
             }
 
+            mainWindow?.title = manifest.displayName
+
             let components = manifest.components ?? []
             if components.isEmpty {
                 NotificationCenter.default.addObserver(
