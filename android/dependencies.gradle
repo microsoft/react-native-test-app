@@ -3,9 +3,20 @@ static String versionOf(String spec) {
 }
 
 ext {
+    apply(from: "${buildscript.sourceFile.getParent()}/test-app-util.gradle")
+
     compileSdkVersion = 31
     minSdkVersion = 23
     targetSdkVersion = 29
+
+    // We need only set `ndkVersion` when building react-native from source.
+    if (hasProperty("ANDROID_NDK_VERSION")) {
+        ndkVersion ANDROID_NDK_VERSION
+    } else if (System.properties["os.arch"] == "aarch64") {
+        // Android NDK added support for Apple M1 in r24:
+        // https://github.com/android/ndk/wiki/Changelog-r24
+        ndkVersion = "24.0.8215888"
+    }
 
     /**
      * Dependabot requires a `dependencies.gradle` to evaluate Java

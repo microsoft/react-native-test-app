@@ -66,9 +66,8 @@ project.ext.signingConfigs = getSigningConfigs()
 android {
     compileSdkVersion project.ext.compileSdkVersion
 
-    // We need only set `ndkVersion` when building react-native from source.
-    if (hasProperty("ANDROID_NDK_VERSION")) {
-        ndkVersion ANDROID_NDK_VERSION
+    if (project.hasProperty("ndkVersion")) {
+        ndkVersion project.ext.ndkVersion
     }
 
     // TODO: Remove this block when minSdkVersion >= 24. See
