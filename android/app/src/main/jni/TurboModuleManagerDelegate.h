@@ -14,6 +14,16 @@ namespace ReactTestApp
         : public facebook::jni::HybridClass<TurboModuleManagerDelegate,
                                             facebook::react::TurboModuleManagerDelegate>
     {
+        // Signatures changed in 0.70 to avoid unnecessary string copies; see
+        // https://github.com/facebook/react-native/commit/3337add547c60b84816ef5dad82f4ead2e8742ef
+#if __has_include(<ReactCommon/CompositeTurboModuleManagerDelegate.h>)
+        using SharedCallInvoker = const std::shared_ptr<facebook::react::CallInvoker> &;
+        using StringRef = const std::string &;
+#else
+        using SharedCallInvoker = const std::shared_ptr<facebook::react::CallInvoker>;
+        using StringRef = const std::string;
+#endif
+
     public:
         static constexpr auto kJavaDescriptor =
             "Lcom/microsoft/reacttestapp/turbomodule/TurboModuleManagerDelegate;";
@@ -21,11 +31,10 @@ namespace ReactTestApp
         static void registerNatives();
 
         std::shared_ptr<facebook::react::TurboModule>
-        getTurboModule(const std::string name,  //
-                       const std::shared_ptr<facebook::react::CallInvoker> jsInvoker) override;
+        getTurboModule(StringRef name, SharedCallInvoker jsInvoker) override;
 
         std::shared_ptr<facebook::react::TurboModule>
-        getTurboModule(const std::string name,  //
+        getTurboModule(StringRef name,  //
                        const facebook::react::JavaTurboModule::InitParams &params) override;
 
     private:
@@ -36,7 +45,7 @@ namespace ReactTestApp
          * Test-only method. Allows user to verify whether a TurboModule can be
          * created by instances of this class.
          */
-        bool canCreateTurboModule(std::string name);
+        bool canCreateTurboModule(StringRef name);
     };
 }  // namespace ReactTestApp
 

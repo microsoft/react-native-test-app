@@ -16,14 +16,14 @@ void TurboModuleManagerDelegate::registerNatives()
     });
 }
 
-std::shared_ptr<TurboModule>
-TurboModuleManagerDelegate::getTurboModule(const std::string, const std::shared_ptr<CallInvoker>)
+std::shared_ptr<TurboModule> TurboModuleManagerDelegate::getTurboModule(StringRef,
+                                                                        SharedCallInvoker)
 {
     return nullptr;
 }
 
 std::shared_ptr<TurboModule> TurboModuleManagerDelegate::getTurboModule(
-    const std::string name, const JavaTurboModule::InitParams &params)
+    StringRef name, const JavaTurboModule::InitParams &params)
 {
     // Try autolinked module providers first
     auto rncli_module = rncli_ModuleProvider(name, params);
@@ -41,7 +41,7 @@ TurboModuleManagerDelegate::initHybrid(
     return makeCxxInstance();
 }
 
-bool TurboModuleManagerDelegate::canCreateTurboModule(std::string name)
+bool TurboModuleManagerDelegate::canCreateTurboModule(StringRef name)
 {
     return getTurboModule(name, nullptr) != nullptr ||
            getTurboModule(name, {.moduleName = name}) != nullptr;
