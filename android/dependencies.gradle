@@ -15,11 +15,7 @@ ext {
      * See https://github.com/dependabot/feedback/issues/345.
      */
     libraries = [
-        // androidx.appcompat:appcompat:1.4.0 breaks TextInput. For now, we
-        // need to lock it to 1.3.1 until the fix is released with the next
-        // version of react-native. For more details, see
-        // https://github.com/facebook/react-native/issues/31572.
-        androidAppCompat            : "androidx.appcompat:appcompat:1.3.1",
+        androidAppCompat            : "androidx.appcompat:appcompat:1.4.2",
         androidCoreKotlinExtensions : "androidx.core:core-ktx:1.8.0",
         androidEspressoCore         : "androidx.test.espresso:espresso-core:3.4.0",
         androidJUnit                : "androidx.test.ext:junit:1.1.3",
