@@ -2,8 +2,16 @@
 
 import XCTest
 
-class ManifestTests: XCTestCase {
+// swiftlint:disable identifier_name line_length
+let ReactTestAppTests_AppManifest: NSString = "{\"name\":\"Example\",\"displayName\":\"Example\",\"components\":[{\"appKey\":\"Example\",\"displayName\":\"App\"},{\"appKey\":\"Example\",\"displayName\":\"App (modal)\",\"presentationStyle\":\"modal\"}]}"
+let ReactTestAppTests_AppManifestChecksum: NSString = "94a9447a98dd58c301b7b178a2ee9f29aac817b4fa3688678e4f39b250d5eb37"
 
+let ReactTestApp_AppManifest: UnsafePointer<Int8>? = ReactTestAppTests_AppManifest.utf8String
+let ReactTestApp_AppManifestChecksum: UnsafePointer<Int8>! = ReactTestAppTests_AppManifestChecksum.utf8String
+let ReactTestApp_AppManifestLength = 175
+// swiftlint:enable identifier_name line_length
+
+class ManifestTests: XCTestCase {
     func testReadFromFile() {
         guard let (manifest, checksum) = Manifest.fromFile() else {
             XCTFail("Failed to read 'app.json'")

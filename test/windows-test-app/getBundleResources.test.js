@@ -33,12 +33,18 @@ describe("getBundleResources", () => {
     expect(appName).toBe("Example");
     expect(appxManifest).toBe("windows\\Package.appxmanifest");
     expect(assetItems).toMatchInlineSnapshot(`
-      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
+      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\app.json\\">
+            <DestinationFolders>$(OutDir)\\\\Bundle\\\\assets</DestinationFolders>
+          </CopyFileToFolders>
+          <CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
             <DestinationFolders>$(OutDir)\\\\Bundle</DestinationFolders>
           </CopyFileToFolders>"
     `);
     expect(assetItemFilters).toMatchInlineSnapshot(`
-      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
+      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\app.json\\">
+            <Filter>Assets\\\\assets</Filter>
+          </CopyFileToFolders>
+          <CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
             <Filter>Assets</Filter>
           </CopyFileToFolders>"
     `);

@@ -208,11 +208,6 @@ function generateContentItems(
 ) {
   const { assetFilters, assetItemFilters, assetItems } = assets;
   for (const resource of resources) {
-    if (path.basename(resource) === "app.json") {
-      // `app.json` is always included
-      continue;
-    }
-
     const resourcePath = path.isAbsolute(resource)
       ? path.relative(projectPath, resource)
       : resource;
@@ -540,6 +535,8 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
 
   fs.mkdirSync(projectFilesDestPath, { recursive: true });
   fs.mkdirSync(destPath, { recursive: true });
+
+  require("../scripts/validate-manifest").validate("file");
 
   const manifestFilePath = findNearest("app.json", destPath);
   const {

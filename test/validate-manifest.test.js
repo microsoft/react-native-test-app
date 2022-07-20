@@ -6,7 +6,7 @@ jest.mock("fs");
 describe("validate-manifest", () => {
   const { mockFiles } = require("./mockFiles");
   const {
-    findAppManifest,
+    findFile,
     validateManifest,
   } = require("../scripts/validate-manifest");
 
@@ -31,15 +31,15 @@ describe("validate-manifest", () => {
       "example/node_modules/react-native-test-app/package.json": `{ "name": "Example" }`,
     });
 
-    expect(findAppManifest()).toBeUndefined();
-    expect(findAppManifest("example")).toBeDefined();
+    expect(findFile("app.json")).toBeUndefined();
+    expect(findFile("app.json", "example")).toBeDefined();
     expect(
-      findAppManifest("example/node_modules/react-native-test-app")
+      findFile("app.json", "example/node_modules/react-native-test-app")
     ).toBeDefined();
   });
 
   test("handles missing app manifest", () => {
-    expect(() => validateManifest(undefined)).toThrow("1");
+    expect(validateManifest(undefined)).toBe(1);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
     expect(consoleSpy).toHaveBeenCalledWith(
       `Failed to find 'app.json'. Please make sure you're in the right directory.`
@@ -50,7 +50,7 @@ describe("validate-manifest", () => {
     mockFiles({
       "app.json": `{ "name": "Example" }`,
     });
-    expect(() => validateManifest()).toThrow("1");
+    expect(validateManifest(findFile("app.json"))).toBe(1001);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
     expect(consoleSpy).toHaveBeenCalledWith(
       expect.stringContaining(
@@ -81,7 +81,7 @@ describe("validate-manifest", () => {
         ]
       }`,
     });
-    expect(() => validateManifest()).toThrow("1");
+    expect(validateManifest(findFile("app.json"))).toBe(1001);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
     expect(consoleSpy).toHaveBeenCalledWith(
       expect.stringContaining(
@@ -108,7 +108,7 @@ describe("validate-manifest", () => {
         ]
       }`,
     });
-    expect(() => validateManifest()).toThrow("1");
+    expect(validateManifest(findFile("app.json"))).toBe(1001);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
     expect(consoleSpy).toHaveBeenCalledWith(
       expect.stringContaining(
@@ -130,7 +130,7 @@ describe("validate-manifest", () => {
         "resources": 0
       }`,
     });
-    expect(() => validateManifest()).toThrow("1");
+    expect(validateManifest(findFile("app.json"))).toBe(1003);
     expect(consoleSpy).toHaveBeenCalledWith(
       expect.stringContaining(
         "app.json: error: app.json is not a valid app manifest"
@@ -155,7 +155,7 @@ describe("validate-manifest", () => {
         ]
       }`,
     });
-    expect(() => validateManifest()).toThrow("1");
+    expect(validateManifest(findFile("app.json"))).toBe(1003);
     expect(consoleSpy).toHaveBeenCalledWith(
       expect.stringContaining(
         "app.json: error: app.json is not a valid app manifest"
@@ -184,7 +184,7 @@ describe("validate-manifest", () => {
         }`,
       });
 
-      expect(() => validateManifest()).toThrow("1");
+      expect(validateManifest(findFile("app.json"))).toBe(1003);
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining(
           "app.json: error: app.json is not a valid app manifest"
@@ -237,7 +237,23 @@ describe("validate-manifest", () => {
         }
       }`,
     });
-    expect(() => validateManifest()).not.toThrow();
+    expect(validateManifest(findFile("app.json"))).toMatchInlineSnapshot(`
+      Object {
+        "components": Array [
+          Object {
+            "appKey": "Example",
+            "displayName": "App",
+          },
+          Object {
+            "appKey": "Example",
+            "displayName": "App (modal)",
+            "presentationStyle": "modal",
+          },
+        ],
+        "displayName": "Example",
+        "name": "Example",
+      }
+    `);
     expect(consoleSpy).not.toHaveBeenCalled();
   });
 });

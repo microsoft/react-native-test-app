@@ -101,36 +101,7 @@ ext.applyTestAppModule = { Project project ->
     def generatedRawDir = file("${generatedResDir}/raw")
     generatedRawDir.mkdirs()
 
-    def validateManifest = tasks.register("validateManifest", Exec) {
-        workingDir(projectRoot)
-
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            commandLine("node.exe", "-e", "\"require('react-native-test-app/scripts/validate-manifest')\"")
-        } else {
-            def result = exec {
-                commandLine("bash", "-l", "-c", "command -v node")
-                ignoreExitValue = true
-                standardOutput = new ByteArrayOutputStream()
-            }
-            if (result.getExitValue() == 0) {
-                commandLine("node", "-e", "require('react-native-test-app/scripts/validate-manifest')")
-            } else {
-                logger.warn("Could not validate manifest because `node` was not found")
-                commandLine("true")
-            }
-        }
-    }
-
-    preBuild.dependsOn(tasks.register("copyManifest", Copy) {
-        dependsOn(validateManifest)
-
-        from(manifestFile)
-        into(generatedRawDir)
-    })
-
     preBuild.dependsOn(tasks.register("copyAssets", Copy) {
-        dependsOn(validateManifest)
-
         androidResourceFiles.each {
             from(it)
         }
@@ -139,8 +110,6 @@ ext.applyTestAppModule = { Project project ->
     })
 
     preBuild.dependsOn(tasks.register("copyResources", Copy) {
-        dependsOn(validateManifest)
-
         if (androidResDir != null) {
             from(androidResDir)
             into(generatedResDir)

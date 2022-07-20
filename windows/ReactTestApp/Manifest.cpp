@@ -2,29 +2,14 @@
 
 #include "Manifest.h"
 
-#include <cstdio>
-
 #include <nlohmann/json.hpp>
-#include <winrt/Windows.Security.Cryptography.Core.h>
-#include <winrt/Windows.Security.Cryptography.h>
+
+#include "app.json.h"
 
 using nlohmann::detail::value_t;
-using winrt::Windows::Security::Cryptography::BinaryStringEncoding;
-using winrt::Windows::Security::Cryptography::CryptographicBuffer;
-using winrt::Windows::Security::Cryptography::Core::HashAlgorithmNames;
-using winrt::Windows::Security::Cryptography::Core::HashAlgorithmProvider;
 
 namespace
 {
-    std::string checksum(std::string const &data)
-    {
-        auto hasher = HashAlgorithmProvider::OpenAlgorithm(HashAlgorithmNames::Sha256());
-        auto digest = hasher.HashData(CryptographicBuffer::ConvertStringToBinary(
-            winrt::to_hstring(data), BinaryStringEncoding::Utf8));
-        auto checksum = CryptographicBuffer::EncodeToHexString(digest);
-        return winrt::to_string(checksum);
-    }
-
     template <typename T>
     std::optional<T> get_optional(const nlohmann::json &j, const std::string &key)
     {
@@ -110,26 +95,14 @@ namespace ReactTestApp
                            .value_or(std::vector<Component>{});
     }
 
-    std::optional<std::tuple<Manifest, std::string>> GetManifest(std::string const &filename)
+    std::optional<std::tuple<Manifest, std::string>> GetManifest(const char *const json)
     {
-        std::FILE *stream = nullptr;
-        if (fopen_s(&stream, filename.c_str(), "rb") != 0) {
-            return std::nullopt;
-        }
-
-        std::string json;
-        std::fseek(stream, 0, SEEK_END);
-        json.resize(std::ftell(stream));
-
-        std::rewind(stream);
-        std::fread(json.data(), 1, json.size(), stream);
-        std::fclose(stream);
-
-        auto j = nlohmann::json::parse(json, nullptr, false);
+        auto manifest = json == nullptr ? ReactTestApp_AppManifest : json;
+        auto j = nlohmann::json::parse(manifest, nullptr, false);
         if (j.is_discarded()) {
             return std::nullopt;
         }
 
-        return std::make_tuple(j.get<Manifest>(), checksum(json));
+        return std::make_tuple(j.get<Manifest>(), std::string{ReactTestApp_AppManifestChecksum});
     }
 }  // namespace ReactTestApp

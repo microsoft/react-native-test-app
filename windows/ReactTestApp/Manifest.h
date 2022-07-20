@@ -30,7 +30,7 @@ namespace ReactTestApp
         std::optional<std::vector<Component>> components;
     };
 
-    std::optional<std::tuple<Manifest, std::string>> GetManifest(std::string const &filename);
+    std::optional<std::tuple<Manifest, std::string>> GetManifest(const char *const json = nullptr);
 
 }  // namespace ReactTestApp
 
