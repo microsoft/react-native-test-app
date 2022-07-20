@@ -11,7 +11,8 @@ def resolve_module(request)
   @module_cache ||= {}
   return @module_cache[request] if @module_cache.key?(request)
 
-  package_json = find_file("node_modules/#{request}/package.json", Pathname.pwd)
+  package_json = find_file("node_modules/#{request}/package.json",
+                           Pod::Config.instance.installation_root)
   raise "Cannot find module '#{request}'" if package_json.nil?
 
   @module_cache[request] = package_json.dirname.to_s
