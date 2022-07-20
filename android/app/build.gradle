@@ -201,7 +201,14 @@ dependencies {
     implementation libraries.kotlinStdlibJdk8
     implementation libraries.kotlinReflect
 
-    implementation libraries.androidAppCompat
+    if (reactNativeVersion < 6800) {
+        // androidx.appcompat:appcompat:1.4.0+ breaks TextInput. This was fixed
+        // in react-native 0.68. For more details, see
+        // https://github.com/facebook/react-native/issues/31572.
+        implementation "androidx.appcompat:appcompat:1.3.1"
+    } else {
+        implementation libraries.androidAppCompat
+    }
     implementation libraries.androidCoreKotlinExtensions
     implementation libraries.androidRecyclerView
     implementation libraries.androidSwipeRefreshLayout
