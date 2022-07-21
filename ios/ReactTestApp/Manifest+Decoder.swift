@@ -36,22 +36,13 @@ extension Component {
 
 extension Manifest {
     static func fromFile() -> (Manifest, String)? {
-        guard let appManifest = UnsafeMutableRawPointer(mutating: ReactTestApp_AppManifest) else {
-            fatalError()
-        }
-
-        let data = Data(
-            bytesNoCopy: appManifest,
-            count: ReactTestApp_AppManifestLength,
-            deallocator: .none
-        )
-        return from(data: data)
+        return from(data: Data(ReactTestApp_AppManifest.utf8))
     }
 
     static func from(data: Data) -> (Manifest, String)? {
         do {
             let manifest = try JSONDecoder().decode(self, from: data)
-            return (manifest, String(cString: ReactTestApp_AppManifestChecksum))
+            return (manifest, ReactTestApp_AppManifestChecksum)
         } catch {
             assertionFailure("Failed to load manifest: \(error)")
             return nil
