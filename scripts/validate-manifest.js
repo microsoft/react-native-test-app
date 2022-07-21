@@ -95,14 +95,15 @@ function validateManifest(manifestPath) {
  * @param {("file" | "stdout")=} outputMode Whether to output to `file` or `stdout`
  */
 function validate(outputMode = "stdout") {
-  const manifestPath = findFile(APP_JSON);
+  const projectRoot = process.env["PODS_ROOT"] || process.cwd();
+  const manifestPath = findFile(APP_JSON, projectRoot);
   const manifest = validateManifest(manifestPath);
   if (typeof manifest === "number") {
     process.exitCode = manifest;
     return;
   }
 
-  const nodeModulesPath = findFile(NODE_MODULES);
+  const nodeModulesPath = findFile(NODE_MODULES, projectRoot);
   if (!nodeModulesPath) {
     console.error(
       `Failed to find '${NODE_MODULES}'. Please make sure you've installed npm dependencies.`
