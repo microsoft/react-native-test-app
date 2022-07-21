@@ -15,4 +15,4 @@ integers, such as 1.3.11.
   instead.
 
 Introduced in
-<a href='//github.com/microsoft/react-native-test-app/releases/tag/1.4.0'>1.4.0</a>.
+[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).

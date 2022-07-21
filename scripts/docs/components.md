@@ -78,7 +78,7 @@ public void onAttach(@NonNull Context context) {
 On iOS/macOS, you can have native view controllers on the home screen by using
 their Objective-C names as app key (Swift classes can declare Objective-C names
 with the
-<a href='https://docs.swift.org/swift-book/ReferenceManual/Attributes.html#objc'>`@objc`</a>
+[`@objc`](https://docs.swift.org/swift-book/ReferenceManual/Attributes.html#objc)
 attribute):
 
 ```javascript

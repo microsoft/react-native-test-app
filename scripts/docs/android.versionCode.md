@@ -4,4 +4,4 @@ to determine whether one version is more recent than another. See
 for more on how it is used and how it differs from [`version`](#version).
 
 Introduced in
-<a href='//github.com/microsoft/react-native-test-app/releases/tag/1.4.0'>1.4.0</a>.
+[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).
