@@ -121,6 +121,11 @@ ext.applyTestAppModule = { Project project ->
             main {
                 assets.srcDirs += generatedAssetsDir
                 res.srcDirs += generatedResDir
+                if (manifest.containsKey("android") && manifest["android"].containsKey("icons")) {
+                    res.srcDirs += "${projectRoot}/${manifest["android"]["icons"]}"
+                } else {
+                    res.srcDirs += "${testAppDir}/android/app/src/main/res-launcher"
+                }
             }
         }
     }
