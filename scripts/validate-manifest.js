@@ -93,9 +93,9 @@ function validateManifest(manifestPath) {
 
 /**
  * @param {("file" | "stdout")=} outputMode Whether to output to `file` or `stdout`
+ * @param {string=} projectRoot Path to root of project
  */
-function validate(outputMode = "stdout") {
-  const projectRoot = process.env["PODS_ROOT"] || process.cwd();
+function validate(outputMode = "stdout", projectRoot = process.cwd()) {
   const manifestPath = findFile(APP_JSON, projectRoot);
   const manifest = validateManifest(manifestPath);
   if (typeof manifest === "number") {
