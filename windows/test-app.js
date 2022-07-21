@@ -536,7 +536,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   fs.mkdirSync(projectFilesDestPath, { recursive: true });
   fs.mkdirSync(destPath, { recursive: true });
 
-  require("../scripts/validate-manifest").validate("file");
+  require("../scripts/validate-manifest").validate("file", destPath);
 
   const manifestFilePath = findNearest("app.json", destPath);
   const {

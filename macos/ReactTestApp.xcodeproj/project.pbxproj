@@ -306,7 +306,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source .env\nnode -e 'require(\"react-native-test-app/scripts/validate-manifest\").validate(\"file\")'\n";
+			shellScript = "source .env\nnode -e \"require('react-native-test-app/scripts/validate-manifest').validate('file', '$PODS_ROOT')\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
