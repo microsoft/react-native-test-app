@@ -36,7 +36,7 @@ extension Component {
 
 extension Manifest {
     static func fromFile() -> (Manifest, String)? {
-        return from(data: Data(ReactTestApp_AppManifest.utf8))
+        from(data: Data(ReactTestApp_AppManifest.utf8))
     }
 
     static func from(data: Data) -> (Manifest, String)? {
