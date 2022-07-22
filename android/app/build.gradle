@@ -6,8 +6,8 @@ buildscript {
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    id("org.jetbrains.kotlin.android") version "${kotlinVersion}"
+    id("org.jetbrains.kotlin.kapt") version "${kotlinVersion}"
 }
 
 // `react-native run-android` is hard-coded to look for the output APK at a very
@@ -15,8 +15,8 @@ plugins {
 // https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
 buildDir = "${rootDir}/${name}/build"
 
-def reactNativeDir = findNodeModulesPath(rootDir, "react-native")
-def reactNativeVersion = getReactNativeVersionNumber(rootDir)
+def reactNativeDir = findNodeModulesPath("react-native", rootDir)
+def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 
 repositories {
     maven {
@@ -51,11 +51,14 @@ apply(from: "${projectDir}/../../test-app.gradle")
 applyTestAppModule(project)
 
 project.ext.react = [
-    appName      : getAppName(),
-    applicationId: getApplicationId(),
-    enableFabric : isFabricEnabled(rootDir),
-    enableFlipper: getFlipperVersion(rootDir),
-    enableHermes : true,
+    abiSplit             : false,
+    appName              : getAppName(),
+    applicationId        : getApplicationId(),
+    architectures        : ["arm64-v8a", "armeabi-v7a", "x86", "x86_64"],
+    enableFabric         : isFabricEnabled(project),
+    enableFlipper        : getFlipperVersion(rootDir),
+    enableHermes         : true,
+    enableNewArchitecture: isNewArchitectureEnabled(project),
 ]
 
 project.ext.signingConfigs = getSigningConfigs()
@@ -63,9 +66,8 @@ project.ext.signingConfigs = getSigningConfigs()
 android {
     compileSdkVersion project.ext.compileSdkVersion
 
-    // We need only set `ndkVersion` when building react-native from source.
-    if (hasProperty("ANDROID_NDK_VERSION")) {
-        ndkVersion ANDROID_NDK_VERSION
+    if (project.hasProperty("ndkVersion")) {
+        ndkVersion project.ext.ndkVersion
     }
 
     // TODO: Remove this block when minSdkVersion >= 24. See
@@ -110,6 +112,69 @@ android {
         resValue "string", "app_name", project.ext.react.appName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        if (project.ext.react.enableNewArchitecture) {
+            externalNativeBuild {
+                ndkBuild {
+                    arguments "APP_PLATFORM=android-${project.ext.minSdkVersion}",
+                              "APP_STL=c++_shared",
+                              "NDK_TOOLCHAIN_VERSION=clang",
+                              "GENERATED_SRC_DIR=${buildDir}/generated/source",
+                              "NODE_MODULES_DIR=${reactNativeDir}/..",
+                              "PROJECT_BUILD_DIR=${buildDir}",
+                              "REACT_ANDROID_DIR=${reactNativeDir}/ReactAndroid",
+                              "REACT_ANDROID_BUILD_DIR=${reactNativeDir}/ReactAndroid/build"
+                    cFlags "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
+                    cppFlags "-std=c++17"
+                    targets "reacttestapp_appmodules"
+                }
+            }
+            if (!project.ext.react.abiSplit) {
+                ndk {
+                    abiFilters(*project.ext.react.architectures)
+                }
+            }
+        }
+    }
+
+    if (project.ext.react.enableNewArchitecture) {
+        externalNativeBuild {
+            ndkBuild {
+                path "${projectDir}/src/main/jni/Android.mk"
+            }
+        }
+
+        def reactAndroidProjectDir = project(":ReactAndroid").projectDir
+        def packageReactNdkDebugLibs = tasks.register("packageReactNdkDebugLibs", Copy) {
+            dependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck")
+            from("${reactAndroidProjectDir}/src/main/jni/prebuilt/lib")
+            into("${buildDir}/react-ndk/exported")
+        }
+        def packageReactNdkReleaseLibs = tasks.register("packageReactNdkReleaseLibs", Copy) {
+            dependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck")
+            from("${reactAndroidProjectDir}/src/main/jni/prebuilt/lib")
+            into("${buildDir}/react-ndk/exported")
+        }
+
+        afterEvaluate {
+            preDebugBuild.dependsOn(packageReactNdkDebugLibs)
+            preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
+
+            // Due to a bug in AGP, we have to explicitly set a dependency
+            // between configureNdkBuild* tasks and the preBuild tasks. This can
+            // be removed once this issue is resolved:
+            // https://issuetracker.google.com/issues/207403732
+            configureNdkBuildRelease.dependsOn(preReleaseBuild)
+            configureNdkBuildDebug.dependsOn(preDebugBuild)
+            project.ext.react.architectures.each { architecture ->
+                tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
+                    dependsOn("preDebugBuild")
+                }
+                tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
+                    dependsOn("preReleaseBuild")
+                }
+            }
+        }
     }
 
     lintOptions {
@@ -158,12 +223,28 @@ android {
             main.java.srcDirs += "src/no-fabric/java"
         }
 
+        // TODO: Remove this block when we drop support for 0.65.
+        if (project.ext.react.enableNewArchitecture) {
+            main.java.srcDirs += "src/turbomodule/java"
+        } else {
+            main.java.srcDirs += "src/no-turbomodule/java"
+        }
+
         // TODO: Remove this block when we drop support for 0.67.
         // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
         if (reactNativeVersion < 6800) {
             main.java.srcDirs += "src/reactinstanceeventlistener-pre-0.68/java"
         } else {
             main.java.srcDirs += "src/reactinstanceeventlistener-0.68/java"
+        }
+    }
+
+    splits {
+        abi {
+            reset()
+            enable(project.ext.react.abiSplit)
+            universalApk(false)
+            include(*project.ext.react.architectures)
         }
     }
 }
@@ -175,8 +256,8 @@ dependencies {
         // TODO: Remove this block when we drop support for 0.68.
         if (reactNativeVersion < 6900) {
             def hermesEngineDir =
-                findNodeModulesPath(file(reactNativeDir), "hermes-engine")
-                    ?: findNodeModulesPath(file(reactNativeDir), "hermesvm")
+                findNodeModulesPath("hermes-engine", file(reactNativeDir))
+                    ?: findNodeModulesPath("hermesvm", file(reactNativeDir))
             if (hermesEngineDir == null) {
                 throw new GradleException("Could not find 'hermes-engine'. Please make sure you've added it to 'package.json'.")
             }
@@ -235,4 +316,23 @@ dependencies {
             exclude(group: "com.facebook.flipper")
         }
     }
+}
+
+if (project.ext.react.enableNewArchitecture) {
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            substitute(module("com.facebook.react:react-native"))
+                .using(project(":ReactAndroid"))
+                .because("On New Architecture, we are building React Native from source")
+            substitute(module("com.facebook.react:hermes-engine"))
+                .using(project(":ReactAndroid:hermes-engine"))
+                .because("On New Architecture, we are building Hermes from source")
+        }
+    }
+}
+
+// `@react-native-community/cli` currently requires this function to be defined.
+// See https://github.com/react-native-community/cli/blob/a87fb9014635fe84ab19a1a88d6ecbbc530eb4e2/packages/platform-android/native_modules.gradle#L497
+def isNewArchitectureEnabled() {
+    return isFabricEnabled(project)
 }

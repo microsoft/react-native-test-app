@@ -24,8 +24,7 @@
     "/*.{gradle,js,md,podspec,rb}",
     "/android/**/*.gradle",
     "/android/app/lint.xml",
-    "/android/app/src/**/compat",
-    "/android/app/src/{fabric,flipper,main,no-fabric}",
+    "/android/app/src/!(test)",
     "/android/support/src",
     "/common",
     "/example/.gitignore",
@@ -64,7 +63,7 @@
     "lint:swift": "swiftlint",
     "set-react-version": "node scripts/set-react-version.mjs",
     "test:js": "jest",
-    "test:rb": "bundle exec ruby -Ilib:test test/test_test_app.rb"
+    "test:rb": "bundle exec ruby -Ilib:test -e \"Dir.glob('test/test_*.rb').each { |file| require_relative file }\""
   },
   "dependencies": {
     "ajv": "^8.0.0",
