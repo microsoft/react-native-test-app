@@ -27,4 +27,4 @@ for the debug and release flavors:
 ```
 
 Introduced in
-<a href='//github.com/microsoft/react-native-test-app/releases/tag/0.11.0'>0.11.0</a>.
+[0.11.0](https://github.com/microsoft/react-native-test-app/releases/tag/0.11.0).

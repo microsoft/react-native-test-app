@@ -65,6 +65,37 @@ export async function generateSchema() {
 
   return {
     $defs: {
+      apple: {
+        type: "object",
+        properties: {
+          bundleIdentifier: {
+            description:
+              "Use this property to set the bundle identifier of the final app bundle. This is the same as setting `PRODUCT_BUNDLE_IDENTIFIER` in Xcode.",
+            type: "string",
+          },
+          buildNumber: {
+            description: extractBrief(await docs["ios.buildNumber"]),
+            markdownDescription: await docs["ios.buildNumber"],
+            type: "string",
+          },
+          codeSignEntitlements: {
+            description: extractBrief(await docs["ios.codeSignEntitlements"]),
+            markdownDescription: await docs["ios.codeSignEntitlements"],
+            type: "string",
+          },
+          codeSignIdentity: {
+            description: extractBrief(await docs["ios.codeSignIdentity"]),
+            markdownDescription: await docs["ios.codeSignIdentity"],
+            type: "string",
+          },
+          developmentTeam: {
+            description: extractBrief(await docs["ios.developmentTeam"]),
+            markdownDescription: await docs["ios.developmentTeam"],
+            type: "string",
+          },
+        },
+        "exclude-from-codegen": true,
+      },
       component: {
         type: "object",
         properties: {
@@ -104,9 +135,9 @@ export async function generateSchema() {
             type: "string",
           },
           version: {
-            type: "string",
             description: extractBrief(await docs.version),
             markdownDescription: await docs.version,
+            type: "string",
           },
           bundleRoot: {
             description: extractBrief(await docs.bundleRoot),
@@ -231,33 +262,9 @@ export async function generateSchema() {
       },
       ios: {
         description: "iOS specific properties go here.",
+        allOf: [{ $ref: "#/$defs/apple" }],
         type: "object",
         properties: {
-          bundleIdentifier: {
-            description:
-              "Use this property to set the bundle identifier of the final app bundle. This is the same as setting `PRODUCT_BUNDLE_IDENTIFIER` in Xcode.",
-            type: "string",
-          },
-          buildNumber: {
-            description: extractBrief(await docs["ios.buildNumber"]),
-            markdownDescription: await docs["ios.buildNumber"],
-            type: "string",
-          },
-          codeSignEntitlements: {
-            description: extractBrief(await docs["ios.codeSignEntitlements"]),
-            markdownDescription: await docs["ios.codeSignEntitlements"],
-            type: "string",
-          },
-          codeSignIdentity: {
-            description: extractBrief(await docs["ios.codeSignIdentity"]),
-            markdownDescription: await docs["ios.codeSignIdentity"],
-            type: "string",
-          },
-          developmentTeam: {
-            description: extractBrief(await docs["ios.developmentTeam"]),
-            markdownDescription: await docs["ios.developmentTeam"],
-            type: "string",
-          },
           reactNativePath: {
             description:
               'Sets a custom path to React Native. Useful for when `require("react-native")` does not return the desired path.',
@@ -267,33 +274,9 @@ export async function generateSchema() {
       },
       macos: {
         description: "macOS specific properties go here.",
+        allOf: [{ $ref: "#/$defs/apple" }],
         type: "object",
         properties: {
-          bundleIdentifier: {
-            description:
-              "Use this property to set the bundle identifier of the final app bundle. This is the same as setting `PRODUCT_BUNDLE_IDENTIFIER` in Xcode.",
-            type: "string",
-          },
-          buildNumber: {
-            description: extractBrief(await docs["ios.buildNumber"]),
-            markdownDescription: await docs["ios.buildNumber"],
-            type: "string",
-          },
-          codeSignEntitlements: {
-            description: extractBrief(await docs["ios.codeSignEntitlements"]),
-            markdownDescription: await docs["ios.codeSignEntitlements"],
-            type: "string",
-          },
-          codeSignIdentity: {
-            description: extractBrief(await docs["ios.codeSignIdentity"]),
-            markdownDescription: await docs["ios.codeSignIdentity"],
-            type: "string",
-          },
-          developmentTeam: {
-            description: extractBrief(await docs["ios.developmentTeam"]),
-            markdownDescription: await docs["ios.developmentTeam"],
-            type: "string",
-          },
           reactNativePath: {
             description:
               'Sets a custom path to React Native for macOS. Useful for when `require("react-native-macos")` does not return the desired path.',

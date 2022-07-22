@@ -6,4 +6,4 @@ Defaults to multi-app mode.
 For more details, see [its dedicated page](Single-app-Mode).
 
 Introduced in
-<a href='//github.com/microsoft/react-native-test-app/releases/tag/1.3.0'>1.3.0</a>.
+[1.3.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.3.0).
