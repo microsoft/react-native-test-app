@@ -39,11 +39,11 @@ def include_react_native!(options)
 
   if target_platform == :ios && flipper_versions
     Pod::UI.warn(
-      'use_flipper is deprecated from 0.70+; use the flipper_configuration ' \
+      'use_flipper is deprecated from 0.70; use the flipper_configuration ' \
       'option in the use_test_app! function instead if you don\'t need to ' \
       'support older versions of react-native.'
     )
-    options[:flipper_configuration] = FlipperConfiguration.enabled(["Debug"], flipper_versions)
+    options[:flipper_configuration] = FlipperConfiguration.enabled(['Debug'], flipper_versions)
   end
 
   use_new_architecture!(options)
