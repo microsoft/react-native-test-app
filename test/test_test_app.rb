@@ -92,23 +92,24 @@ class TestTestApp < Minitest::Test
   end
 
   def test_react_native_pods
-    assert_equal('use_react_native-0.68', react_native_pods(Gem::Version.new('1000.0.0')))
-
-    assert_equal('use_react_native-0.68', react_native_pods(Gem::Version.new('0.68.0')))
-    assert_equal('use_react_native-0.68', react_native_pods(Gem::Version.new('0.68.0-rc.1')))
-
-    assert_equal('use_react_native-0.64', react_native_pods(Gem::Version.new('0.67.3')))
-    assert_equal('use_react_native-0.64', react_native_pods(Gem::Version.new('0.66.4')))
-    assert_equal('use_react_native-0.64', react_native_pods(Gem::Version.new('0.65.1')))
-
-    assert_equal('use_react_native-0.64', react_native_pods(Gem::Version.new('0.64.3')))
-    assert_equal('use_react_native-0.64', react_native_pods(Gem::Version.new('0.64.0')))
-
-    assert_equal('use_react_native-0.63', react_native_pods(Gem::Version.new('0.63.4')))
-    assert_equal('use_react_native-0.63', react_native_pods(Gem::Version.new('0.63.0')))
-
-    assert_equal('use_react_native-0.62', react_native_pods(Gem::Version.new('0.62.2')))
-    assert_equal('use_react_native-0.62', react_native_pods(Gem::Version.new('0.62.0')))
+    [
+      ['1000.0.0', '0.70'],
+      ['0.70.0', '0.70'],
+      ['0.70.0-rc.1', '0.70'],
+      ['0.68.0', '0.68'],
+      ['0.68.0-rc.1', '0.68'],
+      ['0.67.3', '0.64'],
+      ['0.66.4', '0.64'],
+      ['0.65.1', '0.64'],
+      ['0.64.3', '0.64'],
+      ['0.64.0', '0.64'],
+      ['0.63.4', '0.63'],
+      ['0.63.0', '0.63'],
+      ['0.62.2', '0.62'],
+      ['0.62.0', '0.62'],
+    ].each do |target, profile|
+      assert_equal("use_react_native-#{profile}", react_native_pods(Gem::Version.new(target)))
+    end
 
     assert_raises(RuntimeError) do
       react_native_pods(Gem::Version.new('0.61.5'))
