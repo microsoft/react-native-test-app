@@ -2117,24 +2117,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/cli-hermes@npm:^6.3.0":
-  version: 6.3.0
-  resolution: "@react-native-community/cli-hermes@npm:6.3.0"
+"@react-native-community/cli-hermes@npm:^6.3.1":
+  version: 6.3.1
+  resolution: "@react-native-community/cli-hermes@npm:6.3.1"
   dependencies:
-    "@react-native-community/cli-platform-android": ^6.3.0
-    "@react-native-community/cli-tools": ^6.2.0
+    "@react-native-community/cli-platform-android": ^6.3.1
+    "@react-native-community/cli-tools": ^6.2.1
     chalk: ^4.1.2
     hermes-profile-transformer: ^0.0.6
     ip: ^1.1.5
-  checksum: 47e126be04e4638850ed7318a11ecacce0226094424fde46e6c457c425d2bbb7f1e1b2ba754c2da7ef14d04b13cb7c3c7ba3a19397fc7ec7a3ba0952d6be4a05
+  checksum: 7e82764c8531de228882e912158f26c9b3a426c36f2c1751f58ac68763689b8b733c43b745814c1b72cc1100de2d5bbc764ed105e7d846104d3d69427aa75a60
   languageName: node
   linkType: hard
 
-"@react-native-community/cli-platform-android@npm:^6.3.0":
-  version: 6.3.0
-  resolution: "@react-native-community/cli-platform-android@npm:6.3.0"
+"@react-native-community/cli-platform-android@npm:^6.3.1":
+  version: 6.3.1
+  resolution: "@react-native-community/cli-platform-android@npm:6.3.1"
   dependencies:
-    "@react-native-community/cli-tools": ^6.2.0
+    "@react-native-community/cli-tools": ^6.2.1
     chalk: ^4.1.2
     execa: ^1.0.0
     fs-extra: ^8.1.0
@@ -2144,7 +2144,7 @@ __metadata:
     logkitty: ^0.7.1
     slash: ^3.0.0
     xmldoc: ^1.1.2
-  checksum: 997d416db128b62b4d416ad01902c11a2f28ad949e10827154994693570713fef8a9d98d6d95c86552dfe4cbecc29997defdf6cb0132b23b800f8e1fbf016b67
+  checksum: cb4d649213c277c792cfff338d9530f622a5445de576402684dd322ac71b6cc8dfcf699179d8dee9fb89c76b18997740eac41cac7e7ff2c6032cc97afd405e0e
   languageName: node
   linkType: hard
 
@@ -2183,12 +2183,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/cli-plugin-metro@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "@react-native-community/cli-plugin-metro@npm:7.0.3"
+"@react-native-community/cli-plugin-metro@npm:^7.0.4":
+  version: 7.0.4
+  resolution: "@react-native-community/cli-plugin-metro@npm:7.0.4"
   dependencies:
-    "@react-native-community/cli-server-api": ^7.0.3
-    "@react-native-community/cli-tools": ^6.2.0
+    "@react-native-community/cli-server-api": ^7.0.4
+    "@react-native-community/cli-tools": ^6.2.1
     chalk: ^4.1.2
     metro: ^0.67.0
     metro-config: ^0.67.0
@@ -2197,16 +2197,16 @@ __metadata:
     metro-resolver: ^0.67.0
     metro-runtime: ^0.67.0
     readline: ^1.3.0
-  checksum: ca91f10586b40b8e43ca378c567bde8b8215d9e7dda88fe3562126aeaa1a0da150e0823fe6c511e3953cac8b47376fecbd397cc956b71dc906f31b3fcfed5e33
+  checksum: adb47af0132360c611c364fc3cbabc4cc5f84e9bb2fe2285dbf2648ca8e9022ad7f19ab5424c396ee34734b275765d30931346c1b7b656ace4beab0724f3b332
   languageName: node
   linkType: hard
 
-"@react-native-community/cli-server-api@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "@react-native-community/cli-server-api@npm:7.0.3"
+"@react-native-community/cli-server-api@npm:^7.0.4":
+  version: 7.0.4
+  resolution: "@react-native-community/cli-server-api@npm:7.0.4"
   dependencies:
     "@react-native-community/cli-debugger-ui": ^7.0.3
-    "@react-native-community/cli-tools": ^6.2.0
+    "@react-native-community/cli-tools": ^6.2.1
     compression: ^1.7.1
     connect: ^3.6.5
     errorhandler: ^1.5.0
@@ -2214,13 +2214,13 @@ __metadata:
     pretty-format: ^26.6.2
     serve-static: ^1.13.1
     ws: ^7.5.1
-  checksum: 300ed63bd5ee9991cdca84a8026af6abc1624f32743c25389c101de1414c258676796b512d9dfb2e096c7ab8901cd624a956ea9685bc25fc6dabce3980bcff38
+  checksum: b6f0a43062c2ed5989f6e439fecf1d7f48275fe0f2b13dcbc720518053d52e2e62e90f50c48a4f0387be1388da02e0a25eed69ecf0ca88ea1e7285d7b538a100
   languageName: node
   linkType: hard
 
-"@react-native-community/cli-tools@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "@react-native-community/cli-tools@npm:6.2.0"
+"@react-native-community/cli-tools@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "@react-native-community/cli-tools@npm:6.2.1"
   dependencies:
     appdirsjs: ^1.2.4
     chalk: ^4.1.2
@@ -2229,8 +2229,8 @@ __metadata:
     node-fetch: ^2.6.0
     open: ^6.2.0
     semver: ^6.3.0
-    shell-quote: 1.6.1
-  checksum: 17bb1e2e22c4e3e8c6902da4d46fcba4ed365831b41f35e24ab28720a6e36998092203e694c2a53b21b37161c1bfe10f0d63bcc05d38d149093e28a0d336602d
+    shell-quote: ^1.7.3
+  checksum: dcc5084c0c021cbec98099c97bdbdaedcd46d51fbd271a369a80c76754fa068dd90b4c5f4a61a9c1a852bce715bea5c4e0f30f2d6da958c7204c2fa14d0f99a8
   languageName: node
   linkType: hard
 
@@ -2261,14 +2261,14 @@ __metadata:
   linkType: hard
 
 "@react-native-community/cli@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "@react-native-community/cli@npm:7.0.3"
+  version: 7.0.4
+  resolution: "@react-native-community/cli@npm:7.0.4"
   dependencies:
     "@react-native-community/cli-debugger-ui": ^7.0.3
-    "@react-native-community/cli-hermes": ^6.3.0
-    "@react-native-community/cli-plugin-metro": ^7.0.3
-    "@react-native-community/cli-server-api": ^7.0.3
-    "@react-native-community/cli-tools": ^6.2.0
+    "@react-native-community/cli-hermes": ^6.3.1
+    "@react-native-community/cli-plugin-metro": ^7.0.4
+    "@react-native-community/cli-server-api": ^7.0.4
+    "@react-native-community/cli-tools": ^6.2.1
     "@react-native-community/cli-types": ^6.0.0
     appdirsjs: ^1.2.4
     chalk: ^4.1.2
@@ -2299,7 +2299,7 @@ __metadata:
     react-native: "*"
   bin:
     react-native: build/bin.js
-  checksum: 5f2907e4e77f1013f41b1f0e2ca6e2fce5e0fcefb8ba3c4163f04e8c3af022a451d5b54b7f41303f966273da88b3b16f3ec718a37179515e72d7ac1ec387e073
+  checksum: 67b545932b593e007bda9bc934eea6288f3fe76c62e22d909748353b967a1aeb0033b32526d18c95abc10622b572c32925c5b0faf53b0b7a8b3681ac77c0ca6f
   languageName: node
   linkType: hard
 
