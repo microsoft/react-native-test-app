@@ -10772,8 +10772,8 @@ fsevents@^2.3.2:
   linkType: soft
 
 "react-native-windows@npm:^0.68.8":
-  version: 0.68.8
-  resolution: "react-native-windows@npm:0.68.8"
+  version: 0.68.9
+  resolution: "react-native-windows@npm:0.68.9"
   dependencies:
     "@babel/runtime": ^7.0.0
     "@jest/create-cache-key-function": ^27.0.1
@@ -10814,7 +10814,7 @@ fsevents@^2.3.2:
   peerDependencies:
     react: 17.0.2
     react-native: ^0.68.0
-  checksum: 1e67b69f391c6f353e093d9297fe56f658e46ec155bc5b466a0fa60faa1f53b0e005a2f29f14d1a563a6e81a3bd2bddba63a51c5e5e8fdb8f5a9544939d1eba5
+  checksum: 36c834c45c5ddf6536d9e60a9cf882aee328f71d2bcc0df85bfd85118725716f7eb0aecbfaf8bc73a274382cdff9bc6be65f29dd3f4a90a541bae944246fcde3
   languageName: node
   linkType: hard
 
