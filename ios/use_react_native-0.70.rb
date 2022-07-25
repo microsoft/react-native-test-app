@@ -10,9 +10,20 @@ def include_react_native!(options)
 
   require_relative(File.join(project_root, react_native, 'scripts', 'react_native_pods'))
 
+  if target_platform == :ios && flipper_versions
+    Pod::UI.warn(
+      'use_flipper is deprecated from 0.70; use the flipper_configuration ' \
+      'option in the use_test_app! function instead if you don\'t need to ' \
+      'support older versions of react-native.'
+    )
+    options[:flipper_configuration] = FlipperConfiguration.enabled(['Debug'], flipper_versions)
+  end
+
   use_new_architecture!(options)
-  use_flipper!(flipper_versions) if target_platform == :ios && flipper_versions
-  use_react_native!(options)
+  use_react_native!(options.except(:turbomodule_enabled,
+                                   :rta_flipper_versions,
+                                   :rta_project_root,
+                                   :rta_target_platform))
 
   # If we're using react-native@main, we'll also need to prepare
   # `react-native-codegen`.
