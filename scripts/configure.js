@@ -6,6 +6,7 @@ require("./link")(module);
 
 const chalk = require("chalk");
 const fs = require("fs");
+const fsp = require("fs/promises");
 const path = require("path");
 const semver = require("semver");
 
@@ -794,22 +795,9 @@ function isDestructive(packagePath, { files, oldFiles }) {
  * @returns {Promise<void[]>}
  */
 function removeAllFiles(files, destination) {
-  /** @type {(p: string, cb: (error?: Error | null) => void) => void} */
-  const rimraf = require("rimraf");
+  const options = { force: true, maxRetries: 3, recursive: true };
   return Promise.all(
-    files.map(
-      /** @type {(filename: string) => Promise<void>} */
-      (filename) =>
-        new Promise((resolve, reject) => {
-          rimraf(path.join(destination, filename), (error) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve();
-            }
-          });
-        })
-    )
+    files.map((filename) => fsp.rm(path.join(destination, filename), options))
   );
 }
 
