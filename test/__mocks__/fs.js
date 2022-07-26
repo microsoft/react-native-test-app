@@ -14,7 +14,6 @@ fs.__toJSON = () => vol.toJSON();
 
 fs.copyFile = (...args) => vol.copyFile(...args);
 fs.existsSync = (...args) => vol.existsSync(...args);
-fs.lstat = (...args) => vol.lstat(...args);
 fs.lstatSync = (...args) => vol.lstatSync(...args);
 fs.mkdir = (...args) => vol.mkdir(...args);
 fs.mkdirSync = (...args) => vol.mkdirSync(...args);
@@ -23,7 +22,6 @@ fs.readFileSync = (...args) => vol.readFileSync(...args);
 fs.readdir = (...args) => vol.readdir(...args);
 fs.readdirSync = (...args) => vol.readdirSync(...args);
 fs.statSync = (...args) => vol.statSync(...args);
-fs.unlink = (...args) => vol.unlink(...args);
 fs.writeFile = (...args) => vol.writeFile(...args);
 
 module.exports = fs;
