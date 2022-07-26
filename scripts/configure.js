@@ -407,7 +407,7 @@ const getConfig = (() => {
       typeof configuration === "undefined" ||
       "JEST_WORKER_ID" in process.env // skip caching when testing
     ) {
-      const { name, testAppPath, targetVersion, flatten, init } = params;
+      const { name, testAppPath, flatten, init } = params;
       const projectPathFlag = flatten ? " --project-path ." : "";
       const testAppRelPath = projectRelativePath(params);
       const templateDir = path.relative(
@@ -576,15 +576,7 @@ const getConfig = (() => {
             Podfile: join(
               `require_relative '${testAppRelPath}/test_app'`,
               "",
-              semver.satisfies(
-                semver.coerce(targetVersion) || "0.0.0",
-                "> 0.0.0 < 0.66"
-              )
-                ? // Use a more recent version of Flipper to avoid build
-                  // break in Xcode 12.5.
-                  // See https://github.com/facebook/react-native/issues/31179.
-                  "use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })"
-                : "use_flipper!",
+              "use_flipper!",
               "",
               `workspace '${name}.xcworkspace'`,
               "",

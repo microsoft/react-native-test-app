@@ -17,10 +17,10 @@
     "windows": "react-native run-windows --no-packager"
   },
   "peerDependencies": {
-    "react": "~16.11.0 || ~16.13.1 || ~17.0.1 || ~18.0.0 || ~18.1.0",
-    "react-native": "^0.0.0-0 || 0.62 - 0.70 || 1000.0.0",
-    "react-native-macos": "^0.0.0-0 || 0.62 - 0.64 || ^0.66 || ^0.68",
-    "react-native-windows": "^0.0.0-0 || 0.62 - 0.70"
+    "react": "~17.0.1 || ~18.0.0 || ~18.1.0",
+    "react-native": "^0.0.0-0 || 0.64 - 0.70 || 1000.0.0",
+    "react-native-macos": "^0.0.0-0 || 0.64 || 0.66 || 0.68",
+    "react-native-windows": "^0.0.0-0 || 0.64 - 0.70"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

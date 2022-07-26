@@ -262,7 +262,7 @@ android {
             debug.java.srcDirs += "src/flipper/java"
         }
 
-        // TODO: Remove this block when we drop support for 0.63.
+        // TODO: Remove this block when we drop support for 0.67.
         if (project.ext.react.enableFabric) {
             main.java.srcDirs += "src/fabric/java"
         } else {
