@@ -23,9 +23,9 @@ describe("getPlatformPackage()", () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    ["0.63", "0.63.4", "^0.63", "^0.63.4"].forEach((targetVersion) => {
+    ["0.68", "0.68.2", "^0.68", "^0.68.2"].forEach((targetVersion) => {
       const pkg = getPlatformPackage(name, targetVersion);
-      expect(pkg).toEqual({ [name]: "^0.63.0" });
+      expect(pkg).toEqual({ [name]: "^0.68.0" });
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
   });

@@ -12,7 +12,7 @@ function mockParams(overrides) {
     name: "Test",
     packagePath: "test",
     testAppPath: ".",
-    targetVersion: "^0.63.4",
+    targetVersion: "^0.68.2",
     platforms: ["android", "ios", "macos", "windows"],
     flatten: false,
     force: false,

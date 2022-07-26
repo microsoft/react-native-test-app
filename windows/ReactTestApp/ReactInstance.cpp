@@ -18,6 +18,7 @@
 
 using facebook::jsi::Runtime;
 using ReactTestApp::ReactInstance;
+using winrt::Microsoft::ReactNative::InstanceLoadedEventArgs;
 using winrt::ReactTestApp::implementation::ReactPackageProvider;
 using winrt::Windows::Foundation::IAsyncOperation;
 using winrt::Windows::Foundation::IInspectable;
@@ -25,10 +26,6 @@ using winrt::Windows::Foundation::PropertyValue;
 using winrt::Windows::Foundation::Uri;
 using winrt::Windows::Storage::ApplicationData;
 using winrt::Windows::Web::Http::HttpClient;
-
-#if REACT_NATIVE_VERSION >= 6400
-using winrt::Microsoft::ReactNative::InstanceLoadedEventArgs;
-#endif  // REACT_NATIVE_VERSION >= 6400
 
 namespace
 {
@@ -69,7 +66,6 @@ ReactInstance::ReactInstance()
     winrt::Microsoft::ReactNative::RegisterAutolinkedNativeModulePackages(
         reactNativeHost_.PackageProviders());
 
-#if REACT_NATIVE_VERSION >= 6400
     reactNativeHost_.InstanceSettings().InstanceLoaded(
         [this](IInspectable const & /*sender*/, InstanceLoadedEventArgs const &args) {
             context_ = args.Context();
@@ -92,7 +88,6 @@ ReactInstance::ReactInstance()
             });
 #endif  // __has_include(<JSI/JsiApiContext.h>)
         });
-#endif  // REACT_NATIVE_VERSION >= 6400
 }
 
 bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
@@ -102,12 +97,7 @@ bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
     auto instanceSettings = reactNativeHost_.InstanceSettings();
     switch (source) {
         case JSBundleSource::DevServer:
-#if REACT_NATIVE_VERSION > 0 && REACT_NATIVE_VERSION < 6400
-            instanceSettings.JavaScriptMainModuleName(L"index");
-            instanceSettings.JavaScriptBundleFile(L"");
-#else
             instanceSettings.JavaScriptBundleFile(L"index");
-#endif
             break;
         case JSBundleSource::Embedded:
             auto const &bundleName = GetBundleName(bundleRoot_);
@@ -141,11 +131,9 @@ void ReactInstance::Reload()
     instanceSettings.UseDeveloperSupport(false);
 #endif
 
-#if REACT_NATIVE_VERSION >= 6300
     auto [host, port] = BundlerAddress();
     instanceSettings.SourceBundleHost(host);
     instanceSettings.SourceBundlePort(static_cast<uint16_t>(port));
-#endif  // REACT_NATIVE_VERSION >= 6300
 
     reactNativeHost_.ReloadInstance();
 }
@@ -197,19 +185,6 @@ void ReactInstance::ToggleElementInspector() const
     }
 
     context_.CallJSFunction(L"RCTDeviceEventEmitter", L"emit", L"toggleElementInspector");
-}
-
-bool ReactInstance::UseCustomDeveloperMenu() const
-{
-    // `ReactInstanceSettings::InstanceLoaded` was introduced in 0.64. Before
-    // then, the only other way to retrieve `ReactContext` is by overriding the
-    // `DevSettings` module, but this breaks web debugging. `ReactContext` is
-    // needed for being able to toggle the element inspector.
-#if REACT_NATIVE_VERSION >= 6400
-    return true;
-#else
-    return false;
-#endif  // REACT_NATIVE_VERSION >= 6400
 }
 
 bool ReactInstance::UseDirectDebugger() const

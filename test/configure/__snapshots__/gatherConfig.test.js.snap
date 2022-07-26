@@ -12,7 +12,7 @@ Object {
     },
     "Podfile": "require_relative '../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
@@ -133,7 +133,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
@@ -303,7 +303,7 @@ Object {
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
@@ -361,8 +361,8 @@ module.exports = {
 exports[`gatherConfig() returns configuration for all platforms 1`] = `
 Object {
   "dependencies": Object {
-    "react-native-macos": "^0.63.0",
-    "react-native-windows": "^0.63.0",
+    "react-native-macos": "^0.68.0",
+    "react-native-windows": "^0.68.0",
   },
   "files": Object {
     ".gitignore": Object {
@@ -435,7 +435,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 
@@ -586,7 +586,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!({ 'Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3' })
+use_flipper!
 
 workspace 'Test.xcworkspace'
 

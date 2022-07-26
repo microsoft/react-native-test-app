@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1914199A234B2DD800D856AE /* RCTDevSupport+UIScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */; };
 		192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192DD200240FCAF5004E9CEB /* Manifest.swift */; };
 		193B614D27F5CD7D00080064 /* React+TurboModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 193B614B27F5CD7D00080064 /* React+TurboModule.mm */; };
 		1963A06227C82E730013D276 /* React+Fabric.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1963A06127C82E730013D276 /* React+Fabric.mm */; };
@@ -44,7 +43,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTDevSupport+UIScene.m"; sourceTree = "<group>"; };
 		192DD200240FCAF5004E9CEB /* Manifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manifest.swift; sourceTree = "<group>"; };
 		192F052624AD3CC500A48456 /* ReactTestApp.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.release.xcconfig; sourceTree = "<group>"; };
 		192F052724AD3CC500A48456 /* ReactTestApp.common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.common.xcconfig; sourceTree = "<group>"; };
@@ -135,7 +133,6 @@
 				196C7214232F1788006556ED /* ReactInstance.swift */,
 				19A624A3258C95F000032776 /* Session.swift */,
 				196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */,
-				19141999234B2DD800D856AE /* RCTDevSupport+UIScene.m */,
 				196C22612490CB7600449D3C /* React+Compatibility.h */,
 				196C22602490CB7600449D3C /* React+Compatibility.m */,
 				1963A06027C82E730013D276 /* React+Fabric.h */,
@@ -332,7 +329,6 @@
 				192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */,
 				197827FA27710D3400AEC655 /* Manifest+Decoder.swift in Sources */,
 				196C724123319A85006556ED /* QRCodeScannerViewController.swift in Sources */,
-				1914199A234B2DD800D856AE /* RCTDevSupport+UIScene.m in Sources */,
 				196C22622490CB7600449D3C /* React+Compatibility.m in Sources */,
 				1963A06227C82E730013D276 /* React+Fabric.mm in Sources */,
 				193B614D27F5CD7D00080064 /* React+TurboModule.mm in Sources */,

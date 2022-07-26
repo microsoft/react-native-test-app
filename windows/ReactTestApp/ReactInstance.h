@@ -72,7 +72,10 @@ namespace ReactTestApp
 
         void ToggleElementInspector() const;
 
-        bool UseCustomDeveloperMenu() const;
+        bool UseCustomDeveloperMenu() const
+        {
+            return true;
+        }
 
         bool UseDirectDebugger() const;
         void UseDirectDebugger(bool);

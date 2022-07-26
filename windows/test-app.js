@@ -635,181 +635,135 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     .map((project) => toProjectEntry(project, destPath))
     .join(os.EOL);
 
-  // The mustache template was introduced in 0.63
-  const solutionTemplatePath =
-    findNearest(
-      // In 0.64, the template was moved into `react-native-windows`
-      path.join(
-        nodeModulesDir,
-        "react-native-windows",
-        "template",
-        "cpp-app",
-        "proj",
-        "MyApp.sln"
-      )
-    ) ||
-    findNearest(
-      // In 0.63, the template is in `@react-native-windows/cli`
-      path.join(
-        nodeModulesDir,
-        "@react-native-windows",
-        "cli",
-        "templates",
-        "cpp",
-        "proj",
-        "MyApp.sln"
-      )
-    );
-
+  const solutionTemplatePath = findNearest(
+    path.join(
+      nodeModulesDir,
+      "react-native-windows",
+      "template",
+      "cpp-app",
+      "proj",
+      "MyApp.sln"
+    )
+  );
   if (!solutionTemplatePath) {
+    throw new Error("Failed to find solution template");
+  }
+
+  const mustache = require("mustache");
+  const reactTestAppProjectPath = path.join(
+    projectFilesDestPath,
+    "ReactTestApp.vcxproj"
+  );
+  const solutionTask = fs.writeFile(
+    path.join(destPath, `${appName}.sln`),
+    mustache
+      .render(fs.readFileSync(solutionTemplatePath, textFileReadOptions), {
+        ...templateView,
+        useExperimentalNuget: useNuGet,
+      })
+      // The current version of this template (v0.63.18) assumes that
+      // `react-native-windows` is always installed in
+      // `..\node_modules\react-native-windows`.
+      .replace(
+        /"\.\.\\node_modules\\react-native-windows\\/g,
+        `"${path.relative(destPath, rnWindowsPath)}\\`
+      )
+      .replace(
+        "ReactTestApp\\ReactTestApp.vcxproj",
+        path.relative(destPath, reactTestAppProjectPath)
+      )
+      .replace(
+        /EndProject\r?\nGlobal/,
+        ["EndProject", additionalProjectEntries, "Global"].join(os.EOL)
+      ),
+    textFileWriteOptions,
+    rethrow
+  );
+
+  const experimentalFeaturesPropsFilename = "ExperimentalFeatures.props";
+  const experimentalFeaturesPropsPath = path.join(
+    destPath,
+    experimentalFeaturesPropsFilename
+  );
+  if (!fs.existsSync(experimentalFeaturesPropsPath)) {
     copyAndReplace(
-      path.join(__dirname, "ReactTestApp.sln"),
-      path.join(destPath, `${appName}.sln`),
+      path.join(__dirname, experimentalFeaturesPropsFilename),
+      experimentalFeaturesPropsPath,
       {
-        "\\$\\(ReactNativeModulePath\\)": path.relative(
-          destPath,
-          rnWindowsPath
-        ),
-        "\\$\\(ReactTestAppProjectPath\\)": path.relative(
-          destPath,
-          projectFilesDestPath
-        ),
-        "\\$\\(AdditionalProjects\\)": additionalProjectEntries,
+        ...(hermesVersion
+          ? { "<UseHermes>false</UseHermes>": `<UseHermes>true</UseHermes>` }
+          : undefined),
       }
     );
-  } else {
-    const mustache = require("mustache");
-    const reactTestAppProjectPath = path.join(
-      projectFilesDestPath,
-      "ReactTestApp.vcxproj"
-    );
-    const solutionTask = fs.writeFile(
-      path.join(destPath, `${appName}.sln`),
-      mustache
-        .render(fs.readFileSync(solutionTemplatePath, textFileReadOptions), {
-          ...templateView,
-          useExperimentalNuget: useNuGet,
-        })
-        // The current version of this template (v0.63.18) assumes that
-        // `react-native-windows` is always installed in
-        // `..\node_modules\react-native-windows`.
-        .replace(
-          /"\.\.\\node_modules\\react-native-windows\\/g,
-          `"${path.relative(destPath, rnWindowsPath)}\\`
-        )
-        .replace(
-          "ReactTestApp\\ReactTestApp.vcxproj",
-          path.relative(destPath, reactTestAppProjectPath)
-        )
-        .replace(
-          /EndProject\r?\nGlobal/,
-          ["EndProject", additionalProjectEntries, "Global"].join(os.EOL)
-        ),
-      textFileWriteOptions,
-      rethrow
-    );
+  }
 
-    const experimentalFeaturesPropsFilename = "ExperimentalFeatures.props";
-    const experimentalFeaturesPropsPath = path.join(
-      destPath,
-      experimentalFeaturesPropsFilename
+  // TODO: Remove when we drop support for 0.67.
+  // Patch building with Visual Studio 2022. For more details, see
+  // https://github.com/microsoft/react-native-windows/issues/9559
+  if (rnWindowsVersionNumber < 6800) {
+    const dispatchQueue = path.join(
+      rnWindowsPath,
+      "Mso",
+      "dispatchQueue",
+      "dispatchQueue.h"
     );
-    if (!fs.existsSync(experimentalFeaturesPropsPath)) {
-      copyAndReplace(
-        path.join(__dirname, experimentalFeaturesPropsFilename),
-        experimentalFeaturesPropsPath,
-        {
-          ...(hermesVersion
-            ? { "<UseHermes>false</UseHermes>": `<UseHermes>true</UseHermes>` }
-            : undefined),
+    copyAndReplace(dispatchQueue, dispatchQueue, {
+      "template <typename T>\\s*inline void MustBeNoExceptVoidFunctor\\(\\) {\\s*static_assert\\(false":
+        "namespace details {\n  template <typename>\n  constexpr bool always_false = false;\n}\n\ntemplate <typename T>\ninline void MustBeNoExceptVoidFunctor() {\n  static_assert(details::always_false<T>",
+    });
+  }
+
+  if (useNuGet) {
+    const nugetConfigPath =
+      findNearest(
+        // In 0.70, the template was renamed from `NuGet.Config` to `NuGet_Config`
+        path.join(
+          nodeModulesDir,
+          "react-native-windows",
+          "template",
+          "shared-app",
+          "proj",
+          "NuGet_Config"
+        )
+      ) ||
+      findNearest(
+        // In 0.64, the template was moved into `react-native-windows`
+        path.join(
+          nodeModulesDir,
+          "react-native-windows",
+          "template",
+          "shared-app",
+          "proj",
+          "NuGet.Config"
+        )
+      );
+    const nugetConfigDestPath = path.join(destPath, "NuGet.Config");
+    if (nugetConfigPath && !fs.existsSync(nugetConfigDestPath)) {
+      fs.writeFile(
+        nugetConfigDestPath,
+        mustache.render(
+          fs.readFileSync(nugetConfigPath, textFileReadOptions),
+          {}
+        ),
+        textFileWriteOptions,
+        rethrow
+      );
+    }
+  }
+
+  if (autolink) {
+    Promise.all([...copyTasks, solutionTask]).then(() => {
+      const { spawn } = require("child_process");
+      spawn(
+        path.join(path.dirname(process.argv0), "npx.cmd"),
+        ["react-native", "autolink-windows", "--proj", reactTestAppProjectPath],
+        { stdio: "inherit" }
+      ).on("close", (code) => {
+        if (code !== 0) {
+          process.exit(code || 1);
         }
-      );
-    }
-
-    // TODO: Remove when we drop support for 0.67.
-    // Patch building with Visual Studio 2022. For more details, see
-    // https://github.com/microsoft/react-native-windows/issues/9559
-    if (rnWindowsVersionNumber < 6800) {
-      const dispatchQueue = path.join(
-        rnWindowsPath,
-        "Mso",
-        "dispatchQueue",
-        "dispatchQueue.h"
-      );
-      copyAndReplace(dispatchQueue, dispatchQueue, {
-        "template <typename T>\\s*inline void MustBeNoExceptVoidFunctor\\(\\) {\\s*static_assert\\(false":
-          "namespace details {\n  template <typename>\n  constexpr bool always_false = false;\n}\n\ntemplate <typename T>\ninline void MustBeNoExceptVoidFunctor() {\n  static_assert(details::always_false<T>",
       });
-    }
-
-    if (useNuGet) {
-      const nugetConfigPath =
-        findNearest(
-          // In 0.70, the template was renamed from `NuGet.Config` to `NuGet_Config`
-          path.join(
-            nodeModulesDir,
-            "react-native-windows",
-            "template",
-            "shared-app",
-            "proj",
-            "NuGet_Config"
-          )
-        ) ||
-        findNearest(
-          // In 0.64, the template was moved into `react-native-windows`
-          path.join(
-            nodeModulesDir,
-            "react-native-windows",
-            "template",
-            "shared-app",
-            "proj",
-            "NuGet.Config"
-          )
-        ) ||
-        findNearest(
-          // In 0.63, the template is in `@react-native-windows/cli`
-          path.join(
-            nodeModulesDir,
-            "@react-native-windows",
-            "cli",
-            "templates",
-            "shared",
-            "proj",
-            "NuGet.Config"
-          )
-        );
-      const nugetConfigDestPath = path.join(destPath, "NuGet.Config");
-      if (nugetConfigPath && !fs.existsSync(nugetConfigDestPath)) {
-        fs.writeFile(
-          nugetConfigDestPath,
-          mustache.render(
-            fs.readFileSync(nugetConfigPath, textFileReadOptions),
-            {}
-          ),
-          textFileWriteOptions,
-          rethrow
-        );
-      }
-    }
-    if (autolink) {
-      Promise.all([...copyTasks, solutionTask]).then(() => {
-        const { spawn } = require("child_process");
-        spawn(
-          path.join(path.dirname(process.argv0), "npx.cmd"),
-          [
-            "react-native",
-            "autolink-windows",
-            "--proj",
-            reactTestAppProjectPath,
-          ],
-          { stdio: "inherit" }
-        ).on("close", (code) => {
-          if (code !== 0) {
-            process.exit(code || 1);
-          }
-        });
-      });
-    }
+    });
   }
 
   return undefined;
