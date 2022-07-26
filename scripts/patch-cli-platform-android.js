@@ -9,7 +9,8 @@ try {
   const nativeModulesScript = path.join(
     path.dirname(
       require.resolve(
-        "@react-native-community/cli-platform-android/package.json"
+        "@react-native-community/cli-platform-android/package.json",
+        { paths: [process.cwd()] }
       )
     ),
     "native_modules.gradle"
