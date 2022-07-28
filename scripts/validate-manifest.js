@@ -38,18 +38,8 @@ function findFile(file, startDir = process.cwd()) {
 }
 
 function makeValidator() {
-  const { default: Ajv, _ } = require("ajv");
+  const { default: Ajv } = require("ajv");
   const ajv = new Ajv({ allErrors: true });
-  ajv.addKeyword({
-    keyword: "exclude-from-codegen",
-    type: "object",
-    schemaType: "boolean",
-    code: (cxt) => {
-      const { data, schema } = cxt;
-      const op = schema ? _`!==` : _`===`;
-      cxt.fail(_`${data} %2 ${op} 0`);
-    },
-  });
   ajv.addKeyword({ keyword: "markdownDescription" });
   return ajv.compile(require(`${__dirname}/../schema.json`));
 }

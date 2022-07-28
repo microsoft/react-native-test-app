@@ -1,5 +1,22 @@
 {
   "$defs": {
+    "appIconSet": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "description": "Path to the app icon file.",
+          "type": "string"
+        },
+        "prerendered": {
+          "description": "Whether the icon already incorporates a shine effect.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "filename",
+        "prerendered"
+      ]
+    },
     "apple": {
       "type": "object",
       "properties": {
@@ -11,6 +28,38 @@
           "description": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store.",
           "markdownDescription": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store.\n\nThe equivalent key in `Info.plist` is\n[`CFBundleVersion`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion).\n\nIntroduced in\n[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).",
           "type": "string"
+        },
+        "icons": {
+          "description": "Information about all of the icons used by the app.",
+          "markdownDescription": "Information about all of the icons used by the app.\n\nIcons for all sizes and scales are generated for you so long as you provide PNGs\nmeasuring 1024x1024 pixels here.\n\nYou can read more about app icons in the\n[Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/foundations/app-icons).\n\nThe equivalent key in `Info.plist` is\n[`CFBundleIcons`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleicons).\n\nIntroduced in\n[1.6.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.6.0).",
+          "type": "object",
+          "properties": {
+            "primaryIcon": {
+              "description": "The primary icon for the Home screen and Settings app, among others.",
+              "markdownDescription": "The primary icon for the Home screen and Settings app, among others.\n\nThe equivalent key in `Info.plist` is\n[`CFBundlePrimaryIcon`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleicons/cfbundleprimaryicon).",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/appIconSet"
+                }
+              ]
+            },
+            "alternateIcons": {
+              "description": "The primary icon for the Home screen and Settings app, among others.",
+              "markdownDescription": "The primary icon for the Home screen and Settings app, among others.\n\nThe equivalent key in `Info.plist` is\n[`CFBundleAlternateIcons`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleicons/cfbundlealternateicons).",
+              "type": "object",
+              "additionalProperties": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/appIconSet"
+                  }
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "primaryIcon"
+          ]
         },
         "codeSignEntitlements": {
           "description": "Specifies the path to a custom\n[Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements)\nfile. The path should be relative to `app.json`.",
@@ -27,8 +76,7 @@
           "markdownDescription": "Sets the\n<a href='https://help.apple.com/xcode/mac/current/#/dev23aab79b4'>development\nteam</a> that the app should be assigned to.\n\nThis is the same as setting `DEVELOPMENT_TEAM` in Xcode.\n\nIntroduced in\n[0.9.7](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.7).",
           "type": "string"
         }
-      },
-      "exclude-from-codegen": true
+      }
     },
     "component": {
       "type": "object",
@@ -122,8 +170,7 @@
       },
       "required": [
         "storeFile"
-      ],
-      "exclude-from-codegen": true
+      ]
     }
   },
   "allOf": [
@@ -190,6 +237,11 @@
         "versionCode": {
           "description": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).",
           "markdownDescription": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).\n\nIntroduced in\n[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).",
+          "type": "string"
+        },
+        "icons": {
+          "description": "Path to resources folder containing launcher icons for the app.",
+          "markdownDescription": "Path to resources folder containing launcher icons for the app.\n\nIf you're configuring icons for the first time, set this property to the path\nwhere you want to store your icons, then use\n[Image Asset Studio](https://developer.android.com/studio/write/image-asset-studio#access)\nto generate the assets.\n\nYou can read more about Android adaptive icons in the\n[Android documentation](https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive).\n\nIntroduced in\n[1.6.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.6.0).",
           "type": "string"
         },
         "signingConfigs": {

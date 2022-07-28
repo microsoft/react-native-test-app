@@ -48,12 +48,16 @@ export async function generateSchema() {
     resources: dummy,
     singleApp: dummy,
     version: dummy,
+    "android.icons": dummy,
     "android.signingConfigs": dummy,
     "android.versionCode": dummy,
     "ios.buildNumber": dummy,
     "ios.codeSignEntitlements": dummy,
     "ios.codeSignIdentity": dummy,
     "ios.developmentTeam": dummy,
+    "ios.icons": dummy,
+    "ios.icons.primaryIcon": dummy,
+    "ios.icons.alternateIcons": dummy,
     "windows.appxManifest": dummy,
     "windows.certificateKeyFile": dummy,
     "windows.certificatePassword": dummy,
@@ -65,6 +69,22 @@ export async function generateSchema() {
 
   return {
     $defs: {
+      appIconSet: {
+        type: "object",
+        properties: {
+          filename: {
+            description: "Path to the app icon file.",
+            type: "string",
+          },
+          prerendered: {
+            description:
+              "Whether the icon already incorporates a shine effect.",
+            type: "boolean",
+          },
+        },
+        required: ["filename", "prerendered"],
+        "exclude-from-codegen": true,
+      },
       apple: {
         type: "object",
         properties: {
@@ -77,6 +97,30 @@ export async function generateSchema() {
             description: extractBrief(await docs["ios.buildNumber"]),
             markdownDescription: await docs["ios.buildNumber"],
             type: "string",
+          },
+          icons: {
+            description: extractBrief(await docs["ios.icons"]),
+            markdownDescription: await docs["ios.icons"],
+            type: "object",
+            properties: {
+              primaryIcon: {
+                description: extractBrief(await docs["ios.icons.primaryIcon"]),
+                markdownDescription: await docs["ios.icons.primaryIcon"],
+                allOf: [{ $ref: "#/$defs/appIconSet" }],
+              },
+              alternateIcons: {
+                description: extractBrief(
+                  await docs["ios.icons.alternateIcons"]
+                ),
+                markdownDescription: await docs["ios.icons.alternateIcons"],
+                type: "object",
+                additionalProperties: {
+                  allOf: [{ $ref: "#/$defs/appIconSet" }],
+                  type: "object",
+                },
+              },
+            },
+            required: ["primaryIcon"],
           },
           codeSignEntitlements: {
             description: extractBrief(await docs["ios.codeSignEntitlements"]),
@@ -239,6 +283,11 @@ export async function generateSchema() {
             markdownDescription: await docs["android.versionCode"],
             type: "string",
           },
+          icons: {
+            description: extractBrief(await docs["android.icons"]),
+            markdownDescription: await docs["android.icons"],
+            type: "string",
+          },
           signingConfigs: {
             description: extractBrief(await docs["android.signingConfigs"]),
             markdownDescription: await docs["android.signingConfigs"],
@@ -321,6 +370,9 @@ export async function generateSchema() {
 if (process.argv[1] === thisScript) {
   generateSchema()
     .then((schema) => {
+      for (const def of Object.values(schema.$defs)) {
+        delete def["exclude-from-codegen"];
+      }
       return trimCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n";
     })
     .then((schema) => fs.writeFile("schema.json", schema))
