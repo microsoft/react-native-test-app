@@ -14,6 +14,7 @@ const BUILD_PROPS = [
   "ios",
   "macos",
   "windows",
+  "plugins",
   "resources",
 ];
 
@@ -146,8 +147,3 @@ function validate(outputMode = "stdout", projectRoot = process.cwd()) {
 exports.findFile = findFile;
 exports.validate = validate;
 exports.validateManifest = validateManifest;
-
-if (require.main === module) {
-  // istanbul ignore next
-  validate();
-}
