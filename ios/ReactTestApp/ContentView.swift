@@ -210,9 +210,9 @@ final class ContentViewController: UITableViewController {
 
         if sections.isEmpty {
             #if targetEnvironment(simulator)
-                let keyboardShortcut = " (⌃⌘Z)"
+            let keyboardShortcut = " (⌃⌘Z)"
             #else
-                let keyboardShortcut = ""
+            let keyboardShortcut = ""
             #endif
             sections.append(SectionData(
                 items: items,
@@ -245,9 +245,9 @@ final class ContentViewController: UITableViewController {
             return "\(major).\(minor).\(patch)"
         }()
         #if USE_FABRIC
-            let fabric = " (Fabric)"
+        let fabric = " (Fabric)"
         #else
-            let fabric = ""
+        let fabric = ""
         #endif
         return "React Native version: \(version)\(fabric)"
     }
