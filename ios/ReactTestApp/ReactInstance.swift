@@ -19,18 +19,18 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
     private var bundleRoot: String?
 
     #if USE_TURBOMODULE
-        private lazy var turboModuleManagerDelegate = RTATurboModuleManagerDelegate(bridgeDelegate: self)
+    private lazy var turboModuleManagerDelegate = RTATurboModuleManagerDelegate(bridgeDelegate: self)
     #endif
 
     override init() {
         #if DEBUG
-            remoteBundleURL = ReactInstance.jsBundleURL()
+        remoteBundleURL = ReactInstance.jsBundleURL()
         #endif
 
         super.init()
 
         #if USE_TURBOMODULE
-            RCTEnableTurboModule(true)
+        RCTEnableTurboModule(true)
         #endif
 
         RCTSetFatalHandler { (error: Error?) in
@@ -67,32 +67,32 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         )
 
         #if os(iOS)
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(onRemoteBundleURLReceived(_:)),
-                name: .didReceiveRemoteBundleURL,
-                object: nil
-            )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onRemoteBundleURLReceived(_:)),
+            name: .didReceiveRemoteBundleURL,
+            object: nil
+        )
         #else
-            NSAppleEventManager.shared().setEventHandler(
-                RCTLinkingManager.self,
-                andSelector: #selector(RCTLinkingManager.getUrlEventHandler(_:withReplyEvent:)),
-                forEventClass: AEEventClass(kInternetEventClass),
-                andEventID: AEEventID(kAEGetURL)
-            )
+        NSAppleEventManager.shared().setEventHandler(
+            RCTLinkingManager.self,
+            andSelector: #selector(RCTLinkingManager.getUrlEventHandler(_:withReplyEvent:)),
+            forEventClass: AEEventClass(kInternetEventClass),
+            andEventID: AEEventID(kAEGetURL)
+        )
         #endif
 
         #if USE_FLIPPER
-            if let flipper = FlipperClient.shared() {
-                flipper.add(FlipperKitLayoutPlugin(
-                    rootNode: UIApplication.shared,
-                    with: SKDescriptorMapper(defaults: ())
-                ))
-                flipper.add(FKUserDefaultsPlugin(suiteName: nil))
-                flipper.add(FlipperKitReactPlugin())
-                flipper.add(FlipperKitNetworkPlugin(networkAdapter: SKIOSNetworkAdapter()))
-                flipper.start()
-            }
+        if let flipper = FlipperClient.shared() {
+            flipper.add(FlipperKitLayoutPlugin(
+                rootNode: UIApplication.shared,
+                with: SKDescriptorMapper(defaults: ())
+            ))
+            flipper.add(FKUserDefaultsPlugin(suiteName: nil))
+            flipper.add(FlipperKitReactPlugin())
+            flipper.add(FlipperKitNetworkPlugin(networkAdapter: SKIOSNetworkAdapter()))
+            flipper.start()
+        }
         #endif
     }
 
@@ -120,15 +120,15 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         )
 
         #if USE_TURBOMODULE
-            guard let bridge = RCTBridge(delegate: turboModuleManagerDelegate, launchOptions: nil) else {
-                assertionFailure("Failed to instantiate RCTBridge with TurboModule")
-                return
-            }
+        guard let bridge = RCTBridge(delegate: turboModuleManagerDelegate, launchOptions: nil) else {
+            assertionFailure("Failed to instantiate RCTBridge with TurboModule")
+            return
+        }
         #else
-            guard let bridge = RCTBridge(delegate: self, launchOptions: nil) else {
-                assertionFailure("Failed to instantiate RCTBridge")
-                return
-            }
+        guard let bridge = RCTBridge(delegate: self, launchOptions: nil) else {
+            assertionFailure("Failed to instantiate RCTBridge")
+            return
+        }
         #endif // USE_TURBOMODULE
 
         surfacePresenterBridgeAdapter = RTACreateSurfacePresenterBridgeAdapter(bridge)
@@ -169,9 +169,9 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 
     private func entryFiles() -> [String] {
         #if os(iOS)
-            let extensions = [".ios", ".mobile", ".native", ""]
+        let extensions = [".ios", ".mobile", ".native", ""]
         #elseif os(macOS)
-            let extensions = [".macos", ".native", ""]
+        let extensions = [".macos", ".native", ""]
         #endif
 
         guard let bundleRoot = bundleRoot else {
@@ -217,12 +217,12 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             ))
 
             #if os(iOS) && !targetEnvironment(simulator)
-                devMenu.add(RCTDevMenuItem.buttonItem(withTitle: "Scan QR Code") {
-                    NotificationCenter.default.post(
-                        name: ReactInstance.scanForQRCodeNotification,
-                        object: self
-                    )
-                })
+            devMenu.add(RCTDevMenuItem.buttonItem(withTitle: "Scan QR Code") {
+                NotificationCenter.default.post(
+                    name: ReactInstance.scanForQRCodeNotification,
+                    object: self
+                )
+            })
             #endif
         }
     }
@@ -252,9 +252,9 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 }
 
 #if os(iOS)
-    typealias RTAView = UIView
+typealias RTAView = UIView
 #else
-    typealias RTAView = NSView
+typealias RTAView = NSView
 #endif
 
 func createReactRootView(_ reactInstance: ReactInstance) -> (RTAView, String)? {

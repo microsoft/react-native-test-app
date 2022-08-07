@@ -1,6 +1,14 @@
 import AppKit
 
 final class ViewController: NSViewController {
+    override var representedObject: Any? {
+        didSet {
+            // Update the view, if already loaded.
+        }
+    }
+
+    #if !ENABLE_SINGLE_APP_MODE
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,12 +33,6 @@ final class ViewController: NSViewController {
         )
     }
 
-    override var representedObject: Any? {
-        didSet {
-            // Update the view, if already loaded.
-        }
-    }
-
     override func mouseDown(with event: NSEvent) {
         NSMenu.popUpReactMenu(with: event, for: view)
     }
@@ -38,7 +40,11 @@ final class ViewController: NSViewController {
     override func rightMouseDown(with event: NSEvent) {
         NSMenu.popUpReactMenu(with: event, for: view)
     }
+
+    #endif // !ENABLE_SINGLE_APP_MODE
 }
+
+#if !ENABLE_SINGLE_APP_MODE
 
 extension NSMenu {
     static func popUpReactMenu(with event: NSEvent, for view: NSView) {
@@ -81,3 +87,5 @@ final class Label: NSTextView {
         NSMenu.popUpReactMenu(with: event, for: self)
     }
 }
+
+#endif // !ENABLE_SINGLE_APP_MODE
