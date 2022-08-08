@@ -43,6 +43,6 @@ ext {
         moshiKotlinCodegen          : "com.squareup.moshi:moshi-kotlin-codegen:1.13.0",
     ]
 
-    androidPluginVersion = "7.2.1"
+    androidPluginVersion = "7.2.2"
     kotlinVersion = versionOf(libraries.kotlinStdlibJdk7)
 }
