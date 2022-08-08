@@ -2318,13 +2318,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/cli@npm:0.68.4":
-  version: 0.68.4
-  resolution: "@react-native-windows/cli@npm:0.68.4"
+"@react-native-windows/cli@npm:0.68.5":
+  version: 0.68.5
+  resolution: "@react-native-windows/cli@npm:0.68.5"
   dependencies:
     "@react-native-windows/fs": 0.68.1
     "@react-native-windows/package-utils": 0.68.1
-    "@react-native-windows/telemetry": 0.68.3
+    "@react-native-windows/telemetry": 0.68.4
     "@xmldom/xmldom": ^0.7.5
     chalk: ^4.1.0
     cli-spinners: ^2.2.0
@@ -2342,7 +2342,7 @@ __metadata:
     xml-formatter: ^2.4.0
     xml-parser: ^1.2.1
     xpath: ^0.0.27
-  checksum: 0d7bdc50af6d5d0b1b754889dc4c34497ee1410c7f2a47ca1deebe785f5d350493fe45c9ed32fa619f9960f06caeb82c55de8a69ca8551963cc99c7581b5599f
+  checksum: 849aee9b2a33793a8266ad421042f947a3c231d3e49053d02e44cc18e71ce31713d17223ccdcd8f1327b1d758dacf929b431d6c0692c12a97bb7c14aef709656
   languageName: node
   linkType: hard
 
@@ -2376,9 +2376,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/telemetry@npm:0.68.3":
-  version: 0.68.3
-  resolution: "@react-native-windows/telemetry@npm:0.68.3"
+"@react-native-windows/telemetry@npm:0.68.4":
+  version: 0.68.4
+  resolution: "@react-native-windows/telemetry@npm:0.68.4"
   dependencies:
     "@react-native-windows/fs": 0.68.1
     "@xmldom/xmldom": ^0.7.5
@@ -2386,10 +2386,9 @@ __metadata:
     ci-info: ^3.2.0
     envinfo: ^7.8.1
     lodash: ^4.17.21
-    node-machine-id: ^1.1.12
     os-locale: ^5.0.0
     xpath: ^0.0.27
-  checksum: 11f0b9dd2b4c1508c9a779ac086a22a542fcf0a39f58e28aff1f290381ea5906c50a50b1d5398ee4aba11e931c39cf0b94bfb8b7ff1088ccfdf866a957931c63
+  checksum: 21ccfdc141f2321a7d3f47385cbbd75144d113823d158825ce360535a3cbeadf01dd1e21a0062719e68e876aa9f797b2662d4563b87d065e347e9ea55f27a374
   languageName: node
   linkType: hard
 
@@ -9434,13 +9433,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"node-machine-id@npm:^1.1.12":
-  version: 1.1.12
-  resolution: "node-machine-id@npm:1.1.12"
-  checksum: e23088a0fb4a77a1d6484b7f09a22992fd3e0054d4f2e427692b4c7081e6cf30118ba07b6113b6c89f1ce46fd26ec5ab1d76dcaf6c10317717889124511283a5
-  languageName: node
-  linkType: hard
-
 "node-releases@npm:^2.0.2":
   version: 2.0.3
   resolution: "node-releases@npm:2.0.3"
@@ -10807,15 +10799,15 @@ fsevents@^2.3.2:
   linkType: soft
 
 "react-native-windows@npm:^0.68.8":
-  version: 0.68.9
-  resolution: "react-native-windows@npm:0.68.9"
+  version: 0.68.12
+  resolution: "react-native-windows@npm:0.68.12"
   dependencies:
     "@babel/runtime": ^7.0.0
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^7.0.3
     "@react-native-community/cli-platform-android": ^7.0.1
     "@react-native-community/cli-platform-ios": ^7.0.1
-    "@react-native-windows/cli": 0.68.4
+    "@react-native-windows/cli": 0.68.5
     "@react-native-windows/virtualized-list": 0.68.1
     "@react-native/assets": 1.0.0
     "@react-native/normalize-color": 2.0.0
@@ -10849,7 +10841,7 @@ fsevents@^2.3.2:
   peerDependencies:
     react: 17.0.2
     react-native: ^0.68.0
-  checksum: 36c834c45c5ddf6536d9e60a9cf882aee328f71d2bcc0df85bfd85118725716f7eb0aecbfaf8bc73a274382cdff9bc6be65f29dd3f4a90a541bae944246fcde3
+  checksum: b91554523c96f8a41b70e21750d2f4d0b5bd1ccbf0f40d71c66e361aebb9c6d136911a844f919aef560e744c4e29cabd988d19ef32e62f2fec0a462fca44cbb0
   languageName: node
   linkType: hard
 
