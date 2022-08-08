@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+
 require 'open3'
 
 require_relative('pod_helpers')
@@ -20,10 +22,16 @@ def include_react_native!(options)
   end
 
   use_new_architecture!(options)
-  use_react_native!(options.except(:turbomodule_enabled,
-                                   :rta_flipper_versions,
-                                   :rta_project_root,
-                                   :rta_target_platform))
+  use_react_native!(
+    path: react_native,
+    fabric_enabled: options[:fabric_enabled] == true,
+    new_arch_enabled: options[:new_arch_enabled] == true,
+    production: options.key?(:production) ? options[:production] : ENV['PRODUCTION'] == '1',
+    hermes_enabled: options[:hermes_enabled] == true,
+    flipper_configuration: options[:flipper_configuration] || FlipperConfiguration.disabled,
+    app_path: options[:app_path] || '..',
+    config_file_dir: options[:config_file_dir] || ''
+  )
 
   # If we're using react-native@main, we'll also need to prepare
   # `react-native-codegen`.
@@ -37,3 +45,5 @@ def include_react_native!(options)
     end
   }
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
