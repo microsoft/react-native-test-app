@@ -1,108 +1,136 @@
-import React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   ScrollView,
   StatusBar,
   StyleSheet,
+  Switch,
   Text,
   useColorScheme,
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from "react-native/Libraries/NewAppScreen";
+import { Colors, Header } from "react-native/Libraries/NewAppScreen";
+import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
 
-const Section = ({ children, title }) => {
-  const isDarkMode = useColorScheme() === "dark";
+function getHermesVersion() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}
-      >
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}
-      >
-        {children}
-      </Text>
+    global.HermesInternal?.getRuntimeProperties?.()["OSS Release Version"] ??
+    false
+  );
+}
+
+function getReactNativeVersion() {
+  const version = `${coreVersion.major}.${coreVersion.minor}.${coreVersion.patch}`;
+  return coreVersion.prerelease
+    ? version + `-${coreVersion.prerelease}`
+    : version;
+}
+
+function useStyles() {
+  const colorScheme = useColorScheme();
+  return useMemo(() => {
+    const isDarkMode = colorScheme === "dark";
+
+    const fontSize = 18;
+    const groupBorderRadius = 8;
+    const margin = 16;
+
+    return StyleSheet.create({
+      body: {
+        backgroundColor: isDarkMode ? Colors.black : Colors.lighter,
+        flex: 1,
+      },
+      group: {
+        backgroundColor: isDarkMode ? Colors.darker : Colors.white,
+        borderRadius: groupBorderRadius,
+        margin,
+      },
+      groupItemContainer: {
+        alignItems: "center",
+        flexDirection: "row",
+        marginHorizontal: margin,
+      },
+      groupItemLabel: {
+        color: isDarkMode ? Colors.white : Colors.black,
+        flex: 1,
+        fontSize,
+        marginVertical: 12,
+      },
+      groupItemValue: {
+        color: isDarkMode ? Colors.light : Colors.dark,
+        fontSize: fontSize,
+      },
+      separator: {
+        backgroundColor: isDarkMode ? Colors.dark : Colors.light,
+        height: StyleSheet.hairlineWidth,
+        marginStart: margin,
+      },
+    });
+  }, [colorScheme]);
+}
+
+const Feature = ({ children, value }) => {
+  const styles = useStyles();
+  return (
+    <View style={styles.groupItemContainer}>
+      <Text style={styles.groupItemLabel}>{children}</Text>
+      {typeof value === "boolean" ? (
+        <Switch value={value} />
+      ) : (
+        <Text style={styles.groupItemValue}>{value}</Text>
+      )}
     </View>
   );
 };
 
-const App = () => {
-  const isDarkMode = useColorScheme() === "dark";
+const Separator = () => {
+  const styles = useStyles();
+  return <View style={styles.separator} />;
+};
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const App = ({ concurrentRoot }) => {
+  const isDarkMode = useColorScheme() === "dark";
+  const styles = useStyles();
+
+  const [isFabric, setFabric] = useState(false);
+  const onLayout = useCallback(
+    (ev) => {
+      setFabric(
+        Boolean(
+          ev.currentTarget["_internalInstanceHandle"]?.stateNode?.canonical
+        )
+      );
+    },
+    [setFabric]
+  );
+
+  const hermesVersion = getHermesVersion();
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={backgroundStyle}>
+      <SafeAreaView style={styles.body}>
         <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}
+          onLayout={onLayout}
+          style={styles.body}
         >
           <Header />
-          <View
-            style={{
-              backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }}
-          >
-            <Section title="Step One">
-              Edit <Text style={styles.highlight}>App.js</Text> to change this
-              screen and then come back to see your edits.
-            </Section>
-            <Section title="See Your Changes">
-              <ReloadInstructions />
-            </Section>
-            <Section title="Debug">
-              <DebugInstructions />
-            </Section>
-            <Section title="Learn More">
-              Read the docs to discover what to do next:
-            </Section>
-            <LearnMoreLinks />
+          <View style={styles.group}>
+            <Feature value={getReactNativeVersion()}>React Native</Feature>
+            <Separator />
+            <Feature value={Boolean(hermesVersion)}>Hermes</Feature>
+            <Separator />
+            <Feature value={isFabric}>Fabric</Feature>
+            <Separator />
+            <Feature value={isFabric && Boolean(concurrentRoot)}>
+              Concurrent React
+            </Feature>
           </View>
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
-});
 
 export default App;
