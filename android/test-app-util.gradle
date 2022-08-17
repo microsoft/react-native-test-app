@@ -6,11 +6,6 @@ import java.security.MessageDigest
 
 ext.manifest = null
 
-ext.buildReactNativeFromSource = { baseDir ->
-    def reactNativePath = findNodeModulesPath("react-native", baseDir)
-    return !file("${reactNativePath}/android").exists()
-}
-
 ext.findFile = { fileName ->
     def currentDirPath = rootDir == null ? null : rootDir.toString()
 
