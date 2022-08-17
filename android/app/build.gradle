@@ -71,7 +71,6 @@ project.ext.react = [
     enableFlipper        : getFlipperVersion(rootDir),
     enableHermes         : true,
     enableNewArchitecture: isNewArchitectureEnabled(project),
-
 ]
 
 project.ext.signingConfigs = getSigningConfigs()
