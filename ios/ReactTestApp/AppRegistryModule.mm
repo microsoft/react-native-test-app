@@ -3,15 +3,15 @@
 #import <jsi/jsi.h>
 
 #import <React/RCTBridge.h>
+#import <ReactCommon/RuntimeExecutor.h>
 
 #import "AppRegistry.h"
 #import "ReactTestApp-DevSupport.h"
 
 using facebook::jsi::Runtime;
+using facebook::react::RuntimeExecutor;
 
-@interface RCTCxxBridge : RCTBridge
-@property (nonatomic, readonly) void *runtime;
-@end
+extern RuntimeExecutor RCTRuntimeExecutorFromBridge(RCTBridge *bridge);
 
 @implementation RTAAppRegistryModule
 
@@ -37,29 +37,23 @@ RCT_EXPORT_MODULE();
 
 - (void)javascriptDidLoadNotification:(NSNotification *)note
 {
-    if (![self.bridge isKindOfClass:[RCTCxxBridge class]] ||
-        ![self.bridge respondsToSelector:@selector(runtime)]) {
-        return;
-    }
+    auto executor = RCTRuntimeExecutorFromBridge(self.bridge);
+    executor([](Runtime &runtime) {
+        auto appKeys = ReactTestApp::GetAppKeys(runtime);
+        if (appKeys.empty()) {
+            return;
+        }
 
-    auto runtimePtr = ((RCTCxxBridge *)self.bridge).runtime;
-    if (runtimePtr == nullptr) {
-        return;
-    }
+        NSMutableArray *array = [NSMutableArray arrayWithCapacity:appKeys.size()];
+        for (const auto &appKey : appKeys) {
+            [array addObject:[NSString stringWithUTF8String:appKey.c_str()]];
+        }
 
-    auto appKeys = ReactTestApp::GetAppKeys(*static_cast<Runtime *>(runtimePtr));
-    if (appKeys.empty()) {
-        return;
-    }
-
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:appKeys.size()];
-    for (const auto &appKey : appKeys) {
-        [array addObject:[NSString stringWithUTF8String:appKey.c_str()]];
-    }
-
-    [NSNotificationCenter.defaultCenter postNotificationName:ReactTestAppDidRegisterAppsNotification
-                                                      object:self
-                                                    userInfo:@{@"appKeys": [array copy]}];
+        [NSNotificationCenter.defaultCenter
+            postNotificationName:ReactTestAppDidRegisterAppsNotification
+                          object:nil
+                        userInfo:@{@"appKeys": [array copy]}];
+    });
 }
 
 @end
