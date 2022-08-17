@@ -11,6 +11,7 @@ using facebook::jsi::Runtime;
 
 @interface RCTCxxBridge : RCTBridge
 @property (nonatomic, readonly) void *runtime;
+- (void)invokeAsync:(std::function<void()> &&)func;
 @end
 
 @implementation RTAAppRegistryModule
@@ -38,28 +39,33 @@ RCT_EXPORT_MODULE();
 - (void)javascriptDidLoadNotification:(NSNotification *)note
 {
     if (![self.bridge isKindOfClass:[RCTCxxBridge class]] ||
-        ![self.bridge respondsToSelector:@selector(runtime)]) {
+        ![self.bridge respondsToSelector:@selector(runtime)] ||
+        ![self.bridge respondsToSelector:@selector(invokeAsync:)]) {
         return;
     }
 
-    auto runtimePtr = ((RCTCxxBridge *)self.bridge).runtime;
-    if (runtimePtr == nullptr) {
-        return;
-    }
+    auto batchedBridge = (RCTCxxBridge *)self.bridge;
+    [batchedBridge invokeAsync:[batchedBridge] {
+        auto runtime = static_cast<Runtime *>(batchedBridge.runtime);
+        if (runtime == nullptr) {
+            return;
+        }
 
-    auto appKeys = ReactTestApp::GetAppKeys(*static_cast<Runtime *>(runtimePtr));
-    if (appKeys.empty()) {
-        return;
-    }
+        auto appKeys = ReactTestApp::GetAppKeys(*runtime);
+        if (appKeys.empty()) {
+            return;
+        }
 
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:appKeys.size()];
-    for (const auto &appKey : appKeys) {
-        [array addObject:[NSString stringWithUTF8String:appKey.c_str()]];
-    }
+        NSMutableArray *array = [NSMutableArray arrayWithCapacity:appKeys.size()];
+        for (const auto &appKey : appKeys) {
+            [array addObject:[NSString stringWithUTF8String:appKey.c_str()]];
+        }
 
-    [NSNotificationCenter.defaultCenter postNotificationName:ReactTestAppDidRegisterAppsNotification
-                                                      object:self
-                                                    userInfo:@{@"appKeys": [array copy]}];
+        [NSNotificationCenter.defaultCenter
+            postNotificationName:ReactTestAppDidRegisterAppsNotification
+                          object:nil
+                        userInfo:@{@"appKeys": [array copy]}];
+    }];
 }
 
 @end
