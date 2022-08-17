@@ -3,15 +3,16 @@
 #import <jsi/jsi.h>
 
 #import <React/RCTBridge.h>
-#import <ReactCommon/RuntimeExecutor.h>
 
 #import "AppRegistry.h"
 #import "ReactTestApp-DevSupport.h"
 
 using facebook::jsi::Runtime;
-using facebook::react::RuntimeExecutor;
 
-extern RuntimeExecutor RCTRuntimeExecutorFromBridge(RCTBridge *bridge);
+@interface RCTCxxBridge : RCTBridge
+@property (nonatomic, readonly) void *runtime;
+- (void)invokeAsync:(std::function<void()> &&)func;
+@end
 
 @implementation RTAAppRegistryModule
 
@@ -37,9 +38,20 @@ RCT_EXPORT_MODULE();
 
 - (void)javascriptDidLoadNotification:(NSNotification *)note
 {
-    auto executor = RCTRuntimeExecutorFromBridge(self.bridge);
-    executor([](Runtime &runtime) {
-        auto appKeys = ReactTestApp::GetAppKeys(runtime);
+    if (![self.bridge isKindOfClass:[RCTCxxBridge class]] ||
+        ![self.bridge respondsToSelector:@selector(runtime)] ||
+        ![self.bridge respondsToSelector:@selector(invokeAsync:)]) {
+        return;
+    }
+
+    auto batchedBridge = (RCTCxxBridge *)self.bridge;
+    [batchedBridge invokeAsync:[batchedBridge] {
+        auto runtime = static_cast<Runtime *>(batchedBridge.runtime);
+        if (runtime == nullptr) {
+            return;
+        }
+
+        auto appKeys = ReactTestApp::GetAppKeys(*runtime);
         if (appKeys.empty()) {
             return;
         }
@@ -53,7 +65,7 @@ RCT_EXPORT_MODULE();
             postNotificationName:ReactTestAppDidRegisterAppsNotification
                           object:nil
                         userInfo:@{@"appKeys": [array copy]}];
-    });
+    }];
 }
 
 @end
