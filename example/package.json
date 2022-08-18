@@ -25,6 +25,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@types/jest": "^27.0.0",
+    "@types/react-native": "^0.68.0",
     "jest": "^27.0.0",
     "metro-react-native-babel-preset": "^0.67.0",
     "mkdirp": "^1.0.0",
