@@ -80,10 +80,7 @@ function useStyles() {
   }, [colorScheme]);
 }
 
-/**
- * @param {{ children: string; value: string | boolean; }} props
- * @returns
- */
+/** @type {React.FunctionComponent<{ children: string; value: string | boolean; }>} */
 const Feature = ({ children, value }) => {
   const styles = useStyles();
   return (
@@ -103,10 +100,7 @@ const Separator = () => {
   return <View style={styles.separator} />;
 };
 
-/**
- * @param {{ concurrentRoot?: boolean; }} props
- * @returns
- */
+/** @type {React.FunctionComponent<{ concurrentRoot?: boolean; }>} */
 const App = ({ concurrentRoot }) => {
   const isDarkMode = useColorScheme() === "dark";
   const styles = useStyles();
