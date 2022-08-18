@@ -1,3 +1,4 @@
+// @ts-check
 import React, { useCallback, useMemo, useState } from "react";
 import {
   ScrollView,
@@ -10,10 +11,12 @@ import {
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
+// @ts-expect-error
 import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
 
 function getHermesVersion() {
   return (
+    // @ts-expect-error
     global.HermesInternal?.getRuntimeProperties?.()["OSS Release Version"] ??
     false
   );
@@ -24,6 +27,14 @@ function getReactNativeVersion() {
   return coreVersion.prerelease
     ? version + `-${coreVersion.prerelease}`
     : version;
+}
+
+/**
+ * @param {unknown} value
+ * @returns {"Off" | "On"}
+ */
+function isOnOrOff(value) {
+  return value ? "On" : "Off";
 }
 
 function useStyles() {
@@ -69,6 +80,10 @@ function useStyles() {
   }, [colorScheme]);
 }
 
+/**
+ * @param {{ children: string; value: string | boolean; }} props
+ * @returns
+ */
 const Feature = ({ children, value }) => {
   const styles = useStyles();
   return (
@@ -88,6 +103,10 @@ const Separator = () => {
   return <View style={styles.separator} />;
 };
 
+/**
+ * @param {{ concurrentRoot?: boolean; }} props
+ * @returns
+ */
 const App = ({ concurrentRoot }) => {
   const isDarkMode = useColorScheme() === "dark";
   const styles = useStyles();
@@ -119,11 +138,11 @@ const App = ({ concurrentRoot }) => {
           <View style={styles.group}>
             <Feature value={getReactNativeVersion()}>React Native</Feature>
             <Separator />
-            <Feature value={Boolean(hermesVersion)}>Hermes</Feature>
+            <Feature value={isOnOrOff(hermesVersion)}>Hermes</Feature>
             <Separator />
-            <Feature value={isFabric}>Fabric</Feature>
+            <Feature value={isOnOrOff(isFabric)}>Fabric</Feature>
             <Separator />
-            <Feature value={isFabric && Boolean(concurrentRoot)}>
+            <Feature value={isOnOrOff(isFabric && concurrentRoot)}>
               Concurrent React
             </Feature>
           </View>
