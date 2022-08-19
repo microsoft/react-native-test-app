@@ -12,6 +12,12 @@ def include_react_native!(options)
 
   require_relative(File.join(project_root, react_native, 'scripts', 'react_native_pods'))
 
+  # TODO: Remove this block when react-native-macos catches up to core.
+  unless defined?(FlipperConfiguration)
+    require_relative('use_react_native-0.68')
+    return include_react_native!(options)
+  end
+
   if target_platform == :ios && flipper_versions
     Pod::UI.warn(
       'use_flipper is deprecated from 0.70; use the flipper_configuration ' \
