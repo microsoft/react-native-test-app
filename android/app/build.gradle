@@ -14,14 +14,13 @@ def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
 def codegenPath = file(findNodeModulesPath("react-native-codegen", reactNativePath))
 
 if (isNewArchitectureEnabled(project)) {
-    apply plugin: 'com.facebook.react'
+    apply(plugin: "com.facebook.react")
 
     react {
         codegenDir = codegenPath
         reactNativeDir = reactNativePath
     }
 }
-
 
 // `react-native run-android` is hard-coded to look for the output APK at a very
 // specific location. See
