@@ -10,17 +10,29 @@ plugins {
     id("org.jetbrains.kotlin.kapt") version "${kotlinVersion}"
 }
 
+def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
+def codegenPath = file(findNodeModulesPath("react-native-codegen", reactNativePath))
+
+if (isNewArchitectureEnabled(project)) {
+    apply plugin: 'com.facebook.react'
+
+    react {
+        codegenDir = codegenPath
+        reactNativeDir = reactNativePath
+    }
+}
+
+
 // `react-native run-android` is hard-coded to look for the output APK at a very
 // specific location. See
 // https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
 buildDir = "${rootDir}/${name}/build"
 
-def reactNativeDir = findNodeModulesPath("react-native", rootDir)
 def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 
 repositories {
     maven {
-        url = uri("${reactNativeDir}/android")
+        url = uri("${reactNativePath}/android")
     }
 
     mavenCentral()
@@ -120,10 +132,10 @@ android {
                               "APP_STL=c++_shared",
                               "NDK_TOOLCHAIN_VERSION=clang",
                               "GENERATED_SRC_DIR=${buildDir}/generated/source",
-                              "NODE_MODULES_DIR=${reactNativeDir}/..",
+                              "NODE_MODULES_DIR=${reactNativePath}/..",
                               "PROJECT_BUILD_DIR=${buildDir}",
-                              "REACT_ANDROID_DIR=${reactNativeDir}/ReactAndroid",
-                              "REACT_ANDROID_BUILD_DIR=${reactNativeDir}/ReactAndroid/build"
+                              "REACT_ANDROID_DIR=${reactNativePath}/ReactAndroid",
+                              "REACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build"
                     cFlags "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
                     cppFlags "-std=c++17"
                     targets "reacttestapp_appmodules"
@@ -256,8 +268,8 @@ dependencies {
         // TODO: Remove this block when we drop support for 0.68.
         if (reactNativeVersion < 6900) {
             def hermesEngineDir =
-                findNodeModulesPath("hermes-engine", file(reactNativeDir))
-                    ?: findNodeModulesPath("hermesvm", file(reactNativeDir))
+                findNodeModulesPath("hermes-engine", reactNativePath)
+                    ?: findNodeModulesPath("hermesvm", reactNativePath)
             if (hermesEngineDir == null) {
                 throw new GradleException("Could not find 'hermes-engine'. Please make sure you've added it to 'package.json'.")
             }
@@ -272,7 +284,7 @@ dependencies {
         }
     }
 
-    if (buildReactNativeFromSource(rootDir)) {
+    if (project.ext.react.enableNewArchitecture) {
         implementation project(":ReactAndroid")
     } else {
         implementation "com.facebook.react:react-native:+"
