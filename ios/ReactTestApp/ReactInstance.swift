@@ -54,13 +54,6 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(onJavaScriptLoading(_:)),
-            name: .RCTJavaScriptWillStartLoading,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
             selector: #selector(onJavaScriptLoaded(_:)),
             name: .RCTJavaScriptDidLoad,
             object: nil
@@ -224,19 +217,6 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
                 )
             })
             #endif
-        }
-    }
-
-    @objc
-    private func onJavaScriptLoading(_ notification: Notification) {
-        guard self.bridge != nil else {
-            // This is a cold boot. The bridge will be set in initReact(onDidInitialize:).
-            return
-        }
-
-        let bridge = notification.userInfo?["bridge"] as? RCTBridge
-        if bridge != self.bridge {
-            self.bridge = bridge
         }
     }
 

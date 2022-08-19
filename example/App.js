@@ -1,6 +1,7 @@
 // @ts-check
 import React, { useCallback, useMemo, useState } from "react";
 import {
+  NativeModules,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -10,9 +11,11 @@ import {
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 // @ts-expect-error
 import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
+import { Colors, Header } from "react-native/Libraries/NewAppScreen";
+// @ts-expect-error
+import { isAsyncDebugging } from "react-native/Libraries/Utilities/DebugEnvironment";
 
 function getHermesVersion() {
   return (
@@ -27,6 +30,14 @@ function getReactNativeVersion() {
   return coreVersion.prerelease
     ? version + `-${coreVersion.prerelease}`
     : version;
+}
+
+function getRemoteDebuggingAvailability() {
+  return (
+    // @ts-expect-error
+    global.RN$Bridgeless !== true &&
+    typeof NativeModules["DevSettings"]?.setIsDebuggingRemotely === "function"
+  );
 }
 
 /**
@@ -80,14 +91,26 @@ function useStyles() {
   }, [colorScheme]);
 }
 
-/** @type {React.FunctionComponent<{ children: string; value: string | boolean; }>} */
-const Feature = ({ children, value }) => {
+/**
+ * @typedef {{
+ *   children: string;
+ *   value: string;
+ * } | {
+ *   children: string;
+ *   value: boolean;
+ *   disabled?: boolean;
+ *   onValueChange?: (value: boolean) => void;
+ * }} FeatureProps
+ *
+ * @type {React.FunctionComponent<FeatureProps>}
+ */
+const Feature = ({ children, value, ...props }) => {
   const styles = useStyles();
   return (
     <View style={styles.groupItemContainer}>
       <Text style={styles.groupItemLabel}>{children}</Text>
       {typeof value === "boolean" ? (
-        <Switch value={value} />
+        <Switch value={value} {...props} />
       ) : (
         <Text style={styles.groupItemValue}>{value}</Text>
       )}
@@ -95,9 +118,37 @@ const Feature = ({ children, value }) => {
   );
 };
 
+/** @type {React.FunctionComponent<{}>} */
 const Separator = () => {
   const styles = useStyles();
   return <View style={styles.separator} />;
+};
+
+/** @type {React.FunctionComponent<{}>} */
+const DevMenu = () => {
+  const styles = useStyles();
+
+  const isRemoteDebuggingAvailable = getRemoteDebuggingAvailability();
+  const toggleRemoteDebugging = useCallback(
+    (value) => {
+      if (isRemoteDebuggingAvailable) {
+        NativeModules["DevSettings"].setIsDebuggingRemotely(value);
+      }
+    },
+    [isRemoteDebuggingAvailable]
+  );
+
+  if (!isRemoteDebuggingAvailable) {
+    return null;
+  }
+
+  return (
+    <View style={styles.group}>
+      <Feature value={isAsyncDebugging} onValueChange={toggleRemoteDebugging}>
+        Remote Debugging
+      </Feature>
+    </View>
+  );
 };
 
 /** @type {React.FunctionComponent<{ concurrentRoot?: boolean; }>} */
@@ -117,8 +168,6 @@ const App = ({ concurrentRoot }) => {
     [setFabric]
   );
 
-  const hermesVersion = getHermesVersion();
-
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.body}>
@@ -129,10 +178,11 @@ const App = ({ concurrentRoot }) => {
           style={styles.body}
         >
           <Header />
+          <DevMenu />
           <View style={styles.group}>
             <Feature value={getReactNativeVersion()}>React Native</Feature>
             <Separator />
-            <Feature value={isOnOrOff(hermesVersion)}>Hermes</Feature>
+            <Feature value={isOnOrOff(getHermesVersion())}>Hermes</Feature>
             <Separator />
             <Feature value={isOnOrOff(isFabric)}>Fabric</Feature>
             <Separator />

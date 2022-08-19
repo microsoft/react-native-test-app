@@ -31,7 +31,7 @@
       "matchPackagePrefixes": ["com.squareup.moshi"]
     },
     {
-      "matchPackageNames": ["react"],
+      "matchPackageNames": ["com.facebook.react:hermes-engine", "react"],
       "enabled": false
     },
     {
