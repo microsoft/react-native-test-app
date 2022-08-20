@@ -20,11 +20,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         true
     }
 
-    func applicationWillTerminate(_: Notification) {
-        // Insert code here to tear down your application
+    func applicationDidFinishLaunching(_: Notification) {
+        NotificationCenter.default.post(
+            name: .ReactTestAppDidInitialize,
+            object: nil
+        )
+
+        initialize()
+
+        // applicationDidFinishLaunching(_:)
     }
 
-    // MARK: - User interaction
+    func applicationWillTerminate(_: Notification) {
+        // applicationWillTerminate(_:)
+    }
+
+    // MARK: Push Notifications
+
+    func application(_ application: NSApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
+    {
+        // application(_:didRegisterForRemoteNotificationsWithDeviceToken:)
+    }
+
+    func application(_ application: NSApplication,
+                     didFailToRegisterForRemoteNotificationsWithError error: Error)
+    {
+        // application(_:didFailToRegisterForRemoteNotificationsWithError:)
+    }
+
+    func application(_ application: NSApplication,
+                     didReceiveRemoteNotification userInfo: [String: Any])
+    {
+        // application(_:didReceiveRemoteNotification:)
+    }
+
+    // MARK: User interaction
 
     @IBAction
     func onLoadEmbeddedBundleSelected(_: NSMenuItem) {
@@ -50,7 +81,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // MARK: - Private
+    // MARK: Private
 
     private enum WindowSize {
         static let defaultSize = CGSize(width: 640, height: 480)
@@ -76,22 +107,7 @@ extension AppDelegate {
         !(mainWindow?.contentViewController is ViewController)
     }
 
-    func applicationWillFinishLaunching(_: Notification) {
-        if Session.shouldRememberLastComponent {
-            rememberLastComponentMenuItem.state = .on
-        }
-
-        showReactMenu()
-    }
-
-    func applicationDidFinishLaunching(_: Notification) {
-        defer {
-            NotificationCenter.default.post(
-                name: .ReactTestAppDidInitialize,
-                object: nil
-            )
-        }
-
+    func initialize() {
         guard let (manifest, checksum) = Manifest.fromFile() else {
             let item = reactMenu.addItem(
                 withTitle: "Could not load 'app.json'",
@@ -147,6 +163,14 @@ extension AppDelegate {
         }
 
         manifestChecksum = checksum
+    }
+
+    func applicationWillFinishLaunching(_: Notification) {
+        if Session.shouldRememberLastComponent {
+            rememberLastComponentMenuItem.state = .on
+        }
+
+        showReactMenu()
     }
 
     @objc
@@ -257,6 +281,8 @@ extension AppDelegate {
 #if ENABLE_SINGLE_APP_MODE
 
 extension AppDelegate {
+    func initialize() {}
+
     func applicationWillFinishLaunching(_: Notification) {
         guard let window = mainWindow else {
             assertionFailure("Main window should have been instantiated by now")
@@ -281,13 +307,6 @@ extension AppDelegate {
 
         showReactMenu()
         #endif // DEBUG
-    }
-
-    func applicationDidFinishLaunching(_: Notification) {
-        NotificationCenter.default.post(
-            name: .ReactTestAppDidInitialize,
-            object: nil
-        )
     }
 }
 
