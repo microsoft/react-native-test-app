@@ -29,6 +29,12 @@ const defaultProviders = {
   podfileProperties: nullProvider,
 };
 
+// `react-native-test-app` files
+defaultProviders["sceneDelegate"] = modifyFilePath(
+  expoProviders.appDelegate,
+  "ReactTestApp/SceneDelegate.swift"
+);
+
 export function getIosModFileProviders() {
   return defaultProviders;
 }
