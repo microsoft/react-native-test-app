@@ -10,7 +10,7 @@ function pod_install {
 }
 
 function prepare {
-  [[ -z "$(jobs -p)" ]] || kill $(jobs -p)
+  terminate_dev_server
   git checkout .
   npm run set-react-version ${VERSION}
   npm run clean
@@ -24,6 +24,10 @@ function start_dev_server {
   yarn start &> metro.server.log &
 }
 
+function terminate_dev_server {
+  [[ -z "$(jobs -p)" ]] || kill $(jobs -p)
+}
+
 function wait_for_user {
   echo
   if [[ -n "$1" ]]; then
@@ -33,6 +37,8 @@ function wait_for_user {
   read -n 1 -r -s -p "Press any key to continue..."
   echo
 }
+
+trap terminate_dev_server EXIT
 
 if command -v ccache 1> /dev/null; then
   export USE_CCACHE=1
