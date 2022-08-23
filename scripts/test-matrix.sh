@@ -57,7 +57,7 @@ echo "│  Build Android  │"
 echo "└─────────────────┘"
 echo
 
-npm run android --no-packager
+npm run android -- --no-packager
 wait_for_user "Android app is ready for testing"
 
 echo
@@ -67,7 +67,7 @@ echo "└─────────────┘"
 echo
 
 pod_install ios
-npm run ios --no-packager
+npm run ios -- --no-packager
 wait_for_user "iOS app is ready for testing"
 
 echo
@@ -78,7 +78,7 @@ echo
 
 sed -i '' 's/:hermes_enabled => false/:hermes_enabled => true/' ios/Podfile
 pod_install ios
-npm run ios --no-packager
+npm run ios -- --no-packager
 wait_for_user "iOS app with Hermes is ready for testing"
 
 echo
@@ -101,7 +101,7 @@ pushd android 1> /dev/null
 # Due to a bug in Gradle, we need to run this task separately
 ./gradlew packageReactNdkDebugLibs
 popd 1> /dev/null
-npm run android --no-packager
+npm run android -- --no-packager
 wait_for_user "Android app with Fabric is ready for testing"
 
 echo
@@ -112,7 +112,7 @@ echo
 
 sed -i '' 's/:turbomodule_enabled => false/:turbomodule_enabled => true/' ios/Podfile
 pod_install ios
-npm run ios --no-packager
+npm run ios -- --no-packager
 wait_for_user "iOS app with Fabric is ready for testing"
 
 echo
@@ -123,7 +123,7 @@ echo
 
 sed -i '' 's/:hermes_enabled => false/:hermes_enabled => true/' ios/Podfile
 pod_install ios
-npm run ios --no-packager
+npm run ios -- --no-packager
 wait_for_user "iOS app with Fabric + Hermes is ready for testing"
 
 popd 1> /dev/null
