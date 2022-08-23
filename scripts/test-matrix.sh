@@ -45,6 +45,7 @@ if command -v ccache 1> /dev/null; then
   export ANDROID_CCACHE=$(which ccache)
   export CCACHE_DIR=$HOME/.cache/ccache
   export PATH=$(dirname $(dirname $ANDROID_CCACHE))/opt/ccache/libexec:$PATH
+  mkdir -p $CCACHE_DIR
 fi
 
 pushd $(git rev-parse --show-toplevel) 1> /dev/null
