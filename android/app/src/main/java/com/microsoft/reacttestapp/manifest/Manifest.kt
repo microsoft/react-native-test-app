@@ -7,6 +7,7 @@ import android.os.Bundle
 import com.squareup.moshi.JsonClass
 
 /* ktlint-disable trailing-comma */
+/* ktlint-disable trailing-comma-on-declaration-site */
 
 @JsonClass(generateAdapter = true)
 data class Component(

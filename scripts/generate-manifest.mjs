@@ -105,6 +105,7 @@ function getLanguage(output) {
             "import com.squareup.moshi.JsonClass",
             "",
             "/* ktlint-disable trailing-comma */",
+            "/* ktlint-disable trailing-comma-on-declaration-site */",
             "",
           ].join("\n"),
         },
