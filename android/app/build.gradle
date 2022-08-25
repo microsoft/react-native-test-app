@@ -126,18 +126,28 @@ android {
 
         if (project.ext.react.enableNewArchitecture) {
             externalNativeBuild {
-                ndkBuild {
-                    arguments "APP_PLATFORM=android-${project.ext.minSdkVersion}",
-                              "APP_STL=c++_shared",
-                              "NDK_TOOLCHAIN_VERSION=clang",
-                              "GENERATED_SRC_DIR=${buildDir}/generated/source",
-                              "NODE_MODULES_DIR=${reactNativePath}/..",
-                              "PROJECT_BUILD_DIR=${buildDir}",
-                              "REACT_ANDROID_DIR=${reactNativePath}/ReactAndroid",
-                              "REACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build"
-                    cFlags "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
-                    cppFlags "-std=c++17"
-                    targets "reacttestapp_appmodules"
+                if (reactNativeVersion < 7000) {
+                    ndkBuild {
+                        arguments "APP_PLATFORM=android-${project.ext.minSdkVersion}",
+                                  "APP_STL=c++_shared",
+                                  "NDK_TOOLCHAIN_VERSION=clang",
+                                  "GENERATED_SRC_DIR=${buildDir}/generated/source",
+                                  "NODE_MODULES_DIR=${reactNativePath}/..",
+                                  "PROJECT_BUILD_DIR=${buildDir}",
+                                  "REACT_ANDROID_DIR=${reactNativePath}/ReactAndroid",
+                                  "REACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build"
+                        cFlags "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
+                        cppFlags "-std=c++17"
+                        targets "reacttestapp_appmodules"
+                    }
+                } else {
+                    cmake {
+                        arguments "-DANDROID_STL=c++_shared",
+                                  "-DNODE_MODULES_DIR=${reactNativePath}/..",
+                                  "-DPROJECT_BUILD_DIR=${buildDir}",
+                                  "-DREACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build",
+                                  "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid"
+                    }
                 }
             }
             if (!project.ext.react.abiSplit) {
@@ -150,8 +160,14 @@ android {
 
     if (project.ext.react.enableNewArchitecture) {
         externalNativeBuild {
-            ndkBuild {
-                path "${projectDir}/src/main/jni/Android.mk"
+            if (reactNativeVersion < 7000) {
+                ndkBuild {
+                    path "${projectDir}/src/main/jni/Android.mk"
+                }
+            } else {
+                cmake {
+                    path "${projectDir}/src/main/jni/CMakeLists.txt"
+                }
             }
         }
 
@@ -171,18 +187,35 @@ android {
             preDebugBuild.dependsOn(packageReactNdkDebugLibs)
             preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
 
-            // Due to a bug in AGP, we have to explicitly set a dependency
-            // between configureNdkBuild* tasks and the preBuild tasks. This can
-            // be removed once this issue is resolved:
-            // https://issuetracker.google.com/issues/207403732
-            configureNdkBuildRelease.dependsOn(preReleaseBuild)
-            configureNdkBuildDebug.dependsOn(preDebugBuild)
-            project.ext.react.architectures.each { architecture ->
-                tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
-                    dependsOn("preDebugBuild")
+            if (reactNativeVersion < 7000) {
+                // Due to a bug in AGP, we have to explicitly set a dependency
+                // between configureNdkBuild* tasks and the preBuild tasks. This can
+                // be removed once this issue is resolved:
+                // https://issuetracker.google.com/issues/207403732
+                configureNdkBuildRelease.dependsOn(preReleaseBuild)
+                configureNdkBuildDebug.dependsOn(preDebugBuild)
+                project.ext.react.architectures.each { architecture ->
+                    tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
+                        dependsOn("preDebugBuild")
+                    }
+                    tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
+                        dependsOn("preReleaseBuild")
+                    }
                 }
-                tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
-                    dependsOn("preReleaseBuild")
+            } else {
+                // Due to a bug in AGP, we have to explicitly set a dependency
+                // between configureCMakeDebug* tasks and the preBuild tasks. This can
+                // be removed once this issue is resolved:
+                // https://issuetracker.google.com/issues/207403732
+                configureCMakeDebug.dependsOn(preDebugBuild)
+                configureCMakeRelWithDebInfo.dependsOn(preReleaseBuild)
+                project.ext.react.architectures.each { architecture ->
+                    tasks.findByName("configureCMakeDebug[${architecture}]")?.configure {
+                        dependsOn("preDebugBuild")
+                    }
+                    tasks.findByName("configureCMakeRelWithDebInfo[${architecture}]")?.configure {
+                        dependsOn("preReleaseBuild")
+                    }
                 }
             }
         }
