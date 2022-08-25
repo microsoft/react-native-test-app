@@ -44,6 +44,8 @@ if command -v ccache 1> /dev/null; then
   export USE_CCACHE=1
   export ANDROID_CCACHE=$(which ccache)
   export CCACHE_DIR=$HOME/.cache/ccache
+  export CMAKE_C_COMPILER_LAUNCHER=$ANDROID_CCACHE
+  export CMAKE_CXX_COMPILER_LAUNCHER=$ANDROID_CCACHE
   export PATH=$(dirname $(dirname $ANDROID_CCACHE))/opt/ccache/libexec:$PATH
   mkdir -p $CCACHE_DIR
 fi
