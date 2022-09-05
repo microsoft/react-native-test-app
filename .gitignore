@@ -5,6 +5,7 @@
 .android-test-*
 .ccache/*
 !.ccache/ccache.conf
+.cxx/
 .gradle/
 .idea/
 .vs/
