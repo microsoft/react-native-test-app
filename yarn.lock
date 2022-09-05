@@ -2808,11 +2808,11 @@ __metadata:
   linkType: hard
 
 "@types/react-native@npm:^0.68.0":
-  version: 0.68.3
-  resolution: "@types/react-native@npm:0.68.3"
+  version: 0.68.4
+  resolution: "@types/react-native@npm:0.68.4"
   dependencies:
     "@types/react": ^17
-  checksum: e9ca9e5038499044f33a6f1f1f65f3a2a8877e793552e24a8ab0f86f6ac04e193992ea8c5a6457ee3e76fc41d7c52f81a104ca90dd61d0924d8295c8d046a622
+  checksum: f449aa8d7a6da50d4659e98fb97d933dda6ef38f4def39ed926f56b6e1176f3f5d6659761e4ffa3df5f913aec4b3f539157e2c2dc44a75e3457798c7cc9d5332
   languageName: node
   linkType: hard
 
