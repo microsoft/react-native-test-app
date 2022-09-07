@@ -71,7 +71,7 @@
     "prompts": "^2.4.0",
     "rimraf": "^3.0.0",
     "semver": "^7.3.5",
-    "uuid": "^8.3.2",
+    "uuid": "^9.0.0",
     "yargs": "^16.0.0"
   },
   "peerDependencies": {
