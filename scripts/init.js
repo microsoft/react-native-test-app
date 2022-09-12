@@ -18,7 +18,7 @@
       type: "text",
       name: "name",
       message: "What is the name of your test app?",
-      initial: "testapp",
+      initial: "TestApp",
       validate: Boolean,
     },
     {
