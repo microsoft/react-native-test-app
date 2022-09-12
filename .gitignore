@@ -11,6 +11,7 @@
 .vs/
 .watchman-*
 .yarn/*
+!.yarn/plugins/
 !.yarn/releases/
 Pods/
 android/**/build/
