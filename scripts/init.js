@@ -18,6 +18,7 @@
       type: "text",
       name: "name",
       message: "What is the name of your test app?",
+      initial: "TestApp",
       validate: Boolean,
     },
     {
@@ -36,6 +37,7 @@
       type: "text",
       name: "packagePath",
       message: "Where should we create the new project?",
+      initial: "example",
       validate: Boolean,
     },
   ]);
