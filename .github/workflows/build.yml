@@ -7,6 +7,8 @@ on:
   schedule:
     # nightly builds against react-native@nightly at 5:00
     - cron: 0 5 * * *
+env:
+  HOMEBREW_NO_INSTALL_CLEANUP: 1
 jobs:
   lint-commit:
     name: "lint commit message"
