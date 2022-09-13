@@ -8,6 +8,24 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Set up Ccache
+      if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' }}
+      run: |
+        if ! command -v ccache 1> /dev/null; then
+          brew install ccache
+        fi
+
+        CCACHE_HOME=$(dirname $(dirname $(which ccache)))/opt/ccache
+
+        echo "CCACHE_DIR=$(git rev-parse --show-toplevel)/.ccache" >> $GITHUB_ENV
+
+        echo "CC=${CCACHE_HOME}/libexec/clang" >> $GITHUB_ENV
+        echo "CXX=${CCACHE_HOME}/libexec/clang++" >> $GITHUB_ENV
+        echo "CMAKE_C_COMPILER_LAUNCHER=$(which ccache)" >> $GITHUB_ENV
+        echo "CMAKE_CXX_COMPILER_LAUNCHER=$(which ccache)" >> $GITHUB_ENV
+
+        ccache --zero-stats 1> /dev/null
+      shell: bash
     - name: Set up Node.js
       uses: actions/setup-node@v3.4.1
       with:

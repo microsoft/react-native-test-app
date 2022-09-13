@@ -1,7 +1,7 @@
 tap 'homebrew/cask-versions'
 brew 'clang-format'
 brew 'ktlint'
-brew 'node'
+brew 'n'
 brew 'swiftformat'
 brew 'swiftlint'
 brew 'yarn'
