@@ -142,7 +142,8 @@
   },
   "packageManager": "yarn@3.1.1",
   "resolutions": {
-    "@commitlint/is-ignored/semver": "^7.3.5",
+    "@commitlint/is-ignored/semver": "^7.3.7",
+    "@expo/config-plugins/glob": "^7.1.6",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
     "core-js-compat/semver": "^7.3.5"
   },
