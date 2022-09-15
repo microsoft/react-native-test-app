@@ -143,6 +143,7 @@ extension Notification.Name {
 }
 
 extension UIAlertAction {
+    // swiftlint:disable:next identifier_name
     static func No(handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
         UIAlertAction(
             title: NSLocalizedString("No", comment: "Negative"),
@@ -151,6 +152,7 @@ extension UIAlertAction {
         )
     }
 
+    // swiftlint:disable:next identifier_name
     static func Yes(handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
         UIAlertAction(
             title: NSLocalizedString("Yes", comment: "Affirmative"),
