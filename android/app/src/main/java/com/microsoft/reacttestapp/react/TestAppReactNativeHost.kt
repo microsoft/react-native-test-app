@@ -4,8 +4,11 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.facebook.hermes.reactexecutor.HermesExecutor
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
+import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.JSIModulePackage
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMarker
@@ -150,6 +153,12 @@ class TestAppReactNativeHost(
         return reactInstanceManager
     }
 
+    override fun getJavaScriptExecutorFactory(): JavaScriptExecutorFactory {
+        SoLoader.init(application, false)
+        HermesExecutor.loadLibrary()
+        return HermesExecutorFactory()
+    }
+
     override fun getJSIModulePackage(): JSIModulePackage? {
         return if (BuildConfig.ReactTestApp_useFabric) {
             FabricJSIModulePackage(this)
@@ -165,7 +174,7 @@ class TestAppReactNativeHost(
 
     override fun getUseDeveloperSupport() = source == BundleSource.Server
 
-    override fun getPackages() = PackageList(application).packages
+    override fun getPackages(): List<ReactPackage> = PackageList(application).packages
 
     private fun addCustomDevOptions(devSupportManager: DevSupportManager) {
         val bundleOption = application.resources.getString(
