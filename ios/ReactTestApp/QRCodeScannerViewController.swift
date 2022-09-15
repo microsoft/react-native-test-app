@@ -116,7 +116,7 @@ final class QRCodeScannerViewController: UIViewController, AVCaptureMetadataOutp
                     message: stringValue,
                     preferredStyle: .alert
                 )
-                alert.addAction(UIAlertAction.Yes() { _ in
+                alert.addAction(UIAlertAction.Yes { _ in
                     NotificationCenter.default.post(
                         name: .didReceiveRemoteBundleURL,
                         object: presentingViewController,
@@ -144,7 +144,7 @@ extension Notification.Name {
 
 extension UIAlertAction {
     static func No(handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
-        return UIAlertAction(
+        UIAlertAction(
             title: NSLocalizedString("No", comment: "Negative"),
             style: .cancel,
             handler: handler
@@ -152,7 +152,7 @@ extension UIAlertAction {
     }
 
     static func Yes(handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
-        return UIAlertAction(
+        UIAlertAction(
             title: NSLocalizedString("Yes", comment: "Affirmative"),
             style: .default,
             handler: handler
