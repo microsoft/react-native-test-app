@@ -169,6 +169,7 @@
   },
   "release": {
     "branches": [
+      "releases/+([0-9]).x",
       "trunk"
     ],
     "tagFormat": "${version}",
