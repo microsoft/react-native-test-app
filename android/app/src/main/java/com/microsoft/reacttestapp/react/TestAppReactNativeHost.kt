@@ -10,6 +10,7 @@ import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.JSIModulePackage
+import com.facebook.react.bridge.JavaScriptExecutorFactory
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMarker
 import com.facebook.react.bridge.ReactMarkerConstants
