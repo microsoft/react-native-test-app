@@ -18,6 +18,11 @@
         android:title="@string/remember_last_component"
         app:showAsAction="never" />
     <item
+        android:id="@+id/scan_qr_code"
+        android:contentDescription="@string/content_description_scan_qr_code"
+        android:title="@string/scan_qr_code"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/show_dev_options"
         android:contentDescription="@string/content_description_show_dev_options"
         android:enabled="false"
