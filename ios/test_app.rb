@@ -367,6 +367,8 @@ def make_project!(xcodeproj, project_root, target_platform, options)
     },
     :use_fabric => use_fabric,
     :use_turbomodule => use_turbomodule,
+    :code_sign_identity => code_sign_identity || '',
+    :development_team => development_team || '',
   }
 end
 
@@ -447,6 +449,18 @@ def use_test_app_internal!(target_platform, options)
             setting = config.resolve_build_setting(key)
             config.build_settings[key] = 'YES' if setting.nil?
           end
+        end
+      end
+
+      # Code signing of resource bundles was enabled in Xcode 14. Not sure if
+      # this is intentional, or if there's a bug in CocoaPods, but Xcode will
+      # fail to build when targeting devices. Until this is resolved, we'll just
+      # just have to make sure it's consistent with what's set in `app.json`.
+      # See also https://github.com/CocoaPods/CocoaPods/issues/11402.
+      if target.respond_to?(:product_type) and target.product_type == 'com.apple.product-type.bundle'
+        target.build_configurations.each do |config|
+          config.build_settings['CODE_SIGN_IDENTITY'] ||= project_target[:code_sign_identity]
+          config.build_settings['DEVELOPMENT_TEAM'] ||= project_target[:development_team]
         end
       end
     end
