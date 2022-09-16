@@ -8,6 +8,8 @@ repositories {
 }
 
 android {
+    namespace "com.microsoft.reacttestapp.support"
+
     def androidDir = "${buildscript.sourceFile.getParent()}/../"
     apply(from: "${androidDir}/dependencies.gradle")
     apply(from: "${androidDir}/test-app-util.gradle")

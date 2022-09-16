@@ -75,6 +75,8 @@ project.ext.react = [
 project.ext.signingConfigs = getSigningConfigs()
 
 android {
+    namespace "com.microsoft.reacttestapp"
+
     compileSdkVersion project.ext.compileSdkVersion
 
     if (project.hasProperty("ndkVersion")) {
@@ -202,7 +204,7 @@ android {
                         dependsOn("preReleaseBuild")
                     }
                 }
-            } else {
+            } else if (reactNativeVersion < 7100) {
                 // Due to a bug in AGP, we have to explicitly set a dependency
                 // between configureCMakeDebug* tasks and the preBuild tasks. This can
                 // be removed once this issue is resolved:
