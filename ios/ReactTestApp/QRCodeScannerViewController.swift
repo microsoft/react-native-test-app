@@ -51,7 +51,9 @@ final class QRCodeScannerViewController: UIViewController, AVCaptureMetadataOutp
         super.viewWillAppear(animated)
 
         if captureSession.isRunnable {
-            captureSession.startRunning()
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                self?.captureSession.startRunning()
+            }
             feedback.prepare()
         } else {
             let alert = UIAlertController(
@@ -103,11 +105,27 @@ final class QRCodeScannerViewController: UIViewController, AVCaptureMetadataOutp
 
             feedback.notificationOccurred(.success)
 
-            NotificationCenter.default.post(
-                name: .didReceiveRemoteBundleURL,
-                object: self,
-                userInfo: ["url": urlComponents]
-            )
+            guard let presentingViewController = presentingViewController else {
+                assertionFailure()
+                return
+            }
+
+            DispatchQueue.main.async {
+                let alert = UIAlertController(
+                    title: "Is this the right URL?",
+                    message: stringValue,
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction.Yes { _ in
+                    NotificationCenter.default.post(
+                        name: .didReceiveRemoteBundleURL,
+                        object: presentingViewController,
+                        userInfo: ["url": urlComponents]
+                    )
+                })
+                alert.addAction(UIAlertAction.No())
+                presentingViewController.present(alert, animated: true)
+            }
         }
     }
 }
@@ -122,6 +140,26 @@ extension AVCaptureSession {
 
 extension Notification.Name {
     static let didReceiveRemoteBundleURL = Notification.Name("didReceiveRemoteBundleURL")
+}
+
+extension UIAlertAction {
+    // swiftlint:disable:next identifier_name
+    static func No(handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+        UIAlertAction(
+            title: NSLocalizedString("No", comment: "Negative"),
+            style: .cancel,
+            handler: handler
+        )
+    }
+
+    // swiftlint:disable:next identifier_name
+    static func Yes(handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+        UIAlertAction(
+            title: NSLocalizedString("Yes", comment: "Affirmative"),
+            style: .default,
+            handler: handler
+        )
+    }
 }
 
 extension UIDevice {
