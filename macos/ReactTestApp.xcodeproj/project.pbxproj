@@ -292,6 +292,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		19E2AE7C27693278007B06CA /* Validate Manifest */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
