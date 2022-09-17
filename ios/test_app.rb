@@ -74,6 +74,10 @@ def react_native_path(project_root, target_platform)
   Pathname.new(resolve_module(react_native))
 end
 
+def target_product_type(target)
+  target.product_type if target.respond_to?(:product_type)
+end
+
 def generate_assets_catalog!(project_root, target_platform, destination)
   xcassets_src = project_path('ReactTestApp/Assets.xcassets', target_platform)
   xcassets_dst = File.join(destination, File.basename(xcassets_src))
@@ -367,6 +371,8 @@ def make_project!(xcodeproj, project_root, target_platform, options)
     },
     :use_fabric => use_fabric,
     :use_turbomodule => use_turbomodule,
+    :code_sign_identity => code_sign_identity || '',
+    :development_team => development_team || '',
   }
 end
 
@@ -448,6 +454,18 @@ def use_test_app_internal!(target_platform, options)
             config.build_settings[key] = 'YES' if setting.nil?
           end
         end
+      end
+
+      next unless target_product_type(target) == 'com.apple.product-type.bundle'
+
+      # Code signing of resource bundles was enabled in Xcode 14. Not sure if
+      # this is intentional, or if there's a bug in CocoaPods, but Xcode will
+      # fail to build when targeting devices. Until this is resolved, we'll just
+      # just have to make sure it's consistent with what's set in `app.json`.
+      # See also https://github.com/CocoaPods/CocoaPods/issues/11402.
+      target.build_configurations.each do |config|
+        config.build_settings['CODE_SIGN_IDENTITY'] ||= project_target[:code_sign_identity]
+        config.build_settings['DEVELOPMENT_TEAM'] ||= project_target[:development_team]
       end
     end
 
