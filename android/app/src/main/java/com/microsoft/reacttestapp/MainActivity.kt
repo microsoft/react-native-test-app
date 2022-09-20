@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
+import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.facebook.react.packagerconnection.PackagerConnectionSettings
@@ -22,6 +23,7 @@ import com.microsoft.reacttestapp.component.ComponentBottomSheetDialogFragment
 import com.microsoft.reacttestapp.component.ComponentListAdapter
 import com.microsoft.reacttestapp.component.ComponentViewModel
 import com.microsoft.reacttestapp.manifest.Component
+import com.microsoft.reacttestapp.react.AppRegistry
 import com.microsoft.reacttestapp.react.BundleSource
 
 class MainActivity : ReactActivity() {
@@ -34,7 +36,8 @@ class MainActivity : ReactActivity() {
         HandlerCompat.createAsync(Looper.getMainLooper())
     }
 
-    private var didInitialNavigation = false
+    private lateinit var componentListAdapter: ComponentListAdapter
+    private var isTopResumedActivity = false
 
     private val newComponentViewModel = { component: Component ->
         ComponentViewModel(
@@ -49,21 +52,7 @@ class MainActivity : ReactActivity() {
         Session(applicationContext)
     }
 
-    private val startComponent: (ComponentViewModel) -> Unit = { component ->
-        didInitialNavigation = true
-        when (component.presentationStyle) {
-            "modal" -> {
-                ComponentBottomSheetDialogFragment
-                    .newInstance(component)
-                    .show(supportFragmentManager, ComponentBottomSheetDialogFragment.TAG)
-            }
-            else -> {
-                findActivityClass(component.name)?.let {
-                    startActivity(Intent(this, it))
-                } ?: startActivity(ComponentActivity.newIntent(this, component))
-            }
-        }
-    }
+    private var useAppRegistry: Boolean = false
 
     private fun findActivityClass(name: String): Class<*>? {
         return try {
@@ -87,16 +76,29 @@ class MainActivity : ReactActivity() {
             BuildConfig.ReactTestApp_singleApp === null -> {
                 setContentView(R.layout.activity_main)
 
-                didInitialNavigation =
-                    savedInstanceState?.getBoolean("didInitialNavigation", false) == true
-
-                if (components.isNotEmpty()) {
+                useAppRegistry = components.isEmpty()
+                if (useAppRegistry) {
+                    testApp.reactNativeHost.addReactInstanceEventListener {
+                        it.runOnJSQueueThread {
+                            val appKeys = AppRegistry.getAppKeys(it as ReactApplicationContext)
+                            val viewModels = appKeys.map { appKey ->
+                                ComponentViewModel(appKey, appKey, null, null)
+                            }
+                            mainThreadHandler.post {
+                                componentListAdapter.setComponents(viewModels)
+                                if (isTopResumedActivity && viewModels.count() == 1) {
+                                    startComponent(viewModels[0])
+                                }
+                            }
+                        }
+                    }
+                } else {
                     val index =
                         if (components.count() == 1) 0 else session.lastOpenedComponent(checksum)
                     index?.let {
                         val component = newComponentViewModel(components[it])
                         val startInitialComponent = { _: ReactContext ->
-                            if (!didInitialNavigation) {
+                            if (isTopResumedActivity) {
                                 startComponent(component)
                             }
                         }
@@ -125,6 +127,11 @@ class MainActivity : ReactActivity() {
         }
     }
 
+    override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
+        super.onTopResumedActivityChanged(isTopResumedActivity)
+        this.isTopResumedActivity = isTopResumedActivity
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -139,26 +146,30 @@ class MainActivity : ReactActivity() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBoolean("didInitialNavigation", didInitialNavigation)
-        super.onSaveInstanceState(outState)
+    internal fun reloadJSFromServer(bundleURL: String) {
+        componentListAdapter.clear()
+        testApp.reloadJSFromServer(this, bundleURL)
     }
 
     private fun reload(bundleSource: BundleSource) {
+        if (useAppRegistry) {
+            componentListAdapter.clear()
+        }
         testApp.reactNativeHost.reload(this, bundleSource)
     }
 
     private fun setupRecyclerView(manifestComponents: List<Component>, manifestChecksum: String) {
-        val components = manifestComponents.map(newComponentViewModel)
+        componentListAdapter = ComponentListAdapter(
+            LayoutInflater.from(applicationContext),
+            manifestComponents.map(newComponentViewModel)
+        ) { component, index ->
+            startComponent(component)
+            session.storeComponent(index, manifestChecksum)
+        }
+
         findViewById<RecyclerView>(R.id.recyclerview).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = ComponentListAdapter(
-                LayoutInflater.from(context),
-                components
-            ) { component, index ->
-                startComponent(component)
-                session.storeComponent(index, manifestChecksum)
-            }
+            adapter = componentListAdapter
 
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
@@ -211,6 +222,21 @@ class MainActivity : ReactActivity() {
         updateMenuItemState(toolbar, testApp.reactNativeHost.source)
         testApp.reactNativeHost.onBundleSourceChanged = {
             updateMenuItemState(toolbar, it)
+        }
+    }
+
+    private fun startComponent(component: ComponentViewModel) {
+        when (component.presentationStyle) {
+            "modal" -> {
+                ComponentBottomSheetDialogFragment
+                    .newInstance(component)
+                    .show(supportFragmentManager, ComponentBottomSheetDialogFragment.TAG)
+            }
+            else -> {
+                findActivityClass(component.name)?.let {
+                    startActivity(Intent(this, it))
+                } ?: startActivity(ComponentActivity.newIntent(this, component))
+            }
         }
     }
 

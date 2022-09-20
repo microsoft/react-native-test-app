@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.microsoft.reacttestapp.MainActivity
 import com.microsoft.reacttestapp.R
-import com.microsoft.reacttestapp.testApp
 
 fun MainActivity.canUseCamera(): Boolean {
     return ContextCompat.checkSelfPermission(
@@ -27,7 +26,7 @@ fun MainActivity.scanForQrCode() {
                     .setTitle(R.string.is_this_the_right_url)
                     .setMessage(it)
                     .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
-                        testApp.reloadJSFromServer(this, it)
+                        reloadJSFromServer(it)
                     }
                     .setNegativeButton(R.string.no) { _: DialogInterface, _: Int ->
                         // Nothing to do

@@ -12,12 +12,13 @@ include $(PROJECT_BUILD_DIR)/generated/rncli/src/main/jni/Android-rncli.mk
 include $(CLEAR_VARS)
 
 LOCAL_PATH := $(THIS_DIR)
+REACTTESTAPP_PATH := $(LOCAL_PATH)/../../../../..
 
 # You can customize the name of your application .so file here.
 LOCAL_MODULE := reacttestapp_appmodules
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)
-LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/*.cpp)
+LOCAL_C_INCLUDES := $(LOCAL_PATH) $(REACTTESTAPP_PATH)
+LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/*.cpp) $(REACTTESTAPP_PATH)/common/AppRegistry.cpp
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 
 # If you wish to add a custom TurboModule or Fabric component in your app you

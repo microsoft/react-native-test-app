@@ -158,6 +158,15 @@ android {
                     abiFilters(*project.ext.react.architectures)
                 }
             }
+        } else {
+            externalNativeBuild {
+                cmake {
+                    arguments "-DANDROID_STL=c++_shared",
+                              "-DREACT_COMMON_DIR=${reactNativePath}/ReactCommon",
+                              "-DREACT_JNILIBS_DIR=${buildDir}/outputs/jniLibs"
+                    cppFlags "-std=c++17"
+                }
+            }
         }
     }
 
@@ -221,6 +230,32 @@ android {
                     }
                 }
             }
+        }
+    } else {
+        externalNativeBuild {
+            cmake {
+                path "${projectDir}/src/main/jni/CMakeLists.txt"
+            }
+        }
+
+        def version = getPackageVersion("react-native", rootDir)
+        def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
+
+        def prepareDebugJSI = tasks.register("prepareDebugJSI", Copy) {
+            def debugAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-debug.aar")
+            from(zipTree(debugAar.exists() ? debugAar : allAar).matching({ it.include "**/libjsi.so" }))
+            into("${buildDir}/outputs/jniLibs/debug")
+        }
+
+        def prepareReleaseJSI = tasks.register("prepareReleaseJSI", Copy) {
+            def releaseAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-release.aar")
+            from(zipTree(releaseAar.exists() ? releaseAar : allAar).matching({ it.include "**/libjsi.so" }))
+            into("${buildDir}/outputs/jniLibs/release")
+        }
+
+        afterEvaluate {
+            preDebugBuild.dependsOn(prepareDebugJSI)
+            preReleaseBuild.dependsOn(prepareReleaseJSI)
         }
     }
 

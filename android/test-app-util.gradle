@@ -134,11 +134,16 @@ ext.getManifest = {
     return manifest
 }
 
-ext.getPackageVersionNumber = { packageName, baseDir ->
+ext.getPackageVersion = { packageName, baseDir ->
     def packagePath = findNodeModulesPath(packageName, baseDir)
     def packageJson = file("${packagePath}/package.json")
     def manifest = new JsonSlurper().parseText(packageJson.text)
-    def (major, minor, patch) = manifest["version"].findAll(/\d+/)
+    return manifest["version"]
+}
+
+ext.getPackageVersionNumber = { packageName, baseDir ->
+    def version = getPackageVersion(packageName, baseDir)
+    def (major, minor, patch) = version.findAll(/\d+/)
     return (major as int) * 10000 + (minor as int) * 100 + (patch as int)
 }
 

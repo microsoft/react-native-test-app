@@ -1,16 +1,32 @@
 package com.microsoft.reacttestapp.component
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.UiThread
 import androidx.recyclerview.widget.RecyclerView
 import com.microsoft.reacttestapp.R
 
 class ComponentListAdapter(
     private val layoutInflater: LayoutInflater,
-    private val components: List<ComponentViewModel>,
+    private var components: List<ComponentViewModel>,
     private val listener: (ComponentViewModel, Int) -> Unit
 ) : RecyclerView.Adapter<ComponentListAdapter.ComponentViewHolder>() {
+
+    @UiThread
+    fun clear() {
+        val itemCount = components.size
+        components = listOf()
+        notifyItemRangeRemoved(0, itemCount)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @UiThread
+    fun setComponents(components: List<ComponentViewModel>) {
+        this.components = components
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount() = components.size
 
