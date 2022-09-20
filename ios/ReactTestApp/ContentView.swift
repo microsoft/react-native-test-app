@@ -60,6 +60,13 @@ final class ContentViewController: UITableViewController {
 
         title = manifest.displayName
 
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "qrcode.viewfinder"),
+            style: .plain,
+            target: self,
+            action: #selector(scanForQRCode)
+        )
+
         let components = manifest.components ?? []
         if components.isEmpty {
             NotificationCenter.default.addObserver(
@@ -113,7 +120,7 @@ final class ContentViewController: UITableViewController {
 
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(scanForQRCode(_:)),
+            selector: #selector(scanForQRCode),
             name: ReactInstance.scanForQRCodeNotification,
             object: nil
         )
@@ -255,7 +262,7 @@ final class ContentViewController: UITableViewController {
 
 extension ContentViewController {
     @objc
-    private func scanForQRCode(_: Notification) {
+    private func scanForQRCode() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
