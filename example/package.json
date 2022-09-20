@@ -52,5 +52,37 @@
     "roots": [
       "test"
     ]
+  },
+  "rnx-kit": {
+    "//": "This configuration is only used for Viewfinder",
+    "kitType": "app",
+    "reactNativeVersion": "0.68",
+    "capabilities": [
+      "core-android",
+      "core-ios",
+      "core-macos",
+      "core-windows",
+      "animation",
+      "babel-preset-react-native",
+      "checkbox",
+      "clipboard",
+      "datetime-picker",
+      "filesystem",
+      "floating-action",
+      "gestures",
+      "html",
+      "masked-view",
+      "modal",
+      "navigation/native",
+      "navigation/stack",
+      "netinfo",
+      "popover",
+      "screens",
+      "shimmer",
+      "sqlite",
+      "storage",
+      "svg",
+      "webview"
+    ]
   }
 }
