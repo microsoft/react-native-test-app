@@ -3,6 +3,7 @@ package com.microsoft.reacttestapp.react
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
@@ -14,12 +15,12 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactMarker
 import com.facebook.react.bridge.ReactMarkerConstants
 import com.facebook.react.common.LifecycleState
-import com.facebook.react.common.build.ReactBuildConfig
 import com.facebook.react.devsupport.DevInternalSettings
 import com.facebook.react.devsupport.DevServerHelper
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
 import com.facebook.react.devsupport.interfaces.DevSupportManager
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
+import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
@@ -136,25 +137,9 @@ class TestAppReactNativeHost(
     }
 
     fun reloadJSFromServer(activity: Activity?, bundleURL: String) {
+        val uri = Uri.parse(bundleURL)
+        PackagerConnectionSettings(activity).debugServerHost = "${uri.host}:${uri.port}"
         reload(activity, BundleSource.Server)
-
-        val devSettings = reactInstanceManager.devSupportManager.devSettings
-        val runtimeBytecodeVersion =
-            if (ReactBuildConfig.HERMES_BYTECODE_VERSION != 0) {
-                "&runtimeBytecodeVersion=" + ReactBuildConfig.HERMES_BYTECODE_VERSION
-            } else {
-                ""
-            }
-        reactInstanceManager.devSupportManager.reloadJSFromServer(
-            bundleURL +
-                "?platform=android" +
-                "&dev=" + (devSettings?.isJSDevModeEnabled ?: true) +
-                "&minify=" + (devSettings?.isJSMinifyEnabled ?: false) +
-                "&app=" + application.packageName +
-                "&modulesOnly=false" +
-                "&runModule=true" +
-                runtimeBytecodeVersion
-        )
     }
 
     override fun createReactInstanceManager(): ReactInstanceManager {

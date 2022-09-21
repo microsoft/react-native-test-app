@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
+import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.google.android.material.appbar.MaterialToolbar
 import com.microsoft.reacttestapp.camera.canUseCamera
 import com.microsoft.reacttestapp.camera.scanForQrCode
@@ -179,6 +180,7 @@ class MainActivity : ReactActivity() {
                     true
                 }
                 R.id.load_from_dev_server -> {
+                    PackagerConnectionSettings(this).debugServerHost = ""
                     reload(BundleSource.Server)
                     true
                 }
