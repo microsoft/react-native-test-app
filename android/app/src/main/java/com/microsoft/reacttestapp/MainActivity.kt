@@ -182,14 +182,14 @@ class MainActivity : ReactActivity() {
                     reload(BundleSource.Server)
                     true
                 }
-                R.id.scan_qr_code -> {
-                    scanForQrCode()
-                    true
-                }
                 R.id.remember_last_component -> {
                     val enable = !menuItem.isChecked
                     menuItem.isChecked = enable
                     session.shouldRememberLastComponent = enable
+                    true
+                }
+                R.id.scan_qr_code -> {
+                    scanForQrCode()
                     true
                 }
                 R.id.show_dev_options -> {
