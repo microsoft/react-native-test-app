@@ -3,8 +3,10 @@ package com.microsoft.reacttestapp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.TextView
+import androidx.core.os.HandlerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +28,10 @@ class MainActivity : ReactActivity() {
 
     companion object {
         const val REQUEST_CODE_PERMISSIONS = 42
+    }
+
+    val mainThreadHandler by lazy {
+        HandlerCompat.createAsync(Looper.getMainLooper())
     }
 
     private var didInitialNavigation = false

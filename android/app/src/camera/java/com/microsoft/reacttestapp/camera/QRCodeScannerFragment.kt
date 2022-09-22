@@ -1,7 +1,7 @@
 package com.microsoft.reacttestapp.camera
 
 import android.os.Bundle
-import android.os.Looper
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,6 @@ import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
-import androidx.core.os.HandlerCompat
 import androidx.core.util.Consumer
 import androidx.fragment.app.DialogFragment
 import com.google.mlkit.vision.barcode.BarcodeScanner
@@ -20,7 +19,10 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.microsoft.reacttestapp.R
 import java.util.concurrent.Executors
 
-class QRCodeScannerFragment(private val consumer: Consumer<String>) : DialogFragment() {
+class QRCodeScannerFragment(
+    private val mainThreadHandler: Handler,
+    private val consumer: Consumer<String>
+) : DialogFragment() {
 
     companion object {
         const val TAG = "QRCodeScannerFragment"
@@ -36,7 +38,42 @@ class QRCodeScannerFragment(private val consumer: Consumer<String>) : DialogFrag
         Executors.newSingleThreadExecutor()
     }
 
-    private lateinit var previewView: PreviewView
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val scanner = BarcodeScanning.getClient(
+            BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .build()
+        )
+
+        cameraController.imageCaptureMode = CAPTURE_MODE_MINIMIZE_LATENCY
+        cameraController.setImageAnalysisAnalyzer(
+            cameraExecutor,
+            MlKitAnalyzer(
+                listOf(scanner),
+                COORDINATE_SYSTEM_VIEW_REFERENCED,
+                cameraExecutor
+            ) {
+                it.getValue(scanner)?.let { barcodes ->
+                    for (barcode in barcodes) {
+                        when (barcode.valueType) {
+                            Barcode.TYPE_URL -> {
+                                // Close the scanner otherwise it will keep posting results
+                                scanner.close()
+                                mainThreadHandler.post {
+                                    dismiss()
+                                    consumer.accept(barcode.url?.url)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        )
+
+        barcodeScanner = scanner
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,42 +81,10 @@ class QRCodeScannerFragment(private val consumer: Consumer<String>) : DialogFrag
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.camera_view, container, false)
-        previewView = view.findViewById(R.id.preview_view)
-
-        val barcodeScanner = BarcodeScanning.getClient(
-            BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build()
-        )
-        cameraController.setImageAnalysisAnalyzer(
-            cameraExecutor,
-            MlKitAnalyzer(
-                listOf(barcodeScanner),
-                COORDINATE_SYSTEM_VIEW_REFERENCED,
-                cameraExecutor
-            ) {
-                it.getValue(barcodeScanner)?.let { barcodes ->
-                    for (barcode in barcodes) {
-                        when (barcode.valueType) {
-                            Barcode.TYPE_URL -> {
-                                barcodeScanner.close()
-                                val handler = HandlerCompat.createAsync(Looper.getMainLooper())
-                                handler.post {
-                                    this.dismiss()
-                                    consumer.accept(barcode.url?.url)
-                                }
-                                break
-                            }
-                        }
-                    }
-                }
-            }
-        )
-        cameraController.imageCaptureMode = CAPTURE_MODE_MINIMIZE_LATENCY
         cameraController.bindToLifecycle(viewLifecycleOwner)
-        previewView.controller = cameraController
 
-        this.barcodeScanner = barcodeScanner
+        val previewView = view.findViewById<PreviewView>(R.id.preview_view)
+        previewView.controller = cameraController
 
         return view
     }

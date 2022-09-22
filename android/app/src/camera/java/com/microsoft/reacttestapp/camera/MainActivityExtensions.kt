@@ -21,7 +21,7 @@ fun MainActivity.canUseCamera(): Boolean {
 fun MainActivity.scanForQrCode() {
     when {
         canUseCamera() -> {
-            val fragment = QRCodeScannerFragment {
+            val fragment = QRCodeScannerFragment(mainThreadHandler) {
                 AlertDialog
                     .Builder(this)
                     .setTitle(R.string.is_this_the_right_url)
