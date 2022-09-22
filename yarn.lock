@@ -5590,7 +5590,7 @@ __metadata:
     react: 17.0.2
     react-native: ^0.68.2
     react-native-macos: ^0.68.3
-    react-native-safe-area-context: ^4.3.1
+    react-native-safe-area-context: ^4.3.4
     react-native-test-app: "workspace:."
     react-native-windows: ^0.68.8
   peerDependencies:
@@ -10786,13 +10786,13 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^4.3.1":
-  version: 4.3.3
-  resolution: "react-native-safe-area-context@npm:4.3.3"
+"react-native-safe-area-context@npm:^4.3.4":
+  version: 4.3.4
+  resolution: "react-native-safe-area-context@npm:4.3.4"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 18471ca740f88e8633eb8c6b403ae7e8b79e595cc0cac122228bb77dbbec6ac3eb5dc22caf84b6ab890da0893a6964092688129fc1a49e6a327e7dff5d1b15de
+  checksum: 89135b4028760e90e03a8c7116c82eafe4a35ca90f831daecb165188e865b4475213d4d9ed27e73c692829d0abca8522b1aa071a0f187064750406ab33735c41
   languageName: node
   linkType: hard
 
