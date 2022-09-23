@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.facebook.hermes.reactexecutor.HermesExecutor
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
@@ -156,7 +155,6 @@ class TestAppReactNativeHost(
 
     override fun getJavaScriptExecutorFactory(): JavaScriptExecutorFactory {
         SoLoader.init(application, false)
-        HermesExecutor.loadLibrary()
         return HermesExecutorFactory()
     }
 
