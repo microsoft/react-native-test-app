@@ -18,7 +18,9 @@ ext {
         ndkVersion = "24.0.8215888"
     }
 
-    androidPluginVersion = "7.2.2"
+    androidPluginVersion = getPackageVersionNumber("react-native", rootDir) < 7100
+        ? "7.2.2"
+        : "7.3.0"
     kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
         ? rootProject.properties["KOTLIN_VERSION"]
         : "1.7.10"
