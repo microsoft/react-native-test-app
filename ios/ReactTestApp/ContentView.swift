@@ -49,6 +49,21 @@ final class ContentViewController: UITableViewController {
         fatalError("\(#function) has not been implemented")
     }
 
+    // MARK: - UIResponder overrides
+
+    override public func motionEnded(_: UIEvent.EventSubtype, with event: UIEvent?) {
+        guard event?.subtype == .motionShake,
+              let bridge = reactInstance.bridge,
+              let settings = bridge.module(for: RCTDevSettings.self) as? RCTDevSettings,
+              settings.isShakeToShowDevMenuEnabled,
+              let devMenu = bridge.module(for: RCTDevMenu.self) as? RCTDevMenu
+        else {
+            return
+        }
+
+        devMenu.show()
+    }
+
     // MARK: - UIViewController overrides
 
     override public func viewDidLoad() {
