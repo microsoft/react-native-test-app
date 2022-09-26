@@ -2820,11 +2820,11 @@ __metadata:
   linkType: hard
 
 "@types/react-native@npm:^0.68.0":
-  version: 0.68.5
-  resolution: "@types/react-native@npm:0.68.5"
+  version: 0.68.6
+  resolution: "@types/react-native@npm:0.68.6"
   dependencies:
     "@types/react": ^17
-  checksum: b869ea587c4aa0d37c6f44c8d7c2672a40c6e53415bc027db7f0549b9ad382ae56285ecd023fb4f67bdc919f0d9bb76746c4b787b2641dcfa56a06669b231380
+  checksum: 15feb89dc09b2c5b1aabd600d7ac632560d2112224c3005948acbba858209a36da054e3c90641acf13e17135ce2e9cec00828a54585365954ac770c268e2b8dd
   languageName: node
   linkType: hard
 
