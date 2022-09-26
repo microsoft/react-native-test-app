@@ -21,7 +21,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.project-root }}
     - name: Build
-      uses: gradle/gradle-build-action@v2.3.0
+      uses: gradle/gradle-build-action@v2.3.1
       with:
         gradle-version: wrapper
         arguments: ${{ inputs.arguments }}
