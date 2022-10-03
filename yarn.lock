@@ -10787,12 +10787,12 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native-safe-area-context@npm:^4.3.4":
-  version: 4.3.4
-  resolution: "react-native-safe-area-context@npm:4.3.4"
+  version: 4.4.1
+  resolution: "react-native-safe-area-context@npm:4.4.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 89135b4028760e90e03a8c7116c82eafe4a35ca90f831daecb165188e865b4475213d4d9ed27e73c692829d0abca8522b1aa071a0f187064750406ab33735c41
+  checksum: ef7c41ea59a34b114c6481fb130e66ef85e8d5b88acb46279131367761ca9fbf22cd310fe613f49b6c9b56dbd83e044be640f0532eda1d3856bf708e96335a35
   languageName: node
   linkType: hard
 
