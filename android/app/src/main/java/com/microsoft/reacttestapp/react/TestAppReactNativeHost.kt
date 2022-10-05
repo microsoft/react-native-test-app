@@ -138,7 +138,12 @@ class TestAppReactNativeHost(
 
     fun reloadJSFromServer(activity: Activity?, bundleURL: String) {
         val uri = Uri.parse(bundleURL)
-        PackagerConnectionSettings(activity).debugServerHost = "${uri.host}:${uri.port}"
+        PackagerConnectionSettings(activity).debugServerHost =
+            if (uri.port > 0) {
+                "${uri.host}:${uri.port}"
+            } else {
+                uri.host
+            }
         reload(activity, BundleSource.Server)
     }
 
