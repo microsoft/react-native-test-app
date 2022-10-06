@@ -177,8 +177,8 @@
   },
   "release": {
     "branches": [
-      "releases/+([0-9]).x",
-      "trunk"
+      { "name": "trunk", "channel": "latest" },
+      { "name": "releases/1.x", "range": "1.x", "channel": "release-1.x" }
     ],
     "tagFormat": "${version}",
     "plugins": [
