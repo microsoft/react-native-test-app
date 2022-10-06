@@ -66,6 +66,7 @@ project.ext.react = [
     appName              : getAppName(),
     applicationId        : getApplicationId(),
     architectures        : getArchitectures(),
+    enableCamera         : !getSingleAppMode(),
     enableFabric         : isFabricEnabled(project),
     enableFlipper        : getFlipperVersion(rootDir),
     enableHermes         : true,
@@ -258,6 +259,12 @@ android {
     }
 
     sourceSets {
+        if (project.ext.react.enableCamera) {
+            main.java.srcDirs += "src/camera/java"
+        } else {
+            main.java.srcDirs += "src/no-camera/java"
+        }
+
         if (project.ext.react.enableFlipper) {
             debug.java.srcDirs += "src/flipper/java"
         }
@@ -349,6 +356,12 @@ dependencies {
     testImplementation libraries.mockitoInline
     androidTestImplementation libraries.androidJUnit
     androidTestImplementation libraries.androidEspressoCore
+
+    if (project.ext.react.enableCamera) {
+        implementation libraries.androidCamera
+        implementation libraries.androidCameraMlKitVision
+        implementation libraries.mlKitBarcodeScanning
+    }
 
     if (project.ext.react.enableFlipper) {
         def flipperVersion = project.ext.react.enableFlipper

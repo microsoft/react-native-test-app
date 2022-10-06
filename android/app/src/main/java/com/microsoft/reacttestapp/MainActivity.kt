@@ -3,15 +3,20 @@ package com.microsoft.reacttestapp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.TextView
+import androidx.core.os.HandlerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
+import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.google.android.material.appbar.MaterialToolbar
+import com.microsoft.reacttestapp.camera.canUseCamera
+import com.microsoft.reacttestapp.camera.scanForQrCode
 import com.microsoft.reacttestapp.component.ComponentActivity
 import com.microsoft.reacttestapp.component.ComponentBottomSheetDialogFragment
 import com.microsoft.reacttestapp.component.ComponentListAdapter
@@ -20,6 +25,15 @@ import com.microsoft.reacttestapp.manifest.Component
 import com.microsoft.reacttestapp.react.BundleSource
 
 class MainActivity : ReactActivity() {
+
+    companion object {
+        const val REQUEST_CODE_PERMISSIONS = 42
+    }
+
+    val mainThreadHandler by lazy {
+        HandlerCompat.createAsync(Looper.getMainLooper())
+    }
+
     private var didInitialNavigation = false
 
     private val newComponentViewModel = { component: Component ->
@@ -76,7 +90,7 @@ class MainActivity : ReactActivity() {
                 didInitialNavigation =
                     savedInstanceState?.getBoolean("didInitialNavigation", false) == true
 
-                if (components.count() > 0) {
+                if (components.isNotEmpty()) {
                     val index =
                         if (components.count() == 1) 0 else session.lastOpenedComponent(checksum)
                     index?.let {
@@ -97,7 +111,7 @@ class MainActivity : ReactActivity() {
                 setupRecyclerView(components, checksum)
             }
 
-            components.count() > 0 -> {
+            components.isNotEmpty() -> {
                 val slug = BuildConfig.ReactTestApp_singleApp
                 val component = components.find { it.slug == slug }
                     ?: throw IllegalArgumentException("No component with slug: $slug")
@@ -108,6 +122,20 @@ class MainActivity : ReactActivity() {
             }
 
             else -> throw IllegalArgumentException("At least one component must be declared")
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (canUseCamera()) {
+                scanForQrCode()
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
 
@@ -158,6 +186,7 @@ class MainActivity : ReactActivity() {
                     true
                 }
                 R.id.load_from_dev_server -> {
+                    PackagerConnectionSettings(this).debugServerHost = ""
                     reload(BundleSource.Server)
                     true
                 }
@@ -165,6 +194,10 @@ class MainActivity : ReactActivity() {
                     val enable = !menuItem.isChecked
                     menuItem.isChecked = enable
                     session.shouldRememberLastComponent = enable
+                    true
+                }
+                R.id.scan_qr_code -> {
+                    scanForQrCode()
                     true
                 }
                 R.id.show_dev_options -> {

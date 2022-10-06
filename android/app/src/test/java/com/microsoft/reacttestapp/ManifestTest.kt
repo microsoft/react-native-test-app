@@ -69,7 +69,7 @@ class ManifestTest {
 
                 val propsOne = componentOne.initialProperties
                 assertNotNull(propsOne)
-                assertEquals("value_1", propsOne?.get("prop_1").toString())
+                assertEquals("value_1", propsOne?.getString("prop_1"))
 
                 val componentTwo = components[1]
                 assertEquals("Example2", componentTwo.appKey)
@@ -77,7 +77,7 @@ class ManifestTest {
 
                 val propsTwo = componentTwo.initialProperties
                 assertNotNull(propsTwo)
-                assertEquals("value_2", propsTwo?.get("prop_2").toString())
+                assertEquals("value_2", propsTwo?.getString("prop_2"))
             }
         }
     }
@@ -99,7 +99,7 @@ class ManifestTest {
     private fun mockBundle(): MockedConstruction<Bundle> {
         val map = HashMap<String, Any>()
         return Mockito.mockConstruction(Bundle::class.java) { mock, _ ->
-            Mockito.doAnswer { map[it.getArgument(0)] }.`when`(mock).get(Mockito.anyString())
+            Mockito.doAnswer { map[it.getArgument(0)] }.`when`(mock).getString(Mockito.anyString())
 
             Mockito.doAnswer {
                 val key = it.getArgument<String>(0)

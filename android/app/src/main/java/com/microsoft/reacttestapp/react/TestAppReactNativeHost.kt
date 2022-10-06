@@ -3,6 +3,7 @@ package com.microsoft.reacttestapp.react
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
@@ -19,6 +20,7 @@ import com.facebook.react.devsupport.DevServerHelper
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
 import com.facebook.react.devsupport.interfaces.DevSupportManager
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
+import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
@@ -132,6 +134,17 @@ class TestAppReactNativeHost(
         }
 
         onBundleSourceChanged?.invoke(newSource)
+    }
+
+    fun reloadJSFromServer(activity: Activity?, bundleURL: String) {
+        val uri = Uri.parse(bundleURL)
+        PackagerConnectionSettings(activity).debugServerHost =
+            if (uri.port > 0) {
+                "${uri.host}:${uri.port}"
+            } else {
+                uri.host
+            }
+        reload(activity, BundleSource.Server)
     }
 
     override fun createReactInstanceManager(): ReactInstanceManager {

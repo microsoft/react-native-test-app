@@ -1,5 +1,6 @@
 package com.microsoft.reacttestapp
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import com.facebook.react.PackageList
@@ -16,6 +17,10 @@ class TestApp : Application(), ReactApplication {
     private lateinit var manifestProviderInternal: ManifestProvider
     private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
     private lateinit var reactNativeHostInternal: TestAppReactNativeHost
+
+    fun reloadJSFromServer(activity: Activity?, bundleURL: String) {
+        reactNativeHostInternal.reloadJSFromServer(activity, bundleURL)
+    }
 
     override fun onCreate() {
         super.onCreate()

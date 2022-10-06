@@ -92,6 +92,7 @@ class ComponentActivity : ReactActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (android.R.id.home == item.itemId) {
+            @Suppress("DEPRECATION")
             onBackPressed()
             return true
         }
