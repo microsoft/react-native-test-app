@@ -70,7 +70,7 @@ function useStyles() {
       groupItemContainer: {
         alignItems: "center",
         flexDirection: "row",
-        marginHorizontal: margin,
+        paddingHorizontal: margin,
       },
       groupItemLabel: {
         color: isDarkMode ? Colors.white : Colors.black,

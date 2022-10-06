@@ -35,6 +35,8 @@
     "/macos",
     "/schema.json",
     "/scripts/*.js",
+    "/scripts/apply-config-plugins.mjs",
+    "/scripts/config-plugins/**/*.mjs",
     "/windows/*.{js,props,sln}",
     "/windows/ReactTestApp"
   ],
@@ -42,8 +44,7 @@
   "bin": {
     "configure-test-app": "scripts/configure.js",
     "init-test-app": "scripts/init.js",
-    "install-windows-test-app": "windows/test-app.js",
-    "validate-app-json": "scripts/validate-manifest.js"
+    "install-windows-test-app": "windows/test-app.js"
   },
   "repository": {
     "type": "git",
@@ -53,7 +54,7 @@
     "clean": "git clean -dfqx --exclude=.yarn/cache",
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write $(git ls-files '*.js' '*.yml' 'test/**/*.json')",
-    "format:swift": "swiftformat --swiftversion 5.5 --ifdef no-indent ios macos",
+    "format:swift": "swiftformat --swiftversion 5.5 --ifdef no-indent --stripunusedargs closure-only ios macos",
     "generate:code": "node scripts/generate-manifest.mjs",
     "generate:schema": "node scripts/generate-schema.mjs",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | commitlint",
@@ -74,6 +75,7 @@
     "yargs": "^16.0.0"
   },
   "peerDependencies": {
+    "@expo/config-plugins": "^5.0.0",
     "@react-native-community/cli": ">=5.0",
     "@react-native-community/cli-platform-android": ">=5.0",
     "@react-native-community/cli-platform-ios": ">=5.0",
@@ -84,6 +86,9 @@
     "react-native-windows": "^0.0.0-0 || 0.64 - 0.70"
   },
   "peerDependenciesMeta": {
+    "@expo/config-plugins": {
+      "optional": true
+    },
     "@react-native-community/cli": {
       "optional": true
     },
@@ -107,6 +112,7 @@
     "@babel/core": "^7.0.0",
     "@commitlint/cli": "^17.0.0",
     "@commitlint/config-conventional": "^17.0.0",
+    "@expo/config-plugins": "^5.0.0",
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^7.0.3",
     "@react-native-community/cli-platform-android": "^7.0.1",
@@ -136,7 +142,8 @@
   },
   "packageManager": "yarn@3.1.1",
   "resolutions": {
-    "@commitlint/is-ignored/semver": "^7.3.5",
+    "@commitlint/is-ignored/semver": "^7.3.7",
+    "@expo/config-plugins/glob": "^7.1.6",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
     "core-js-compat/semver": "^7.3.5"
   },
