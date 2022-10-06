@@ -27,6 +27,7 @@ import com.microsoft.reacttestapp.R
 import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 import com.microsoft.reacttestapp.compat.ReactNativeHostCompat
 import com.microsoft.reacttestapp.fabric.FabricJSIModulePackage
+import java.util.Collections.synchronizedList
 import java.util.concurrent.CountDownLatch
 
 sealed class BundleSource {
@@ -62,6 +63,9 @@ class TestAppReactNativeHost(
         }
 
     var onBundleSourceChanged: ((newSource: BundleSource) -> Unit)? = null
+
+    private val reactInstanceEventListeners =
+        synchronizedList<ReactInstanceEventListener>(arrayListOf())
 
     fun init(beforeReactNativeInit: () -> Unit, afterReactNativeInit: () -> Unit) {
         if (BuildConfig.DEBUG && hasInstance()) {
@@ -106,6 +110,7 @@ class TestAppReactNativeHost(
     }
 
     fun addReactInstanceEventListener(listener: (ReactContext) -> Unit) {
+        reactInstanceEventListeners.add(listener)
         reactInstanceManager.addReactInstanceEventListener(listener)
     }
 
@@ -162,7 +167,16 @@ class TestAppReactNativeHost(
             .setJSIModulesPackage(jsiModulePackage)
             .build()
         ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_END)
+
         addCustomDevOptions(reactInstanceManager.devSupportManager)
+
+        synchronized(reactInstanceEventListeners) {
+            val i = reactInstanceEventListeners.iterator()
+            while (i.hasNext()) {
+                reactInstanceManager.addReactInstanceEventListener(i.next())
+            }
+        }
+
         return reactInstanceManager
     }
 
