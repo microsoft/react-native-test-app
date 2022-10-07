@@ -17,7 +17,7 @@ describe("test-app-util", () => {
     "",
     "    dependencies {",
     '        classpath("com.android.tools.build:gradle:${androidPluginVersion}")',
-    '        classpath("de.undercouch:gradle-download-task:5.1.2")',
+    '        classpath("de.undercouch:gradle-download-task:5.2.1")',
     "    }",
     "}",
     "",
