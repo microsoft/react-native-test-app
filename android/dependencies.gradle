@@ -34,7 +34,7 @@ ext {
      */
     libraries = [
         androidAppCompat            : "androidx.appcompat:appcompat:1.4.2",
-        androidCamera               : "androidx.camera:camera-camera2:1.2.0-beta01",
+        androidCamera               : "androidx.camera:camera-camera2:1.2.0-beta02",
         androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.2.0-beta01",
         androidCoreKotlinExtensions : "androidx.core:core-ktx:1.8.0",
         androidEspressoCore         : "androidx.test.espresso:espresso-core:3.4.0",
