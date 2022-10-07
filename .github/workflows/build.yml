@@ -123,8 +123,63 @@ jobs:
         run: |
           npm run set-react-version 0.66
     timeout-minutes: 60
+  changes:
+    name: "Changes"
+    if: ${{ github.event_name != 'schedule' }}
+    runs-on: ubuntu-latest
+    outputs:
+      android: ${{ steps.filter.outputs.android }}
+      ios: ${{ steps.filter.outputs.ios }}
+      macos: ${{ steps.filter.outputs.macos }}
+      windows: ${{ steps.filter.outputs.windows }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Detect changes
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            android:
+              - android/**/*
+              - common/**/*
+              - example/android/**/*
+              - scripts/*.js
+              - test-app.gradle
+              - yarn.lock
+            ios:
+              - ReactTestApp-DevSupport.podspec
+              - common/**/*
+              - example/ios/**/*
+              - ios/**/*
+              - scripts/*.js
+              - test_app.rb
+              - yarn.lock
+            macos:
+              - ReactTestApp-DevSupport.podspec
+              - common/**/*
+              - example/macos/**/*
+              - ios/*.rb
+              - ios/ReactTestApp/Manifest.swift
+              - ios/ReactTestApp/React+Compatibility.{h,m}
+              - ios/ReactTestApp/ReactInstance.swift
+              - ios/ReactTestApp/ReactTestApp-Bridging-Header.h
+              - ios/ReactTestApp/Session.swift
+              - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
+              - macos/**/*
+              - scripts/*.js
+              - test_app.rb
+              - yarn.lock
+            windows:
+              - common/**/*
+              - example/windows/**/*
+              - scripts/*.js
+              - windows/**/*
+              - yarn.lock
   ios:
     name: "iOS"
+    needs: [changes]
+    if: ${{ github.event_name == 'schedule' || needs.changes.outputs.ios == 'true' }}
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -172,11 +227,12 @@ jobs:
     timeout-minutes: 60
   ios-template:
     name: "iOS [template]"
+    needs: [changes]
+    if: ${{ github.event_name != 'schedule' && needs.changes.outputs.ios == 'true' }}
     strategy:
       matrix:
         template: [all, ios]
     runs-on: macos-latest
-    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -216,11 +272,12 @@ jobs:
     timeout-minutes: 60
   android:
     name: "Android"
+    needs: [changes]
+    if: ${{ github.event_name != 'schedule' && needs.changes.outputs.android == 'true' }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -255,12 +312,13 @@ jobs:
     timeout-minutes: 60
   android-template:
     name: "Android [template]"
+    needs: [changes]
+    if: ${{ github.event_name != 'schedule' && needs.changes.outputs.android == 'true' }}
     strategy:
       matrix:
         template: [all, android]
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -288,6 +346,8 @@ jobs:
     timeout-minutes: 60
   macos:
     name: "macOS"
+    needs: [changes]
+    if: ${{ github.event_name == 'schedule' || needs.changes.outputs.macos == 'true' }}
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -336,11 +396,12 @@ jobs:
     timeout-minutes: 60
   macos-template:
     name: "macOS [template]"
+    needs: [changes]
+    if: ${{ github.event_name != 'schedule' && needs.changes.outputs.macos == 'true' }}
     strategy:
       matrix:
         template: [all, macos]
     runs-on: macos-latest
-    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -376,6 +437,8 @@ jobs:
     timeout-minutes: 60
   windows:
     name: "Windows"
+    needs: [changes]
+    if: ${{ github.event_name == 'schedule' || needs.changes.outputs.windows == 'true' }}
     runs-on: windows-latest
     strategy:
       matrix:
@@ -429,8 +492,9 @@ jobs:
     timeout-minutes: 60
   windows-template:
     name: "Windows [template]"
+    needs: [changes]
+    if: ${{ github.event_name != 'schedule' && needs.changes.outputs.windows == 'true' }}
     runs-on: windows-latest
-    if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
         template: [all, windows]
@@ -473,8 +537,8 @@ jobs:
         windows,
         windows-template,
       ]
-    runs-on: ubuntu-latest
     if: ${{ github.event_name != 'schedule' }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -490,11 +554,11 @@ jobs:
           npx semantic-release
   autobot:
     name: "Autobot"
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
     if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
     steps:
       - name: Label
         uses: actions/labeler@v4.0.1
