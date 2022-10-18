@@ -125,7 +125,7 @@ jobs:
     timeout-minutes: 60
   ios:
     name: "iOS"
-    runs-on: macos-latest
+    runs-on: macos-12
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -175,7 +175,7 @@ jobs:
     strategy:
       matrix:
         template: [all, ios]
-    runs-on: macos-latest
+    runs-on: macos-12
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -288,7 +288,7 @@ jobs:
     timeout-minutes: 60
   macos:
     name: "macOS"
-    runs-on: macos-latest
+    runs-on: macos-12
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -339,7 +339,7 @@ jobs:
     strategy:
       matrix:
         template: [all, macos]
-    runs-on: macos-latest
+    runs-on: macos-12
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
