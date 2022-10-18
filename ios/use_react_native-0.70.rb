@@ -42,7 +42,7 @@ def include_react_native!(options)
   # If we're using react-native@main, we'll also need to prepare
   # `react-native-codegen`.
   codegen = File.join(project_root, react_native, 'packages', 'react-native-codegen')
-  Open3.popen3('yarn build', :chdir => codegen) if File.directory?(codegen)
+  Open3.popen3('node scripts/build.js', :chdir => codegen) if File.directory?(codegen)
 
   lambda { |installer|
     react_native_post_install(installer)
