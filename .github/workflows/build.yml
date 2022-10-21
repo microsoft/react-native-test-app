@@ -197,9 +197,9 @@ jobs:
         id: configure
         run: |
           if [[ ${{ matrix.template }} == ios ]]; then
-            echo '::set-output name=project-directory::.'
+            echo 'project-directory=.' >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=project-directory::ios'
+            echo 'project-directory=ios' >> $GITHUB_OUTPUT
           fi
       - name: Install Pods
         run: |
@@ -361,9 +361,9 @@ jobs:
         id: configure
         run: |
           if [[ ${{ matrix.template }} == macos ]]; then
-            echo '::set-output name=project-directory::.'
+            echo 'project-directory=.' >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=project-directory::macos'
+            echo 'project-directory=macos' >> $GITHUB_OUTPUT
           fi
       - name: Install Pods
         run: |

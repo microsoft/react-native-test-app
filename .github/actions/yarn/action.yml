@@ -9,7 +9,7 @@ runs:
   steps:
     - name: Generate cache key
       id: cache-key-generator
-      run: echo "::set-output name=cache-key::$(node scripts/shasum.mjs yarn.lock)"
+      run: echo "cache-key=$(node scripts/shasum.mjs yarn.lock)" >> $GITHUB_OUTPUT
       shell: bash
     - name: Cache /.yarn/cache
       uses: actions/cache@v3
