@@ -52,9 +52,9 @@ runs:
       id: cache-key-generator
       run: |
         if [[ -f example/${{ inputs.platform }}/Podfile.lock ]]; then
-          echo "::set-output name=cache-key::$(node scripts/shasum.mjs example/${{ inputs.platform }}/Podfile.lock)"
+          echo "cache-key=$(node scripts/shasum.mjs example/${{ inputs.platform }}/Podfile.lock)" >> $GITHUB_OUTPUT
         else
-          echo '::set-output name=cache-key::false'
+          echo 'cache-key=false' >> $GITHUB_OUTPUT
         fi
       shell: bash
     - name: Cache /.ccache

@@ -14,9 +14,9 @@ runs:
       id: build-root-directory-finder
       run: |
         if [[ -f android/build.gradle ]]; then
-          echo "::set-output name=build-root-directory::${{ inputs.project-root }}/android"
+          echo "build-root-directory=${{ inputs.project-root }}/android" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=build-root-directory::${{ inputs.project-root }}"
+          echo "build-root-directory=${{ inputs.project-root }}" >> $GITHUB_OUTPUT
         fi
       shell: bash
       working-directory: ${{ inputs.project-root }}
