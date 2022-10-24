@@ -10601,12 +10601,12 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"promise@npm:^8.0.3":
-  version: 8.1.0
-  resolution: "promise@npm:8.1.0"
+"promise@npm:^8.0.3, promise@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "promise@npm:8.2.0"
   dependencies:
     asap: ~2.0.6
-  checksum: 89b71a56154ed7d66a73236d8e8351a9c59adddba3929ecc845f75421ff37fc08ea0c67ad76cd5c0b0d81812c7d07a32bed27e7df5fcc960c6d68b0c1cd771f7
+  checksum: 45d65ffe4fbd9172ef848f790ac1366822e63f063a5ef42a14e75b577ffa3c37870a9d8472729d9d429d7c8a770428f9d13650b52aafaa361dcc69cf84873b20
   languageName: node
   linkType: hard
 
@@ -10781,6 +10781,18 @@ fsevents@^2.3.2:
     jscodeshift: ^0.13.1
     nullthrows: ^1.1.1
   checksum: 32ac7e77851df32fdafa6721c01e3bbfe4e42ca4b8e6d6e7e64b96200060629b3c0475bd7007de6db96b4c5edef1f6dd625fb7b77efa8f7fd1869c0777b064cc
+  languageName: node
+  linkType: hard
+
+"react-native-codegen@npm:^0.0.18":
+  version: 0.0.18
+  resolution: "react-native-codegen@npm:0.0.18"
+  dependencies:
+    "@babel/parser": ^7.14.0
+    flow-parser: ^0.121.0
+    jscodeshift: ^0.13.1
+    nullthrows: ^1.1.1
+  checksum: 55af378d630cae2323e56da9d6840e21a78ff811b39353b7c0935e8ca77d39f46dd1ef797b013c6a9a1c5ca7ceeff6203dadba9fca9b920dec810cdba1ca863c
   languageName: node
   linkType: hard
 
@@ -10972,8 +10984,8 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native@npm:^0.68.2":
-  version: 0.68.3
-  resolution: "react-native@npm:0.68.3"
+  version: 0.68.4
+  resolution: "react-native@npm:0.68.4"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^7.0.3
@@ -10995,9 +11007,9 @@ fsevents@^2.3.2:
     metro-source-map: 0.67.0
     nullthrows: ^1.1.1
     pretty-format: ^26.5.2
-    promise: ^8.0.3
+    promise: ^8.2.0
     react-devtools-core: ^4.23.0
-    react-native-codegen: ^0.0.17
+    react-native-codegen: ^0.0.18
     react-native-gradle-plugin: ^0.0.6
     react-refresh: ^0.4.0
     react-shallow-renderer: 16.14.1
@@ -11011,7 +11023,7 @@ fsevents@^2.3.2:
     react: 17.0.2
   bin:
     react-native: cli.js
-  checksum: 56d1e9dd948243082b36d3f7a239775565e0401dd55c6331b7f16ef026c86dbd857195ab6bfac8ae5011d4bc14c0fc259e0a5e1d712fb81b4f7db19e6d434e1a
+  checksum: f650dbbd55229013451c402033864e924be58134c186f64e5fb194d7bde9663ed0e7d20b0b1e87c4b5e9f7c684d18c18988563dfedaea413d1b5dd4f512e3f9c
   languageName: node
   linkType: hard
 
