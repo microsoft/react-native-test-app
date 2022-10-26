@@ -14,9 +14,10 @@ ext {
     // We need only set `ndkVersion` when building react-native from source.
     if (rootProject.hasProperty("ANDROID_NDK_VERSION")) {
         ndkVersion = rootProject.properties["ANDROID_NDK_VERSION"]
-    } else if (System.properties["os.arch"] == "aarch64" || reactNativeVersion >= 7100) {
-        // NDK r23c has been patched to support Apple M1 and will be default in
-        // 0.71: https://github.com/facebook/react-native/pull/35066
+    } else if (System.properties["os.arch"] == "aarch64" && reactNativeVersion < 7100) {
+        // NDK r23c has been patched to support Apple M1 and is default in AGP
+        // 7.3.0. Prior to 0.71, we still need to set `ndkVersion` because we'll
+        // be using AGP 7.2.2 (see `androidPluginVersion` below).
         ndkVersion = "23.2.8568313"
     }
 
