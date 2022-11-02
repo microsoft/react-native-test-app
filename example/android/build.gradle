@@ -11,7 +11,8 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:${androidPluginVersion}")
 
-        if (isNewArchitectureEnabled(project)) {
+        def isNightly = getPackageVersionNumber("react-native", rootDir) == 0
+        if (isNightly || isNewArchitectureEnabled(project)) {
             classpath("com.facebook.react:react-native-gradle-plugin")
             classpath("de.undercouch:gradle-download-task:5.2.1")
         }

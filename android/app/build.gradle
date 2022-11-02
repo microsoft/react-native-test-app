@@ -10,15 +10,19 @@ plugins {
     id("org.jetbrains.kotlin.kapt") version "${kotlinVersion}"
 }
 
+def enableNewArchitecture = isNewArchitectureEnabled(project)
+def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
 def codegenPath = file(findNodeModulesPath("react-native-codegen", reactNativePath))
 
-if (isNewArchitectureEnabled(project)) {
+if (reactNativeVersion == 0 || enableNewArchitecture) {
     apply(plugin: "com.facebook.react")
 
-    react {
-        codegenDir = codegenPath
-        reactNativeDir = reactNativePath
+    if (enableNewArchitecture) {
+        react {
+            codegenDir = codegenPath
+            reactNativeDir = reactNativePath
+        }
     }
 }
 
@@ -26,8 +30,6 @@ if (isNewArchitectureEnabled(project)) {
 // specific location. See
 // https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
 buildDir = "${rootDir}/${name}/build"
-
-def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 
 repositories {
     maven {
@@ -70,7 +72,7 @@ project.ext.react = [
     enableFabric         : isFabricEnabled(project),
     enableFlipper        : getFlipperVersion(rootDir),
     enableHermes         : true,
-    enableNewArchitecture: isNewArchitectureEnabled(project),
+    enableNewArchitecture: enableNewArchitecture,
 ]
 
 project.ext.signingConfigs = getSigningConfigs()
@@ -238,24 +240,31 @@ android {
             }
         }
 
-        def version = getPackageVersion("react-native", rootDir)
-        def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
+        // Nightlies are downloaded from Sonatype and cannot be found under
+        // `node_modules`. Instead, they can be found in Gradle's cache folder,
+        // `.gradle/caches/modules-2/files-2.1/com.facebook.react/react-native`.
+        // For now, we will simply disable this step as we only need to verify
+        // that things build.
+        if (reactNativeVersion > 0) {
+            def version = getPackageVersion("react-native", rootDir)
+            def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
 
-        def prepareDebugJSI = tasks.register("prepareDebugJSI", Copy) {
-            def debugAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-debug.aar")
-            from(zipTree(debugAar.exists() ? debugAar : allAar).matching({ it.include "**/libjsi.so" }))
-            into("${buildDir}/outputs/jniLibs/debug")
-        }
+            def prepareDebugJSI = tasks.register("prepareDebugJSI", Copy) {
+                def debugAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-debug.aar")
+                from(zipTree(debugAar.exists() ? debugAar : allAar).matching({ it.include "**/libjsi.so" }))
+                into("${buildDir}/outputs/jniLibs/debug")
+            }
 
-        def prepareReleaseJSI = tasks.register("prepareReleaseJSI", Copy) {
-            def releaseAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-release.aar")
-            from(zipTree(releaseAar.exists() ? releaseAar : allAar).matching({ it.include "**/libjsi.so" }))
-            into("${buildDir}/outputs/jniLibs/release")
-        }
+            def prepareReleaseJSI = tasks.register("prepareReleaseJSI", Copy) {
+                def releaseAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-release.aar")
+                from(zipTree(releaseAar.exists() ? releaseAar : allAar).matching({ it.include "**/libjsi.so" }))
+                into("${buildDir}/outputs/jniLibs/release")
+            }
 
-        afterEvaluate {
-            preDebugBuild.dependsOn(prepareDebugJSI)
-            preReleaseBuild.dependsOn(prepareReleaseJSI)
+            afterEvaluate {
+                preDebugBuild.dependsOn(prepareDebugJSI)
+                preReleaseBuild.dependsOn(prepareReleaseJSI)
+            }
         }
     }
 
@@ -341,8 +350,14 @@ dependencies {
     implementation project(":support")
 
     if (project.ext.react.enableHermes) {
-        // TODO: Remove this block when we drop support for 0.68.
-        if (reactNativeVersion > 0 && reactNativeVersion < 6900) {
+        if (reactNativeVersion == 0) {
+            implementation("com.facebook.react:hermes-engine")
+        } else if (reactNativeVersion >= 6900) {
+            implementation("com.facebook.react:hermes-engine:+") {
+                exclude(group: "com.facebook.fbjni")
+            }
+        } else {
+            // TODO: Remove this block when we drop support for 0.68.
             def hermesEngineDir =
                 findNodeModulesPath("hermes-engine", reactNativePath)
                     ?: findNodeModulesPath("hermesvm", reactNativePath)
@@ -353,10 +368,6 @@ dependencies {
             def hermesAndroidDir = "${hermesEngineDir}/android"
             releaseImplementation files("${hermesAndroidDir}/hermes-release.aar")
             debugImplementation files("${hermesAndroidDir}/hermes-debug.aar")
-        } else {
-            implementation("com.facebook.react:hermes-engine:+") {
-                exclude(group: "com.facebook.fbjni")
-            }
         }
     }
 
