@@ -38,7 +38,7 @@ repositories {
     google()
 
     // TODO: Remove this block when we drop support for 0.64.
-    if (reactNativeVersion < 6500) {
+    if (reactNativeVersion > 0 && reactNativeVersion < 6500) {
         // Artifacts for 0.65+ are published to Maven Central. If we're on an
         // older version, we still need to use JCenter.
         // noinspection JcenterRepositoryObsolete
@@ -86,7 +86,7 @@ android {
 
     // TODO: Remove this block when minSdkVersion >= 24. See
     // https://stackoverflow.com/q/53402639 for details.
-    if (reactNativeVersion < 6900) {
+    if (reactNativeVersion > 0 && reactNativeVersion < 6900) {
         compileOptions {
             sourceCompatibility(JavaVersion.VERSION_1_8)
             targetCompatibility(JavaVersion.VERSION_1_8)
@@ -95,7 +95,7 @@ android {
 
     kotlinOptions {
         allWarningsAsErrors = true
-        if (reactNativeVersion < 6900) {
+        if (reactNativeVersion > 0 && reactNativeVersion < 6900) {
             jvmTarget = JavaVersion.VERSION_1_8
         } else {
             jvmTarget = JavaVersion.VERSION_11
@@ -129,7 +129,7 @@ android {
 
         if (project.ext.react.enableNewArchitecture) {
             externalNativeBuild {
-                if (reactNativeVersion < 7000) {
+                if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
                     ndkBuild {
                         arguments "APP_PLATFORM=android-${project.ext.minSdkVersion}",
                                   "APP_STL=c++_shared",
@@ -172,7 +172,7 @@ android {
 
     if (project.ext.react.enableNewArchitecture) {
         externalNativeBuild {
-            if (reactNativeVersion < 7000) {
+            if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
                 ndkBuild {
                     path "${projectDir}/src/main/jni/Android.mk"
                 }
@@ -199,7 +199,7 @@ android {
             preDebugBuild.dependsOn(packageReactNdkDebugLibs)
             preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
 
-            if (reactNativeVersion < 7000) {
+            if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
                 // Due to a bug in AGP, we have to explicitly set a dependency
                 // between configureNdkBuild* tasks and the preBuild tasks. This can
                 // be removed once this issue is resolved:
@@ -214,7 +214,7 @@ android {
                         dependsOn("preReleaseBuild")
                     }
                 }
-            } else if (reactNativeVersion < 7100) {
+            } else if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
                 // Due to a bug in AGP, we have to explicitly set a dependency
                 // between configureCMakeDebug* tasks and the preBuild tasks. This can
                 // be removed once this issue is resolved:
@@ -320,7 +320,7 @@ android {
 
         // TODO: Remove this block when we drop support for 0.67.
         // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
-        if (reactNativeVersion < 6800) {
+        if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
             main.java.srcDirs += "src/reactinstanceeventlistener-pre-0.68/java"
         } else {
             main.java.srcDirs += "src/reactinstanceeventlistener-0.68/java"
@@ -342,7 +342,7 @@ dependencies {
 
     if (project.ext.react.enableHermes) {
         // TODO: Remove this block when we drop support for 0.68.
-        if (reactNativeVersion < 6900) {
+        if (reactNativeVersion > 0 && reactNativeVersion < 6900) {
             def hermesEngineDir =
                 findNodeModulesPath("hermes-engine", reactNativePath)
                     ?: findNodeModulesPath("hermesvm", reactNativePath)
@@ -370,7 +370,7 @@ dependencies {
     implementation libraries.kotlinStdlibJdk8
     implementation libraries.kotlinReflect
 
-    if (reactNativeVersion < 6800) {
+    if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
         // androidx.appcompat:appcompat:1.4.0+ breaks TextInput. This was fixed
         // in react-native 0.68. For more details, see
         // https://github.com/facebook/react-native/issues/31572.
