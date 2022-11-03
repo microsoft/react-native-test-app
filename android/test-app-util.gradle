@@ -223,14 +223,24 @@ ext.getVersionName = {
 }
 
 ext.isFabricEnabled = { project ->
-    return isNewArchitectureEnabled(project) ||
-        (isPropertySet(project, "USE_FABRIC", "1") &&
-            getPackageVersionNumber("react-native", project.rootDir) >= 6800)
+    if (isNewArchitectureEnabled(project)) {
+        return true
+    }
+
+    if (isPropertySet(project, "USE_FABRIC", "1")) {
+        def version = getPackageVersionNumber("react-native", project.rootDir)
+        return version == 0 || version >= 6800
+    }
+
+    return false
 }
 
 ext.isNewArchitectureEnabled = { project ->
-    return isPropertySet(project, "newArchEnabled", "true") &&
-        getPackageVersionNumber("react-native", project.rootDir) >= 6800
+    if (isPropertySet(project, "newArchEnabled", "true")) {
+        def version = getPackageVersionNumber("react-native", project.rootDir)
+        return version == 0 || version >= 6800
+    }
+    return false
 }
 
 ext.isPropertySet = { project, propertyName, value ->

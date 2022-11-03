@@ -162,7 +162,6 @@ class TestAppReactNativeHost(
             .addPackages(packages)
             .setUseDeveloperSupport(useDeveloperSupport)
             .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
-            .setUIImplementationProvider(uiImplementationProvider)
             .setRedBoxHandler(redBoxHandler)
             .setJSIModulesPackage(jsiModulePackage)
             .build()

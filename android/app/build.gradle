@@ -10,15 +10,19 @@ plugins {
     id("org.jetbrains.kotlin.kapt") version "${kotlinVersion}"
 }
 
+def enableNewArchitecture = isNewArchitectureEnabled(project)
+def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
 def codegenPath = file(findNodeModulesPath("react-native-codegen", reactNativePath))
 
-if (isNewArchitectureEnabled(project)) {
+if (reactNativeVersion == 0 || enableNewArchitecture) {
     apply(plugin: "com.facebook.react")
 
-    react {
-        codegenDir = codegenPath
-        reactNativeDir = reactNativePath
+    if (enableNewArchitecture) {
+        react {
+            codegenDir = codegenPath
+            reactNativeDir = reactNativePath
+        }
     }
 }
 
@@ -26,8 +30,6 @@ if (isNewArchitectureEnabled(project)) {
 // specific location. See
 // https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
 buildDir = "${rootDir}/${name}/build"
-
-def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 
 repositories {
     maven {
@@ -38,7 +40,7 @@ repositories {
     google()
 
     // TODO: Remove this block when we drop support for 0.64.
-    if (reactNativeVersion < 6500) {
+    if (reactNativeVersion > 0 && reactNativeVersion < 6500) {
         // Artifacts for 0.65+ are published to Maven Central. If we're on an
         // older version, we still need to use JCenter.
         // noinspection JcenterRepositoryObsolete
@@ -70,7 +72,7 @@ project.ext.react = [
     enableFabric         : isFabricEnabled(project),
     enableFlipper        : getFlipperVersion(rootDir),
     enableHermes         : true,
-    enableNewArchitecture: isNewArchitectureEnabled(project),
+    enableNewArchitecture: enableNewArchitecture,
 ]
 
 project.ext.signingConfigs = getSigningConfigs()
@@ -86,7 +88,7 @@ android {
 
     // TODO: Remove this block when minSdkVersion >= 24. See
     // https://stackoverflow.com/q/53402639 for details.
-    if (reactNativeVersion < 6900) {
+    if (reactNativeVersion > 0 && reactNativeVersion < 6900) {
         compileOptions {
             sourceCompatibility(JavaVersion.VERSION_1_8)
             targetCompatibility(JavaVersion.VERSION_1_8)
@@ -95,7 +97,7 @@ android {
 
     kotlinOptions {
         allWarningsAsErrors = true
-        if (reactNativeVersion < 6900) {
+        if (reactNativeVersion > 0 && reactNativeVersion < 6900) {
             jvmTarget = JavaVersion.VERSION_1_8
         } else {
             jvmTarget = JavaVersion.VERSION_11
@@ -129,7 +131,7 @@ android {
 
         if (project.ext.react.enableNewArchitecture) {
             externalNativeBuild {
-                if (reactNativeVersion < 7000) {
+                if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
                     ndkBuild {
                         arguments "APP_PLATFORM=android-${project.ext.minSdkVersion}",
                                   "APP_STL=c++_shared",
@@ -172,7 +174,7 @@ android {
 
     if (project.ext.react.enableNewArchitecture) {
         externalNativeBuild {
-            if (reactNativeVersion < 7000) {
+            if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
                 ndkBuild {
                     path "${projectDir}/src/main/jni/Android.mk"
                 }
@@ -199,7 +201,7 @@ android {
             preDebugBuild.dependsOn(packageReactNdkDebugLibs)
             preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
 
-            if (reactNativeVersion < 7000) {
+            if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
                 // Due to a bug in AGP, we have to explicitly set a dependency
                 // between configureNdkBuild* tasks and the preBuild tasks. This can
                 // be removed once this issue is resolved:
@@ -214,7 +216,7 @@ android {
                         dependsOn("preReleaseBuild")
                     }
                 }
-            } else if (reactNativeVersion < 7100) {
+            } else if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
                 // Due to a bug in AGP, we have to explicitly set a dependency
                 // between configureCMakeDebug* tasks and the preBuild tasks. This can
                 // be removed once this issue is resolved:
@@ -238,24 +240,31 @@ android {
             }
         }
 
-        def version = getPackageVersion("react-native", rootDir)
-        def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
+        // Nightlies are downloaded from Sonatype and cannot be found under
+        // `node_modules`. Instead, they can be found in Gradle's cache folder,
+        // `.gradle/caches/modules-2/files-2.1/com.facebook.react/react-native`.
+        // For now, we will simply disable this step as we only need to verify
+        // that things build.
+        if (reactNativeVersion > 0) {
+            def version = getPackageVersion("react-native", rootDir)
+            def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
 
-        def prepareDebugJSI = tasks.register("prepareDebugJSI", Copy) {
-            def debugAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-debug.aar")
-            from(zipTree(debugAar.exists() ? debugAar : allAar).matching({ it.include "**/libjsi.so" }))
-            into("${buildDir}/outputs/jniLibs/debug")
-        }
+            def prepareDebugJSI = tasks.register("prepareDebugJSI", Copy) {
+                def debugAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-debug.aar")
+                from(zipTree(debugAar.exists() ? debugAar : allAar).matching({ it.include "**/libjsi.so" }))
+                into("${buildDir}/outputs/jniLibs/debug")
+            }
 
-        def prepareReleaseJSI = tasks.register("prepareReleaseJSI", Copy) {
-            def releaseAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-release.aar")
-            from(zipTree(releaseAar.exists() ? releaseAar : allAar).matching({ it.include "**/libjsi.so" }))
-            into("${buildDir}/outputs/jniLibs/release")
-        }
+            def prepareReleaseJSI = tasks.register("prepareReleaseJSI", Copy) {
+                def releaseAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-release.aar")
+                from(zipTree(releaseAar.exists() ? releaseAar : allAar).matching({ it.include "**/libjsi.so" }))
+                into("${buildDir}/outputs/jniLibs/release")
+            }
 
-        afterEvaluate {
-            preDebugBuild.dependsOn(prepareDebugJSI)
-            preReleaseBuild.dependsOn(prepareReleaseJSI)
+            afterEvaluate {
+                preDebugBuild.dependsOn(prepareDebugJSI)
+                preReleaseBuild.dependsOn(prepareReleaseJSI)
+            }
         }
     }
 
@@ -320,7 +329,7 @@ android {
 
         // TODO: Remove this block when we drop support for 0.67.
         // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
-        if (reactNativeVersion < 6800) {
+        if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
             main.java.srcDirs += "src/reactinstanceeventlistener-pre-0.68/java"
         } else {
             main.java.srcDirs += "src/reactinstanceeventlistener-0.68/java"
@@ -341,8 +350,14 @@ dependencies {
     implementation project(":support")
 
     if (project.ext.react.enableHermes) {
-        // TODO: Remove this block when we drop support for 0.68.
-        if (reactNativeVersion < 6900) {
+        if (reactNativeVersion == 0) {
+            implementation("com.facebook.react:hermes-engine")
+        } else if (reactNativeVersion >= 6900) {
+            implementation("com.facebook.react:hermes-engine:+") {
+                exclude(group: "com.facebook.fbjni")
+            }
+        } else {
+            // TODO: Remove this block when we drop support for 0.68.
             def hermesEngineDir =
                 findNodeModulesPath("hermes-engine", reactNativePath)
                     ?: findNodeModulesPath("hermesvm", reactNativePath)
@@ -353,10 +368,6 @@ dependencies {
             def hermesAndroidDir = "${hermesEngineDir}/android"
             releaseImplementation files("${hermesAndroidDir}/hermes-release.aar")
             debugImplementation files("${hermesAndroidDir}/hermes-debug.aar")
-        } else {
-            implementation("com.facebook.react:hermes-engine:+") {
-                exclude(group: "com.facebook.fbjni")
-            }
         }
     }
 
@@ -370,7 +381,7 @@ dependencies {
     implementation libraries.kotlinStdlibJdk8
     implementation libraries.kotlinReflect
 
-    if (reactNativeVersion < 6800) {
+    if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
         // androidx.appcompat:appcompat:1.4.0+ breaks TextInput. This was fixed
         // in react-native 0.68. For more details, see
         // https://github.com/facebook/react-native/issues/31572.
