@@ -18,7 +18,10 @@ ext {
         // NDK r23c has been patched to support Apple M1 and is default in AGP
         // 7.3.0. Prior to 0.71, we still need to set `ndkVersion` because we'll
         // be using AGP 7.2.2 (see `androidPluginVersion` below).
-        ndkVersion = "23.2.8568313"
+        // Note that even though newer 23.x versions exist, we'll stick to AGP's
+        // default. See also
+        // https://developer.android.com/studio/releases/gradle-plugin#compatibility-7-3-0
+        ndkVersion = "23.1.7779620"
     }
 
     androidPluginVersion = reactNativeVersion < 7100
