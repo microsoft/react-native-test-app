@@ -46,7 +46,7 @@ ext {
         kotlinReflect               : "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}",
         kotlinStdlibJdk7            : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
         kotlinStdlibJdk8            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
-        materialComponents          : "com.google.android.material:material:1.6.1",
+        materialComponents          : "com.google.android.material:material:1.7.0",
         mlKitBarcodeScanning        : "com.google.mlkit:barcode-scanning:17.0.2",
         mockitoInline               : "org.mockito:mockito-inline:4.8.1",
         moshiKotlin                 : "com.squareup.moshi:moshi-kotlin:1.14.0",
