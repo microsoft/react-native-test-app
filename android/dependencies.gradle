@@ -10,11 +10,12 @@ ext {
     targetSdkVersion = 29
 
     def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+    def useAndroidPlugin_7_2 = reactNativeVersion > 0 && reactNativeVersion < 7100
 
     // We need only set `ndkVersion` when building react-native from source.
     if (rootProject.hasProperty("ANDROID_NDK_VERSION")) {
         ndkVersion = rootProject.properties["ANDROID_NDK_VERSION"]
-    } else if (System.properties["os.arch"] == "aarch64" && reactNativeVersion < 7100) {
+    } else if (System.properties["os.arch"] == "aarch64" && useAndroidPlugin_7_2) {
         // NDK r23c has been patched to support Apple M1 and is default in AGP
         // 7.3.0. Prior to 0.71, we still need to set `ndkVersion` because we'll
         // be using AGP 7.2.2 (see `androidPluginVersion` below).
@@ -24,7 +25,7 @@ ext {
         ndkVersion = "23.1.7779620"
     }
 
-    androidPluginVersion = reactNativeVersion < 7100
+    androidPluginVersion = useAndroidPlugin_7_2
         ? "7.2.2"
         : "7.3.0"
     kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
