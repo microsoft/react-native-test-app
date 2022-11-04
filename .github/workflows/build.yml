@@ -12,7 +12,10 @@ env:
 jobs:
   ios:
     name: "iOS"
-    runs-on: macos-12
+    strategy:
+      matrix:
+        platform: [macos-11, macos-12]
+    runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
