@@ -6,7 +6,7 @@ use_flipper! false unless ENV['ENABLE_FLIPPER']
 
 options = {
   :fabric_enabled => false,
-  :hermes_enabled => false,
+  :hermes_enabled => true,
   :turbomodule_enabled => false,
 }
 

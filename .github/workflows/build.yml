@@ -135,7 +135,6 @@ jobs:
           platform: ios
           variant: example
       - name: Set up react-native@nightly
-        if: ${{ github.event_name == 'schedule' }}
         run: |
           # `nightly` currently doesn't build due to use of version numbers that
           # are incompatible with CocoaPods. See
@@ -147,7 +146,7 @@ jobs:
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
         with:
-          immutable: ${{ github.event_name != 'schedule' }}
+          immutable: false
       - name: Bundle JavaScript
         run: |
           npm run build:ios || npm run build:ios
