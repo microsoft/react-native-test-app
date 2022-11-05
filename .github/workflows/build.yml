@@ -5,7 +5,7 @@ on:
       - trunk
   pull_request:
   schedule:
-    # nightly builds against react-native@nightly at 5:00
+    # Nightly builds against react-native@nightly at 5:00
     - cron: 0 5 * * *
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -220,7 +220,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -231,6 +230,7 @@ jobs:
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
+          git apply scripts/android-nightly.patch
           npm run set-react-version -- nightly
         shell: bash
       - name: Install npm dependencies
@@ -242,6 +242,9 @@ jobs:
           npx jest
         working-directory: example
       - name: Bundle JavaScript
+        # Metro on nightlies currently fails with "SHA-1 for file index.js is
+        # not computed" so we'll skip this step for now.
+        if: ${{ github.event_name != 'schedule' || matrix.os == 'ubuntu-latest' }}
         run: |
           # `npm run` fails with "Workspaces not supported for global packages"
           # on Windows if we don't use `yarn` here. ¯\_(ツ)_/¯
@@ -249,6 +252,8 @@ jobs:
         shell: bash
         working-directory: example
       - name: Build
+        # Nightlies currently fail on Windows because of wrong path separators.
+        if: ${{ github.event_name != 'schedule' || matrix.os == 'ubuntu-latest' }}
         uses: ./.github/actions/gradle
         with:
           project-root: example

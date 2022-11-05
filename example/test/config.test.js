@@ -178,10 +178,9 @@ describe("react-native config", () => {
         project: expect.objectContaining({
           ios: {
             sourceDir: expect.stringContaining(sourceDir),
-            xcodeProject: {
-              name: "Example.xcworkspace",
-              isWorkspace: true,
-            },
+            xcodeProject: fs.existsSync("ios/Pods")
+              ? { name: "Example.xcworkspace", isWorkspace: true }
+              : null,
           },
         }),
       });
