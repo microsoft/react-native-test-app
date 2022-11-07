@@ -36,16 +36,7 @@ repositories {
         url = uri("${reactNativePath}/android")
     }
 
-    if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
-        mavenCentral()
-    } else {
-        mavenCentral {
-            content {
-                excludeGroup "com.facebook.react"
-            }
-        }
-    }
-
+    mavenCentral()
     google()
 
     // TODO: Remove this block when we drop support for 0.64.
@@ -385,7 +376,8 @@ dependencies {
     } else if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
         implementation("com.facebook.react:react-native")
     } else {
-        implementation("com.facebook.react:react-native:+")
+        def version = getPackageVersion("react-native", rootDir)
+        implementation("com.facebook.react:react-native:${version}")
     }
 
     implementation libraries.kotlinStdlibJdk7
@@ -443,6 +435,16 @@ if (project.ext.react.enableNewArchitecture) {
             substitute(module("com.facebook.react:hermes-engine"))
                 .using(project(":ReactAndroid:hermes-engine"))
                 .because("On New Architecture, we are building Hermes from source")
+        }
+    }
+} else if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
+    configurations.all {
+        resolutionStrategy {
+            // Force version here otherwise Gradle will pick up a newer version:
+            // https://github.com/facebook/react-native/issues/35210
+            def version = getPackageVersion("react-native", rootDir)
+            force("com.facebook.react:react-native:${version}")
+            force("com.facebook.react:hermes-engine:${version}")
         }
     }
 }

@@ -25,18 +25,7 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("${rootDir}/../node_modules/react-native/android")
         }
-
-        def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
-        if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
-            mavenCentral()
-        } else {
-            mavenCentral {
-                content {
-                    excludeGroup "com.facebook.react"
-                }
-            }
-        }
-
+        mavenCentral()
         google()
     }
 }

@@ -1,0 +1,28 @@
+buildscript {
+    def buildscriptDir = buildscript.sourceFile.getParent()
+    apply from: "$buildscriptDir/dependencies.gradle"
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidPluginVersion"
+        classpath 'de.undercouch:gradle-download-task:5.2.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    configurations.all {
+        resolutionStrategy {
+            dependencySubstitution {
+                substitute module("com.facebook.react:react-native:+") with project(":ReactAndroid")
+            }
+        }
+    }
+}
