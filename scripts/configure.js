@@ -487,7 +487,7 @@ const getConfig = (() => {
               "",
               "        if (isNewArchitectureEnabled(project)) {",
               '            classpath("com.facebook.react:react-native-gradle-plugin")',
-              '            classpath("de.undercouch:gradle-download-task:5.2.1")',
+              '            classpath("de.undercouch:gradle-download-task:5.3.0")',
               "        }",
               "    }",
               "}",

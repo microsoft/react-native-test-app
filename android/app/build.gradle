@@ -13,14 +13,13 @@ plugins {
 def enableNewArchitecture = isNewArchitectureEnabled(project)
 def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
-def codegenPath = file(findNodeModulesPath("react-native-codegen", reactNativePath))
 
 if (reactNativeVersion == 0 || enableNewArchitecture) {
     apply(plugin: "com.facebook.react")
 
     if (enableNewArchitecture) {
         react {
-            codegenDir = codegenPath
+            codegenDir = file(findNodeModulesPath("react-native-codegen", reactNativePath))
             reactNativeDir = reactNativePath
         }
     }
@@ -245,7 +244,7 @@ android {
         // `.gradle/caches/modules-2/files-2.1/com.facebook.react/react-native`.
         // For now, we will simply disable this step as we only need to verify
         // that things build.
-        if (reactNativeVersion > 0) {
+        if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
             def version = getPackageVersion("react-native", rootDir)
             def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
 
@@ -373,8 +372,11 @@ dependencies {
 
     if (project.ext.react.enableNewArchitecture) {
         implementation project(":ReactAndroid")
+    } else if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
+        implementation("com.facebook.react:react-native")
     } else {
-        implementation "com.facebook.react:react-native:+"
+        def version = getPackageVersion("react-native", rootDir)
+        implementation("com.facebook.react:react-native:${version}")
     }
 
     implementation libraries.kotlinStdlibJdk7
@@ -432,6 +434,16 @@ if (project.ext.react.enableNewArchitecture) {
             substitute(module("com.facebook.react:hermes-engine"))
                 .using(project(":ReactAndroid:hermes-engine"))
                 .because("On New Architecture, we are building Hermes from source")
+        }
+    }
+} else if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
+    configurations.all {
+        resolutionStrategy {
+            // Force version here otherwise Gradle will pick up a newer version:
+            // https://github.com/facebook/react-native/issues/35210
+            def version = getPackageVersion("react-native", rootDir)
+            force("com.facebook.react:react-native:${version}")
+            force("com.facebook.react:hermes-engine:${version}")
         }
     }
 }
