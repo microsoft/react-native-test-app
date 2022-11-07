@@ -13,14 +13,13 @@ plugins {
 def enableNewArchitecture = isNewArchitectureEnabled(project)
 def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
-def codegenPath = file(findNodeModulesPath("react-native-codegen", reactNativePath))
 
 if (reactNativeVersion == 0 || enableNewArchitecture) {
     apply(plugin: "com.facebook.react")
 
     if (enableNewArchitecture) {
         react {
-            codegenDir = codegenPath
+            codegenDir = file(findNodeModulesPath("react-native-codegen", reactNativePath))
             reactNativeDir = reactNativePath
         }
     }
