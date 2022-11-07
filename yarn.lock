@@ -2847,12 +2847,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prompts@npm:~2.0.0":
-  version: 2.0.14
-  resolution: "@types/prompts@npm:2.0.14"
+"@types/prompts@npm:~2.4.0":
+  version: 2.4.1
+  resolution: "@types/prompts@npm:2.4.1"
   dependencies:
     "@types/node": "*"
-  checksum: e20a92a3fc38646d850ac3c7c03cab582a3b4f12224605a209ef7025d2fbe574656276ab9e43ea01b504f7e91d21a6da0119d1e1eeacf939895ec2ad8d9c6b5d
+  checksum: 05cc828c35585eabf53b8ed8626b173d46a9f61f07cb4b31ba7705d4982e63bdc3a68fe29e0e0d5c4eddd31c6114b2dcbc4662826be0468e2aa7c0ba0573d797
   languageName: node
   linkType: hard
 
@@ -10876,7 +10876,7 @@ fsevents@^2.3.2:
     "@types/jest": ^27.0.0
     "@types/mustache": ^4.0.0
     "@types/node": ^16.0.0
-    "@types/prompts": ~2.0.0
+    "@types/prompts": ~2.4.0
     "@types/semver": ^7.3.6
     "@types/uuid": ^8.3.1
     ajv: ^8.0.0
