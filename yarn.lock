@@ -10977,8 +10977,8 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native@npm:^0.68.2":
-  version: 0.68.4
-  resolution: "react-native@npm:0.68.4"
+  version: 0.68.5
+  resolution: "react-native@npm:0.68.5"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^7.0.3
@@ -11016,7 +11016,7 @@ fsevents@^2.3.2:
     react: 17.0.2
   bin:
     react-native: cli.js
-  checksum: f650dbbd55229013451c402033864e924be58134c186f64e5fb194d7bde9663ed0e7d20b0b1e87c4b5e9f7c684d18c18988563dfedaea413d1b5dd4f512e3f9c
+  checksum: 487b520f5d8baa9094b4e36f4a44221bc48ec51ab8db10523f0b8baffd30a4fdca85381d1c2b8797590db204561f27ec2084fe0835c6084b3a0ef14e85d35fb0
   languageName: node
   linkType: hard
 
