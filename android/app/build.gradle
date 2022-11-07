@@ -36,7 +36,16 @@ repositories {
         url = uri("${reactNativePath}/android")
     }
 
-    mavenCentral()
+    if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
+        mavenCentral()
+    } else {
+        mavenCentral {
+            content {
+                excludeGroup "com.facebook.react"
+            }
+        }
+    }
+
     google()
 
     // TODO: Remove this block when we drop support for 0.64.
@@ -245,7 +254,7 @@ android {
         // `.gradle/caches/modules-2/files-2.1/com.facebook.react/react-native`.
         // For now, we will simply disable this step as we only need to verify
         // that things build.
-        if (reactNativeVersion > 0) {
+        if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
             def version = getPackageVersion("react-native", rootDir)
             def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
 
@@ -373,8 +382,10 @@ dependencies {
 
     if (project.ext.react.enableNewArchitecture) {
         implementation project(":ReactAndroid")
+    } else if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
+        implementation("com.facebook.react:react-native")
     } else {
-        implementation "com.facebook.react:react-native:+"
+        implementation("com.facebook.react:react-native:+")
     }
 
     implementation libraries.kotlinStdlibJdk7
