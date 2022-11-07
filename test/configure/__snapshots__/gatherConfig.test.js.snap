@@ -82,9 +82,10 @@ Object {
     dependencies {
         classpath(\\"com.android.tools.build:gradle:\${androidPluginVersion}\\")
 
-        if (isNewArchitectureEnabled(project)) {
+        def isNightly = getPackageVersionNumber(\\"react-native\\", rootDir) == 0
+        if (isNightly || isNewArchitectureEnabled(project)) {
             classpath(\\"com.facebook.react:react-native-gradle-plugin\\")
-            classpath(\\"de.undercouch:gradle-download-task:5.2.1\\")
+            classpath(\\"de.undercouch:gradle-download-task:5.3.0\\")
         }
     }
 }
@@ -95,7 +96,18 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url(\\"\${rootDir}/../react-native/android\\")
         }
-        mavenCentral()
+
+        def reactNativeVersion = getPackageVersionNumber(\\"react-native\\", rootDir)
+        if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
+            mavenCentral()
+        } else {
+            mavenCentral {
+                content {
+                    excludeGroup \\"com.facebook.react\\"
+                }
+            }
+        }
+
         google()
     }
 }
@@ -384,9 +396,10 @@ Object {
     dependencies {
         classpath(\\"com.android.tools.build:gradle:\${androidPluginVersion}\\")
 
-        if (isNewArchitectureEnabled(project)) {
+        def isNightly = getPackageVersionNumber(\\"react-native\\", rootDir) == 0
+        if (isNightly || isNewArchitectureEnabled(project)) {
             classpath(\\"com.facebook.react:react-native-gradle-plugin\\")
-            classpath(\\"de.undercouch:gradle-download-task:5.2.1\\")
+            classpath(\\"de.undercouch:gradle-download-task:5.3.0\\")
         }
     }
 }
@@ -397,7 +410,18 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url(\\"\${rootDir}/../react-native/android\\")
         }
-        mavenCentral()
+
+        def reactNativeVersion = getPackageVersionNumber(\\"react-native\\", rootDir)
+        if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
+            mavenCentral()
+        } else {
+            mavenCentral {
+                content {
+                    excludeGroup \\"com.facebook.react\\"
+                }
+            }
+        }
+
         google()
     }
 }
@@ -535,9 +559,10 @@ Object {
     dependencies {
         classpath(\\"com.android.tools.build:gradle:\${androidPluginVersion}\\")
 
-        if (isNewArchitectureEnabled(project)) {
+        def isNightly = getPackageVersionNumber(\\"react-native\\", rootDir) == 0
+        if (isNightly || isNewArchitectureEnabled(project)) {
             classpath(\\"com.facebook.react:react-native-gradle-plugin\\")
-            classpath(\\"de.undercouch:gradle-download-task:5.2.1\\")
+            classpath(\\"de.undercouch:gradle-download-task:5.3.0\\")
         }
     }
 }
@@ -548,7 +573,18 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url(\\"\${rootDir}/../react-native/android\\")
         }
-        mavenCentral()
+
+        def reactNativeVersion = getPackageVersionNumber(\\"react-native\\", rootDir)
+        if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
+            mavenCentral()
+        } else {
+            mavenCentral {
+                content {
+                    excludeGroup \\"com.facebook.react\\"
+                }
+            }
+        }
+
         google()
     }
 }
