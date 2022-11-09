@@ -268,6 +268,11 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   end
 
   # Note the location of Node so we can use it later in script phases
+  File.open(File.join(project_root, '.xcode.env'), 'w') do |f|
+    node_bin = `which node`
+    node_bin.strip!
+    f.write("export NODE_BINARY=#{node_bin}\n")
+  end
   File.open(File.join(destination, '.env'), 'w') do |f|
     node_bin = `dirname $(which node)`
     node_bin.strip!
