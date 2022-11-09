@@ -1,9 +1,13 @@
 #ifndef REACTTESTAPP_JNI_COMPONENTSREGISTRY_H_
 #define REACTTESTAPP_JNI_COMPONENTSREGISTRY_H_
 
-#include <ComponentFactory.h>
-
 #include <fbjni/fbjni.h>
+
+#if __has_include(<react/fabric/ComponentFactory.h>)  // >= 0.71
+#include <react/fabric/ComponentFactory.h>
+#else  // < 0.71
+#include <ComponentFactory.h>
+#endif
 
 namespace ReactTestApp
 {

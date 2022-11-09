@@ -10,17 +10,22 @@ plugins {
     id("org.jetbrains.kotlin.kapt") version "${kotlinVersion}"
 }
 
-def enableNewArchitecture = isNewArchitectureEnabled(project)
-def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
 
-if (reactNativeVersion == 0 || enableNewArchitecture) {
+if (autodetectReactNativeVersion || enableNewArchitecture) {
     apply(plugin: "com.facebook.react")
 
-    if (enableNewArchitecture) {
-        react {
-            codegenDir = file(findNodeModulesPath("react-native-codegen", reactNativePath))
-            reactNativeDir = reactNativePath
+    react {
+        reactNativeDir = reactNativePath
+        codegenDir = file(findNodeModulesPath("react-native-codegen", reactNativePath))
+    }
+
+    // We don't want the React plugin to bundle.
+    tasks.whenTaskAdded { task ->
+        // The task name can be found in `react-native-gradle-plugin`:
+        // https://github.com/facebook/react-native/blob/0.71-stable/packages/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/TaskConfiguration.kt#L54
+        if (task.name.startsWith("createBundle") && task.name.endsWith("JsAndAssets")) {
+            task.enabled = false
         }
     }
 }
@@ -67,6 +72,7 @@ project.ext.react = [
     appName              : getAppName(),
     applicationId        : getApplicationId(),
     architectures        : getArchitectures(),
+    bundleInRelease      : false,
     enableCamera         : !getSingleAppMode(),
     enableFabric         : isFabricEnabled(project),
     enableFlipper        : getFlipperVersion(rootDir),
@@ -83,6 +89,12 @@ android {
 
     if (project.hasProperty("ndkVersion")) {
         ndkVersion project.ext.ndkVersion
+    }
+
+    if (usePrefabs) {
+        buildFeatures {
+            prefab true
+        }
     }
 
     // TODO: Remove this block when minSdkVersion >= 24. See
@@ -128,7 +140,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        if (project.ext.react.enableNewArchitecture) {
+        if (enableNewArchitecture) {
             externalNativeBuild {
                 if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
                     ndkBuild {
@@ -171,7 +183,7 @@ android {
         }
     }
 
-    if (project.ext.react.enableNewArchitecture) {
+    if (enableNewArchitecture) {
         externalNativeBuild {
             if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
                 ndkBuild {
@@ -184,50 +196,52 @@ android {
             }
         }
 
-        def reactAndroidProjectDir = project(":ReactAndroid").projectDir
-        def packageReactNdkDebugLibs = tasks.register("packageReactNdkDebugLibs", Copy) {
-            dependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck")
-            from("${reactAndroidProjectDir}/src/main/jni/prebuilt/lib")
-            into("${buildDir}/react-ndk/exported")
-        }
-        def packageReactNdkReleaseLibs = tasks.register("packageReactNdkReleaseLibs", Copy) {
-            dependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck")
-            from("${reactAndroidProjectDir}/src/main/jni/prebuilt/lib")
-            into("${buildDir}/react-ndk/exported")
-        }
+        if (!usePrefabs) {
+            def reactAndroidProjectDir = project(":ReactAndroid").projectDir
+            def packageReactNdkDebugLibs = tasks.register("packageReactNdkDebugLibs", Copy) {
+                dependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck")
+                from("${reactAndroidProjectDir}/src/main/jni/prebuilt/lib")
+                into("${buildDir}/react-ndk/exported")
+            }
+            def packageReactNdkReleaseLibs = tasks.register("packageReactNdkReleaseLibs", Copy) {
+                dependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck")
+                from("${reactAndroidProjectDir}/src/main/jni/prebuilt/lib")
+                into("${buildDir}/react-ndk/exported")
+            }
 
-        afterEvaluate {
-            preDebugBuild.dependsOn(packageReactNdkDebugLibs)
-            preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
+            afterEvaluate {
+                preDebugBuild.dependsOn(packageReactNdkDebugLibs)
+                preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
 
-            if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
-                // Due to a bug in AGP, we have to explicitly set a dependency
-                // between configureNdkBuild* tasks and the preBuild tasks. This can
-                // be removed once this issue is resolved:
-                // https://issuetracker.google.com/issues/207403732
-                configureNdkBuildRelease.dependsOn(preReleaseBuild)
-                configureNdkBuildDebug.dependsOn(preDebugBuild)
-                project.ext.react.architectures.each { architecture ->
-                    tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
-                        dependsOn("preDebugBuild")
+                if (reactNativeVersion < 7000) {
+                    // Due to a bug in AGP, we have to explicitly set a dependency
+                    // between configureNdkBuild* tasks and the preBuild tasks. This can
+                    // be removed once this issue is resolved:
+                    // https://issuetracker.google.com/issues/207403732
+                    configureNdkBuildRelease.dependsOn(preReleaseBuild)
+                    configureNdkBuildDebug.dependsOn(preDebugBuild)
+                    project.ext.react.architectures.each { architecture ->
+                        tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
+                            dependsOn("preDebugBuild")
+                        }
+                        tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
+                            dependsOn("preReleaseBuild")
+                        }
                     }
-                    tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
-                        dependsOn("preReleaseBuild")
-                    }
-                }
-            } else if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
-                // Due to a bug in AGP, we have to explicitly set a dependency
-                // between configureCMakeDebug* tasks and the preBuild tasks. This can
-                // be removed once this issue is resolved:
-                // https://issuetracker.google.com/issues/207403732
-                configureCMakeDebug.dependsOn(preDebugBuild)
-                configureCMakeRelWithDebInfo.dependsOn(preReleaseBuild)
-                project.ext.react.architectures.each { architecture ->
-                    tasks.findByName("configureCMakeDebug[${architecture}]")?.configure {
-                        dependsOn("preDebugBuild")
-                    }
-                    tasks.findByName("configureCMakeRelWithDebInfo[${architecture}]")?.configure {
-                        dependsOn("preReleaseBuild")
+                } else {
+                    // Due to a bug in AGP, we have to explicitly set a dependency
+                    // between configureCMakeDebug* tasks and the preBuild tasks. This can
+                    // be removed once this issue is resolved:
+                    // https://issuetracker.google.com/issues/207403732
+                    configureCMakeDebug.dependsOn(preDebugBuild)
+                    configureCMakeRelWithDebInfo.dependsOn(preReleaseBuild)
+                    project.ext.react.architectures.each { architecture ->
+                        tasks.findByName("configureCMakeDebug[${architecture}]")?.configure {
+                            dependsOn("preDebugBuild")
+                        }
+                        tasks.findByName("configureCMakeRelWithDebInfo[${architecture}]")?.configure {
+                            dependsOn("preReleaseBuild")
+                        }
                     }
                 }
             }
@@ -239,12 +253,7 @@ android {
             }
         }
 
-        // Nightlies are downloaded from Sonatype and cannot be found under
-        // `node_modules`. Instead, they can be found in Gradle's cache folder,
-        // `.gradle/caches/modules-2/files-2.1/com.facebook.react/react-native`.
-        // For now, we will simply disable this step as we only need to verify
-        // that things build.
-        if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
+        if (!usePrefabs) {
             def version = getPackageVersion("react-native", rootDir)
             def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
 
@@ -320,7 +329,7 @@ android {
         }
 
         // TODO: Remove this block when we drop support for 0.65.
-        if (project.ext.react.enableNewArchitecture) {
+        if (enableNewArchitecture) {
             main.java.srcDirs += "src/turbomodule/java"
         } else {
             main.java.srcDirs += "src/no-turbomodule/java"
@@ -349,8 +358,8 @@ dependencies {
     implementation project(":support")
 
     if (project.ext.react.enableHermes) {
-        if (reactNativeVersion == 0) {
-            implementation("com.facebook.react:hermes-engine")
+        if (autodetectReactNativeVersion) {
+            implementation("com.facebook.react:hermes-android")
         } else if (reactNativeVersion >= 6900) {
             implementation("com.facebook.react:hermes-engine:+") {
                 exclude(group: "com.facebook.fbjni")
@@ -370,10 +379,12 @@ dependencies {
         }
     }
 
-    if (project.ext.react.enableNewArchitecture) {
+    if (autodetectReactNativeVersion) {
+        implementation("com.facebook.react:react-android")
+    } else if (enableNewArchitecture) {
+        // This is only valid for 0.68 - 0.70. From 0.71 and on, we should be
+        // using prefabs.
         implementation project(":ReactAndroid")
-    } else if (reactNativeVersion == 0 || reactNativeVersion >= 7100) {
-        implementation("com.facebook.react:react-native")
     } else {
         def version = getPackageVersion("react-native", rootDir)
         implementation("com.facebook.react:react-native:${version}")
@@ -425,25 +436,25 @@ dependencies {
     }
 }
 
-if (project.ext.react.enableNewArchitecture) {
+if (!usePrefabs) {
     configurations.all {
-        resolutionStrategy.dependencySubstitution {
-            substitute(module("com.facebook.react:react-native"))
-                .using(project(":ReactAndroid"))
-                .because("On New Architecture, we are building React Native from source")
-            substitute(module("com.facebook.react:hermes-engine"))
-                .using(project(":ReactAndroid:hermes-engine"))
-                .because("On New Architecture, we are building Hermes from source")
-        }
-    }
-} else if (reactNativeVersion > 0 && reactNativeVersion < 7100) {
-    configurations.all {
-        resolutionStrategy {
-            // Force version here otherwise Gradle will pick up a newer version:
-            // https://github.com/facebook/react-native/issues/35210
-            def version = getPackageVersion("react-native", rootDir)
-            force("com.facebook.react:react-native:${version}")
-            force("com.facebook.react:hermes-engine:${version}")
+        if (enableNewArchitecture) {
+            resolutionStrategy.dependencySubstitution {
+                substitute(module("com.facebook.react:react-native"))
+                    .using(project(":ReactAndroid"))
+                    .because("On New Architecture, we are building React Native from source")
+                substitute(module("com.facebook.react:hermes-engine"))
+                    .using(project(":ReactAndroid:hermes-engine"))
+                    .because("On New Architecture, we are building Hermes from source")
+            }
+        } else {
+            resolutionStrategy {
+                // Force version here otherwise Gradle will pick up a newer version:
+                // https://github.com/facebook/react-native/issues/35210
+                def version = getPackageVersion("react-native", rootDir)
+                force("com.facebook.react:react-native:${version}")
+                force("com.facebook.react:hermes-engine:${version}")
+            }
         }
     }
 }

@@ -1,9 +1,12 @@
 #include "ComponentsRegistry.h"
 
-#include <CoreComponentsRegistry.h>
 #include <rncli.h>
 
-#include <fbjni/fbjni.h>
+#if __has_include(<react/fabric/CoreComponentsRegistry.h>)  // >= 0.71
+#include <react/fabric/CoreComponentsRegistry.h>
+#else  // < 0.71
+#include <CoreComponentsRegistry.h>
+#endif
 
 #include <react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
 #include <react/renderer/componentregistry/ComponentDescriptorRegistry.h>
