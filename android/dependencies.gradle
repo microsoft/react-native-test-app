@@ -40,7 +40,7 @@ ext {
      * See https://github.com/dependabot/feedback/issues/345.
      */
     libraries = [
-        androidAppCompat            : "androidx.appcompat:appcompat:1.4.2",
+        androidAppCompat            : "androidx.appcompat:appcompat:1.5.1",
         androidCamera               : "androidx.camera:camera-camera2:1.2.0-beta02",
         androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.2.0-beta02",
         androidCoreKotlinExtensions : "androidx.core:core-ktx:1.9.0",
