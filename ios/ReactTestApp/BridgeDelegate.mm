@@ -1,26 +1,24 @@
-#import "React+TurboModule.h"
+#import "BridgeDelegate.h"
+
+#import <React/RCTCxxBridgeDelegate.h>
 
 #if USE_TURBOMODULE
-
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTAppSetupUtils.h>
-#import <React/RCTCxxBridgeDelegate.h>
-#import <React/RCTDataRequestHandler.h>
-#import <React/RCTFileRequestHandler.h>
-#import <React/RCTGIFImageDecoder.h>
-#import <React/RCTHTTPRequestHandler.h>
-#import <React/RCTImageLoader.h>
-#import <React/RCTJSIExecutorRuntimeInstaller.h>
-#import <React/RCTLocalAssetImageLoader.h>
-#import <React/RCTNetworking.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
 
-@interface RTATurboModuleManagerDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate>
+@interface RTABridgeDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate>
 @end
+#else
+@interface RTABridgeDelegate () <RCTCxxBridgeDelegate>
+@end
+#endif  // USE_TURBOMODULE
 
-@implementation RTATurboModuleManagerDelegate {
+@implementation RTABridgeDelegate {
     __weak id<RCTBridgeDelegate> _bridgeDelegate;
+#if USE_TURBOMODULE
     RCTTurboModuleManager *_turboModuleManager;
+#endif  // USE_TURBOMODULE
 }
 
 - (instancetype)initWithBridgeDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
@@ -48,15 +46,20 @@
 - (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:
     (RCTBridge *)bridge
 {
-    if (_turboModuleManager == nil) {
-        _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
-                                                                   delegate:self
-                                                                  jsInvoker:bridge.jsCallInvoker];
-    }
+#if USE_TURBOMODULE
+    // jsExecutorFactoryForBridge: (USE_TURBOMODULE=1)
+    _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
+                                                               delegate:self
+                                                              jsInvoker:bridge.jsCallInvoker];
     return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager);
+#else
+    // jsExecutorFactoryForBridge: (USE_TURBOMODULE=0)
+    return nullptr;
+#endif  // USE_TURBOMODULE
 }
 
 // MARK: - RCTTurboModuleManagerDelegate details
+#if USE_TURBOMODULE
 
 - (Class)getModuleClassFromName:(const char *)name
 {
@@ -75,6 +78,6 @@
     return RCTAppSetupDefaultModuleFromClass(moduleClass);
 }
 
-@end
-
 #endif  // USE_TURBOMODULE
+
+@end
