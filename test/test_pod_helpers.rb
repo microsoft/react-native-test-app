@@ -19,6 +19,7 @@ class TestPodHelpers < Minitest::Test
 
     # `RCT_NEW_ARCH_ENABLED` enables everything
     ENV['RCT_NEW_ARCH_ENABLED'] = '1'
+
     refute(fabric_enabled?({}, 6799))
     assert(fabric_enabled?({}, 6800))
   end
@@ -38,6 +39,7 @@ class TestPodHelpers < Minitest::Test
 
     # `RCT_NEW_ARCH_ENABLED` enables everything
     ENV['RCT_NEW_ARCH_ENABLED'] = '1'
+
     refute(new_architecture_enabled?({}, 6799))
     assert(new_architecture_enabled?({}, 6800))
   end

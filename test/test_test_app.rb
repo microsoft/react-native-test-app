@@ -19,17 +19,19 @@ end
 class TestTestApp < Minitest::Test
   def test_app_config
     name, display_name, single_app = app_config(fixture_path('with_resources'))
-    assert_equal(name, 'TestFixture')
-    assert_equal(display_name, 'Test Fixture')
+
+    assert_equal('TestFixture', name)
+    assert_equal('Test Fixture', display_name)
     assert_nil(single_app)
   end
 
   def test_app_config_single_app
     name, display_name, version, single_app = app_config(fixture_path('single_app_mode'))
-    assert_equal(name, 'TestFixture')
-    assert_equal(display_name, 'Test Fixture')
-    assert_equal(version, '1.0.0')
-    assert_equal(single_app, 'test-fixture')
+
+    assert_equal('TestFixture', name)
+    assert_equal('Test Fixture', display_name)
+    assert_equal('1.0.0', version)
+    assert_equal('test-fixture', single_app)
   end
 
   def test_autolink_script_path
@@ -40,33 +42,37 @@ class TestTestApp < Minitest::Test
   end
 
   def test_flipper_enabled?
-    assert(flipper_enabled?)
+    assert_predicate(self, :flipper_enabled?)
 
     use_flipper!(false)
 
-    refute(flipper_enabled?)
+    refute_predicate(self, :flipper_enabled?)
 
     use_flipper!
 
-    assert(flipper_enabled?)
+    assert_predicate(self, :flipper_enabled?)
   ensure
     use_flipper!(nil)
   end
 
   def test_flipper_versions
-    assert_equal({}, flipper_versions)
+    assert_empty(flipper_versions)
 
     use_flipper!(false)
+
     refute(flipper_versions)
 
     versions = { 'Flipper' => '~> 0.41.1' }
     use_flipper!(versions)
+
     assert_equal(versions, flipper_versions)
 
     use_flipper!
-    assert_equal({}, flipper_versions)
+
+    assert_empty(flipper_versions)
 
     use_flipper!(false)
+
     refute(flipper_versions)
   ensure
     use_flipper!(nil)
@@ -78,6 +84,7 @@ class TestTestApp < Minitest::Test
     assert_equal(expected, nearest_node_modules(fixture_path('test_app')))
 
     react_native = fixture_path('test_app', 'node_modules', 'react-native')
+
     assert_equal(expected, nearest_node_modules(react_native))
 
     assert_equal(expected, nearest_node_modules(fixture_path('test_app', 'src')))
@@ -85,9 +92,11 @@ class TestTestApp < Minitest::Test
 
   def test_package_version
     react_native = fixture_path('test_app', 'node_modules', 'react-native')
+
     assert_equal(Gem::Version.new('1000.0.0'), package_version(react_native))
 
     cli = fixture_path('test_app', 'node_modules', '@react-native-community', 'cli-platform-ios')
+
     assert_equal(Gem::Version.new('4.10.1'), package_version(cli))
   end
 
@@ -170,7 +179,7 @@ class TestTestApp < Minitest::Test
         manifest = JSON.parse(File.read(manifest_path))
 
         if project_root.to_s.include?('without')
-          assert_equal([], manifest['resources'])
+          assert_empty(manifest['resources'])
         elsif project_root.to_s.include?('with_platform_resources')
           assert_equal(platform_resources, manifest['resources'].sort)
         else
@@ -190,6 +199,7 @@ class TestTestApp < Minitest::Test
 
     project = Xcodeproj::Project.open('macos/ReactTestApp.xcodeproj')
     test_app = project.targets.detect { |target| target.name == 'ReactTestApp' }
+
     assert(test_app)
     test_app.build_configurations.each do |config|
       assert_equal('-', config.build_settings['CODE_SIGN_IDENTITY'])

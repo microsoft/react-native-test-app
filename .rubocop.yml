@@ -1,3 +1,6 @@
+require:
+  - rubocop-minitest
+
 AllCops:
   NewCops: enable
   Exclude:
