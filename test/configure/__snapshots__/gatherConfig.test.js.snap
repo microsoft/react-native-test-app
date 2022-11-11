@@ -12,7 +12,7 @@ Object {
     },
     "Podfile": "require_relative '../test_app'
 
-use_flipper!
+use_flipper! false if ENV['USE_FLIPPER'] == '0'
 
 workspace 'Test.xcworkspace'
 
@@ -133,7 +133,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!
+use_flipper! false if ENV['USE_FLIPPER'] == '0'
 
 workspace 'Test.xcworkspace'
 
@@ -303,7 +303,7 @@ Object {
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!
+use_flipper! false if ENV['USE_FLIPPER'] == '0'
 
 workspace 'Test.xcworkspace'
 
@@ -435,7 +435,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!
+use_flipper! false if ENV['USE_FLIPPER'] == '0'
 
 workspace 'Test.xcworkspace'
 
@@ -586,7 +586,7 @@ applyTestAppSettings(settings)
     },
     "ios/Podfile": "require_relative '../../test_app'
 
-use_flipper!
+use_flipper! false if ENV['USE_FLIPPER'] == '0'
 
 workspace 'Test.xcworkspace'
 
