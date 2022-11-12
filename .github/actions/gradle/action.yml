@@ -24,5 +24,6 @@ runs:
       uses: gradle/gradle-build-action@v2.3.3
       with:
         gradle-version: wrapper
+        cache-disabled: true # causes bad resolutions to reappear
         arguments: ${{ inputs.arguments }}
         build-root-directory: ${{ steps.build-root-directory-finder.outputs.build-root-directory }}
