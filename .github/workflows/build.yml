@@ -198,7 +198,7 @@ jobs:
           fi
       - name: Install Pods
         run: |
-          pod install --project-directory=${{ steps.configure.outputs.project-directory }}
+          USE_FLIPPER=0 pod install --project-directory=${{ steps.configure.outputs.project-directory }}
         working-directory: template-example
       - name: Build
         run: |
