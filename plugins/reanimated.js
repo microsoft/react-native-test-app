@@ -1,11 +1,24 @@
+// @ts-check
 const { createRunOncePlugin } = require("@expo/config-plugins");
 const {
   mergeContents,
 } = require("@expo/config-plugins/build/utils/generateCode");
 const { withBridgeDelegate } = require("./index");
 
+/**
+ * @typedef {import("@expo/config-plugins").ExportedConfig} ExportedConfig
+ */
+
 const NAME = "react-native-reanimated";
 
+/**
+ * Adds specified contents to an existing file with a generated header.
+ * @param {string} tag Tag used to generate a unique header
+ * @param {string} src Contents of the source file
+ * @param {string} newSrc Contents to be added
+ * @param {RegExp} anchor `RegExp` providing the position at which contents is added
+ * @returns {string} The merged content
+ */
 function addContents(tag, src, newSrc, anchor) {
   return mergeContents({
     tag: `${NAME}-${tag}`,
@@ -17,6 +30,14 @@ function addContents(tag, src, newSrc, anchor) {
   }).contents;
 }
 
+/**
+ * Plugin to inject Reanimated's JSI executor in the React bridge delegate.
+ *
+ * Only applies to iOS.
+ *
+ * @param {ExportedConfig} config Exported config
+ * @returns {ExportedConfig} Modified config
+ */
 function withReanimatedExecutor(config) {
   return withBridgeDelegate(config, (config) => {
     if (config.modResults.language !== "objcpp") {
@@ -30,6 +51,7 @@ function withReanimatedExecutor(config) {
       "header",
       config.modResults.contents,
       [
+        "#if !USE_TURBOMODULE",
         "#pragma clang diagnostic push",
         '#pragma clang diagnostic ignored "-Wnullability-completeness"',
         "",
@@ -47,6 +69,7 @@ function withReanimatedExecutor(config) {
         "#endif",
         "",
         "#pragma clang diagnostic pop",
+        "#endif  // !USE_TURBOMODULE",
       ].join("\n"),
       /#import "BridgeDelegate\.h"/
     );
