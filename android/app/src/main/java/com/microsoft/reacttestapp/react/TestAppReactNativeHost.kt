@@ -85,7 +85,6 @@ class TestAppReactNativeHost(
         reactInstanceManager.addReactInstanceEventListener(reactInstanceListener)
 
         beforeReactNativeInit()
-        SoLoader.init(application, false)
         reactInstanceManager.createReactContextInBackground()
 
         if (BuildConfig.DEBUG) {
