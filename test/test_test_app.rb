@@ -36,6 +36,7 @@ class TestTestApp < Minitest::Test
 
   def test_autolink_script_path
     cli = fixture_path('test_app', 'node_modules', '@react-native-community', 'cli-platform-ios')
+
     stub :resolve_module, cli do
       assert(require(autolink_script_path))
     end
