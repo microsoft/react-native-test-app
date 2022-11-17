@@ -46,7 +46,7 @@ ext {
         androidCoreKotlinExtensions : "androidx.core:core-ktx:1.9.0",
         androidEspressoCore         : "androidx.test.espresso:espresso-core:3.5.0",
         androidJUnit                : "androidx.test.ext:junit:1.1.3",
-        androidJUnitKotlinExtensions: "androidx.test.ext:junit-ktx:1.1.3",
+        androidJUnitKotlinExtensions: "androidx.test.ext:junit-ktx:1.1.4",
         androidRecyclerView         : "androidx.recyclerview:recyclerview:1.2.1",
         androidSwipeRefreshLayout   : "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
         junit                       : "junit:junit:4.13.2",
