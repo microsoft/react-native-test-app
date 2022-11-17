@@ -47,7 +47,7 @@ runs:
         bundler-cache: true
     - name: Set up VSTest.console.exe
       if: ${{ inputs.platform == 'windows' }}
-      uses: darenm/Setup-VSTest@v1
+      uses: darenm/Setup-VSTest@v1.2
     - name: Generate cache key
       id: cache-key-generator
       run: |
