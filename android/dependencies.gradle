@@ -44,7 +44,7 @@ ext {
         androidCamera               : "androidx.camera:camera-camera2:1.2.0-beta02",
         androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.2.0-beta02",
         androidCoreKotlinExtensions : "androidx.core:core-ktx:1.9.0",
-        androidEspressoCore         : "androidx.test.espresso:espresso-core:3.4.0",
+        androidEspressoCore         : "androidx.test.espresso:espresso-core:3.5.0",
         androidJUnit                : "androidx.test.ext:junit:1.1.3",
         androidJUnitKotlinExtensions: "androidx.test.ext:junit-ktx:1.1.3",
         androidRecyclerView         : "androidx.recyclerview:recyclerview:1.2.1",
