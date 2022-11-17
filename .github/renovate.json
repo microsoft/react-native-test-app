@@ -21,6 +21,11 @@
       "matchPackagePrefixes": ["androidx.camera"]
     },
     {
+      "groupName": "AndroidX Test Ext",
+      "matchDatasources": ["maven"],
+      "matchPackagePrefixes": ["androidx.test.ext"]
+    },
+    {
       "groupName": "Kotlin",
       "matchDatasources": ["maven"],
       "matchPackagePrefixes": ["org.jetbrains.kotlin"]
