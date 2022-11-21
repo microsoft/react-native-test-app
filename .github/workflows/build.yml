@@ -5,8 +5,8 @@ on:
       - trunk
   pull_request:
   schedule:
-    # Nightly builds against react-native@nightly at 5:00
-    - cron: 0 5 * * *
+    # Nightly builds against react-native@nightly at 4:00, Monday through Friday
+    - cron: 0 4 * * 1-5
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
 jobs:
