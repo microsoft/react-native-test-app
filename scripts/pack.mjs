@@ -10,7 +10,7 @@ const files = ["example/.gitignore", "example/windows/.gitignore"];
  * @returns {string}
  */
 function renameDotFile(p) {
-  return path.join(path.dirname(p), "_" + path.basename(p).slice(1));
+  return path.join(path.dirname(p), "_" + path.basename(p).substring(1));
 }
 
 /**
