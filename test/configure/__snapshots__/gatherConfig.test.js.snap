@@ -5,7 +5,7 @@ Object {
   "dependencies": Object {},
   "files": Object {
     ".gitignore": Object {
-      "source": "example/.gitignore",
+      "source": "example/_gitignore",
     },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -64,7 +64,7 @@ Object {
   "dependencies": Object {},
   "files": Object {
     ".gitignore": Object {
-      "source": "example/.gitignore",
+      "source": "example/_gitignore",
     },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -195,7 +195,7 @@ Object {
   "dependencies": Object {},
   "files": Object {
     ".gitignore": Object {
-      "source": "example/.gitignore",
+      "source": "example/_gitignore",
     },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -204,7 +204,7 @@ Object {
       "source": "node_modules/react-native/template/babel.config.js",
     },
     "common/.gitignore": Object {
-      "source": "example/.gitignore",
+      "source": "example/_gitignore",
     },
     "common/.watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -293,7 +293,7 @@ Object {
   "dependencies": Object {},
   "files": Object {
     ".gitignore": Object {
-      "source": "example/.gitignore",
+      "source": "example/_gitignore",
     },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -366,7 +366,7 @@ Object {
   },
   "files": Object {
     ".gitignore": Object {
-      "source": "example/.gitignore",
+      "source": "example/_gitignore",
     },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -482,7 +482,7 @@ module.exports = {
 };
 ",
     "windows/.gitignore": Object {
-      "source": "example/windows/.gitignore",
+      "source": "example/windows/_gitignore",
     },
   },
   "oldFiles": Array [
@@ -517,7 +517,7 @@ Object {
   "dependencies": Object {},
   "files": Object {
     ".gitignore": Object {
-      "source": "example/.gitignore",
+      "source": "example/_gitignore",
     },
     ".watchmanconfig": Object {
       "source": "node_modules/react-native/template/_watchmanconfig",
