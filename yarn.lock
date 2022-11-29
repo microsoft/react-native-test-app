@@ -10942,6 +10942,7 @@ fsevents@^2.3.2:
       optional: true
   bin:
     configure-test-app: scripts/configure.js
+    init: scripts/init.js
     init-test-app: scripts/init.js
     install-windows-test-app: windows/test-app.js
   languageName: unknown

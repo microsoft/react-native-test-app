@@ -43,6 +43,7 @@
   "main": "scripts/configure.js",
   "bin": {
     "configure-test-app": "scripts/configure.js",
+    "init": "scripts/init.js",
     "init-test-app": "scripts/init.js",
     "install-windows-test-app": "windows/test-app.js"
   },

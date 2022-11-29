@@ -34,6 +34,7 @@ const semver = require("semver");
  * @typedef {{
  *   name: string;
  *   packagePath: string;
+ *   templatePath?: string;
  *   testAppPath: string;
  *   targetVersion: string;
  *   platforms: Platform[];
@@ -407,13 +408,15 @@ const getConfig = (() => {
       typeof configuration === "undefined" ||
       "JEST_WORKER_ID" in process.env // skip caching when testing
     ) {
-      const { name, testAppPath, flatten, init } = params;
+      const { name, templatePath, testAppPath, flatten, init } = params;
       const projectPathFlag = flatten ? " --project-path ." : "";
       const testAppRelPath = projectRelativePath(params);
-      const templateDir = path.relative(
-        process.cwd(),
-        path.dirname(require.resolve("react-native/template/package.json"))
-      );
+      const templateDir =
+        templatePath ||
+        path.relative(
+          process.cwd(),
+          path.dirname(require.resolve("react-native/template/package.json"))
+        );
       configuration = {
         common: {
           files: {
