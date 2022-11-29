@@ -9,6 +9,7 @@ on:
     - cron: 0 4 * * 1-5
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
+  VisualStudioVersion: "17.0"
 jobs:
   lint-commit:
     name: "lint commit message"
