@@ -159,8 +159,9 @@ def resources_pod(project_root, target_platform, platforms)
 
   app_dir = File.dirname(app_manifest)
   resources = resolve_resources(app_manifest(project_root), target_platform)
+  return if resources.nil? || resources.empty?
 
-  if !resources.nil? && resources.any? { |r| !File.exist?(File.join(app_dir, r)) }
+  if resources.any? { |r| !File.exist?(File.join(app_dir, r)) }
     Pod::UI.notice(
       'One or more resources were not found and will not be included in the project. ' \
       'If they are found later and you want to include them, run `pod install` again.'

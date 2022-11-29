@@ -150,8 +150,16 @@ class TestTestApp < Minitest::Test
         with_resources
         with_platform_resources
       ].each do |fixture|
-        assert_equal('.', resources_pod(fixture_path(fixture), target, platforms))
-        assert_equal('..', resources_pod(fixture_path(fixture, target.to_s), target, platforms))
+        podspec_path = resources_pod(fixture_path(fixture), target, platforms)
+        inner_podspec_path = resources_pod(fixture_path(fixture, target.to_s), target, platforms)
+
+        if fixture.to_s.include?('without')
+          assert_nil(podspec_path)
+          assert_nil(inner_podspec_path)
+        else
+          assert_equal('.', podspec_path)
+          assert_equal('..', inner_podspec_path)
+        end
       end
     end
 
@@ -176,12 +184,16 @@ class TestTestApp < Minitest::Test
         fixture_path('without_resources', target.to_s),
       ].each do |project_root|
         podspec_path = resources_pod(project_root, target, platforms)
+
+        if project_root.to_s.include?('without')
+          assert_nil(podspec_path)
+          next
+        end
+
         manifest_path = app_manifest_path(project_root, podspec_path)
         manifest = JSON.parse(File.read(manifest_path))
 
-        if project_root.to_s.include?('without')
-          assert_empty(manifest['resources'])
-        elsif project_root.to_s.include?('with_platform_resources')
+        if project_root.to_s.include?('with_platform_resources')
           assert_equal(platform_resources, manifest['resources'].sort)
         else
           assert_equal(resources, manifest['resources'].sort)
