@@ -16,11 +16,8 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
 
     private var surfacePresenterBridgeAdapter: NSObject?
     private(set) var bridge: RCTBridge?
+    private lazy var bridgeDelegate = RTABridgeDelegate(bridgeDelegate: self)
     private var bundleRoot: String?
-
-    #if USE_TURBOMODULE
-    private lazy var turboModuleManagerDelegate = RTATurboModuleManagerDelegate(bridgeDelegate: self)
-    #endif
 
     override init() {
         #if DEBUG
@@ -112,17 +109,10 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             object: nil
         )
 
-        #if USE_TURBOMODULE
-        guard let bridge = RCTBridge(delegate: turboModuleManagerDelegate, launchOptions: nil) else {
-            assertionFailure("Failed to instantiate RCTBridge with TurboModule")
-            return
-        }
-        #else
-        guard let bridge = RCTBridge(delegate: self, launchOptions: nil) else {
+        guard let bridge = RCTBridge(delegate: bridgeDelegate, launchOptions: nil) else {
             assertionFailure("Failed to instantiate RCTBridge")
             return
         }
-        #endif // USE_TURBOMODULE
 
         surfacePresenterBridgeAdapter = RTACreateSurfacePresenterBridgeAdapter(bridge)
         self.bridge = bridge

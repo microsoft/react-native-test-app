@@ -30,6 +30,10 @@ const defaultProviders = {
 };
 
 // `react-native-test-app` files
+defaultProviders["bridgeDelegate"] = modifyFilePath(
+  expoProviders.appDelegate,
+  "ReactTestApp/BridgeDelegate.mm"
+);
 defaultProviders["sceneDelegate"] = modifyFilePath(
   expoProviders.appDelegate,
   "ReactTestApp/SceneDelegate.swift"

@@ -33,6 +33,7 @@
     "/example/{metro,react-native}.config.js",
     "/ios",
     "/macos",
+    "/plugins",
     "/schema.json",
     "/scripts/*.js",
     "/scripts/apply-config-plugins.mjs",
