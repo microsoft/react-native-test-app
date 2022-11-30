@@ -713,6 +713,21 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     });
   }
 
+  // TODO: Remove when we drop support for 0.69.
+  // Patch building with Visual Studio 2022. For more details, see
+  // https://github.com/microsoft/react-native-windows/pull/10373
+  if (rnWindowsVersionNumber < 7000) {
+    const helpers = path.join(
+      rnWindowsPath,
+      "Microsoft.ReactNative",
+      "Utils",
+      "Helpers.h"
+    );
+    copyAndReplace(helpers, helpers, {
+      "inline typename T asEnum": "inline T asEnum",
+    });
+  }
+
   if (useNuGet) {
     const nugetConfigPath =
       findNearest(
