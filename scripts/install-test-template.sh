@@ -35,7 +35,7 @@ done
 npm pack
 
 yarn
-npx react-native init-test-app --destination template-example --name TemplateExample --platform "$platform"
+GIT_IGNORE_FILE=".gitignore" npx react-native init-test-app --destination template-example --name TemplateExample --platform "$platform"
 
 pushd template-example 1> /dev/null
 

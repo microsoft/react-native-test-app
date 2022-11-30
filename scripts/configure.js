@@ -408,6 +408,9 @@ const getConfig = (() => {
       typeof configuration === "undefined" ||
       "JEST_WORKER_ID" in process.env // skip caching when testing
     ) {
+      // Git ignore files are only renamed when published. `GIT_IGNORE_FILE`
+      // should therefore only be set during testing.
+      const gitignore = process.env["GIT_IGNORE_FILE"] || "_gitignore";
       const { name, templatePath, testAppPath, flatten, init } = params;
       const projectPathFlag = flatten ? " --project-path ." : "";
       const testAppRelPath = projectRelativePath(params);
@@ -421,7 +424,7 @@ const getConfig = (() => {
         common: {
           files: {
             ".gitignore": {
-              source: path.join(testAppPath, "example", ".gitignore"),
+              source: path.join(testAppPath, "example", gitignore),
             },
             ".watchmanconfig": {
               source: path.join(templateDir, "_watchmanconfig"),
@@ -631,12 +634,7 @@ const getConfig = (() => {
         windows: {
           files: {
             ".gitignore": {
-              source: path.join(
-                testAppPath,
-                "example",
-                "windows",
-                ".gitignore"
-              ),
+              source: path.join(testAppPath, "example", "windows", gitignore),
             },
           },
           oldFiles: [

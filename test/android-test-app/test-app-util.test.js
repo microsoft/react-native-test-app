@@ -43,7 +43,12 @@ describe("test-app-util", () => {
     return Number(major) * 10000 + Number(minor) * 100 + Number(patch);
   }
 
+  beforeAll(() => {
+    process.env["GIT_IGNORE_FILE"] = ".gitignore";
+  });
+
   afterAll(() => {
+    delete process.env["GIT_IGNORE_FILE"];
     removeProject(defaultTestProject);
   });
 
