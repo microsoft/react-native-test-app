@@ -12,10 +12,10 @@ describe("parseResources", () => {
   afterEach(() => mockFiles());
 
   test("returns empty strings for no resources", () => {
-    expect(parseResources(undefined, "", "")).toEqual(empty);
-    expect(parseResources([], "", "")).toEqual(empty);
-    expect(parseResources({}, "", "")).toEqual(empty);
-    expect(parseResources({ windows: [] }, "", "")).toEqual(empty);
+    expect(parseResources(undefined, "")).toEqual(empty);
+    expect(parseResources([], "")).toEqual(empty);
+    expect(parseResources({}, "")).toEqual(empty);
+    expect(parseResources({ windows: [] }, "")).toEqual(empty);
   });
 
   test("returns references to existing assets", () => {
@@ -27,8 +27,7 @@ describe("parseResources", () => {
 
     const { assetItems, assetItemFilters, assetFilters } = parseResources(
       ["dist/assets", "dist/main.jsbundle"],
-      ".",
-      "node_modules/.generated/windows/ReactTestApp"
+      "."
     );
     expect(assetItems).toMatchInlineSnapshot(`
 "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\node_modules\\\\arnold\\\\portrait.png\\">
@@ -62,13 +61,9 @@ describe("parseResources", () => {
   test("skips missing assets", () => {
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 
-    expect(
-      parseResources(
-        ["dist/assets", "dist/main.bundle"],
-        ".",
-        "node_modules/.generated/windows/ReactTestApp"
-      )
-    ).toEqual(empty);
+    expect(parseResources(["dist/assets", "dist/main.bundle"], ".")).toEqual(
+      empty
+    );
 
     expect(warnSpy).toHaveBeenCalledWith(
       "warning: resource with path 'dist/assets' was not found"
