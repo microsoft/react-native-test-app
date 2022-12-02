@@ -5807,6 +5807,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-xml-parser@npm:^4.0.0":
+  version: 4.0.12
+  resolution: "fast-xml-parser@npm:4.0.12"
+  dependencies:
+    strnum: ^1.0.5
+  bin:
+    fxparser: src/cli/cli.js
+  checksum: afb800fdc39d3c53ce0be76dd57afafc5556790a798524c98bdb984af2adc0d35360d05d1360cdb37db3f6de1fa754ae5596f16934c60b490b22ffb47948846d
+  languageName: node
+  linkType: hard
+
 "fastest-levenshtein@npm:^1.0.12":
   version: 1.0.12
   resolution: "fastest-levenshtein@npm:1.0.12"
@@ -10913,6 +10924,7 @@ fsevents@^2.3.2:
     chalk: ^4.1.0
     eslint: ^8.0.0
     eslint-plugin-jest: ^27.0.0
+    fast-xml-parser: ^4.0.0
     jest: ^27.0.0
     memfs: ^3.3.0
     prettier: ^2.3.1
@@ -12351,6 +12363,13 @@ resolve@^2.0.0-next.3:
   version: 2.0.1
   resolution: "strip-json-comments@npm:2.0.1"
   checksum: 1074ccb63270d32ca28edfb0a281c96b94dc679077828135141f27d52a5a398ef5e78bcf22809d23cadc2b81dfbe345eb5fd8699b385c8b1128907dec4a7d1e1
+  languageName: node
+  linkType: hard
+
+"strnum@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "strnum@npm:1.0.5"
+  checksum: 651b2031db5da1bf4a77fdd2f116a8ac8055157c5420f5569f64879133825915ad461513e7202a16d7fec63c54fd822410d0962f8ca12385c4334891b9ae6dd2
   languageName: node
   linkType: hard
 

@@ -95,6 +95,122 @@ function findUserProjects(projectDir, projects = []) {
 }
 
 /**
+ * Finds NuGet dependencies.
+ *
+ * Visual Studio (?) currently does not download transitive dependencies. This
+ * is a workaround until `react-native-windows` autolinking adds support.
+ *
+ * @returns {[string, string][]}
+ */
+function getNuGetDependencies() {
+  const pkgJson = findNearest("package.json");
+  if (!pkgJson) {
+    return [];
+  }
+
+  const { loadConfig } = require("@react-native-community/cli");
+  const dependencies = Object.values(loadConfig().dependencies);
+
+  const { XMLParser } = require("fast-xml-parser");
+  const xml = new XMLParser({
+    ignoreAttributes: false,
+    transformTagName: (tag) => tag.toLowerCase(),
+  });
+
+  const lowerCase = (/** @type{Record<string, string>} */ refs) => {
+    for (const key of Object.keys(refs)) {
+      refs[key.toLowerCase()] = refs[key];
+    }
+    return refs;
+  };
+
+  /** @type {Record<string, [string, string]>} */
+  const packageRefs = {};
+
+  for (const { root, platforms } of dependencies) {
+    /** @type {{ projects?: Record<string, string>[]; sourceDir?: string; }?} */
+    const windows = platforms?.["windows"];
+    if (!windows || !Array.isArray(windows.projects)) {
+      continue;
+    }
+
+    const projects = windows.projects.map(({ projectFile }) =>
+      path.join(root, windows.sourceDir || ".", projectFile)
+    );
+
+    if (!Array.isArray(projects)) {
+      continue;
+    }
+
+    // Look for `PackageReference` entries:
+    //
+    //     <Project>
+    //         <ImportGroup>
+    //             <PackageReference ... />
+    //             <PackageReference ... />
+    //         </ImportGroup>
+    //     </Project>
+    //
+    for (const vcxproj of projects) {
+      const proj = xml.parse(fs.readFileSync(vcxproj, textFileReadOptions));
+      const itemGroup = proj.project?.itemgroup;
+      if (!itemGroup) {
+        continue;
+      }
+
+      const itemGroups = Array.isArray(itemGroup) ? itemGroup : [itemGroup];
+      for (const group of itemGroups) {
+        const pkgRef = group["packagereference"];
+        if (!pkgRef) {
+          continue;
+        }
+
+        const refs = Array.isArray(pkgRef) ? pkgRef : [pkgRef];
+        for (const ref of refs) {
+          // Attributes are not case-sensitive
+          lowerCase(ref);
+
+          const id = ref["@_include"];
+          const version = ref["@_version"];
+          if (!id || !version) {
+            continue;
+          }
+
+          // Package ids are not case-sensitive
+          packageRefs[id.toLowerCase()] = [id, version];
+        }
+      }
+    }
+  }
+
+  // Remove dependencies managed by us
+  [
+    "microsoft.reactnative",
+    "microsoft.reactnative.cxx",
+    "microsoft.ui.xaml",
+    "microsoft.windows.cppwinrt",
+    "reactnative.hermes.windows",
+    "nlohmann.json",
+  ].forEach((id) => delete packageRefs[id]);
+
+  return Object.values(packageRefs);
+}
+
+/**
+ * Maps NuGet dependencies to `<Import>` elements.
+ * @param {[string, string][]} refs
+ * @returns {string}
+ */
+function importTargets(refs) {
+  return refs
+    .map(
+      ([id, version]) =>
+        `<Import Project="$(SolutionDir)packages\\${id}.${version}\\build\\native\\${id}.targets" Condition="Exists('$(SolutionDir)packages\\${id}.${version}\\build\\native\\${id}.targets')" />`
+    )
+    .join("\n    ");
+}
+
+/**
  * Returns whether specified object is Error-like.
  * @param {unknown} e
  * @returns {e is Error}
@@ -526,6 +642,8 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       ? "2.6.0"
       : "2.7.0";
 
+  const nuGetDependencies = getNuGetDependencies();
+
   /** @type {[string, Record<string, string>?][]} */
   const projectFiles = [
     ["Assets"],
@@ -537,10 +655,12 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     [
       "ReactTestApp.vcxproj",
       {
-        "1000\\.0\\.0": rnWindowsVersion,
         "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
-        "<!-- ReactTestApp asset items -->": assetItems,
         "\\$\\(ReactTestAppPackageManifest\\)": appxManifest,
+        "\\$\\(ReactNativeWindowsNpmVersion\\)": rnWindowsVersion,
+        "<!-- ReactTestApp asset items -->": assetItems,
+        "<!-- ReactTestApp additional targets -->":
+          importTargets(nuGetDependencies),
         ...(typeof singleApp === "string"
           ? { "ENABLE_SINGLE_APP_MODE=0;": "ENABLE_SINGLE_APP_MODE=1;" }
           : undefined),
@@ -572,6 +692,9 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       {
         '<package id="Microsoft.UI.Xaml" version="0.0.0" targetFramework="native"/>':
           nuGetPackage("Microsoft.UI.Xaml", xamlVersion),
+        "<!-- additional packages -->": nuGetDependencies
+          .map(([id, version]) => nuGetPackage(id, version))
+          .join("\n  "),
         ...(useNuGet && !usePackageReferences
           ? {
               '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native"/ -->':
