@@ -3,7 +3,7 @@
 
 const {
   findNearest,
-  reactNativeVersion,
+  getPackageVersion,
   readJSONFile,
 } = require("./scripts/helpers");
 
@@ -74,7 +74,7 @@ module.exports = {
           name,
           packagePath: destination,
           testAppPath: __dirname,
-          targetVersion: reactNativeVersion(),
+          targetVersion: getPackageVersion("react-native"),
           platforms: sanitizePlatformChoice(platform),
           flatten: true,
           force: true,

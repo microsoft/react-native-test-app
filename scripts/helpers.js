@@ -53,18 +53,6 @@ function getPackageVersion(module, startDir = process.cwd()) {
   return version;
 }
 
-const reactNativeVersion = (() => {
-  /** @type {string} */
-  let version;
-  return () => {
-    if (!version) {
-      version = getPackageVersion("react-native");
-    }
-    return version;
-  };
-})();
-
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
-exports.reactNativeVersion = reactNativeVersion;
 exports.readJSONFile = readJSONFile;

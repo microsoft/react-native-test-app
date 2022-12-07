@@ -9,11 +9,7 @@ const fs = require("fs");
 const fsp = require("fs/promises");
 const path = require("path");
 const semver = require("semver");
-const {
-  getPackageVersion,
-  reactNativeVersion,
-  readJSONFile,
-} = require("./helpers");
+const { getPackageVersion, readJSONFile } = require("./helpers");
 
 /**
  * @typedef {{ source: string; }} FileCopy;
@@ -973,7 +969,7 @@ if (require.main === module) {
         name: typeof name === "string" && name ? name : getAppName(packagePath),
         packagePath,
         testAppPath: path.dirname(require.resolve("../package.json")),
-        targetVersion: reactNativeVersion(),
+        targetVersion: getPackageVersion("react-native"),
         platforms,
         flatten,
         force,
