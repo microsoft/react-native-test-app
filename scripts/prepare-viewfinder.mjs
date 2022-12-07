@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { readJSONFile } from "./helpers.js";
 
 const APP_IDENTIFIER = "com.microsoft.ReactNativeViewfinder";
 const PACKAGE_MANAGER = "yarn";
@@ -21,9 +22,7 @@ const PROJECT_MANIFEST = path.resolve(APP_ROOT, "package.json");
  * Configures the app manifest for Viewfinder.
  */
 function configureAppManifest() {
-  const original = JSON.parse(
-    fs.readFileSync(APP_MANIFEST, { encoding: "utf-8" })
-  );
+  const original = readJSONFile(APP_MANIFEST);
 
   const manifest = {
     ...original,
@@ -60,5 +59,5 @@ function run(command, args, options) {
 }
 
 configureAppManifest();
-run("npx", ["@rnx-kit/dep-check", "--write", PROJECT_MANIFEST]);
+run("npx", ["@rnx-kit/align-deps", "--write", PROJECT_MANIFEST]);
 run(PACKAGE_MANAGER, ["install"]);
