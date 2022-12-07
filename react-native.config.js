@@ -1,6 +1,12 @@
 // @ts-check
 "use strict";
 
+const {
+  findNearest,
+  getPackageVersion,
+  readJSONFile,
+} = require("./scripts/helpers");
+
 /**
  * @template Args
  * @typedef {{
@@ -25,13 +31,10 @@
  * @returns {string | undefined}
  */
 function inferProjectName() {
-  const { findNearest } = require("./windows/test-app");
   const packageJson = findNearest("package.json");
   if (packageJson) {
-    const fs = require("fs");
     try {
-      const fileContent = fs.readFileSync(packageJson, { encoding: "utf8" });
-      const name = JSON.parse(fileContent)["name"];
+      const name = readJSONFile(packageJson)["name"];
       return typeof name === "string" && name ? `${name}-test-app` : undefined;
     } catch (_) {
       // Ignore
@@ -66,13 +69,12 @@ module.exports = {
       name: "init-test-app",
       description: "Initializes a new test app project",
       func: (_argv, _config, { destination, name, platform }) => {
-        const { version: targetVersion } = require("react-native/package.json");
         const { configure } = require("./scripts/configure");
         configure({
           name,
           packagePath: destination,
           testAppPath: __dirname,
-          targetVersion,
+          targetVersion: getPackageVersion("react-native"),
           platforms: sanitizePlatformChoice(platform),
           flatten: true,
           force: true,

@@ -4,6 +4,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { readJSONFile } = require("./helpers");
 
 const APP_JSON = "app.json";
 const NODE_MODULES = "node_modules";
@@ -57,8 +58,7 @@ function validateManifest(manifestPath) {
     return 1;
   }
 
-  const content = fs.readFileSync(manifestPath, { encoding: "utf-8" });
-  const manifest = /** @type {Record<string, unknown>} */ (JSON.parse(content));
+  const manifest = readJSONFile(manifestPath);
   const validate = makeValidator();
   if (!validate(manifest)) {
     console.error(

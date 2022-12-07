@@ -1,9 +1,10 @@
 // @ts-check
 "use strict";
 
+const { findNearest, getPackageVersion } = require("../scripts/helpers");
+
 describe("findNearest", () => {
   const path = require("path");
-  const { findNearest } = require("../../windows/test-app");
 
   test("returns null for non-existent files", () => {
     expect(findNearest("thisFileShouldNotExist")).toBeNull();
@@ -28,5 +29,30 @@ describe("findNearest", () => {
     expect(
       findNearest(path.join("node_modules", "react-native"), projectPath)
     ).toBe(path.join(fixturePath, "node_modules", "react-native"));
+  });
+});
+
+describe("getPackageVersion", () => {
+  const path = require("path");
+
+  const nodeModulesPath = path.resolve(
+    __dirname,
+    "__fixtures__",
+    "test_app",
+    "node_modules"
+  );
+
+  test("returns version number for specified package", () => {
+    const rnPath = path.join(nodeModulesPath, "react-native");
+    expect(getPackageVersion("react-native", rnPath)).toBe("1000.0.0");
+
+    const rnCliPath = path.join(
+      nodeModulesPath,
+      "@react-native-community",
+      "cli-platform-ios"
+    );
+    expect(
+      getPackageVersion("@react-native-community/cli-platform-ios", rnCliPath)
+    ).toBe("4.10.1");
   });
 });

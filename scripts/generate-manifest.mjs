@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // @ts-check
-"use strict";
 
 import * as fs from "node:fs/promises";
 import * as path from "node:path";

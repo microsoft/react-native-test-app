@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // @ts-check
-"use strict";
 
 /**
  * Reminder that this script is meant to be runnable without installing
@@ -11,6 +10,7 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { readJSONFile } from "./helpers.js";
 
 /**
  * @typedef {{
@@ -45,7 +45,7 @@ function isValidVersion(v) {
 
 /**
  * Type-safe `Object.keys()`
- * @template T
+ * @template {Record<string, unknown>} T
  * @param {T} obj
  * @returns {(keyof T)[]}
  */
@@ -188,6 +188,10 @@ async function getProfile(v) {
       const { dependencies, peerDependencies } = await fetchPackageInfo(
         "react-native@nightly"
       );
+      if (!dependencies) {
+        throw new Error("Could not determine dependencies");
+      }
+
       const codegen = await fetchPackageInfo(
         "react-native-codegen@" + dependencies["react-native-codegen"]
       );
@@ -247,10 +251,14 @@ if (!isValidVersion(version)) {
 
   const manifests = ["package.json", "example/package.json"];
   for (const manifestPath of manifests) {
-    const content = await fs.readFile(manifestPath, { encoding: "utf-8" });
-    const manifest = JSON.parse(content);
+    const manifest = /** @type {{ devDependencies: Record<string, string>}} */ (
+      readJSONFile(manifestPath)
+    );
     for (const packageName of keys(profile)) {
-      manifest["devDependencies"][packageName] = profile[packageName];
+      const version = profile[packageName];
+      if (version) {
+        manifest["devDependencies"][packageName] = version;
+      }
     }
 
     const tmpFile = `${manifestPath}.tmp`;
