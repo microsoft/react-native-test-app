@@ -969,7 +969,7 @@ if (require.main === module) {
       package: packagePath,
       platforms,
     }) => {
-      const result = configure({
+      process.exitCode = configure({
         name: typeof name === "string" && name ? name : getAppName(packagePath),
         packagePath,
         testAppPath: path.dirname(require.resolve("../package.json")),
@@ -979,9 +979,6 @@ if (require.main === module) {
         force,
         init,
       });
-      if (result !== 0) {
-        process.exit(result);
-      }
     }
   ).argv;
 }

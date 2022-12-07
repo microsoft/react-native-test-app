@@ -742,7 +742,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
         { stdio: "inherit" }
       ).on("close", (code) => {
         if (code !== 0) {
-          process.exit(code || 1);
+          process.exitCode = code || 1;
         }
       });
     });
