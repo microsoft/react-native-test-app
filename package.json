@@ -60,7 +60,7 @@
     "generate:code": "node scripts/generate-manifest.mjs",
     "generate:schema": "node scripts/generate-schema.mjs",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | commitlint",
-    "lint:js": "eslint $(git ls-files '*.js') && tsc",
+    "lint:js": "eslint $(git ls-files '*.js' '*.mjs') && tsc",
     "lint:kt": "ktlint --android --relative 'android/app/src/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
     "lint:swift": "swiftlint",
