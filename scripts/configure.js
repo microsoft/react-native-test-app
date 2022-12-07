@@ -9,6 +9,11 @@ const fs = require("fs");
 const fsp = require("fs/promises");
 const path = require("path");
 const semver = require("semver");
+const {
+  getPackageVersion,
+  reactNativeVersion,
+  readJSONFile,
+} = require("./helpers");
 
 /**
  * @typedef {{ source: string; }} FileCopy;
@@ -141,23 +146,13 @@ function projectRelativePath({
 }
 
 /**
- * Reads and parses JSON file at specified path.
- * @param {fs.PathLike} path
- * @returns {Record<string, unknown>}
- */
-function readJSONFile(path) {
-  return JSON.parse(fs.readFileSync(path, { encoding: "utf-8" }));
-}
-
-/**
  * Returns whether installed package satisfies specified version range.
  * @param {string} pkg
  * @param {string} versionRange
  * @returns {boolean}
  */
 function packageSatisfiesVersionRange(pkg, versionRange) {
-  const { version } = require(`${pkg}/package.json`);
-  return semver.satisfies(version, versionRange);
+  return semver.satisfies(getPackageVersion(pkg), versionRange);
 }
 
 /**
@@ -905,10 +900,32 @@ function configure(params) {
   return 0;
 }
 
+exports.androidManifestPath = androidManifestPath;
+exports.configure = configure;
+exports.error = error;
+exports.gatherConfig = gatherConfig;
+exports.getAppName = getAppName;
+exports.getConfig = getConfig;
+exports.getPlatformPackage = getPlatformPackage;
+exports.iosProjectPath = iosProjectPath;
+exports.isDestructive = isDestructive;
+exports.isInstalled = isInstalled;
+exports.join = join;
+exports.mergeConfig = mergeConfig;
+exports.packageSatisfiesVersionRange = packageSatisfiesVersionRange;
+exports.projectRelativePath = projectRelativePath;
+exports.reactNativeConfig = reactNativeConfig;
+exports.readJSONFile = readJSONFile;
+exports.removeAllFiles = removeAllFiles;
+exports.sortByKeys = sortByKeys;
+exports.updatePackageManifest = updatePackageManifest;
+exports.warn = warn;
+exports.windowsProjectPath = windowsProjectPath;
+exports.writeAllFiles = writeAllFiles;
+
 if (require.main === module) {
   /** @type {Platform[]} */
   const platformChoices = ["android", "ios", "macos", "windows"];
-  const { version: targetVersion } = require("react-native/package.json");
 
   require("yargs").usage(
     "$0 [options]",
@@ -956,7 +973,7 @@ if (require.main === module) {
         name: typeof name === "string" && name ? name : getAppName(packagePath),
         packagePath,
         testAppPath: path.dirname(require.resolve("../package.json")),
-        targetVersion,
+        targetVersion: reactNativeVersion(),
         platforms,
         flatten,
         force,
@@ -968,26 +985,3 @@ if (require.main === module) {
     }
   ).argv;
 }
-
-exports.androidManifestPath = androidManifestPath;
-exports.configure = configure;
-exports.error = error;
-exports.gatherConfig = gatherConfig;
-exports.getAppName = getAppName;
-exports.getConfig = getConfig;
-exports.getPlatformPackage = getPlatformPackage;
-exports.iosProjectPath = iosProjectPath;
-exports.isDestructive = isDestructive;
-exports.isInstalled = isInstalled;
-exports.join = join;
-exports.mergeConfig = mergeConfig;
-exports.packageSatisfiesVersionRange = packageSatisfiesVersionRange;
-exports.projectRelativePath = projectRelativePath;
-exports.reactNativeConfig = reactNativeConfig;
-exports.readJSONFile = readJSONFile;
-exports.removeAllFiles = removeAllFiles;
-exports.sortByKeys = sortByKeys;
-exports.updatePackageManifest = updatePackageManifest;
-exports.warn = warn;
-exports.windowsProjectPath = windowsProjectPath;
-exports.writeAllFiles = writeAllFiles;

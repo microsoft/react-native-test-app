@@ -5,6 +5,7 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { findNearest, getPackageVersion } = require("../scripts/helpers");
 
 /**
  * @typedef {{
@@ -56,30 +57,6 @@ function copy(src, dest) {
       });
     });
   });
-}
-
-/**
- * Finds nearest relative path to a file or directory from current path.
- * @param {string} fileOrDirName Path to the file or directory to find.
- * @param {string=} currentDir The current working directory. Mostly used for unit tests.
- * @returns {string | null} Nearest path to given file or directory; null if not found
- */
-function findNearest(fileOrDirName, currentDir = path.resolve("")) {
-  const rootDirectory =
-    process.platform === "win32"
-      ? currentDir.split(path.sep)[0] + path.sep
-      : "/";
-  while (currentDir !== rootDirectory) {
-    const candidatePath = path.join(currentDir, fileOrDirName);
-    if (fs.existsSync(candidatePath)) {
-      return path.relative("", candidatePath);
-    }
-
-    // Get parent folder
-    currentDir = path.dirname(currentDir);
-  }
-
-  return null;
 }
 
 /**
@@ -463,18 +440,6 @@ function getHermesVersion(rnwPath) {
 }
 
 /**
- * Returns the version number the package at specified path.
- * @param {string} packagePath
- * @returns {string}
- */
-function getPackageVersion(packagePath) {
-  const { version } = JSON.parse(
-    fs.readFileSync(path.join(packagePath, "package.json"), textFileReadOptions)
-  );
-  return version;
-}
-
-/**
  * Returns a single number for the specified version, suitable as a value for a
  * preprocessor definition.
  * @param {string} version
@@ -548,7 +513,10 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     singleApp,
   } = getBundleResources(manifestFilePath);
 
-  const rnWindowsVersion = getPackageVersion(rnWindowsPath);
+  const rnWindowsVersion = getPackageVersion(
+    "react-native-windows",
+    rnWindowsPath
+  );
   const rnWindowsVersionNumber = getVersionNumber(rnWindowsVersion);
   const hermesVersion = useHermes && getHermesVersion(rnWindowsPath);
   const usePackageReferences =
@@ -785,7 +753,6 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
 
 exports.copy = copy;
 exports.copyAndReplace = copyAndReplace;
-exports.findNearest = findNearest;
 exports.findUserProjects = findUserProjects;
 exports.generateSolution = generateSolution;
 exports.getBundleResources = getBundleResources;
