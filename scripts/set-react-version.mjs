@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // @ts-check
-"use strict";
 
 /**
  * Reminder that this script is meant to be runnable without installing
@@ -46,7 +45,7 @@ function isValidVersion(v) {
 
 /**
  * Type-safe `Object.keys()`
- * @template T
+ * @template {Record<string, unknown>} T
  * @param {T} obj
  * @returns {(keyof T)[]}
  */
@@ -189,6 +188,10 @@ async function getProfile(v) {
       const { dependencies, peerDependencies } = await fetchPackageInfo(
         "react-native@nightly"
       );
+      if (!dependencies) {
+        throw new Error("Could not determine dependencies");
+      }
+
       const codegen = await fetchPackageInfo(
         "react-native-codegen@" + dependencies["react-native-codegen"]
       );
@@ -252,7 +255,10 @@ if (!isValidVersion(version)) {
       readJSONFile(manifestPath)
     );
     for (const packageName of keys(profile)) {
-      manifest["devDependencies"][packageName] = profile[packageName];
+      const version = profile[packageName];
+      if (version) {
+        manifest["devDependencies"][packageName] = version;
+      }
     }
 
     const tmpFile = `${manifestPath}.tmp`;
