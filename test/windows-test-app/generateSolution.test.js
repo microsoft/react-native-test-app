@@ -25,8 +25,8 @@ describe("generateSolution", () => {
     process.chdir(cwd);
   });
 
-  test("throws if destination path is missing/invalid", () => {
-    expect(() => generateSolution("", options)).toThrow(
+  test("exits if destination path is missing/invalid", () => {
+    expect(generateSolution("", options)).toBe(
       "Missing or invalid destination path"
     );
   });

@@ -28,7 +28,7 @@ describe("getBundleResources", () => {
       assetItems,
       assetItemFilters,
       assetFilters,
-    } = getBundleResources("app.json", path.resolve(""));
+    } = getBundleResources("app.json");
 
     expect(appName).toBe("Example");
     expect(appxManifest).toBe("windows\\Package.appxmanifest");
@@ -64,7 +64,7 @@ describe("getBundleResources", () => {
       }),
     });
 
-    expect(getBundleResources("app.json", path.resolve(""))).toEqual({
+    expect(getBundleResources("app.json")).toEqual({
       appName: "ReactTestApp",
       appxManifest: "windows\\Example\\Package.appxmanifest",
       assetItems: "",
@@ -77,7 +77,7 @@ describe("getBundleResources", () => {
   test("handles missing manifest", () => {
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 
-    expect(getBundleResources("", "")).toEqual({
+    expect(getBundleResources("")).toEqual({
       appName: "ReactTestApp",
       appxManifest: "windows/Package.appxmanifest",
       assetItems: "",
@@ -96,7 +96,7 @@ describe("getBundleResources", () => {
 
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 
-    expect(getBundleResources("app.json", path.resolve(""))).toEqual({
+    expect(getBundleResources("app.json")).toEqual({
       appName: "ReactTestApp",
       appxManifest: "windows/Package.appxmanifest",
       assetItems: "",
@@ -123,10 +123,7 @@ describe("getBundleResources", () => {
       }),
     });
 
-    const { packageCertificate } = getBundleResources(
-      "app.json",
-      path.resolve("")
-    );
+    const { packageCertificate } = getBundleResources("app.json");
     expect(packageCertificate).toMatchInlineSnapshot(`
       "<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
           <PackageCertificateKeyFile>$(ProjectRootDir)\\\\windows\\\\ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>

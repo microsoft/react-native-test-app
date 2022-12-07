@@ -5,16 +5,6 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const uuidv5 = (() => {
-  try {
-    // @ts-ignore uuid@3.x
-    return require("uuid/v5");
-  } catch (_) {
-    // uuid@7.x and above
-    const { v5 } = require("uuid");
-    return v5;
-  }
-})();
 
 /**
  * @typedef {{
@@ -206,6 +196,17 @@ function generateContentItems(
   currentFilter = "Assets",
   source = ""
 ) {
+  const uuidv5 = (() => {
+    try {
+      // @ts-ignore uuid@3.x
+      return require("uuid/v5");
+    } catch (_) {
+      // uuid@7.x and above
+      const { v5 } = require("uuid");
+      return v5;
+    }
+  })();
+
   const { assetFilters, assetItemFilters, assetItems } = assets;
   for (const resource of resources) {
     const resourcePath = path.isAbsolute(resource)
@@ -274,13 +275,12 @@ function generateContentItems(
 /**
  * @param {string[] | { windows?: string[] } | undefined} resources
  * @param {string} projectPath
- * @param {string} vcxProjectPath
  * @returns {Assets}
  */
-function parseResources(resources, projectPath, vcxProjectPath) {
+function parseResources(resources, projectPath) {
   if (!Array.isArray(resources)) {
     if (resources && resources.windows) {
-      return parseResources(resources.windows, projectPath, vcxProjectPath);
+      return parseResources(resources.windows, projectPath);
     }
     return { assetItems: "", assetItemFilters: "", assetFilters: "" };
   }
@@ -389,7 +389,6 @@ function copyAndReplace(srcPath, destPath, replacements, callback = rethrow) {
 /**
  * Reads manifest file and and resolves paths to bundle resources.
  * @param {string | null} manifestFilePath Path to the closest manifest file.
- * @param {string} projectFilesDestPath Resolved paths will be relative to this path.
  * @returns {{
  *   appName: string;
  *   appxManifest: string;
@@ -400,7 +399,7 @@ function copyAndReplace(srcPath, destPath, replacements, callback = rethrow) {
  *   singleApp?: string;
  * }} Application name, and paths to directories and files to include.
  */
-function getBundleResources(manifestFilePath, projectFilesDestPath) {
+function getBundleResources(manifestFilePath) {
   // Default value if manifest or 'name' field don't exist.
   const defaultName = "ReactTestApp";
 
@@ -424,7 +423,7 @@ function getBundleResources(manifestFilePath, projectFilesDestPath) {
           windows || {},
           projectPath
         ),
-        ...parseResources(resources, projectPath, projectFilesDestPath),
+        ...parseResources(resources, projectPath),
       };
     } catch (e) {
       if (isErrorLike(e)) {
@@ -501,7 +500,7 @@ function getVersionNumber(version) {
  */
 function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   if (!destPath) {
-    throw "Missing or invalid destination path";
+    return "Missing or invalid destination path";
   }
 
   const nodeModulesDir = "node_modules";
@@ -547,7 +546,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     assetFilters,
     packageCertificate,
     singleApp,
-  } = getBundleResources(manifestFilePath, projectFilesDestPath);
+  } = getBundleResources(manifestFilePath);
 
   const rnWindowsVersion = getPackageVersion(rnWindowsPath);
   const rnWindowsVersionNumber = getVersionNumber(rnWindowsVersion);
@@ -784,6 +783,20 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   return undefined;
 }
 
+exports.copy = copy;
+exports.copyAndReplace = copyAndReplace;
+exports.findNearest = findNearest;
+exports.findUserProjects = findUserProjects;
+exports.generateSolution = generateSolution;
+exports.getBundleResources = getBundleResources;
+exports.getHermesVersion = getHermesVersion;
+exports.getPackageVersion = getPackageVersion;
+exports.getVersionNumber = getVersionNumber;
+exports.nuGetPackage = nuGetPackage;
+exports.parseResources = parseResources;
+exports.replaceContent = replaceContent;
+exports.toProjectEntry = toProjectEntry;
+
 if (require.main === module) {
   require("../scripts/link")(module);
 
@@ -825,22 +838,8 @@ if (require.main === module) {
       });
       if (error) {
         console.error(error);
-        process.exit(1);
+        process.exitCode = 1;
       }
     }
   ).argv;
-} else {
-  exports.copy = copy;
-  exports.copyAndReplace = copyAndReplace;
-  exports.findNearest = findNearest;
-  exports.findUserProjects = findUserProjects;
-  exports.generateSolution = generateSolution;
-  exports.getBundleResources = getBundleResources;
-  exports.getHermesVersion = getHermesVersion;
-  exports.getPackageVersion = getPackageVersion;
-  exports.getVersionNumber = getVersionNumber;
-  exports.nuGetPackage = nuGetPackage;
-  exports.parseResources = parseResources;
-  exports.replaceContent = replaceContent;
-  exports.toProjectEntry = toProjectEntry;
 }
