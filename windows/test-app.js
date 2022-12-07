@@ -757,7 +757,6 @@ exports.findUserProjects = findUserProjects;
 exports.generateSolution = generateSolution;
 exports.getBundleResources = getBundleResources;
 exports.getHermesVersion = getHermesVersion;
-exports.getPackageVersion = getPackageVersion;
 exports.getVersionNumber = getVersionNumber;
 exports.nuGetPackage = nuGetPackage;
 exports.parseResources = parseResources;
