@@ -11,6 +11,7 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { readJSONFile } from "./helpers.js";
 
 /**
  * @typedef {{
@@ -247,8 +248,9 @@ if (!isValidVersion(version)) {
 
   const manifests = ["package.json", "example/package.json"];
   for (const manifestPath of manifests) {
-    const content = await fs.readFile(manifestPath, { encoding: "utf-8" });
-    const manifest = JSON.parse(content);
+    const manifest = /** @type {{ devDependencies: Record<string, string>}} */ (
+      readJSONFile(manifestPath)
+    );
     for (const packageName of keys(profile)) {
       manifest["devDependencies"][packageName] = profile[packageName];
     }
