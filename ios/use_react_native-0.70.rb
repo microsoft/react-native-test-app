@@ -45,7 +45,7 @@ def include_react_native!(options)
   Open3.popen3('node scripts/build.js', :chdir => codegen) if File.directory?(codegen)
 
   lambda { |installer|
-    react_native_post_install(installer)
+    react_native_post_install(installer, react_native)
     if defined?(__apply_Xcode_12_5_M1_post_install_workaround)
       __apply_Xcode_12_5_M1_post_install_workaround(installer)
     end
