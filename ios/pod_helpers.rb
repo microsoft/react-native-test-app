@@ -39,7 +39,7 @@ def use_new_architecture!(options)
     Pod::UI.warn(
       'As of writing, Fabric is still experimental and subject to change. ' \
       'For more information, please see ' \
-      'https://reactnative.dev/docs/next/new-architecture-app-renderer-ios.'
+      'https://reactnative.dev/docs/next/new-architecture-intro.'
     )
     ENV['RCT_NEW_ARCH_ENABLED'] = '1'
   end
@@ -49,7 +49,7 @@ def use_new_architecture!(options)
   Pod::UI.warn(
     'As of writing, TurboModule is still experimental and subject to change. ' \
     'For more information, please see ' \
-    'https://reactnative.dev/docs/next/new-architecture-app-modules-ios.'
+    'https://reactnative.dev/docs/next/new-architecture-intro.'
   )
 
   # At the moment, Fabric and TurboModule code are intertwined. We need to

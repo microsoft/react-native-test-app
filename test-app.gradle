@@ -50,7 +50,12 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
         settings.includeBuild(reactNativeGradlePlugin)
     }
 
-    if (isNewArchitectureEnabled(settings)) {
+    // This logic is copied from `android/dependencies.gradle`. Importing it
+    // currently causes build failure because `project` is not yet defined.
+    def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+    def usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= 7100
+
+    if (isNewArchitectureEnabled(settings) && !usePrefabs) {
         def reactNativeDir = findNodeModulesPath("react-native", settings.rootDir)
 
         settings.include(":ReactAndroid")

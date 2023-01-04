@@ -191,3 +191,30 @@ To avoid issues, remember to clear out `node_modules` folders before you run
 yarn clean
 yarn
 ```
+
+## Adding Support For New React Native Versions
+
+First, create a new issue using the "New `react-native` version" template,
+update the title, and fill out all the required fields.
+
+When opening a PR, link to the issue that was created, and use the table below
+to paste in screenshots as you test the different configurations:
+
+```markdown
+| Configuration   | Android | iOS  | macOS | Windows |
+| :-------------- | :-----: | :--: | :---: | :-----: |
+| JSC             |  TODO   | TODO | TODO  |  TODO   |
+| Hermes          |  TODO   | TODO | TODO  |  TODO   |
+| Fabric          |  TODO   | TODO | TODO  |  TODO   |
+| Fabric + Hermes |  TODO   | TODO | TODO  |  TODO   |
+```
+
+You can use the test script to both test and capture screenshots. For instance,
+to test 0.71, run:
+
+```sh
+scripts/test-matrix.sh 0.71
+```
+
+At the minimum, we should be testing the lowest supported version (0.64 at the
+time of writing) in addition to the new version.

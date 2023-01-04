@@ -9,7 +9,11 @@ ext {
     minSdkVersion = 23
     targetSdkVersion = 29
 
-    def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+    reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+    autodetectReactNativeVersion = reactNativeVersion == 0 || reactNativeVersion >= 7100
+    enableNewArchitecture = isNewArchitectureEnabled(project)
+    usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= 7100
+
     def useAndroidPlugin_7_2 = reactNativeVersion > 0 && reactNativeVersion < 7100
 
     // We need only set `ndkVersion` when building react-native from source.
@@ -27,7 +31,7 @@ ext {
 
     androidPluginVersion = useAndroidPlugin_7_2
         ? "7.2.2"
-        : "7.3.0"
+        : "7.3.1"
     kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
         ? rootProject.properties["KOTLIN_VERSION"]
         : "1.7.10"
@@ -59,4 +63,15 @@ ext {
         moshiKotlin                 : "com.squareup.moshi:moshi-kotlin:1.14.0",
         moshiKotlinCodegen          : "com.squareup.moshi:moshi-kotlin-codegen:1.14.0",
     ]
+
+    getReactNativeDependencies = {
+        def dependencies = ["com.android.tools.build:gradle:${androidPluginVersion}"]
+
+        if (autodetectReactNativeVersion || enableNewArchitecture) {
+            dependencies << "com.facebook.react:react-native-gradle-plugin"
+            dependencies << "de.undercouch:gradle-download-task:5.3.0"
+        }
+
+        return dependencies
+    }
 }

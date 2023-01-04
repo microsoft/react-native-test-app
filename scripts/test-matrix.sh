@@ -5,7 +5,7 @@ PACKAGE_MANAGER=yarn
 VERSION=${1}
 
 function pod_install {
-  rm -fr $1/Podfile.lock $1/Pods
+  rm -fr $1/Podfile.lock $1/Pods $1/build
   pod install --project-directory=$1
 }
 
@@ -25,7 +25,7 @@ function start_dev_server {
 }
 
 function terminate_dev_server {
-  [[ -z "$(jobs -p)" ]] || kill $(jobs -p)
+  [[ -z "$(jobs -p)" ]] || kill $(jobs -p) || true
 }
 
 function wait_for_user {
@@ -91,6 +91,8 @@ echo
 
 popd 1> /dev/null
 prepare
+# `react-native-safe-area-context` doesn't support latest New Arch changes
+sed -i '' 's/"react-native-safe-area-context": ".[.0-9]*",//' package.json
 
 echo
 echo "┌─────────────────────────────┐"
@@ -100,8 +102,6 @@ echo
 
 sed -i '' 's/#newArchEnabled=true/newArchEnabled=true/' android/gradle.properties
 pushd android 1> /dev/null
-# Due to a bug in Gradle, we need to run this task separately
-./gradlew packageReactNdkDebugLibs
 popd 1> /dev/null
 npm run android -- --no-packager
 wait_for_user "Android app with Fabric is ready for testing"
