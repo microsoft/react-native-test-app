@@ -155,7 +155,7 @@ start windows/Example.sln
 ```
 
 If you choose to use Visual Studio, remember to first set the target platform to
-`x64`. It is set to `ARM` by default.
+`x64`. It may be set to `ARM64` by default.
 
 > **Note:** If you made changes to `app.json` or any other assets, you should
 > re-run `install-windows-test-app` to make sure that the changes are included
