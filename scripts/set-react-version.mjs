@@ -251,14 +251,12 @@ if (!isValidVersion(version)) {
 
   const manifests = ["package.json", "example/package.json"];
   for (const manifestPath of manifests) {
-    const manifest = /** @type {{ devDependencies: Record<string, string>}} */ (
+    const manifest = /** @type {{ devDependencies: Record<string, string | undefined>}} */ (
       readJSONFile(manifestPath)
     );
     for (const packageName of keys(profile)) {
       const version = profile[packageName];
-      if (version) {
-        manifest["devDependencies"][packageName] = version;
-      }
+      manifest["devDependencies"][packageName] = version;
     }
 
     const tmpFile = `${manifestPath}.tmp`;
