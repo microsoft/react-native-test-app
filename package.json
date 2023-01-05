@@ -38,7 +38,7 @@
     "/scripts/*.js",
     "/scripts/apply-config-plugins.mjs",
     "/scripts/config-plugins/**/*.mjs",
-    "/windows/*.{js,props,sln}",
+    "/windows/*.{js,props}",
     "/windows/ReactTestApp"
   ],
   "main": "scripts/configure.js",
