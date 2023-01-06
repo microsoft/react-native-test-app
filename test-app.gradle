@@ -45,7 +45,8 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
         .projectDir = file("${testAppDir}/android/support")
 
     def reactNativeGradlePlugin =
-        findNodeModulesPath("react-native-gradle-plugin", settings.rootDir)
+        findNodeModulesPath("@react-native/gradle-plugin", settings.rootDir)  // >= 0.72
+            ?: findNodeModulesPath("react-native-gradle-plugin", settings.rootDir)  // < 0.72
     if (reactNativeGradlePlugin != null) {
         settings.includeBuild(reactNativeGradlePlugin)
     }
