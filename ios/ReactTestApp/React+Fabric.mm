@@ -1,5 +1,8 @@
 #import "React+Fabric.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
+
 #ifdef USE_FABRIC
 #import <React/RCTFabricSurfaceHostingProxyRootView.h>
 #import <React/RCTSurfacePresenter.h>
@@ -8,6 +11,8 @@
 #else
 #import <React/RCTRootView.h>
 #endif  // USE_FABRIC
+
+#pragma clang diagnostic pop
 
 RTAView *RTACreateReactRootView(RCTBridge *bridge,
                                 NSString *moduleName,
