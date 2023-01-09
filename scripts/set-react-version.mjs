@@ -22,7 +22,7 @@ import { readJSONFile } from "./helpers.js";
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];
 const REACT_NATIVE_VERSIONS = {
-  "canary-macos": "^0.66",
+  "canary-macos": "^0.68",
 };
 
 /**
