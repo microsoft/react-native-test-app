@@ -100,6 +100,7 @@ function findUserProjects(projectDir, projects = []) {
  * Visual Studio (?) currently does not download transitive dependencies. This
  * is a workaround until `react-native-windows` autolinking adds support.
  *
+ * @see {@link https://github.com/microsoft/react-native-windows/issues/9578}
  * @returns {[string, string][]}
  */
 function getNuGetDependencies() {
@@ -184,14 +185,14 @@ function getNuGetDependencies() {
   }
 
   // Remove dependencies managed by us
-  [
-    "microsoft.reactnative",
-    "microsoft.reactnative.cxx",
-    "microsoft.ui.xaml",
-    "microsoft.windows.cppwinrt",
-    "reactnative.hermes.windows",
-    "nlohmann.json",
-  ].forEach((id) => delete packageRefs[id]);
+  const config = path.join(__dirname, "ReactTestApp", "packages.config");
+  const matches = fs
+    .readFileSync(config, textFileReadOptions)
+    .matchAll(/package id="(.+?)"/g);
+  for (const m of matches) {
+    const id = m[1].toLowerCase();
+    delete packageRefs[id];
+  }
 
   return Object.values(packageRefs);
 }
