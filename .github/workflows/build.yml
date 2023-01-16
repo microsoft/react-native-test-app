@@ -329,9 +329,17 @@ jobs:
         run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
         working-directory: example
-      - name: Build ARM
+      - name: Prepare for arm64 build
         run: |
           rm -fr macos/build
+        working-directory: example
+      - name: Install Pods
+        uses: ./.github/actions/cocoapods
+        with:
+          project-directory: macos
+          working-directory: example
+      - name: Build arm64
+        run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
         working-directory: example
     timeout-minutes: 60
