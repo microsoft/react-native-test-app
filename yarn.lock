@@ -10992,6 +10992,7 @@ fsevents@^2.3.2:
     eslint-plugin-jest: ^27.0.0
     fast-xml-parser: ^4.0.0
     jest: ^27.0.0
+    js-yaml: ^4.1.0
     memfs: ^3.3.0
     prettier: ^2.3.1
     prompts: ^2.4.0
