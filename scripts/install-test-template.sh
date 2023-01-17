@@ -38,14 +38,7 @@ yarn
 GIT_IGNORE_FILE=".gitignore" npx react-native init-test-app --destination template-example --name TemplateExample --platform "$platform"
 
 pushd template-example 1> /dev/null
-
-{
-  echo 'enableScripts: false'
-  echo 'enableTelemetry: false'
-  echo 'nodeLinker: node-modules'
-  echo 'npmRegistryServer: "https://registry.npmjs.org"'
-  echo 'yarnPath: ../.yarn/releases/yarn-3.1.1.cjs'
-} >> .yarnrc.yml
+node ../scripts/copy-yarnrc.mjs ../.yarnrc.yml
 
 script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/react-native-test-app-$version.tgz\"/"
 if sed --version &> /dev/null; then
