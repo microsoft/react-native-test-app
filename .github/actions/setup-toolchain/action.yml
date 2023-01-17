@@ -37,7 +37,7 @@ runs:
         java-version: 11
     - name: Set up MSBuild
       if: ${{ inputs.platform == 'windows' }}
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v1.3
     - name: Set up Ruby
       if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' || inputs.platform == 'node' }}
       uses: ruby/setup-ruby@v1.123.0
