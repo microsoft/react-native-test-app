@@ -145,7 +145,7 @@
   "engines": {
     "node": ">=14.15"
   },
-  "packageManager": "yarn@3.1.1",
+  "packageManager": "yarn@3.3.1",
   "resolutions": {
     "@commitlint/is-ignored/semver": "^7.3.7",
     "@expo/config-plugins/glob": "^7.1.6",
