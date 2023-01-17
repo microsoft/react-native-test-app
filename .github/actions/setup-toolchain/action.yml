@@ -27,7 +27,7 @@ runs:
         ccache --zero-stats 1> /dev/null
       shell: bash
     - name: Set up Node.js
-      uses: actions/setup-node@v3.5.1
+      uses: actions/setup-node@v3.6.0
       with:
         node-version: 16
     - name: Set up JDK
