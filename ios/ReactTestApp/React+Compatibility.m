@@ -26,9 +26,9 @@ IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
 }
 
 // MARK: - [0.70.0] Alerts don't show when using UIScene
-// See https://github.com/facebook/react-native/pull/34562
+// See https://github.com/facebook/react-native/pull/35716
 
-#if !TARGET_OS_OSX && REACT_NATIVE_VERSION < 7100
+#if !TARGET_OS_OSX && REACT_NATIVE_VERSION < 7200
 
 #import <React/RCTAlertController.h>
 #import <React/RCTUtils.h>
