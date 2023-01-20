@@ -5657,7 +5657,7 @@ __metadata:
     react: ~17.0.1 || ~18.0.0 || ~18.1.0
     react-native: ^0.0.0-0 || 0.64 - 0.71 || 1000.0.0
     react-native-macos: ^0.0.0-0 || 0.64 || 0.66 || 0.68
-    react-native-windows: ^0.0.0-0 || 0.64 - 0.70
+    react-native-windows: ^0.0.0-0 || 0.64 - 0.71
   languageName: unknown
   linkType: soft
 
@@ -11015,7 +11015,7 @@ fsevents@^2.3.2:
     react: ~17.0.1 || ~18.0.0 || ~18.1.0
     react-native: ^0.0.0-0 || 0.64 - 0.71 || 1000.0.0
     react-native-macos: ^0.0.0-0 || 0.64 || 0.66 || 0.68
-    react-native-windows: ^0.0.0-0 || 0.64 - 0.70
+    react-native-windows: ^0.0.0-0 || 0.64 - 0.71
   peerDependenciesMeta:
     "@expo/config-plugins":
       optional: true
