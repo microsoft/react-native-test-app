@@ -52,7 +52,8 @@ runs:
       id: cache-key-generator
       run: |
         if [[ -f example/${{ inputs.platform }}/Podfile.lock ]]; then
-          echo "cache-key=$(node scripts/shasum.mjs example/${{ inputs.platform }}/Podfile.lock)" >> $GITHUB_OUTPUT
+          clang --version > .clang-version
+          echo "cache-key=$(node scripts/shasum.mjs .clang-version example/${{ inputs.platform }}/Podfile.lock)" >> $GITHUB_OUTPUT
         else
           echo 'cache-key=false' >> $GITHUB_OUTPUT
         fi

@@ -5650,7 +5650,7 @@ __metadata:
     react: 17.0.2
     react-native: ^0.68.2
     react-native-macos: ^0.68.3
-    react-native-safe-area-context: ^4.3.4
+    react-native-safe-area-context: ^4.5.0
     react-native-test-app: "workspace:."
     react-native-windows: ^0.68.8
   peerDependencies:
@@ -10912,8 +10912,8 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native-macos@npm:^0.68.3":
-  version: 0.68.61
-  resolution: "react-native-macos@npm:0.68.61"
+  version: 0.68.62
+  resolution: "react-native-macos@npm:0.68.62"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^7.0.3
@@ -10953,17 +10953,17 @@ fsevents@^2.3.2:
     react: 17.0.2
   bin:
     react-native-macos: cli.js
-  checksum: 2253bc70db0dc13f4c48874b752582dae051e8a58237656feb9f027a7c04292b9326497e97a5cfcece229a21a651060b19878ac037c1c455be3c05acb7c39f37
+  checksum: cf3659310364cebee8c3231de9ba1d3921c8e5703ae7393f7105e5825e7bbeed53dad7409089e42e24de1a98895cb289614e7d30245d1af900ef4f4588c4ea9b
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^4.3.4":
-  version: 4.4.1
-  resolution: "react-native-safe-area-context@npm:4.4.1"
+"react-native-safe-area-context@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "react-native-safe-area-context@npm:4.5.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: ef7c41ea59a34b114c6481fb130e66ef85e8d5b88acb46279131367761ca9fbf22cd310fe613f49b6c9b56dbd83e044be640f0532eda1d3856bf708e96335a35
+  checksum: 958df1d20492aa89c23d746f88409a3a3bd1b0d397c80310a4b0bbec9888cbbeb7579c9c92dad46841e2e6536491806206228ba009b7c8af970670aef8273a30
   languageName: node
   linkType: hard
 
