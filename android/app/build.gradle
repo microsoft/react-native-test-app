@@ -290,14 +290,14 @@ android {
     }
 
     project.ext.signingConfigs.each { name, config ->
-        signingConfigs.register(name) {
-            keyAlias config["keyAlias"]
-                keyPassword config["keyPassword"]
-                storeFile config["storeFile"]
-                storePassword config["storePassword"]
-        }
+        def signingConfig = signingConfigs.findByName(name) ?: signingConfigs.create(name)
+        signingConfig.keyAlias = config["keyAlias"]
+        signingConfig.keyPassword = config["keyPassword"]
+        signingConfig.storeFile = config["storeFile"]
+        signingConfig.storePassword = config["storePassword"]
 
-        buildTypes[name].signingConfig = signingConfigs[name]
+        def buildType = buildTypes.findByName(name) ?: buildTypes.create(name)
+        buildType.signingConfig = signingConfigs[name]
     }
 
     sourceSets {
