@@ -121,8 +121,8 @@ android {
         applicationId project.ext.react.applicationId
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-        versionCode getVersionCode()
-        versionName getVersionName()
+        versionCode project.ext.getVersionCode()
+        versionName project.ext.getVersionName()
 
         def (appManifest, checksum) = validateManifest(rootDir)
         buildConfigField "String", "ReactTestApp_appManifest", "\"${appManifest}\""
