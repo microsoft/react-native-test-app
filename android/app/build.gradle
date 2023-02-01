@@ -289,27 +289,15 @@ android {
         pickFirst "lib/x86/libc++_shared.so"
     }
 
-    def signingDebug = project.ext.signingConfigs["debug"]
-    def signingRelease = project.ext.signingConfigs["release"]
-    if (signingDebug || signingRelease) {
-        signingConfigs {
-            if (signingDebug) {
-                debug {
-                    keyAlias signingDebug["keyAlias"]
-                    keyPassword signingDebug["keyPassword"]
-                    storeFile signingDebug["storeFile"]
-                    storePassword signingDebug["storePassword"]
-                }
-            }
-            if (signingRelease) {
-                release {
-                    keyAlias signingRelease["keyAlias"]
-                    keyPassword signingRelease["keyPassword"]
-                    storeFile signingRelease["storeFile"]
-                    storePassword signingRelease["storePassword"]
-                }
-            }
-        }
+    project.ext.signingConfigs.each { name, config ->
+        def signingConfig = signingConfigs.findByName(name) ?: signingConfigs.create(name)
+        signingConfig.keyAlias = config["keyAlias"]
+        signingConfig.keyPassword = config["keyPassword"]
+        signingConfig.storeFile = config["storeFile"]
+        signingConfig.storePassword = config["storePassword"]
+
+        def buildType = buildTypes.findByName(name) ?: buildTypes.create(name)
+        buildType.signingConfig = signingConfigs[name]
     }
 
     sourceSets {
