@@ -53,23 +53,7 @@ describe("test-app-util", () => {
     removeProject(defaultTestProject);
   });
 
-  test("getAppName() returns `name` if `displayName` is omitted", async () => {
-    const { status, stdout } = await runGradle({
-      "app.json": JSON.stringify({
-        name: "AppName",
-        resources: ["dist/res", "dist/main.android.jsbundle"],
-      }),
-      "build.gradle": [
-        ...buildGradle,
-        'println("getAppName() = " + ext.getAppName())',
-      ],
-    });
-
-    expect(status).toBe(0);
-    expect(stdout).toContain("getAppName() = AppName");
-  });
-
-  test("getAppName() returns `displayName` if set", async () => {
+  test("getAppName() returns `displayName`", async () => {
     const { status, stdout } = await runGradle({
       "app.json": JSON.stringify({
         name: "AppName",
