@@ -281,7 +281,7 @@ export async function generateSchema() {
           versionCode: {
             description: extractBrief(await docs["android.versionCode"]),
             markdownDescription: await docs["android.versionCode"],
-            type: "string",
+            type: "number",
           },
           icons: {
             description: extractBrief(await docs["android.icons"]),
