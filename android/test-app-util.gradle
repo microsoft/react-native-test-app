@@ -252,7 +252,8 @@ ext.validateManifest = { baseDir ->
     def process = Runtime.runtime.exec(cmd, null, baseDir)
     process.waitFor()
 
-    def inputStream = process.getInputStream()
+    def error = process.exitValue() != 0
+    def inputStream = error ? process.getErrorStream() : process.getInputStream()
     def output = new ByteArrayOutputStream()
     def buffer = new byte[1024]
     def length = inputStream.read(buffer)
@@ -262,6 +263,10 @@ ext.validateManifest = { baseDir ->
     }
 
     def result = output.toString(StandardCharsets.UTF_8.name()).trim()
+    if (error) {
+        throw new GradleException(result);
+    }
+
     def checksum = MessageDigest.getInstance("SHA-256").digest(output.toByteArray())
     return [result, checksum.encodeHex().toString()]
 }
