@@ -13,7 +13,8 @@ module.exports = {
         const path = require("node:path");
 
         function normalize(p) {
-          return p.startsWith("\\") ? p.substring(1) : p;
+          // On Windows, paths are prefixed with `/`
+          return p.replace(/^[/\\]([^/\\]+:[/\\])/, "$1");
         }
 
         const projectPath = normalize(project.cwd);
