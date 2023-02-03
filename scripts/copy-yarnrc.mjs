@@ -21,6 +21,8 @@ function main(src, dst) {
   const rc = /** @type {Record<string, string | undefined>} */ (yaml.load(yml));
 
   rc["nmHoistingLimits"] = undefined;
+  rc["plugins"] = undefined;
+
   if (rc.yarnPath) {
     rc["yarnPath"] = path.join(path.dirname(src), rc.yarnPath);
   }
