@@ -12,7 +12,12 @@ module.exports = {
         const fs = require("node:fs");
         const path = require("node:path");
 
-        const manifestPath = path.join(project.cwd, "package.json");
+        function normalize(p) {
+          return p.startsWith("\\") ? p.substring(1) : p;
+        }
+
+        const projectPath = normalize(project.cwd);
+        const manifestPath = path.join(projectPath, "package.json");
         const manifest = fs.readFileSync(manifestPath, { encoding: "utf-8" });
         const { name } = JSON.parse(manifest);
 
@@ -21,11 +26,11 @@ module.exports = {
             continue;
           }
 
-          const nodeModulesPath = path.join(ws.cwd, "node_modules");
+          const nodeModulesPath = path.join(normalize(ws.cwd), "node_modules");
           const linkPath = path.join(nodeModulesPath, name);
 
           fs.rmSync(linkPath, { force: true, maxRetries: 3, recursive: true });
-          fs.symlinkSync(path.relative(nodeModulesPath, project.cwd), linkPath);
+          fs.symlinkSync(path.relative(nodeModulesPath, projectPath), linkPath);
         }
       },
     },
