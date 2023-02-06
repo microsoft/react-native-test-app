@@ -2,7 +2,13 @@ module.exports = {
   name: "plugin-link-project",
   factory: (_require) => ({
     hooks: {
-      afterAllInstalled(project, _options) {
+      afterAllInstalled(project, options) {
+        // This mode is typically used by tools like Renovate or Dependabot to
+        // keep a lockfile up-to-date without incurring the full install cost.
+        if (options.mode === "update-lockfile") {
+          return;
+        }
+
         // As of 3.3.0, Yarn avoids creating circular symlinks. We need to
         // manually create a symlink to the main project after install.
         if (project.configuration.values.get("nodeLinker") !== "node-modules") {
