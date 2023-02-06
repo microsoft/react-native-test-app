@@ -2517,9 +2517,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/eslint-plugin@npm:^0.2.0":
-  version: 0.2.13
-  resolution: "@rnx-kit/eslint-plugin@npm:0.2.13"
+"@rnx-kit/eslint-plugin@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@rnx-kit/eslint-plugin@npm:0.4.0"
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
@@ -2528,7 +2528,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.3.0
   peerDependencies:
     eslint: ">=6.0.0"
-  checksum: b6ce02a83b6c272cfdafebb8c85d4a056e231eb1e64684719abc5b017fea969d8dfb47da6cdc279827706e25275e986a2893c678370abf3aafe19cb16dd6047c
+  checksum: 17971dda803e16756259d84888ead82bd42142a87e0a0af44e1d45c24c21b68efa668167192ffdac3b314352641efb51fceeef2dc4eed20877161c3b811451bd
   languageName: node
   linkType: hard
 
@@ -10979,7 +10979,7 @@ fsevents@^2.3.2:
     "@react-native-community/cli": ^7.0.3
     "@react-native-community/cli-platform-android": ^7.0.1
     "@react-native-community/cli-platform-ios": ^7.0.1
-    "@rnx-kit/eslint-plugin": ^0.2.0
+    "@rnx-kit/eslint-plugin": ^0.4.0
     "@types/jest": ^27.0.0
     "@types/mustache": ^4.0.0
     "@types/node": ^16.0.0
