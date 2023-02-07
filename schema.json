@@ -237,7 +237,7 @@
         "versionCode": {
           "description": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).",
           "markdownDescription": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).\n\nIntroduced in\n[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).",
-          "type": "string"
+          "type": "number"
         },
         "icons": {
           "description": "Path to resources folder containing launcher icons for the app.",
