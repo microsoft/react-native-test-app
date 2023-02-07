@@ -1,5 +1,5 @@
 name: Yarn
-description: Runs `yarn install` and caches downloaded dependencies
+description: Runs `yarn install`
 inputs:
   immutable:
     description: Abort with an error exit code if the lockfile was to be modified
@@ -7,15 +7,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Generate cache key
-      id: cache-key-generator
-      run: echo "cache-key=$(node scripts/shasum.mjs yarn.lock)" >> $GITHUB_OUTPUT
-      shell: bash
-    - name: Cache /.yarn/cache
-      uses: actions/cache@v3
-      with:
-        path: .yarn/cache
-        key: yarn-${{ inputs.immutable }}-${{ steps.cache-key-generator.outputs.cache-key }}
     - name: Install npm dependencies
       if: ${{ inputs.immutable == 'true' }}
       run: yarn
