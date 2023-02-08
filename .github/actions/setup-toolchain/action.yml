@@ -29,7 +29,8 @@ runs:
     - name: Set up Node.js
       uses: actions/setup-node@v3.6.0
       with:
-        node-version: 18
+        # `npm pack` is broken in npm 9.x: https://github.com/npm/npm-packlist/issues/152
+        node-version: 16
         cache: yarn
     - name: Set up JDK
       uses: actions/setup-java@v3.9.0
