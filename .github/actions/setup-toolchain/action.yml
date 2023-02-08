@@ -30,6 +30,7 @@ runs:
       uses: actions/setup-node@v3.6.0
       with:
         node-version: 18
+        cache: yarn
     - name: Set up JDK
       uses: actions/setup-java@v3.9.0
       with:
@@ -53,7 +54,7 @@ runs:
       run: |
         if [[ -f example/${{ inputs.platform }}/Podfile.lock ]]; then
           clang --version > .clang-version
-          echo "cache-key=$(node scripts/shasum.mjs .clang-version example/${{ inputs.platform }}/Podfile.lock)" >> $GITHUB_OUTPUT
+          echo "cache-key=$(node scripts/shasum.mjs .clang-version .yarnrc.yml example/${{ inputs.platform }}/Podfile.lock)" >> $GITHUB_OUTPUT
         else
           echo 'cache-key=false' >> $GITHUB_OUTPUT
         fi
