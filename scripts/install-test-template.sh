@@ -4,6 +4,7 @@ set -eo pipefail
 install=true
 platforms=(all android ios macos windows)
 version=$(node -e 'console.log(require("./package.json").version)')
+tarball=react-native-test-app-$version.$(git rev-parse --short HEAD).tgz
 
 function print_usage {
   echo "usage: $(basename "$0") [-u] <$(IFS=\|; echo "${platforms[*]}")>"
@@ -33,6 +34,7 @@ done
 
 # Use tarballs to ensure that published packages are consumable
 npm pack
+mv react-native-test-app-$version.tgz $tarball
 
 yarn
 GIT_IGNORE_FILE=".gitignore" yarn react-native init-test-app --destination template-example --name TemplateExample --platform "$platform"
@@ -40,7 +42,7 @@ GIT_IGNORE_FILE=".gitignore" yarn react-native init-test-app --destination templ
 pushd template-example 1> /dev/null
 node ../scripts/copy-yarnrc.mjs ../.yarnrc.yml
 
-script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/react-native-test-app-$version.tgz\"/"
+script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/$tarball\"/"
 if sed --version &> /dev/null; then
   sed -i'' "$script" package.json
 else
