@@ -2867,11 +2867,11 @@ __metadata:
   linkType: hard
 
 "@types/react-native@npm:^0.68.0":
-  version: 0.68.10
-  resolution: "@types/react-native@npm:0.68.10"
+  version: 0.68.11
+  resolution: "@types/react-native@npm:0.68.11"
   dependencies:
     "@types/react": ^17
-  checksum: 640b9a93fda39a556a36a370e1f99734a9c8156b3b1ae954795d0df21b6d526d00d13a2b79b04370901ffa97c4b76a6846309bf6e8d6086780a007ff94ed39bd
+  checksum: b8e40aba13a43eb4297ca3400da0dd68070240322942542a8c2b8b7b7dfdf0f9173084ed1771e27288e4306f793e0a54a6ff856f0d9878fe6560ad8feccf2bbe
   languageName: node
   linkType: hard
 
@@ -11087,8 +11087,8 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native@npm:^0.68.2":
-  version: 0.68.5
-  resolution: "react-native@npm:0.68.5"
+  version: 0.68.6
+  resolution: "react-native@npm:0.68.6"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^7.0.3
@@ -11126,7 +11126,7 @@ fsevents@^2.3.2:
     react: 17.0.2
   bin:
     react-native: cli.js
-  checksum: 487b520f5d8baa9094b4e36f4a44221bc48ec51ab8db10523f0b8baffd30a4fdca85381d1c2b8797590db204561f27ec2084fe0835c6084b3a0ef14e85d35fb0
+  checksum: 2458616315c93bbbd412f2c1a0bf8faac57711c0673c0e1c3a2b07778146f5e41cb97d0c8e3912620303fdff4de009834670f29e914bb6139379dea02d7c3070
   languageName: node
   linkType: hard
 
