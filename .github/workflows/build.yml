@@ -4,6 +4,7 @@ on:
     branches:
       - trunk
   pull_request:
+  merge_group:
   schedule:
     # Nightly builds against react-native@nightly at 4:00, Monday through Friday
     - cron: 0 4 * * 1-5
