@@ -10912,8 +10912,8 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native-macos@npm:^0.68.3":
-  version: 0.68.62
-  resolution: "react-native-macos@npm:0.68.62"
+  version: 0.68.64
+  resolution: "react-native-macos@npm:0.68.64"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^7.0.3
@@ -10953,7 +10953,7 @@ fsevents@^2.3.2:
     react: 17.0.2
   bin:
     react-native-macos: cli.js
-  checksum: cf3659310364cebee8c3231de9ba1d3921c8e5703ae7393f7105e5825e7bbeed53dad7409089e42e24de1a98895cb289614e7d30245d1af900ef4f4588c4ea9b
+  checksum: 54ba76a8864e6ad85f7e291cf32b04346ee6a4fc07d1b56c5619a454d9b37d0d783c0f697af0afd6aa6696a63886101dff20deff5b14794ea1c4262d6f532bd5
   languageName: node
   linkType: hard
 
