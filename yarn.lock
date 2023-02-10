@@ -2087,6 +2087,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/openapi-types@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "@octokit/openapi-types@npm:16.0.0"
+  checksum: 844f30a545da380d63c712e0eb733366bc567d1aab34529c79fdfbec3d73810e81d83f06fdab13058a5cbc7dae786db1a9b90b5b61b1e606854ee45d5ec5f194
+  languageName: node
+  linkType: hard
+
 "@octokit/plugin-paginate-rest@npm:^3.0.0":
   version: 3.0.0
   resolution: "@octokit/plugin-paginate-rest@npm:3.0.0"
@@ -2116,6 +2123,18 @@ __metadata:
   peerDependencies:
     "@octokit/core": ">=3"
   checksum: 88ba028da00f73cf8a0471e9ffe0da2ba61c15b91fbaf252e33863bd4115db7dcd3bd426f22a01c7492affe89e37117fc3f0d15569cd5cf5a4b978f1bc22738b
+  languageName: node
+  linkType: hard
+
+"@octokit/plugin-rest-endpoint-methods@npm:^7.0.0":
+  version: 7.0.1
+  resolution: "@octokit/plugin-rest-endpoint-methods@npm:7.0.1"
+  dependencies:
+    "@octokit/types": ^9.0.0
+    deprecation: ^2.3.1
+  peerDependencies:
+    "@octokit/core": ">=3"
+  checksum: cdb8734ec960f75acc2405284920c58efac9a71b1c3b2a71662b9100ffbc22dac597150acff017a93459c57e9a492d9e1c27872b068387dbb90597de75065fcf
   languageName: node
   linkType: hard
 
@@ -2162,6 +2181,15 @@ __metadata:
   dependencies:
     "@octokit/openapi-types": ^12.10.0
   checksum: e8854fefd24003423bb03c3530449d1b390d340dc21f078a34adfa89a356138e9ab8f02493c6aa1e1bd101f630658dce24877e0615c130911fac8adc721eac42
+  languageName: node
+  linkType: hard
+
+"@octokit/types@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@octokit/types@npm:9.0.0"
+  dependencies:
+    "@octokit/openapi-types": ^16.0.0
+  checksum: 5c7f5cca8f00f7c4daa0d00f4fe991c1598ec47cd6ced50b1c5fbe9721bb9dee0adc2acdee265a3a715bb984e53ef3dc7f1cfb7326f712c6d809d59fc5c6648d
   languageName: node
   linkType: hard
 
@@ -12454,17 +12482,17 @@ fsevents@^2.3.2:
   linkType: hard
 
 "suggestion-bot@npm:^1.0.0":
-  version: 1.3.5
-  resolution: "suggestion-bot@npm:1.3.5"
+  version: 1.3.6
+  resolution: "suggestion-bot@npm:1.3.6"
   dependencies:
     "@octokit/core": ^4.0.0
-    "@octokit/plugin-rest-endpoint-methods": ^6.0.0
+    "@octokit/plugin-rest-endpoint-methods": ^7.0.0
     azure-devops-node-api: ^11.0.0
     commander: ^8.1.0
     parse-diff: ^0.10.0
   bin:
     suggestion-bot: cli.js
-  checksum: a3b8aa440f8bdc0d4b32379c8decdfb49a735803f464171f08ebe79d7fd4656695fd3a630611f9effb02ced57d455d5d6f160258c9282f32b919de08469288be
+  checksum: 2146c1b213ef33226894fb94df029af7766695b0390d9db61a61dd63054275d1e9844b32c71602ee2c2c790f4fe3b09abe5258018871f981ea49acedde70b27a
   languageName: node
   linkType: hard
 
