@@ -1,7 +1,4 @@
 GEM
-  specs:
-
-GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (3.0.5)
@@ -47,10 +44,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  minitest!
-  rubocop!
-  rubocop-minitest!
-  xcodeproj!
+  minitest
+  rubocop
+  rubocop-minitest
+  xcodeproj
 
 BUNDLED WITH
    2.3.11
