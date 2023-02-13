@@ -7,15 +7,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Generate cache key
-      id: cache-key-generator
-      run: echo "cache-key=$(node scripts/shasum.mjs yarn.lock)" >> $GITHUB_OUTPUT
-      shell: bash
-    - name: Cache /.yarn/cache
-      uses: actions/cache@v3
-      with:
-        path: .yarn/cache
-        key: yarn-true-${{ steps.cache-key-generator.outputs.cache-key }}
     - name: Install
       run: |
         scripts/install-test-template.sh ${{ inputs.platform }}
