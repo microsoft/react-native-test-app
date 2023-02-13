@@ -1367,13 +1367,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-plugins@npm:^5.0.0":
-  version: 5.0.4
-  resolution: "@expo/config-plugins@npm:5.0.4"
+"@expo/config-plugins@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@expo/config-plugins@npm:6.0.0"
   dependencies:
-    "@expo/config-types": ^47.0.0
-    "@expo/json-file": 8.2.36
-    "@expo/plist": 0.0.18
+    "@expo/config-types": ^48.0.0
+    "@expo/json-file": ~8.2.37
+    "@expo/plist": ^0.0.20
     "@expo/sdk-runtime-versions": ^1.0.0
     "@react-native/normalize-color": ^2.0.0
     chalk: ^4.1.2
@@ -1386,36 +1386,36 @@ __metadata:
     slash: ^3.0.0
     xcode: ^3.0.1
     xml2js: 0.4.23
-  checksum: 9fc5e19a92e105d200aeb7ed28607c2e4e8dcf2b7256c8bae32b2f30ccb5139fbe4854df8c6d6db0bb80e254ddb48a82665043582e7044b4ba1888448909c818
+  checksum: bc3598c38ecef4c673c654632284068f093c33a71725e7f35c889936ffacd92477674c76e13501668f7535d90a8c4629ea727994a7fc3aee380e28ce49cf3604
   languageName: node
   linkType: hard
 
-"@expo/config-types@npm:^47.0.0":
-  version: 47.0.0
-  resolution: "@expo/config-types@npm:47.0.0"
-  checksum: bb26456bed60bedb7a2482cb475ab539d34da177d9eb49384f599ea85ad0d0c8bb35f97c181e01454a925320021607472f83c8f456f239a6b329c8bf82044d9c
+"@expo/config-types@npm:^48.0.0":
+  version: 48.0.0
+  resolution: "@expo/config-types@npm:48.0.0"
+  checksum: 11c4b0bb5c1b4a8623c26ed5766297568385cf8e6b1444aa606c62306ea8dd5d8ecee4b52e8ba82dcaf749ffca5cde750afeef5a7a01750bca2360987f26e686
   languageName: node
   linkType: hard
 
-"@expo/json-file@npm:8.2.36":
-  version: 8.2.36
-  resolution: "@expo/json-file@npm:8.2.36"
+"@expo/json-file@npm:~8.2.37":
+  version: 8.2.37
+  resolution: "@expo/json-file@npm:8.2.37"
   dependencies:
     "@babel/code-frame": ~7.10.4
-    json5: ^1.0.1
+    json5: ^2.2.2
     write-file-atomic: ^2.3.0
-  checksum: 37ce80b3472fef2a56136ebff5993d98ab4fbd45c4d7791ff47be80438dbeabd84bc699a401da0c314357ef65d8fff87a5a1241b3119db2d575878f9321bd1e7
+  checksum: f04e71654c5b3491bbb7088a02d64acf8e7750369fd48f4d55c64ff4372b5396bdef05a8eff51955e0b098e0069e63281f3c40dc6d3b71aec62295861b1236a6
   languageName: node
   linkType: hard
 
-"@expo/plist@npm:0.0.18":
-  version: 0.0.18
-  resolution: "@expo/plist@npm:0.0.18"
+"@expo/plist@npm:^0.0.20":
+  version: 0.0.20
+  resolution: "@expo/plist@npm:0.0.20"
   dependencies:
-    "@xmldom/xmldom": ~0.7.0
+    "@xmldom/xmldom": ~0.7.7
     base64-js: ^1.2.3
     xmlbuilder: ^14.0.0
-  checksum: 42f5743fcd2a07b55a9f048d27cf0f273510ab35dde1f7030b22dc8c30ab2cfb65c6e68f8aa58fbcfa00177fdc7c9696d0004083c9a47c36fd4ac7fea27d6ccc
+  checksum: 74dea791f86ca29541e94c00d7e0d044b1ccb7947a6f62b18569a85baa4572190c0cbd0973bf97eec9b5f207f45ebb55b8975bd200e5933b237e4d2d2dc12194
   languageName: node
   linkType: hard
 
@@ -3094,7 +3094,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xmldom/xmldom@npm:^0.7.7, @xmldom/xmldom@npm:~0.7.0":
+"@xmldom/xmldom@npm:^0.7.7, @xmldom/xmldom@npm:~0.7.7":
   version: 0.7.9
   resolution: "@xmldom/xmldom@npm:0.7.9"
   checksum: 66e37b7800132f891b885b2eceeeebc53f60b69789da10276f1584256b963d79a28c7ae2071bc53a9cd842d9b03554c761b2701fe8036d6052f26bcd0ae8f2bb
@@ -8154,17 +8154,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"json5@npm:^1.0.1":
-  version: 1.0.2
-  resolution: "json5@npm:1.0.2"
-  dependencies:
-    minimist: ^1.2.0
-  bin:
-    json5: lib/cli.js
-  checksum: 866458a8c58a95a49bef3adba929c625e82532bcff1fe93f01d29cb02cac7c3fe1f4b79951b7792c2da9de0b32871a8401a6e3c5b36778ad852bf5b8a61165d7
-  languageName: node
-  linkType: hard
-
 "json5@npm:^2.2.2":
   version: 2.2.3
   resolution: "json5@npm:2.2.3"
@@ -11002,7 +10991,7 @@ fsevents@^2.3.2:
     "@babel/core": ^7.0.0
     "@commitlint/cli": ^17.0.0
     "@commitlint/config-conventional": ^17.0.0
-    "@expo/config-plugins": ^5.0.0
+    "@expo/config-plugins": ^6.0.0
     "@microsoft/eslint-plugin-sdl": ^0.2.0
     "@react-native-community/cli": ^7.0.3
     "@react-native-community/cli-platform-android": ^7.0.1
@@ -11035,7 +11024,7 @@ fsevents@^2.3.2:
     uuid: ^8.3.2
     yargs: ^16.0.0
   peerDependencies:
-    "@expo/config-plugins": ^5.0.0
+    "@expo/config-plugins": ">=5.0"
     "@react-native-community/cli": ">=5.0"
     "@react-native-community/cli-platform-android": ">=5.0"
     "@react-native-community/cli-platform-ios": ">=5.0"
