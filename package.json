@@ -80,7 +80,7 @@
     "yargs": "^16.0.0"
   },
   "peerDependencies": {
-    "@expo/config-plugins": "^5.0.0",
+    "@expo/config-plugins": ">=5.0",
     "@react-native-community/cli": ">=5.0",
     "@react-native-community/cli-platform-android": ">=5.0",
     "@react-native-community/cli-platform-ios": ">=5.0",
@@ -117,7 +117,7 @@
     "@babel/core": "^7.0.0",
     "@commitlint/cli": "^17.0.0",
     "@commitlint/config-conventional": "^17.0.0",
-    "@expo/config-plugins": "^5.0.0",
+    "@expo/config-plugins": "^6.0.0",
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^7.0.3",
     "@react-native-community/cli-platform-android": "^7.0.1",
