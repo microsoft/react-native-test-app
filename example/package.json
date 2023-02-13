@@ -23,7 +23,8 @@
     "react-native-windows": "^0.0.0-0 || 0.64 - 0.71"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
     "@types/jest": "^27.0.0",
     "@types/react-native": "^0.68.0",
     "jest": "^27.0.0",
