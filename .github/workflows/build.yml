@@ -113,7 +113,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
         run: |
           echo "::add-matcher::.github/swiftformat.json"
-          yarn format:swift -- --lint
+          yarn format:swift --lint
           echo "::remove-matcher owner=swiftformat::"
       - name: SwiftLint
         if: ${{ matrix.platform == 'macos' }}
@@ -139,7 +139,7 @@ jobs:
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version -- nightly
+          yarn set-react-version nightly
           rm example/ios/Podfile.lock
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -228,7 +228,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           git apply scripts/android-nightly.patch
-          yarn set-react-version -- nightly
+          yarn set-react-version nightly
         shell: bash
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -300,7 +300,7 @@ jobs:
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version -- canary-macos
+          yarn set-react-version canary-macos
           rm example/macos/Podfile.lock
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -425,7 +425,7 @@ jobs:
           if ("${{ matrix.configuration }}" -eq "Release") {
             yarn ci:windows --release --arch ${{ matrix.platform }}
           } else {
-            yarn ci:windows -- --arch ${{ matrix.platform }}
+            yarn ci:windows --arch ${{ matrix.platform }}
           }
         working-directory: example/windows
       - name: Test
