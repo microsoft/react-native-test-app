@@ -408,7 +408,7 @@ jobs:
       - name: Build bundle and create solution
         run: |
           yarn build:windows
-          yarn --package react-native-test-app install-windows-test-app --use-nuget
+          yarn install-windows-test-app --use-nuget
         working-directory: example
       - name: Test `react-native config`
         run: |
