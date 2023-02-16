@@ -13,6 +13,6 @@ runs:
       shell: bash
     - name: react-native init-test-app
       run: |
-        npx react-native init-test-app --destination test-app --name TestApp --platform ${{ inputs.platform }}
+        yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ inputs.platform }}
       shell: bash
       working-directory: template-example
