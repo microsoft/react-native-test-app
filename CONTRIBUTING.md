@@ -33,6 +33,10 @@ delimiters.
 
 Following this is necessary to pass CI.
 
+> Note that if you need to push additional changes to an existing PR, you don't
+> need to follow this convention. We squash all commits before merging. Only the
+> first commit needs to adhere.
+
 ## Additional Dependencies
 
 - Node LTS (see [releases](https://nodejs.org/en/about/releases/) for specific
