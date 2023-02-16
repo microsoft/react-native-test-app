@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
+GIT_IGNORE_FILE=".gitignore"
 PACKAGE_MANAGER=yarn
 VERSION=${1}
 
@@ -59,7 +60,7 @@ echo "│  Build Android  │"
 echo "└─────────────────┘"
 echo
 
-npm run android -- --no-packager
+yarn android --no-packager
 wait_for_user "Android app is ready for testing"
 
 echo
@@ -69,7 +70,7 @@ echo "└─────────────┘"
 echo
 
 pod_install ios
-npm run ios -- --no-packager
+yarn ios --no-packager
 wait_for_user "iOS app is ready for testing"
 
 echo
@@ -80,7 +81,7 @@ echo
 
 sed -i '' 's/:hermes_enabled => false/:hermes_enabled => true/' ios/Podfile
 pod_install ios
-npm run ios -- --no-packager
+yarn ios --no-packager
 wait_for_user "iOS app with Hermes is ready for testing"
 
 echo
@@ -103,7 +104,7 @@ echo
 sed -i '' 's/#newArchEnabled=true/newArchEnabled=true/' android/gradle.properties
 pushd android 1> /dev/null
 popd 1> /dev/null
-npm run android -- --no-packager
+yarn android --no-packager
 wait_for_user "Android app with Fabric is ready for testing"
 
 echo
@@ -114,7 +115,7 @@ echo
 
 sed -i '' 's/:turbomodule_enabled => false/:turbomodule_enabled => true/' ios/Podfile
 pod_install ios
-npm run ios -- --no-packager
+yarn ios --no-packager
 wait_for_user "iOS app with Fabric is ready for testing"
 
 echo
@@ -125,7 +126,15 @@ echo
 
 sed -i '' 's/:hermes_enabled => false/:hermes_enabled => true/' ios/Podfile
 pod_install ios
-npm run ios -- --no-packager
+yarn ios --no-packager
 wait_for_user "iOS app with Fabric + Hermes is ready for testing"
 
 popd 1> /dev/null
+
+echo
+echo "┌─────────────────────┐"
+echo "│  Initialize new app │"
+echo "└─────────────────────┘"
+echo
+
+yarn react-native init-test-app --destination template-example --name TemplateExample --platform android,ios

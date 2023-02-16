@@ -49,17 +49,21 @@ function inferProjectName() {
  * @returns {import("./scripts/configure").Platform[]}
  */
 function sanitizePlatformChoice(choice) {
-  switch (choice) {
-    case "all":
-      return ["android", "ios", "macos", "windows"];
-    case "android":
-    case "ios":
-    case "macos":
-    case "windows":
-      return [choice];
-    default:
-      throw new Error(`Unknown platform: ${choice}`);
+  const platforms = choice.split(",");
+  for (const platform of choice.split(",")) {
+    switch (platform) {
+      case "all":
+        return ["android", "ios", "macos", "windows"];
+      case "android":
+      case "ios":
+      case "macos":
+      case "windows":
+        continue;
+      default:
+        throw new Error(`Unknown platform: ${platform}`);
+    }
   }
+  return platforms;
 }
 
 /** @type {{ commands: Command<{ destination: string; name: string; platform: string; }>[] }} */
