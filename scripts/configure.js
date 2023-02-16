@@ -430,9 +430,16 @@ const getConfig = (() => {
             ...(!init
               ? undefined
               : {
-                  "App.js": {
-                    source: path.join(templateDir, "App.js"),
-                  },
+                  // starting with RN 0.71, App.js is no longer in the template
+                  ...(fs.existsSync(path.join(templateDir, "App.tsx"))
+                    ? {
+                        "App.tsx": {
+                          source: path.join(templateDir, "App.tsx"),
+                        },
+                      }
+                    : {
+                        "App.js": { source: path.join(templateDir, "App.js") },
+                      }),
                   "app.json": serialize({
                     name,
                     displayName: name,
