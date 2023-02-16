@@ -3,19 +3,16 @@
 
 describe("npm pack", () => {
   const { spawnSync } = require("node:child_process");
+  const os = require("os");
 
   // Ensure we include all files regardless of future changes in `npm-packlist`.
   // For more details, see https://github.com/npm/npm-packlist/issues/152.
   test("includes all files", () => {
-    const { status, stdout, stderr } = spawnSync(
-      "npm",
+    const { status, stdout } = spawnSync(
+      os.platform() === "win32" ? "npm.cmd" : "npm",
       ["pack", "--silent", "--dry-run", "--json"],
       { encoding: "utf-8" }
     );
-
-    if (stderr) {
-      console.error(stderr);
-    }
 
     expect(status).toBe(0);
 
