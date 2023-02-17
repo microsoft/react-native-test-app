@@ -123,7 +123,7 @@ jobs:
           echo "::remove-matcher owner=swiftlint::"
       - name: Smoke test `set-react-version`
         run: |
-          yarn set-react-version 0.66
+          npm run set-react-version -- 0.66
     timeout-minutes: 60
   ios:
     name: "iOS"
@@ -139,7 +139,7 @@ jobs:
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version nightly
+          npm run set-react-version -- nightly
           rm example/ios/Podfile.lock
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -228,7 +228,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           git apply scripts/android-nightly.patch
-          yarn set-react-version nightly
+          npm run set-react-version -- nightly
         shell: bash
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -300,7 +300,7 @@ jobs:
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version canary-macos
+          npm run set-react-version -- canary-macos
           rm example/macos/Podfile.lock
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
@@ -399,7 +399,7 @@ jobs:
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          yarn set-react-version canary-windows
+          npm run set-react-version -- canary-windows
         shell: bash
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
