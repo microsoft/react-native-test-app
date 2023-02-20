@@ -9,7 +9,7 @@ describe("reactNativeConfig()", () => {
     const genericConfig = reactNativeConfig(mockParams());
     expect(genericConfig).toContain("android: {");
     expect(genericConfig).toContain("ios: {");
-    expect(genericConfig).toContain("windows: fs.exists");
+    expect(genericConfig).toContain("windows: {");
 
     const withFlattenOnly = mockParams({ flatten: true });
     expect(reactNativeConfig(withFlattenOnly)).toEqual(genericConfig);
@@ -23,30 +23,30 @@ describe("reactNativeConfig()", () => {
 
   test("returns Android specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["android"], flatten: true });
-    expect(reactNativeConfig(params)).toContain("androidManifestPath");
-    expect(reactNativeConfig(params)).not.toContain("iosProjectPath");
-    expect(reactNativeConfig(params)).not.toContain("windowsProjectPath");
+    expect(reactNativeConfig(params)).toContain("android: {");
+    expect(reactNativeConfig(params)).not.toContain("ios: {");
+    expect(reactNativeConfig(params)).not.toContain("windows: {");
   });
 
   test("returns iOS specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["ios"], flatten: true });
-    expect(reactNativeConfig(params)).not.toContain("androidManifestPath");
-    expect(reactNativeConfig(params)).toContain("iosProjectPath");
-    expect(reactNativeConfig(params)).not.toContain("windowsProjectPath");
+    expect(reactNativeConfig(params)).not.toContain("android: {");
+    expect(reactNativeConfig(params)).toContain("ios: {");
+    expect(reactNativeConfig(params)).not.toContain("windows: {");
   });
 
   test("returns macOS specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["macos"], flatten: true });
-    expect(reactNativeConfig(params)).not.toContain("androidManifestPath");
-    expect(reactNativeConfig(params)).toContain("iosProjectPath");
-    expect(reactNativeConfig(params)).not.toContain("windowsProjectPath");
+    expect(reactNativeConfig(params)).not.toContain("android: {");
+    expect(reactNativeConfig(params)).toContain("ios: {");
+    expect(reactNativeConfig(params)).not.toContain("windows: {");
   });
 
   test("returns Windows specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["windows"], flatten: true });
-    expect(reactNativeConfig(params)).not.toContain("androidManifestPath");
-    expect(reactNativeConfig(params)).not.toContain("iosProjectPath");
-    expect(reactNativeConfig(params)).toContain("windowsProjectPath");
+    expect(reactNativeConfig(params)).not.toContain("android: {");
+    expect(reactNativeConfig(params)).not.toContain("ios: {");
+    expect(reactNativeConfig(params)).toContain("windows: {");
   });
 
   test("throws when an unknown platform is specified", () => {

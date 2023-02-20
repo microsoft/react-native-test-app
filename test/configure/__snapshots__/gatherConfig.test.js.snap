@@ -26,15 +26,12 @@ use_test_app!
     },
     "react-native.config.js": "const project = (() => {
   try {
-    const { iosProjectPath } = require(\\"react-native-test-app\\");
-    const project = iosProjectPath(\\".\\");
-    return project
-      ? {
-          ios: {
-            project,
-          },
-        }
-      : undefined;
+    const { configureProjects } = require(\\"react-native-test-app\\");
+    return configureProjects({
+      ios: {
+        sourceDir: \\".\\",
+      },
+    });
   } catch (_) {
     return undefined;
   }
@@ -139,27 +136,20 @@ use_test_app!
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
-  const fs = require(\\"fs\\");
-  const path = require(\\"path\\");
   try {
-    const {
-      androidManifestPath,
-      iosProjectPath,
-      windowsProjectPath,
-    } = require(\\"react-native-test-app\\");
-    const iosProject = iosProjectPath(\\"ios\\");
-    return {
+    const { configureProjects } = require(\\"react-native-test-app\\");
+    return configureProjects({
       android: {
         sourceDir: \\"android\\",
-        manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
       },
-      windows: fs.existsSync(\\"windows/Test.sln\\") && {
+      ios: {
+        sourceDir: \\"ios\\",
+      },
+      windows: {
         sourceDir: \\"windows\\",
-        solutionFile: \\"Test.sln\\",
-        project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
+        solutionFile: \\"windows/Test.sln\\",
       },
-      ...(iosProject ? { ios: { project: iosProject } } : undefined),
-    };
+    });
   } catch (_) {
     return undefined;
   }
@@ -212,27 +202,20 @@ Object {
       "source": "example/metro.config.js",
     },
     "common/react-native.config.js": "const project = (() => {
-  const fs = require(\\"fs\\");
-  const path = require(\\"path\\");
   try {
-    const {
-      androidManifestPath,
-      iosProjectPath,
-      windowsProjectPath,
-    } = require(\\"react-native-test-app\\");
-    const iosProject = iosProjectPath(\\"ios\\");
-    return {
+    const { configureProjects } = require(\\"react-native-test-app\\");
+    return configureProjects({
       android: {
         sourceDir: \\"android\\",
-        manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
       },
-      windows: fs.existsSync(\\"windows/Test.sln\\") && {
+      ios: {
+        sourceDir: \\"ios\\",
+      },
+      windows: {
         sourceDir: \\"windows\\",
-        solutionFile: \\"Test.sln\\",
-        project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
+        solutionFile: \\"windows/Test.sln\\",
       },
-      ...(iosProject ? { ios: { project: iosProject } } : undefined),
-    };
+    });
   } catch (_) {
     return undefined;
   }
@@ -246,27 +229,20 @@ module.exports = {
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
-  const fs = require(\\"fs\\");
-  const path = require(\\"path\\");
   try {
-    const {
-      androidManifestPath,
-      iosProjectPath,
-      windowsProjectPath,
-    } = require(\\"react-native-test-app\\");
-    const iosProject = iosProjectPath(\\"ios\\");
-    return {
+    const { configureProjects } = require(\\"react-native-test-app\\");
+    return configureProjects({
       android: {
         sourceDir: \\"android\\",
-        manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
       },
-      windows: fs.existsSync(\\"windows/Test.sln\\") && {
+      ios: {
+        sourceDir: \\"ios\\",
+      },
+      windows: {
         sourceDir: \\"windows\\",
-        solutionFile: \\"Test.sln\\",
-        project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
+        solutionFile: \\"windows/Test.sln\\",
       },
-      ...(iosProject ? { ios: { project: iosProject } } : undefined),
-    };
+    });
   } catch (_) {
     return undefined;
   }
@@ -309,27 +285,20 @@ use_test_app!
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
-  const fs = require(\\"fs\\");
-  const path = require(\\"path\\");
   try {
-    const {
-      androidManifestPath,
-      iosProjectPath,
-      windowsProjectPath,
-    } = require(\\"react-native-test-app\\");
-    const iosProject = iosProjectPath(\\"ios\\");
-    return {
+    const { configureProjects } = require(\\"react-native-test-app\\");
+    return configureProjects({
       android: {
         sourceDir: \\"android\\",
-        manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
       },
-      windows: fs.existsSync(\\"windows/Test.sln\\") && {
+      ios: {
+        sourceDir: \\"ios\\",
+      },
+      windows: {
         sourceDir: \\"windows\\",
-        solutionFile: \\"Test.sln\\",
-        project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
+        solutionFile: \\"windows/Test.sln\\",
       },
-      ...(iosProject ? { ios: { project: iosProject } } : undefined),
-    };
+    });
   } catch (_) {
     return undefined;
   }
@@ -443,27 +412,20 @@ use_test_app!
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
-  const fs = require(\\"fs\\");
-  const path = require(\\"path\\");
   try {
-    const {
-      androidManifestPath,
-      iosProjectPath,
-      windowsProjectPath,
-    } = require(\\"react-native-test-app\\");
-    const iosProject = iosProjectPath(\\"ios\\");
-    return {
+    const { configureProjects } = require(\\"react-native-test-app\\");
+    return configureProjects({
       android: {
         sourceDir: \\"android\\",
-        manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
       },
-      windows: fs.existsSync(\\"windows/Test.sln\\") && {
+      ios: {
+        sourceDir: \\"ios\\",
+      },
+      windows: {
         sourceDir: \\"windows\\",
-        solutionFile: \\"Test.sln\\",
-        project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
+        solutionFile: \\"windows/Test.sln\\",
       },
-      ...(iosProject ? { ios: { project: iosProject } } : undefined),
-    };
+    });
   } catch (_) {
     return undefined;
   }
@@ -584,27 +546,20 @@ use_test_app!
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
-  const fs = require(\\"fs\\");
-  const path = require(\\"path\\");
   try {
-    const {
-      androidManifestPath,
-      iosProjectPath,
-      windowsProjectPath,
-    } = require(\\"react-native-test-app\\");
-    const iosProject = iosProjectPath(\\"ios\\");
-    return {
+    const { configureProjects } = require(\\"react-native-test-app\\");
+    return configureProjects({
       android: {
         sourceDir: \\"android\\",
-        manifestPath: androidManifestPath(path.join(__dirname, \\"android\\")),
       },
-      windows: fs.existsSync(\\"windows/Test.sln\\") && {
+      ios: {
+        sourceDir: \\"ios\\",
+      },
+      windows: {
         sourceDir: \\"windows\\",
-        solutionFile: \\"Test.sln\\",
-        project: windowsProjectPath(path.join(__dirname, \\"windows\\")),
+        solutionFile: \\"windows/Test.sln\\",
       },
-      ...(iosProject ? { ios: { project: iosProject } } : undefined),
-    };
+    });
   } catch (_) {
     return undefined;
   }

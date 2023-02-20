@@ -9,7 +9,7 @@ const fs = require("fs");
 const fsp = require("fs/promises");
 const path = require("path");
 const semver = require("semver");
-const { getPackageVersion, readJSONFile } = require("./helpers");
+const { findNearest, getPackageVersion, readJSONFile } = require("./helpers");
 
 /**
  * @typedef {{ source: string; }} FileCopy;
@@ -43,7 +43,30 @@ const { getPackageVersion, readJSONFile } = require("./helpers");
  *   force: boolean;
  *   init: boolean;
  * }} ConfigureParams;
+ *
+ * @typedef {{
+ *   android?: { sourceDir: string; };
+ *   ios?: { sourceDir: string; };
+ *   windows?: { sourceDir: string; solutionFile: string; };
+ * }} ProjectConfig
+ *
+ * @typedef {{
+ *   android: {
+ *     sourceDir: string;
+ *     manifestPath: string;
+ *   };
+ *   ios: {
+ *     sourceDir?: string;
+ *     project?: string;
+ *   };
+ *   windows: {
+ *     sourceDir: string;
+ *     solutionFile: string;
+ *     project: { projectFile: string; };
+ *   };
+ * }} ProjectParams
  */
+const cliPlatformIOS = "@react-native-community/cli-platform-ios";
 
 /**
  * Prints an error message to the console.
@@ -147,9 +170,17 @@ function projectRelativePath({
  * @param {string} versionRange
  * @returns {boolean}
  */
-function packageSatisfiesVersionRange(pkg, versionRange) {
-  return semver.satisfies(getPackageVersion(pkg), versionRange);
-}
+const packageSatisfiesVersionRange = (() => {
+  /** @type {Record<string, string>} */
+  const cache = {};
+  /** @type {(pkg: string, versionRange: string) => boolean} */
+  return (pkg, versionRange) => {
+    if (!cache[pkg]) {
+      cache[pkg] = getPackageVersion(pkg);
+    }
+    return semver.satisfies(cache[pkg], versionRange);
+  };
+})();
 
 /**
  * Converts an object or value to a pretty JSON string.
@@ -229,8 +260,6 @@ function androidManifestPath(sourceDir) {
  * @returns {string | undefined}
  */
 function iosProjectPath(sourceDir) {
-  const cliPlatformIOS = "@react-native-community/cli-platform-ios";
-
   const needsDummyProject = packageSatisfiesVersionRange(
     cliPlatformIOS,
     "<5.0.2"
@@ -257,7 +286,7 @@ function iosProjectPath(sourceDir) {
 
 /**
  * @param {string} sourceDir
- * @returns {{ projectFile: string }}
+ * @returns {ProjectParams["windows"]["project"]}
  */
 function windowsProjectPath(sourceDir) {
   return {
@@ -275,6 +304,53 @@ function windowsProjectPath(sourceDir) {
 }
 
 /**
+ * @param {ProjectConfig} configuration
+ * @returns {Partial<ProjectParams>}
+ */
+function configureProjects({ android, ios, windows }) {
+  const reactNativeConfig = findNearest("react-native.config.js");
+  if (!reactNativeConfig) {
+    throw new Error("Failed to find `react-native.config.js`");
+  }
+
+  /** @type {Partial<ProjectParams>} */
+  const config = {};
+  const projectRoot = path.dirname(reactNativeConfig);
+
+  if (android) {
+    config.android = {
+      sourceDir: android.sourceDir,
+      manifestPath: androidManifestPath(
+        path.resolve(projectRoot, android.sourceDir)
+      ),
+    };
+  }
+
+  if (ios) {
+    // `ios.sourceDir` was added in 8.0.0
+    // https://github.com/react-native-community/cli/commit/25eec7c695f09aea0ace7c0b591844fe8828ccc5
+    config.ios = packageSatisfiesVersionRange(cliPlatformIOS, ">=8.0.0")
+      ? ios
+      : undefined;
+    const project = iosProjectPath(path.basename(ios.sourceDir));
+    if (project) {
+      config.ios = config.ios ?? {};
+      config.ios.project = project;
+    }
+  }
+
+  if (windows && fs.existsSync(windows.solutionFile)) {
+    config.windows = {
+      sourceDir: windows.sourceDir,
+      solutionFile: path.relative(windows.sourceDir, windows.solutionFile),
+      project: windowsProjectPath(path.resolve(projectRoot, windows.sourceDir)),
+    };
+  }
+
+  return config;
+}
+
+/**
  * Returns the appropriate `react-native.config.js` for specified parameters.
  * @param {ConfigureParams} params
  * @returns {string | FileCopy}
@@ -287,13 +363,12 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
         return join(
           "const project = (() => {",
           "  try {",
-          '    const { androidManifestPath } = require("react-native-test-app");',
-          "    return {",
+          '    const { configureProjects } = require("react-native-test-app");',
+          "    return configureProjects({",
           "      android: {",
           '        sourceDir: ".",',
-          "        manifestPath: androidManifestPath(__dirname),",
           "      },",
-          "    };",
+          "    });",
           "  } catch (_) {",
           "    return undefined;",
           "  }",
@@ -310,15 +385,12 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
         return join(
           "const project = (() => {",
           "  try {",
-          '    const { iosProjectPath } = require("react-native-test-app");',
-          '    const project = iosProjectPath(".");',
-          "    return project",
-          "      ? {",
-          "          ios: {",
-          "            project,",
-          "          },",
-          "        }",
-          "      : undefined;",
+          '    const { configureProjects } = require("react-native-test-app");',
+          "    return configureProjects({",
+          "      ios: {",
+          '        sourceDir: ".",',
+          "      },",
+          "    });",
           "  } catch (_) {",
           "    return undefined;",
           "  }",
@@ -901,6 +973,7 @@ function configure(params) {
 
 exports.androidManifestPath = androidManifestPath;
 exports.configure = configure;
+exports.configureProjects = configureProjects;
 exports.error = error;
 exports.gatherConfig = gatherConfig;
 exports.getAppName = getAppName;
