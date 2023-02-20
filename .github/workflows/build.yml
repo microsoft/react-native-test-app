@@ -30,8 +30,8 @@ jobs:
           yarn lint:commit
   review:
     permissions:
-      issues: write
-      pull-requests: write
+      issues: write # comment on PRs (suggestion-bot)
+      pull-requests: write # create code reviews (suggestion-bot)
     strategy:
       matrix:
         platform: [macos, windows]
@@ -472,7 +472,7 @@ jobs:
     timeout-minutes: 60
   release:
     permissions:
-      contents: write
+      contents: write # create releases (semantic-release)
     needs:
       [
         review,
