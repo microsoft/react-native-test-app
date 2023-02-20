@@ -2,7 +2,7 @@
 // @ts-check
 "use strict";
 
-require("./link")(module);
+ require("./link")(module);
 
 const chalk = require("chalk");
 const fs = require("fs");
