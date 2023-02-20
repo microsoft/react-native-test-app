@@ -28,8 +28,10 @@ jobs:
       - name: Lint commit message
         run: |
           yarn lint:commit
-  lint-test:
-    name: "lint + test"
+  review:
+    permissions:
+      issues: write
+      pull-requests: write
     strategy:
       matrix:
         platform: [macos, windows]
@@ -469,9 +471,11 @@ jobs:
         working-directory: template-example
     timeout-minutes: 60
   release:
+    permissions:
+      contents: write
     needs:
       [
-        lint-test,
+        review,
         ios,
         ios-template,
         android,
@@ -501,11 +505,11 @@ jobs:
           yarn semantic-release
   autobot:
     name: "Autobot"
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
     if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
     steps:
       - name: Label
         uses: actions/labeler@v4.0.2
