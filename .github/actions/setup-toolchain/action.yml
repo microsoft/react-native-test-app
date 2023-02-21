@@ -3,35 +3,44 @@ description: Sets up the toolchain for the project
 inputs:
   platform:
     description: The target platform to set up toolchain for
-  variant:
-    description: Whether we're building from example, template, etc.
+  project-root:
+    description: Root of the project
+  cache-key-prefix:
+    description: Prefix to add to the cache key
+  cache-npm-dependencies:
+    description: Caches npm dependencies (supports npm, yarn, pnpm v6.10+)
+    default: yarn
 runs:
   using: composite
   steps:
     - name: Set up Ccache
+      id: setup-ccache
       if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' }}
       run: |
-        if ! command -v ccache 1> /dev/null; then
-          brew install ccache
+        podfile_lock="${{ inputs.project-root }}/${{ inputs.platform }}/Podfile.lock"
+        if [[ -f $(git rev-parse --show-toplevel)/.ccache/ccache.conf ]] && [[ -f "$podfile_lock" ]]; then
+          if ! command -v ccache 1> /dev/null; then
+            brew install ccache
+          fi
+
+          CCACHE_HOME=$(dirname $(dirname $(which ccache)))/opt/ccache
+
+          echo "CCACHE_DIR=$(git rev-parse --show-toplevel)/.ccache" >> $GITHUB_ENV
+
+          echo "CC=${CCACHE_HOME}/libexec/clang" >> $GITHUB_ENV
+          echo "CXX=${CCACHE_HOME}/libexec/clang++" >> $GITHUB_ENV
+          echo "CMAKE_C_COMPILER_LAUNCHER=$(which ccache)" >> $GITHUB_ENV
+          echo "CMAKE_CXX_COMPILER_LAUNCHER=$(which ccache)" >> $GITHUB_ENV
+
+          ccache --zero-stats 1> /dev/null
+
+          clang --version > .clang-version
+          input=$(find . -maxdepth 1 -name .clang-version -o -name .yarnrc.yml)
+          echo "cache-key=$(tar -cf - "$podfile_lock" $input | shasum -a 256 | awk '{ print $1 }')" >> $GITHUB_OUTPUT
         fi
-
-        CCACHE_HOME=$(dirname $(dirname $(which ccache)))/opt/ccache
-
-        echo "CCACHE_DIR=$(git rev-parse --show-toplevel)/.ccache" >> $GITHUB_ENV
-
-        echo "CC=${CCACHE_HOME}/libexec/clang" >> $GITHUB_ENV
-        echo "CXX=${CCACHE_HOME}/libexec/clang++" >> $GITHUB_ENV
-        echo "CMAKE_C_COMPILER_LAUNCHER=$(which ccache)" >> $GITHUB_ENV
-        echo "CMAKE_CXX_COMPILER_LAUNCHER=$(which ccache)" >> $GITHUB_ENV
-
-        ccache --zero-stats 1> /dev/null
       shell: bash
-    - name: Set up Node.js
-      uses: actions/setup-node@v3.6.0
-      with:
-        node-version: 18
-        cache: yarn
     - name: Set up JDK
+      if: ${{ inputs.platform == 'android' || inputs.platform == 'node' }}
       uses: actions/setup-java@v3.10.0
       with:
         distribution: temurin
@@ -49,20 +58,15 @@ runs:
     - name: Set up VSTest.console.exe
       if: ${{ inputs.platform == 'windows' }}
       uses: darenm/Setup-VSTest@v1.2
-    - name: Generate cache key
-      id: cache-key-generator
-      run: |
-        if [[ -f example/${{ inputs.platform }}/Podfile.lock ]]; then
-          clang --version > .clang-version
-          echo "cache-key=$(node scripts/shasum.mjs .clang-version .yarnrc.yml example/${{ inputs.platform }}/Podfile.lock)" >> $GITHUB_OUTPUT
-        else
-          echo 'cache-key=false' >> $GITHUB_OUTPUT
-        fi
-      shell: bash
+    - name: Set up Node.js
+      uses: actions/setup-node@v3.6.0
+      with:
+        node-version: 18
+        cache: ${{ inputs.cache-npm-dependencies }}
     - name: Cache /.ccache
-      if: ${{ steps.cache-key-generator.outputs.cache-key != 'false' }}
+      if: ${{ steps.setup-ccache.outputs.cache-key }}
       uses: actions/cache@v3
       with:
         path: .ccache
-        key: ${{ runner.os }}-${{ inputs.variant }}-ccache-${{ steps.cache-key-generator.outputs.cache-key }}
-        restore-keys: ${{ runner.os }}-${{ inputs.variant }}-ccache-
+        key: ${{ runner.os }}-${{ inputs.cache-key-prefix }}-ccache-${{ steps.setup-ccache.outputs.cache-key }}
+        restore-keys: ${{ runner.os }}-${{ inputs.cache-key-prefix }}-ccache-
