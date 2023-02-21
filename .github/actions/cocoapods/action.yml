@@ -10,21 +10,20 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Generate cache key
-      id: cache-key-generator
+    - name: Find `Podfile.lock`
+      id: find-lockfile
       run: |
-        if [[ -f ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock ]]; then
-          echo "cache-key=$(node scripts/shasum.mjs ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock)" >> $GITHUB_OUTPUT
-        else
-          echo 'cache-key=false' >> $GITHUB_OUTPUT
+        podfile_lock="${{ inputs.working-directory }}/${{ inputs.project-directory }}/Podfile.lock"
+        if [[ -f "$podfile_lock" ]]; then
+          echo "path=$podfile_lock" >> $GITHUB_OUTPUT
         fi
       shell: bash
     - name: Cache /${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
-      if: ${{ steps.cache-key-generator.outputs.cache-key != 'false' }}
+      if: ${{ steps.find-lockfile.outputs.path }}
       uses: actions/cache@v3
       with:
         path: ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
-        key: ${{ runner.os }}-pods-${{ steps.cache-key-generator.outputs.cache-key }}
+        key: ${{ runner.os }}-pods-${{ hashFiles(steps.find-lockfile.outputs.path) }}
     - name: Install Pods
       run: |
         pod install --project-directory=${{ inputs.project-directory }}

@@ -137,7 +137,8 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: ios
-          variant: example
+          project-root: example
+          cache-key-prefix: example
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -183,7 +184,8 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: ios
-          variant: template-${{ matrix.template }}
+          project-root: example
+          cache-key-prefix: template-${{ matrix.template }}
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
@@ -298,7 +300,8 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: macos
-          variant: example
+          project-root: example
+          cache-key-prefix: example
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -358,7 +361,8 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: macos
-          variant: template-${{ matrix.template }}
+          project-root: example
+          cache-key-prefix: template-${{ matrix.template }}
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
