@@ -6,7 +6,7 @@
  * dependencies. It can therefore not rely on any external libraries.
  */
 import { spawn } from "node:child_process";
-import * as fs from "node:fs/promises";
+import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -73,24 +73,34 @@ export function fetchPackageInfo(pkg) {
       buffers.push(data);
     });
     npmView.on("close", (exitCode) => {
-      if (exitCode !== 0) {
-        reject();
-      } else if (buffers.length === 0) {
-        resolve({
-          version: undefined,
-          dependencies: {},
-          peerDependencies: {},
-        });
-      } else {
+      if (buffers.length > 0) {
         const json = Buffer.concat(buffers).toString().trim();
         const result = JSON.parse(json);
-        if (Array.isArray(result)) {
+        if (result.error) {
+          if (result.error.code === "E404") {
+            resolve({
+              version: undefined,
+              dependencies: {},
+              peerDependencies: {},
+            });
+          } else {
+            reject(result.error);
+          }
+        } else if (Array.isArray(result)) {
           // If there are multiple packages matching the version range, pick
           // the last (latest) one.
           resolve(result[result.length - 1]);
         } else {
           resolve(result);
         }
+      } else if (exitCode !== 0) {
+        reject(new Error(`Failed to fetch registry info for '${pkg}'`));
+      } else {
+        resolve({
+          version: undefined,
+          dependencies: {},
+          peerDependencies: {},
+        });
       }
     });
   });
@@ -245,25 +255,30 @@ if (!isValidVersion(version)) {
   process.exit(1);
 }
 
-(async () => {
-  const profile = await getProfile(version);
-  console.log(profile);
+getProfile(version)
+  .then((profile) => {
+    console.dir(profile, { depth: null });
 
-  const manifests = ["package.json", "example/package.json"];
-  for (const manifestPath of manifests) {
-    const manifest = /** @type {{ devDependencies: Record<string, string | undefined>}} */ (
-      readJSONFile(manifestPath)
-    );
-    for (const packageName of keys(profile)) {
-      const version = profile[packageName];
-      manifest["devDependencies"][packageName] = version;
+    const manifests = ["package.json", "example/package.json"];
+    for (const manifestPath of manifests) {
+      const manifest =
+        /** @type {{ devDependencies: Record<string, string | undefined>}} */ (
+          readJSONFile(manifestPath)
+        );
+      for (const packageName of keys(profile)) {
+        const version = profile[packageName];
+        manifest["devDependencies"][packageName] = version;
+      }
+
+      const tmpFile = `${manifestPath}.tmp`;
+      fs.writeFileSync(
+        tmpFile,
+        JSON.stringify(manifest, undefined, 2) + os.EOL
+      );
+      fs.renameSync(tmpFile, manifestPath);
     }
-
-    const tmpFile = `${manifestPath}.tmp`;
-    await fs.writeFile(
-      tmpFile,
-      JSON.stringify(manifest, undefined, 2) + os.EOL
-    );
-    await fs.rename(tmpFile, manifestPath);
-  }
-})();
+  })
+  .catch((e) => {
+    console.error(e);
+    process.exitCode = 1;
+  });
