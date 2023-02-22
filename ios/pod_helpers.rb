@@ -1,7 +1,8 @@
 def fabric_enabled?(options, react_native_version)
   return true if new_architecture_enabled?(options, react_native_version)
 
-  react_native_version >= 6800 && options[:fabric_enabled]
+  supports_new_architecture = supports_new_architecture?(react_native_version)
+  supports_new_architecture && options[:fabric_enabled]
 end
 
 def find_file(file_name, current_dir)
@@ -14,7 +15,8 @@ def find_file(file_name, current_dir)
 end
 
 def new_architecture_enabled?(options, react_native_version)
-  react_native_version >= 6800 && ENV.fetch('RCT_NEW_ARCH_ENABLED', options[:turbomodule_enabled])
+  supports_new_architecture = supports_new_architecture?(react_native_version)
+  supports_new_architecture && ENV.fetch('RCT_NEW_ARCH_ENABLED', options[:turbomodule_enabled])
 end
 
 def resolve_module(request)
@@ -26,6 +28,10 @@ def resolve_module(request)
   raise "Cannot find module '#{request}'" if package_json.nil?
 
   @module_cache[request] = package_json.dirname.to_s
+end
+
+def supports_new_architecture?(react_native_version)
+  react_native_version.zero? || react_native_version >= 6800
 end
 
 def try_pod(name, podspec, project_root)
