@@ -4,8 +4,19 @@
 
 #if USE_TURBOMODULE
 #import <React/CoreModulesPlugins.h>
-#import <React/RCTAppSetupUtils.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
+
+#if __has_include(<React/RCTAppSetupUtils.h>)  // <0.72
+#import <React/RCTAppSetupUtils.h>
+#define USE_RUNTIME_SCHEDULER 0
+#else
+#import <RCTAppSetupUtils.h>
+
+#import <React/RCTSurfacePresenterBridgeAdapter.h>
+#import <react/renderer/runtimescheduler/RuntimeScheduler.h>
+#import <react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h>
+#define USE_RUNTIME_SCHEDULER 1
+#endif  // __has_include(<React/RCTAppSetupUtils.h>)
 
 @interface RTABridgeDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate>
 @end
@@ -19,6 +30,9 @@
 #if USE_TURBOMODULE
     RCTTurboModuleManager *_turboModuleManager;
 #endif  // USE_TURBOMODULE
+#if USE_RUNTIME_SCHEDULER
+    std::shared_ptr<facebook::react::RuntimeScheduler> _runtimeScheduler;
+#endif  // USE_RUNTIME_SCHEDULER
 }
 
 - (instancetype)initWithBridgeDelegate:(id<RCTBridgeDelegate>)bridgeDelegate
@@ -48,10 +62,21 @@
 {
 #if USE_TURBOMODULE
     // jsExecutorFactoryForBridge: (USE_TURBOMODULE=1)
+#if USE_RUNTIME_SCHEDULER
+    _runtimeScheduler =
+        std::make_shared<facebook::react::RuntimeScheduler>(RCTRuntimeExecutorFromBridge(bridge));
+    auto callInvoker =
+        std::make_shared<facebook::react::RuntimeSchedulerCallInvoker>(_runtimeScheduler);
+    _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
+                                                               delegate:self
+                                                              jsInvoker:callInvoker];
+    return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager, _runtimeScheduler);
+#else
     _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
                                                                delegate:self
                                                               jsInvoker:bridge.jsCallInvoker];
     return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager);
+#endif  // USE_RUNTIME_SCHEDULER
 #else
     // jsExecutorFactoryForBridge: (USE_TURBOMODULE=0)
     return nullptr;
