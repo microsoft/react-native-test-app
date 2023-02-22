@@ -903,7 +903,7 @@ if (require.main === module) {
       autolink: {
         type: "boolean",
         description: "Run autolink after generating the solution",
-        default: true,
+        default: require("os").platform() === "win32",
       },
       "use-hermes": {
         type: "boolean",
