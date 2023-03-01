@@ -35,8 +35,8 @@ runs:
           ccache --zero-stats 1> /dev/null
 
           clang --version > .clang-version
-          input=$(find . -maxdepth 1 -name .clang-version -o -name .yarnrc.yml)
-          echo "cache-key=$(tar -cf - "$podfile_lock" $input | shasum -a 256 | awk '{ print $1 }')" >> $GITHUB_OUTPUT
+          input=$(find . -maxdepth 1 -name .clang-version -o -name .yarnrc.yml | sort)
+          echo "cache-key=$(cat "$podfile_lock" $input | shasum -a 256 | awk '{ print $1 }')" >> $GITHUB_OUTPUT
         fi
       shell: bash
     - name: Set up JDK
