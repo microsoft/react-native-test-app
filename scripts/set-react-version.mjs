@@ -14,6 +14,7 @@ import { readJSONFile } from "./helpers.js";
 
 /**
  * @typedef {{
+ *   name?: string;
  *   version?: string;
  *   dependencies?: Record<string, string>;
  *   peerDependencies?: Record<string, string>;
@@ -21,9 +22,6 @@ import { readJSONFile } from "./helpers.js";
  */
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];
-const REACT_NATIVE_VERSIONS = {
-  "canary-macos": "^0.68",
-};
 
 /**
  * Escapes given string for use in Command Prompt.
@@ -51,6 +49,34 @@ function isValidVersion(v) {
  */
 function keys(obj) {
   return /** @type {(keyof T)[]} */ (Object.keys(obj));
+}
+
+/**
+ * Infer the React Native version an out-of-tree platform package is based on.
+ * @param {Manifest} manifest
+ * @returns {string}
+ */
+function inferReactNativeVersion({ name, version, dependencies }) {
+  const cliPackage = "@react-native-community/cli";
+  const cliVersion = dependencies?.[cliPackage];
+  if (!cliVersion) {
+    throw new Error(
+      `Unable to determine the react-native version that ${name}@${version} is based on`
+    );
+  }
+
+  const m = cliVersion.match(/[^\d]*([\d]+)/);
+  if (!m) {
+    throw new Error(`Invalid '${cliPackage}' version number: ${cliVersion}`);
+  }
+
+  return {
+    7: "^0.68",
+    8: "^0.69",
+    9: "^0.70",
+    10: "^0.71",
+    11: "^0.72",
+  }[m[1]];
 }
 
 /**
@@ -143,11 +169,10 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
 
 /**
  * Returns an object with common dependencies.
- * @param {Manifest["dependencies"]} dependencies
- * @param {Manifest["peerDependencies"]} peerDependencies
+ * @param {Manifest} manifest
  * @return {Record<string, string | undefined>}
  */
-function pickCommonDependencies(dependencies, peerDependencies) {
+function pickCommonDependencies({ dependencies, peerDependencies }) {
   return {
     "@react-native-community/cli":
       dependencies?.["@react-native-community/cli"],
@@ -170,34 +195,31 @@ function pickCommonDependencies(dependencies, peerDependencies) {
 async function getProfile(v) {
   switch (v) {
     case "canary-macos": {
-      const { dependencies, peerDependencies } = await fetchPackageInfo(
-        "react-native-macos@canary"
-      );
+      const info = await fetchPackageInfo("react-native-macos@canary");
       return {
-        ...pickCommonDependencies(dependencies, peerDependencies),
-        "react-native": REACT_NATIVE_VERSIONS[v],
+        ...pickCommonDependencies(info),
+        "react-native": inferReactNativeVersion(info),
         "react-native-macos": "canary",
         "react-native-windows": undefined,
       };
     }
 
     case "canary-windows": {
-      const { version, dependencies, peerDependencies } =
+      const info =
         process.env["CI"] || process.env["NUGET_EXE"]
           ? await fetchReactNativeWindowsCanaryInfoViaNuGet()
           : await fetchPackageInfo("react-native-windows@canary");
       return {
-        ...pickCommonDependencies(dependencies, peerDependencies),
-        "react-native": peerDependencies?.["react-native"] || "^0.0.0-0",
+        ...pickCommonDependencies(info),
+        "react-native": info.peerDependencies?.["react-native"] || "^0.0.0-0",
         "react-native-macos": undefined,
-        "react-native-windows": version,
+        "react-native-windows": info.version,
       };
     }
 
     case "main": {
-      const { dependencies, peerDependencies } = await fetchPackageInfo(
-        "react-native@nightly"
-      );
+      const info = await fetchPackageInfo("react-native@nightly");
+      const { dependencies } = info;
       if (!dependencies) {
         throw new Error("Could not determine dependencies");
       }
@@ -206,7 +228,7 @@ async function getProfile(v) {
         "react-native-codegen@" + dependencies["react-native-codegen"]
       );
       return {
-        ...pickCommonDependencies(dependencies, peerDependencies),
+        ...pickCommonDependencies(info),
         ...codegen.dependencies,
         "react-native": "facebook/react-native",
         "react-native-macos": undefined,
@@ -215,11 +237,9 @@ async function getProfile(v) {
     }
 
     case "nightly": {
-      const { dependencies, peerDependencies } = await fetchPackageInfo(
-        "react-native@nightly"
-      );
+      const info = await fetchPackageInfo("react-native@nightly");
       return {
-        ...pickCommonDependencies(dependencies, peerDependencies),
+        ...pickCommonDependencies(info),
         "react-native": "nightly",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
@@ -227,18 +247,15 @@ async function getProfile(v) {
     }
 
     default: {
-      const [
-        { version: rnVersion, dependencies, peerDependencies },
-        { version: rnmVersion },
-        { version: rnwVersion },
-      ] = await Promise.all([
-        fetchPackageInfo(`react-native@^${v}.0-0`),
-        fetchPackageInfo(`react-native-macos@^${v}.0-0`),
-        fetchPackageInfo(`react-native-windows@^${v}.0-0`),
-      ]);
+      const [reactNative, { version: rnmVersion }, { version: rnwVersion }] =
+        await Promise.all([
+          fetchPackageInfo(`react-native@^${v}.0-0`),
+          fetchPackageInfo(`react-native-macos@^${v}.0-0`),
+          fetchPackageInfo(`react-native-windows@^${v}.0-0`),
+        ]);
       return {
-        ...pickCommonDependencies(dependencies, peerDependencies),
-        "react-native": rnVersion,
+        ...pickCommonDependencies(reactNative),
+        "react-native": reactNative.version,
         "react-native-macos": rnmVersion,
         "react-native-windows": rnwVersion,
       };
