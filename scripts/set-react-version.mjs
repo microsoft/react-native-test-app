@@ -67,7 +67,7 @@ function inferReactNativeVersion({ name, version, dependencies }) {
 
   const m = cliVersion.match(/[^\d]*([\d]+)/);
   if (!m) {
-    throw new Error(`Invalid '${cliPackage}' version number: ${version}`);
+    throw new Error(`Invalid '${cliPackage}' version number: ${cliVersion}`);
   }
 
   return {
