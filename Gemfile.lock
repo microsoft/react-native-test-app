@@ -8,7 +8,7 @@ GEM
     claide (1.1.0)
     colored2 (3.1.2)
     json (2.6.3)
-    minitest (5.17.0)
+    minitest (5.18.0)
     nanaimo (0.3.0)
     parallel (1.22.1)
     parser (3.2.1.0)
