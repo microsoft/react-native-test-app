@@ -206,7 +206,7 @@ def use_react_native!(project_root, target_platform, options)
   require_relative(react_native_pods(version))
 
   include_react_native!(**options,
-                        app_path: find_file('package.json', project_root).parent,
+                        app_path: find_file('package.json', project_root).parent.to_s,
                         path: react_native.relative_path_from(project_root).to_s,
                         rta_flipper_versions: flipper_versions,
                         rta_project_root: project_root,
