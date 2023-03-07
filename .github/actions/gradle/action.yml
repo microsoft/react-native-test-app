@@ -21,7 +21,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.project-root }}
     - name: Build
-      uses: gradle/gradle-build-action@v2.3.3
+      uses: gradle/gradle-build-action@v2.4.0
       with:
         gradle-version: wrapper
         cache-disabled: true # causes bad resolutions to reappear
