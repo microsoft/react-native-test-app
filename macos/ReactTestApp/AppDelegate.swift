@@ -206,7 +206,8 @@ extension AppDelegate {
 
     private func present(_ component: Component) {
         guard let window = mainWindow,
-              let bridge = reactInstance.bridge
+              let host = reactInstance.host,
+              let bridge = host.bridge
         else {
             return
         }
@@ -220,10 +221,9 @@ extension AppDelegate {
 
             let viewController = NSViewController(nibName: nil, bundle: nil)
             viewController.title = title
-            viewController.view = RTACreateReactRootView(
-                bridge,
-                component.appKey,
-                component.initialProperties
+            viewController.view = host.view(
+                moduleName: component.appKey,
+                initialProperties: component.initialProperties
             )
             return viewController
         }()

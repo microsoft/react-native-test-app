@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192DD200240FCAF5004E9CEB /* Manifest.swift */; };
-		193B614D27F5CD7D00080064 /* BridgeDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 193B614B27F5CD7D00080064 /* BridgeDelegate.mm */; };
-		1963A06227C82E730013D276 /* React+Fabric.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1963A06127C82E730013D276 /* React+Fabric.mm */; };
 		196C22622490CB7600449D3C /* React+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 196C22602490CB7600449D3C /* React+Compatibility.m */; };
 		196C7215232F1788006556ED /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C7214232F1788006556ED /* ReactInstance.swift */; };
 		196C724123319A85006556ED /* QRCodeScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C724023319A85006556ED /* QRCodeScannerViewController.swift */; };
@@ -47,10 +45,6 @@
 		192F052624AD3CC500A48456 /* ReactTestApp.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.release.xcconfig; sourceTree = "<group>"; };
 		192F052724AD3CC500A48456 /* ReactTestApp.common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.common.xcconfig; sourceTree = "<group>"; };
 		192F052824AD3CC500A48456 /* ReactTestApp.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.debug.xcconfig; sourceTree = "<group>"; };
-		193B614B27F5CD7D00080064 /* BridgeDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BridgeDelegate.mm; sourceTree = "<group>"; };
-		193B614C27F5CD7D00080064 /* BridgeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgeDelegate.h; sourceTree = "<group>"; };
-		1963A06027C82E730013D276 /* React+Fabric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "React+Fabric.h"; sourceTree = "<group>"; };
-		1963A06127C82E730013D276 /* React+Fabric.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "React+Fabric.mm"; sourceTree = "<group>"; };
 		196C22602490CB7600449D3C /* React+Compatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "React+Compatibility.m"; sourceTree = "<group>"; };
 		196C22612490CB7600449D3C /* React+Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "React+Compatibility.h"; sourceTree = "<group>"; };
 		196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -133,12 +127,8 @@
 				196C7214232F1788006556ED /* ReactInstance.swift */,
 				19A624A3258C95F000032776 /* Session.swift */,
 				196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */,
-				193B614C27F5CD7D00080064 /* BridgeDelegate.h */,
-				193B614B27F5CD7D00080064 /* BridgeDelegate.mm */,
 				196C22612490CB7600449D3C /* React+Compatibility.h */,
 				196C22602490CB7600449D3C /* React+Compatibility.m */,
-				1963A06027C82E730013D276 /* React+Fabric.h */,
-				1963A06127C82E730013D276 /* React+Fabric.mm */,
 				1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */,
 				1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */,
 				19ECD0DB232ED427003D8557 /* Assets.xcassets */,
@@ -325,13 +315,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */,
-				193B614D27F5CD7D00080064 /* BridgeDelegate.mm in Sources */,
 				19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */,
 				192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */,
 				197827FA27710D3400AEC655 /* Manifest+Decoder.swift in Sources */,
 				196C724123319A85006556ED /* QRCodeScannerViewController.swift in Sources */,
 				196C22622490CB7600449D3C /* React+Compatibility.m in Sources */,
-				1963A06227C82E730013D276 /* React+Fabric.mm in Sources */,
 				196C7215232F1788006556ED /* ReactInstance.swift in Sources */,
 				19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */,
 				19A624A4258C95F000032776 /* Session.swift in Sources */,

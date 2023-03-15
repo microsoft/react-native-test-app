@@ -1,6 +1,7 @@
 import Foundation
+import ReactNativeHost
 
-final class ReactInstance: NSObject, RCTBridgeDelegate {
+final class ReactInstance: NSObject, RNXHostConfig {
     public static let scanForQRCodeNotification =
         NSNotification.Name("ReactInstance.scanForQRCodeNotification")
 
@@ -14,9 +15,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         }
     }
 
-    private var surfacePresenterBridgeAdapter: NSObject?
-    private(set) var bridge: RCTBridge?
-    private lazy var bridgeDelegate = RTABridgeDelegate(bridgeDelegate: self)
+    private(set) var host: ReactNativeHost?
     private var bundleRoot: String?
 
     override init() {
@@ -29,25 +28,6 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
         #if USE_TURBOMODULE
         RCTEnableTurboModule(true)
         #endif
-
-        RCTSetFatalHandler { (error: Error?) in
-            guard let error = error else {
-                print("Unknown error")
-                return
-            }
-
-            guard let nsError = error as NSError? else {
-                print(error.localizedDescription)
-                return
-            }
-
-            let message = RCTFormatError(
-                nsError.localizedDescription,
-                nsError.userInfo[RCTJSStackTraceKey] as? [[String: Any]],
-                9001
-            )
-            print(message ?? nsError.localizedDescription)
-        }
 
         NotificationCenter.default.addObserver(
             self,
@@ -91,7 +71,7 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
     }
 
     func initReact(bundleRoot: String?, onDidInitialize: @escaping () -> Void) {
-        if bridge != nil {
+        if host != nil {
             if remoteBundleURL == nil {
                 // When loading the embedded bundle, we must disable remote
                 // debugging to prevent the bridge from getting stuck in
@@ -109,25 +89,36 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             object: nil
         )
 
-        guard let bridge = RCTBridge(delegate: bridgeDelegate, launchOptions: nil) else {
-            assertionFailure("Failed to instantiate RCTBridge")
-            return
-        }
-
-        surfacePresenterBridgeAdapter = RTACreateSurfacePresenterBridgeAdapter(bridge)
-        self.bridge = bridge
+        let reactNativeHost = ReactNativeHost(self)
+        host = reactNativeHost
 
         NotificationCenter.default.post(
             name: .ReactTestAppDidInitializeReactNative,
-            object: bridge
+            object: reactNativeHost.bridge
         )
 
         onDidInitialize()
     }
 
+    // MARK: - RNXHostConfig details
+
+    func onFatalError(_ error: Error) {
+        guard let nsError = error as NSError? else {
+            print(error.localizedDescription)
+            return
+        }
+
+        let message = RCTFormatError(
+            nsError.localizedDescription,
+            nsError.userInfo[RCTJSStackTraceKey] as? [[String: Any]],
+            9001
+        )
+        print(message ?? nsError.localizedDescription)
+    }
+
     // MARK: - RCTBridgeDelegate details
 
-    func sourceURL(for _: RCTBridge?) -> URL? {
+    func sourceURL(for _: RCTBridge!) -> URL? {
         if let remoteBundleURL = remoteBundleURL {
             return remoteBundleURL
         }
@@ -142,10 +133,6 @@ final class ReactInstance: NSObject, RCTBridgeDelegate {
             }
             .first(where: { $0 != nil })
         return embeddedBundleURL ?? ReactInstance.jsBundleURL()
-    }
-
-    func extraModules(for _: RCTBridge!) -> [RCTBridgeModule] {
-        []
     }
 
     // MARK: - Private
@@ -241,15 +228,14 @@ func createReactRootView(_ reactInstance: ReactInstance) -> (RTAView, String)? {
     }
 
     reactInstance.initReact(bundleRoot: manifest.bundleRoot) {}
-    guard let bridge = reactInstance.bridge else {
-        assertionFailure("Failed to initialize React")
+    guard let host = reactInstance.host else {
+        assertionFailure("Failed to initialize ReactNativeHost")
         return nil
     }
 
-    let view = RTACreateReactRootView(
-        bridge,
-        component.appKey,
-        component.initialProperties
+    let view = host.view(
+        moduleName: component.appKey,
+        initialProperties: component.initialProperties
     )
     return (view, component.displayName ?? component.appKey)
 }

@@ -417,6 +417,8 @@ def use_test_app_internal!(target_platform, options)
   target 'ReactTestApp' do
     react_native_post_install = use_react_native!(project_root, target_platform, options)
 
+    pod 'ReactNativeHost', :path => resolve_module_relative('@rnx-kit/react-native-host')
+
     if (resources_pod_path = resources_pod(project_root, target_platform, platforms))
       pod 'ReactTestApp-Resources', :path => resources_pod_path
     end
@@ -441,12 +443,6 @@ def use_test_app_internal!(target_platform, options)
 
     installer.pods_project.targets.each do |target|
       case target.name
-      when 'SwiftLint'
-        # Let SwiftLint inherit the deployment target from the Pods project
-        target.build_configurations.each do |config|
-          config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
-          config.build_settings.delete('MACOSX_DEPLOYMENT_TARGET')
-        end
       when /\AFlipper/, 'libevent'
         target.build_configurations.each do |config|
           # Flipper and its dependencies log too many warnings
