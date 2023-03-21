@@ -95,7 +95,7 @@
     "@react-native-community/cli-platform-ios": ">=5.0",
     "mustache": "^4.0.0",
     "react": "~17.0.1 || ~18.0.0 || ~18.1.0 || ~18.2.0",
-    "react-native": "^0.0.0-0 || 0.64 - 0.71 || 1000.0.0",
+    "react-native": "^0.0.0-0 || 0.64 - 0.72 || 1000.0.0",
     "react-native-macos": "^0.0.0-0 || 0.64 || 0.66 || 0.68 || 0.71",
     "react-native-windows": "^0.0.0-0 || 0.64 - 0.71"
   },

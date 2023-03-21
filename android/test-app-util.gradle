@@ -6,6 +6,33 @@ import java.security.MessageDigest
 
 ext.manifest = null
 
+ext.checkEnvironment = {
+    def (major, minor, patch) = gradle.gradleVersion.findAll(/\d+/)
+    def gradleVersion = (major as int) * 10000 + (minor as int) * 100 + (patch as int)
+    if (reactNativeVersion > 0 && reactNativeVersion < 7200) {
+        if (gradleVersion < 70501 || gradleVersion >= 80000) {
+            logger.warn([
+                "Latest Gradle 7.x is required for current React Native version. ",
+                "Run the following command in the 'android' folder to install a supported version: ",
+                "./gradlew wrapper --gradle-version=7.6.1",
+            ].join(""))
+        }
+    } else {
+        // Gradle 7.5+ seems to be working with 0.72 so we will only recommend a
+        // newer version if it's older.
+        if (gradleVersion < 70501) {
+            logger.warn([
+                "Latest Gradle 8.0.x is recommended for React Native 0.72 and higher. ",
+                "Run the following command in the 'android' folder to install a supported version: ",
+                "./gradlew wrapper --gradle-version=8.0.2",
+                "\n\n",
+                "If you still need to work with older versions of React Native, ",
+                "Gradle 7.5.1+ should still work."
+            ].join(""))
+        }
+    }
+}
+
 ext.findFile = { fileName ->
     def currentDirPath = rootDir == null ? null : rootDir.toString()
 

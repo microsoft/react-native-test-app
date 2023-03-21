@@ -93,6 +93,7 @@ echo
 popd 1> /dev/null
 prepare
 # `react-native-safe-area-context` doesn't support latest New Arch changes
+git apply ../scripts/disable-safe-area-context.patch
 sed -i '' 's/"react-native-safe-area-context": ".[.0-9]*",//' package.json
 
 echo
@@ -137,4 +138,4 @@ echo "│  Initialize new app │"
 echo "└─────────────────────┘"
 echo
 
-yarn react-native init-test-app --destination template-example --name TemplateExample --platform android,ios
+GIT_IGNORE_FILE=".gitignore" yarn react-native init-test-app --destination template-example --name TemplateExample --platform android,ios

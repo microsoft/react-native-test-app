@@ -5,6 +5,7 @@ static String getKspVersion(String kotlinVersion) {
     return [
         // Run `scripts/update-ksp-versions.mjs` to update this list
         // update-ksp-versions start
+        "1.8.20-1.0.11",
         "1.8.10-1.0.9",
         "1.8.0-1.0.9",
         "1.7.22-1.0.8",
