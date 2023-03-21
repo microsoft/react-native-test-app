@@ -100,7 +100,7 @@ function main() {
             break;
 
           case "paragraph":
-            console.error("✖ Title and body must be separated by a newline");
+            console.error("✖ Title and body must be separated by an empty line");
             break;
 
           case "scope":
