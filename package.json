@@ -66,7 +66,7 @@
     "format:swift": "swiftformat --swiftversion 5.5 --ifdef no-indent --stripunusedargs closure-only ios macos",
     "generate:code": "node scripts/generate-manifest.mjs",
     "generate:schema": "node scripts/generate-schema.mjs",
-    "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | commitlint",
+    "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | node scripts/lint-commit.mjs",
     "lint:js": "eslint $(git ls-files '*.js' '*.mjs' ':!:.yarn') && tsc",
     "lint:kt": "ktlint --android --relative 'android/app/src/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
@@ -123,8 +123,6 @@
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
-    "@commitlint/cli": "^17.0.0",
-    "@commitlint/config-conventional": "^17.0.0",
     "@expo/config-plugins": "^6.0.0",
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^7.0.3",
@@ -156,7 +154,6 @@
   },
   "packageManager": "yarn@3.4.1",
   "resolutions": {
-    "@commitlint/is-ignored/semver": "^7.3.7",
     "@expo/config-plugins/glob": "^7.1.6",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
     "@semantic-release/npm/npm": "link:./example",
@@ -165,11 +162,6 @@
   "workspaces": [
     "example"
   ],
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
   "eslintConfig": {
     "extends": [
       "plugin:@microsoft/sdl/required",
