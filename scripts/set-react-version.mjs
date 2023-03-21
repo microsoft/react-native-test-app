@@ -170,9 +170,9 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
 /**
  * Returns an object with common dependencies.
  * @param {Manifest} manifest
- * @return {Record<string, string | undefined>}
+ * @return {Promise<Record<string, string | undefined>>}
  */
-function pickCommonDependencies({ dependencies, peerDependencies }) {
+async function resolveCommonDependencies({ dependencies, peerDependencies }) {
   return {
     "@react-native-community/cli":
       dependencies?.["@react-native-community/cli"],
@@ -181,8 +181,23 @@ function pickCommonDependencies({ dependencies, peerDependencies }) {
     "@react-native-community/cli-platform-ios":
       dependencies?.["@react-native-community/cli-platform-ios"],
     "hermes-engine": dependencies?.["hermes-engine"],
-    "metro-react-native-babel-preset":
-      dependencies?.["metro-react-native-babel-transformer"],
+    "metro-react-native-babel-preset": await (async () => {
+      // Metro bumps and publishes all packages together, meaning we can use
+      // `metro-react-native-babel-transformer` to determine the version of
+      // `metro-react-native-babel-preset` that should be used.
+      const metroBabelTransformer = "metro-react-native-babel-transformer";
+      const version = dependencies?.[metroBabelTransformer];
+      if (version) {
+        return version;
+      }
+
+      // `metro-react-native-babel-transformer` is no longer a direct dependency
+      // of `react-native`. As of 0.72, we should go through
+      // `@react-native-community/cli-plugin-metro` instead.
+      const cliPluginMetro = "@react-native-community/cli-plugin-metro";
+      const metroPluginInfo = await fetchPackageInfo(cliPluginMetro);
+      return metroPluginInfo.dependencies?.[metroBabelTransformer];
+    })(),
     react: peerDependencies?.["react"],
   };
 }
@@ -196,8 +211,9 @@ async function getProfile(v) {
   switch (v) {
     case "canary-macos": {
       const info = await fetchPackageInfo("react-native-macos@canary");
+      const commonDeps = await resolveCommonDependencies(info);
       return {
-        ...pickCommonDependencies(info),
+        ...commonDeps,
         "react-native": inferReactNativeVersion(info),
         "react-native-macos": "canary",
         "react-native-windows": undefined,
@@ -209,8 +225,9 @@ async function getProfile(v) {
         process.env["CI"] || process.env["NUGET_EXE"]
           ? await fetchReactNativeWindowsCanaryInfoViaNuGet()
           : await fetchPackageInfo("react-native-windows@canary");
+      const commonDeps = await resolveCommonDependencies(info);
       return {
-        ...pickCommonDependencies(info),
+        ...commonDeps,
         "react-native": info.peerDependencies?.["react-native"] || "^0.0.0-0",
         "react-native-macos": undefined,
         "react-native-windows": info.version,
@@ -224,11 +241,12 @@ async function getProfile(v) {
         throw new Error("Could not determine dependencies");
       }
 
+      const commonDeps = await resolveCommonDependencies(info);
       const codegen = await fetchPackageInfo(
         "react-native-codegen@" + dependencies["react-native-codegen"]
       );
       return {
-        ...pickCommonDependencies(info),
+        ...commonDeps,
         ...codegen.dependencies,
         "react-native": "facebook/react-native",
         "react-native-macos": undefined,
@@ -238,8 +256,9 @@ async function getProfile(v) {
 
     case "nightly": {
       const info = await fetchPackageInfo("react-native@nightly");
+      const commonDeps = await resolveCommonDependencies(info);
       return {
-        ...pickCommonDependencies(info),
+        ...commonDeps,
         "react-native": "nightly",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
@@ -253,8 +272,9 @@ async function getProfile(v) {
           fetchPackageInfo(`react-native-macos@^${v}.0-0`),
           fetchPackageInfo(`react-native-windows@^${v}.0-0`),
         ]);
+      const commonDeps = await resolveCommonDependencies(reactNative);
       return {
-        ...pickCommonDependencies(reactNative),
+        ...commonDeps,
         "react-native": reactNative.version,
         "react-native-macos": rnmVersion,
         "react-native-windows": rnwVersion,
