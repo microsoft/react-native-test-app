@@ -177,8 +177,9 @@ class TestAppReactNativeHost(
 
     override fun getJSMainModuleName() = "index"
 
-    // We may not always need a JS bundle, but `ReactNativeHost.createReactInstanceManager`
-    // asserts it so we need to return something.
+    // We may not always have (or need) a JS bundle, but
+    // `ReactNativeHost.createReactInstanceManager` asserts it so we need to
+    // return something.
     override fun getBundleAssetName() = reactBundleNameProvider.bundleName ?: "main.android.bundle"
 
     override fun getUseDeveloperSupport() = source == BundleSource.Server
