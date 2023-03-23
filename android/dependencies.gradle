@@ -2,9 +2,9 @@
  * Find the latest version of KSP that supports the specified Kotlin version.
  */
 static String getKspVersion(String kotlinVersion) {
-    // This list of `com.google.devtools.ksp` versions can be found on
-    // https://mvnrepository.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin
     return [
+        // Run `scripts/update-ksp-versions.mjs` to update this list
+        // update-ksp-versions start
         "1.8.10-1.0.9",
         "1.8.0-1.0.9",
         "1.7.22-1.0.8",
@@ -18,6 +18,7 @@ static String getKspVersion(String kotlinVersion) {
         "1.6.0-1.0.2",
         "1.5.31-1.0.1",
         "1.5.30-1.0.0",
+        // update-ksp-versions end
     ].find { it.startsWith(kotlinVersion) }
 }
 
