@@ -6,8 +6,8 @@ buildscript {
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android") version "${kotlinVersion}"
-    id("org.jetbrains.kotlin.kapt") version "${kotlinVersion}"
+    id("com.google.devtools.ksp").version("${kspVersion}")
+    id("org.jetbrains.kotlin.android").version("${kotlinVersion}")
 }
 
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
@@ -398,7 +398,7 @@ dependencies {
     implementation libraries.materialComponents
 
     implementation libraries.moshiKotlin
-    kapt libraries.moshiKotlinCodegen
+    ksp libraries.moshiKotlinCodegen
 
     testImplementation libraries.junit
     testImplementation libraries.androidJUnitKotlinExtensions
