@@ -12,9 +12,6 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.JSIModulePackage
 import com.facebook.react.bridge.JavaScriptExecutorFactory
 import com.facebook.react.bridge.ReactContext
-import com.facebook.react.bridge.ReactMarker
-import com.facebook.react.bridge.ReactMarkerConstants
-import com.facebook.react.common.LifecycleState
 import com.facebook.react.devsupport.DevInternalSettings
 import com.facebook.react.devsupport.DevServerHelper
 import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
@@ -152,20 +149,7 @@ class TestAppReactNativeHost(
     }
 
     override fun createReactInstanceManager(): ReactInstanceManager {
-        ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_START)
-        val reactInstanceManager = ReactInstanceManager.builder()
-            .setApplication(application)
-            .setJavaScriptExecutorFactory(javaScriptExecutorFactory)
-            .setBundleAssetName(bundleAssetName)
-            .setJSMainModulePath(jsMainModuleName)
-            .addPackages(packages)
-            .setUseDeveloperSupport(useDeveloperSupport)
-            .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
-            .setRedBoxHandler(redBoxHandler)
-            .setJSIModulesPackage(jsiModulePackage)
-            .build()
-        ReactMarker.logMarker(ReactMarkerConstants.BUILD_REACT_INSTANCE_MANAGER_END)
-
+        val reactInstanceManager = super.createReactInstanceManager()
         addCustomDevOptions(reactInstanceManager.devSupportManager)
 
         synchronized(reactInstanceEventListeners) {
@@ -193,8 +177,10 @@ class TestAppReactNativeHost(
 
     override fun getJSMainModuleName() = "index"
 
-    override fun getBundleAssetName() =
-        if (source == BundleSource.Disk) reactBundleNameProvider.bundleName else null
+    // We may not always have (or need) a JS bundle, but
+    // `ReactNativeHost.createReactInstanceManager` asserts it so we need to
+    // return something.
+    override fun getBundleAssetName() = reactBundleNameProvider.bundleName ?: "main.android.bundle"
 
     override fun getUseDeveloperSupport() = source == BundleSource.Server
 
