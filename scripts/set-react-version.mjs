@@ -185,8 +185,7 @@ async function resolveCommonDependencies({ dependencies, peerDependencies }) {
       // Metro bumps and publishes all packages together, meaning we can use
       // `metro-react-native-babel-transformer` to determine the version of
       // `metro-react-native-babel-preset` that should be used.
-      const metroBabelTransformer = "metro-react-native-babel-transformer";
-      const version = dependencies?.[metroBabelTransformer];
+      const version = dependencies?.["metro-react-native-babel-transformer"];
       if (version) {
         return version;
       }
@@ -196,7 +195,7 @@ async function resolveCommonDependencies({ dependencies, peerDependencies }) {
       // `@react-native-community/cli-plugin-metro` instead.
       const cliPluginMetro = "@react-native-community/cli-plugin-metro";
       const metroPluginInfo = await fetchPackageInfo(cliPluginMetro);
-      return metroPluginInfo.dependencies?.[metroBabelTransformer];
+      return metroPluginInfo.dependencies?.["metro"];
     })(),
     react: peerDependencies?.["react"],
   };
