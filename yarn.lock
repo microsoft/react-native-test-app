@@ -4303,6 +4303,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cliui@npm:^8.0.0":
+  version: 8.0.1
+  resolution: "cliui@npm:8.0.1"
+  dependencies:
+    string-width: ^4.2.0
+    strip-ansi: ^6.0.1
+    wrap-ansi: ^7.0.0
+  checksum: 79648b3b0045f2e285b76fb2e24e207c6db44323581e421c3acbd0e86454cba1b37aea976ab50195a49e7384b871e6dfb2247ad7dec53c02454ac6497394cb56
+  languageName: node
+  linkType: hard
+
 "clone-deep@npm:^4.0.1":
   version: 4.0.1
   resolution: "clone-deep@npm:4.0.1"
@@ -8851,6 +8862,13 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
+"minimist@npm:^1.2.8":
+  version: 1.2.8
+  resolution: "minimist@npm:1.2.8"
+  checksum: 75a6d645fb122dad29c06a7597bddea977258957ed88d7a6df59b5cd3fe4a527e253e9bbf2e783e4b73657f9098b96a5fe96ab8a113655d4109108577ecf85b0
+  languageName: node
+  linkType: hard
+
 "minipass-collect@npm:^1.0.2":
   version: 1.0.2
   resolution: "minipass-collect@npm:1.0.2"
@@ -10162,12 +10180,14 @@ fsevents@^2.3.2:
     "@types/uuid": ^8.3.1
     ajv: ^8.0.0
     chalk: ^4.1.0
+    cliui: ^8.0.0
     eslint: ^8.0.0
     eslint-plugin-jest: ^27.0.0
     fast-xml-parser: ^4.0.0
     jest: ^27.0.0
     js-yaml: ^4.1.0
     memfs: ^3.3.0
+    minimist: ^1.2.8
     prettier: ^2.3.1
     prompts: ^2.4.0
     react: 17.0.2
@@ -10179,7 +10199,6 @@ fsevents@^2.3.2:
     suggestion-bot: ^1.0.0
     typescript: ^5.0.0
     uuid: ^8.3.2
-    yargs: ^16.0.0
   peerDependencies:
     "@expo/config-plugins": ">=5.0"
     "@react-native-community/cli": ">=5.0"
@@ -12713,7 +12732,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"yargs@npm:^16.0.0, yargs@npm:^16.2.0":
+"yargs@npm:^16.2.0":
   version: 16.2.0
   resolution: "yargs@npm:16.2.0"
   dependencies:

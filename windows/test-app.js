@@ -6,6 +6,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { findNearest, getPackageVersion } = require("../scripts/helpers");
+const { parseArgs } = require("../scripts/parseargs");
 
 /**
  * @typedef {{
@@ -890,28 +891,29 @@ exports.toProjectEntry = toProjectEntry;
 if (require.main === module) {
   require("../scripts/link")(module);
 
-  require("yargs").usage(
-    "$0 [options]",
+  parseArgs(
     "Generate a Visual Studio solution for React Test App",
     {
       "project-directory": {
-        alias: "p",
+        description:
+          "Directory where solution will be created (default: “windows”)",
         type: "string",
-        description: "Directory where solution will be created",
+        short: "p",
         default: "windows",
       },
       autolink: {
+        description: `Run autolink after generating the solution (this is the default on Windows)`,
         type: "boolean",
-        description: "Run autolink after generating the solution",
         default: require("os").platform() === "win32",
       },
       "use-hermes": {
-        type: "boolean",
         description: "Use Hermes JavaScript engine (experimental)",
+        type: "boolean",
+        default: false,
       },
       "use-nuget": {
-        type: "boolean",
         description: "Use NuGet packages (experimental)",
+        type: "boolean",
         default: false,
       },
     },
@@ -931,5 +933,5 @@ if (require.main === module) {
         process.exitCode = 1;
       }
     }
-  ).argv;
+  );
 }
