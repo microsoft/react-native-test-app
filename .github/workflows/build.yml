@@ -11,6 +11,10 @@ on:
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
   VisualStudioVersion: "17.0"
+concurrency:
+  # Ensure single build of a pull request. `trunk` should not be affected.
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 jobs:
   lint-commit:
     name: "lint commit message"
