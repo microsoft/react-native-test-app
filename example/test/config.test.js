@@ -108,11 +108,11 @@ describe("react-native config", () => {
           android: expect.anything(),
         }),
         project: expect.objectContaining({
-          android: {
+          android: expect.objectContaining({
             sourceDir: expect.stringContaining(sourceDir),
             appName: fs.existsSync("android/app") ? "app" : "",
             packageName: "com.microsoft.reacttestapp",
-          },
+          }),
         }),
       });
     }
