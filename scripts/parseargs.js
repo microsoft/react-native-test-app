@@ -50,6 +50,7 @@ function formatHelp(description, options) {
   const minWidth =
     Math.max(...flags.map(([flag]) => flag.length)) + indent.length * 2;
 
+  // @ts-expect-error This expression is not callable
   const ui = require("cliui")();
   for (const [flag, config] of flags) {
     ui.div(
