@@ -181,6 +181,7 @@ describe("npm pack", () => {
       "scripts/helpers.js",
       "scripts/init.js",
       "scripts/link.js",
+      "scripts/parseargs.js",
       "scripts/patch-cli-platform-android.js",
       "scripts/validate-manifest.js",
       "test-app.gradle",

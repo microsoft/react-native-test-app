@@ -10,6 +10,7 @@ const fsp = require("fs/promises");
 const path = require("path");
 const semver = require("semver");
 const { findNearest, getPackageVersion, readJSONFile } = require("./helpers");
+const { parseArgs } = require("../scripts/parseargs");
 
 /**
  * @typedef {{ source: string; }} FileCopy;
@@ -998,39 +999,57 @@ exports.writeAllFiles = writeAllFiles;
 if (require.main === module) {
   /** @type {Platform[]} */
   const platformChoices = ["android", "ios", "macos", "windows"];
+  const defaultPlatforms = platformChoices.join(", ");
 
-  require("yargs").usage(
-    "$0 [options]",
+  /** @type {(input: string | string[]) => Platform[] } */
+  const validatePlatforms = (input) => {
+    const platforms = Array.isArray(input) ? input : [input];
+    for (const p of platforms) {
+      switch (p) {
+        case "android":
+        case "ios":
+        case "macos":
+        case "windows":
+          break;
+        default:
+          throw new Error(`Unknown platform: ${p}`);
+      }
+    }
+    return /** @type {Platform[]} */ (platforms);
+  };
+
+  parseArgs(
     "Configures React Test App in an existing package",
     {
       flatten: {
-        default: false,
         description:
           "Flatten the directory structure (when only one platform is selected)",
         type: "boolean",
+        default: false,
       },
       force: {
-        alias: "f",
-        default: false,
         description: "Allow destructive operations",
         type: "boolean",
+        short: "f",
+        default: false,
       },
       init: {
-        default: false,
         description: "Initialize a new project",
         type: "boolean",
+        default: false,
       },
       package: {
-        default: ".",
-        description: "Path of the package to modify",
+        description:
+          "Path of the package to modify (defaults to current directory)",
         type: "string",
+        default: ".",
       },
       platforms: {
-        alias: "p",
-        choices: platformChoices,
+        description: `Platforms to configure (defaults to [${defaultPlatforms}])`,
+        type: "string",
+        multiple: true,
+        short: "p",
         default: platformChoices,
-        description: "Platforms to configure",
-        type: "array",
       },
     },
     ({
@@ -1046,11 +1065,11 @@ if (require.main === module) {
         packagePath,
         testAppPath: path.dirname(require.resolve("../package.json")),
         targetVersion: getPackageVersion("react-native"),
-        platforms,
+        platforms: validatePlatforms(platforms),
         flatten,
         force,
         init,
       });
     }
-  ).argv;
+  );
 }
