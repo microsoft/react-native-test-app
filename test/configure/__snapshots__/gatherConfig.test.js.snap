@@ -50,7 +50,7 @@ module.exports = {
   ],
   "scripts": {
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
-    "ios": "react-native run-ios --project-path .",
+    "ios": "react-native run-ios",
     "start": "react-native start",
   },
 }
