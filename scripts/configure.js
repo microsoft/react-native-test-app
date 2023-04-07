@@ -476,7 +476,10 @@ const getConfig = (() => {
       // should therefore only be set during testing.
       const gitignore = process.env["GIT_IGNORE_FILE"] || "_gitignore";
       const { name, templatePath, testAppPath, flatten, init } = params;
-      const projectPathFlag = flatten ? " --project-path ." : "";
+      const projectPathFlag =
+        flatten && packageSatisfiesVersionRange(cliPlatformIOS, "<8.0.0")
+          ? " --project-path ."
+          : "";
       const testAppRelPath = projectRelativePath(params);
       const templateDir =
         templatePath ||
