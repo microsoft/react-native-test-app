@@ -238,13 +238,13 @@ describe("validate-manifest", () => {
       }`,
     });
     expect(validateManifest(findFile("app.json"))).toMatchInlineSnapshot(`
-      Object {
-        "components": Array [
-          Object {
+      {
+        "components": [
+          {
             "appKey": "Example",
             "displayName": "App",
           },
-          Object {
+          {
             "appKey": "Example",
             "displayName": "App (modal)",
             "presentationStyle": "modal",

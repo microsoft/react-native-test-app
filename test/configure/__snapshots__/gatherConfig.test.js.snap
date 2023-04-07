@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`gatherConfig() flattens configuration for a single platform only 1`] = `
-Object {
-  "dependencies": Object {},
-  "files": Object {
-    ".gitignore": Object {
+{
+  "dependencies": {},
+  "files": {
+    ".gitignore": {
       "source": "example/_gitignore",
     },
-    ".watchmanconfig": Object {
+    ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
     "Podfile": "require_relative '../test_app'
@@ -18,18 +18,18 @@ workspace 'Test.xcworkspace'
 
 use_test_app!
 ",
-    "babel.config.js": Object {
+    "babel.config.js": {
       "source": "node_modules/react-native/template/babel.config.js",
     },
-    "metro.config.js": Object {
+    "metro.config.js": {
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
   try {
-    const { configureProjects } = require(\\"react-native-test-app\\");
+    const { configureProjects } = require("react-native-test-app");
     return configureProjects({
       ios: {
-        sourceDir: \\".\\",
+        sourceDir: ".",
       },
     });
   } catch (_) {
@@ -42,13 +42,13 @@ module.exports = {
 };
 ",
   },
-  "oldFiles": Array [
+  "oldFiles": [
     "Podfile.lock",
     "Pods",
     "Test.xcodeproj",
     "Test.xcworkspace",
   ],
-  "scripts": Object {
+  "scripts": {
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
     "ios": "react-native run-ios --project-path .",
     "start": "react-native start",
@@ -57,18 +57,18 @@ module.exports = {
 `;
 
 exports[`gatherConfig() flattens configuration for a single platform only 2`] = `
-Object {
-  "dependencies": Object {},
-  "files": Object {
-    ".gitignore": Object {
+{
+  "dependencies": {},
+  "files": {
+    ".gitignore": {
       "source": "example/_gitignore",
     },
-    ".watchmanconfig": Object {
+    ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
     "android/build.gradle": "buildscript {
-    def androidTestAppDir = \\"../../android\\"
-    apply(from: \\"\${androidTestAppDir}/dependencies.gradle\\")
+    def androidTestAppDir = "../../android"
+    apply(from: "\${androidTestAppDir}/dependencies.gradle")
 
     repositories {
         mavenCentral()
@@ -86,26 +86,26 @@ allprojects {
     repositories {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url(\\"\${rootDir}/../react-native/android\\")
+            url("\${rootDir}/../react-native/android")
         }
         mavenCentral()
         google()
     }
 }
 ",
-    "android/gradle.properties": Object {
+    "android/gradle.properties": {
       "source": "example/android/gradle.properties",
     },
-    "android/gradle/wrapper/gradle-wrapper.jar": Object {
+    "android/gradle/wrapper/gradle-wrapper.jar": {
       "source": "example/android/gradle/wrapper/gradle-wrapper.jar",
     },
-    "android/gradle/wrapper/gradle-wrapper.properties": Object {
+    "android/gradle/wrapper/gradle-wrapper.properties": {
       "source": "example/android/gradle/wrapper/gradle-wrapper.properties",
     },
-    "android/gradlew": Object {
+    "android/gradlew": {
       "source": "example/android/gradlew",
     },
-    "android/gradlew.bat": Object {
+    "android/gradlew.bat": {
       "source": "example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
@@ -116,12 +116,12 @@ allprojects {
     }
 }
 
-rootProject.name = \\"Test\\"
+rootProject.name = "Test"
 
-apply(from: \\"../../test-app.gradle\\")
+apply(from: "../../test-app.gradle")
 applyTestAppSettings(settings)
 ",
-    "babel.config.js": Object {
+    "babel.config.js": {
       "source": "node_modules/react-native/template/babel.config.js",
     },
     "ios/Podfile": "require_relative '../../test_app'
@@ -132,22 +132,22 @@ workspace 'Test.xcworkspace'
 
 use_test_app!
 ",
-    "metro.config.js": Object {
+    "metro.config.js": {
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
   try {
-    const { configureProjects } = require(\\"react-native-test-app\\");
+    const { configureProjects } = require("react-native-test-app");
     return configureProjects({
       android: {
-        sourceDir: \\"android\\",
+        sourceDir: "android",
       },
       ios: {
-        sourceDir: \\"ios\\",
+        sourceDir: "ios",
       },
       windows: {
-        sourceDir: \\"windows\\",
-        solutionFile: \\"windows/Test.sln\\",
+        sourceDir: "windows",
+        solutionFile: "windows/Test.sln",
       },
     });
   } catch (_) {
@@ -160,13 +160,13 @@ module.exports = {
 };
 ",
   },
-  "oldFiles": Array [
+  "oldFiles": [
     "ios/Podfile.lock",
     "ios/Pods",
     "ios/Test.xcodeproj",
     "ios/Test.xcworkspace",
   ],
-  "scripts": Object {
+  "scripts": {
     "android": "react-native run-android",
     "build:android": "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
@@ -177,43 +177,43 @@ module.exports = {
 `;
 
 exports[`gatherConfig() returns common configuration 1`] = `
-Object {
-  "dependencies": Object {},
-  "files": Object {
-    ".gitignore": Object {
+{
+  "dependencies": {},
+  "files": {
+    ".gitignore": {
       "source": "example/_gitignore",
     },
-    ".watchmanconfig": Object {
+    ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "babel.config.js": Object {
+    "babel.config.js": {
       "source": "node_modules/react-native/template/babel.config.js",
     },
-    "common/.gitignore": Object {
+    "common/.gitignore": {
       "source": "example/_gitignore",
     },
-    "common/.watchmanconfig": Object {
+    "common/.watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "common/babel.config.js": Object {
+    "common/babel.config.js": {
       "source": "node_modules/react-native/template/babel.config.js",
     },
-    "common/metro.config.js": Object {
+    "common/metro.config.js": {
       "source": "example/metro.config.js",
     },
     "common/react-native.config.js": "const project = (() => {
   try {
-    const { configureProjects } = require(\\"react-native-test-app\\");
+    const { configureProjects } = require("react-native-test-app");
     return configureProjects({
       android: {
-        sourceDir: \\"android\\",
+        sourceDir: "android",
       },
       ios: {
-        sourceDir: \\"ios\\",
+        sourceDir: "ios",
       },
       windows: {
-        sourceDir: \\"windows\\",
-        solutionFile: \\"windows/Test.sln\\",
+        sourceDir: "windows",
+        solutionFile: "windows/Test.sln",
       },
     });
   } catch (_) {
@@ -225,22 +225,22 @@ module.exports = {
   ...(project ? { project } : undefined),
 };
 ",
-    "metro.config.js": Object {
+    "metro.config.js": {
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
   try {
-    const { configureProjects } = require(\\"react-native-test-app\\");
+    const { configureProjects } = require("react-native-test-app");
     return configureProjects({
       android: {
-        sourceDir: \\"android\\",
+        sourceDir: "android",
       },
       ios: {
-        sourceDir: \\"ios\\",
+        sourceDir: "ios",
       },
       windows: {
-        sourceDir: \\"windows\\",
-        solutionFile: \\"windows/Test.sln\\",
+        sourceDir: "windows",
+        solutionFile: "windows/Test.sln",
       },
     });
   } catch (_) {
@@ -253,24 +253,24 @@ module.exports = {
 };
 ",
   },
-  "oldFiles": Array [],
-  "scripts": Object {
+  "oldFiles": [],
+  "scripts": {
     "start": "react-native start",
   },
 }
 `;
 
 exports[`gatherConfig() returns configuration for a single platform 1`] = `
-Object {
-  "dependencies": Object {},
-  "files": Object {
-    ".gitignore": Object {
+{
+  "dependencies": {},
+  "files": {
+    ".gitignore": {
       "source": "example/_gitignore",
     },
-    ".watchmanconfig": Object {
+    ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
-    "babel.config.js": Object {
+    "babel.config.js": {
       "source": "node_modules/react-native/template/babel.config.js",
     },
     "ios/Podfile": "require_relative '../../test_app'
@@ -281,22 +281,22 @@ workspace 'Test.xcworkspace'
 
 use_test_app!
 ",
-    "metro.config.js": Object {
+    "metro.config.js": {
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
   try {
-    const { configureProjects } = require(\\"react-native-test-app\\");
+    const { configureProjects } = require("react-native-test-app");
     return configureProjects({
       android: {
-        sourceDir: \\"android\\",
+        sourceDir: "android",
       },
       ios: {
-        sourceDir: \\"ios\\",
+        sourceDir: "ios",
       },
       windows: {
-        sourceDir: \\"windows\\",
-        solutionFile: \\"windows/Test.sln\\",
+        sourceDir: "windows",
+        solutionFile: "windows/Test.sln",
       },
     });
   } catch (_) {
@@ -309,13 +309,13 @@ module.exports = {
 };
 ",
   },
-  "oldFiles": Array [
+  "oldFiles": [
     "ios/Podfile.lock",
     "ios/Pods",
     "ios/Test.xcodeproj",
     "ios/Test.xcworkspace",
   ],
-  "scripts": Object {
+  "scripts": {
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
     "ios": "react-native run-ios",
     "start": "react-native start",
@@ -324,21 +324,21 @@ module.exports = {
 `;
 
 exports[`gatherConfig() returns configuration for all platforms 1`] = `
-Object {
-  "dependencies": Object {
+{
+  "dependencies": {
     "react-native-macos": "^0.68.0",
     "react-native-windows": "^0.68.0",
   },
-  "files": Object {
-    ".gitignore": Object {
+  "files": {
+    ".gitignore": {
       "source": "example/_gitignore",
     },
-    ".watchmanconfig": Object {
+    ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
     "android/build.gradle": "buildscript {
-    def androidTestAppDir = \\"../../android\\"
-    apply(from: \\"\${androidTestAppDir}/dependencies.gradle\\")
+    def androidTestAppDir = "../../android"
+    apply(from: "\${androidTestAppDir}/dependencies.gradle")
 
     repositories {
         mavenCentral()
@@ -356,26 +356,26 @@ allprojects {
     repositories {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url(\\"\${rootDir}/../react-native/android\\")
+            url("\${rootDir}/../react-native/android")
         }
         mavenCentral()
         google()
     }
 }
 ",
-    "android/gradle.properties": Object {
+    "android/gradle.properties": {
       "source": "example/android/gradle.properties",
     },
-    "android/gradle/wrapper/gradle-wrapper.jar": Object {
+    "android/gradle/wrapper/gradle-wrapper.jar": {
       "source": "example/android/gradle/wrapper/gradle-wrapper.jar",
     },
-    "android/gradle/wrapper/gradle-wrapper.properties": Object {
+    "android/gradle/wrapper/gradle-wrapper.properties": {
       "source": "example/android/gradle/wrapper/gradle-wrapper.properties",
     },
-    "android/gradlew": Object {
+    "android/gradlew": {
       "source": "example/android/gradlew",
     },
-    "android/gradlew.bat": Object {
+    "android/gradlew.bat": {
       "source": "example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
@@ -386,12 +386,12 @@ allprojects {
     }
 }
 
-rootProject.name = \\"Test\\"
+rootProject.name = "Test"
 
-apply(from: \\"../../test-app.gradle\\")
+apply(from: "../../test-app.gradle")
 applyTestAppSettings(settings)
 ",
-    "babel.config.js": Object {
+    "babel.config.js": {
       "source": "node_modules/react-native/template/babel.config.js",
     },
     "ios/Podfile": "require_relative '../../test_app'
@@ -408,22 +408,22 @@ workspace 'Test.xcworkspace'
 
 use_test_app!
 ",
-    "metro.config.js": Object {
+    "metro.config.js": {
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
   try {
-    const { configureProjects } = require(\\"react-native-test-app\\");
+    const { configureProjects } = require("react-native-test-app");
     return configureProjects({
       android: {
-        sourceDir: \\"android\\",
+        sourceDir: "android",
       },
       ios: {
-        sourceDir: \\"ios\\",
+        sourceDir: "ios",
       },
       windows: {
-        sourceDir: \\"windows\\",
-        solutionFile: \\"windows/Test.sln\\",
+        sourceDir: "windows",
+        solutionFile: "windows/Test.sln",
       },
     });
   } catch (_) {
@@ -435,11 +435,11 @@ module.exports = {
   ...(project ? { project } : undefined),
 };
 ",
-    "windows/.gitignore": Object {
+    "windows/.gitignore": {
       "source": "example/windows/_gitignore",
     },
   },
-  "oldFiles": Array [
+  "oldFiles": [
     "ios/Podfile.lock",
     "ios/Pods",
     "ios/Test.xcodeproj",
@@ -452,7 +452,7 @@ module.exports = {
     "windows/Test.vcxproj",
     "windows/Test/Test.vcxproj",
   ],
-  "scripts": Object {
+  "scripts": {
     "android": "react-native run-android",
     "build:android": "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
@@ -467,18 +467,18 @@ module.exports = {
 `;
 
 exports[`gatherConfig() returns configuration for arbitrary platforms 1`] = `
-Object {
-  "dependencies": Object {},
-  "files": Object {
-    ".gitignore": Object {
+{
+  "dependencies": {},
+  "files": {
+    ".gitignore": {
       "source": "example/_gitignore",
     },
-    ".watchmanconfig": Object {
+    ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
     },
     "android/build.gradle": "buildscript {
-    def androidTestAppDir = \\"../../android\\"
-    apply(from: \\"\${androidTestAppDir}/dependencies.gradle\\")
+    def androidTestAppDir = "../../android"
+    apply(from: "\${androidTestAppDir}/dependencies.gradle")
 
     repositories {
         mavenCentral()
@@ -496,26 +496,26 @@ allprojects {
     repositories {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url(\\"\${rootDir}/../react-native/android\\")
+            url("\${rootDir}/../react-native/android")
         }
         mavenCentral()
         google()
     }
 }
 ",
-    "android/gradle.properties": Object {
+    "android/gradle.properties": {
       "source": "example/android/gradle.properties",
     },
-    "android/gradle/wrapper/gradle-wrapper.jar": Object {
+    "android/gradle/wrapper/gradle-wrapper.jar": {
       "source": "example/android/gradle/wrapper/gradle-wrapper.jar",
     },
-    "android/gradle/wrapper/gradle-wrapper.properties": Object {
+    "android/gradle/wrapper/gradle-wrapper.properties": {
       "source": "example/android/gradle/wrapper/gradle-wrapper.properties",
     },
-    "android/gradlew": Object {
+    "android/gradlew": {
       "source": "example/android/gradlew",
     },
-    "android/gradlew.bat": Object {
+    "android/gradlew.bat": {
       "source": "example/android/gradlew.bat",
     },
     "android/settings.gradle": "pluginManagement {
@@ -526,12 +526,12 @@ allprojects {
     }
 }
 
-rootProject.name = \\"Test\\"
+rootProject.name = "Test"
 
-apply(from: \\"../../test-app.gradle\\")
+apply(from: "../../test-app.gradle")
 applyTestAppSettings(settings)
 ",
-    "babel.config.js": Object {
+    "babel.config.js": {
       "source": "node_modules/react-native/template/babel.config.js",
     },
     "ios/Podfile": "require_relative '../../test_app'
@@ -542,22 +542,22 @@ workspace 'Test.xcworkspace'
 
 use_test_app!
 ",
-    "metro.config.js": Object {
+    "metro.config.js": {
       "source": "example/metro.config.js",
     },
     "react-native.config.js": "const project = (() => {
   try {
-    const { configureProjects } = require(\\"react-native-test-app\\");
+    const { configureProjects } = require("react-native-test-app");
     return configureProjects({
       android: {
-        sourceDir: \\"android\\",
+        sourceDir: "android",
       },
       ios: {
-        sourceDir: \\"ios\\",
+        sourceDir: "ios",
       },
       windows: {
-        sourceDir: \\"windows\\",
-        solutionFile: \\"windows/Test.sln\\",
+        sourceDir: "windows",
+        solutionFile: "windows/Test.sln",
       },
     });
   } catch (_) {
@@ -570,13 +570,13 @@ module.exports = {
 };
 ",
   },
-  "oldFiles": Array [
+  "oldFiles": [
     "ios/Podfile.lock",
     "ios/Pods",
     "ios/Test.xcodeproj",
     "ios/Test.xcworkspace",
   ],
-  "scripts": Object {
+  "scripts": {
     "android": "react-native run-android",
     "build:android": "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
     "build:ios": "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",

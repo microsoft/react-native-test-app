@@ -40,7 +40,7 @@ describe("getConfig()", () => {
     expect(Object.keys(config.files).sort()).toEqual([
       ".gitignore",
       ".watchmanconfig",
-      "App.js",
+      "App.tsx",
       "app.json",
       "babel.config.js",
       "index.js",
