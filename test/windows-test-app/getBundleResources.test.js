@@ -33,18 +33,18 @@ describe("getBundleResources", () => {
     expect(appName).toBe("Example");
     expect(appxManifest).toBe("windows\\Package.appxmanifest");
     expect(assetItems).toMatchInlineSnapshot(`
-      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\app.json\\">
-            <DestinationFolders>$(OutDir)\\\\Bundle\\\\assets</DestinationFolders>
+      "<CopyFileToFolders Include="$(ProjectRootDir)\\dist\\assets\\app.json">
+            <DestinationFolders>$(OutDir)\\Bundle\\assets</DestinationFolders>
           </CopyFileToFolders>
-          <CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
-            <DestinationFolders>$(OutDir)\\\\Bundle</DestinationFolders>
+          <CopyFileToFolders Include="$(ProjectRootDir)\\dist\\main.bundle">
+            <DestinationFolders>$(OutDir)\\Bundle</DestinationFolders>
           </CopyFileToFolders>"
     `);
     expect(assetItemFilters).toMatchInlineSnapshot(`
-      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\app.json\\">
-            <Filter>Assets\\\\assets</Filter>
+      "<CopyFileToFolders Include="$(ProjectRootDir)\\dist\\assets\\app.json">
+            <Filter>Assets\\assets</Filter>
           </CopyFileToFolders>
-          <CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.bundle\\">
+          <CopyFileToFolders Include="$(ProjectRootDir)\\dist\\main.bundle">
             <Filter>Assets</Filter>
           </CopyFileToFolders>"
     `);
@@ -126,7 +126,7 @@ describe("getBundleResources", () => {
     const { packageCertificate } = getBundleResources("app.json");
     expect(packageCertificate).toMatchInlineSnapshot(`
       "<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
-          <PackageCertificateKeyFile>$(ProjectRootDir)\\\\windows\\\\ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+          <PackageCertificateKeyFile>$(ProjectRootDir)\\windows\\ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
           <PackageCertificateThumbprint>thumbprint</PackageCertificateThumbprint>
           <PackageCertificatePassword>password</PackageCertificatePassword>"
     `);

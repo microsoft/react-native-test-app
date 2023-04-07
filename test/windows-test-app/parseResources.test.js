@@ -30,24 +30,24 @@ describe("parseResources", () => {
       "."
     );
     expect(assetItems).toMatchInlineSnapshot(`
-"<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\node_modules\\\\arnold\\\\portrait.png\\">
-      <DestinationFolders>$(OutDir)\\\\Bundle\\\\assets\\\\node_modules\\\\arnold</DestinationFolders>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\splash.png\\">
-      <DestinationFolders>$(OutDir)\\\\Bundle\\\\assets</DestinationFolders>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.jsbundle\\">
-      <DestinationFolders>$(OutDir)\\\\Bundle</DestinationFolders>
-    </CopyFileToFolders>"
-`);
+      "<CopyFileToFolders Include="$(ProjectRootDir)\\dist\\assets\\node_modules\\arnold\\portrait.png">
+            <DestinationFolders>$(OutDir)\\Bundle\\assets\\node_modules\\arnold</DestinationFolders>
+          </CopyFileToFolders>
+          <CopyFileToFolders Include="$(ProjectRootDir)\\dist\\assets\\splash.png">
+            <DestinationFolders>$(OutDir)\\Bundle\\assets</DestinationFolders>
+          </CopyFileToFolders>
+          <CopyFileToFolders Include="$(ProjectRootDir)\\dist\\main.jsbundle">
+            <DestinationFolders>$(OutDir)\\Bundle</DestinationFolders>
+          </CopyFileToFolders>"
+    `);
     expect(assetItemFilters).toMatchInlineSnapshot(`
-      "<CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\node_modules\\\\arnold\\\\portrait.png\\">
-            <Filter>Assets\\\\assets\\\\node_modules\\\\arnold</Filter>
+      "<CopyFileToFolders Include="$(ProjectRootDir)\\dist\\assets\\node_modules\\arnold\\portrait.png">
+            <Filter>Assets\\assets\\node_modules\\arnold</Filter>
           </CopyFileToFolders>
-          <CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\assets\\\\splash.png\\">
-            <Filter>Assets\\\\assets</Filter>
+          <CopyFileToFolders Include="$(ProjectRootDir)\\dist\\assets\\splash.png">
+            <Filter>Assets\\assets</Filter>
           </CopyFileToFolders>
-          <CopyFileToFolders Include=\\"$(ProjectRootDir)\\\\dist\\\\main.jsbundle\\">
+          <CopyFileToFolders Include="$(ProjectRootDir)\\dist\\main.jsbundle">
             <Filter>Assets</Filter>
           </CopyFileToFolders>"
     `);
