@@ -41,7 +41,7 @@ runs:
       shell: bash
     - name: Set up JDK
       if: ${{ inputs.platform == 'android' || inputs.platform == 'node' }}
-      uses: actions/setup-java@v3.10.0
+      uses: actions/setup-java@v3.11.0
       with:
         distribution: temurin
         java-version: 11
