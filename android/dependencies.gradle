@@ -65,20 +65,20 @@ ext {
      * See https://github.com/dependabot/feedback/issues/345.
      */
     libraries = [
-        androidAppCompat            : "androidx.appcompat:appcompat:1.4.2",
+        androidAppCompat            : "androidx.appcompat:appcompat:1.6.1",
         androidCamera               : "androidx.camera:camera-camera2:1.2.0-beta02",
         androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.2.0-beta02",
         androidCoreKotlinExtensions : "androidx.core:core-ktx:1.9.0",
         androidEspressoCore         : "androidx.test.espresso:espresso-core:3.5.1",
         androidJUnit                : "androidx.test.ext:junit:1.1.5",
         androidJUnitKotlinExtensions: "androidx.test.ext:junit-ktx:1.1.5",
-        androidRecyclerView         : "androidx.recyclerview:recyclerview:1.2.1",
+        androidRecyclerView         : "androidx.recyclerview:recyclerview:1.3.0",
         androidSwipeRefreshLayout   : "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
         junit                       : "junit:junit:4.13.2",
         kotlinReflect               : "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}",
         kotlinStdlibJdk7            : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
         kotlinStdlibJdk8            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
-        materialComponents          : "com.google.android.material:material:1.7.0",
+        materialComponents          : "com.google.android.material:material:1.8.0",
         mlKitBarcodeScanning        : "com.google.mlkit:barcode-scanning:17.1.0",
         mockitoInline               : "org.mockito:mockito-inline:4.11.0",
         moshiKotlin                 : "com.squareup.moshi:moshi-kotlin:1.14.0",
