@@ -3686,13 +3686,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"azure-devops-node-api@npm:^11.0.0":
-  version: 11.0.1
-  resolution: "azure-devops-node-api@npm:11.0.1"
+"azure-devops-node-api@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "azure-devops-node-api@npm:12.0.0"
   dependencies:
     tunnel: 0.0.6
     typed-rest-client: ^1.8.4
-  checksum: a899e1094dc32c215370e62cb17943929139f24b24cbe739446d3187133f55c6a48f525bd7686239b20529789f70f1cd0920ae3f16fda41fdfd9f91813c5e1ce
+  checksum: a6e142c61f71ace9cd3fd814607d47d68b443065e50735b596c4d5057de16345f1eb40f4e2b5bcae2b60497483cf54fc7d9c4136a3568c01345cc34165e9b8ef
   languageName: node
   linkType: hard
 
@@ -11417,17 +11417,17 @@ fsevents@^2.3.2:
   linkType: hard
 
 "suggestion-bot@npm:^1.0.0":
-  version: 1.3.6
-  resolution: "suggestion-bot@npm:1.3.6"
+  version: 1.3.7
+  resolution: "suggestion-bot@npm:1.3.7"
   dependencies:
     "@octokit/core": ^4.0.0
     "@octokit/plugin-rest-endpoint-methods": ^7.0.0
-    azure-devops-node-api: ^11.0.0
+    azure-devops-node-api: ^12.0.0
     commander: ^8.1.0
     parse-diff: ^0.10.0
   bin:
     suggestion-bot: cli.js
-  checksum: 2146c1b213ef33226894fb94df029af7766695b0390d9db61a61dd63054275d1e9844b32c71602ee2c2c790f4fe3b09abe5258018871f981ea49acedde70b27a
+  checksum: 2fc979f316fe5d3d2777abb77855cbff151996b850fa8522eb33626323cbb9f842b3e3e30623ee56d9202d27d3bbfcc1fc226b94d77e7c634c670d8ff7c3e9aa
   languageName: node
   linkType: hard
 
