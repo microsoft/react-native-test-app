@@ -4,11 +4,7 @@
   "packageRules": [
     {
       "matchPackagePrefixes": ["@react-native-community/cli"],
-      "allowedVersions": "^7.0.0"
-    },
-    {
-      "matchPackageNames": ["hermes-engine"],
-      "allowedVersions": "~0.11.0"
+      "allowedVersions": "^10.0.0"
     },
     {
       "groupName": "Android",
@@ -33,7 +29,7 @@
     {
       "groupName": "Metro",
       "matchSourceUrlPrefixes": ["https://github.com/facebook/metro"],
-      "allowedVersions": "^0.67.0"
+      "allowedVersions": "^0.73.0"
     },
     {
       "groupName": "Moshi",
@@ -46,12 +42,11 @@
     },
     {
       "matchPackageNames": [
-        "@types/react-native",
         "react-native",
         "react-native-macos",
         "react-native-windows"
       ],
-      "allowedVersions": "^0.68.0"
+      "allowedVersions": "^0.71.0"
     }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
