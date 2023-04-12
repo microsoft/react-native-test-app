@@ -332,7 +332,7 @@ PODS:
     - React-jsi (= 0.71.0)
     - React-logger (= 0.71.0)
     - React-perflogger (= 0.71.0)
-  - ReactNativeHost (0.2.4):
+  - ReactNativeHost (0.2.5):
     - React-Core
     - React-cxxreact
   - ReactTestApp-DevSupport (0.0.1-dev):
@@ -498,7 +498,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: d7d88c57b07ae1f2a9943a5a9d1cdd0ad8ce6401
   React-runtimeexecutor: cdb731a5850727c4d381156c0787c7a4faf8ee63
   ReactCommon: 0e53d59d4fdcbaaf3cd8bcfc9472735a170ebb6f
-  ReactNativeHost: 75c4be73d2bc8ef78ec9ba2674d0af72e0ee1f24
+  ReactNativeHost: 5e4cc8c8ededf0639d095fe874e4bddcacdfe77f
   ReactTestApp-DevSupport: 19f2e33511690a213253175a9ca541d10456cb95
   ReactTestApp-Resources: 8539dac0f8d2ef3821827a537e37812104c6ff78
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
