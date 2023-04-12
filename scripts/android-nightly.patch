@@ -35,14 +35,14 @@ index c9cd14d..f63758d 100644
  };
  
 diff --git a/example/package.json b/example/package.json
-index a51d4cf..512b9c6 100644
+index 9c2e1aa..94fb85e 100644
 --- a/example/package.json
 +++ b/example/package.json
 @@ -32,7 +32,6 @@
-     "react": "17.0.2",
-     "react-native": "^0.68.2",
-     "react-native-macos": "^0.68.3",
+     "react": "18.2.0",
+     "react-native": "^0.71.6",
+     "react-native-macos": "^0.71.0",
 -    "react-native-safe-area-context": "^4.5.0",
      "react-native-test-app": "workspace:.",
-     "react-native-windows": "^0.68.8"
+     "react-native-windows": "^0.71.4"
    },
