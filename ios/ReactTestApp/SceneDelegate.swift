@@ -54,7 +54,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             object: [
                 "scene": scene,
                 "URLContexts": URLContexts,
-            ]
+            ] as [String: Any]
         )
 
         // scene(_:openURLContexts:)
