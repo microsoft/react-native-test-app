@@ -7,30 +7,14 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
-import com.facebook.react.ReactRootView
 import com.microsoft.reacttestapp.BuildConfig
 
 class ComponentActivity : ReactActivity() {
 
-    private inner class ComponentActivityDelegate(
-        activity: ReactActivity,
-        mainComponentName: String?
-    ) : ReactActivityDelegate(activity, mainComponentName) {
-        override fun getLaunchOptions(): Bundle? {
-            return intent.extras?.getBundle(COMPONENT_INITIAL_PROPERTIES)
-        }
-
-        override fun createRootView(): ReactRootView {
-            val rootView = super.createRootView()
-            rootView.setIsFabric(BuildConfig.ReactTestApp_useFabric)
-            return rootView
-        }
-    }
-
     companion object {
         private const val COMPONENT_NAME = "extra:componentName"
         private const val COMPONENT_DISPLAY_NAME = "extra:componentDisplayName"
-        private const val COMPONENT_INITIAL_PROPERTIES = "extra:componentInitialProperties"
+        const val COMPONENT_INITIAL_PROPERTIES = "extra:componentInitialProperties"
 
         fun newIntent(activity: Activity, component: ComponentViewModel): Intent {
             return Intent(activity, ComponentActivity::class.java).apply {
@@ -43,6 +27,8 @@ class ComponentActivity : ReactActivity() {
             }
         }
     }
+
+    // ReactActivity overrides
 
     override fun createReactActivityDelegate(): ReactActivityDelegate {
         return ComponentActivityDelegate(this, mainComponentName)
@@ -74,13 +60,7 @@ class ComponentActivity : ReactActivity() {
         } ?: loadApp(componentName)
     }
 
-    private fun findClass(name: String): Class<*>? {
-        return try {
-            Class.forName(name)
-        } catch (e: ClassNotFoundException) {
-            null
-        }
-    }
+    // Activity overrides
 
     override fun getSystemService(name: String): Any? {
         if (name == "service:reactNativeHostService") {
@@ -98,5 +78,15 @@ class ComponentActivity : ReactActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    // Private
+
+    private fun findClass(name: String): Class<*>? {
+        return try {
+            Class.forName(name)
+        } catch (e: ClassNotFoundException) {
+            null
+        }
     }
 }
