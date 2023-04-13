@@ -311,26 +311,34 @@ android {
             debug.java.srcDirs += "src/flipper/java"
         }
 
-        // TODO: Remove this block when we drop support for 0.67.
+        // TODO: Remove this block when we drop support for 0.67
         if (project.ext.react.enableFabric) {
             main.java.srcDirs += "src/fabric/java"
         } else {
             main.java.srcDirs += "src/no-fabric/java"
         }
 
-        // TODO: Remove this block when we drop support for 0.65.
+        // TODO: Remove this block when we drop support for 0.65
         if (enableNewArchitecture) {
             main.java.srcDirs += "src/turbomodule/java"
         } else {
             main.java.srcDirs += "src/no-turbomodule/java"
         }
 
-        // TODO: Remove this block when we drop support for 0.67.
+        // TODO: Remove this block when we drop support for 0.67
         // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
         if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
             main.java.srcDirs += "src/reactinstanceeventlistener-pre-0.68/java"
         } else {
             main.java.srcDirs += "src/reactinstanceeventlistener-0.68/java"
+        }
+
+        // TODO: Remove this block when we drop support for 0.72
+        // https://github.com/facebook/react-native/commit/e5dd9cdc6688e63e75a7e0bebf380be1a9a5fe2b
+        if (reactNativeVersion > 0 && reactNativeVersion < 7200) {
+            main.java.srcDirs += "src/reactactivitydelegate-pre-0.72/java"
+        } else {
+            main.java.srcDirs += "src/reactactivitydelegate-0.72/java"
         }
     }
 

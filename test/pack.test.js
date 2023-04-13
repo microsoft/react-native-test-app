@@ -82,6 +82,8 @@ describe("npm pack", () => {
       "android/app/src/no-fabric/java/com/microsoft/reacttestapp/fabric/FabricJSIModulePackage.kt",
       "android/app/src/no-turbomodule/java/com/microsoft/reacttestapp/compat/ReactNativeHostCompat.kt",
       "android/app/src/no-turbomodule/java/com/microsoft/reacttestapp/fabric/ComponentsRegistry.kt",
+      "android/app/src/reactactivitydelegate-0.72/java/com/microsoft/reacttestapp/component/ComponentActivityDelegate.kt",
+      "android/app/src/reactactivitydelegate-pre-0.72/java/com/microsoft/reacttestapp/component/ComponentActivityDelegate.kt",
       "android/app/src/reactinstanceeventlistener-0.68/java/com/microsoft/reacttestapp/compat/ReactInstanceEventListener.kt",
       "android/app/src/reactinstanceeventlistener-pre-0.68/java/com/microsoft/reacttestapp/compat/ReactInstanceEventListener.kt",
       "android/app/src/turbomodule/java/com/microsoft/reacttestapp/compat/ReactNativeHostCompat.kt",
