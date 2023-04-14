@@ -19,15 +19,23 @@ def new_architecture_enabled?(options, react_native_version)
   supports_new_architecture && ENV.fetch('RCT_NEW_ARCH_ENABLED', options[:turbomodule_enabled])
 end
 
-def resolve_module(request)
+def resolve_module(request, start_dir = Pod::Config.instance.installation_root)
   @module_cache ||= {}
   return @module_cache[request] if @module_cache.key?(request)
 
-  package_json = find_file("node_modules/#{request}/package.json",
-                           Pod::Config.instance.installation_root)
+  @module_cache[request] = resolve_module_uncached(request, start_dir).to_s
+end
+
+def resolve_module_relative(request)
+  path = resolve_module_uncached(request, Pathname.new(__dir__))
+  path.relative_path_from(Pod::Config.instance.installation_root).to_s
+end
+
+def resolve_module_uncached(request, start_dir)
+  package_json = find_file("node_modules/#{request}/package.json", start_dir)
   raise "Cannot find module '#{request}'" if package_json.nil?
 
-  @module_cache[request] = package_json.dirname.to_s
+  package_json.dirname
 end
 
 def supports_new_architecture?(react_native_version)

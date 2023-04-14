@@ -323,6 +323,9 @@ PODS:
     - React-jsi (= 0.71.6)
     - React-logger (= 0.71.6)
     - React-perflogger (= 0.71.6)
+  - ReactNativeHost (0.2.5):
+    - React-Core
+    - React-cxxreact
   - ReactTestApp-DevSupport (0.0.1-dev):
     - React-Core
     - React-jsi
@@ -365,6 +368,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "ReactNativeHost (from `../../node_modules/@rnx-kit/react-native-host`)"
   - ReactTestApp-DevSupport (from `../node_modules/react-native-test-app`)
   - ReactTestApp-Resources (from `..`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -442,6 +446,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeHost:
+    :path: "../../node_modules/@rnx-kit/react-native-host"
   ReactTestApp-DevSupport:
     :path: "../node_modules/react-native-test-app"
   ReactTestApp-Resources:
@@ -485,6 +491,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 73d201599a64ea14b4e0b8f91b64970979fd92e6
   React-runtimeexecutor: 8692ac548bec648fa121980ccb4304afd136d584
   ReactCommon: e1067159764444e5db7c14e294d5cd79fb159c59
+  ReactNativeHost: 5e4cc8c8ededf0639d095fe874e4bddcacdfe77f
   ReactTestApp-DevSupport: 19f2e33511690a213253175a9ca541d10456cb95
   ReactTestApp-Resources: ff5f151e465e890010b417ce65ca6c5de6aeccbb
   Yoga: ba09b6b11e6139e3df8229238aa794205ca6a02a

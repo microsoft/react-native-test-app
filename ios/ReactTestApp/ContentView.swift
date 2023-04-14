@@ -53,7 +53,7 @@ final class ContentViewController: UITableViewController {
 
     override public func motionEnded(_: UIEvent.EventSubtype, with event: UIEvent?) {
         guard event?.subtype == .motionShake,
-              let bridge = reactInstance.bridge,
+              let bridge = reactInstance.host?.bridge,
               let settings = bridge.module(for: RCTDevSettings.self) as? RCTDevSettings,
               settings.isShakeToShowDevMenuEnabled,
               let devMenu = bridge.module(for: RCTDevMenu.self) as? RCTDevMenu
@@ -193,7 +193,8 @@ final class ContentViewController: UITableViewController {
     // MARK: - Private
 
     private func navigate(to component: Component) {
-        guard let bridge = reactInstance.bridge,
+        guard let host = reactInstance.host,
+              let bridge = host.bridge,
               let navigationController = navigationController
         else {
             return
@@ -205,10 +206,9 @@ final class ContentViewController: UITableViewController {
             }
 
             let viewController = UIViewController(nibName: nil, bundle: nil)
-            viewController.view = RTACreateReactRootView(
-                bridge,
-                component.appKey,
-                component.initialProperties
+            viewController.view = host.view(
+                moduleName: component.appKey,
+                initialProperties: component.initialProperties
             )
             viewController.view.backgroundColor = UIColor.systemBackground
             return viewController
