@@ -20,7 +20,7 @@ index c9cd14d..f63758d 100644
  import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 @@ -169,7 +169,6 @@ const App = ({ concurrentRoot }) => {
    );
-
+ 
    return (
 -    <SafeAreaProvider>
        <SafeAreaView style={styles.body}>
@@ -33,7 +33,7 @@ index c9cd14d..f63758d 100644
 -    </SafeAreaProvider>
    );
  };
-
+ 
 diff --git a/example/package.json b/example/package.json
 index 9c2e1aa..94fb85e 100644
 --- a/example/package.json
