@@ -54,7 +54,7 @@ ext {
         : "7.3.1"
     kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
         ? rootProject.properties["KOTLIN_VERSION"]
-        : "1.7.10"
+        : "1.7.22"
     kspVersion = getKspVersion(kotlinVersion)
 
     /**
@@ -86,7 +86,10 @@ ext {
     ]
 
     getReactNativeDependencies = {
-        def dependencies = ["com.android.tools.build:gradle:${androidPluginVersion}"]
+        def dependencies = [
+          "com.android.tools.build:gradle:${androidPluginVersion}",
+          "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
+        ]
 
         if (autodetectReactNativeVersion || enableNewArchitecture) {
             dependencies << "com.facebook.react:react-native-gradle-plugin"

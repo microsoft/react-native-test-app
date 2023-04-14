@@ -7,7 +7,7 @@ buildscript {
 plugins {
     id("com.android.application")
     id("com.google.devtools.ksp").version("${kspVersion}")
-    id("org.jetbrains.kotlin.android").version("${kotlinVersion}")
+    id("org.jetbrains.kotlin.android")
 }
 
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
