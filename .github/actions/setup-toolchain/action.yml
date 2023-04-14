@@ -68,5 +68,4 @@ runs:
       uses: actions/cache@v3
       with:
         path: .ccache
-        key: ${{ runner.os }}-${{ inputs.cache-key-prefix }}-ccache-${{ steps.setup-ccache.outputs.cache-key }}
-        restore-keys: ${{ runner.os }}-${{ inputs.cache-key-prefix }}-ccache-
+        key: ${{ runner.os }}-${{ inputs.cache-key-prefix }}-ccache-${{ steps.setup-ccache.outputs.cache-key }}-1
