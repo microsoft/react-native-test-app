@@ -188,3 +188,5 @@ class ManifestTests: XCTestCase {
         XCTAssertNotNil(object["object"] as? NSNull)
     }
 }
+
+// swiftlint:enable force_cast
