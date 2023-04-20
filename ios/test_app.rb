@@ -430,6 +430,7 @@ def use_test_app_internal!(target_platform, options)
 
   post_install do |installer|
     react_native_post_install&.call(installer)
+    options[:post_install]&.call(installer)
 
     test_dependencies = {}
     %w[ReactTestAppTests ReactTestAppUITests].each do |target|
