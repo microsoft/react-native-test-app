@@ -13,8 +13,8 @@ class AppRegistry {
         }
 
         fun getAppKeys(context: ReactApplicationContext): Array<String> {
-            val appKeys = AppRegistry().getAppKeys(context.javaScriptContextHolder.get())
-                ?: return arrayOf()
+            val jsContext = context.javaScriptContextHolder?.get() ?: return arrayOf()
+            val appKeys = AppRegistry().getAppKeys(jsContext) ?: return arrayOf()
             return appKeys.filterIsInstance<String>().toTypedArray()
         }
     }
