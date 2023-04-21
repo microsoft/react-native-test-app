@@ -258,6 +258,7 @@ async function getProfile(v) {
       const commonDeps = await resolveCommonDependencies(info);
       return {
         ...commonDeps,
+        "@react-native/metro-config": "latest",
         "react-native": "nightly",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
@@ -265,15 +266,21 @@ async function getProfile(v) {
     }
 
     default: {
-      const [reactNative, { version: rnmVersion }, { version: rnwVersion }] =
-        await Promise.all([
-          fetchPackageInfo(`react-native@^${v}.0-0`),
-          fetchPackageInfo(`react-native-macos@^${v}.0-0`),
-          fetchPackageInfo(`react-native-windows@^${v}.0-0`),
-        ]);
+      const [
+        { version: rnMetroConfig },
+        reactNative,
+        { version: rnmVersion },
+        { version: rnwVersion },
+      ] = await Promise.all([
+        fetchPackageInfo(`@react-native/metro-config@^${v}.0-0`),
+        fetchPackageInfo(`react-native@^${v}.0-0`),
+        fetchPackageInfo(`react-native-macos@^${v}.0-0`),
+        fetchPackageInfo(`react-native-windows@^${v}.0-0`),
+      ]);
       const commonDeps = await resolveCommonDependencies(reactNative);
       return {
         ...commonDeps,
+        "@react-native/metro-config": rnMetroConfig,
         "react-native": reactNative.version,
         "react-native-macos": rnmVersion,
         "react-native-windows": rnwVersion,
