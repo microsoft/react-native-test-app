@@ -12,13 +12,15 @@ set(REACTTESTAPP_SOURCE_FILES
   AppRegistry.h
 )
 
+FILE(GLOB REACTNATIVEHOST_FILES ${REACT_NATIVE_HOST_DIR}/src/main/jni/*.cpp)
+
 # Suppress 'Manually-specified variables were not used by the project' warning
 set(UNUSED_VARIABLES ${REACT_COMMON_DIR} ${REACT_JNILIBS_DIR})
 
 if(DEFINED REACT_ANDROID_DIR)
   # New architecture
   include(${REACT_ANDROID_DIR}/cmake-utils/ReactNative-application.cmake)
-  target_sources(${THIS_LIBRARY} PRIVATE ${REACTTESTAPP_SOURCE_FILES})
+  target_sources(${THIS_LIBRARY} PRIVATE ${REACTTESTAPP_SOURCE_FILES} ${REACTNATIVEHOST_FILES} ${REACTNATIVEHOST_FILES})
 else()
   # On old architecture, use prefabs if they can be found. Otherwise, look for
   # the `libjsi.so` we extracted from the `.aar`.

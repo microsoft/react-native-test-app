@@ -11,6 +11,7 @@ plugins {
 }
 
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
+def reactNativeHostPath = file(findNodeModulesPath("@rnx-kit/react-native-host", rootDir))
 
 if (autodetectReactNativeVersion || enableNewArchitecture) {
     apply(plugin: "com.facebook.react")
@@ -153,7 +154,8 @@ android {
                                   "NODE_MODULES_DIR=${reactNativePath}/..",
                                   "PROJECT_BUILD_DIR=${buildDir}",
                                   "REACT_ANDROID_DIR=${reactNativePath}/ReactAndroid",
-                                  "REACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build"
+                                  "REACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build",
+                                  "REACT_NATIVE_HOST_DIR=${reactNativeHostPath}/android"
                         cFlags "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
                         cppFlags "-std=c++17"
                         targets "reacttestapp_appmodules"
@@ -164,7 +166,8 @@ android {
                                   "-DNODE_MODULES_DIR=${reactNativePath}/..",
                                   "-DPROJECT_BUILD_DIR=${buildDir}",
                                   "-DREACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build",
-                                  "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid"
+                                  "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid",
+                                  "-DREACT_NATIVE_HOST_DIR=${reactNativeHostPath}/android"
                     }
                 }
             }
@@ -178,7 +181,8 @@ android {
                 cmake {
                     arguments "-DANDROID_STL=c++_shared",
                               "-DREACT_COMMON_DIR=${reactNativePath}/ReactCommon",
-                              "-DREACT_JNILIBS_DIR=${buildDir}/outputs/jniLibs"
+                              "-DREACT_JNILIBS_DIR=${buildDir}/outputs/jniLibs",
+                              "-DREACT_NATIVE_HOST_DIR=${reactNativeHostPath}/android"
                     cppFlags "-std=c++17"
                 }
             }
@@ -301,6 +305,8 @@ android {
     }
 
     sourceSets {
+        main.java.srcDirs += "${reactNativeHostPath}/android/src/main/java"
+
         if (project.ext.react.enableCamera) {
             main.java.srcDirs += "src/camera/java"
         } else {
@@ -308,29 +314,29 @@ android {
         }
 
         if (project.ext.react.enableFlipper) {
-            debug.java.srcDirs += "src/flipper/java"
+            debug.java.srcDirs += "${reactNativeHostPath}/android/src/flipper/java"
         }
 
         // TODO: Remove this block when we drop support for 0.67
         if (project.ext.react.enableFabric) {
-            main.java.srcDirs += "src/fabric/java"
+            main.java.srcDirs += "${reactNativeHostPath}/android/src/fabric/java"
         } else {
-            main.java.srcDirs += "src/no-fabric/java"
+            main.java.srcDirs += "${reactNativeHostPath}/android/src/no-fabric/java"
         }
 
         // TODO: Remove this block when we drop support for 0.65
         if (enableNewArchitecture) {
-            main.java.srcDirs += "src/turbomodule/java"
+            main.java.srcDirs += "${reactNativeHostPath}/android/src/turbomodule/java"
         } else {
-            main.java.srcDirs += "src/no-turbomodule/java"
+            main.java.srcDirs += "${reactNativeHostPath}/android/src/no-turbomodule/java"
         }
 
         // TODO: Remove this block when we drop support for 0.67
         // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
         if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
-            main.java.srcDirs += "src/reactinstanceeventlistener-pre-0.68/java"
+            main.java.srcDirs += "${reactNativeHostPath}/android/src/reactinstanceeventlistener-pre-0.68/java"
         } else {
-            main.java.srcDirs += "src/reactinstanceeventlistener-0.68/java"
+            main.java.srcDirs += "${reactNativeHostPath}/android/src/reactinstanceeventlistener-0.68/java"
         }
 
         // TODO: Remove this block when we drop support for 0.72
@@ -382,11 +388,13 @@ dependencies {
     } else if (enableNewArchitecture) {
         // This is only valid for 0.68 - 0.70. From 0.71 and on, we should be
         // using prefabs.
-        implementation project(":ReactAndroid")
+        implementation module(":ReactAndroid")
     } else {
         def version = getPackageVersion("react-native", rootDir)
         implementation("com.facebook.react:react-native:${version}")
     }
+
+    // implementation project(":react-native-host")
 
     implementation libraries.kotlinStdlibJdk7
     implementation libraries.kotlinStdlibJdk8
