@@ -12,9 +12,6 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.JSIModulePackage
 import com.facebook.react.bridge.JavaScriptExecutorFactory
 import com.facebook.react.bridge.ReactContext
-import com.facebook.react.devsupport.DevInternalSettings
-import com.facebook.react.devsupport.DevServerHelper
-import com.facebook.react.devsupport.InspectorPackagerConnection.BundleStatus
 import com.facebook.react.devsupport.interfaces.DevSupportManager
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.facebook.react.packagerconnection.PackagerConnectionSettings
@@ -212,13 +209,12 @@ class TestAppReactNativeHost(
         val latch = CountDownLatch(1)
         var packagerIsRunning = false
 
-        DevServerHelper(
-            DevInternalSettings(context) {},
-            context.packageName
-        ) { BundleStatus() }.isPackagerRunning {
+        val devSettings = reactInstanceManager.devSupportManager.devSettings
+        createDevServerHelper(context, devSettings).isPackagerRunning {
             packagerIsRunning = it
             latch.countDown()
         }
+
         latch.await()
         return packagerIsRunning
     }

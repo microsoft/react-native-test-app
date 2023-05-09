@@ -340,6 +340,14 @@ android {
         } else {
             main.java.srcDirs += "src/reactactivitydelegate-0.72/java"
         }
+
+        // TODO: Remove this block when we drop support for 0.73
+        // https://github.com/facebook/react-native/commit/da358d0ec7a492edb804b9cdce70e7516ee518ae
+        if (reactNativeVersion > 0 && reactNativeVersion < 7300) {
+            main.java.srcDirs += "src/devserverhelper-pre-0.73/java"
+        } else {
+            main.java.srcDirs += "src/devserverhelper-0.73/java"
+        }
     }
 
     splits {
