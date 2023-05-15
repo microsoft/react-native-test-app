@@ -303,44 +303,36 @@ android {
     }
 
     sourceSets {
-        if (project.ext.react.enableCamera) {
-            main.java.srcDirs += "src/camera/java"
-        } else {
-            main.java.srcDirs += "src/no-camera/java"
-        }
+        main.java.srcDirs += [
+            project.ext.react.enableCamera ? "src/camera/java" : "src/no-camera/java",
+
+            // TODO: Remove this block when we drop support for 0.67
+            project.ext.react.enableFabric ? "src/fabric/java" : "src/no-fabric/java",
+
+            // TODO: Remove this block when we drop support for 0.65
+            enableNewArchitecture ? "src/turbomodule/java" : "src/no-turbomodule/java",
+
+            // TODO: Remove this block when we drop support for 0.67
+            // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
+            reactNativeVersion > 0 && reactNativeVersion < 6800
+                ? "src/reactinstanceeventlistener-pre-0.68/java"
+                : "src/reactinstanceeventlistener-0.68/java",
+
+            // TODO: Remove this block when we drop support for 0.72
+            // https://github.com/facebook/react-native/commit/e5dd9cdc6688e63e75a7e0bebf380be1a9a5fe2b
+            reactNativeVersion > 0 && reactNativeVersion < 7200
+                ? "src/reactactivitydelegate-pre-0.72/java"
+                : "src/reactactivitydelegate-0.72/java",
+
+            // TODO: Remove this block when we drop support for 0.73
+            // https://github.com/facebook/react-native/commit/da358d0ec7a492edb804b9cdce70e7516ee518ae
+            reactNativeVersion > 0 && reactNativeVersion < 7300
+                ? "src/devserverhelper-pre-0.73/java"
+                : "src/devserverhelper-0.73/java",
+        ]
 
         if (project.ext.react.enableFlipper) {
             debug.java.srcDirs += "src/flipper/java"
-        }
-
-        // TODO: Remove this block when we drop support for 0.67
-        if (project.ext.react.enableFabric) {
-            main.java.srcDirs += "src/fabric/java"
-        } else {
-            main.java.srcDirs += "src/no-fabric/java"
-        }
-
-        // TODO: Remove this block when we drop support for 0.65
-        if (enableNewArchitecture) {
-            main.java.srcDirs += "src/turbomodule/java"
-        } else {
-            main.java.srcDirs += "src/no-turbomodule/java"
-        }
-
-        // TODO: Remove this block when we drop support for 0.67
-        // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
-        if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
-            main.java.srcDirs += "src/reactinstanceeventlistener-pre-0.68/java"
-        } else {
-            main.java.srcDirs += "src/reactinstanceeventlistener-0.68/java"
-        }
-
-        // TODO: Remove this block when we drop support for 0.72
-        // https://github.com/facebook/react-native/commit/e5dd9cdc6688e63e75a7e0bebf380be1a9a5fe2b
-        if (reactNativeVersion > 0 && reactNativeVersion < 7200) {
-            main.java.srcDirs += "src/reactactivitydelegate-pre-0.72/java"
-        } else {
-            main.java.srcDirs += "src/reactactivitydelegate-0.72/java"
         }
     }
 
