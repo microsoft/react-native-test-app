@@ -10,6 +10,10 @@ const artifactId = "com.google.devtools.ksp.gradle.plugin";
 const rows = 50;
 const searchUrl = `https://search.maven.org/solrsearch/select?q=g:%22${groupId}%22+AND+a:%22${artifactId}%22&core=gav&rows=${rows}&wt=json`;
 
+/**
+ * @param {{ docs?: { id: string; g: string; a: string; v: string; }[]; }} response
+ * @returns {string[]}
+ */
 function extractVersions(response) {
   if (!Array.isArray(response.docs)) {
     return [];
@@ -25,6 +29,10 @@ function extractVersions(response) {
   return Object.values(versionMap);
 }
 
+/**
+ * @param {string} output
+ * @param {string[]} versions
+ */
 function update(output, versions) {
   const startMarker = "// update-ksp-versions start";
   const endMarker = "// update-ksp-versions end";
@@ -35,7 +43,11 @@ function update(output, versions) {
     new RegExp(`${startMarker}.*${endMarker}`, "s"),
     [startMarker, ...versions.map((v) => `"${v}",`), endMarker].join(separator)
   );
-  fs.writeFileSync(output, updated);
+
+  if (updated !== src) {
+    fs.writeFileSync(output, updated);
+    console.log(`Updated '${dependenciesGradle}'`);
+  }
 }
 
 function main() {

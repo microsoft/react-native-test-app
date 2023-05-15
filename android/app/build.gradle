@@ -10,6 +10,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+checkEnvironment()
+
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
 
 if (autodetectReactNativeVersion || enableNewArchitecture) {

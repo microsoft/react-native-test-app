@@ -16,6 +16,7 @@ module.exports = {
         }
 
         const fs = require("node:fs");
+        const os = require("node:os");
         const path = require("node:path");
 
         function normalize(p) {
@@ -37,7 +38,12 @@ module.exports = {
           const linkPath = path.join(nodeModulesPath, name);
 
           fs.rmSync(linkPath, { force: true, maxRetries: 3, recursive: true });
-          fs.symlinkSync(path.relative(nodeModulesPath, projectPath), linkPath);
+          if (os.platform() === "win32") {
+            fs.symlinkSync(projectPath, linkPath, "junction");
+          } else {
+            const target = path.relative(nodeModulesPath, projectPath);
+            fs.symlinkSync(target, linkPath);
+          }
         }
       },
     },

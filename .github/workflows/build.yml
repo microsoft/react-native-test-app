@@ -235,6 +235,7 @@ jobs:
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
+          git apply scripts/disable-safe-area-context.patch
           git apply scripts/android-nightly.patch
           npm run set-react-version -- nightly
         shell: bash
