@@ -3,7 +3,7 @@ const { createRunOncePlugin } = require("@expo/config-plugins");
 const {
   mergeContents,
 } = require("@expo/config-plugins/build/utils/generateCode");
-const { withBridgeDelegate } = require("./index");
+const { withReactNativeHost } = require("./index");
 
 /**
  * @typedef {import("@expo/config-plugins").ExportedConfig} ExportedConfig
@@ -30,6 +30,11 @@ function addContents(tag, src, newSrc, anchor) {
   }).contents;
 }
 
+function rnMinorVersion() {
+  const { version } = require("react-native/package.json");
+  return version.split(".")[1];
+}
+
 /**
  * Plugin to inject Reanimated's JSI executor in the React bridge delegate.
  *
@@ -39,10 +44,10 @@ function addContents(tag, src, newSrc, anchor) {
  * @returns {ExportedConfig} Modified config
  */
 function withReanimatedExecutor(config) {
-  return withBridgeDelegate(config, (config) => {
+  return withReactNativeHost(config, (config) => {
     if (config.modResults.language !== "objcpp") {
       throw new Error(
-        "`BridgeDelegate` is not in Objective-C++ (did that change recently?)"
+        "`ReactNativeHost` is not in Objective-C++ (did that change recently?)"
       );
     }
 
@@ -55,6 +60,7 @@ function withReanimatedExecutor(config) {
         "#pragma clang diagnostic push",
         '#pragma clang diagnostic ignored "-Wnullability-completeness"',
         "",
+        `#define REACT_NATIVE_MINOR_VERSION ${rnMinorVersion()}`,
         "#import <RNReanimated/REAInitializer.h>",
         "",
         "#if __has_include(<reacthermes/HermesExecutorFactory.h>)",
@@ -71,7 +77,7 @@ function withReanimatedExecutor(config) {
         "#pragma clang diagnostic pop",
         "#endif  // !USE_TURBOMODULE",
       ].join("\n"),
-      /#import "BridgeDelegate\.h"/
+      /#import "ReactNativeHost\.h"/
     );
 
     // Install Reanimated's JSI executor runtime

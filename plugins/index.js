@@ -7,15 +7,15 @@ const { withMod } = require("@expo/config-plugins");
  */
 
 /**
- * Provides the `BridgeDelegate` file for modification.
+ * Provides the `ReactNativeHost` file for modification.
  * @param {ExportedConfig} config Exported config
  * @param {Mod} action Method to run on the mod when the config is compiled
  * @returns {ExportedConfig} Modified config
  */
-function withBridgeDelegate(config, action) {
+function withReactNativeHost(config, action) {
   return withMod(config, {
     platform: "ios",
-    mod: "bridgeDelegate",
+    mod: "reactNativeHost",
     action,
   });
 }
@@ -34,5 +34,5 @@ function withSceneDelegate(config, action) {
   });
 }
 
-exports.withBridgeDelegate = withBridgeDelegate;
+exports.withReactNativeHost = withReactNativeHost;
 exports.withSceneDelegate = withSceneDelegate;
