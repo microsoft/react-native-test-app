@@ -3,7 +3,7 @@ const { createRunOncePlugin } = require("@expo/config-plugins");
 const {
   mergeContents,
 } = require("@expo/config-plugins/build/utils/generateCode");
-const { withBridgeDelegate } = require("./index");
+const { withReactNativeHost } = require("./index");
 
 /**
  * @typedef {import("@expo/config-plugins").ExportedConfig} ExportedConfig
@@ -39,10 +39,10 @@ function addContents(tag, src, newSrc, anchor) {
  * @returns {ExportedConfig} Modified config
  */
 function withReanimatedExecutor(config) {
-  return withBridgeDelegate(config, (config) => {
+  return withReactNativeHost(config, (config) => {
     if (config.modResults.language !== "objcpp") {
       throw new Error(
-        "`BridgeDelegate` is not in Objective-C++ (did that change recently?)"
+        "`ReactNativeHost` is not in Objective-C++ (did that change recently?)"
       );
     }
 
@@ -50,6 +50,9 @@ function withReanimatedExecutor(config) {
     config.modResults.contents = addContents(
       "header",
       config.modResults.contents,
+      // TODO: Update the headers, currently there's an error
+      // `'ReactCommon/TurboModule.h' file not found` coming from
+      // /node_modules/react-native-reanimated/Common/cpp/NativeModules/NativeReanimatedModuleSpec.cpp
       [
         "#if !USE_TURBOMODULE",
         "#pragma clang diagnostic push",
@@ -71,7 +74,7 @@ function withReanimatedExecutor(config) {
         "#pragma clang diagnostic pop",
         "#endif  // !USE_TURBOMODULE",
       ].join("\n"),
-      /#import "BridgeDelegate\.h"/
+      /#import "ReactNativeHost\.h"/
     );
 
     // Install Reanimated's JSI executor runtime

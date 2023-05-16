@@ -20,14 +20,21 @@ export function makeNullProvider(defaultRead = {}) {
 /**
  * Creates a mod modifier that just changes `getFilePath()`.
  * @param {string} actualProjectDir
+ * @param {boolean} isOutsideOfProjectRoot
  * @returns {<ModType, Props>(original: BaseModProviderMethods<ModType, Props>, file: string) => BaseModProviderMethods<ModType, Props>}
  */
-export function makeFilePathModifier(actualProjectDir) {
+export function makeFilePathModifier(
+  actualProjectDir,
+  isOutsideOfProjectRoot = false
+) {
   return function (original, file) {
     return BaseMods.provider({
       ...original,
       getFilePath: async ({ modRequest: { projectRoot } }) => {
         const name = path.posix.join(actualProjectDir, file);
+        if (isOutsideOfProjectRoot) {
+          return name;
+        }
         const result = findFile(name, projectRoot);
         return result || name;
       },

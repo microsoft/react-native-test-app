@@ -29,6 +29,15 @@ function findNearest(fileOrDirName, currentDir = path.resolve("")) {
 }
 
 /**
+ * Resolve package location using node module resolution.
+ * @param {string} packageName Path to the file or directory to find.
+ * @returns {string} Path to given package
+ */
+function resolvePackageLocation(packageName) {
+  return path.dirname(require.resolve(path.join(packageName, "package.json")));
+}
+
+/**
  * Reads and parses JSON file at specified path.
  * @param {fs.PathLike} path
  * @returns {Record<string, unknown>}
@@ -53,6 +62,7 @@ function getPackageVersion(module, startDir = process.cwd()) {
   return version;
 }
 
+exports.resolvePackageLocation = resolvePackageLocation;
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
 exports.readJSONFile = readJSONFile;

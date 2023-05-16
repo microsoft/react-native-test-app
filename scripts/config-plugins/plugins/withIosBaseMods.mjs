@@ -1,6 +1,7 @@
 // @ts-check
 import { BaseMods } from "../ExpoConfigPlugins.mjs";
 import { makeFilePathModifier, makeNullProvider } from "../provider.mjs";
+import { resolvePackageLocation } from "../../helpers.js";
 
 const modifyFilePath = makeFilePathModifier("node_modules/.generated/ios");
 
@@ -30,14 +31,16 @@ const defaultProviders = {
 };
 
 // `react-native-test-app` files
-defaultProviders["bridgeDelegate"] = modifyFilePath(
-  expoProviders.appDelegate,
-  "ReactTestApp/BridgeDelegate.mm"
-);
 defaultProviders["sceneDelegate"] = modifyFilePath(
   expoProviders.appDelegate,
   "ReactTestApp/SceneDelegate.swift"
 );
+
+// `@rnx-kit/react-native-host` files
+defaultProviders["reactNativeHost"] = makeFilePathModifier(
+  resolvePackageLocation("@rnx-kit/react-native-host"),
+  true
+)(expoProviders.appDelegate, "cocoa/ReactNativeHost.mm");
 
 export function getIosModFileProviders() {
   return defaultProviders;
