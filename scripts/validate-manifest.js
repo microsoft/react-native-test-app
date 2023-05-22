@@ -26,16 +26,18 @@ const BUILD_PROPS = [
  * @returns {string | undefined}
  */
 function findFile(file, startDir = process.cwd()) {
-  let candidate = path.join(startDir, file);
+  let currentDir = startDir;
+  let candidate = path.join(currentDir, file);
   while (!fs.existsSync(candidate)) {
-    const cwd = path.dirname(candidate);
-    const parent = path.dirname(cwd);
-    if (parent === cwd) {
+    const nextDir = path.dirname(currentDir);
+    if (nextDir === currentDir) {
       return undefined;
     }
 
-    candidate = path.join(parent, file);
+    currentDir = nextDir;
+    candidate = path.join(currentDir, file);
   }
+
   return candidate;
 }
 
