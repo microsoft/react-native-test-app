@@ -50,7 +50,7 @@ runs:
       uses: microsoft/setup-msbuild@v1.3
     - name: Set up Ruby
       if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' || inputs.platform == 'node' }}
-      uses: ruby/setup-ruby@v1.146.0
+      uses: ruby/setup-ruby@v1.150.0
       with:
         ruby-version: "3.0"
         bundler: Gemfile.lock
