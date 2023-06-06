@@ -134,7 +134,7 @@
     "@rnx-kit/eslint-plugin": "^0.4.0",
     "@types/jest": "^29.0.0",
     "@types/mustache": "^4.0.0",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.0.0",
     "@types/prompts": "~2.4.0",
     "@types/semver": "^7.3.6",
     "@types/uuid": "^8.3.1",
@@ -159,9 +159,7 @@
   "resolutions": {
     "@expo/config-plugins/glob": "^7.1.6",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
-    "@react-native-community/cli-platform-ios": "^10.2.1",
-    "@semantic-release/npm/npm": "link:./example",
-    "core-js-compat/semver": "^7.3.5"
+    "@semantic-release/npm/npm": "link:./example"
   },
   "workspaces": [
     "example"
