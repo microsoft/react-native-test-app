@@ -456,6 +456,16 @@ def use_test_app_internal!(target_platform, options)
           config.build_settings['WARNING_CFLAGS'] ||= ['$(inherited)']
           config.build_settings['WARNING_CFLAGS'] << '-Wno-nullability-completeness'
         end
+      when 'RNReanimated'
+        # Reanimated tries to automatically install itself by swizzling a method
+        # in `RCTAppDelegate`. We don't use it since it doesn't exist on older
+        # versions of React Native. Redirect users to the config plugin instead.
+        # See https://github.com/microsoft/react-native-test-app/issues/1195 and
+        # https://github.com/software-mansion/react-native-reanimated/commit/a8206f383e51251e144cb9fd5293e15d06896df0.
+        target.build_configurations.each do |config|
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'DONT_AUTOINSTALL_REANIMATED'
+        end
       else
         # Ensure `ENABLE_TESTING_SEARCH_PATHS` is always set otherwise Xcode may
         # fail to properly import XCTest
