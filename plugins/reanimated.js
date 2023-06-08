@@ -53,13 +53,13 @@ function installerFor(version, indent = "    ") {
     "",
     "#if __has_include(<reacthermes/HermesExecutorFactory.h>)",
     "#import <reacthermes/HermesExecutorFactory.h>",
-    "using ExecutorFactory = HermesExecutorFactory;",
+    "using ExecutorFactory = facebook::react::HermesExecutorFactory;",
     "#elif __has_include(<React/HermesExecutorFactory.h>)",
     "#import <React/HermesExecutorFactory.h>",
-    "using ExecutorFactory = HermesExecutorFactory;",
+    "using ExecutorFactory = facebook::react::HermesExecutorFactory;",
     "#else",
     "#import <React/JSCExecutorFactory.h>",
-    "using ExecutorFactory = JSCExecutorFactory;",
+    "using ExecutorFactory = facebook::react::JSCExecutorFactory;",
     "#endif",
     "",
     "#pragma clang diagnostic pop",
@@ -76,6 +76,7 @@ function installerFor(version, indent = "    ") {
     // As of React Native 0.72, we need to call `REAInitializer` instead. See
     // https://github.com/software-mansion/react-native-reanimated/commit/a8206f383e51251e144cb9fd5293e15d06896df0.
     const installer = [
+      `${indent}reanimated::REAInitializer(bridge);`,
       `${indent}return std::make_unique<ExecutorFactory>(`,
       `${indent}${indent}facebook::react::RCTJSIExecutorRuntimeInstaller([](facebook::jsi::Runtime &) {}));`,
     ].join("\n");
