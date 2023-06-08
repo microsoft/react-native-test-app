@@ -39,48 +39,46 @@ function addContents(tag, src, newSrc, anchor) {
  */
 function installerFor(version, indent = "    ") {
   const minorVersion = Math.trunc(version / 100) % 100;
-  const header = [
-    "#if !USE_TURBOMODULE",
-    "#pragma clang diagnostic push",
-    '#pragma clang diagnostic ignored "-Wnullability-completeness"',
-    "",
-    `#define REACT_NATIVE_MINOR_VERSION ${minorVersion}`,
-    "#import <RNReanimated/REAInitializer.h>",
-    "",
-    "#if __has_include(<React/RCTJSIExecutorRuntimeInstaller.h>)",
-    "#import <React/RCTJSIExecutorRuntimeInstaller.h>",
-    "#endif",
-    "",
-    "#if __has_include(<reacthermes/HermesExecutorFactory.h>)",
-    "#import <reacthermes/HermesExecutorFactory.h>",
-    "using ExecutorFactory = facebook::react::HermesExecutorFactory;",
-    "#elif __has_include(<React/HermesExecutorFactory.h>)",
-    "#import <React/HermesExecutorFactory.h>",
-    "using ExecutorFactory = facebook::react::HermesExecutorFactory;",
-    "#else",
-    "#import <React/JSCExecutorFactory.h>",
-    "using ExecutorFactory = facebook::react::JSCExecutorFactory;",
-    "#endif",
-    "",
-    "#pragma clang diagnostic pop",
-    "#endif  // !USE_TURBOMODULE",
-  ].join("\n");
 
   if (version > 0 && version < 7200) {
+    const header = [
+      "#if !USE_TURBOMODULE",
+      "#pragma clang diagnostic push",
+      '#pragma clang diagnostic ignored "-Wnullability-completeness"',
+      "",
+      `#define REACT_NATIVE_MINOR_VERSION ${minorVersion}`,
+      "#import <RNReanimated/REAInitializer.h>",
+      "",
+      "#if __has_include(<reacthermes/HermesExecutorFactory.h>)",
+      "#import <reacthermes/HermesExecutorFactory.h>",
+      "using ExecutorFactory = facebook::react::HermesExecutorFactory;",
+      "#elif __has_include(<React/HermesExecutorFactory.h>)",
+      "#import <React/HermesExecutorFactory.h>",
+      "using ExecutorFactory = facebook::react::HermesExecutorFactory;",
+      "#else",
+      "#import <React/JSCExecutorFactory.h>",
+      "using ExecutorFactory = facebook::react::JSCExecutorFactory;",
+      "#endif",
+      "",
+      "#pragma clang diagnostic pop",
+      "#endif  // !USE_TURBOMODULE",
+    ].join("\n");
     const installer = [
       `${indent}const auto installer = reanimated::REAJSIExecutorRuntimeInstaller(bridge, nullptr);`,
-      `${indent}return std::make_unique<ExecutorFactory>(RCTJSIExecutorRuntimeInstaller(installer));`,
+      `${indent}auto installBindings = facebook::react::RCTJSIExecutorRuntimeInstaller(installer);`,
+      `${indent}return std::make_unique<ExecutorFactory>(installBindings);`,
     ].join("\n");
     return [header, installer];
   } else {
     // As of React Native 0.72, we need to call `REAInitializer` instead. See
     // https://github.com/software-mansion/react-native-reanimated/commit/a8206f383e51251e144cb9fd5293e15d06896df0.
-    const installer = [
-      `${indent}reanimated::REAInitializer(bridge);`,
-      `${indent}return std::make_unique<ExecutorFactory>(`,
-      `${indent}${indent}facebook::react::RCTJSIExecutorRuntimeInstaller([](facebook::jsi::Runtime &) {}));`,
+    const header = [
+      "#if !USE_TURBOMODULE",
+      `#define REACT_NATIVE_MINOR_VERSION ${minorVersion}`,
+      "#import <RNReanimated/REAInitializer.h>",
+      "#endif  // !USE_TURBOMODULE",
     ].join("\n");
-    return [header, installer];
+    return [header, `${indent}reanimated::REAInitializer(bridge);`];
   }
 }
 
