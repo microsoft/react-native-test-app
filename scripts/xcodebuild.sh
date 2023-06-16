@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo pipefail
+set -eox pipefail
 
 workspace=$1
 action=$2
