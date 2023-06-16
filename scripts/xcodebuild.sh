@@ -9,7 +9,7 @@ platform=$(grep -o '\w\+/ReactTestApp.xcodeproj' "$workspace/contents.xcworkspac
 
 if [[ $platform == ios/* ]]; then
   if [[ $action == 'test' || $action == 'test-without-building' ]]; then
-    device_name=${1:-'iPhone 13'}
+    device_name=${1:-'iPhone 14'}
     device=$(xcrun simctl list devices "${device_name}" available | grep "${device_name} (")
     re='\(([-0-9A-Fa-f]+)\)'
     [[ $device =~ $re ]] || exit 1
