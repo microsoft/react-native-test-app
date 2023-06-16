@@ -10,6 +10,8 @@ inputs:
   cache-npm-dependencies:
     description: Caches npm dependencies (supports npm, yarn, pnpm v6.10+)
     default: yarn
+  xcode-developer-dir:
+    description: Set the path for the active Xcode developer directory
 runs:
   using: composite
   steps:
@@ -63,6 +65,11 @@ runs:
       with:
         node-version: 18
         cache: ${{ inputs.cache-npm-dependencies }}
+    - name: Set up Xcode
+      if: ${{ inputs.xcode-developer-dir != '' }}
+      run: |
+        sudo xcode-select --switch ${{ inputs.xcode-developer-dir }}
+      shell: bash
     - name: Cache /.ccache
       if: ${{ steps.setup-ccache.outputs.cache-key }}
       uses: actions/cache@v3

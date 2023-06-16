@@ -11,6 +11,7 @@ on:
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
   VisualStudioVersion: "17.0"
+  XCODE_DEVELOPER_DIR: /Applications/Xcode_14.3.1.app/Contents/Developer
 concurrency:
   # Ensure single build of a pull request. `trunk` should not be affected.
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.run_id }}
@@ -133,7 +134,7 @@ jobs:
     timeout-minutes: 60
   ios:
     name: "iOS"
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -143,6 +144,7 @@ jobs:
           platform: ios
           project-root: example
           cache-key-prefix: example
+          xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -179,7 +181,7 @@ jobs:
     strategy:
       matrix:
         template: [all, ios]
-    runs-on: macos-12
+    runs-on: macos-13
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -190,6 +192,7 @@ jobs:
           platform: ios
           project-root: example
           cache-key-prefix: template-${{ matrix.template }}
+          xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
@@ -297,7 +300,7 @@ jobs:
     timeout-minutes: 60
   macos:
     name: "macOS"
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -307,6 +310,7 @@ jobs:
           platform: macos
           project-root: example
           cache-key-prefix: example
+          xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -357,7 +361,7 @@ jobs:
     strategy:
       matrix:
         template: [all, macos]
-    runs-on: macos-12
+    runs-on: macos-13
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -368,6 +372,7 @@ jobs:
           platform: macos
           project-root: example
           cache-key-prefix: template-${{ matrix.template }}
+          xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
