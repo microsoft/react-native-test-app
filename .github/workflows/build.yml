@@ -9,6 +9,7 @@ on:
     # Nightly builds against react-native@nightly at 4:00, Monday through Friday
     - cron: 0 4 * * 1-5
 env:
+  DEVELOPER_DIR: /Applications/Xcode_14.3.1.app/Contents/Developer
   HOMEBREW_NO_INSTALL_CLEANUP: 1
   VisualStudioVersion: "17.0"
 concurrency:
@@ -133,7 +134,7 @@ jobs:
     timeout-minutes: 60
   ios:
     name: "iOS"
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -179,7 +180,7 @@ jobs:
     strategy:
       matrix:
         template: [all, ios]
-    runs-on: macos-12
+    runs-on: macos-13
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -297,7 +298,7 @@ jobs:
     timeout-minutes: 60
   macos:
     name: "macOS"
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -357,7 +358,7 @@ jobs:
     strategy:
       matrix:
         template: [all, macos]
-    runs-on: macos-12
+    runs-on: macos-13
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
