@@ -144,6 +144,9 @@ jobs:
           platform: ios
           project-root: example
           cache-key-prefix: example
+      - name: Select Xcode version
+        run: |
+          xcode-select --switch $DEVELOPER_DIR
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -191,6 +194,9 @@ jobs:
           platform: ios
           project-root: example
           cache-key-prefix: template-${{ matrix.template }}
+      - name: Select Xcode version
+        run: |
+          xcode-select --switch $DEVELOPER_DIR
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
@@ -308,6 +314,9 @@ jobs:
           platform: macos
           project-root: example
           cache-key-prefix: example
+      - name: Select Xcode version
+        run: |
+          xcode-select --switch $DEVELOPER_DIR
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -369,6 +378,9 @@ jobs:
           platform: macos
           project-root: example
           cache-key-prefix: template-${{ matrix.template }}
+      - name: Select Xcode version
+        run: |
+          xcode-select --switch $DEVELOPER_DIR
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
