@@ -9,9 +9,9 @@ on:
     # Nightly builds against react-native@nightly at 4:00, Monday through Friday
     - cron: 0 4 * * 1-5
 env:
-  DEVELOPER_DIR: /Applications/Xcode_14.3.1.app/Contents/Developer
   HOMEBREW_NO_INSTALL_CLEANUP: 1
   VisualStudioVersion: "17.0"
+  XCODE_DEVELOPER_DIR: /Applications/Xcode_14.3.1.app/Contents/Developer
 concurrency:
   # Ensure single build of a pull request. `trunk` should not be affected.
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.run_id }}
@@ -144,9 +144,7 @@ jobs:
           platform: ios
           project-root: example
           cache-key-prefix: example
-      - name: Select Xcode version
-        run: |
-          xcode-select --switch $DEVELOPER_DIR
+          xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -194,9 +192,7 @@ jobs:
           platform: ios
           project-root: example
           cache-key-prefix: template-${{ matrix.template }}
-      - name: Select Xcode version
-        run: |
-          xcode-select --switch $DEVELOPER_DIR
+          xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
@@ -314,9 +310,7 @@ jobs:
           platform: macos
           project-root: example
           cache-key-prefix: example
-      - name: Select Xcode version
-        run: |
-          xcode-select --switch $DEVELOPER_DIR
+          xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -378,9 +372,7 @@ jobs:
           platform: macos
           project-root: example
           cache-key-prefix: template-${{ matrix.template }}
-      - name: Select Xcode version
-        run: |
-          xcode-select --switch $DEVELOPER_DIR
+          xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
