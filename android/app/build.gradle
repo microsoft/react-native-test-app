@@ -10,8 +10,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-checkEnvironment()
-
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
 
 if (autodetectReactNativeVersion || enableNewArchitecture) {
@@ -112,10 +110,13 @@ android {
 
     kotlinOptions {
         allWarningsAsErrors = true
-        if (reactNativeVersion > 0 && reactNativeVersion < 6900) {
-            jvmTarget = JavaVersion.VERSION_1_8
-        } else {
-            jvmTarget = JavaVersion.VERSION_11
+        if (reactNativeVersion > 0) {
+            if (reactNativeVersion < 6900) {
+                jvmTarget = JavaVersion.VERSION_1_8
+            } else if (reactNativeVersion < 7300) {
+                jvmTarget = JavaVersion.VERSION_11
+            }
+            // else let `@react-native/gradle-plugin` handle this
         }
     }
 

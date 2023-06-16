@@ -26,6 +26,7 @@ private static void patchArgumentTypeMismatchError(String testAppDir, File rootD
 def testAppDir = buildscript.sourceFile.getParent()
 apply(from: "${testAppDir}/android/test-app-util.gradle")
 
+checkEnvironment(rootDir)
 patchArgumentTypeMismatchError(testAppDir, rootDir)
 
 if (findNodeModulesPath("@expo/config-plugins", rootDir)) {

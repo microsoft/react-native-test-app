@@ -6,29 +6,41 @@ import java.security.MessageDigest
 
 ext.manifest = null
 
-ext.checkEnvironment = {
+ext.checkEnvironment = { rootDir ->
+    def warnGradle = { gradleVersion, gradleVersionRange, reactNativeVersion ->
+        def message = [
+            "\n",
+            "Latest Gradle {} is recommended for React Native {}.\n",
+            "> Run the following command in the 'android' folder to install a supported version:\n",
+            "   > ./gradlew wrapper --gradle-version={}\n",
+            "> If the command above fails, you can manually modify 'gradle/wrapper/gradle-wrapper.properties'.",
+        ].join("")
+        logger.warn(message, gradleVersionRange, reactNativeVersion, gradleVersion)
+    }
+
+    // Gradle version can be found in the template:
+    // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/gradle/wrapper/gradle-wrapper.properties
     def (major, minor, patch) = gradle.gradleVersion.findAll(/\d+/)
     def gradleVersion = (major as int) * 10000 + (minor as int) * 100 + (patch as int)
-    if (reactNativeVersion > 0 && reactNativeVersion < 7200) {
-        if (gradleVersion < 70501 || gradleVersion >= 80000) {
-            logger.warn([
-                "Latest Gradle 7.x is required for current React Native version. ",
-                "Run the following command in the 'android' folder to install a supported version: ",
-                "./gradlew wrapper --gradle-version=7.6.1",
-            ].join(""))
+
+    def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+    if (reactNativeVersion == 0 || reactNativeVersion >= 7300) {
+        if (gradleVersion < 80100) {
+            warnGradle("8.1.1", "8.1.x", "0.73 and newer")
         }
-    } else {
+    } else if (reactNativeVersion >= 7200) {
         // Gradle 7.5+ seems to be working with 0.72 so we will only recommend a
         // newer version if it's older.
         if (gradleVersion < 70501) {
+            warnGradle("8.0.2", "8.0.x", "0.72")
             logger.warn([
-                "Latest Gradle 8.0.x is recommended for React Native 0.72 and higher. ",
-                "Run the following command in the 'android' folder to install a supported version: ",
-                "./gradlew wrapper --gradle-version=8.0.2",
-                "\n\n",
-                "If you still need to work with older versions of React Native, ",
-                "Gradle 7.5.1+ should still work."
+                "> If you still need to work with older versions of React Native, ",
+                "Gradle 7.5.1+ should still work.",
             ].join(""))
+        }
+    } else {
+        if (gradleVersion < 70501 || gradleVersion >= 80000) {
+            warnGradle("7.6.1", "7.x", "0.71 and older")
         }
     }
 }
