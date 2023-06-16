@@ -9,9 +9,8 @@ platform=$(grep -o '\w\+/ReactTestApp.xcodeproj' "$workspace/contents.xcworkspac
 
 if [[ $platform == ios/* ]]; then
   if [[ $action == 'test' || $action == 'test-without-building' ]]; then
-    device_name=${1:-'iPhone 14'}
-    device=$(xcrun simctl list devices "${device_name}" available | grep "${device_name} (")
-    re='\(([-0-9A-Fa-f]+)\)'
+    device=$(xcrun simctl list devices iPhone available)
+    re='iPhone [0-9]+ \(([-0-9A-Fa-f]+)\)'
     [[ $device =~ $re ]] || exit 1
     shift || true
     destination="-destination \"platform=iOS Simulator,id=${BASH_REMATCH[1]}\""
