@@ -69,6 +69,7 @@ runs:
       if: ${{ inputs.xcode-developer-dir != '' }}
       run: |
         sudo xcode-select --switch ${{ inputs.xcode-developer-dir }}
+      shell: bash
     - name: Cache /.ccache
       if: ${{ steps.setup-ccache.outputs.cache-key }}
       uses: actions/cache@v3
