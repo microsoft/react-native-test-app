@@ -52,6 +52,55 @@ function keys(obj) {
 }
 
 /**
+ * @param {string} args
+ */
+function npm(args) {
+  return os.platform() === "win32"
+    ? spawn("cmd.exe", ["/d", "/s", "/c", cmdEscape(`"npm ${args}"`)], {
+        windowsVerbatimArguments: true,
+      })
+    : spawn("npm", args.split(" "));
+}
+
+async function checkEnvironment() {
+  // Make sure we use Node 18.14+ and npm 9.3+ as they contain breaking changes.
+  // See https://nodejs.org/en/blog/release/v18.14.0.
+
+  const [major, minor] = process.versions.node.split(".");
+  const nodeVersion = Number.parseInt(major) * 100 + Number.parseInt(minor);
+  if (nodeVersion < 1814) {
+    console.error("Node.js v18.14 or greater is required");
+    return false;
+  }
+
+  try {
+    await new Promise((resolve, reject) => {
+      const npmVersion = npm("--version");
+      const npmVersionBuffer = [];
+      npmVersion.stdout.on("data", (data) => {
+        npmVersionBuffer.push(data);
+      });
+      npmVersion.on("close", () => {
+        const version = Buffer.concat(npmVersionBuffer).toString().trim();
+        const [major, minor] = version.split(".");
+        const npmVersion =
+          Number.parseInt(major) * 100 + Number.parseInt(minor);
+        if (npmVersion < 903) {
+          reject();
+        } else {
+          resolve(true);
+        }
+      });
+    });
+  } catch (e) {
+    console.error("npm v9.3.1 or greater is required");
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Infer the React Native version an out-of-tree platform package is based on.
  * @param {Manifest} manifest
  * @returns {string}
@@ -87,14 +136,7 @@ function inferReactNativeVersion({ name, version, dependencies }) {
 export function fetchPackageInfo(pkg) {
   return new Promise((resolve, reject) => {
     const buffers = [];
-    const npmView =
-      os.platform() === "win32"
-        ? spawn(
-            "cmd.exe",
-            ["/d", "/s", "/c", cmdEscape(`"npm view --json ${pkg}"`)],
-            { windowsVerbatimArguments: true }
-          )
-        : spawn("npm", ["view", "--json", pkg]);
+    const npmView = npm(`view --json ${pkg}`);
     npmView.stdout.on("data", (data) => {
       buffers.push(data);
     });
@@ -287,6 +329,10 @@ async function getProfile(v) {
       };
     }
   }
+}
+
+if (!await checkEnvironment()) {
+  process.exit(1);
 }
 
 const { [2]: version } = process.argv;
