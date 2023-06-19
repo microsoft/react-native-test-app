@@ -359,6 +359,19 @@ getProfile(version)
         manifest["devDependencies"][packageName] = version;
       }
 
+      // Reset resolutions so we don't get old packages
+      const resolutions = manifest["resolutions"];
+      if (resolutions) {
+        for (const pkg of Object.keys(resolutions)) {
+          if (
+            pkg.startsWith("@react-native-community/cli") ||
+            pkg.startsWith("metro")
+          ) {
+            resolutions[pkg] = undefined;
+          }
+        }
+      }
+
       const tmpFile = `${manifestPath}.tmp`;
       fs.writeFileSync(
         tmpFile,
