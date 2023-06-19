@@ -127,9 +127,9 @@
     "@babel/preset-env": "^7.1.6",
     "@expo/config-plugins": "^6.0.0",
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
-    "@react-native-community/cli": "^10.2.2",
+    "@react-native-community/cli": "^10.2.5",
     "@react-native-community/cli-platform-android": "^10.2.0",
-    "@react-native-community/cli-platform-ios": "^10.2.1",
+    "@react-native-community/cli-platform-ios": "^10.2.5",
     "@rnx-kit/commitlint-lite": "^1.0.0",
     "@rnx-kit/eslint-plugin": "^0.4.0",
     "@types/jest": "^29.0.0",
@@ -159,7 +159,13 @@
   "resolutions": {
     "@expo/config-plugins/glob": "^7.1.6",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
-    "@semantic-release/npm/npm": "link:./example"
+    "@react-native-community/cli": "^10.2.5",
+    "@react-native-community/cli-platform-android": "^10.2.0",
+    "@react-native-community/cli-platform-ios": "^10.2.5",
+    "@semantic-release/npm/npm": "link:./example",
+    "metro-react-native-babel-transformer": "^0.73.10",
+    "metro-runtime": "^0.73.10",
+    "metro-source-map": "^0.73.10"
   },
   "workspaces": [
     "example"
