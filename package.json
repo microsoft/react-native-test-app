@@ -78,7 +78,7 @@
     "test:rb": "bundle exec ruby -Ilib:test -e \"Dir.glob('test/test_*.rb').each { |file| require_relative file }\""
   },
   "dependencies": {
-    "@rnx-kit/react-native-host": "^0.2.6",
+    "@rnx-kit/react-native-host": "^0.2.7",
     "ajv": "^8.0.0",
     "chalk": "^4.1.0",
     "cliui": "^8.0.0",
