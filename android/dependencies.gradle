@@ -1,10 +1,24 @@
 /**
+ * Get the recommended Kotlin version for the specified React Native version.
+ */
+static String getDefaultKotlinVersion(int reactNativeVersion) {
+    // Kotlin version can be found in the template:
+    // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/build.gradle
+    if (reactNativeVersion == 0 || reactNativeVersion >= 7300) {
+        return "1.8.0"
+    } else {
+        return "1.7.21"
+    }
+}
+
+/**
  * Find the latest version of KSP that supports the specified Kotlin version.
  */
 static String getKspVersion(String kotlinVersion) {
     return [
         // Run `scripts/update-ksp-versions.mjs` to update this list
         // update-ksp-versions start
+        "1.8.22-1.0.11",
         "1.8.21-1.0.11",
         "1.8.20-1.0.11",
         "1.8.10-1.0.9",
@@ -56,7 +70,7 @@ ext {
         : "7.3.1"
     kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
         ? rootProject.properties["KOTLIN_VERSION"]
-        : "1.7.22"
+        : getDefaultKotlinVersion(reactNativeVersion)
     kspVersion = getKspVersion(kotlinVersion)
 
     /**
