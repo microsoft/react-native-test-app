@@ -206,6 +206,15 @@ class TestAppReactNativeHost(
     }
 
     private fun isPackagerRunning(context: Context): Boolean {
+        if (!hasInstance()) {
+            // Return early otherwise we will get in an initialization loop.
+            // `source` may be initialized by calling this function. Without
+            // this check, the `getReactInstanceManager()` call below will
+            // instantiate `ReactInstanceManager`, which in turn will try to
+            // access `source`.
+            return BuildConfig.DEBUG
+        }
+
         val latch = CountDownLatch(1)
         var packagerIsRunning = false
 
