@@ -1,9 +1,16 @@
 #!/bin/bash
 set -eo pipefail
 
-GIT_IGNORE_FILE=".gitignore"
+export GIT_IGNORE_FILE=".gitignore"
+
 PACKAGE_MANAGER=yarn
 VERSION=${1}
+
+scripts_dir=$(cd -P "$(dirname "$0")" && pwd)
+
+function build_and_run {
+  ${PACKAGE_MANAGER} $1 --no-packager
+}
 
 function pod_install {
   rm -fr $1/Podfile.lock $1/Pods $1/build
@@ -14,15 +21,31 @@ function prepare {
   terminate_dev_server
   git checkout .
   npm run set-react-version ${VERSION}
-  npm run clean
+  npm run clean -- --exclude='example/*.png'
   ${PACKAGE_MANAGER} install
   pushd example 1> /dev/null
+  start_appium_server
   start_dev_server
+}
+
+function run_tests {
+  "$scripts_dir/test-e2e.sh" $@
+}
+
+function start_appium_server {
+  run_tests prepare
+  if ! nc -z 127.0.0.1 4723; then
+    echo "*** Please start Appium server in a separate terminal"
+    echo
+    echo "	cd example"
+    echo "	${PACKAGE_MANAGER} appium"
+    wait_for_user
+  fi
 }
 
 function start_dev_server {
   echo "*** Starting Metro dev server in the background (logs go to '$(pwd)/metro.server.log')"
-  yarn start &> metro.server.log &
+  ${PACKAGE_MANAGER} start &> metro.server.log &
 }
 
 function terminate_dev_server {
@@ -60,8 +83,8 @@ echo "│  Build Android  │"
 echo "└─────────────────┘"
 echo
 
-yarn android --no-packager
-wait_for_user "Android app is ready for testing"
+build_and_run android
+run_tests android hermes
 
 echo
 echo "┌─────────────┐"
@@ -70,8 +93,8 @@ echo "└─────────────┘"
 echo
 
 pod_install ios
-yarn ios --no-packager
-wait_for_user "iOS app is ready for testing"
+build_and_run ios
+run_tests ios
 
 echo
 echo "┌─────────────────────────┐"
@@ -81,8 +104,8 @@ echo
 
 sed -i '' 's/:hermes_enabled => false/:hermes_enabled => true/' ios/Podfile
 pod_install ios
-yarn ios --no-packager
-wait_for_user "iOS app with Hermes is ready for testing"
+build_and_run ios
+run_tests ios hermes
 
 echo
 echo "┌──────────────────────────────┐"
@@ -105,8 +128,8 @@ echo
 sed -i '' 's/#newArchEnabled=true/newArchEnabled=true/' android/gradle.properties
 pushd android 1> /dev/null
 popd 1> /dev/null
-yarn android --no-packager
-wait_for_user "Android app with Fabric is ready for testing"
+build_and_run android
+run_tests android hermes fabric
 
 echo
 echo "┌─────────────────────────┐"
@@ -116,8 +139,8 @@ echo
 
 sed -i '' 's/:turbomodule_enabled => false/:turbomodule_enabled => true/' ios/Podfile
 pod_install ios
-yarn ios --no-packager
-wait_for_user "iOS app with Fabric is ready for testing"
+build_and_run ios
+run_tests ios fabric
 
 echo
 echo "┌──────────────────────────────────┐"
@@ -127,8 +150,8 @@ echo
 
 sed -i '' 's/:hermes_enabled => false/:hermes_enabled => true/' ios/Podfile
 pod_install ios
-yarn ios --no-packager
-wait_for_user "iOS app with Fabric + Hermes is ready for testing"
+build_and_run ios
+run_tests ios hermes fabric
 
 popd 1> /dev/null
 
@@ -138,4 +161,7 @@ echo "│  Initialize new app │"
 echo "└─────────────────────┘"
 echo
 
-GIT_IGNORE_FILE=".gitignore" yarn react-native init-test-app --destination template-example --name TemplateExample --platform android,ios
+${PACKAGE_MANAGER} react-native init-test-app \
+  --destination template-example \
+  --name TemplateExample \
+  --platform android,ios
