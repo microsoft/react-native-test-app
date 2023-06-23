@@ -12,7 +12,7 @@ inputs:
     default: yarn
   java-version:
     description: Desired Java version
-    default: '11'
+    default: "11"
   xcode-developer-dir:
     description: Set the path for the active Xcode developer directory
 runs:
@@ -66,7 +66,7 @@ runs:
     - name: Set up Node.js
       uses: actions/setup-node@v3.6.0
       with:
-        node-version: 18
+        node-version: "18"
         cache: ${{ inputs.cache-npm-dependencies }}
     - name: Set up Xcode
       if: ${{ inputs.xcode-developer-dir != '' }}
