@@ -78,7 +78,7 @@ class MainActivity : ReactActivity() {
 
                 useAppRegistry = components.isEmpty()
                 if (useAppRegistry) {
-                    testApp.getReactNativeHost().addReactInstanceEventListener {
+                    testApp.reactNativeHost.addReactInstanceEventListener {
                         it.runOnJSQueueThread {
                             val appKeys = AppRegistry.getAppKeys(it as ReactApplicationContext)
                             val viewModels = appKeys.map { appKey ->
@@ -102,7 +102,7 @@ class MainActivity : ReactActivity() {
                                 startComponent(component)
                             }
                         }
-                        testApp.getReactNativeHost().apply {
+                        testApp.reactNativeHost.apply {
                             addReactInstanceEventListener(startInitialComponent)
                             reactInstanceManager.currentReactContext?.let(startInitialComponent)
                         }
@@ -155,7 +155,7 @@ class MainActivity : ReactActivity() {
         if (useAppRegistry) {
             componentListAdapter.clear()
         }
-        testApp.getReactNativeHost().reload(this, bundleSource)
+        testApp.reactNativeHost.reload(this, bundleSource)
     }
 
     private fun setupRecyclerView(manifestComponents: List<Component>, manifestChecksum: String) {
@@ -219,9 +219,8 @@ class MainActivity : ReactActivity() {
             }
         }
 
-        val reactNativeHost = testApp.getReactNativeHost()
-        updateMenuItemState(toolbar, reactNativeHost.source)
-        reactNativeHost.onBundleSourceChanged = {
+        updateMenuItemState(toolbar, testApp.reactNativeHost.source)
+        testApp.reactNativeHost.onBundleSourceChanged = {
             updateMenuItemState(toolbar, it)
         }
     }
