@@ -1,11 +1,27 @@
 /**
+ * Get the recommended Gradle plugin version for the specified React Native
+ * version.
+ */
+static String getDefaultGradlePluginVersion(int reactNativeVersion) {
+    // Gradle plugin version can be found in the template:
+    // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/build.gradle
+    if (reactNativeVersion == 0 || reactNativeVersion >= 7300) {
+        return ""
+    } else if (reactNativeVersion >= 7100) {
+        return "7.3.1"
+    } else {
+        return "7.2.2"
+    }
+}
+
+/**
  * Get the recommended Kotlin version for the specified React Native version.
  */
 static String getDefaultKotlinVersion(int reactNativeVersion) {
     // Kotlin version can be found in the template:
     // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/build.gradle
     if (reactNativeVersion == 0 || reactNativeVersion >= 7300) {
-        return "1.8.0"
+        return "1.8.22"
     } else {
         return "1.7.21"
     }
@@ -50,12 +66,16 @@ ext {
     enableNewArchitecture = isNewArchitectureEnabled(project)
     usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= 7100
 
-    def useAndroidPlugin_7_2 = reactNativeVersion > 0 && reactNativeVersion < 7100
+    androidPluginVersion = getDefaultGradlePluginVersion(reactNativeVersion)
+    kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
+        ? rootProject.properties["KOTLIN_VERSION"]
+        : getDefaultKotlinVersion(reactNativeVersion)
+    kspVersion = getKspVersion(kotlinVersion)
 
     // We need only set `ndkVersion` when building react-native from source.
     if (rootProject.hasProperty("ANDROID_NDK_VERSION")) {
         ndkVersion = rootProject.properties["ANDROID_NDK_VERSION"]
-    } else if (System.properties["os.arch"] == "aarch64" && useAndroidPlugin_7_2) {
+    } else if (System.properties["os.arch"] == "aarch64" && androidPluginVersion == "7.2.2") {
         // NDK r23c has been patched to support Apple M1 and is default in AGP
         // 7.3.0. Prior to 0.71, we still need to set `ndkVersion` because we'll
         // be using AGP 7.2.2 (see `androidPluginVersion` below).
@@ -64,14 +84,6 @@ ext {
         // https://developer.android.com/studio/releases/gradle-plugin#compatibility-7-3-0
         ndkVersion = "23.1.7779620"
     }
-
-    androidPluginVersion = useAndroidPlugin_7_2
-        ? "7.2.2"
-        : "7.3.1"
-    kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
-        ? rootProject.properties["KOTLIN_VERSION"]
-        : getDefaultKotlinVersion(reactNativeVersion)
-    kspVersion = getKspVersion(kotlinVersion)
 
     /**
      * Dependabot requires a `dependencies.gradle` to evaluate Java
@@ -103,7 +115,9 @@ ext {
 
     getReactNativeDependencies = {
         def dependencies = [
-          "com.android.tools.build:gradle:${androidPluginVersion}",
+          androidPluginVersion == ""
+              ? "com.android.tools.build:gradle"
+              : "com.android.tools.build:gradle:${androidPluginVersion}",
           "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
         ]
 

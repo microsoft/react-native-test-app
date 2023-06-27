@@ -39,7 +39,7 @@ class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
         return ReactRootView(context).apply {
             setIsFabric(BuildConfig.ReactTestApp_useFabric)
             startReactApplication(
-                reactApplication.reactNativeHost.reactInstanceManager,
+                reactApplication.getReactNativeHost().reactInstanceManager,
                 requireArguments().getString(NAME),
                 requireArguments().getBundle(INITIAL_PROPERTIES)
             )
