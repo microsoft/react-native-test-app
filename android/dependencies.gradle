@@ -27,6 +27,11 @@ static String getDefaultKotlinVersion(int reactNativeVersion) {
     }
 }
 
+static int toVersionNumber(String version) {
+    def (major, minor, patch) = version.findAll(/\d+/)
+    return (major as int) * 10000 + (minor as int) * 100 + (patch as int)
+}
+
 /**
  * Find the latest version of KSP that supports the specified Kotlin version.
  */
@@ -85,10 +90,15 @@ ext {
         ndkVersion = "23.1.7779620"
     }
 
+    def kotlinVersionNumber = toVersionNumber(kotlinVersion)
+
     /**
      * Dependabot requires a `dependencies.gradle` to evaluate Java
      * dependencies. It is also very particular about the formatting and cannot
      * evaluate string literals.
+     *
+     * Hint: When making conditional changes, check whether the correct version
+     * is set with `./gradlew app:dependencies`.
      *
      * See https://github.com/dependabot/feedback/issues/345.
      */
@@ -109,11 +119,17 @@ ext {
         materialComponents          : "com.google.android.material:material:1.8.0",
         mlKitBarcodeScanning        : "com.google.mlkit:barcode-scanning:17.1.0",
         mockitoInline               : "org.mockito:mockito-inline:5.2.0",
-        moshiKotlin                 : "com.squareup.moshi:moshi-kotlin:1.14.0",
-        moshiKotlinCodegen          : "com.squareup.moshi:moshi-kotlin-codegen:1.14.0",
+        moshiKotlin                 : kotlinVersionNumber >= 10800
+                                          ? "com.squareup.moshi:moshi-kotlin:1.15.0"
+                                          : "com.squareup.moshi:moshi-kotlin:1.14.0",
+        moshiKotlinCodegen          : kotlinVersionNumber >= 10800
+                                          ? "com.squareup.moshi:moshi-kotlin-codegen:1.15.0"
+                                          : "com.squareup.moshi:moshi-kotlin-codegen:1.14.0",
     ]
 
     getReactNativeDependencies = {
+        // Hint: Use `./gradlew buildEnvironment` to check whether these are
+        // correctly set.
         def dependencies = [
           androidPluginVersion == ""
               ? "com.android.tools.build:gradle"
