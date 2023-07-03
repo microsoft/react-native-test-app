@@ -244,11 +244,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
   # Copy localization files and replace instances of `ReactTestApp` with app display name
   product_name = display_name || name
-  product_name = if product_name.is_a? String
-                   product_name
-                 else
-                   target.name
-                 end
+  product_name = target.name unless product_name.is_a? String
   localizations_src = project_path('Localizations', target_platform)
   if File.exist?(localizations_src)
     main_strings = 'Main.strings'
