@@ -11,10 +11,16 @@ import com.microsoft.reacttestapp.react.ReactBundleNameProvider
 import com.microsoft.reacttestapp.react.TestAppReactNativeHost
 import com.microsoft.reacttestapp.support.ReactTestAppLifecycleEvents
 
-val Context.testApp: TestApp
-    get() = applicationContext as TestApp
-
 class TestApp : Application(), ReactApplication {
+    val bundleNameProvider: ReactBundleNameProvider
+        get() = reactNativeBundleNameProvider
+
+    val manifestProvider: ManifestProvider
+        get() = manifestProviderInternal
+
+    override val reactNativeHost: TestAppReactNativeHost
+        get() = reactNativeHostInternal
+
     private lateinit var manifestProviderInternal: ManifestProvider
     private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
     private lateinit var reactNativeHostInternal: TestAppReactNativeHost
@@ -52,12 +58,7 @@ class TestApp : Application(), ReactApplication {
             }
         )
     }
-
-    val bundleNameProvider: ReactBundleNameProvider
-        get() = reactNativeBundleNameProvider
-
-    val manifestProvider: ManifestProvider
-        get() = manifestProviderInternal
-
-    override fun getReactNativeHost() = reactNativeHostInternal
 }
+
+val Context.testApp: TestApp
+    get() = applicationContext as TestApp
