@@ -1750,11 +1750,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-plugins@npm:^6.0.0":
-  version: 6.0.2
-  resolution: "@expo/config-plugins@npm:6.0.2"
+"@expo/config-plugins@npm:^7.0.0":
+  version: 7.2.5
+  resolution: "@expo/config-plugins@npm:7.2.5"
   dependencies:
-    "@expo/config-types": ^48.0.0
+    "@expo/config-types": ^49.0.0-alpha.1
     "@expo/json-file": ~8.2.37
     "@expo/plist": ^0.0.20
     "@expo/sdk-runtime-versions": ^1.0.0
@@ -1765,18 +1765,18 @@ __metadata:
     getenv: ^1.0.0
     glob: 7.1.6
     resolve-from: ^5.0.0
-    semver: ^7.3.5
+    semver: ^7.5.3
     slash: ^3.0.0
     xcode: ^3.0.1
-    xml2js: 0.4.23
-  checksum: 2c689f767d3fd6578535b90bae42f6559e7e53321d71e621d38975fdf49853f9c16b5bd7a5f8574a72133cb2b93490c28a46a8c5dcc1f999940b7fa742acfca9
+    xml2js: 0.6.0
+  checksum: 7ebed343d2109cdb43d03c909845bae5e5a329ee6408acbb4ff09e3dd2a65ed7b80d7b9e09101d20e4c9609f154de8b13c21791e1fa9a30a1875acb5e4be048f
   languageName: node
   linkType: hard
 
-"@expo/config-types@npm:^48.0.0":
-  version: 48.0.0
-  resolution: "@expo/config-types@npm:48.0.0"
-  checksum: 11c4b0bb5c1b4a8623c26ed5766297568385cf8e6b1444aa606c62306ea8dd5d8ecee4b52e8ba82dcaf749ffca5cde750afeef5a7a01750bca2360987f26e686
+"@expo/config-types@npm:^49.0.0-alpha.1":
+  version: 49.0.0
+  resolution: "@expo/config-types@npm:49.0.0"
+  checksum: 5ce8e678495e2e4568f6b502e7f2ef8afd6a8962b28d8e17316249be82321dc5ec5061f8fc467c90d85e330fd3565823cfdc10bab4a78e6b1765296101c8d71d
   languageName: node
   linkType: hard
 
@@ -10018,7 +10018,7 @@ fsevents@^2.3.2:
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
-    "@expo/config-plugins": ^6.0.0
+    "@expo/config-plugins": ^7.0.0
     "@microsoft/eslint-plugin-sdl": ^0.2.0
     "@react-native-community/cli": ^10.2.5
     "@react-native-community/cli-platform-android": ^10.2.0
@@ -10718,7 +10718,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.1.2, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7":
+"semver@npm:^7.1.2, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.5.3":
   version: 7.5.3
   resolution: "semver@npm:7.5.3"
   dependencies:
@@ -12280,13 +12280,13 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"xml2js@npm:0.4.23":
-  version: 0.4.23
-  resolution: "xml2js@npm:0.4.23"
+"xml2js@npm:0.6.0":
+  version: 0.6.0
+  resolution: "xml2js@npm:0.6.0"
   dependencies:
     sax: ">=0.6.0"
     xmlbuilder: ~11.0.0
-  checksum: ca0cf2dfbf6deeaae878a891c8fbc0db6fd04398087084edf143cdc83d0509ad0fe199b890f62f39c4415cf60268a27a6aed0d343f0658f8779bd7add690fa98
+  checksum: 437f353fd66d367bf158e9555a0625df9965d944e499728a5c6bc92a54a2763179b144f14b7e1c725040f56bbd22b0fa6cfcb09ec4faf39c45ce01efe631f40b
   languageName: node
   linkType: hard
 
