@@ -2673,9 +2673,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/cli@npm:0.71.10":
-  version: 0.71.10
-  resolution: "@react-native-windows/cli@npm:0.71.10"
+"@react-native-windows/cli@npm:0.71.11":
+  version: 0.71.11
+  resolution: "@react-native-windows/cli@npm:0.71.11"
   dependencies:
     "@react-native-windows/codegen": 0.71.5
     "@react-native-windows/fs": 0.71.3
@@ -2700,7 +2700,7 @@ __metadata:
     xpath: ^0.0.27
   peerDependencies:
     react-native: "*"
-  checksum: 6d9327eeb2207a8fa359da1f8408a23f4d8e3d8e4928449cf1081815019fc07067f6d05e18bdf2049c47382e1330b331dc5eaf7b27f56948dfc456930cbdb5ec
+  checksum: f77af6fc63240b71bc609f24d0ec273d62ba38edcdb1d845721202f916d06fb65af17f1860cbe94670d3e7073053645319a36bbb5a53e6c732a627a3a252fff8
   languageName: node
   linkType: hard
 
@@ -10088,15 +10088,15 @@ fsevents@^2.3.2:
   linkType: soft
 
 "react-native-windows@npm:^0.71.4":
-  version: 0.71.21
-  resolution: "react-native-windows@npm:0.71.21"
+  version: 0.71.23
+  resolution: "react-native-windows@npm:0.71.23"
   dependencies:
     "@babel/runtime": ^7.0.0
     "@jest/create-cache-key-function": ^29.2.1
-    "@react-native-community/cli": 10.2.2
+    "@react-native-community/cli": 10.2.4
     "@react-native-community/cli-platform-android": 10.2.0
-    "@react-native-community/cli-platform-ios": 10.2.1
-    "@react-native-windows/cli": 0.71.10
+    "@react-native-community/cli-platform-ios": 10.2.4
+    "@react-native-windows/cli": 0.71.11
     "@react-native/assets": 1.0.0
     "@react-native/normalize-color": 2.1.0
     "@react-native/polyfills": 2.0.0
@@ -10108,9 +10108,9 @@ fsevents@^2.3.2:
     invariant: ^2.2.4
     jest-environment-node: ^29.2.1
     memoize-one: ^5.0.0
-    metro-react-native-babel-transformer: 0.73.9
-    metro-runtime: 0.73.9
-    metro-source-map: 0.73.9
+    metro-react-native-babel-transformer: 0.73.10
+    metro-runtime: 0.73.10
+    metro-source-map: 0.73.10
     mkdirp: ^0.5.1
     nullthrows: ^1.1.1
     pretty-format: ^26.5.2
@@ -10129,7 +10129,7 @@ fsevents@^2.3.2:
   peerDependencies:
     react: 18.2.0
     react-native: ^0.71.0
-  checksum: d137e5184b136720d7bd2efeb7840f85a2dfac5f4dadc3fb5d60765a358505e9526a75e1e0a8514054ef52dd94191ce95c86a8db998f10c49d6533d9f7dd9d84
+  checksum: c5205229deae31be2bad5e71fbf388d03cc4afb52c78f5965a7a38b927221db75eda4203e7bd49a1131739d13a789eba996cdd1addec8eb0058825861d35e950
   languageName: node
   linkType: hard
 
