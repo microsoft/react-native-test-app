@@ -157,7 +157,7 @@
   },
   "packageManager": "yarn@3.4.1",
   "resolutions": {
-    "@expo/config-plugins/glob": "^7.1.6",
+    "@expo/config-plugins/glob": "^10.0.0",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
     "@react-native-community/cli": "^10.2.5",
     "@react-native-community/cli-platform-android": "^10.2.0",
