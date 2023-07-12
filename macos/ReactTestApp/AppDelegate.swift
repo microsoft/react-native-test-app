@@ -206,8 +206,7 @@ extension AppDelegate {
 
     private func present(_ component: Component) {
         guard let window = mainWindow,
-              let host = reactInstance.host,
-              let bridge = host.bridge
+              let host = reactInstance.host
         else {
             return
         }
@@ -215,7 +214,7 @@ extension AppDelegate {
         let title = component.displayName ?? component.appKey
 
         let viewController: NSViewController = {
-            if let viewController = RTAViewControllerFromString(component.appKey, bridge) {
+            if let viewController = RTAViewControllerFromString(component.appKey, host) {
                 return viewController
             }
 

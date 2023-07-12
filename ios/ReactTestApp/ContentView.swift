@@ -52,16 +52,21 @@ final class ContentViewController: UITableViewController {
     // MARK: - UIResponder overrides
 
     override public func motionEnded(_: UIEvent.EventSubtype, with event: UIEvent?) {
-        guard event?.subtype == .motionShake,
-              let bridge = reactInstance.host?.bridge,
-              let settings = bridge.module(for: RCTDevSettings.self) as? RCTDevSettings,
-              settings.isShakeToShowDevMenuEnabled,
-              let devMenu = bridge.module(for: RCTDevMenu.self) as? RCTDevMenu
-        else {
+        guard event?.subtype == .motionShake, let host = reactInstance.host else {
             return
         }
 
-        devMenu.show()
+        host.using(module: RCTDevSettings.self) { settings in
+            let settings = settings as? RCTDevSettings
+            guard settings?.isShakeToShowDevMenuEnabled == true else {
+                return
+            }
+
+            host.using(module: RCTDevMenu.self) { devMenu in
+                let devMenu = devMenu as? RCTDevMenu
+                devMenu?.show()
+            }
+        }
     }
 
     // MARK: - UIViewController overrides
@@ -193,15 +198,12 @@ final class ContentViewController: UITableViewController {
     // MARK: - Private
 
     private func navigate(to component: Component) {
-        guard let host = reactInstance.host,
-              let bridge = host.bridge,
-              let navigationController = navigationController
-        else {
+        guard let host = reactInstance.host, let navigationController else {
             return
         }
 
         let viewController: UIViewController = {
-            if let viewController = RTAViewControllerFromString(component.appKey, bridge) {
+            if let viewController = RTAViewControllerFromString(component.appKey, host) {
                 return viewController
             }
 

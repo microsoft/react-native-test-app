@@ -94,7 +94,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
         NotificationCenter.default.post(
             name: .ReactTestAppDidInitializeReactNative,
-            object: reactNativeHost.bridge
+            object: reactNativeHost
         )
 
         onDidInitialize()
@@ -119,7 +119,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
     // MARK: - RCTBridgeDelegate details
 
     func sourceURL(for _: RCTBridge!) -> URL? {
-        if let remoteBundleURL = remoteBundleURL {
+        if let remoteBundleURL {
             return remoteBundleURL
         }
 
@@ -144,7 +144,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
         let extensions = [".macos", ".native", ""]
         #endif
 
-        guard let bundleRoot = bundleRoot else {
+        guard let bundleRoot else {
             return extensions.reduce(into: []) { files, ext in
                 files.append("index" + ext)
                 files.append("main" + ext)

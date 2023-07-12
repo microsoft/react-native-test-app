@@ -1,4 +1,8 @@
+// Disable clang-format because it gets confused when there's a "+" in the
+// filename.
+// clang-format off
 #import "React+Compatibility.h"
+// clang-format on
 
 #include <TargetConditionals.h>
 

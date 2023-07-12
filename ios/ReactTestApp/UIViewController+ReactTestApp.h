@@ -7,10 +7,10 @@
 #define RTAViewController NSViewController
 #endif
 
-@class RCTBridge;
+@class ReactNativeHost;
 
 NS_ASSUME_NONNULL_BEGIN
 
-RTAViewController *_Nullable RTAViewControllerFromString(NSString *name, RCTBridge *bridge);
+RTAViewController *_Nullable RTAViewControllerFromString(NSString *name, ReactNativeHost *host);
 
 NS_ASSUME_NONNULL_END
