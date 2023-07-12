@@ -1,4 +1,8 @@
+// Disable clang-format because it gets confused when there's a "+" in the
+// filename.
+// clang-format off
 #import "UIViewController+ReactTestApp.h"
+// clang-format on
 
 #import <ReactNativeHost/ReactNativeHost.h>
 
