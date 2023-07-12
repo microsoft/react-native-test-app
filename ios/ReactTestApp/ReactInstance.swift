@@ -94,7 +94,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
         NotificationCenter.default.post(
             name: .ReactTestAppDidInitializeReactNative,
-            object: reactNativeHost.bridge
+            object: reactNativeHost
         )
 
         onDidInitialize()
