@@ -65,14 +65,14 @@ private struct DynamicCodingKey: CodingKey {
     }
 
     func toHashable() -> AnyHashable {
-        guard let intValue = intValue else {
+        guard let intValue else {
             return stringValue
         }
         return intValue
     }
 }
 
-extension Array where Element == Any {
+extension [Any] {
     static func decode(from decoder: Decoder) throws -> Array? {
         guard var container = try? decoder.unkeyedContainer() else {
             return nil
@@ -100,7 +100,7 @@ extension Array where Element == Any {
     }
 }
 
-extension Dictionary where Key == AnyHashable, Value == Any {
+extension [AnyHashable: Any] {
     static func decode(from decoder: Decoder) throws -> Dictionary? {
         guard let container = try? decoder.container(keyedBy: DynamicCodingKey.self) else {
             return nil

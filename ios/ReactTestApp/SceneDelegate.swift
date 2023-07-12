@@ -146,18 +146,18 @@ extension UIScene.OpenURLOptions {
     func dictionary() -> [UIApplication.OpenURLOptionsKey: Any] {
         var options: [UIApplication.OpenURLOptionsKey: Any] = [:]
 
-        if let sourceApplication = sourceApplication {
+        if let sourceApplication {
             options[.sourceApplication] = sourceApplication
         }
 
-        if let annotation = annotation {
+        if let annotation {
             options[.annotation] = annotation
         }
 
         options[.openInPlace] = openInPlace
 
         if #available(iOS 14.5, *) {
-            if let eventAttribution = eventAttribution {
+            if let eventAttribution {
                 options[.eventAttribution] = eventAttribution
             }
         }

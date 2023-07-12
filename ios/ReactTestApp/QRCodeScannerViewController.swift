@@ -105,7 +105,7 @@ final class QRCodeScannerViewController: UIViewController, AVCaptureMetadataOutp
 
             feedback.notificationOccurred(.success)
 
-            guard let presentingViewController = presentingViewController else {
+            guard let presentingViewController else {
                 assertionFailure()
                 return
             }

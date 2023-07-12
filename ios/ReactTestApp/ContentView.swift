@@ -198,9 +198,7 @@ final class ContentViewController: UITableViewController {
     // MARK: - Private
 
     private func navigate(to component: Component) {
-        guard let host = reactInstance.host,
-              let navigationController = navigationController
-        else {
+        guard let host = reactInstance.host, let navigationController else {
             return
         }
 
