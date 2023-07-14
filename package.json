@@ -163,9 +163,11 @@
     "@react-native-community/cli-platform-android": "^10.2.0",
     "@react-native-community/cli-platform-ios": "^10.2.5",
     "@semantic-release/npm/npm": "link:./example",
-    "metro-react-native-babel-transformer": "^0.73.10",
-    "metro-runtime": "^0.73.10",
-    "metro-source-map": "^0.73.10"
+    "body-parser": "~1.20.2",
+    "bplist-parser": "~0.3.2",
+    "safe-buffer": "~5.2.1",
+    "shell-quote": "~1.8.1",
+    "teen_process": "~2.0.2"
   },
   "workspaces": [
     "example"

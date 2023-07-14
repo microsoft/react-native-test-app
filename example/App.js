@@ -26,10 +26,9 @@ function getHermesVersion() {
 }
 
 function getReactNativeVersion() {
-  const version = `${coreVersion.major}.${coreVersion.minor}.${coreVersion.patch}`;
-  return coreVersion.prerelease
-    ? version + `-${coreVersion.prerelease}`
-    : version;
+  const { major, minor, patch, prerelease } = coreVersion;
+  const version = `${major}.${minor}.${patch}`;
+  return prerelease ? `${version}-${prerelease}` : version;
 }
 
 function getRemoteDebuggingAvailability() {
@@ -46,6 +45,14 @@ function getRemoteDebuggingAvailability() {
  */
 function isOnOrOff(value) {
   return value ? "On" : "Off";
+}
+
+/**
+ * @param {string} label
+ * @returns {string}
+ */
+function testID(label) {
+  return label.toLowerCase().replace(/\s+/g, "-") + "-value";
 }
 
 function useStyles() {
@@ -104,15 +111,17 @@ function useStyles() {
  *
  * @type {React.FunctionComponent<FeatureProps>}
  */
-const Feature = ({ children, value, ...props }) => {
+const Feature = ({ children: label, value, ...props }) => {
   const styles = useStyles();
   return (
     <View style={styles.groupItemContainer}>
-      <Text style={styles.groupItemLabel}>{children}</Text>
+      <Text style={styles.groupItemLabel}>{label}</Text>
       {typeof value === "boolean" ? (
         <Switch value={value} {...props} />
       ) : (
-        <Text style={styles.groupItemValue}>{value}</Text>
+        <Text testID={testID(label)} style={styles.groupItemValue}>
+          {value}
+        </Text>
       )}
     </View>
   );
