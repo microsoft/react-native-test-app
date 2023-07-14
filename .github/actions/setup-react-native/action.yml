@@ -1,0 +1,17 @@
+name: Setup React Native
+description: Set up a specific version of React Native
+inputs:
+  version:
+    description: The React Native version to set up
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Set up react-native@${{ inputs.version }}
+      run: |
+        git apply scripts/disable-safe-area-context.patch
+        git apply scripts/android-nightly.patch
+        rm example/ios/Podfile.lock
+        rm example/macos/Podfile.lock
+        npm run set-react-version -- ${{ inputs.version }}
+      shell: bash
