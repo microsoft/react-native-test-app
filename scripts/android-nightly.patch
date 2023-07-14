@@ -1,11 +1,11 @@
 diff --git a/example/android/gradle/wrapper/gradle-wrapper.properties b/example/android/gradle/wrapper/gradle-wrapper.properties
-index 5083229..37aef8d 100644
+index 4e86b92..37aef8d 100644
 --- a/example/android/gradle/wrapper/gradle-wrapper.properties
 +++ b/example/android/gradle/wrapper/gradle-wrapper.properties
 @@ -1,6 +1,6 @@
  distributionBase=GRADLE_USER_HOME
  distributionPath=wrapper/dists
--distributionUrl=https\://services.gradle.org/distributions/gradle-7.6.1-bin.zip
+-distributionUrl=https\://services.gradle.org/distributions/gradle-7.6.2-bin.zip
 +distributionUrl=https\://services.gradle.org/distributions/gradle-8.1.1-bin.zip
  networkTimeout=10000
  zipStoreBase=GRADLE_USER_HOME

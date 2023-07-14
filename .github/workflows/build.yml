@@ -128,9 +128,10 @@ jobs:
           echo "::add-matcher::.github/swiftlint.json"
           swiftlint
           echo "::remove-matcher owner=swiftlint::"
-      - name: Smoke test `set-react-version`
-        run: |
-          npm run set-react-version -- 0.66
+      - name: Smoke test `setup-react-native` action
+        uses: ./.github/actions/setup-react-native
+        with:
+          version: nightly
     timeout-minutes: 60
   ios:
     name: "iOS"
@@ -147,9 +148,9 @@ jobs:
           xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
-        run: |
-          npm run set-react-version -- nightly
-          rm example/ios/Podfile.lock
+        uses: ./.github/actions/setup-react-native
+        with:
+          version: nightly
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
         with:
@@ -238,11 +239,9 @@ jobs:
           java-version: ${{ github.event_name == 'schedule' && '17' || '11' }}
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
-        run: |
-          git apply scripts/disable-safe-area-context.patch
-          git apply scripts/android-nightly.patch
-          npm run set-react-version -- nightly
-        shell: bash
+        uses: ./.github/actions/setup-react-native
+        with:
+          version: nightly
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
         with:
@@ -314,9 +313,9 @@ jobs:
           xcode-developer-dir: ${{ env.XCODE_DEVELOPER_DIR }}
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
-        run: |
-          npm run set-react-version -- canary-macos
-          rm example/macos/Podfile.lock
+        uses: ./.github/actions/setup-react-native
+        with:
+          version: canary-macos
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
         with:
@@ -415,9 +414,9 @@ jobs:
           platform: windows
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
-        run: |
-          npm run set-react-version -- canary-windows
-        shell: bash
+        uses: ./.github/actions/setup-react-native
+        with:
+          version: canary-windows
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
         with:
