@@ -98,3 +98,14 @@ The view controller must implement an initializer that accepts a
 - (nonnull instancetype)initWithHost:(nonnull ReactNativeHost *)host;
 @end
 ```
+
+Or in Swift:
+
+```swift
+@objc(MyViewController)
+class MyViewController: UIViewController {
+    @objc init(host: ReactNativeHost) {
+        // Initialize
+    }
+}
+```
