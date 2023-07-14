@@ -417,7 +417,6 @@ jobs:
         uses: ./.github/actions/setup-react-native
         with:
           version: canary-windows
-        shell: bash
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
         with:
