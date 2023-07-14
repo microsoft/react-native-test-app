@@ -128,9 +128,13 @@ jobs:
           echo "::add-matcher::.github/swiftlint.json"
           swiftlint
           echo "::remove-matcher owner=swiftlint::"
+      - name: Verify nightly patches
+        run: |
+          git apply scripts/disable-safe-area-context.patch
+          git apply scripts/android-nightly.patch
       - name: Smoke test `set-react-version`
         run: |
-          npm run set-react-version -- 0.66
+          npm run set-react-version -- nightly
     timeout-minutes: 60
   ios:
     name: "iOS"
