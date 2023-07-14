@@ -9,7 +9,11 @@ VERSION=${1}
 scripts_dir=$(cd -P "$(dirname "$0")" && pwd)
 
 function build_and_run {
-  ${PACKAGE_MANAGER} $1 --no-packager
+  if [[ $1 == "ios" ]]; then
+    ${PACKAGE_MANAGER} $1 --simulator 'iPhone 14' --no-packager
+  else
+    ${PACKAGE_MANAGER} $1 --no-packager
+  fi
 }
 
 function pod_install {
