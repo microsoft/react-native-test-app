@@ -78,7 +78,7 @@ public void onAttach(@NonNull Context context) {
 On iOS/macOS, you can have native view controllers on the home screen by using
 their Objective-C names as app key (Swift classes can declare Objective-C names
 with the
-[`@objc`](https://docs.swift.org/swift-book/ReferenceManual/Attributes.html#objc)
+[`@objc`](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/attributes/#objc)
 attribute):
 
 ```javascript
@@ -90,9 +90,22 @@ attribute):
 ]
 ```
 
-The view controller must implement an initializer that accepts a `RCTBridge`
-instance:
+The view controller must implement an initializer that accepts a
+`ReactNativeHost` instance:
 
 ```objc
-- (nonnull instancetype)initWithBridge:(nonnull RCTBridge *)bridge;
+@interface MyViewController : UIViewController
+- (nonnull instancetype)initWithHost:(nonnull ReactNativeHost *)host;
+@end
+```
+
+Or in Swift:
+
+```swift
+@objc(MyViewController)
+class MyViewController: UIViewController {
+    @objc init(host: ReactNativeHost) {
+        // Initialize
+    }
+}
 ```
