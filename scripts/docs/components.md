@@ -94,7 +94,7 @@ The view controller must implement an initializer that accepts a
 `ReactNativeHost` instance:
 
 ```objc
-@interface MyViewController : NSObject
+@interface MyViewController : UIViewController
 - (nonnull instancetype)initWithHost:(nonnull ReactNativeHost *)host;
 @end
 ```
