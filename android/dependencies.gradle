@@ -110,7 +110,7 @@ ext {
         androidAppCompat            : "androidx.appcompat:appcompat:1.6.1",
         androidCamera               : "androidx.camera:camera-camera2:1.2.0-beta02",
         androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.2.0-beta02",
-        androidCoreKotlinExtensions : "androidx.core:core-ktx:1.9.0",
+        androidCoreKotlinExtensions : "androidx.core:core-ktx:1.10.1",
         androidEspressoCore         : "androidx.test.espresso:espresso-core:3.5.1",
         androidJUnit                : "androidx.test.ext:junit:1.1.5",
         androidJUnitKotlinExtensions: "androidx.test.ext:junit-ktx:1.1.5",
