@@ -1,6 +1,8 @@
 import AVFoundation
 import UIKit
 
+#if !ENABLE_SINGLE_APP_MODE
+
 private struct NavigationLink {
     let title: String
     let action: (() -> Void)?
@@ -323,3 +325,5 @@ extension ContentViewController {
         }
     }
 }
+
+#endif // !ENABLE_SINGLE_APP_MODE

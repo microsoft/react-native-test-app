@@ -236,7 +236,7 @@ PODS:
   - React-jsinspector (0.71.12)
   - React-logger (0.71.12):
     - glog
-  - react-native-safe-area-context (4.7.0):
+  - react-native-safe-area-context (4.7.1):
     - React-Core
   - React-perflogger (0.71.12)
   - React-RCTActionSheet (0.71.12):
@@ -319,7 +319,7 @@ PODS:
     - React-jsi (= 0.71.12)
     - React-logger (= 0.71.12)
     - React-perflogger (= 0.71.12)
-  - ReactNativeHost (0.2.7):
+  - ReactNativeHost (0.2.8):
     - React-Core
     - React-cxxreact
     - ReactCommon/turbomodule/core
@@ -474,7 +474,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: a78a0e415dc4b786a4308becf3e3bc6dbbc7b92e
   React-jsinspector: ec4dcbfb1f4e72f04f826a0301eceee5fa7ca540
   React-logger: 35538accacf2583693fbc3ee8b53e69a1776fcee
-  react-native-safe-area-context: 46b2815aabca6921dca647416a9ff42668a52580
+  react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
   React-perflogger: 75b0e25075c67565a830985f3c373e2eae5389e0
   React-RCTActionSheet: a0c3e916b327e297d124d9ebe8b0c721840ee04d
   React-RCTAnimation: 3da7025801d7bf0f8cfd94574d6278d5b82a8b88
@@ -488,7 +488,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a283fefb8cc29d9740a7ff2e87f72ad10f25a433
   React-runtimeexecutor: 7902246857a4ead4166869e6c42d4df329ff721d
   ReactCommon: 903ae47d52e4af9bd1d41d5c7c6004e828aa59a1
-  ReactNativeHost: 5dd0021c01ade845f1171f4e6f6814f214ddfadb
+  ReactNativeHost: 5caf8c9381f26c453fabbe8c3b87f6a013a3c459
   ReactTestApp-DevSupport: 5fd0815a03f06e26b120ac7b8a7ff29824fa700b
   ReactTestApp-Resources: 1f512f66574607bcfa614e9c0d30e7a990fecf30
   Yoga: 39310a10944fc864a7550700de349183450f8aaa

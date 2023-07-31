@@ -3075,7 +3075,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.2.7":
+"@rnx-kit/react-native-host@npm:^0.2.8":
   version: 0.2.8
   resolution: "@rnx-kit/react-native-host@npm:0.2.8"
   peerDependencies:
@@ -12352,7 +12352,7 @@ fsevents@^2.3.2:
     "@react-native-community/cli-platform-ios": ^10.2.5
     "@rnx-kit/commitlint-lite": ^1.0.0
     "@rnx-kit/eslint-plugin": ^0.4.0
-    "@rnx-kit/react-native-host": ^0.2.7
+    "@rnx-kit/react-native-host": ^0.2.8
     "@types/jest": ^29.0.0
     "@types/mustache": ^4.0.0
     "@types/node": ^18.0.0
