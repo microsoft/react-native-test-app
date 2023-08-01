@@ -69,16 +69,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction
     func onRememberLastComponentSelected(_ menuItem: NSMenuItem) {
-        switch menuItem.state {
-        case .mixed, .on:
-            Session.shouldRememberLastComponent = false
-            menuItem.state = .off
-        case .off:
-            Session.shouldRememberLastComponent = true
-            menuItem.state = .on
-        default:
-            assertionFailure()
-        }
+        onRememberLastComponentSelectedInternal(menuItem)
     }
 
     // MARK: Private
@@ -204,6 +195,19 @@ extension AppDelegate {
         rememberLastComponentMenuItem.isEnabled = components.count > 1
     }
 
+    private func onRememberLastComponentSelectedInternal(_ menuItem: NSMenuItem) {
+        switch menuItem.state {
+        case .mixed, .on:
+            Session.shouldRememberLastComponent = false
+            menuItem.state = .off
+        case .off:
+            Session.shouldRememberLastComponent = true
+            menuItem.state = .on
+        default:
+            assertionFailure()
+        }
+    }
+
     private func present(_ component: Component) {
         guard let window = mainWindow,
               let host = reactInstance.host
@@ -300,13 +304,11 @@ extension AppDelegate {
         window.contentViewController?.view = rootView
 
         #if DEBUG
-        if Session.shouldRememberLastComponent {
-            rememberLastComponentMenuItem.state = .on
-        }
-
         showReactMenu()
         #endif // DEBUG
     }
+
+    private func onRememberLastComponentSelectedInternal(_: NSMenuItem) {}
 }
 
 #endif // ENABLE_SINGLE_APP_MODE
