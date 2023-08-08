@@ -16,6 +16,8 @@ describe("generateSolution", () => {
     useNuGet: false,
   };
 
+  const testManifest = `{ name: "react-native-test-app", version: "0.0.1-dev" }`;
+
   beforeEach(() => {
     process.chdir(path.dirname(cwd));
   });
@@ -31,14 +33,17 @@ describe("generateSolution", () => {
     );
   });
 
-  test("exits if 'node_modules' folder cannot be found", () => {
+  test("exits if 'package.json' folder cannot be found", () => {
     expect(generateSolution("test", options)).toBe(
-      "Could not find 'node_modules'"
+      "Could not find 'package.json'"
     );
   });
 
   test("exits if 'react-native-windows' folder cannot be found", () => {
-    mockFiles({ [path.resolve("", "node_modules", ".bin")]: "directory" });
+    mockFiles({
+      [path.resolve("", "package.json")]: testManifest,
+      [path.resolve("", "node_modules", ".bin")]: "directory",
+    });
 
     expect(generateSolution("test", options)).toBe(
       "Could not find 'react-native-windows'"
@@ -47,6 +52,7 @@ describe("generateSolution", () => {
 
   test("exits if 'react-native-test-app' folder cannot be found", () => {
     mockFiles({
+      [path.resolve("", "package.json")]: testManifest,
       [path.resolve(
         "",
         "node_modules",
