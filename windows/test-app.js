@@ -586,12 +586,12 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     return "Missing or invalid destination path";
   }
 
-  const nodeModulesDir = "node_modules";
-
-  const nodeModulesPath = findNearest(nodeModulesDir);
-  if (!nodeModulesPath) {
-    return "Could not find 'node_modules'";
+  const projectManifest = findNearest("package.json");
+  if (!projectManifest) {
+    return "Could not find 'package.json'";
   }
+
+  const nodeModulesDir = "node_modules";
 
   const rnWindowsPath = findNearest(
     path.join(nodeModulesDir, "react-native-windows")
@@ -609,7 +609,8 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
 
   const projDir = "ReactTestApp";
   const projectFilesDestPath = path.join(
-    nodeModulesPath,
+    path.dirname(projectManifest),
+    nodeModulesDir,
     ".generated",
     "windows",
     projDir

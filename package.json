@@ -190,6 +190,7 @@
     ]
   },
   "prettier": {
+    "trailingComma": "es5",
     "endOfLine": "auto"
   },
   "release": {
