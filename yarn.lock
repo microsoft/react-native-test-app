@@ -22,11 +22,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appium/base-driver@npm:^9.3.15":
-  version: 9.3.15
-  resolution: "@appium/base-driver@npm:9.3.15"
+"@appium/base-driver@npm:^9.3.16":
+  version: 9.3.16
+  resolution: "@appium/base-driver@npm:9.3.16"
   dependencies:
-    "@appium/support": ^4.1.2
+    "@appium/support": ^4.1.3
     "@appium/types": ^0.13.2
     "@colors/colors": 1.5.0
     "@types/async-lock": 1.4.0
@@ -51,25 +51,25 @@ __metadata:
     source-map-support: 0.5.21
     type-fest: 3.11.1
     validate.js: 0.13.1
-  checksum: ea1e1939a28ee9520d2dcd19641b443164ee8830d28dbd1ff44a7fcb53689093f0a6f0ac7f93f95f0c559d94a2aa0c6f01344d334d55bc587e89a85378bc23bf
+  checksum: 061ec771191ee91b01e34adf1f7a5bd5e1df526c6a60877ec7e8f2e698f7b2ba4fd7a716d1e0122517b9f3d90617c074355552a00fac38253a2ec5fd85993032
   languageName: node
   linkType: hard
 
-"@appium/base-plugin@npm:^2.2.15":
-  version: 2.2.15
-  resolution: "@appium/base-plugin@npm:2.2.15"
+"@appium/base-plugin@npm:^2.2.16":
+  version: 2.2.16
+  resolution: "@appium/base-plugin@npm:2.2.16"
   dependencies:
-    "@appium/base-driver": ^9.3.15
-    "@appium/support": ^4.1.2
-  checksum: fb9211c89c7e21522e27b5f966520b29c39675470526344059c8c8bc471c971c1bc70c1873673054045a6bb7a0efec2ff74d8f8c3ae56649c8d81a031ef15880
+    "@appium/base-driver": ^9.3.16
+    "@appium/support": ^4.1.3
+  checksum: 137c643038a4fedc1298476cb8c3067560b6e81488ab377eb0f22a0851a8cf34f99ff8cb8677a9fc8f22defe9b1819cbe3f1a65f0ab36f9031fd1ceca61aeb7e
   languageName: node
   linkType: hard
 
-"@appium/docutils@npm:^0.4.4":
-  version: 0.4.4
-  resolution: "@appium/docutils@npm:0.4.4"
+"@appium/docutils@npm:^0.4.5":
+  version: 0.4.5
+  resolution: "@appium/docutils@npm:0.4.5"
   dependencies:
-    "@appium/support": ^4.1.2
+    "@appium/support": ^4.1.3
     "@appium/tsconfig": ^0.3.0
     "@appium/typedoc-plugin-appium": ^0.6.5
     "@sliphua/lilconfig-ts-loader": 3.2.2
@@ -87,7 +87,7 @@ __metadata:
     read-pkg: 5.2.0
     semver: 7.5.3
     source-map-support: 0.5.21
-    teen_process: 2.0.2
+    teen_process: 2.0.4
     type-fest: 3.11.1
     typedoc: 0.23.28
     typedoc-plugin-markdown: 3.14.0
@@ -98,7 +98,7 @@ __metadata:
     yargs-parser: 21.1.1
   bin:
     appium-docs: bin/appium-docs.js
-  checksum: 8dd7feb7dfb3e6ca4b0d2e1fc7e982805e579459f63c1ffe248b5ffc3ee9e2ba664c456b3e1620a7f63bd218f36a9e08fd44b67b161ae827a655915360979576
+  checksum: cc0985e7e8907c12e048944a2402c2f6361bdb7e1d45a0c9edae675d9087ec49aefb4392c683f72ba76e5f90fa6e33db39fe32cceb60d67eb0b49037047588dd
   languageName: node
   linkType: hard
 
@@ -113,9 +113,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appium/support@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "@appium/support@npm:4.1.2"
+"@appium/support@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "@appium/support@npm:4.1.3"
   dependencies:
     "@appium/tsconfig": ^0.3.0
     "@appium/types": ^0.13.2
@@ -167,7 +167,7 @@ __metadata:
     shell-quote: 1.8.1
     source-map-support: 0.5.21
     supports-color: 8.1.1
-    teen_process: 2.0.2
+    teen_process: 2.0.4
     type-fest: 3.11.1
     uuid: 9.0.0
     which: 3.0.1
@@ -175,7 +175,7 @@ __metadata:
   dependenciesMeta:
     sharp:
       optional: true
-  checksum: b9168a2cd8977b6b58d2d5484372ecb8af56e6feca11b9a7c0cada8c7a9573048596634666af5939ccd4ace7da3e1524c31ce816ed5e78ffa5fe5ac3385f7751
+  checksum: eceaa2f7f2cc05521787db1350ac3e5beb5062f244219f83b4f12348c0a043e27e3ffb8a743b6bd14168aaf7cfc5b0aff3616a0e6e89aa40f9df7617dd5b59c3
   languageName: node
   linkType: hard
 
@@ -4287,14 +4287,14 @@ __metadata:
   linkType: hard
 
 "appium@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "appium@npm:2.0.0"
+  version: 2.0.1
+  resolution: "appium@npm:2.0.1"
   dependencies:
-    "@appium/base-driver": ^9.3.15
-    "@appium/base-plugin": ^2.2.15
-    "@appium/docutils": ^0.4.4
+    "@appium/base-driver": ^9.3.16
+    "@appium/base-plugin": ^2.2.16
+    "@appium/docutils": ^0.4.5
     "@appium/schema": ^0.3.1
-    "@appium/support": ^4.1.2
+    "@appium/support": ^4.1.3
     "@appium/types": ^0.13.2
     "@sidvind/better-ajv-errors": 2.1.0
     "@types/argparse": 2.0.10
@@ -4321,14 +4321,14 @@ __metadata:
     resolve-from: 5.0.0
     semver: 7.5.3
     source-map-support: 0.5.21
-    teen_process: 2.0.2
+    teen_process: 2.0.4
     type-fest: 3.11.1
     winston: 3.9.0
     wrap-ansi: 7.0.0
     yaml: 2.3.1
   bin:
     appium: index.js
-  checksum: b7db3f9607d14225ff242d5bd6c81f332565a9604c57f2f748ad600c7e6eff3337cce586c90cdeaf97afda7857a4f1ca5a8cfadd91f66a2a431a6464fca4286a
+  checksum: 86ed58269c9a9a2f4121ce3b78e5e54f170e7d388179358f1d39e0d4fa1d91adf7da24d06e3414f6a9b1a7721ee7f0b5f2d755fed5697d367a7b3f0b0922d7af
   languageName: node
   linkType: hard
 
