@@ -22,14 +22,6 @@ function memo(fn) {
 }
 
 /**
- * @param {string} v
- */
-function minorVersion(v) {
-  const [major, minor] = v.split("-")[0].split(".").map(Number);
-  return major * 100 + minor;
-}
-
-/**
  * Invokes `npm`.
  * @param {...string} args
  */
@@ -82,6 +74,7 @@ const getInstalledVersion = memo(() => {
 });
 
 /**
+ * Returns the npm package name for the specified platform.
  * @param {string} platform
  * @returns {string}
  */
@@ -130,7 +123,8 @@ function getVersion(platforms) {
       return result;
     }
 
-    const v = minorVersion(npm("view", pkgName, "version"));
+    const [major, minor] = npm("view", pkgName, "version").split(".");
+    const v = Number(major) * 100 + Number(minor);
     return v < result ? v : result;
   }, Number.MAX_VALUE);
 
