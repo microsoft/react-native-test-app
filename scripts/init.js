@@ -22,6 +22,14 @@ function memo(fn) {
 }
 
 /**
+ * @param {string} v
+ */
+function minorVersion(v) {
+  const [major, minor] = v.split("-")[0].split(".").map(Number);
+  return major * 100 + minor;
+}
+
+/**
  * Invokes `npm`.
  * @param {...string} args
  */
@@ -74,6 +82,24 @@ const getInstalledVersion = memo(() => {
 });
 
 /**
+ * @param {string} platform
+ * @returns {string}
+ */
+function getPackageName(platform) {
+  switch (platform) {
+    case "android":
+    case "ios":
+      return "react-native";
+    case "macos":
+      return "react-native-macos";
+    case "windows":
+      return "react-native-windows";
+    default:
+      throw new Error(`Unsupported platform: ${platform}`);
+  }
+}
+
+/**
  * Returns the desired `react-native` version.
  *
  * Checks the following in order:
@@ -82,9 +108,10 @@ const getInstalledVersion = memo(() => {
  *   - Currently installed `react-native` version
  *   - Latest version from npm
  *
+ * @param {import("./configure").Platform[]} platforms
  * @returns {string}
  */
-function getVersion() {
+function getVersion(platforms) {
   const index = process.argv.lastIndexOf("--version");
   if (index >= 0) {
     return process.argv[index + 1];
@@ -95,16 +122,42 @@ function getVersion() {
     return version;
   }
 
-  return npm("view", "react-native", "version");
+  console.log("No version was specified; fetching available versions...");
+
+  const maxSupportedVersion = platforms.reduce((result, p) => {
+    const pkgName = getPackageName(p);
+    if (!pkgName) {
+      return result;
+    }
+
+    const v = minorVersion(npm("view", pkgName, "version"));
+    return v < result ? v : result;
+  }, Number.MAX_VALUE);
+
+  const major = Math.trunc(maxSupportedVersion / 100);
+  const minor = maxSupportedVersion % 100;
+
+  const target = `^${major}.${minor}`;
+
+  const chalk = require("chalk");
+  const fmtTarget = chalk.bold(target);
+  const fmtVersionFlag = chalk.bold("--version");
+  console.log(
+    `Using ${fmtTarget} because it supports all specified platforms (use ` +
+      `${fmtVersionFlag} to manually specify a version)`
+  );
+
+  return target;
 }
 
 /**
  * Returns the React Native version and path to the template.
+ * @param {import("./configure").Platform[]} platforms
  * @returns {Promise<[string] | [string, string]>}
  */
-function getTemplate() {
+function getTemplate(platforms) {
   return new Promise((resolve, reject) => {
-    const version = getVersion();
+    const version = getVersion(platforms);
     if (getInstalledVersion() === version) {
       const rnManifest = getInstalledReactNativeManifest();
       if (rnManifest) {
@@ -193,7 +246,7 @@ async function main() {
 
   const { configure } = require("./configure");
 
-  const [targetVersion, templatePath] = await getTemplate();
+  const [targetVersion, templatePath] = await getTemplate(platforms);
   return configure({
     name,
     packagePath,
