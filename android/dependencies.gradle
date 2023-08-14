@@ -123,7 +123,7 @@ ext {
         kotlinStdlibJdk7            : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
         kotlinStdlibJdk8            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
         materialComponents          : "com.google.android.material:material:1.8.0",
-        mlKitBarcodeScanning        : "com.google.mlkit:barcode-scanning:17.1.0",
+        mlKitBarcodeScanning        : "com.google.mlkit:barcode-scanning:17.2.0",
         mockitoInline               : "org.mockito:mockito-inline:5.2.0",
         moshiKotlin                 : kotlinVersionNumber >= 10800
                                           ? "com.squareup.moshi:moshi-kotlin:1.15.0"
