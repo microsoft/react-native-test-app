@@ -2,6 +2,7 @@
 "use strict";
 
 jest.mock("fs");
+jest.mock("fs/promises");
 
 const fs = require("fs");
 const path = require("path");

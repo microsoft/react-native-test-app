@@ -901,38 +901,19 @@ function updatePackageManifest(path, { dependencies, scripts }) {
 function writeAllFiles(files, destination) {
   const options = { recursive: true, mode: 0o755 };
   return Promise.all(
-    Object.keys(files).map((filename) => {
+    Object.keys(files).map(async (filename) => {
       const content = files[filename];
       if (!content) {
-        return Promise.resolve();
+        return;
       }
 
       const file = path.join(destination, filename);
-      /** @type {Promise<void>} */
-      const p = new Promise((resolve, reject) =>
-        fs.mkdir(path.dirname(file), options, (error) => {
-          // Calling `fs.mkdir()` when `path` is a directory that exists results
-          // in an error only when `recursive` is false.
-          if (error) {
-            reject(error);
-          } else {
-            /** @type {(error: Error | null) => void} */
-            const callback = (error) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve();
-              }
-            };
-            if (typeof content === "string") {
-              fs.writeFile(file, content, callback);
-            } else {
-              fs.copyFile(content.source, file, callback);
-            }
-          }
-        })
-      );
-      return p;
+      await fsp.mkdir(path.dirname(file), options);
+      if (typeof content === "string") {
+        await fsp.writeFile(file, content);
+      } else {
+        await fsp.copyFile(content.source, file);
+      }
     })
   );
 }
