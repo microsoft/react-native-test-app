@@ -389,10 +389,6 @@ dependencies {
         implementation("com.facebook.react:react-native:${version}")
     }
 
-    implementation libraries.kotlinStdlibJdk7
-    implementation libraries.kotlinStdlibJdk8
-    implementation libraries.kotlinReflect
-
     if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
         // androidx.appcompat:appcompat:1.4.0+ breaks TextInput. This was fixed
         // in react-native 0.68. For more details, see
