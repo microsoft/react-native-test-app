@@ -1,5 +1,5 @@
-// @ts-check
 import React, { useCallback, useMemo, useState } from "react";
+import type { LayoutChangeEvent, NativeSyntheticEvent } from "react-native";
 import {
   NativeModules,
   ScrollView,
@@ -17,6 +17,19 @@ import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 // @ts-expect-error
 import { isAsyncDebugging } from "react-native/Libraries/Utilities/DebugEnvironment";
 
+type AppProps = {
+  concurrentRoot?: boolean;
+};
+
+type FeatureProps =
+  | { children: string; value: string }
+  | {
+      children: string;
+      value: boolean;
+      disabled?: boolean;
+      onValueChange?: (value: boolean) => void;
+    };
+
 function getHermesVersion() {
   return (
     // @ts-expect-error
@@ -25,33 +38,37 @@ function getHermesVersion() {
   );
 }
 
-function getReactNativeVersion() {
+function getReactNativeVersion(): string {
   const { major, minor, patch, prerelease } = coreVersion;
   const version = `${major}.${minor}.${patch}`;
   return prerelease ? `${version}-${prerelease}` : version;
 }
 
-function getRemoteDebuggingAvailability() {
+function getRemoteDebuggingAvailability(): boolean {
   return (
+    !getHermesVersion() &&
     // @ts-expect-error
     global.RN$Bridgeless !== true &&
     typeof NativeModules["DevSettings"]?.setIsDebuggingRemotely === "function"
   );
 }
 
-/**
- * @param {unknown} value
- * @returns {"Off" | "On"}
- */
-function isOnOrOff(value) {
+function isFabricInstance<T>(
+  ref: NativeSyntheticEvent<T>["currentTarget"]
+): boolean {
+  return Boolean(
+    // @ts-expect-error — https://github.com/facebook/react-native/blob/0.72-stable/packages/react-native/Libraries/Renderer/public/ReactFabricPublicInstanceUtils.js
+    ref["__nativeTag"] ||
+      // @ts-expect-error — https://github.com/facebook/react-native/blob/0.72-stable/packages/react-native/Libraries/Renderer/public/ReactFabricPublicInstanceUtils.js
+      ref["_internalInstanceHandle"]?.stateNode?.canonical
+  );
+}
+
+function isOnOrOff(value: unknown): "Off" | "On" {
   return value ? "On" : "Off";
 }
 
-/**
- * @param {string} label
- * @returns {string}
- */
-function testID(label) {
+function testID(label: string): string {
   return label.toLowerCase().replace(/\s+/g, "-") + "-value";
 }
 
@@ -98,20 +115,11 @@ function useStyles() {
   }, [colorScheme]);
 }
 
-/**
- * @typedef {{
- *   children: string;
- *   value: string;
- * } | {
- *   children: string;
- *   value: boolean;
- *   disabled?: boolean;
- *   onValueChange?: (value: boolean) => void;
- * }} FeatureProps
- *
- * @type {React.FunctionComponent<FeatureProps>}
- */
-const Feature = ({ children: label, value, ...props }) => {
+function Feature({
+  children: label,
+  value,
+  ...props
+}: FeatureProps): React.ReactElement<FeatureProps> {
   const styles = useStyles();
   return (
     <View style={styles.groupItemContainer}>
@@ -125,21 +133,19 @@ const Feature = ({ children: label, value, ...props }) => {
       )}
     </View>
   );
-};
+}
 
-/** @type {React.FunctionComponent<{}>} */
-const Separator = () => {
+function Separator(): React.ReactElement {
   const styles = useStyles();
   return <View style={styles.separator} />;
-};
+}
 
-/** @type {React.FunctionComponent<{}>} */
-const DevMenu = () => {
+function DevMenu(): React.ReactElement | null {
   const styles = useStyles();
 
   const isRemoteDebuggingAvailable = getRemoteDebuggingAvailability();
   const toggleRemoteDebugging = useCallback(
-    (value) => {
+    (value: boolean) => {
       if (isRemoteDebuggingAvailable) {
         NativeModules["DevSettings"].setIsDebuggingRemotely(value);
       }
@@ -158,21 +164,16 @@ const DevMenu = () => {
       </Feature>
     </View>
   );
-};
+}
 
-/** @type {React.FunctionComponent<{ concurrentRoot?: boolean; }>} */
-const App = ({ concurrentRoot }) => {
+function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
   const isDarkMode = useColorScheme() === "dark";
   const styles = useStyles();
 
   const [isFabric, setFabric] = useState(false);
   const onLayout = useCallback(
-    (ev) => {
-      setFabric(
-        Boolean(
-          ev.currentTarget["_internalInstanceHandle"]?.stateNode?.canonical
-        )
-      );
+    ({ currentTarget }: LayoutChangeEvent) => {
+      setFabric(isFabricInstance(currentTarget));
     },
     [setFabric]
   );
@@ -203,6 +204,6 @@ const App = ({ concurrentRoot }) => {
       </SafeAreaView>
     </SafeAreaProvider>
   );
-};
+}
 
 export default App;
