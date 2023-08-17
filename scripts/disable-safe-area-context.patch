@@ -1,9 +1,9 @@
-diff --git a/example/App.js b/example/App.js
-index c9cd14d..f63758d 100644
---- a/example/App.js
-+++ b/example/App.js
-@@ -2,6 +2,7 @@
- import React, { useCallback, useMemo, useState } from "react";
+diff --git a/example/App.tsx b/example/App.tsx
+index edc2259..7168465 100644
+--- a/example/App.tsx
++++ b/example/App.tsx
+@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
+ import type { LayoutChangeEvent, NativeSyntheticEvent } from "react-native";
  import {
    NativeModules,
 +  SafeAreaView,
@@ -18,7 +18,7 @@ index c9cd14d..f63758d 100644
  // @ts-expect-error
  import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
  import { Colors, Header } from "react-native/Libraries/NewAppScreen";
-@@ -169,7 +169,6 @@ const App = ({ concurrentRoot }) => {
+@@ -179,7 +179,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
    );
  
    return (
@@ -26,11 +26,11 @@ index c9cd14d..f63758d 100644
        <SafeAreaView style={styles.body}>
          <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
          <ScrollView
-@@ -192,7 +191,6 @@ const App = ({ concurrentRoot }) => {
+@@ -202,7 +201,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
            </View>
          </ScrollView>
        </SafeAreaView>
 -    </SafeAreaProvider>
    );
- };
+ }
  
