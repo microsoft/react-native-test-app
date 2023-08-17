@@ -1,9 +1,9 @@
 diff --git a/example/App.tsx b/example/App.tsx
-index edc2259..7168465 100644
+index 54ed4d1..3c811df 100644
 --- a/example/App.tsx
 +++ b/example/App.tsx
 @@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
- import type { LayoutChangeEvent, NativeSyntheticEvent } from "react-native";
+ import type { NativeSyntheticEvent } from "react-native";
  import {
    NativeModules,
 +  SafeAreaView,
@@ -19,7 +19,7 @@ index edc2259..7168465 100644
  import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
  import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 @@ -179,7 +179,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
-   );
+   const [isFabric, setIsFabric] = useIsFabricComponent();
  
    return (
 -    <SafeAreaProvider>
