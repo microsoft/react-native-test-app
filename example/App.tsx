@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import type { LayoutChangeEvent, NativeSyntheticEvent } from "react-native";
+import type { NativeSyntheticEvent } from "react-native";
 import {
   NativeModules,
   ScrollView,
@@ -44,15 +44,6 @@ function getReactNativeVersion(): string {
   return prerelease ? `${version}-${prerelease}` : version;
 }
 
-function getRemoteDebuggingAvailability(): boolean {
-  return (
-    !getHermesVersion() &&
-    // @ts-expect-error
-    global.RN$Bridgeless !== true &&
-    typeof NativeModules["DevSettings"]?.setIsDebuggingRemotely === "function"
-  );
-}
-
 function isFabricInstance<T>(
   ref: NativeSyntheticEvent<T>["currentTarget"]
 ): boolean {
@@ -68,8 +59,34 @@ function isOnOrOff(value: unknown): "Off" | "On" {
   return value ? "On" : "Off";
 }
 
+function isRemoteDebuggingAvailable(): boolean {
+  return (
+    !getHermesVersion() &&
+    // @ts-expect-error
+    global.RN$Bridgeless !== true &&
+    typeof NativeModules["DevSettings"]?.setIsDebuggingRemotely === "function"
+  );
+}
+
+function setRemoteDebugging(value: boolean) {
+  if (isRemoteDebuggingAvailable()) {
+    NativeModules["DevSettings"].setIsDebuggingRemotely(value);
+  }
+}
+
 function testID(label: string): string {
   return label.toLowerCase().replace(/\s+/g, "-") + "-value";
+}
+
+function useIsFabricComponent() {
+  const [isFabric, setIsFabric] = useState(false);
+  const setter = useCallback(
+    ({ currentTarget }: NativeSyntheticEvent<unknown>) => {
+      setIsFabric(isFabricInstance(currentTarget));
+    },
+    [setIsFabric]
+  );
+  return [isFabric, setter] as const;
 }
 
 function useStyles() {
@@ -143,23 +160,13 @@ function Separator(): React.ReactElement {
 function DevMenu(): React.ReactElement | null {
   const styles = useStyles();
 
-  const isRemoteDebuggingAvailable = getRemoteDebuggingAvailability();
-  const toggleRemoteDebugging = useCallback(
-    (value: boolean) => {
-      if (isRemoteDebuggingAvailable) {
-        NativeModules["DevSettings"].setIsDebuggingRemotely(value);
-      }
-    },
-    [isRemoteDebuggingAvailable]
-  );
-
-  if (!isRemoteDebuggingAvailable) {
+  if (!isRemoteDebuggingAvailable()) {
     return null;
   }
 
   return (
     <View style={styles.group}>
-      <Feature value={isAsyncDebugging} onValueChange={toggleRemoteDebugging}>
+      <Feature value={isAsyncDebugging} onValueChange={setRemoteDebugging}>
         Remote Debugging
       </Feature>
     </View>
@@ -169,14 +176,7 @@ function DevMenu(): React.ReactElement | null {
 function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
   const isDarkMode = useColorScheme() === "dark";
   const styles = useStyles();
-
-  const [isFabric, setFabric] = useState(false);
-  const onLayout = useCallback(
-    ({ currentTarget }: LayoutChangeEvent) => {
-      setFabric(isFabricInstance(currentTarget));
-    },
-    [setFabric]
-  );
+  const [isFabric, setIsFabric] = useIsFabricComponent();
 
   return (
     <SafeAreaProvider>
@@ -184,7 +184,7 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
         <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
-          onLayout={onLayout}
+          onLayout={setIsFabric}
           style={styles.body}
         >
           <Header />
