@@ -11,7 +11,7 @@ const fs = require("fs");
  * @param {Record<string, string>} files
  */
 function mockFiles(files = {}) {
-  // @ts-ignore `__setMockFiles`
+  // @ts-expect-error for mocking purposes only
   fs.__setMockFiles(files);
 }
 

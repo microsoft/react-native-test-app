@@ -11,11 +11,15 @@ import {
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-// @ts-expect-error
+// @ts-expect-error no type definitions available
 import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
-// @ts-expect-error
+// @ts-expect-error no type definitions available
 import { isAsyncDebugging } from "react-native/Libraries/Utilities/DebugEnvironment";
+
+declare global {
+  export const RN$Bridgeless: boolean;
+}
 
 type AppProps = {
   concurrentRoot?: boolean;
@@ -30,11 +34,12 @@ type FeatureProps =
       onValueChange?: (value: boolean) => void;
     };
 
-function getHermesVersion() {
+function getHermesVersion(): string | undefined {
   return (
-    // @ts-expect-error
-    global.HermesInternal?.getRuntimeProperties?.()["OSS Release Version"] ??
-    false
+    HermesInternal &&
+    "getRuntimeProperties" in HermesInternal &&
+    typeof HermesInternal.getRuntimeProperties === "function" &&
+    HermesInternal.getRuntimeProperties()["OSS Release Version"]
   );
 }
 
@@ -42,6 +47,10 @@ function getReactNativeVersion(): string {
   const { major, minor, patch, prerelease } = coreVersion;
   const version = `${major}.${minor}.${patch}`;
   return prerelease ? `${version}-${prerelease}` : version;
+}
+
+function isBridgeless() {
+  return RN$Bridgeless === true;
 }
 
 function isFabricInstance<T>(
@@ -62,8 +71,7 @@ function isOnOrOff(value: unknown): "Off" | "On" {
 function isRemoteDebuggingAvailable(): boolean {
   return (
     !getHermesVersion() &&
-    // @ts-expect-error
-    global.RN$Bridgeless !== true &&
+    !isBridgeless() &&
     typeof NativeModules["DevSettings"]?.setIsDebuggingRemotely === "function"
   );
 }
