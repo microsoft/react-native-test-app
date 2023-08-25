@@ -2851,7 +2851,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/cli-tools@npm:10.1.1, @react-native-community/cli-tools@npm:^10.1.1":
+"@react-native-community/cli-tools@npm:^10.1.1":
   version: 10.1.1
   resolution: "@react-native-community/cli-tools@npm:10.1.1"
   dependencies:
@@ -12707,14 +12707,13 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native-macos@npm:^0.71.0":
-  version: 0.71.31
-  resolution: "react-native-macos@npm:0.71.31"
+  version: 0.71.34
+  resolution: "react-native-macos@npm:0.71.34"
   dependencies:
     "@jest/create-cache-key-function": ^29.2.1
     "@react-native-community/cli": 10.2.4
     "@react-native-community/cli-platform-android": 10.2.0
     "@react-native-community/cli-platform-ios": 10.2.4
-    "@react-native-community/cli-tools": 10.1.1
     "@react-native/assets": 1.0.0
     "@react-native/normalize-color": 2.1.0
     "@react-native/polyfills": 2.0.0
@@ -12750,7 +12749,7 @@ fsevents@^2.3.2:
     react: 18.2.0
   bin:
     react-native-macos: cli.js
-  checksum: a4b79b40405a967560e137bb1e80b11ac961396f48e320d51a4071d80ffe2a6874bec3481c16c8f6e3c50a6165b19cee6a5dd3f8afd1481ce454ffc299a580e6
+  checksum: 54a1bc4c4a46a57d92b27680458d403840b0bc4ee1abcb938d3541849a7be5ae5df00280e56c2945943a5d9e833793e2314975f997a61e513bbfe4479c90bddf
   languageName: node
   linkType: hard
 
