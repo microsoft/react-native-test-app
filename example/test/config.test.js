@@ -17,7 +17,7 @@ const path = require("path");
 const {
   version: cliVersion,
 } = require("@react-native-community/cli/package.json");
-const cliMajorVersion = cliVersion.split(".")[0];
+const cliMajorVersion = Number(cliVersion.split(".")[0]);
 
 /**
  * Test only if given predicate evaluates to `true`.
