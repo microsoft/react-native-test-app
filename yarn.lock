@@ -220,13 +220,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@assemblyscript/loader@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "@assemblyscript/loader@npm:0.10.1"
-  checksum: fd1f57bdf2c55252a48c2d93fbec3c5a9ef4ca40e581e8709dd8ee437613eb47af74c8cdba011a324077eda9605d6f24983f429c2ce18b0b582ddcc5acf75c26
-  languageName: node
-  linkType: hard
-
 "@azure/abort-controller@npm:^1.0.0":
   version: 1.1.0
   resolution: "@azure/abort-controller@npm:1.1.0"
@@ -2694,7 +2687,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@puppeteer/browsers@npm:1.4.6, @puppeteer/browsers@npm:^1.4.6":
+"@puppeteer/browsers@npm:1.4.6":
   version: 1.4.6
   resolution: "@puppeteer/browsers@npm:1.4.6"
   dependencies:
@@ -2713,6 +2706,23 @@ __metadata:
   bin:
     browsers: lib/cjs/main-cli.js
   checksum: 29569dd8a8a41737bb0dd40cce6279cfc8764afc6242d2f9d8ae610bed7e466fc77eeb27b9b3ac53dd04927a1a0e26389f282f6ba057210979b36ab455009d64
+  languageName: node
+  linkType: hard
+
+"@puppeteer/browsers@npm:^1.6.0":
+  version: 1.7.0
+  resolution: "@puppeteer/browsers@npm:1.7.0"
+  dependencies:
+    debug: 4.3.4
+    extract-zip: 2.0.1
+    progress: 2.0.3
+    proxy-agent: 6.3.0
+    tar-fs: 3.0.4
+    unbzip2-stream: 1.4.3
+    yargs: 17.7.1
+  bin:
+    browsers: lib/cjs/main-cli.js
+  checksum: 0a2aecc72fb94a8d94246188f94cfaad730d1d372b34df94ca51ff8a94596bf475a0fee162c317a768fa4b2a707bfa8afd582d594958f49e1019effadfe744b6
   languageName: node
   linkType: hard
 
@@ -3958,19 +3968,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wdio/config@npm:8.14.6":
-  version: 8.14.6
-  resolution: "@wdio/config@npm:8.14.6"
+"@wdio/config@npm:8.15.6":
+  version: 8.15.6
+  resolution: "@wdio/config@npm:8.15.6"
   dependencies:
     "@wdio/logger": 8.11.0
-    "@wdio/types": 8.14.0
-    "@wdio/utils": 8.14.0
+    "@wdio/types": 8.15.0
+    "@wdio/utils": 8.15.6
     decamelize: ^6.0.0
     deepmerge-ts: ^5.0.0
     glob: ^10.2.2
     import-meta-resolve: ^3.0.0
     read-pkg-up: ^10.0.0
-  checksum: d6922ebcdddfba014713d788cdb5771601fb08598029ab0bdb614c45368210bf7486f3c81f1a74d1ffd5232b20e4d87969d78a8f429a6d75951ce5f08b3e4bcc
+  checksum: 6f620da0c76509528b718d6e9961f8bc1bb055edf5a683d8bf68a0daa0dec7c4abcbf6700290d1a973cf906bb0f2b456fb2819611a249031cc00a6ebd5ec6240
   languageName: node
   linkType: hard
 
@@ -4002,23 +4012,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wdio/types@npm:8.14.0":
-  version: 8.14.0
-  resolution: "@wdio/types@npm:8.14.0"
+"@wdio/types@npm:8.15.0":
+  version: 8.15.0
+  resolution: "@wdio/types@npm:8.15.0"
   dependencies:
     "@types/node": ^20.1.0
-  checksum: 229eba13b47383e805668bcf4a5cb0e0165fc2b6704297911cbfc1df49d86c6f80ab75afb42456a6e9975dab27e66579d0360f503fcbfc24dc843e6f5310a3fe
+  checksum: e21e3d7e5833417853f834729bf7246891284c217d9ccaaf9635fbfd7217797701ee98549b109f9b2f5322de03873614ffef2498cd2f422b191e42d2e12488c4
   languageName: node
   linkType: hard
 
-"@wdio/utils@npm:8.14.0":
-  version: 8.14.0
-  resolution: "@wdio/utils@npm:8.14.0"
+"@wdio/utils@npm:8.15.6":
+  version: 8.15.6
+  resolution: "@wdio/utils@npm:8.15.6"
   dependencies:
+    "@puppeteer/browsers": ^1.6.0
     "@wdio/logger": 8.11.0
-    "@wdio/types": 8.14.0
+    "@wdio/types": 8.15.0
+    chrome-launcher: ^1.0.0
+    decamelize: ^6.0.0
+    deepmerge-ts: ^5.1.0
+    edgedriver: ^5.3.5
+    geckodriver: ^4.2.0
+    get-port: ^7.0.0
+    got: ^13.0.0
     import-meta-resolve: ^3.0.0
-  checksum: 0f276e900095e0586c75e220fcee31cedf2ff7f9d3d7b6bfa88491bb6abad50f97dbaab825ad18cf68909aeb653701c609a13de8d978dd57d8c4e647f5134e18
+    safaridriver: ^0.1.0
+    wait-port: ^1.0.4
+  checksum: c0366dc571430b99c4753ebd26181f70eac1d58c189242a6b6197af1371def2d70a6a11747fe70afd710efd5bb93520d7357e7b1352ec40dfa6399413f7ed9d1
   languageName: node
   linkType: hard
 
@@ -4919,7 +4939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.1.2, base64-js@npm:^1.2.0, base64-js@npm:^1.2.3, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
+"base64-js@npm:^1.1.2, base64-js@npm:^1.2.3, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -5302,15 +5322,6 @@ __metadata:
   version: 3.1.0
   resolution: "callsites@npm:3.1.0"
   checksum: 072d17b6abb459c2ba96598918b55868af677154bec7e73d222ef95a8fdb9bbf7dae96a8421085cdad8cd190d86653b5b6dc55a4484f2e5b2e27d5e0c3fc15b3
-  languageName: node
-  linkType: hard
-
-"camaro@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "camaro@npm:6.2.0"
-  dependencies:
-    piscina: ^3.2.0
-  checksum: c1f216774aef841304627099d5e9ba38c2a08bc99b9f774521fb8f40196489afc1685d6fb105a367c57093b8dea222b5f19acbf1e8e635f24d09cdd458c90613
   languageName: node
   linkType: hard
 
@@ -6418,10 +6429,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devtools-protocol@npm:^0.0.1170846":
-  version: 0.0.1170846
-  resolution: "devtools-protocol@npm:0.0.1170846"
-  checksum: e2945ad0a0e3a4f978abc43edf3c1c4c1a7897a5950fa8692c0ef6147dc444177dbb6b0edd991710d2c9bb94326aba66f9a7a6c8324ef6cd48c514c05d18336f
+"devtools-protocol@npm:^0.0.1182435":
+  version: 0.0.1182435
+  resolution: "devtools-protocol@npm:0.0.1182435"
+  checksum: dc652b1f039da5aeac15c50a8b1d87e662d7494f99d030c253d49b996e6706d5012933be691ed291da89f6ab310148e33352e1da90a24d854e1b3d7043d3fd8e
   languageName: node
   linkType: hard
 
@@ -6542,12 +6553,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"edgedriver@npm:^5.3.2":
-  version: 5.3.3
-  resolution: "edgedriver@npm:5.3.3"
+"edgedriver@npm:^5.3.5":
+  version: 5.3.5
+  resolution: "edgedriver@npm:5.3.5"
   dependencies:
     "@wdio/logger": ^8.11.0
-    camaro: ^6.2.0
     decamelize: ^6.0.0
     edge-paths: ^3.0.5
     node-fetch: ^3.3.2
@@ -6555,7 +6565,7 @@ __metadata:
     which: ^3.0.1
   bin:
     edgedriver: bin/edgedriver.js
-  checksum: 92882a800af233b710224546dcfd6ec46756693682eb22c2fe9c7dafb07be53b8d7bd213a2b9c7225489fc5d183cb550569130d35a0a3b527c2fb31695d7d536
+  checksum: 205fee091150a8b84253b43d36e01c1d3c6128d052905752a829566c116a7d5c84e33e3735d476e11e930a950e06ebee409c0c47ffb85c202ff507bcf775ffbd
   languageName: node
   linkType: hard
 
@@ -7068,13 +7078,6 @@ __metadata:
   version: 5.0.1
   resolution: "event-target-shim@npm:5.0.1"
   checksum: 1ffe3bb22a6d51bdeb6bf6f7cf97d2ff4a74b017ad12284cc9e6a279e727dc30a5de6bb613e5596ff4dc3e517841339ad09a7eec44266eccb1aa201a30448166
-  languageName: node
-  linkType: hard
-
-"eventemitter-asyncresource@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "eventemitter-asyncresource@npm:1.0.0"
-  checksum: 3cfbbc3490bd429a165bff6336289ff810f7df214796f25000d2097a5a0883eae51542a78674916ff99bbd4c66811911b310df1cb4fc96dfc9546ba9dfc89f8f
   languageName: node
   linkType: hard
 
@@ -8079,6 +8082,25 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
+"got@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "got@npm:13.0.0"
+  dependencies:
+    "@sindresorhus/is": ^5.2.0
+    "@szmarczak/http-timer": ^5.0.1
+    cacheable-lookup: ^7.0.0
+    cacheable-request: ^10.2.8
+    decompress-response: ^6.0.0
+    form-data-encoder: ^2.1.2
+    get-stream: ^6.0.1
+    http2-wrapper: ^2.1.10
+    lowercase-keys: ^3.0.0
+    p-cancelable: ^3.0.0
+    responselike: ^3.0.0
+  checksum: bcae6601efd710bc6c5b454c5e44bcb16fcfe57a1065e2d61ff918c1d69c3cf124984ebf509ca64ed10f0da2d2b5531b77da05aa786e75849d084fb8fbea711b
+  languageName: node
+  linkType: hard
+
 "graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.3, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.2, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.8, graceful-fs@npm:^4.2.9":
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
@@ -8223,24 +8245,6 @@ fsevents@^2.3.2:
   dependencies:
     function-bind: ^1.1.1
   checksum: b9ad53d53be4af90ce5d1c38331e712522417d017d5ef1ebd0507e07c2fbad8686fffb8e12ddecd4c39ca9b9b47431afbb975b8abf7f3c3b82c98e9aad052792
-  languageName: node
-  linkType: hard
-
-"hdr-histogram-js@npm:^2.0.1":
-  version: 2.0.3
-  resolution: "hdr-histogram-js@npm:2.0.3"
-  dependencies:
-    "@assemblyscript/loader": ^0.10.1
-    base64-js: ^1.2.0
-    pako: ^1.0.3
-  checksum: 7bb252ba3596bed72b90427ffc6f6fa332a460c4810788faa9b9a743f7ac6f1cb42dccd7ae7555740f0a8c0602884944d00d1ccfb746af4976a816772361a6d6
-  languageName: node
-  linkType: hard
-
-"hdr-histogram-percentiles-obj@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "hdr-histogram-percentiles-obj@npm:3.0.0"
-  checksum: ab238edcb38d9b60d23ca53da0ecd9a6b1c8ee9a49e30a6146bd3f8f70f26244652f28b79974157c00504e7ddf3129e0ddb217baf71d32330e3fae0105bf30ed
   languageName: node
   linkType: hard
 
@@ -11342,17 +11346,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"nice-napi@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "nice-napi@npm:1.0.2"
-  dependencies:
-    node-addon-api: ^3.0.0
-    node-gyp: latest
-    node-gyp-build: ^4.2.2
-  conditions: "!os=win32"
-  languageName: node
-  linkType: hard
-
 "nice-try@npm:^1.0.4":
   version: 1.0.5
   resolution: "nice-try@npm:1.0.5"
@@ -11373,15 +11366,6 @@ fsevents@^2.3.2:
   dependencies:
     semver: ^7.3.5
   checksum: 18c4305d7de5f1132741a2a66ba652941518210d02c9268702abe97ce1c166db468b4fc3e85fff04b9c19218c2e47f4e295f9a46422dc834932f4e11443400cd
-  languageName: node
-  linkType: hard
-
-"node-addon-api@npm:^3.0.0":
-  version: 3.2.1
-  resolution: "node-addon-api@npm:3.2.1"
-  dependencies:
-    node-gyp: latest
-  checksum: 2369986bb0881ccd9ef6bacdf39550e07e089a9c8ede1cbc5fc7712d8e2faa4d50da0e487e333d4125f8c7a616c730131d1091676c9d499af1d74560756b4a18
   languageName: node
   linkType: hard
 
@@ -11441,17 +11425,6 @@ fsevents@^2.3.2:
     fetch-blob: ^3.1.4
     formdata-polyfill: ^4.0.10
   checksum: 06a04095a2ddf05b0830a0d5302699704d59bda3102894ea64c7b9d4c865ecdff2d90fd042df7f5bc40337266961cb6183dcc808ea4f3000d024f422b462da92
-  languageName: node
-  linkType: hard
-
-"node-gyp-build@npm:^4.2.2":
-  version: 4.6.0
-  resolution: "node-gyp-build@npm:4.6.0"
-  bin:
-    node-gyp-build: bin.js
-    node-gyp-build-optional: optional.js
-    node-gyp-build-test: build-test.js
-  checksum: 25d78c5ef1f8c24291f4a370c47ba52fcea14f39272041a90a7894cd50d766f7c8cb8fb06c0f42bf6f69b204b49d9be3c8fc344aac09714d5bdb95965499eb15
   languageName: node
   linkType: hard
 
@@ -12088,13 +12061,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"pako@npm:^1.0.3":
-  version: 1.0.11
-  resolution: "pako@npm:1.0.11"
-  checksum: 1be2bfa1f807608c7538afa15d6f25baa523c30ec870a3228a89579e474a4d992f4293859524e46d5d87fd30fa17c5edf34dbef0671251d9749820b488660b16
-  languageName: node
-  linkType: hard
-
 "parent-module@npm:^1.0.0":
   version: 1.0.1
   resolution: "parent-module@npm:1.0.1"
@@ -12288,21 +12254,6 @@ fsevents@^2.3.2:
   version: 4.0.5
   resolution: "pirates@npm:4.0.5"
   checksum: c9994e61b85260bec6c4fc0307016340d9b0c4f4b6550a957afaaff0c9b1ad58fbbea5cfcf083860a25cb27a375442e2b0edf52e2e1e40e69934e08dcc52d227
-  languageName: node
-  linkType: hard
-
-"piscina@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "piscina@npm:3.2.0"
-  dependencies:
-    eventemitter-asyncresource: ^1.0.0
-    hdr-histogram-js: ^2.0.1
-    hdr-histogram-percentiles-obj: ^3.0.0
-    nice-napi: ^1.0.2
-  dependenciesMeta:
-    nice-napi:
-      optional: true
-  checksum: c1980c7d45d85f53265652dd2fc62a2b9e9d2321f5bbb9fc1796edb9c1324bb77c153e823a0d6454c3c35098820efedff584737cc282207480afe478a3b8a166
   languageName: node
   linkType: hard
 
@@ -15434,49 +15385,41 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"webdriver@npm:8.14.6":
-  version: 8.14.6
-  resolution: "webdriver@npm:8.14.6"
+"webdriver@npm:8.15.6":
+  version: 8.15.6
+  resolution: "webdriver@npm:8.15.6"
   dependencies:
-    "@puppeteer/browsers": ^1.4.6
     "@types/node": ^20.1.0
     "@types/ws": ^8.5.3
-    "@wdio/config": 8.14.6
+    "@wdio/config": 8.15.6
     "@wdio/logger": 8.11.0
     "@wdio/protocols": 8.14.6
-    "@wdio/types": 8.14.0
-    "@wdio/utils": 8.14.0
-    chrome-launcher: ^1.0.0
-    decamelize: ^6.0.0
+    "@wdio/types": 8.15.0
+    "@wdio/utils": 8.15.6
     deepmerge-ts: ^5.1.0
-    edgedriver: ^5.3.2
-    geckodriver: ^4.2.0
-    get-port: ^7.0.0
     got: ^ 12.6.1
     ky: ^0.33.0
-    safaridriver: ^0.1.0
-    wait-port: ^1.0.4
     ws: ^8.8.0
-  checksum: 07fc3d4ecadc7f25c5004435d71cf4ee7badf048ce56b2bcfeb1461efc486da992669578da8c102e41844618097cb57cebb87e39409022ffa64517786db371e7
+  checksum: d806336b0913be88644cc2ae7204d7db4e27254cfaa2c56471b06bf9bda1d9d04fa07a9f2591ab79138aa498f9a27002eb9052e42e04b42761ad8b019d1c192b
   languageName: node
   linkType: hard
 
 "webdriverio@npm:^8.11.2":
-  version: 8.14.6
-  resolution: "webdriverio@npm:8.14.6"
+  version: 8.15.6
+  resolution: "webdriverio@npm:8.15.6"
   dependencies:
     "@types/node": ^20.1.0
-    "@wdio/config": 8.14.6
+    "@wdio/config": 8.15.6
     "@wdio/logger": 8.11.0
     "@wdio/protocols": 8.14.6
     "@wdio/repl": 8.10.1
-    "@wdio/types": 8.14.0
-    "@wdio/utils": 8.14.0
+    "@wdio/types": 8.15.0
+    "@wdio/utils": 8.15.6
     archiver: ^5.0.0
     aria-query: ^5.0.0
     css-shorthand-properties: ^1.1.1
     css-value: ^0.0.1
-    devtools-protocol: ^0.0.1170846
+    devtools-protocol: ^0.0.1182435
     grapheme-splitter: ^1.0.2
     import-meta-resolve: ^3.0.0
     is-plain-obj: ^4.1.0
@@ -15488,13 +15431,13 @@ fsevents@^2.3.2:
     resq: ^1.9.1
     rgb2hex: 0.2.5
     serialize-error: ^11.0.1
-    webdriver: 8.14.6
+    webdriver: 8.15.6
   peerDependencies:
     devtools: ^8.14.0
   peerDependenciesMeta:
     devtools:
       optional: true
-  checksum: ae179b4d8018e7bf9c5cf71d9eee91a0dc09d20e51d6ce2e8c98d2d3217d09e84cd74aecb8fd9a38ed477f6d47a8808a128e361524aefb77a0b96b0b20f3e0a4
+  checksum: 429a5d9d65a619c508510c8c8c46beefa38cb5a5854da7f75a70c1501ac55889f8ee1020eca27b5ee17270633f6387b1a10ff98418c1643b2ae162e522545a47
   languageName: node
   linkType: hard
 
