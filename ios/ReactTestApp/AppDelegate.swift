@@ -1,6 +1,6 @@
 import UIKit
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private weak var application: UIApplication?
 

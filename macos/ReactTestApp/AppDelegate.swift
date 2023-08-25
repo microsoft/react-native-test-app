@@ -1,6 +1,6 @@
 import Cocoa
 
-@NSApplicationMain
+@main
 final class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var reactMenu: NSMenu!
     @IBOutlet var rememberLastComponentMenuItem: NSMenuItem!

@@ -48,7 +48,7 @@ def platform_config(key, project_root, target_platform)
   return if manifest.nil?
 
   config = manifest[target_platform.to_s]
-  return config[key] if !config.nil? && !config.empty?
+  config[key] if !config.nil? && !config.empty?
 end
 
 def flipper_enabled?
