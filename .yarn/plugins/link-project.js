@@ -24,27 +24,41 @@ module.exports = {
           return p.replace(/^[/\\]([^/\\]+:[/\\])/, "$1");
         }
 
-        const projectPath = normalize(project.cwd);
-        const manifestPath = path.join(projectPath, "package.json");
-        const manifest = fs.readFileSync(manifestPath, { encoding: "utf-8" });
-        const { name } = JSON.parse(manifest);
+        const noop = () => null;
+        const rmOptions = { force: true, maxRetries: 3, recursive: true };
 
-        for (const ws of project.workspaces) {
-          if (ws.cwd === project.cwd) {
-            continue;
+        const projectRoot = normalize(project.cwd);
+        const manifestPath = path.join(projectRoot, "package.json");
+
+        fs.readFile(manifestPath, { encoding: "utf-8" }, (_err, manifest) => {
+          const { name } = JSON.parse(manifest);
+
+          for (const ws of project.workspaces) {
+            if (ws.cwd === project.cwd) {
+              continue;
+            }
+
+            const nodeModulesDir = path.join(normalize(ws.cwd), "node_modules");
+            const linkPath = path.join(nodeModulesDir, name);
+
+            fs.readlink(linkPath, (err, linkString) => {
+              if (
+                !linkString ||
+                path.resolve(nodeModulesDir, linkString) !== projectRoot
+              ) {
+                if (err?.code !== "ENOENT") {
+                  fs.rmSync(linkPath, rmOptions);
+                }
+                if (os.platform() === "win32") {
+                  fs.symlink(projectRoot, linkPath, "junction", noop);
+                } else {
+                  const target = path.relative(nodeModulesDir, projectRoot);
+                  fs.symlink(target, linkPath, noop);
+                }
+              }
+            });
           }
-
-          const nodeModulesPath = path.join(normalize(ws.cwd), "node_modules");
-          const linkPath = path.join(nodeModulesPath, name);
-
-          fs.rmSync(linkPath, { force: true, maxRetries: 3, recursive: true });
-          if (os.platform() === "win32") {
-            fs.symlinkSync(projectPath, linkPath, "junction");
-          } else {
-            const target = path.relative(nodeModulesPath, projectPath);
-            fs.symlinkSync(target, linkPath);
-          }
-        }
+        });
       },
     },
   }),
