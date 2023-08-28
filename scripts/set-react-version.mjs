@@ -331,7 +331,7 @@ async function getProfile(v) {
   }
 }
 
-if (!await checkEnvironment()) {
+if (!(await checkEnvironment())) {
   process.exit(1);
 }
 

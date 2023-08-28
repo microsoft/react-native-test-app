@@ -1,7 +1,17 @@
+// @ts-check
+/**
+ * @typedef {{ values: Map<string, unknown>; }} Configuration
+ * @typedef {{ cwd: string; }} Workspace
+ * @typedef {{ configuration: Configuration; cwd: string; workspaces: Workspace[]; }} Project
+ * @typedef {{ mode?: "skip-build" | "update-lockfile"; }} InstallOptions
+ *
+ * @type {{ name: string; factory: (require: NodeRequire) => unknown; }}
+ */
 module.exports = {
   name: "plugin-link-project",
   factory: (_require) => ({
     hooks: {
+      /** @type {(project: Project, options: InstallOptions) => void} */
       afterAllInstalled(project, options) {
         // This mode is typically used by tools like Renovate or Dependabot to
         // keep a lockfile up-to-date without incurring the full install cost.
@@ -19,6 +29,10 @@ module.exports = {
         const os = require("node:os");
         const path = require("node:path");
 
+        /**
+         * @param {string} p
+         * @returns {string}
+         */
         function normalize(p) {
           // On Windows, paths are prefixed with `/`
           return p.replace(/^[/\\]([^/\\]+:[/\\])/, "$1");
