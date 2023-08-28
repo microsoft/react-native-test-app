@@ -36,7 +36,7 @@ describe("copy", () => {
 
     // Wait until all files have been copied
     const writeDone = waitUntil(() => {
-      // @ts-ignore
+      // @ts-expect-error mock
       const files = Object.keys(fs.__toJSON());
       return files.length === 12;
     });
@@ -44,7 +44,7 @@ describe("copy", () => {
     copy("assets", "assets copy");
     await writeDone;
 
-    // @ts-ignore
+    // @ts-expect-error mock
     const files = Object.keys(fs.__toJSON());
 
     expect(files).toEqual(

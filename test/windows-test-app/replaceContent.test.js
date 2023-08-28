@@ -5,7 +5,7 @@ describe("replaceContent", () => {
   const { replaceContent } = require("../../windows/test-app");
 
   test("returns same string with no replacements", () => {
-    // @ts-ignore intentional use of `undefined`
+    // @ts-expect-error intentional use of `undefined`
     expect(replaceContent(undefined, {})).toBeUndefined();
     expect(replaceContent("", {})).toBe("");
     expect(replaceContent("content", {})).toBe("content");

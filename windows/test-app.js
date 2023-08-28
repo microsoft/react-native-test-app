@@ -293,7 +293,7 @@ function generateContentItems(
 ) {
   const uuidv5 = (() => {
     try {
-      // @ts-ignore uuid@3.x
+      // @ts-expect-error export only exists in uuid@3.x and older
       return require("uuid/v5");
     } catch (_) {
       // uuid@7.x and above

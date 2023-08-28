@@ -1,5 +1,5 @@
 diff --git a/example/App.tsx b/example/App.tsx
-index 54ed4d1..3c811df 100644
+index a256f50..3343dfa 100644
 --- a/example/App.tsx
 +++ b/example/App.tsx
 @@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
@@ -15,10 +15,10 @@ index 54ed4d1..3c811df 100644
    View,
  } from "react-native";
 -import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
- // @ts-expect-error
+ // @ts-expect-error no type definitions available
  import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
  import { Colors, Header } from "react-native/Libraries/NewAppScreen";
-@@ -179,7 +179,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
+@@ -187,7 +187,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
    const [isFabric, setIsFabric] = useIsFabricComponent();
  
    return (
@@ -26,7 +26,7 @@ index 54ed4d1..3c811df 100644
        <SafeAreaView style={styles.body}>
          <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
          <ScrollView
-@@ -202,7 +201,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
+@@ -210,7 +209,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
            </View>
          </ScrollView>
        </SafeAreaView>

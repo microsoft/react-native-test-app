@@ -53,8 +53,7 @@ async function makeProject(name, platforms, setupFiles = {}) {
       "dir"
     );
   } catch (e) {
-    // @ts-ignore
-    if (e.code !== "EEXIST") {
+    if (e && typeof e === "object" && "code" in e && e.code !== "EEXIST") {
       throw e;
     }
   }

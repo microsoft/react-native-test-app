@@ -41,7 +41,7 @@ describe("getPlatformPackage()", () => {
   });
 
   test("throws if target version is invalid", () => {
-    // @ts-ignore intentional use of empty string to elicit an exception
+    // @ts-expect-error intentional use of empty string to elicit an exception
     expect(() => getPlatformPackage("", "version")).toThrow();
   });
 });
