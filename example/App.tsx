@@ -36,6 +36,7 @@ type FeatureProps =
 
 function getHermesVersion(): string | undefined {
   return (
+    "HermesInternal" in global &&
     HermesInternal &&
     "getRuntimeProperties" in HermesInternal &&
     typeof HermesInternal.getRuntimeProperties === "function" &&
@@ -50,7 +51,7 @@ function getReactNativeVersion(): string {
 }
 
 function isBridgeless() {
-  return RN$Bridgeless === true;
+  return "RN$Bridgeless" in global && RN$Bridgeless === true;
 }
 
 function isFabricInstance<T>(
