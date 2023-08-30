@@ -1,0 +1,26 @@
+{
+  "branches": [
+    {
+      "name": "trunk",
+      "channel": "latest"
+    },
+    {
+      "name": "releases/1.x",
+      "range": "1.x",
+      "channel": "release-1.x"
+    }
+  ],
+  "tagFormat": "${version}",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/npm",
+    [
+      "@semantic-release/github",
+      {
+        "successComment": false,
+        "failTitle": false
+      }
+    ]
+  ]
+}

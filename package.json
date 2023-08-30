@@ -130,7 +130,7 @@
     "@react-native-community/cli-platform-android": "^10.2.0",
     "@react-native-community/cli-platform-ios": "^10.2.5",
     "@rnx-kit/commitlint-lite": "^1.0.0",
-    "@rnx-kit/eslint-plugin": "^0.4.0",
+    "@rnx-kit/eslint-plugin": "^0.5.0",
     "@types/jest": "^29.0.0",
     "@types/mustache": "^4.0.0",
     "@types/node": "^18.0.0",
@@ -165,9 +165,7 @@
     "@semantic-release/npm/npm": "link:./example",
     "body-parser": "~1.20.2",
     "bplist-parser": "~0.3.2",
-    "safe-buffer": "~5.2.1",
-    "shell-quote": "~1.8.1",
-    "teen_process": "~2.0.2"
+    "safe-buffer": "~5.2.1"
   },
   "workspaces": [
     "example"
@@ -191,29 +189,6 @@
     "endOfLine": "auto"
   },
   "release": {
-    "branches": [
-      {
-        "name": "trunk",
-        "channel": "latest"
-      },
-      {
-        "name": "releases/1.x",
-        "range": "1.x",
-        "channel": "release-1.x"
-      }
-    ],
-    "tagFormat": "${version}",
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      [
-        "@semantic-release/github",
-        {
-          "successComment": false,
-          "failTitle": false
-        }
-      ]
-    ]
+    "extends": "./.github/semantic-release.json"
   }
 }
