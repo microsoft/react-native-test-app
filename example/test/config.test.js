@@ -49,11 +49,6 @@ describe("react-native config", () => {
             name: "react-native-test-app",
           }),
         }),
-        commands: expect.arrayContaining([
-          expect.objectContaining({
-            name: "init-test-app",
-          }),
-        ]),
         assets: [],
         platforms: expect.objectContaining({
           android: expect.anything(),
@@ -99,11 +94,6 @@ describe("react-native config", () => {
             name: "react-native-test-app",
           }),
         }),
-        commands: expect.arrayContaining([
-          expect.objectContaining({
-            name: "init-test-app",
-          }),
-        ]),
         platforms: expect.objectContaining({
           android: expect.anything(),
         }),
@@ -131,11 +121,6 @@ describe("react-native config", () => {
             name: "react-native-test-app",
           }),
         }),
-        commands: expect.arrayContaining([
-          expect.objectContaining({
-            name: "init-test-app",
-          }),
-        ]),
         assets: [],
         platforms: expect.objectContaining({
           ios: expect.anything(),
@@ -167,11 +152,6 @@ describe("react-native config", () => {
             name: "react-native-test-app",
           }),
         }),
-        commands: expect.arrayContaining([
-          expect.objectContaining({
-            name: "init-test-app",
-          }),
-        ]),
         platforms: expect.objectContaining({
           ios: expect.anything(),
         }),
@@ -209,11 +189,6 @@ describe("react-native config", () => {
           name: "react-native-test-app",
         }),
       }),
-      commands: expect.arrayContaining([
-        expect.objectContaining({
-          name: "init-test-app",
-        }),
-      ]),
       platforms: expect.objectContaining({
         windows: expect.objectContaining({
           npmPackageName: "react-native-windows",
