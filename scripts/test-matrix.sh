@@ -1,8 +1,6 @@
 #!/bin/bash
 set -eo pipefail
 
-export GIT_IGNORE_FILE=".gitignore"
-
 PACKAGE_MANAGER=yarn
 VERSION=${1}
 
@@ -166,7 +164,8 @@ echo "│  Initialize new app │"
 echo "└─────────────────────┘"
 echo
 
-${PACKAGE_MANAGER} react-native init-test-app \
+${PACKAGE_MANAGER} init-test-app \
   --destination template-example \
   --name TemplateExample \
-  --platform android,ios
+  --platform android \
+  --platform ios

@@ -37,7 +37,20 @@ npm pack
 mv react-native-test-app-$version.tgz $tarball
 
 yarn
-GIT_IGNORE_FILE=".gitignore" yarn react-native init-test-app --destination template-example --name TemplateExample --platform "$platform"
+if [[ "$platform" == "all" ]]; then
+  yarn init-test-app                \
+    --destination template-example  \
+    --name TemplateExample          \
+    --platform android              \
+    --platform ios                  \
+    --platform macos                \
+    --platform windows
+else
+  yarn init-test-app                \
+    --destination template-example  \
+    --name TemplateExample          \
+    --platform "$platform"
+fi
 
 pushd template-example 1> /dev/null
 node ../scripts/copy-yarnrc.mjs ../.yarnrc.yml
