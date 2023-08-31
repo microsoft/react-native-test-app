@@ -23,8 +23,8 @@ function main(src, dst) {
   rc["nmHoistingLimits"] = undefined;
   rc["plugins"] = undefined;
 
-  if (rc["yarnPath"]) {
-    rc["yarnPath"] = path.join(path.dirname(src), rc["yarnPath"]);
+  if (rc.yarnPath) {
+    rc["yarnPath"] = path.join(path.dirname(src), rc.yarnPath);
   }
 
   fs.writeFileSync(dst, yaml.dump(rc));
