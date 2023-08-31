@@ -163,12 +163,14 @@ function generateType(name, definition, lang) {
 
   const result = [outer + lang.structBegin(name)];
 
+  // @ts-expect-error `required` is optional
   const { properties, required = [] } = definition;
   Object.entries(properties).forEach(([name, prop]) => {
     const isRequired = required.includes(name);
     switch (prop.type) {
       case "array":
         result.push(
+          // @ts-expect-error `items` exists if `type === "array"`
           inner + lang.arrayProperty(name, prop.items.$ref, isRequired)
         );
         break;

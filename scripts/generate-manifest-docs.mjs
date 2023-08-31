@@ -20,7 +20,9 @@ async function generateManifestDocs() {
    * @param {string} scope
    */
   const render = (definition, toc, lines, scope = "") => {
+    // @ts-expect-error Schema typings are not accurate enough for TypeScript
     definition.allOf?.forEach(({ $ref }) => {
+      // @ts-expect-error Schema typings are not accurate enough for TypeScript
       render(schema.$defs[$ref.replace("#/$defs/", "")], toc, lines, scope);
     });
 
