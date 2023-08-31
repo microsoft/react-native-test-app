@@ -33,10 +33,7 @@ export async function readMarkdown(name) {
   return trimCarriageReturn(md).trim();
 }
 
-/**
- * @param {string} str
- * @returns {string}
- */
+/** @type {(s: string) => string} */
 const trimCarriageReturn =
   os.EOL === "\r\n" ? (str) => str.replace(/\r/g, "") : (str) => str;
 
@@ -63,7 +60,7 @@ export async function generateSchema() {
     "windows.certificatePassword": dummy,
     "windows.certificateThumbprint": dummy,
   };
-  for (const key of Object.keys(docs)) {
+  for (const key of /** @type {(keyof typeof docs)[]} */ (Object.keys(docs))) {
     docs[key] = readMarkdown(key);
   }
 
@@ -371,6 +368,7 @@ if (process.argv[1] === thisScript) {
   generateSchema()
     .then((schema) => {
       for (const def of Object.values(schema.$defs)) {
+        // @ts-expect-error This is a noop if it doesn't exist
         delete def["exclude-from-codegen"];
       }
       return trimCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n";

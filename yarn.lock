@@ -3476,6 +3476,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/js-yaml@npm:^4.0.5":
+  version: 4.0.5
+  resolution: "@types/js-yaml@npm:4.0.5"
+  checksum: 7dcac8c50fec31643cc9d6444b5503239a861414cdfaa7ae9a38bc22597c4d850c4b8cec3d82d73b3fbca408348ce223b0408d598b32e094470dfffc6d486b4d
+  languageName: node
+  linkType: hard
+
 "@types/jsftp@npm:2.1.2":
   version: 2.1.2
   resolution: "@types/jsftp@npm:2.1.2"
@@ -12782,6 +12789,7 @@ fsevents@^2.3.2:
     "@rnx-kit/eslint-plugin": ^0.5.0
     "@rnx-kit/react-native-host": ^0.2.8
     "@types/jest": ^29.0.0
+    "@types/js-yaml": ^4.0.5
     "@types/mustache": ^4.0.0
     "@types/node": ^18.0.0
     "@types/prompts": ~2.4.0

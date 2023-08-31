@@ -76,7 +76,10 @@ async function checkEnvironment() {
   try {
     await new Promise((resolve, reject) => {
       const npmVersion = npm("--version");
+
+      /** @type {Buffer[]} */
       const npmVersionBuffer = [];
+
       npmVersion.stdout.on("data", (data) => {
         npmVersionBuffer.push(data);
       });
@@ -119,13 +122,18 @@ function inferReactNativeVersion({ name, version, dependencies }) {
     throw new Error(`Invalid '${cliPackage}' version number: ${cliVersion}`);
   }
 
-  return {
+  const v = {
     7: "^0.68",
     8: "^0.69",
     9: "^0.70",
     10: "^0.71",
     11: "^0.72",
   }[m[1]];
+  if (!v) {
+    throw new Error(`Unsupported '${cliPackage}' version: ${cliVersion}`);
+  }
+
+  return v;
 }
 
 /**
@@ -135,7 +143,9 @@ function inferReactNativeVersion({ name, version, dependencies }) {
  */
 export function fetchPackageInfo(pkg) {
   return new Promise((resolve, reject) => {
+    /** @type {Buffer[]} */
     const buffers = [];
+
     const npmView = npm(`view --json ${pkg}`);
     npmView.stdout.on("data", (data) => {
       buffers.push(data);
@@ -351,7 +361,7 @@ getProfile(version)
     const manifests = ["package.json", "example/package.json"];
     for (const manifestPath of manifests) {
       const manifest =
-        /** @type {{ devDependencies: Record<string, string | undefined>}} */ (
+        /** @type {{ devDependencies: Record<string, string | undefined>; resolutions?: Record<string, string | undefined>; }} */ (
           readJSONFile(manifestPath)
         );
       for (const packageName of keys(profile)) {

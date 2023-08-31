@@ -19,14 +19,17 @@ function extractVersions(response) {
     return [];
   }
 
-  const versionMap = response.docs.reduce((versions, { v }) => {
+  /** @type {Record<string, string>} */
+  const versions = {};
+
+  for (const { v } of response.docs) {
     const parts = v.split("-");
     if (parts.length === 2 && !(parts[0] in versions)) {
       versions[parts[0]] = v;
     }
-    return versions;
-  }, {});
-  return Object.values(versionMap);
+  }
+
+  return Object.values(versions);
 }
 
 /**
@@ -67,6 +70,7 @@ function main() {
         return;
       }
 
+      /** @type {Buffer[]} */
       const data = [];
       res.on("data", (chunk) => data.push(chunk));
       res.on("end", () => {

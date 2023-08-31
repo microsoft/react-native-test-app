@@ -1,26 +1,34 @@
 {
   "compilerOptions": {
     "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-
+    "module": "CommonJS",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-
+    "declaration": true,
+    "declarationMap": true,
     "noEmit": true,
-
+    "sourceMap": true,
     "allowJs": true,
     "checkJs": true,
-
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-
-    "target": "ESNext"
+    "isolatedModules": true,
+    "jsx": "react",
+    "target": "ES2019",
+    "pretty": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
   },
   "include": [
+    "plugins/**/*.js",
     "react-native.config.js",
     "scripts/**/*.js",
     "test/**/*.test.js",

@@ -4,9 +4,12 @@ import { findFile } from "../validate-manifest.js";
 import { BaseMods } from "./ExpoConfigPlugins.mjs";
 
 /**
+ * @typedef {import("@expo/config-plugins/build/plugins/createBaseMod").ForwardedBaseModOptions} ForwardedBaseModOptions
+ */
+/**
  * @template ModType
- * @template Props
- * @typedef {ReturnType<typeof BaseMods.provider<ModType, Props>>} BaseModProviderMethods
+ * @template {ForwardedBaseModOptions} Props
+ * @typedef {import("@expo/config-plugins/build/plugins/createBaseMod").BaseModProviderMethods<ModType, Props>} BaseModProviderMethods
  */
 
 export function makeNullProvider(defaultRead = {}) {
@@ -20,7 +23,7 @@ export function makeNullProvider(defaultRead = {}) {
 /**
  * Creates a mod modifier that just changes `getFilePath()`.
  * @param {string} actualProjectDir
- * @returns {<ModType, Props>(original: BaseModProviderMethods<ModType, Props>, file: string) => BaseModProviderMethods<ModType, Props>}
+ * @returns {<ModType, Props extends ForwardedBaseModOptions>(original: BaseModProviderMethods<ModType, Props>, file: string) => BaseModProviderMethods<ModType, Props>}
  */
 export function makeFilePathModifier(actualProjectDir) {
   return function (original, file) {
