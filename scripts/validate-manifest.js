@@ -5,6 +5,7 @@
 const fs = require("fs");
 const path = require("path");
 const { readJSONFile } = require("./helpers");
+const { generateSchema } = require("./schema");
 
 const APP_JSON = "app.json";
 const NODE_MODULES = "node_modules";
@@ -44,8 +45,9 @@ function findFile(file, startDir = process.cwd()) {
 function makeValidator() {
   const { default: Ajv } = require("ajv");
   const ajv = new Ajv({ allErrors: true });
+  ajv.addKeyword({ keyword: "exclude-from-codegen" });
   ajv.addKeyword({ keyword: "markdownDescription" });
-  return ajv.compile(require(`${__dirname}/../schema.json`));
+  return ajv;
 }
 
 /**
@@ -61,12 +63,12 @@ function validateManifest(manifestPath) {
   }
 
   const manifest = readJSONFile(manifestPath);
-  const validate = makeValidator();
-  if (!validate(manifest)) {
+  const validator = makeValidator();
+  if (!validator.validate(generateSchema(), manifest)) {
     console.error(
       `${manifestPath}: error: ${APP_JSON} is not a valid app manifest`
     );
-    const errors = validate.errors;
+    const errors = validator.errors;
     if (errors) {
       errors.map(({ instancePath, message }) =>
         console.error(

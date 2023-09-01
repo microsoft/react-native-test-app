@@ -64,6 +64,7 @@
     "format:js": "prettier --write $(git ls-files '*.[cm]js' '*.[jt]s' '*.tsx' '*.yml' 'test/**/*.json' ':!:.yarn/releases')",
     "format:swift": "swiftformat --swiftversion 5.7 --ifdef no-indent --stripunusedargs closure-only ios macos",
     "generate:code": "node scripts/generate-manifest.mjs",
+    "generate:docs": "node scripts/generate-manifest-docs.mjs",
     "generate:schema": "node scripts/generate-schema.mjs",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | yarn commitlint-lite",
     "lint:js": "eslint $(git ls-files '*.[cm]js' '*.[jt]s' '*.tsx' ':!:.yarn/releases') && tsc && tsc --project scripts/tsconfig.esm.json",
