@@ -5,7 +5,7 @@ exports[`gatherConfig() flattens configuration for a single platform only 1`] = 
   "dependencies": {},
   "files": {
     ".gitignore": {
-      "source": "example/_gitignore",
+      "source": "example/.gitignore",
     },
     ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -61,7 +61,7 @@ exports[`gatherConfig() flattens configuration for a single platform only 2`] = 
   "dependencies": {},
   "files": {
     ".gitignore": {
-      "source": "example/_gitignore",
+      "source": "example/.gitignore",
     },
     ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -181,7 +181,7 @@ exports[`gatherConfig() returns common configuration 1`] = `
   "dependencies": {},
   "files": {
     ".gitignore": {
-      "source": "example/_gitignore",
+      "source": "example/.gitignore",
     },
     ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -190,7 +190,7 @@ exports[`gatherConfig() returns common configuration 1`] = `
       "source": "node_modules/react-native/template/babel.config.js",
     },
     "common/.gitignore": {
-      "source": "example/_gitignore",
+      "source": "example/.gitignore",
     },
     "common/.watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -265,7 +265,7 @@ exports[`gatherConfig() returns configuration for a single platform 1`] = `
   "dependencies": {},
   "files": {
     ".gitignore": {
-      "source": "example/_gitignore",
+      "source": "example/.gitignore",
     },
     ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -331,7 +331,7 @@ exports[`gatherConfig() returns configuration for all platforms 1`] = `
   },
   "files": {
     ".gitignore": {
-      "source": "example/_gitignore",
+      "source": "example/.gitignore",
     },
     ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",
@@ -436,7 +436,7 @@ module.exports = {
 };
 ",
     "windows/.gitignore": {
-      "source": "example/windows/_gitignore",
+      "source": "example/windows/.gitignore",
     },
   },
   "oldFiles": [
@@ -471,7 +471,7 @@ exports[`gatherConfig() returns configuration for arbitrary platforms 1`] = `
   "dependencies": {},
   "files": {
     ".gitignore": {
-      "source": "example/_gitignore",
+      "source": "example/.gitignore",
     },
     ".watchmanconfig": {
       "source": "node_modules/react-native/template/_watchmanconfig",

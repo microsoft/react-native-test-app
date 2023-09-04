@@ -472,10 +472,16 @@ const getConfig = (() => {
       typeof configuration === "undefined" ||
       "JEST_WORKER_ID" in process.env // skip caching when testing
     ) {
-      // Git ignore files are only renamed when published. `GIT_IGNORE_FILE`
-      // should therefore only be set during testing.
-      const gitignore = process.env["GIT_IGNORE_FILE"] || "_gitignore";
       const { name, templatePath, testAppPath, flatten, init } = params;
+
+      // `.gitignore` files are only renamed when published.
+      const gitignore = ["_gitignore", ".gitignore"].find((filename) => {
+        return fs.existsSync(path.join(testAppPath, "example", filename));
+      });
+      if (!gitignore) {
+        throw new Error("Failed to find `.gitignore`");
+      }
+
       const projectPathFlag =
         flatten && packageSatisfiesVersionRange(cliPlatformIOS, "<8.0.0")
           ? " --project-path ."
@@ -487,6 +493,7 @@ const getConfig = (() => {
           process.cwd(),
           path.dirname(require.resolve("react-native/template/package.json"))
         );
+
       configuration = {
         common: {
           files: {

@@ -11,8 +11,12 @@ runs:
       run: |
         scripts/install-test-template.sh ${{ inputs.platform }}
       shell: bash
-    - name: react-native init-test-app
+    - name: Initialize a new app
       run: |
-        yarn react-native init-test-app --destination test-app --name TestApp --platform ${{ inputs.platform }}
+        if [[ ${{ inputs.platform }} == "all" ]]; then
+          yarn init-test-app --destination test-app --name TestApp -p android -p ios -p macos -p windows
+        else
+          yarn init-test-app --destination test-app --name TestApp --platform ${{ inputs.platform }}
+        fi
       shell: bash
       working-directory: template-example

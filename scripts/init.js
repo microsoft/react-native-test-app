@@ -197,60 +197,96 @@ function getTemplate(platforms) {
   });
 }
 
-async function main() {
-  /**
-   * @type {{
-   *   name?: string;
-   *   packagePath?: string;
-   *   platforms?: import("./configure").Platform[];
-   * }}
-   */
-  const { name, packagePath, platforms } = await require("prompts")([
-    {
-      type: "text",
-      name: "name",
-      message: "What is the name of your app?",
-      initial: "Example",
-      validate: Boolean,
-    },
-    {
-      type: "multiselect",
-      name: "platforms",
-      message: "Which platforms do you need test apps for?",
-      choices: [
-        { title: "Android", value: "android", selected: true },
-        { title: "iOS", value: "ios", selected: true },
-        { title: "macOS", value: "macos", selected: true },
-        { title: "Windows", value: "windows", selected: true },
-      ],
-      min: 1,
-    },
-    {
-      type: "text",
-      name: "packagePath",
-      message: "Where should we create the new project?",
-      initial: "example",
-      validate: Boolean,
-    },
-  ]);
+function main() {
+  return new Promise((resolve) => {
+    const { parseArgs } = require("./parseargs");
+    parseArgs(
+      "Initializes a new app project from template",
+      {
+        name: {
+          description: "Name of the app",
+          type: "string",
+        },
+        platform: {
+          description:
+            "Platform to configure; can be specified multiple times e.g., `-p android -p ios`",
+          type: "string",
+          multiple: true,
+          short: "p",
+        },
+        destination: {
+          description: "Destination path for the app",
+          type: "string",
+        },
+      },
+      async (args) => {
+        const prompts = require("prompts");
+        prompts.override({
+          name: args.name,
+          platforms:
+            typeof args.platform === "string" ? [args.platform] : args.platform,
+          packagePath: args.destination,
+        });
 
-  if (!name || !packagePath || !platforms) {
-    return 1;
-  }
+        /**
+         * @type {{
+         *   name?: string;
+         *   packagePath?: string;
+         *   platforms?: import("./configure").Platform[];
+         * }}
+         */
+        const { name, packagePath, platforms } = await prompts([
+          {
+            type: "text",
+            name: "name",
+            message: "What is the name of your app?",
+            initial: "Example",
+            validate: Boolean,
+          },
+          {
+            type: "multiselect",
+            name: "platforms",
+            message: "Which platforms do you need test apps for?",
+            choices: [
+              { title: "Android", value: "android", selected: true },
+              { title: "iOS", value: "ios", selected: true },
+              { title: "macOS", value: "macos", selected: true },
+              { title: "Windows", value: "windows", selected: true },
+            ],
+            min: 1,
+          },
+          {
+            type: "text",
+            name: "packagePath",
+            message: "Where should we create the new project?",
+            initial: "example",
+            validate: Boolean,
+          },
+        ]);
 
-  const { configure } = require("./configure");
+        if (!name || !packagePath || !platforms) {
+          resolve(1);
+          return;
+        }
 
-  const [targetVersion, templatePath] = await getTemplate(platforms);
-  return configure({
-    name,
-    packagePath,
-    templatePath,
-    testAppPath: path.resolve(__dirname, ".."),
-    targetVersion,
-    platforms,
-    flatten: true,
-    force: true,
-    init: true,
+        const { configure } = require("./configure");
+
+        const [targetVersion, templatePath] = await getTemplate(platforms);
+        const result = configure({
+          name,
+          packagePath,
+          templatePath,
+          testAppPath: path.resolve(__dirname, ".."),
+          targetVersion,
+          platforms,
+          flatten: true,
+          force: true,
+          init: true,
+        });
+
+        resolve(result);
+      }
+    );
   });
 }
 
