@@ -4,7 +4,7 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { generateSchema } from "./generate-schema.mjs";
+import { generateSchema } from "./schema.js";
 
 /**
  * @typedef {{
@@ -21,8 +21,7 @@ import { generateSchema } from "./generate-schema.mjs";
  *   structEnd: string;
  * }} Language
  *
- * @typedef {import("./generate-schema.mjs").Schema} Schema
- * @typedef {import("./generate-schema.mjs").SchemaDefinition} SchemaDefinition
+ * @typedef {import("ajv").SchemaObject} SchemaObject
  */
 const thisScript = fileURLToPath(import.meta.url);
 
@@ -152,7 +151,7 @@ function getLanguage(output) {
 /**
  * Generates a data model from the specified schema definition.
  * @param {string} name
- * @param {SchemaDefinition} definition
+ * @param {SchemaObject} definition
  * @param {Language} lang
  * @returns {string[]}
  */
@@ -163,14 +162,12 @@ function generateType(name, definition, lang) {
 
   const result = [outer + lang.structBegin(name)];
 
-  // @ts-expect-error `required` is optional
   const { properties, required = [] } = definition;
   Object.entries(properties).forEach(([name, prop]) => {
     const isRequired = required.includes(name);
     switch (prop.type) {
       case "array":
         result.push(
-          // @ts-expect-error `items` exists if `type === "array"`
           inner + lang.arrayProperty(name, prop.items.$ref, isRequired)
         );
         break;
@@ -189,7 +186,7 @@ function generateType(name, definition, lang) {
 
 /**
  * Generates manifest data models and writes them to specified path.
- * @param {Schema} schema
+ * @param {SchemaObject} schema
  * @param {string} output
  */
 async function generate(schema, output) {
@@ -209,7 +206,7 @@ async function generate(schema, output) {
       lines.push(
         ...generateType(
           typename(key),
-          /** @type {SchemaDefinition} */ (definition),
+          /** @type {SchemaObject} */ (definition),
           lang
         ),
         ""
@@ -230,8 +227,8 @@ async function generate(schema, output) {
   }
 }
 
-async function main() {
-  const schema = await generateSchema();
+function main() {
+  const schema = generateSchema();
   const scriptsDir = path.dirname(thisScript);
 
   [
@@ -251,7 +248,7 @@ async function main() {
     ),
     path.join(scriptsDir, "..", "ios", "ReactTestApp", "Manifest.swift"),
     path.join(scriptsDir, "..", "windows", "ReactTestApp", "Manifest.h"),
-  ].forEach((output) => generate(schema, output));
+  ].forEach((output) => generate(schema, output).catch(console.error));
 }
 
-main().catch(console.error);
+main();
