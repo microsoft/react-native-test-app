@@ -33,7 +33,8 @@ if (findNodeModulesPath("@expo/config-plugins", rootDir)) {
     applyConfigPlugins(testAppDir, rootDir)
 }
 
-def cliAndroidDir = findNodeModulesPath("@react-native-community/cli-platform-android", rootDir)
+def reactNativeDir = file(findNodeModulesPath("react-native", rootDir))
+def cliAndroidDir = findNodeModulesPath("@react-native-community/cli-platform-android", reactNativeDir)
 apply(from: "${cliAndroidDir}/native_modules.gradle")
 
 ext.applyTestAppSettings = { DefaultSettings settings ->
@@ -46,8 +47,8 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
         .projectDir = file("${testAppDir}/android/support")
 
     def reactNativeGradlePlugin =
-        findNodeModulesPath("@react-native/gradle-plugin", settings.rootDir)  // >= 0.72
-            ?: findNodeModulesPath("react-native-gradle-plugin", settings.rootDir)  // < 0.72
+        findNodeModulesPath("@react-native/gradle-plugin", reactNativeDir)  // >= 0.72
+            ?: findNodeModulesPath("react-native-gradle-plugin", reactNativeDir)  // < 0.72
     if (reactNativeGradlePlugin != null) {
         settings.includeBuild(reactNativeGradlePlugin)
     }
@@ -58,8 +59,6 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
     def usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= 7100
 
     if (isNewArchitectureEnabled(settings) && !usePrefabs) {
-        def reactNativeDir = findNodeModulesPath("react-native", settings.rootDir)
-
         settings.include(":ReactAndroid")
         settings.project(":ReactAndroid")
             .projectDir = file("${reactNativeDir}/ReactAndroid")
