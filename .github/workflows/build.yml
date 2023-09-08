@@ -477,8 +477,8 @@ jobs:
       - name: Build bundle and create solution
         run: |
           yarn build:windows
-          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app }
-          else { yarn install-windows-test-app --project-directory=. }
+          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app --use-nuget }
+          else { yarn install-windows-test-app --project-directory=. --use-nuget }
         working-directory: template-example
       - name: Build
         run: |
