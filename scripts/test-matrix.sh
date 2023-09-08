@@ -24,7 +24,7 @@ function prepare {
   terminate_dev_server
   git checkout .
   npm run set-react-version ${VERSION}
-  npm run clean -- --exclude='example/*.png'
+  git clean -dfqx --exclude='.yarn/cache' --exclude='example/*.png'
   ${PACKAGE_MANAGER} install
   pushd example 1> /dev/null
   start_appium_server
