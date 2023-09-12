@@ -3082,8 +3082,8 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/eslint-plugin@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "@rnx-kit/eslint-plugin@npm:0.5.0"
+  version: 0.5.1
+  resolution: "@rnx-kit/eslint-plugin@npm:0.5.1"
   dependencies:
     "@typescript-eslint/eslint-plugin": ^6.0.0
     "@typescript-eslint/parser": ^6.0.0
@@ -3092,7 +3092,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.3.0
   peerDependencies:
     eslint: ">=6.0.0"
-  checksum: 588fe7e5ac29893b968868863c7234bce5087afcd2786e5ee6cd06a620969d9cd4e4bb78f9d84425efe1bc126bccad0ceec95bd10309d69260ede88eed2805df
+  checksum: e9145a6c576164a42c9f8bf379c43431d8dd3e2033d57dbebadf5d9dab73f88248b7b9185442fd7cf72c413ac94e31f45417c4e2900c167be2db829cda706f78
   languageName: node
   linkType: hard
 
