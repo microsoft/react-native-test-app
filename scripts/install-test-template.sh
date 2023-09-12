@@ -55,6 +55,13 @@ fi
 pushd template-example 1> /dev/null
 node ../scripts/copy-yarnrc.mjs ../.yarnrc.yml
 
+# Workaround for NuGet publishing failures
+if [[ "$platform" == "all" ]] || [[ "$platform" == "windows" ]]; then
+  cp ../yarn.lock .
+else
+  touch yarn.lock
+fi
+
 script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/$tarball\"/"
 if sed --version &> /dev/null; then
   sed -i'' "$script" package.json
@@ -62,7 +69,6 @@ else
   sed -i '' "$script" package.json
 fi
 
-touch yarn.lock
 if $install; then
   yarn --no-immutable
 fi
