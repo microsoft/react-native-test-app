@@ -3,7 +3,7 @@ description: Executes a Gradle build
 inputs:
   arguments:
     description: Gradle will execute a build with the provided arguments
-    default: --no-daemon --scan clean build check test
+    default: --no-daemon --parallel clean build check test
   project-root:
     description: The path to the root of the project
     required: true
