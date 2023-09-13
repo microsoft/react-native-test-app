@@ -5,5 +5,13 @@ module.exports = {
     "plugin:jest/recommended",
     "plugin:jest/style",
   ],
+  rules: {
+    "jest/no-standalone-expect": [
+      "error",
+      {
+        additionalTestBlockFunctions: ["testIf"],
+      },
+    ],
+  },
   ignorePatterns: ["!.yarn"],
 };
