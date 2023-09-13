@@ -179,26 +179,12 @@
     "example"
   ],
   "eslintConfig": {
-    "extends": [
-      "plugin:@microsoft/sdl/required",
-      "plugin:@rnx-kit/recommended",
-      "plugin:jest/recommended",
-      "plugin:jest/style"
-    ],
-    "ignorePatterns": [
-      "!.yarn"
-    ]
+    "extends": "./.github/eslint.config.js"
   },
   "jest": {
-    "collectCoverage": true,
-    "roots": [
-      "test"
-    ]
+    "preset": "./.github/jest.config.js"
   },
-  "prettier": {
-    "trailingComma": "es5",
-    "endOfLine": "auto"
-  },
+  "prettier": "./.github/prettierrc.json",
   "release": {
     "extends": "./.github/semantic-release.json"
   }
