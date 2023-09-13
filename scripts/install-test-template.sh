@@ -3,7 +3,7 @@ set -eo pipefail
 
 install=true
 platforms=(all android ios macos windows)
-version=$(node -e 'console.log(require("./package.json").version)')
+version=$(node --print 'require("./package.json").version')
 tarball=react-native-test-app-$version.$(git rev-parse --short HEAD).tgz
 
 function print_usage {

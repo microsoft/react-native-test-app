@@ -41,28 +41,17 @@
     "webdriverio": "^8.11.2"
   },
   "eslintConfig": {
-    "rules": {
-      "jest/no-standalone-expect": [
-        "error",
-        {
-          "additionalTestBlockFunctions": [
-            "testIf"
-          ]
-        }
-      ]
-    }
+    "extends": "../.github/eslint.config.js"
   },
   "jest": {
-    "roots": [
-      "test"
-    ]
+    "preset": "../.github/jest.config.js"
   },
   "rnx-kit": {
     "//": "This configuration is only used for Viewfinder",
     "kitType": "app",
     "alignDeps": {
       "requirements": [
-        "react-native@0.68"
+        "react-native@0.72"
       ],
       "capabilities": [
         "core-android",
