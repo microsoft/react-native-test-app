@@ -42,6 +42,12 @@
     },
     {
       "matchPackageNames": [
+        "@react-native/assets-registry",
+        "@react-native/codegen",
+        "@react-native/gradle-plugin",
+        "@react-native/js-polyfills",
+        "@react-native/normalize-colors",
+        "@react-native/virtualized-lists",
         "react-native",
         "react-native-macos",
         "react-native-windows"
