@@ -58,7 +58,7 @@ jobs:
   build-ios:
     name: Build iOS
     if: ${{ github.event.inputs.platform == 'ios' }}
-    runs-on: macos-12
+    runs-on: macos-13
     env:
       CERTIFICATE_FILE: build-certificate.p12
       KEYCHAIN_FILE: app-signing.keychain-db
@@ -117,7 +117,7 @@ jobs:
   build-macos:
     name: Build macOS
     if: ${{ github.event.inputs.platform == 'macos' }}
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - name: Checkout
         uses: actions/checkout@v4
