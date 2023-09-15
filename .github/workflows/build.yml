@@ -30,7 +30,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
       - name: Lint commit message
         run: |
-          yarn lint:commit
+          npm run lint:commit
   review:
     permissions:
       issues: write # comment on PRs (suggestion-bot)
