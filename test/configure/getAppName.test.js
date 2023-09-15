@@ -1,16 +1,17 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 describe("getAppName()", () => {
-  const { mockFiles } = require("../mockFiles");
-  const { getAppName } = require("../../scripts/configure");
+  const fs = require("../fs.mock");
+  const { getAppName: getAppNameActual } = require("../../scripts/configure");
+
+  /** @type {typeof getAppNameActual} */
+  const getAppName = (p) => getAppNameActual(p, fs);
 
   const consoleSpy = jest.spyOn(global.console, "warn");
 
   afterEach(() => {
-    mockFiles();
+    fs.__setMockFiles();
     consoleSpy.mockReset();
   });
 
@@ -19,19 +20,19 @@ describe("getAppName()", () => {
   });
 
   test("retrieves name from the app manifest", () => {
-    mockFiles({ "app.json": `{ "name": "Example" }` });
+    fs.__setMockFiles({ "app.json": `{ "name": "Example" }` });
     expect(getAppName(".")).toBe("Example");
     expect(consoleSpy).not.toHaveBeenCalled();
   });
 
   test("falls back to 'ReactTestApp' if `name` is missing or empty", () => {
-    mockFiles({ "app.json": "{}" });
+    fs.__setMockFiles({ "app.json": "{}" });
     expect(getAppName(".")).toBe("ReactTestApp");
     expect(consoleSpy).toHaveBeenCalledTimes(1);
 
     consoleSpy.mockReset();
 
-    mockFiles({ "app.json": `{ name: "" }` });
+    fs.__setMockFiles({ "app.json": `{ name: "" }` });
     expect(getAppName(".")).toBe("ReactTestApp");
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });

@@ -1,15 +1,18 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 describe("parseResources", () => {
-  const { mockFiles } = require("../mockFiles");
-  const { parseResources } = require("../../windows/test-app");
+  const fs = require("../fs.mock");
+  const {
+    parseResources: parseResourcesActual,
+  } = require("../../windows/test-app");
+
+  /** @type {typeof parseResourcesActual} */
+  const parseResources = (r, p) => parseResourcesActual(r, p, fs);
 
   const empty = { assetFilters: "", assetItemFilters: "", assetItems: "" };
 
-  afterEach(() => mockFiles());
+  afterEach(() => fs.__setMockFiles());
 
   test("returns empty strings for no resources", () => {
     expect(parseResources(undefined, "")).toEqual(empty);
@@ -19,7 +22,7 @@ describe("parseResources", () => {
   });
 
   test("returns references to existing assets", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "dist/assets/node_modules/arnold/portrait.png": "{}",
       "dist/assets/splash.png": "{}",
       "dist/main.jsbundle": "'use strict';",

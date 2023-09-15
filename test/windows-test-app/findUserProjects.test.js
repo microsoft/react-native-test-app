@@ -2,7 +2,7 @@
 "use strict";
 
 describe("findUserProjects", () => {
-  const path = require("path");
+  const path = require("node:path");
   const { findUserProjects } = require("../../windows/test-app");
 
   test("finds all user projects, ignoring android/ios/macos/node_modules", () => {
@@ -56,8 +56,8 @@ describe("findUserProjects", () => {
 });
 
 describe("toProjectEntry", () => {
-  const os = require("os");
-  const path = require("path");
+  const os = require("node:os");
+  const path = require("node:path");
   const { toProjectEntry } = require("../../windows/test-app");
 
   test("returns solution entry for specified project", () => {

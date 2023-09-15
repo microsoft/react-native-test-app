@@ -1,22 +1,23 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-jest.mock("fs/promises");
-
-const fs = require("fs");
-const path = require("path");
-
 describe("writeAllFiles()", () => {
-  const { mockFiles } = require("../mockFiles");
-  const { writeAllFiles } = require("../../scripts/configure");
+  const path = require("node:path");
+  const fs = require("../fs.mock");
+  const fsp = require("../fs-promises.mock");
+  const {
+    writeAllFiles: writeAllFilesActual,
+  } = require("../../scripts/configure");
+
+  /** @type {typeof writeAllFilesActual} */
+  const writeAllFiles = (files, dest) => writeAllFilesActual(files, dest, fsp);
 
   afterEach(() => {
-    mockFiles();
+    fs.__setMockFiles();
   });
 
   test("writes all files to disk", async () => {
-    mockFiles({ "file-on-disk": "0" });
+    fs.__setMockFiles({ "file-on-disk": "0" });
     await writeAllFiles(
       {
         file0: { source: "file-on-disk" },

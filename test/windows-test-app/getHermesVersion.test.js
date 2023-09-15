@@ -1,8 +1,6 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 /**
  * Returns a property sheet with specified Hermes version.
  * @param {string} version
@@ -20,15 +18,20 @@ function jsEngineProps(version) {
 }
 
 describe("getHermesVersion", () => {
-  const path = require("path");
-  const { mockFiles } = require("../mockFiles");
-  const { getHermesVersion } = require("../../windows/test-app");
+  const path = require("node:path");
+  const fs = require("../fs.mock");
+  const {
+    getHermesVersion: getHermesVersionActual,
+  } = require("../../windows/test-app");
 
-  afterEach(() => mockFiles());
+  /** @type {typeof getHermesVersionActual} */
+  const getHermesVersion = (p) => getHermesVersionActual(p, fs);
+
+  afterEach(() => fs.__setMockFiles());
 
   test("returns the required Hermes version", () => {
     ["0.7.2", "0.8.0-ms.0", "0.9.0-ms.1"].forEach((version) => {
-      mockFiles({
+      fs.__setMockFiles({
         [path.join("react-native-windows", "PropertySheets", "JSEngine.props")]:
           jsEngineProps(version),
       });

@@ -2,7 +2,6 @@
 // @ts-check
 "use strict";
 
-const fs = require("fs");
 const path = require("path");
 const { readJSONFile } = require("./helpers");
 const { generateSchema } = require("./schema");
@@ -26,7 +25,7 @@ const BUILD_PROPS = [
  * @param {string=} startDir
  * @returns {string | undefined}
  */
-function findFile(file, startDir = process.cwd()) {
+function findFile(file, startDir = process.cwd(), fs = require("fs")) {
   let currentDir = startDir;
   let candidate = path.join(currentDir, file);
   while (!fs.existsSync(candidate)) {
@@ -51,10 +50,10 @@ function makeValidator() {
 }
 
 /**
- * @param {fs.PathLike | undefined} manifestPath
+ * @param {import("node:fs").PathLike | undefined} manifestPath
  * @returns {Record<string, unknown> | number}
  */
-function validateManifest(manifestPath) {
+function validateManifest(manifestPath, fs = require("fs")) {
   if (!manifestPath) {
     console.error(
       `Failed to find '${APP_JSON}'. Please make sure you're in the right directory.`
@@ -62,7 +61,7 @@ function validateManifest(manifestPath) {
     return 1;
   }
 
-  const manifest = readJSONFile(manifestPath);
+  const manifest = readJSONFile(manifestPath, fs);
   const validator = makeValidator();
   if (!validator.validate(generateSchema(), manifest)) {
     console.error(
@@ -90,15 +89,19 @@ function validateManifest(manifestPath) {
  * @param {("file" | "stdout")=} outputMode Whether to output to `file` or `stdout`
  * @param {string=} projectRoot Path to root of project
  */
-function validate(outputMode = "stdout", projectRoot = process.cwd()) {
-  const manifestPath = findFile(APP_JSON, projectRoot);
-  const manifest = validateManifest(manifestPath);
+function validate(
+  outputMode = "stdout",
+  projectRoot = process.cwd(),
+  fs = require("fs")
+) {
+  const manifestPath = findFile(APP_JSON, projectRoot, fs);
+  const manifest = validateManifest(manifestPath, fs);
   if (typeof manifest === "number") {
     process.exitCode = manifest;
     return;
   }
 
-  const nodeModulesPath = findFile(NODE_MODULES, projectRoot);
+  const nodeModulesPath = findFile(NODE_MODULES, projectRoot, fs);
   if (!nodeModulesPath) {
     console.error(
       `Failed to find '${NODE_MODULES}'. Please make sure you've installed npm dependencies.`
@@ -137,10 +140,8 @@ function validate(outputMode = "stdout", projectRoot = process.cwd()) {
       !fs.existsSync(manifestCopyDest) ||
       cppHeader !== fs.readFileSync(manifestCopyDest, { encoding: "utf-8" })
     ) {
-      fs.mkdirSync(path.dirname(manifestCopyDest), {
-        recursive: true,
-        mode: 0o755,
-      });
+      const options = { recursive: true, mode: 0o755 };
+      fs.mkdirSync(path.dirname(manifestCopyDest), options);
       fs.writeFileSync(manifestCopyDest, cppHeader);
     }
   } else {

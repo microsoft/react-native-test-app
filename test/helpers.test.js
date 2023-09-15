@@ -4,7 +4,7 @@
 const { findNearest, getPackageVersion } = require("../scripts/helpers");
 
 describe("findNearest", () => {
-  const path = require("path");
+  const path = require("node:path");
 
   test("returns null for non-existent files", () => {
     expect(findNearest("thisFileShouldNotExist")).toBeNull();
@@ -33,7 +33,7 @@ describe("findNearest", () => {
 });
 
 describe("getPackageVersion", () => {
-  const path = require("path");
+  const path = require("node:path");
 
   const nodeModulesPath = path.resolve(
     __dirname,

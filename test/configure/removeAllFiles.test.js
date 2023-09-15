@@ -1,24 +1,26 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-jest.mock("fs/promises");
-
-const fs = require("fs");
-
 describe("removeAllFiles()", () => {
-  const { mockFiles } = require("../mockFiles");
-  const { removeAllFiles } = require("../../scripts/configure");
+  const fs = require("../fs.mock");
+  const fsp = require("../fs-promises.mock");
+  const {
+    removeAllFiles: removeAllFilesActual,
+  } = require("../../scripts/configure");
+
+  /** @type {typeof removeAllFilesActual} */
+  const removeAllFiles = (files, destination) =>
+    removeAllFilesActual(files, destination, fsp);
 
   beforeEach(() => {
-    mockFiles({
+    fs.__setMockFiles({
       "babel.config.js": "module.exports = {};",
       "metro.config.js": "module.exports = {};",
     });
   });
 
   afterAll(() => {
-    mockFiles();
+    fs.__setMockFiles();
   });
 
   test("removes all specified files", async () => {

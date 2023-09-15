@@ -1,16 +1,20 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 describe("updatePackageManifest()", () => {
-  const { mockFiles } = require("../mockFiles");
-  const { updatePackageManifest } = require("../../scripts/configure");
+  const fs = require("../fs.mock");
+  const {
+    updatePackageManifest: updatePackageManifestActual,
+  } = require("../../scripts/configure");
 
-  afterEach(() => mockFiles());
+  /** @type {typeof updatePackageManifestActual} */
+  const updatePackageManifest = (p, cfg) =>
+    updatePackageManifestActual(p, cfg, fs);
+
+  afterEach(() => fs.__setMockFiles());
 
   test("adds `scripts` field if missing", () => {
-    mockFiles({ "package.json": `{ "key": "value" }` });
+    fs.__setMockFiles({ "package.json": `{ "key": "value" }` });
 
     const config = {
       scripts: {
@@ -35,7 +39,7 @@ describe("updatePackageManifest()", () => {
   });
 
   test("adds to existing `scripts` field", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "package.json": JSON.stringify({
         key: "value",
         scripts: {

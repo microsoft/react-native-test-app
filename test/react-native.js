@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // @ts-check
 
-const { spawnSync } = require("child_process");
+const { spawnSync } = require("node:child_process");
 
 const DEVICE_ID = "T-800";
 
