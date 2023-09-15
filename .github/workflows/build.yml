@@ -28,8 +28,6 @@ jobs:
           fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
-      - name: Install npm dependencies
-        uses: ./.github/actions/yarn
       - name: Lint commit message
         run: |
           yarn lint:commit
