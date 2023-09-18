@@ -91,7 +91,8 @@ ext.findNodeModulesPath = { packageName, baseDir ->
     while (basePath) {
         def candidatePath = Paths.get(basePath.toString(), "node_modules", packageName)
         if (candidatePath.toFile().exists()) {
-            return candidatePath.toString()
+            // Resolve the real path in case we're dealing with symlinks
+            return candidatePath.toRealPath().toString()
         }
 
         basePath = basePath.getParent()
