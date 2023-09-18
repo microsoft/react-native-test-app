@@ -45,14 +45,8 @@ describe("getPackageVersion", () => {
   test("returns version number for specified package", () => {
     const rnPath = path.join(nodeModulesPath, "react-native");
     expect(getPackageVersion("react-native", rnPath)).toBe("1000.0.0");
-
-    const rnCliPath = path.join(
-      nodeModulesPath,
-      "@react-native-community",
-      "cli-platform-ios"
-    );
     expect(
-      getPackageVersion("@react-native-community/cli-platform-ios", rnCliPath)
+      getPackageVersion("@react-native-community/cli-platform-ios", rnPath)
     ).toBe("4.10.1");
   });
 });

@@ -174,10 +174,10 @@ function projectRelativePath({
 const packageSatisfiesVersionRange = (() => {
   /** @type {Record<string, string>} */
   const cache = {};
-  /** @type {(pkg: string, versionRange: string) => boolean} */
-  return (pkg, versionRange) => {
+  /** @type {(pkg: string, versionRange: string, startDir?: string) => boolean} */
+  return (pkg, versionRange, startDir = process.cwd()) => {
     if (!cache[pkg]) {
-      cache[pkg] = getPackageVersion(pkg);
+      cache[pkg] = getPackageVersion(pkg, startDir);
     }
     return semver.satisfies(cache[pkg], versionRange);
   };
@@ -261,9 +261,11 @@ function androidManifestPath(sourceDir) {
  * @returns {string | undefined}
  */
 function iosProjectPath(sourceDir) {
+  const rnDir = path.dirname(require.resolve("react-native/package.json"));
   const needsDummyProject = packageSatisfiesVersionRange(
     cliPlatformIOS,
-    "<5.0.2"
+    "<5.0.2",
+    rnDir
   );
   if (needsDummyProject) {
     // Prior to @react-native-community/cli-platform-ios v5.0.0, `project` was
@@ -273,7 +275,8 @@ function iosProjectPath(sourceDir) {
 
   const needsProjectPath = packageSatisfiesVersionRange(
     cliPlatformIOS,
-    "<8.0.0"
+    "<8.0.0",
+    rnDir
   );
   if (needsProjectPath) {
     // `sourceDir` and `podfile` detection was fixed in
@@ -330,9 +333,10 @@ function configureProjects({ android, ios, windows }) {
   if (ios) {
     // `ios.sourceDir` was added in 8.0.0
     // https://github.com/react-native-community/cli/commit/25eec7c695f09aea0ace7c0b591844fe8828ccc5
-    config.ios = packageSatisfiesVersionRange(cliPlatformIOS, ">=8.0.0")
-      ? ios
-      : undefined;
+    const rnDir = path.dirname(require.resolve("react-native/package.json"));
+    if (packageSatisfiesVersionRange(cliPlatformIOS, ">=8.0.0", rnDir)) {
+      config.ios = ios;
+    }
     const project = iosProjectPath(path.basename(ios.sourceDir));
     if (project) {
       config.ios = config.ios ?? {};
@@ -482,8 +486,9 @@ const getConfig = (() => {
         throw new Error("Failed to find `.gitignore`");
       }
 
+      const rnDir = path.dirname(require.resolve("react-native/package.json"));
       const projectPathFlag =
-        flatten && packageSatisfiesVersionRange(cliPlatformIOS, "<8.0.0")
+        flatten && packageSatisfiesVersionRange(cliPlatformIOS, "<8.0.0", rnDir)
           ? " --project-path ."
           : "";
       const testAppRelPath = projectRelativePath(params);
