@@ -12161,7 +12161,6 @@ fsevents@^2.3.2:
     "@expo/config-plugins": ^7.0.0
     "@microsoft/eslint-plugin-sdl": ^0.2.0
     "@react-native-community/cli": ^11.3.6
-    "@react-native-community/cli-platform-ios": ^11.3.6
     "@rnx-kit/eslint-plugin": ^0.5.0
     "@rnx-kit/react-native-host": ^0.2.8
     "@types/jest": ^29.0.0
@@ -12195,7 +12194,6 @@ fsevents@^2.3.2:
   peerDependencies:
     "@expo/config-plugins": ">=5.0"
     "@react-native-community/cli": ">=5.0"
-    "@react-native-community/cli-platform-ios": ">=5.0"
     mustache: ^4.0.0
     react: ~17.0.1 || ~18.0.0 || ~18.1.0 || ~18.2.0
     react-native: ^0.0.0-0 || 0.64 - 0.72 || 1000.0.0
@@ -12205,8 +12203,6 @@ fsevents@^2.3.2:
     "@expo/config-plugins":
       optional: true
     "@react-native-community/cli":
-      optional: true
-    "@react-native-community/cli-platform-ios":
       optional: true
     mustache:
       optional: true
