@@ -2,9 +2,9 @@
 // @ts-check
 "use strict";
 
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 const {
   findNearest,
   getPackageVersion,
@@ -65,7 +65,7 @@ const textFileWriteOptions = { encoding: "utf-8", mode: 0o644 };
  * @param {string} src
  * @param {string} dest
  */
-function copy(src, dest, fs = require("fs")) {
+function copy(src, dest, fs = require("node:fs")) {
   fs.mkdir(dest, mkdirRecursiveOptions, (err) => {
     rethrow(err);
     fs.readdir(src, { withFileTypes: true }, (err, files) => {
@@ -312,7 +312,7 @@ function generateContentItems(
   assets = { assetFilters: [], assetItemFilters: [], assetItems: [] },
   currentFilter = "Assets",
   source = "",
-  fs = require("fs")
+  fs = require("node:fs")
 ) {
   const uuidv5 = (() => {
     try {
@@ -396,7 +396,7 @@ function generateContentItems(
  * @param {string} projectPath
  * @returns {Assets}
  */
-function parseResources(resources, projectPath, fs = require("fs")) {
+function parseResources(resources, projectPath, fs = require("node:fs")) {
   if (!Array.isArray(resources)) {
     if (resources && resources.windows) {
       return parseResources(resources.windows, projectPath, fs);
@@ -487,7 +487,7 @@ function copyAndReplace(
   destPath,
   replacements,
   callback = rethrow,
-  fs = require("fs")
+  fs = require("node:fs")
 ) {
   const stat = fs.statSync(srcPath);
   if (stat.isDirectory()) {
@@ -528,7 +528,7 @@ function copyAndReplace(
  *   singleApp?: string;
  * }} Application name, and paths to directories and files to include.
  */
-function getBundleResources(manifestFilePath, fs = require("fs")) {
+function getBundleResources(manifestFilePath, fs = require("node:fs")) {
   // Default value if manifest or 'name' field don't exist.
   const defaultName = "ReactTestApp";
 
@@ -581,7 +581,7 @@ function getBundleResources(manifestFilePath, fs = require("fs")) {
  * @param {string} rnwPath Path to `react-native-windows`.
  * @returns {string | null}
  */
-function getHermesVersion(rnwPath, fs = require("fs")) {
+function getHermesVersion(rnwPath, fs = require("node:fs")) {
   const jsEnginePropsPath = path.join(
     rnwPath,
     "PropertySheets",
@@ -601,7 +601,7 @@ function getHermesVersion(rnwPath, fs = require("fs")) {
 function generateSolution(
   destPath,
   { autolink, useHermes, useNuGet },
-  fs = require("fs")
+  fs = require("node:fs")
 ) {
   if (!destPath) {
     return "Missing or invalid destination path";
@@ -913,7 +913,7 @@ function generateSolution(
 
   if (autolink) {
     Promise.all([...copyTasks, solutionTask]).then(() => {
-      const { spawn } = require("child_process");
+      const { spawn } = require("node:child_process");
       spawn(
         path.join(path.dirname(process.argv0), "npx.cmd"),
         ["react-native", "autolink-windows", "--proj", reactTestAppProjectPath],
@@ -956,7 +956,7 @@ if (require.main === module) {
       autolink: {
         description: `Run autolink after generating the solution (this is the default on Windows)`,
         type: "boolean",
-        default: require("os").platform() === "win32",
+        default: require("node:os").platform() === "win32",
       },
       "use-hermes": {
         description: "Use Hermes JavaScript engine (experimental)",

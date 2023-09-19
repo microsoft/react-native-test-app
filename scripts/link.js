@@ -1,6 +1,6 @@
 // @ts-check
 
-const path = require("path");
+const path = require("node:path");
 
 const localNodeModulesPath = path.join(process.cwd(), "node_modules");
 

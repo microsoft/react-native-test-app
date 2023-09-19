@@ -2,8 +2,8 @@
 // @ts-check
 "use strict";
 
-const { spawnSync } = require("child_process");
-const path = require("path");
+const { spawnSync } = require("node:child_process");
+const path = require("node:path");
 
 /**
  * @template T
@@ -171,10 +171,10 @@ function getTemplate(platforms) {
 
     console.log(`Downloading ${path.basename(url)}...`);
 
-    require("https")
+    require("node:https")
       .get(url, (res) => {
-        const fs = require("fs");
-        const os = require("os");
+        const fs = require("node:fs");
+        const os = require("node:os");
 
         const tmpDir = path.join(os.tmpdir(), "react-native-test-app");
         fs.mkdirSync(tmpDir, { recursive: true });

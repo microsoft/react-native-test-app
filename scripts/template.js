@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require("node:path");
 
 /**
  * Joins all specified lines into a single string.
@@ -169,7 +169,7 @@ function reactNativeConfigAppleFlat() {
 function reactNativeConfigWindowsFlat(name) {
   return join(
     "const project = (() => {",
-    '  const path = require("path");',
+    '  const path = require("node:path");',
     '  const sourceDir = "windows";',
     "  try {",
     '    const { windowsProjectPath } = require("react-native-test-app");',

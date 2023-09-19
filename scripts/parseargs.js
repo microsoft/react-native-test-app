@@ -61,7 +61,7 @@ function formatHelp(description, options) {
     );
   }
 
-  const script = require("path").basename(process.argv[1]);
+  const script = require("node:path").basename(process.argv[1]);
   return [
     `usage: ${script} [options]`,
     "",
