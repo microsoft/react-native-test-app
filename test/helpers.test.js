@@ -1,7 +1,11 @@
 // @ts-check
 "use strict";
 
-const { findNearest, getPackageVersion } = require("../scripts/helpers");
+const {
+  findNearest,
+  getPackageVersion,
+  requireTransitive,
+} = require("../scripts/helpers");
 
 describe("findNearest", () => {
   const path = require("path");
@@ -48,5 +52,28 @@ describe("getPackageVersion", () => {
     expect(
       getPackageVersion("@react-native-community/cli-platform-ios", rnPath)
     ).toBe("4.10.1");
+  });
+});
+
+describe("requireTransitive", () => {
+  const path = require("path");
+
+  test("imports transitive dependencies", () => {
+    const mustache = requireTransitive([
+      "react-native-windows",
+      "@react-native-windows/cli",
+      "mustache",
+    ]);
+    expect(mustache).toBeDefined();
+    expect(typeof mustache.parse).toBe("function");
+  });
+
+  test("imports transitive dependencies given a start path", () => {
+    const mustache = requireTransitive(
+      ["@react-native-windows/cli", "mustache"],
+      path.dirname(require.resolve("react-native-windows/package.json"))
+    );
+    expect(mustache).toBeDefined();
+    expect(typeof mustache.parse).toBe("function");
   });
 });

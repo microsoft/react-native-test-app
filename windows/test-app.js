@@ -5,7 +5,11 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { findNearest, getPackageVersion } = require("../scripts/helpers");
+const {
+  findNearest,
+  getPackageVersion,
+  requireTransitive,
+} = require("../scripts/helpers");
 const { parseArgs } = require("../scripts/parseargs");
 
 /**
@@ -102,15 +106,20 @@ function findUserProjects(projectDir, projects = []) {
  * is a workaround until `react-native-windows` autolinking adds support.
  *
  * @see {@link https://github.com/microsoft/react-native-windows/issues/9578}
+ * @param {string} rnWindowsPath
  * @returns {[string, string][]}
  */
-function getNuGetDependencies() {
+function getNuGetDependencies(rnWindowsPath) {
   const pkgJson = findNearest("package.json");
   if (!pkgJson) {
     return [];
   }
 
-  const { loadConfig } = require("@react-native-community/cli");
+  /** @type {import("@react-native-community/cli")} */
+  const { loadConfig } = requireTransitive(
+    ["@react-native-community/cli"],
+    rnWindowsPath
+  );
   const dependencies = Object.values(loadConfig().dependencies);
 
   const { XMLParser } = require("fast-xml-parser");
@@ -645,7 +654,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       ? "2.6.0"
       : "2.7.0";
 
-  const nuGetDependencies = getNuGetDependencies();
+  const nuGetDependencies = getNuGetDependencies(rnWindowsPath);
 
   /** @type {[string, Record<string, string>?][]} */
   const projectFiles = [
@@ -742,7 +751,11 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     throw new Error("Failed to find solution template");
   }
 
-  const mustache = require("mustache");
+  /** @type {import("mustache")} */
+  const mustache = requireTransitive(
+    ["@react-native-windows/cli", "mustache"],
+    rnWindowsPath
+  );
   const reactTestAppProjectPath = path.join(
     projectFilesDestPath,
     "ReactTestApp.vcxproj"
