@@ -1,6 +1,6 @@
 // @ts-check
-import { createRequire } from "module";
-import * as path from "path";
+import { createRequire } from "node:module";
+import * as path from "node:path";
 import { BaseMods } from "../ExpoConfigPlugins.mjs";
 import { makeFilePathModifier, makeNullProvider } from "../provider.mjs";
 
