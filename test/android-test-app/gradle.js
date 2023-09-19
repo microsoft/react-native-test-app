@@ -1,10 +1,10 @@
 // @ts-check
 // istanbul ignore file
 
-const { spawnSync } = require("child_process");
-const fs = require("fs/promises");
-const os = require("os");
-const path = require("path");
+const { spawnSync } = require("node:child_process");
+const fs = require("node:fs/promises");
+const os = require("node:os");
+const path = require("node:path");
 const { version: targetVersion } = require("react-native/package.json");
 const { gatherConfig, writeAllFiles } = require("../../scripts/configure");
 

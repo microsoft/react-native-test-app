@@ -1,14 +1,19 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 describe("validate-manifest", () => {
-  const { mockFiles } = require("./mockFiles");
+  const fs = require("./fs.mock");
   const {
-    findFile,
-    validateManifest,
+    findFile: findFileActual,
+    validateManifest: validateManifestActual,
   } = require("../scripts/validate-manifest");
+
+  /** @type {typeof findFileActual} */
+  const findFile = (file, startDir = undefined) =>
+    findFileActual(file, startDir, fs);
+
+  /** @type {typeof validateManifestActual} */
+  const validateManifest = (p) => validateManifestActual(p, fs);
 
   const consoleSpy = jest.spyOn(global.console, "error");
 
@@ -17,7 +22,7 @@ describe("validate-manifest", () => {
   });
 
   afterEach(() => {
-    mockFiles();
+    fs.__setMockFiles();
     consoleSpy.mockReset();
   });
 
@@ -26,7 +31,7 @@ describe("validate-manifest", () => {
   });
 
   test("finds app manifest", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "example/app.json": `{ "name": "Example" }`,
       "example/node_modules/react-native-test-app/package.json": `{ "name": "Example" }`,
     });
@@ -47,7 +52,7 @@ describe("validate-manifest", () => {
   });
 
   test("catches missing root properties", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": `{ "name": "Example" }`,
     });
     expect(validateManifest(findFile("app.json"))).toBe(1001);
@@ -65,7 +70,7 @@ describe("validate-manifest", () => {
   });
 
   test("catches missing component properties", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",
@@ -96,7 +101,7 @@ describe("validate-manifest", () => {
   });
 
   test("catches invalid values for `presentationStyle`", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",
@@ -123,7 +128,7 @@ describe("validate-manifest", () => {
   });
 
   test("catches invalid values for resources", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",
@@ -145,7 +150,7 @@ describe("validate-manifest", () => {
   });
 
   test("catches duplicate resources", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",
@@ -171,7 +176,7 @@ describe("validate-manifest", () => {
   test("catches duplicate, platform-specific resources", () => {
     ["android", "ios", "macos", "windows"].forEach((platform) => {
       consoleSpy.mockReset();
-      mockFiles({
+      fs.__setMockFiles({
         "app.json": `{
           "name": "Example",
           "displayName": "Example",
@@ -202,7 +207,7 @@ describe("validate-manifest", () => {
   });
 
   test("is silent on valid manifests", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",

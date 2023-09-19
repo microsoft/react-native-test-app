@@ -1,12 +1,15 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 describe("generateSolution", () => {
-  const path = require("path");
-  const { mockFiles } = require("../mockFiles");
-  const { generateSolution } = require("../../windows/test-app");
+  const path = require("node:path");
+  const fs = require("../fs.mock");
+  const {
+    generateSolution: generateSolutionActual,
+  } = require("../../windows/test-app");
+
+  /** @type {typeof generateSolutionActual} */
+  const generateSolution = (d, cfg) => generateSolutionActual(d, cfg, fs);
 
   const cwd = process.cwd();
 
@@ -23,7 +26,7 @@ describe("generateSolution", () => {
   });
 
   afterEach(() => {
-    mockFiles();
+    fs.__setMockFiles();
     process.chdir(cwd);
   });
 
@@ -40,7 +43,7 @@ describe("generateSolution", () => {
   });
 
   test("exits if 'react-native-windows' folder cannot be found", () => {
-    mockFiles({
+    fs.__setMockFiles({
       [path.resolve("", "package.json")]: testManifest,
       [path.resolve("", "node_modules", ".bin")]: "directory",
     });
@@ -51,7 +54,7 @@ describe("generateSolution", () => {
   });
 
   test("exits if 'react-native-test-app' folder cannot be found", () => {
-    mockFiles({
+    fs.__setMockFiles({
       [path.resolve("", "package.json")]: testManifest,
       [path.resolve(
         "",

@@ -1,8 +1,6 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 /**
  * Waits until the specified predicate returns `true`.
  * @param {() => boolean} predicate
@@ -18,14 +16,16 @@ async function waitUntil(predicate) {
 }
 
 describe("copy", () => {
-  const fs = require("fs");
-  const { mockFiles } = require("../mockFiles");
-  const { copy } = require("../../windows/test-app");
+  const fs = require("../fs.mock");
+  const { copy: copyActual } = require("../../windows/test-app");
 
-  afterEach(() => mockFiles());
+  /** @type {typeof copyActual} */
+  const copy = (src, dest) => copyActual(src, dest, fs);
+
+  afterEach(() => fs.__setMockFiles());
 
   test("recursively copies all files under directory", async () => {
-    mockFiles({
+    fs.__setMockFiles({
       "assets/1.png": "binary",
       "assets/2.png": "binary",
       "assets/3.png": "binary",
@@ -36,7 +36,6 @@ describe("copy", () => {
 
     // Wait until all files have been copied
     const writeDone = waitUntil(() => {
-      // @ts-expect-error mock
       const files = Object.keys(fs.__toJSON());
       return files.length === 12;
     });
@@ -44,7 +43,6 @@ describe("copy", () => {
     copy("assets", "assets copy");
     await writeDone;
 
-    // @ts-expect-error mock
     const files = Object.keys(fs.__toJSON());
 
     expect(files).toEqual(

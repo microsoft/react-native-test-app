@@ -1,19 +1,22 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 describe("getBundleResources", () => {
-  const path = require("path");
-  const { mockFiles } = require("../mockFiles");
-  const { getBundleResources } = require("../../windows/test-app");
+  const path = require("node:path");
+  const fs = require("../fs.mock");
+  const {
+    getBundleResources: getBundleResourcesActual,
+  } = require("../../windows/test-app");
 
-  afterEach(() => mockFiles());
+  /** @type {typeof getBundleResourcesActual} */
+  const getBundleResources = (p) => getBundleResourcesActual(p, fs);
+
+  afterEach(() => fs.__setMockFiles());
 
   test("returns app name and bundle resources", () => {
     const assets = path.join("dist", "assets");
     const bundle = path.join("dist", "main.bundle");
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": JSON.stringify({
         name: "Example",
         resources: [assets, bundle],
@@ -56,7 +59,7 @@ describe("getBundleResources", () => {
   });
 
   test("returns package manifest", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": JSON.stringify({
         windows: {
           appxManifest: "windows/Example/Package.appxmanifest",
@@ -92,7 +95,7 @@ describe("getBundleResources", () => {
   });
 
   test("handles invalid manifest", () => {
-    mockFiles({ "app.json": "-" });
+    fs.__setMockFiles({ "app.json": "-" });
 
     const warnSpy = jest.spyOn(global.console, "warn").mockImplementation();
 
@@ -113,7 +116,7 @@ describe("getBundleResources", () => {
   });
 
   test("returns package certificate", () => {
-    mockFiles({
+    fs.__setMockFiles({
       "app.json": JSON.stringify({
         windows: {
           certificateKeyFile: "windows/ReactTestApp_TemporaryKey.pfx",

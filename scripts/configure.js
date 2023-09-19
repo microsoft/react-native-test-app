@@ -6,7 +6,6 @@ require("./link")(module);
 
 const chalk = require("chalk");
 const fs = require("fs");
-const fsp = require("fs/promises");
 const path = require("path");
 const semver = require("semver");
 const { findNearest, getPackageVersion, readJSONFile } = require("./helpers");
@@ -811,9 +810,9 @@ function gatherConfig(params) {
  * @param {string} packagePath
  * @returns {string}
  */
-function getAppName(packagePath) {
+function getAppName(packagePath, fs = require("fs")) {
   try {
-    const { name } = readJSONFile(path.join(packagePath, "app.json"));
+    const { name } = readJSONFile(path.join(packagePath, "app.json"), fs);
     if (typeof name === "string" && name) {
       return name;
     }
@@ -831,7 +830,7 @@ function getAppName(packagePath) {
  * @param {Configuration} config
  * @returns {boolean}
  */
-function isDestructive(packagePath, { files, oldFiles }) {
+function isDestructive(packagePath, { files, oldFiles }, fs = require("fs")) {
   const modified = Object.keys(files).reduce((result, file) => {
     const targetPath = path.join(packagePath, file);
     if (fs.existsSync(targetPath)) {
@@ -869,10 +868,10 @@ function isDestructive(packagePath, { files, oldFiles }) {
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
-function removeAllFiles(files, destination) {
+function removeAllFiles(files, destination, fs = require("fs/promises")) {
   const options = { force: true, maxRetries: 3, recursive: true };
   return Promise.all(
-    files.map((filename) => fsp.rm(path.join(destination, filename), options))
+    files.map((filename) => fs.rm(path.join(destination, filename), options))
   );
 }
 
@@ -882,8 +881,12 @@ function removeAllFiles(files, destination) {
  * @param {Configuration} config
  * @returns {Record<string, unknown>}
  */
-function updatePackageManifest(path, { dependencies, scripts }) {
-  const manifest = readJSONFile(path);
+function updatePackageManifest(
+  path,
+  { dependencies, scripts },
+  fs = require("fs")
+) {
+  const manifest = readJSONFile(path, fs);
 
   manifest["scripts"] = mergeObjects(manifest["scripts"], scripts);
 
@@ -910,7 +913,7 @@ function updatePackageManifest(path, { dependencies, scripts }) {
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
-function writeAllFiles(files, destination) {
+function writeAllFiles(files, destination, fs = require("fs/promises")) {
   const options = { recursive: true, mode: 0o755 };
   return Promise.all(
     Object.keys(files).map(async (filename) => {
@@ -920,11 +923,11 @@ function writeAllFiles(files, destination) {
       }
 
       const file = path.join(destination, filename);
-      await fsp.mkdir(path.dirname(file), options);
+      await fs.mkdir(path.dirname(file), options);
       if (typeof content === "string") {
-        await fsp.writeFile(file, content);
+        await fs.writeFile(file, content);
       } else {
-        await fsp.copyFile(content.source, file);
+        await fs.copyFile(content.source, file);
       }
     })
   );

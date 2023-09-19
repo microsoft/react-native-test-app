@@ -1,11 +1,14 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 describe("isDestructive()", () => {
-  const { mockFiles } = require("../mockFiles");
-  const { isDestructive } = require("../../scripts/configure");
+  const fs = require("../fs.mock");
+  const {
+    isDestructive: isDestructiveActual,
+  } = require("../../scripts/configure");
+
+  /** @type {typeof isDestructiveActual} */
+  const isDestructive = (p, cfg) => isDestructiveActual(p, cfg, fs);
 
   /**
    * Example output:
@@ -31,7 +34,7 @@ describe("isDestructive()", () => {
   const consoleSpy = jest.spyOn(global.console, "warn");
 
   afterEach(() => {
-    mockFiles();
+    fs.__setMockFiles();
     consoleSpy.mockReset();
   });
 
@@ -63,7 +66,7 @@ describe("isDestructive()", () => {
     expect(isDestructive(".", config)).toBe(false);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
 
-    mockFiles({ "metro.config.js": "" });
+    fs.__setMockFiles({ "metro.config.js": "" });
 
     expect(isDestructive(".", config)).toBe(true);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
@@ -82,7 +85,7 @@ describe("isDestructive()", () => {
     expect(isDestructive(".", config)).toBe(false);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
 
-    mockFiles({ "Podfile.lock": "" });
+    fs.__setMockFiles({ "Podfile.lock": "" });
 
     expect(isDestructive(".", config)).toBe(true);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
@@ -103,7 +106,7 @@ describe("isDestructive()", () => {
     expect(isDestructive(".", config)).toBe(false);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
 
-    mockFiles({
+    fs.__setMockFiles({
       "Podfile.lock": "",
       "babel.config.js": "",
       "metro.config.js": "",

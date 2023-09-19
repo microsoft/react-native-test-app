@@ -48,7 +48,7 @@ const textFileWriteOptions = { encoding: "utf-8", mode: 0o644 };
  * @param {string} src
  * @param {string} dest
  */
-function copy(src, dest) {
+function copy(src, dest, fs = require("fs")) {
   fs.mkdir(dest, mkdirRecursiveOptions, (err) => {
     rethrow(err);
     fs.readdir(src, { withFileTypes: true }, (err, files) => {
@@ -57,7 +57,7 @@ function copy(src, dest) {
         const source = path.join(src, file.name);
         const target = path.join(dest, file.name);
         file.isDirectory()
-          ? copy(source, target)
+          ? copy(source, target, fs)
           : fs.copyFile(source, target, rethrow);
       });
     });
@@ -298,7 +298,8 @@ function generateContentItems(
   projectPath,
   assets = { assetFilters: [], assetItemFilters: [], assetItems: [] },
   currentFilter = "Assets",
-  source = ""
+  source = "",
+  fs = require("fs")
 ) {
   const uuidv5 = (() => {
     try {
@@ -342,7 +343,8 @@ function generateContentItems(
         projectPath,
         assets,
         filter,
-        source || path.dirname(resource)
+        source || path.dirname(resource),
+        fs
       );
     } else {
       const assetPath = normalizePath(path.relative(projectPath, resourcePath));
@@ -381,17 +383,21 @@ function generateContentItems(
  * @param {string} projectPath
  * @returns {Assets}
  */
-function parseResources(resources, projectPath) {
+function parseResources(resources, projectPath, fs = require("fs")) {
   if (!Array.isArray(resources)) {
     if (resources && resources.windows) {
-      return parseResources(resources.windows, projectPath);
+      return parseResources(resources.windows, projectPath, fs);
     }
     return { assetItems: "", assetItemFilters: "", assetFilters: "" };
   }
 
   const { assetItems, assetItemFilters, assetFilters } = generateContentItems(
     resources,
-    projectPath
+    projectPath,
+    /* assets */ undefined,
+    /* currentFilter */ undefined,
+    /* source */ undefined,
+    fs
   );
 
   return {
@@ -463,10 +469,16 @@ function toProjectEntry(project, destPath) {
  * @param {Record<string, string> | undefined} replacements e.g. {'TextToBeReplaced': 'Replacement'}
  * @param {(error: Error | null) => void=} callback Callback for when the copy operation is done.
  */
-function copyAndReplace(srcPath, destPath, replacements, callback = rethrow) {
+function copyAndReplace(
+  srcPath,
+  destPath,
+  replacements,
+  callback = rethrow,
+  fs = require("fs")
+) {
   const stat = fs.statSync(srcPath);
   if (stat.isDirectory()) {
-    copy(srcPath, destPath);
+    copy(srcPath, destPath, fs);
   } else if (!replacements) {
     fs.copyFile(srcPath, destPath, callback);
   } else {
@@ -503,7 +515,7 @@ function copyAndReplace(srcPath, destPath, replacements, callback = rethrow) {
  *   singleApp?: string;
  * }} Application name, and paths to directories and files to include.
  */
-function getBundleResources(manifestFilePath) {
+function getBundleResources(manifestFilePath, fs = require("fs")) {
   // Default value if manifest or 'name' field don't exist.
   const defaultName = "ReactTestApp";
 
@@ -527,7 +539,7 @@ function getBundleResources(manifestFilePath) {
           windows || {},
           projectPath
         ),
-        ...parseResources(resources, projectPath),
+        ...parseResources(resources, projectPath, fs),
       };
     } catch (e) {
       if (isErrorLike(e)) {
@@ -555,7 +567,7 @@ function getBundleResources(manifestFilePath) {
  * @param {string} rnwPath Path to `react-native-windows`.
  * @returns {string | null}
  */
-function getHermesVersion(rnwPath) {
+function getHermesVersion(rnwPath, fs = require("fs")) {
   const jsEnginePropsPath = path.join(
     rnwPath,
     "PropertySheets",
@@ -590,12 +602,16 @@ function getVersionNumber(version) {
  * @param {{ autolink: boolean; useHermes: boolean | undefined; useNuGet: boolean; }} options
  * @returns {string | undefined} An error message; `undefined` otherwise.
  */
-function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
+function generateSolution(
+  destPath,
+  { autolink, useHermes, useNuGet },
+  fs = require("fs")
+) {
   if (!destPath) {
     return "Missing or invalid destination path";
   }
 
-  const projectManifest = findNearest("package.json");
+  const projectManifest = findNearest("package.json", undefined, fs);
   if (!projectManifest) {
     return "Could not find 'package.json'";
   }
@@ -603,14 +619,18 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
   const nodeModulesDir = "node_modules";
 
   const rnWindowsPath = findNearest(
-    path.join(nodeModulesDir, "react-native-windows")
+    path.join(nodeModulesDir, "react-native-windows"),
+    undefined,
+    fs
   );
   if (!rnWindowsPath) {
     return "Could not find 'react-native-windows'";
   }
 
   const rnTestAppPath = findNearest(
-    path.join(nodeModulesDir, "react-native-test-app")
+    path.join(nodeModulesDir, "react-native-test-app"),
+    undefined,
+    fs
   );
   if (!rnTestAppPath) {
     return "Could not find 'react-native-test-app'";
@@ -630,7 +650,7 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
 
   require("../scripts/validate-manifest").validate("file", destPath);
 
-  const manifestFilePath = findNearest("app.json", destPath);
+  const manifestFilePath = findNearest("app.json", destPath, fs);
   const {
     appName,
     appxManifest,
@@ -639,14 +659,15 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     assetFilters,
     packageCertificate,
     singleApp,
-  } = getBundleResources(manifestFilePath);
+  } = getBundleResources(manifestFilePath, fs);
 
   const rnWindowsVersion = getPackageVersion(
     "react-native-windows",
-    rnWindowsPath
+    rnWindowsPath,
+    fs
   );
   const rnWindowsVersionNumber = getVersionNumber(rnWindowsVersion);
-  const hermesVersion = useHermes && getHermesVersion(rnWindowsPath);
+  const hermesVersion = useHermes && getHermesVersion(rnWindowsPath, fs);
   const usePackageReferences =
     rnWindowsVersionNumber === 0 || rnWindowsVersionNumber >= 6800;
   const xamlVersion =
@@ -729,7 +750,9 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
     copyAndReplace(
       path.join(__dirname, projDir, file),
       path.join(projectFilesDestPath, file),
-      replacements
+      replacements,
+      undefined,
+      fs
     )
   );
 
@@ -745,7 +768,9 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       "cpp-app",
       "proj",
       "MyApp.sln"
-    )
+    ),
+    undefined,
+    fs
   );
   if (!solutionTemplatePath) {
     throw new Error("Failed to find solution template");
@@ -799,7 +824,9 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
         ...(hermesVersion
           ? { "<UseHermes>false</UseHermes>": `<UseHermes>true</UseHermes>` }
           : undefined),
-      }
+      },
+      undefined,
+      fs
     );
   }
 
@@ -813,10 +840,16 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       "dispatchQueue",
       "dispatchQueue.h"
     );
-    copyAndReplace(dispatchQueue, dispatchQueue, {
-      "template <typename T>\\s*inline void MustBeNoExceptVoidFunctor\\(\\) {\\s*static_assert\\(false":
-        "namespace details {\n  template <typename>\n  constexpr bool always_false = false;\n}\n\ntemplate <typename T>\ninline void MustBeNoExceptVoidFunctor() {\n  static_assert(details::always_false<T>",
-    });
+    copyAndReplace(
+      dispatchQueue,
+      dispatchQueue,
+      {
+        "template <typename T>\\s*inline void MustBeNoExceptVoidFunctor\\(\\) {\\s*static_assert\\(false":
+          "namespace details {\n  template <typename>\n  constexpr bool always_false = false;\n}\n\ntemplate <typename T>\ninline void MustBeNoExceptVoidFunctor() {\n  static_assert(details::always_false<T>",
+      },
+      undefined,
+      fs
+    );
   }
 
   // TODO: Remove when we drop support for 0.69.
@@ -829,9 +862,15 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
       "Utils",
       "Helpers.h"
     );
-    copyAndReplace(helpers, helpers, {
-      "inline typename T asEnum": "inline T asEnum",
-    });
+    copyAndReplace(
+      helpers,
+      helpers,
+      {
+        "inline typename T asEnum": "inline T asEnum",
+      },
+      undefined,
+      fs
+    );
   }
 
   if (useNuGet) {
@@ -845,7 +884,9 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
           "shared-app",
           "proj",
           "NuGet_Config"
-        )
+        ),
+        undefined,
+        fs
       ) ||
       findNearest(
         // In 0.64, the template was moved into `react-native-windows`
@@ -856,7 +897,9 @@ function generateSolution(destPath, { autolink, useHermes, useNuGet }) {
           "shared-app",
           "proj",
           "NuGet.Config"
-        )
+        ),
+        undefined,
+        fs
       );
     const nugetConfigDestPath = path.join(destPath, "NuGet.Config");
     if (nugetConfigPath && !fs.existsSync(nugetConfigDestPath)) {
@@ -937,11 +980,8 @@ if (require.main === module) {
       "use-hermes": useHermes,
       "use-nuget": useNuGet,
     }) => {
-      const error = generateSolution(path.resolve(projectDirectory), {
-        autolink,
-        useHermes,
-        useNuGet,
-      });
+      const options = { autolink, useHermes, useNuGet };
+      const error = generateSolution(path.resolve(projectDirectory), options);
       if (error) {
         console.error(error);
         process.exitCode = 1;

@@ -1,25 +1,28 @@
 // @ts-check
 "use strict";
 
-jest.mock("fs");
-
 describe("copyAndReplace", () => {
-  const fs = require("fs");
   const { promisify } = require("util");
-  const { mockFiles } = require("../mockFiles");
-  const { copyAndReplace } = require("../../windows/test-app");
+  const fs = require("../fs.mock");
+  const {
+    copyAndReplace: copyAndReplaceActual,
+  } = require("../../windows/test-app");
+
+  /** @type {typeof copyAndReplaceActual} */
+  const copyAndReplace = (src, dst, r, cb) =>
+    copyAndReplaceActual(src, dst, r, cb, fs);
 
   const copyFileSpy = jest.spyOn(fs, "copyFile");
 
   const copyAndReplaceAsync = promisify(copyAndReplace);
 
   afterEach(() => {
-    mockFiles();
+    fs.__setMockFiles();
     copyFileSpy.mockReset();
   });
 
   test("copies files if no modifications are needed", async () => {
-    mockFiles({
+    fs.__setMockFiles({
       "ReactTestApp.png": "binary",
       "test/.placeholder": "",
     });
@@ -39,7 +42,7 @@ describe("copyAndReplace", () => {
   });
 
   test("replaces file content", async () => {
-    mockFiles({
+    fs.__setMockFiles({
       "ReactTestApp.png": "binary",
       "test/.placeholder": "",
     });

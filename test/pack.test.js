@@ -3,7 +3,7 @@
 
 describe("npm pack", () => {
   const { spawnSync } = require("node:child_process");
-  const os = require("os");
+  const os = require("node:os");
 
   // Ensure we include all files regardless of future changes in `npm-packlist`.
   // For more details, see https://github.com/npm/npm-packlist/issues/152.
