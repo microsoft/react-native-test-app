@@ -53,6 +53,21 @@ function getPackageVersion(module, startDir = process.cwd()) {
   return version;
 }
 
+/**
+ * @template T
+ * @param {string[]} dependencyChain
+ * @param {string=} startDir
+ * @returns {T}
+ */
+function requireTransitive(dependencyChain, startDir = process.cwd()) {
+  const p = dependencyChain.reduce((curr, next) => {
+    const p = require.resolve(next + "/package.json", { paths: [curr] });
+    return path.dirname(p);
+  }, startDir);
+  return require(p);
+}
+
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
 exports.readJSONFile = readJSONFile;
+exports.requireTransitive = requireTransitive;

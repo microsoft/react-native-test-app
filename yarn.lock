@@ -12193,18 +12193,12 @@ fsevents@^2.3.2:
     uuid: ^8.3.2
   peerDependencies:
     "@expo/config-plugins": ">=5.0"
-    "@react-native-community/cli": ">=5.0"
-    mustache: ^4.0.0
     react: ~17.0.1 || ~18.0.0 || ~18.1.0 || ~18.2.0
     react-native: ^0.0.0-0 || 0.64 - 0.72 || 1000.0.0
     react-native-macos: ^0.0.0-0 || 0.64 || 0.66 || 0.68 || 0.71 - 0.72
     react-native-windows: ^0.0.0-0 || 0.64 - 0.72
   peerDependenciesMeta:
     "@expo/config-plugins":
-      optional: true
-    "@react-native-community/cli":
-      optional: true
-    mustache:
       optional: true
     react-native-macos:
       optional: true
