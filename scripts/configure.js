@@ -5,8 +5,8 @@
 require("./link")(module);
 
 const chalk = require("chalk");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 const semver = require("semver");
 const { parseArgs } = require("../scripts/parseargs");
 const {
@@ -396,7 +396,7 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
       case "windows":
         return join(
           "const project = (() => {",
-          '  const path = require("path");',
+          '  const path = require("node:path");',
           '  const sourceDir = "windows";',
           "  try {",
           '    const { windowsProjectPath } = require("react-native-test-app");',
@@ -791,7 +791,7 @@ function gatherConfig(params, disableCache = false) {
  * @param {string} packagePath
  * @returns {string}
  */
-function getAppName(packagePath, fs = require("fs")) {
+function getAppName(packagePath, fs = require("node:fs")) {
   try {
     const { name } = readJSONFile(path.join(packagePath, "app.json"), fs);
     if (typeof name === "string" && name) {
@@ -811,7 +811,11 @@ function getAppName(packagePath, fs = require("fs")) {
  * @param {Configuration} config
  * @returns {boolean}
  */
-function isDestructive(packagePath, { files, oldFiles }, fs = require("fs")) {
+function isDestructive(
+  packagePath,
+  { files, oldFiles },
+  fs = require("node:fs")
+) {
   const modified = Object.keys(files).reduce((result, file) => {
     const targetPath = path.join(packagePath, file);
     if (fs.existsSync(targetPath)) {
@@ -849,7 +853,7 @@ function isDestructive(packagePath, { files, oldFiles }, fs = require("fs")) {
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
-function removeAllFiles(files, destination, fs = require("fs/promises")) {
+function removeAllFiles(files, destination, fs = require("node:fs/promises")) {
   const options = { force: true, maxRetries: 3, recursive: true };
   return Promise.all(
     files.map((filename) => fs.rm(path.join(destination, filename), options))
@@ -865,7 +869,7 @@ function removeAllFiles(files, destination, fs = require("fs/promises")) {
 function updatePackageManifest(
   path,
   { dependencies, scripts },
-  fs = require("fs")
+  fs = require("node:fs")
 ) {
   const manifest = readJSONFile(path, fs);
 
@@ -894,7 +898,7 @@ function updatePackageManifest(
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
-function writeAllFiles(files, destination, fs = require("fs/promises")) {
+function writeAllFiles(files, destination, fs = require("node:fs/promises")) {
   const options = { recursive: true, mode: 0o755 };
   return Promise.all(
     Object.keys(files).map(async (filename) => {

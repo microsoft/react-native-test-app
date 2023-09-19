@@ -1,5 +1,5 @@
 // @ts-check
-import * as fs from "fs/promises";
+import * as fs from "node:fs/promises";
 import { withPlugins } from "./ExpoConfigPlugins.mjs";
 import { compileModsAsync } from "./plugins/mod-compiler.mjs";
 import { withInternal } from "./plugins/withInternal.mjs";

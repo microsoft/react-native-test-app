@@ -1,7 +1,7 @@
 // @ts-check
 "use strict";
 
-const path = require("path");
+const path = require("node:path");
 
 /**
  * Finds nearest relative path to a file or directory from current path.
@@ -12,7 +12,7 @@ const path = require("path");
 function findNearest(
   fileOrDirName,
   currentDir = path.resolve(""),
-  fs = require("fs")
+  fs = require("node:fs")
 ) {
   const rootDirectory =
     process.platform === "win32"
@@ -37,7 +37,7 @@ function findNearest(
  * @param {import("node:fs").PathLike} path
  * @returns {T}
  */
-function readJSONFile(path, fs = require("fs")) {
+function readJSONFile(path, fs = require("node:fs")) {
   return JSON.parse(fs.readFileSync(path, { encoding: "utf-8" }));
 }
 
@@ -49,7 +49,7 @@ function readJSONFile(path, fs = require("fs")) {
 function getPackageVersion(
   module,
   startDir = process.cwd(),
-  fs = require("fs")
+  fs = require("node:fs")
 ) {
   const options = { paths: [startDir] };
   const manifestPath = require.resolve(`${module}/package.json`, options);
