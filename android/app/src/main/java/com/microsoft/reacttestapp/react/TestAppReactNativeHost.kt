@@ -26,7 +26,8 @@ import java.util.concurrent.CountDownLatch
 
 sealed class BundleSource {
     enum class Action {
-        RESTART, RELOAD
+        RESTART,
+        RELOAD
     }
 
     abstract fun moveTo(to: BundleSource): Action

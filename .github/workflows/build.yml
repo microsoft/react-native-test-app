@@ -113,7 +113,7 @@ jobs:
           yarn test:js --ci
         shell: bash
       - name: ktlint
-        if: ${{ matrix.platform == 'macos' }}
+        if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
         run: |
           brew install ktlint
           echo "::add-matcher::.github/ktlint.json"
