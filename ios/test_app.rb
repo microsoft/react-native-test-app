@@ -324,12 +324,24 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   app_project.native_targets.each do |target|
     case target.name
     when 'ReactTestApp'
+      # In Xcode 15, `unary_function` and `binary_function` are no longer
+      # provided in C++17 and newer Standard modes. See Xcode release notes:
+      # https://developer.apple.com/documentation/xcode-release-notes/xcode-15-release-notes#Deprecations
+      # Upstream issue: https://github.com/facebook/react-native/issues/37748
+      enable_cxx17_removed_unary_binary_function =
+        (rn_version >= 7200 && rn_version < 7207) ||
+        (rn_version >= 7100 && rn_version < 7114) ||
+        (rn_version.positive? && rn_version < 7014)
       target.build_configurations.each do |config|
         use_flipper = config.name == 'Debug' && supports_flipper
 
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << version_macro
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1' if use_fabric
+        if enable_cxx17_removed_unary_binary_function
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] <<
+            '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
+        end
         if use_flipper
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FB_SONARKIT_ENABLED=1'
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FLIPPER=1'
