@@ -329,7 +329,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
       # https://developer.apple.com/documentation/xcode-release-notes/xcode-15-release-notes#Deprecations
       # Upstream issue: https://github.com/facebook/react-native/issues/37748
       enable_cxx17_removed_unary_binary_function =
-        (rn_version >= 7200 && rn_version < 7207) ||
+        (rn_version >= 7200 && rn_version < 7205) ||
         (rn_version >= 7100 && rn_version < 7114) ||
         (rn_version.positive? && rn_version < 7014)
       target.build_configurations.each do |config|
