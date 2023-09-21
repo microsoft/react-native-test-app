@@ -51,14 +51,6 @@ def platform_config(key, project_root, target_platform)
   config[key] if !config.nil? && !config.empty?
 end
 
-def flipper_enabled?
-  @flipper_versions != false
-end
-
-def flipper_versions
-  @flipper_versions != false && (@flipper_versions || {})
-end
-
 def nearest_node_modules(project_root)
   path = find_file('node_modules', project_root)
   assert(!path.nil?, "Could not find 'node_modules'")
@@ -194,10 +186,6 @@ def resources_pod(project_root, target_platform, platforms)
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
-def use_flipper!(versions = {})
-  @flipper_versions = versions
-end
-
 def use_react_native!(project_root, target_platform, options)
   react_native = react_native_path(project_root, target_platform)
   version = package_version(react_native.to_s).segments
@@ -208,9 +196,7 @@ def use_react_native!(project_root, target_platform, options)
   include_react_native!(**options,
                         app_path: find_file('package.json', project_root).parent.to_s,
                         path: react_native.relative_path_from(project_root).to_s,
-                        rta_flipper_versions: flipper_versions,
-                        rta_project_root: project_root,
-                        rta_target_platform: target_platform)
+                        rta_project_root: project_root)
 end
 
 def make_project!(xcodeproj, project_root, target_platform, options)
@@ -315,7 +301,6 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   build_number = platform_config('buildNumber', project_root, target_platform)
   build_settings['PRODUCT_BUILD_NUMBER'] = build_number || '1'
 
-  supports_flipper = target_platform == :ios && flipper_enabled?
   use_fabric = fabric_enabled?(options, rn_version)
   use_turbomodule = new_architecture_enabled?(options, rn_version)
 
@@ -332,18 +317,12 @@ def make_project!(xcodeproj, project_root, target_platform, options)
         (rn_version >= v(0, 71, 0) && rn_version < v(0, 71, 4)) ||
         (rn_version.positive? && rn_version < v(0, 70, 14))
       target.build_configurations.each do |config|
-        use_flipper = config.name == 'Debug' && supports_flipper
-
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << version_macro
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1' if use_fabric
         if enable_cxx17_removed_unary_binary_function
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] <<
             '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
-        end
-        if use_flipper
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FB_SONARKIT_ENABLED=1'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FLIPPER=1'
         end
         if use_turbomodule
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
@@ -357,10 +336,6 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
         config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
         config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FABRIC' if use_fabric
-        if use_flipper
-          config.build_settings['OTHER_SWIFT_FLAGS'] << '-DFB_SONARKIT_ENABLED'
-          config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FLIPPER'
-        end
         config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_TURBOMODULE' if use_turbomodule
         if single_app.is_a? String
           config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
@@ -455,11 +430,6 @@ def use_test_app_internal!(target_platform, options)
 
     installer.pods_project.targets.each do |target|
       case target.name
-      when /\AFlipper/, 'libevent'
-        target.build_configurations.each do |config|
-          # Flipper and its dependencies log too many warnings
-          config.build_settings['WARNING_CFLAGS'] = ['-w']
-        end
       when /\AReact/
         target.build_configurations.each do |config|
           # Xcode 10.2 requires suppression of nullability for React

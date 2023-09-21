@@ -111,8 +111,6 @@ describe("gatherConfig()", () => {
         "ios/Podfile": join(
           "require_relative '../../test_app'",
           "",
-          "use_flipper! false unless ENV['USE_FLIPPER'] == '1'",
-          "",
           "workspace 'Test.xcworkspace'",
           "",
           "use_test_app!",
@@ -296,8 +294,6 @@ describe("gatherConfig()", () => {
         "ios/Podfile": join(
           "require_relative '../../test_app'",
           "",
-          "use_flipper! false unless ENV['USE_FLIPPER'] == '1'",
-          "",
           "workspace 'Test.xcworkspace'",
           "",
           "use_test_app!",
@@ -424,8 +420,6 @@ describe("gatherConfig()", () => {
         "ios/Podfile": join(
           "require_relative '../../test_app'",
           "",
-          "use_flipper! false unless ENV['USE_FLIPPER'] == '1'",
-          "",
           "workspace 'Test.xcworkspace'",
           "",
           "use_test_app!",
@@ -492,8 +486,6 @@ describe("gatherConfig()", () => {
         },
         Podfile: join(
           "require_relative '../test_app'",
-          "",
-          "use_flipper! false unless ENV['USE_FLIPPER'] == '1'",
           "",
           "workspace 'Test.xcworkspace'",
           "",
@@ -609,8 +601,6 @@ describe("gatherConfig()", () => {
         },
         "ios/Podfile": join(
           "require_relative '../../test_app'",
-          "",
-          "use_flipper! false unless ENV['USE_FLIPPER'] == '1'",
           "",
           "workspace 'Test.xcworkspace'",
           "",

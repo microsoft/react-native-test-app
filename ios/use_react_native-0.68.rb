@@ -3,20 +3,11 @@ require 'open3'
 require_relative('pod_helpers')
 
 def include_react_native!(options)
-  react_native = options[:path]
-  flipper_versions = options[:rta_flipper_versions]
-  project_root = options[:rta_project_root]
-  target_platform = options[:rta_target_platform]
+  react_native, project_root = options.values_at(:path, :rta_project_root)
 
   require_relative(File.join(project_root, react_native, 'scripts', 'react_native_pods'))
 
-  if target_platform == :ios && flipper_versions
-    Pod::UI.warn('Flipper is deprecated and is removed from react-native in 0.74')
-    Pod::UI.warn('Flipper will be removed from react-native-test-app in 3.0')
-  end
-
   use_new_architecture!(options)
-  use_flipper!(flipper_versions) if target_platform == :ios && flipper_versions
   use_react_native!(options)
 
   # If we're using react-native@main, we'll also need to prepare
