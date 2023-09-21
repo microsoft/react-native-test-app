@@ -1,5 +1,5 @@
 diff --git a/example/android/gradle.properties b/example/android/gradle.properties
-index 2577d91..bf833ad 100644
+index a2b58de..f90c5f0 100644
 --- a/example/android/gradle.properties
 +++ b/example/android/gradle.properties
 @@ -25,7 +25,7 @@ org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryEr
@@ -11,6 +11,8 @@ index 2577d91..bf833ad 100644
  # Jetifier randomly fails on these libraries
  android.jetifier.ignorelist=hermes-android
  
+ # Use this property to specify which architecture you want to build.
+ # You can also override it from the CLI using
 diff --git a/example/android/gradle/wrapper/gradle-wrapper.properties b/example/android/gradle/wrapper/gradle-wrapper.properties
 index 878fe04..3fa8f86 100644
 --- a/example/android/gradle/wrapper/gradle-wrapper.properties
@@ -24,14 +26,14 @@ index 878fe04..3fa8f86 100644
  validateDistributionUrl=true
  zipStoreBase=GRADLE_USER_HOME
 diff --git a/example/package.json b/example/package.json
-index 97105c7..6c3a680 100644
+index 4d6605e..b6adc1e 100644
 --- a/example/package.json
 +++ b/example/package.json
-@@ -33,7 +33,6 @@
+@@ -21,7 +21,6 @@
      "react": "18.2.0",
      "react-native": "^0.72.0",
      "react-native-macos": "^0.72.0",
 -    "react-native-safe-area-context": "^4.5.3",
-     "react-native-test-app": "workspace:*",
-     "react-native-windows": "^0.72.0",
-     "webdriverio": "^8.11.2"
+     "react-native-windows": "^0.72.0"
+   },
+   "devDependencies": {

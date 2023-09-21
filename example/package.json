@@ -17,11 +17,12 @@
     "start": "react-native start",
     "windows": "react-native run-windows --no-packager"
   },
-  "peerDependencies": {
-    "react": "17.0.1 - 18.2",
-    "react-native": "^0.0.0-0 || 0.64 - 0.73 || 1000.0.0",
-    "react-native-macos": "^0.0.0-0 || 0.64 || 0.66 || 0.68 || 0.71 - 0.72",
-    "react-native-windows": "^0.0.0-0 || 0.64 - 0.72"
+  "dependencies": {
+    "react": "18.2.0",
+    "react-native": "^0.72.0",
+    "react-native-macos": "^0.72.0",
+    "react-native-safe-area-context": "^4.5.3",
+    "react-native-windows": "^0.72.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -30,12 +31,7 @@
     "@types/react": "~18.2.0",
     "appium": "^2.0.0",
     "metro-react-native-babel-preset": "^0.76.8",
-    "react": "18.2.0",
-    "react-native": "^0.72.0",
-    "react-native-macos": "^0.72.0",
-    "react-native-safe-area-context": "^4.5.3",
     "react-native-test-app": "workspace:*",
-    "react-native-windows": "^0.72.0",
     "webdriverio": "^8.11.2"
   },
   "eslintConfig": {
@@ -68,6 +64,7 @@
         "navigation/stack",
         "netinfo",
         "popover",
+        "safe-area",
         "screens",
         "shimmer",
         "sqlite",

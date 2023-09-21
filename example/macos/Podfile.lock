@@ -578,7 +578,7 @@ SPEC CHECKSUMS:
   React-utils: 9097e90f9eb8df45d8ffe687e4c84d3f0c543818
   ReactCommon: 264af40c40bf5632f3773f33334173b746818235
   ReactNativeHost: 3cc863b178e289d813b92816b149a3acde276d6e
-  ReactTestApp-DevSupport: 5fd0815a03f06e26b120ac7b8a7ff29824fa700b
+  ReactTestApp-DevSupport: 117a31e8e40d50090ecb86c9e9a59a1a5b486f25
   ReactTestApp-Resources: 8539dac0f8d2ef3821827a537e37812104c6ff78
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 7ef818e41d5a09eb22b8a8d4ef5a5f9e2eff4292

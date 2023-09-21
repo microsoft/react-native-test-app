@@ -251,18 +251,10 @@ function androidManifestPath(sourceDir) {
 }
 
 /**
- * @param {string} sourceDir
  * @returns {string | undefined}
  */
-function iosProjectPath(sourceDir) {
+function iosProjectPath() {
   const rnDir = path.dirname(require.resolve("react-native/package.json"));
-  const needsDummyProject = cliPlatformIOSVersion(rnDir) < v(5, 0, 2);
-  if (needsDummyProject) {
-    // Prior to @react-native-community/cli-platform-ios v5.0.0, `project` was
-    // only used to infer `sourceDir` and `podfile`.
-    return path.join(sourceDir, "ReactTestApp-Dummy.xcodeproj");
-  }
-
   const needsProjectPath = cliPlatformIOSVersion(rnDir) < v(8, 0, 0);
   if (needsProjectPath) {
     // `sourceDir` and `podfile` detection was fixed in
@@ -323,7 +315,7 @@ function configureProjects({ android, ios, windows }) {
     if (cliPlatformIOSVersion(rnDir) >= v(8, 0, 0)) {
       config.ios = ios;
     }
-    const project = iosProjectPath(path.basename(ios.sourceDir));
+    const project = iosProjectPath();
     if (project) {
       config.ios = config.ios ?? {};
       config.ios.project = project;
