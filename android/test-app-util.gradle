@@ -134,34 +134,6 @@ ext.getArchitectures = {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
-// TODO: this will not work 0.74 onward.
-ext.getFlipperRecommendedVersion = { baseDir ->
-    def reactNativePath = findNodeModulesPath("react-native", baseDir)
-    def props = new Properties()
-    file("${reactNativePath}/template/android/gradle.properties").withInputStream {
-        props.load(it)
-    }
-
-    return props.getProperty("FLIPPER_VERSION")
-}
-
-ext.getFlipperVersion = { baseDir ->
-    def recommendedFlipperVersion = getFlipperRecommendedVersion(baseDir)
-    if (recommendedFlipperVersion == null) {
-        // Current React Native version doesn't support Flipper
-        return null
-    }
-
-    // Prefer user specified Flipper version
-    if (project.hasProperty("FLIPPER_VERSION")) {
-        def flipperVersion = project.getProperty("FLIPPER_VERSION")
-        return flipperVersion == "false" ? null : flipperVersion
-    }
-
-    // Use the recommended Flipper version
-    return recommendedFlipperVersion
-}
-
 ext.getManifest = {
     if (manifest == null) {
         def manifestFile = findFile("app.json")

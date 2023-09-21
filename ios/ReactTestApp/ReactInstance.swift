@@ -51,19 +51,6 @@ final class ReactInstance: NSObject, RNXHostConfig {
             andEventID: AEEventID(kAEGetURL)
         )
         #endif
-
-        #if USE_FLIPPER
-        if let flipper = FlipperClient.shared() {
-            flipper.add(FlipperKitLayoutPlugin(
-                rootNode: UIApplication.shared,
-                with: SKDescriptorMapper(defaults: ())
-            ))
-            flipper.add(FKUserDefaultsPlugin(suiteName: nil))
-            flipper.add(FlipperKitReactPlugin())
-            flipper.add(FlipperKitNetworkPlugin(networkAdapter: SKIOSNetworkAdapter()))
-            flipper.start()
-        }
-        #endif
     }
 
     init(forTestingPurposesOnly: Bool) {
