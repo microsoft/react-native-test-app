@@ -6601,11 +6601,6 @@ __metadata:
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.72.0"
     webdriverio: "npm:^8.11.2"
-  peerDependencies:
-    react: 17.0.1 - 18.2
-    react-native: ^0.0.0-0 || 0.64 - 0.73 || 1000.0.0
-    react-native-macos: ^0.0.0-0 || 0.64 || 0.66 || 0.68 || 0.71 - 0.73
-    react-native-windows: ^0.0.0-0 || 0.64 - 0.73
   languageName: unknown
   linkType: soft
 
@@ -11537,9 +11532,9 @@ __metadata:
   peerDependencies:
     "@expo/config-plugins": ">=5.0"
     react: 17.0.1 - 18.2
-    react-native: ^0.0.0-0 || 0.64 - 0.73 || 1000.0.0
-    react-native-macos: ^0.0.0-0 || 0.64 || 0.66 || 0.68 || 0.71 - 0.73
-    react-native-windows: ^0.0.0-0 || 0.64 - 0.73
+    react-native: ^0.0.0-0 || 0.66 - 0.73 || 1000.0.0
+    react-native-macos: ^0.0.0-0 || 0.66 || 0.68 || 0.71 - 0.73
+    react-native-windows: ^0.0.0-0 || 0.66 - 0.73
   peerDependenciesMeta:
     "@expo/config-plugins":
       optional: true

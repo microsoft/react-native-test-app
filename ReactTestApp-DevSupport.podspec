@@ -19,7 +19,7 @@ package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 version = package['version']
 
 Pod::Spec.new do |s|
-  s.name      = 'ReactTestApp-DevSupport'
+  s.name      = File.basename(__FILE__, '.podspec')
   s.version   = version
   s.author    = { package['author']['name'] => package['author']['email'] }
   s.license   = package['license']

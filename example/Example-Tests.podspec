@@ -3,7 +3,7 @@ require 'json'
 package = JSON.parse(File.read(File.join('..', 'package.json')))
 
 Pod::Spec.new do |s|
-  s.name      = 'Example-Tests'
+  s.name      = File.basename(__FILE__, '.podspec')
   s.version   = package['version']
   s.author    = { package['author']['name'] => package['author']['email'] }
   s.license   = package['license']
