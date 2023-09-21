@@ -5,6 +5,11 @@
       "channel": "latest"
     },
     {
+      "name": "releases/2.x",
+      "range": "2.x",
+      "channel": "release-2.x"
+    },
+    {
       "name": "releases/1.x",
       "range": "1.x",
       "channel": "release-1.x"
