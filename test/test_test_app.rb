@@ -103,22 +103,17 @@ class TestTestApp < Minitest::Test
 
   def test_react_native_pods
     [
-      ['1000.0.0', '0.70'],
-      ['0.70.0', '0.70'],
-      ['0.70.0-rc.1', '0.70'],
-      ['0.68.0', '0.68'],
-      ['0.68.0-rc.1', '0.68'],
-      ['0.67.3', '0.64'],
-      ['0.66.4', '0.64'],
-      ['0.65.1', '0.64'],
-      ['0.64.3', '0.64'],
-      ['0.64.0', '0.64'],
+      [v(1000, 0, 0), '0.70'],
+      [v(0, 70, 0), '0.70'],
+      [v(0, 68, 0), '0.68'],
+      [v(0, 67, 3), '0.64'],
+      [v(0, 66, 4), '0.64'],
     ].each do |target, profile|
-      assert_equal("use_react_native-#{profile}", react_native_pods(Gem::Version.new(target)))
+      assert_equal("use_react_native-#{profile}", react_native_pods(target))
     end
 
     assert_raises(RuntimeError) do
-      react_native_pods(Gem::Version.new('0.63.4'))
+      react_native_pods(v(0, 65, 3))
     end
   end
 

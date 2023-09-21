@@ -1,6 +1,5 @@
 require('json')
 require('pathname')
-require('rubygems/version')
 
 require_relative('pod_helpers')
 
@@ -135,12 +134,11 @@ def generate_assets_catalog!(project_root, target_platform, destination)
 end
 
 def react_native_pods(version)
-  v = version.release
-  if v == Gem::Version.new('0.0.0') || v >= Gem::Version.new('0.70')
+  if version.zero? || version >= v(0, 70, 0)
     'use_react_native-0.70'
-  elsif v >= Gem::Version.new('0.68')
+  elsif version >= v(0, 68, 0)
     'use_react_native-0.68'
-  elsif v >= Gem::Version.new('0.64')
+  elsif version >= v(0, 66, 0)
     'use_react_native-0.64'
   else
     raise "Unsupported React Native version: #{version}"
@@ -202,7 +200,8 @@ end
 
 def use_react_native!(project_root, target_platform, options)
   react_native = react_native_path(project_root, target_platform)
-  version = package_version(react_native.to_s)
+  version = package_version(react_native.to_s).segments
+  version = v(version[0], version[1], version[2])
 
   require_relative(react_native_pods(version))
 
