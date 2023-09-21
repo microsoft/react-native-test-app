@@ -34,7 +34,6 @@ describe("npm pack", () => {
       "android/app/src/devserverhelper-0.73/java/com/microsoft/reacttestapp/react/DevServerHelperCompat.kt",
       "android/app/src/devserverhelper-pre-0.73/java/com/microsoft/reacttestapp/react/DevServerHelperCompat.kt",
       "android/app/src/fabric/java/com/microsoft/reacttestapp/fabric/FabricJSIModulePackage.kt",
-      "android/app/src/flipper/java/com/microsoft/reacttestapp/ReactNativeFlipper.kt",
       "android/app/src/main/AndroidManifest.xml",
       "android/app/src/main/java/com/microsoft/reacttestapp/MainActivity.kt",
       "android/app/src/main/java/com/microsoft/reacttestapp/Session.kt",

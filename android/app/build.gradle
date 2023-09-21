@@ -62,7 +62,6 @@ project.ext.react = [
     bundleInRelease      : false,
     enableCamera         : !getSingleAppMode(),
     enableFabric         : isFabricEnabled(project),
-    enableFlipper        : getFlipperVersion(rootDir),
     enableHermes         : true,
     enableNewArchitecture: enableNewArchitecture,
 ]
@@ -115,11 +114,6 @@ android {
         def (appManifest, checksum) = validateManifest(rootDir)
         buildConfigField "String", "ReactTestApp_appManifest", "\"${appManifest}\""
         buildConfigField "String", "ReactTestApp_appManifestChecksum", "\"${checksum}\""
-
-        def recommendedFlipperVersion = getFlipperRecommendedVersion(rootDir)
-        buildConfigField "String",
-                         "ReactTestApp_recommendedFlipperVersion",
-                         recommendedFlipperVersion ? "\"${recommendedFlipperVersion}\"" : "\"0\""
 
         def singleApp = getSingleAppMode()
         buildConfigField "String", "ReactTestApp_singleApp", singleApp ? "\"${singleApp}\"" : "null"
@@ -319,10 +313,6 @@ android {
                 ? "src/reactapplication-pre-0.73/java"
                 : "src/reactapplication-0.73/java",
         ]
-
-        if (project.ext.react.enableFlipper) {
-            debug.java.srcDirs += "src/flipper/java"
-        }
     }
 
     splits {
@@ -397,21 +387,6 @@ dependencies {
         implementation libraries.androidCamera
         implementation libraries.androidCameraMlKitVision
         implementation libraries.mlKitBarcodeScanning
-    }
-
-    if (project.ext.react.enableFlipper) {
-        logger.warn("\nFlipper is deprecated and is removed from react-native in 0.74")
-        logger.warn("\nFlipper will be removed from react-native-test-app in 3.0")
-        def flipperVersion = project.ext.react.enableFlipper
-        debugImplementation("com.facebook.flipper:flipper:${flipperVersion}") {
-            exclude(group: "com.facebook.fbjni")
-        }
-        debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${flipperVersion}") {
-            exclude(group: "com.facebook.flipper")
-        }
-        debugImplementation("com.facebook.flipper:flipper-network-plugin:${flipperVersion}") {
-            exclude(group: "com.facebook.flipper")
-        }
     }
 }
 

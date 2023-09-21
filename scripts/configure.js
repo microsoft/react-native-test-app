@@ -635,8 +635,6 @@ const getConfig = (() => {
             Podfile: join(
               `require_relative '${testAppRelPath}/test_app'`,
               "",
-              "use_flipper! false unless ENV['USE_FLIPPER'] == '1'",
-              "",
               `workspace '${name}.xcworkspace'`,
               "",
               `use_test_app!`,

@@ -42,43 +42,6 @@ class TestTestApp < Minitest::Test
     end
   end
 
-  def test_flipper_enabled?
-    assert_predicate(self, :flipper_enabled?)
-
-    use_flipper!(false)
-
-    refute_predicate(self, :flipper_enabled?)
-
-    use_flipper!
-
-    assert_predicate(self, :flipper_enabled?)
-  ensure
-    use_flipper!(nil)
-  end
-
-  def test_flipper_versions
-    assert_empty(flipper_versions)
-
-    use_flipper!(false)
-
-    refute(flipper_versions)
-
-    versions = { 'Flipper' => '~> 0.41.1' }
-    use_flipper!(versions)
-
-    assert_equal(versions, flipper_versions)
-
-    use_flipper!
-
-    assert_empty(flipper_versions)
-
-    use_flipper!(false)
-
-    refute(flipper_versions)
-  ensure
-    use_flipper!(nil)
-  end
-
   def test_nearest_node_modules
     expected = fixture_path('test_app', 'node_modules')
 

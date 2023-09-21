@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
@@ -13,7 +12,6 @@ import com.facebook.react.bridge.JSIModulePackage
 import com.facebook.react.bridge.JavaScriptExecutorFactory
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.devsupport.interfaces.DevSupportManager
-import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
@@ -81,26 +79,6 @@ class TestAppReactNativeHost(
 
         beforeReactNativeInit()
         reactInstanceManager.createReactContextInBackground()
-
-        if (BuildConfig.DEBUG) {
-            try {
-                Class.forName("com.microsoft.reacttestapp.ReactNativeFlipper")
-                    .getMethod("initialize", Context::class.java, ReactInstanceManager::class.java)
-                    .invoke(null, application, reactInstanceManager)
-            } catch (e: ClassNotFoundException) {
-                val flipperVersion = BuildConfig.ReactTestApp_recommendedFlipperVersion
-                if (flipperVersion != "0") {
-                    val major = ReactNativeVersion.VERSION["major"] as Int
-                    val minor = ReactNativeVersion.VERSION["minor"] as Int
-                    Log.i(
-                        "ReactTestApp",
-                        "To use Flipper, define `FLIPPER_VERSION` in your `gradle.properties`. " +
-                            "Since you're using React Native $major.$minor, we recommend setting " +
-                            "`FLIPPER_VERSION=$flipperVersion`."
-                    )
-                }
-            }
-        }
     }
 
     fun addReactInstanceEventListener(listener: ReactInstanceEventListener) {

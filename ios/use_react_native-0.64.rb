@@ -1,20 +1,10 @@
-# rubocop:disable Metrics/CyclomaticComplexity
-
 require 'open3'
 
 def include_react_native!(options)
-  react_native, flipper_versions, project_root, target_platform = options.values_at(
-    :path, :rta_flipper_versions, :rta_project_root, :rta_target_platform
-  )
+  react_native, project_root = options.values_at(:path, :rta_project_root)
 
   require_relative(File.join(project_root, react_native, 'scripts', 'react_native_pods'))
 
-  if target_platform == :ios && flipper_versions
-    Pod::UI.warn('Flipper is deprecated and is removed from react-native in 0.74')
-    Pod::UI.warn('Flipper will be removed from react-native-test-app in 3.0')
-  end
-
-  use_flipper!(flipper_versions) if target_platform == :ios && flipper_versions
   use_react_native!(options)
 
   # If we're using react-native@main, we'll also need to prepare
@@ -37,5 +27,3 @@ def include_react_native!(options)
     end
   }
 end
-
-# rubocop:enable Metrics/CyclomaticComplexity
