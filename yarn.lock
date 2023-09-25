@@ -3573,6 +3573,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/minimist@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@types/minimist@npm:1.2.2"
+  checksum: b8da83c66eb4aac0440e64674b19564d9d86c80ae273144db9681e5eeff66f238ade9515f5006ffbfa955ceff8b89ad2bd8ec577d7caee74ba101431fb07045d
+  languageName: node
+  linkType: hard
+
 "@types/mustache@npm:^4.0.0":
   version: 4.2.2
   resolution: "@types/mustache@npm:4.2.2"
@@ -12170,6 +12177,7 @@ fsevents@^2.3.2:
     "@rnx-kit/react-native-host": ^0.2.8
     "@types/jest": ^29.0.0
     "@types/js-yaml": ^4.0.5
+    "@types/minimist": ^1.2.2
     "@types/mustache": ^4.0.0
     "@types/node": ^18.0.0
     "@types/prompts": ~2.4.0
