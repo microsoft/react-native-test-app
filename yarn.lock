@@ -2768,15 +2768,15 @@ __metadata:
   linkType: hard
 
 "@react-native-community/cli-platform-android@npm:^11.3.6":
-  version: 11.3.7
-  resolution: "@react-native-community/cli-platform-android@npm:11.3.7"
+  version: 11.3.8
+  resolution: "@react-native-community/cli-platform-android@npm:11.3.8"
   dependencies:
-    "@react-native-community/cli-tools": 11.3.7
+    "@react-native-community/cli-tools": 11.3.8
     chalk: ^4.1.2
     execa: ^5.0.0
     glob: ^7.1.3
     logkitty: ^0.7.1
-  checksum: 5f2f567af3077518d487005fa322f96461f2929762c0bbce6275af97ee00a798683835d481a42477ed3430a5aa141e8fb033d913b7ddbf4ab28aae19bedec4c3
+  checksum: 49a7ddefee42999184665c9d5fe58debbc6743cac6eb66f5dee16e963f674a423ba5afcbf6af7edc5915540547a71d35f493cbf937aa262814aa1eb7c9e04d12
   languageName: node
   linkType: hard
 
