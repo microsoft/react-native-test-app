@@ -137,7 +137,7 @@ function parseArgs(description, options, callback) {
 
   const args = require("minimist")(
     process.argv.slice(2),
-    minimistOptions(options)
+    minimistOptions(mergedOptions)
   );
 
   if (args["help"]) {

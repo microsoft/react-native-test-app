@@ -8,6 +8,7 @@ const path = require("path");
 const {
   findNearest,
   getPackageVersion,
+  readJSONFile,
   requireTransitive,
 } = require("../scripts/helpers");
 const { parseArgs } = require("../scripts/parseargs");
@@ -24,6 +25,20 @@ const { parseArgs } = require("../scripts/parseargs");
  *   assetItemFilters: string;
  *   assetFilters: string;
  * }} Assets;
+ *
+ * @typedef {string[] | { windows?: string[] }} Resources;
+ *
+ * @typedef {{
+ *   name?: string;
+ *   singleApp?: string;
+ *   resources?: Resources;
+ *   windows?: {
+ *     appxManifest?: string;
+ *     certificateKeyFile?: string;
+ *     certificatePassword?: string;
+ *     certificateThumbprint?: string;
+ *   };
+ * }} AppManifest
  */
 
 const templateView = {
@@ -250,11 +265,7 @@ function nuGetPackage(id, version) {
 }
 
 /**
- * @param {{
- *   certificateKeyFile?: string;
- *   certificateThumbprint?: string;
- *   certificatePassword?: string;
- * }} certificate
+ * @param {Required<AppManifest>["windows"]} certificate
  * @param {string} projectPath
  * @returns {string}
  */
@@ -525,8 +536,9 @@ function getBundleResources(manifestFilePath, fs = require("fs")) {
 
   if (manifestFilePath) {
     try {
-      const content = fs.readFileSync(manifestFilePath, textFileReadOptions);
-      const { name, singleApp, resources, windows } = JSON.parse(content);
+      /** @type {AppManifest} */
+      const manifest = readJSONFile(manifestFilePath, fs);
+      const { name, singleApp, resources, windows } = manifest;
       const projectPath = path.dirname(manifestFilePath);
       return {
         appName: name || defaultName,

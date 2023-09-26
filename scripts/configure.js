@@ -68,6 +68,9 @@ const { parseArgs } = require("../scripts/parseargs");
  */
 const cliPlatformIOS = "@react-native-community/cli-platform-ios";
 
+/** @type {{ encoding: "utf-8" }} */
+const utf8 = { encoding: "utf-8" };
+
 /**
  * Prints an error message to the console.
  * @param {string} message
@@ -421,9 +424,7 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
   }
 
   const config = path.join(testAppPath, "example", "react-native.config.js");
-  return fs
-    .readFileSync(config, { encoding: "utf-8" })
-    .replace(/Example/g, name);
+  return fs.readFileSync(config, utf8).replace(/Example/g, name);
 }
 
 /**
@@ -530,9 +531,7 @@ const getConfig = (() => {
                     source: path.join(templateDir, "index.js"),
                   },
                   "package.json": fs
-                    .readFileSync(path.join(templateDir, "package.json"), {
-                      encoding: "utf-8",
-                    })
+                    .readFileSync(path.join(templateDir, "package.json"), utf8)
                     .replace(/HelloWorld/g, name),
                 }),
           },
