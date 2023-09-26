@@ -657,8 +657,8 @@ function generateSolution(
     projDir
   );
 
-  fs.mkdirSync(projectFilesDestPath, { recursive: true });
-  fs.mkdirSync(destPath, { recursive: true });
+  fs.mkdirSync(projectFilesDestPath, mkdirRecursiveOptions);
+  fs.mkdirSync(destPath, mkdirRecursiveOptions);
 
   require("../scripts/validate-manifest").validate("file", destPath);
 
