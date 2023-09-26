@@ -33,8 +33,9 @@ function findNearest(
 
 /**
  * Reads and parses JSON file at specified path.
+ * @template [T = Record<string, unknown>]
  * @param {import("node:fs").PathLike} path
- * @returns {Record<string, unknown>}
+ * @returns {T}
  */
 function readJSONFile(path, fs = require("fs")) {
   return JSON.parse(fs.readFileSync(path, { encoding: "utf-8" }));
