@@ -77,23 +77,6 @@ function error(message) {
 }
 
 /**
- * Returns whether the specified package is installed.
- * @param {string} pkg The target package, e.g. "react-native-macos"
- * @param {boolean=} isRequired Whether the package is required
- * @return {boolean}
- */
-function isInstalled(pkg, isRequired = false) {
-  try {
-    return Boolean(require.resolve(pkg));
-  } catch (error) {
-    if (isRequired) {
-      throw error;
-    }
-    return false;
-  }
-}
-
-/**
  * Joins all specified lines into a single string.
  * @param {...string} lines
  * @returns {string}
@@ -981,7 +964,6 @@ exports.getConfig = getConfig;
 exports.getPlatformPackage = getPlatformPackage;
 exports.iosProjectPath = iosProjectPath;
 exports.isDestructive = isDestructive;
-exports.isInstalled = isInstalled;
 exports.join = join;
 exports.mergeConfig = mergeConfig;
 exports.packageSatisfiesVersionRange = packageSatisfiesVersionRange;
