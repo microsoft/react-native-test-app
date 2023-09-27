@@ -137,7 +137,7 @@ function projectRelativePath({
   flatten,
   init,
 }) {
-  const shouldFlatten = platforms.length === 1 && flatten;
+  const shouldFlatten = flatten && platforms.length === 1;
   if (init) {
     const prefix = shouldFlatten ? "" : "../";
     return `${prefix}node_modules/react-native-test-app`;
@@ -346,7 +346,7 @@ function configureProjects({ android, ios, windows }) {
  * @returns {string | FileCopy}
  */
 function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
-  const shouldFlatten = platforms.length === 1 && flatten;
+  const shouldFlatten = flatten && platforms.length === 1;
   if (shouldFlatten) {
     switch (platforms[0]) {
       case "android":
@@ -450,15 +450,12 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
 const getConfig = (() => {
   /** @type {PlatformConfiguration} */
   let configuration;
-
   return (
     /** @type {ConfigureParams} */ params,
-    /** @type {Platform} */ platform
+    /** @type {Platform} */ platform,
+    disableCache = false
   ) => {
-    if (
-      typeof configuration === "undefined" ||
-      "JEST_WORKER_ID" in process.env // skip caching when testing
-    ) {
+    if (disableCache || typeof configuration === "undefined") {
       const { name, templatePath, testAppPath, flatten, init } = params;
 
       // `.gitignore` files are only renamed when published.
@@ -726,21 +723,22 @@ const getConfig = (() => {
  * @param {ConfigureParams} params
  * @returns Configuration
  */
-function gatherConfig(params) {
+function gatherConfig(params, disableCache = false) {
   const { flatten, platforms } = params;
+  const shouldFlatten = flatten && platforms.length === 1;
+  const options = { ...params, flatten: shouldFlatten };
   const config = (() => {
-    const shouldFlatten = platforms.length === 1 && flatten;
-    const options = { ...params, flatten: shouldFlatten };
     return platforms.reduce(
       (config, platform) => {
         const { getDependencies, ...platformConfig } = getConfig(
           options,
-          platform
+          platform,
+          disableCache
         );
 
         const dependencies = getDependencies && getDependencies(params);
         if (!dependencies) {
-          /* istanbul ignore next */
+          /* node:coverage ignore next */
           return config;
         }
 
@@ -784,7 +782,7 @@ function gatherConfig(params) {
     return config;
   }
 
-  return mergeConfig(getConfig(params, "common"), config);
+  return mergeConfig(getConfig(options, "common", disableCache), config);
 }
 
 /**
@@ -909,7 +907,21 @@ function writeAllFiles(files, destination, fs = require("fs/promises")) {
       if (typeof content === "string") {
         await fs.writeFile(file, content);
       } else {
-        await fs.copyFile(content.source, file);
+        try {
+          await fs.copyFile(content.source, file);
+        } catch (e) {
+          if (path.basename(content.source) !== ".gitignore") {
+            throw e;
+          }
+
+          // This is a special case for `.gitignore` files. On CI, and only
+          // during testing, there is some sort of race condition that causes
+          // the files to be renamed _after_ `getConfig()` is called, even
+          // though the renaming should've happened during `npm pack`, long
+          // before this script is ever called.
+          const sourceDir = path.dirname(content.source);
+          await fs.copyFile(path.join(sourceDir, "_gitignore"), file);
+        }
       }
     })
   );

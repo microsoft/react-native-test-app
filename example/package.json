@@ -43,9 +43,6 @@
   "eslintConfig": {
     "extends": "../.github/eslint.config.js"
   },
-  "jest": {
-    "preset": "../.github/jest.config.js"
-  },
   "rnx-kit": {
     "//": "This configuration is only used for Viewfinder",
     "kitType": "app",

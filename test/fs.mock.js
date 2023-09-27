@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-// istanbul ignore file
+/* node:coverage disable */
 const { vol } = require("memfs");
 
 /**
