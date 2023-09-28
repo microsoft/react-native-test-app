@@ -37,6 +37,10 @@
       "matchPackagePrefixes": ["com.squareup.moshi"]
     },
     {
+      "groupName": "WebdriverIO",
+      "matchSourceUrlPrefixes": ["https://github.com/webdriverio/webdriverio"],
+    },
+    {
       "matchPackageNames": ["com.facebook.react:hermes-engine", "react"],
       "enabled": false
     },

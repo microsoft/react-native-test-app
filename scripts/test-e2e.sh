@@ -2,7 +2,6 @@
 set -eo
 
 appium="$(pwd)/node_modules/.bin/appium"
-jest="$(pwd)/node_modules/.bin/jest"
 rncli="$(pwd)/node_modules/.bin/react-native"
 
 function check_appium_server {
@@ -57,6 +56,4 @@ case $1 in
     exit 1
 esac
 
-export NODE_OPTIONS=--experimental-vm-modules
-export TEST_ARGS=$@
-$jest --config test/specs/jest.config.js
+TEST_ARGS=$@ node --test $(git ls-files '*.spec.mjs')

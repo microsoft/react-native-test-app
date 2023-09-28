@@ -1,7 +1,9 @@
 // @ts-check
 /** @type {import("webdriverio").RemoteOptions} */
-module.exports = {
+exports.config = {
+  runner: "local",
   port: 4723,
+  specs: ["**/*.spec.js"],
   capabilities: (() => {
     const args = process.env["TEST_ARGS"]?.toLowerCase() ?? "";
     const [targetPlatform, ...flags] = args.split(" ");
@@ -37,4 +39,5 @@ module.exports = {
   })(),
   logLevel: "info",
   waitforTimeout: 60000,
+  specFileRetries: 3,
 };
