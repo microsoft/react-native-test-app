@@ -30,7 +30,6 @@
     "plugins/**/*.js",
     "react-native.config.js",
     "scripts/**/*.js",
-    "test/**/*.test.js",
     "windows/test-app.js"
   ]
 }

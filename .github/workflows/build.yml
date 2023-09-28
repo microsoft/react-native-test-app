@@ -109,7 +109,7 @@ jobs:
             echo "::remove-matcher owner=eslint-stylish::"
           fi
           yarn tsc
-          yarn test:js --ci
+          yarn test:js
         shell: bash
       - name: ktlint
         if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
@@ -171,7 +171,7 @@ jobs:
         working-directory: example
       - name: Test `react-native config`
         run: |
-          yarn jest
+          node --test test/config.test.mjs
         working-directory: example
       - name: Test
         run: |
@@ -220,7 +220,7 @@ jobs:
         working-directory: template-example
       - name: react-native run-ios
         run: |
-          ../test/react-native.js run-ios
+          ../test/react-native.mjs run-ios
         working-directory: template-example
     timeout-minutes: 60
   android:
@@ -248,7 +248,7 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Test `react-native config`
         run: |
-          yarn jest
+          node --test test/config.test.mjs
         working-directory: example
       - name: Bundle JavaScript
         # Metro on nightlies currently fails with "SHA-1 for file index.js is
@@ -295,7 +295,7 @@ jobs:
           project-root: template-example
       - name: react-native run-android
         run: |
-          ../test/react-native.js run-android
+          ../test/react-native.mjs run-android
         working-directory: template-example
     timeout-minutes: 60
   macos:
@@ -334,7 +334,7 @@ jobs:
         working-directory: example
       - name: Test `react-native config`
         run: |
-          yarn jest
+          node --test test/config.test.mjs
         working-directory: example
       - name: Test
         if: ${{ github.event_name != 'schedule' }}
@@ -426,7 +426,7 @@ jobs:
         working-directory: example
       - name: Test `react-native config`
         run: |
-          yarn jest
+          node --test test/config.test.mjs
         working-directory: example
       - name: Set up NuGet sources
         if: ${{ github.event_name == 'schedule' }}
@@ -508,7 +508,7 @@ jobs:
         uses: ./.github/actions/yarn
       - name: Verify tarball content
         run: |
-          yarn test:js test/pack.test.js
+          node --test test/pack.test.mjs
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

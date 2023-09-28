@@ -67,14 +67,14 @@
     "generate:docs": "node scripts/generate-manifest-docs.mjs",
     "generate:schema": "node scripts/generate-schema.mjs",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@1.0.0",
-    "lint:js": "eslint $(git ls-files '*.[cm]js' '*.[jt]s' '*.tsx' ':!:*.config.js' ':!:.yarn/releases') && tsc && tsc --project scripts/tsconfig.esm.json",
+    "lint:js": "eslint $(git ls-files '*.[cm]js' '*.[jt]s' '*.tsx' ':!:*.config.js' ':!:.yarn/releases') && tsc && tsc --project tsconfig.esm.json",
     "lint:kt": "ktlint --code-style=android_studio --relative 'android/app/src/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
     "lint:swift": "swiftlint",
     "prepack": "node scripts/pack.mjs pre",
     "postpack": "node scripts/pack.mjs post",
     "set-react-version": "node scripts/set-react-version.mjs",
-    "test:js": "jest",
+    "test:js": "node --test --experimental-test-coverage $(git ls-files '*.test.mjs')",
     "test:rb": "bundle exec ruby -Ilib:test -e \"Dir.glob('test/test_*.rb').each { |file| require_relative file }\""
   },
   "dependencies": {
@@ -113,7 +113,6 @@
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^11.3.6",
     "@rnx-kit/eslint-plugin": "^0.5.0",
-    "@types/jest": "^29.0.0",
     "@types/js-yaml": "^4.0.5",
     "@types/minimist": "^1.2.2",
     "@types/mustache": "^4.0.0",
@@ -122,8 +121,6 @@
     "@types/semver": "^7.3.6",
     "@types/uuid": "^8.3.1",
     "eslint": "^8.0.0",
-    "eslint-plugin-jest": "^27.0.0",
-    "jest": "^29.2.1",
     "js-yaml": "^4.1.0",
     "memfs": "^4.0.0",
     "prettier": "^3.0.0",
@@ -163,9 +160,6 @@
   ],
   "eslintConfig": {
     "extends": "./.github/eslint.config.js"
-  },
-  "jest": {
-    "preset": "./.github/jest.config.js"
   },
   "prettier": "./.github/prettierrc.json",
   "release": {
