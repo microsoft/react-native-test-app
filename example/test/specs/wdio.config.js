@@ -1,7 +1,12 @@
 // @ts-check
-/** @type {import("webdriverio").RemoteOptions} */
-module.exports = {
+/**
+ * @typedef {import("webdriverio").RemoteOptions["logLevel"]} LogLevel;
+ * @typedef {import("webdriverio").RemoteOptions["runner"]} Runner;
+ */
+exports.config = {
+  runner: /** @type {Runner} */ ("local"),
   port: 4723,
+  specs: ["**/*.spec.js"],
   capabilities: (() => {
     const args = process.env["TEST_ARGS"]?.toLowerCase() ?? "";
     const [targetPlatform, ...flags] = args.split(" ");
@@ -26,8 +31,8 @@ module.exports = {
         return {
           platformName: "iOS",
           "appium:app": "com.microsoft.ReactTestApp",
-          "appium:deviceName": "iPhone 14",
-          "appium:platformVersion": "16.4",
+          "appium:deviceName": "iPhone 15 Pro",
+          "appium:platformVersion": "17.0",
           "appium:automationName": "XCUITest",
           ...features,
         };
@@ -35,6 +40,7 @@ module.exports = {
         throw new Error(`Unknown platform: ${targetPlatform}`);
     }
   })(),
-  logLevel: "info",
+  logLevel: /** @type {LogLevel} */ ("info"),
   waitforTimeout: 60000,
+  specFileRetries: 3,
 };

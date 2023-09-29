@@ -1,17 +1,22 @@
 // @ts-check
-jest.retryTimes(3);
+import { equal } from "node:assert/strict";
+import * as fs from "node:fs";
+import { after, before, describe, it } from "node:test";
+import { remote } from "webdriverio";
+import { findNearest } from "../../../scripts/helpers.js";
+import { config } from "./wdio.config.js";
 
 /**
  * @typedef {Awaited<ReturnType<typeof import("webdriverio").remote>>} Browser
+ * @typedef {keyof typeof config.capabilities} Capability
  */
 
 /**
- * @param {Browser} client
- * @param {string} featureName
+ * @param {Capability} name
  * @returns {"Off" | "On"}
  */
-function getFeature(client, featureName) {
-  return client.capabilities[`react:${featureName}`] ? "On" : "Off";
+function getCapability(name) {
+  return config.capabilities[name] ? "On" : "Off";
 }
 
 /**
@@ -22,10 +27,10 @@ function saveScreenshot(client) {
   const prefix = "react:";
   const prefixLength = prefix.length;
 
-  const { capabilities } = client;
+  const { capabilities } = config;
   const filename = ["Screenshot", capabilities["platformName"]];
 
-  for (const key of Object.keys(capabilities)) {
+  for (const key of /** @type {Capability[]} */ (Object.keys(capabilities))) {
     if (key.startsWith(prefix) && capabilities[key]) {
       filename.push(key.slice(prefixLength));
     }
@@ -34,7 +39,16 @@ function saveScreenshot(client) {
 }
 
 describe("App", () => {
-  const { remote } = require("webdriverio");
+  const reactNativeVersion = (() => {
+    const rnPath = findNearest("node_modules/react-native/package.json");
+    if (!rnPath) {
+      throw new Error("Could not find 'react-native'");
+    }
+
+    const manifest = fs.readFileSync(rnPath, { encoding: "utf-8" });
+    const { version } = JSON.parse(manifest);
+    return version;
+  })();
 
   /** @type {Browser} */
   let client;
@@ -44,7 +58,7 @@ describe("App", () => {
    * @returns {string}
    */
   function byId(id) {
-    const platform = client.capabilities["platformName"];
+    const platform = config.capabilities["platformName"];
     switch (platform) {
       case "Android":
         return `//*[@resource-id="${id}"]`;
@@ -62,7 +76,7 @@ describe("App", () => {
    * @returns {string}
    */
   function byLabel(id) {
-    const platform = client.capabilities["platformName"];
+    const platform = config.capabilities["platformName"];
     switch (platform) {
       case "Android":
         return `//*[@text="${id}"]`;
@@ -75,11 +89,11 @@ describe("App", () => {
     }
   }
 
-  beforeAll(async () => {
-    client = await remote(require("./wdio.config"));
+  before(async () => {
+    client = await remote(config);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await client.deleteSession();
   });
 
@@ -87,18 +101,17 @@ describe("App", () => {
     const appButton = await client.$(byLabel("App"));
     await appButton.click();
 
-    const { version } = require("react-native/package.json");
     const reactNative = await client.$(byId("react-native-value"));
-    expect(await reactNative.getText()).toBe(version);
+    equal(await reactNative.getText(), reactNativeVersion);
 
     const hermes = await client.$(byId("hermes-value"));
-    expect(await hermes.getText()).toBe(getFeature(client, "hermes"));
+    equal(await hermes.getText(), getCapability("react:hermes"));
 
     const fabric = await client.$(byId("fabric-value"));
-    expect(await fabric.getText()).toBe(getFeature(client, "fabric"));
+    equal(await fabric.getText(), getCapability("react:fabric"));
 
     const concurrent = await client.$(byId("concurrent-react-value"));
-    expect(await concurrent.getText()).toBe(getFeature(client, "concurrent"));
+    equal(await concurrent.getText(), getCapability("react:concurrent"));
 
     await saveScreenshot(client);
   });
