@@ -8,7 +8,7 @@ scripts_dir=$(cd -P "$(dirname "$0")" && pwd)
 
 function build_and_run {
   if [[ $1 == "ios" ]]; then
-    local simulator=$(TEST_ARGS=ios node --print 'require("./test/specs/wdio.config")["capabilities"]["appium:deviceName"]')
+    local simulator=$(TEST_ARGS=ios node --print 'require("./test/specs/wdio.config").config.capabilities["appium:deviceName"]')
     ${PACKAGE_MANAGER} $1 --simulator "${simulator}" --no-packager
   else
     ${PACKAGE_MANAGER} $1 --no-packager
