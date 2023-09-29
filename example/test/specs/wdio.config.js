@@ -1,7 +1,10 @@
 // @ts-check
-/** @type {import("webdriverio").RemoteOptions} */
+/**
+ * @typedef {import("webdriverio").RemoteOptions["logLevel"]} LogLevel;
+ * @typedef {import("webdriverio").RemoteOptions["runner"]} Runner;
+ */
 exports.config = {
-  runner: "local",
+  runner: /** @type {Runner} */ ("local"),
   port: 4723,
   specs: ["**/*.spec.js"],
   capabilities: (() => {
@@ -37,7 +40,7 @@ exports.config = {
         throw new Error(`Unknown platform: ${targetPlatform}`);
     }
   })(),
-  logLevel: "info",
+  logLevel: /** @type {LogLevel} */ ("info"),
   waitforTimeout: 60000,
   specFileRetries: 3,
 };

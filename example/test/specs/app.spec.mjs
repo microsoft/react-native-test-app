@@ -8,18 +8,15 @@ import { config } from "./wdio.config.js";
 
 /**
  * @typedef {Awaited<ReturnType<typeof import("webdriverio").remote>>} Browser
+ * @typedef {keyof typeof config.capabilities} Capability
  */
-const prefix = "react:";
 
 /**
- * @param {Browser} client
- * @param {string} featureName
+ * @param {Capability} name
  * @returns {"Off" | "On"}
  */
-function getFeature(client, featureName) {
-  // @ts-expect-error — TS cannot know that our config includes this capability
-  const capability = client.capabilities[prefix + featureName];
-  return capability ? "On" : "Off";
+function getCapability(name) {
+  return config.capabilities[name] ? "On" : "Off";
 }
 
 /**
@@ -27,15 +24,13 @@ function getFeature(client, featureName) {
  * @returns {Promise<Buffer>}
  */
 function saveScreenshot(client) {
+  const prefix = "react:";
   const prefixLength = prefix.length;
 
-  const { capabilities } = client;
-  // @ts-expect-error — TS cannot know that our config includes `platformName`
-  const platformName = capabilities["platformName"];
-  const filename = ["Screenshot", platformName];
+  const { capabilities } = config;
+  const filename = ["Screenshot", capabilities["platformName"]];
 
-  for (const key of Object.keys(capabilities)) {
-    // @ts-expect-error — TS cannot know that our config includes this capability
+  for (const key of /** @type {Capability[]} */ (Object.keys(capabilities))) {
     if (key.startsWith(prefix) && capabilities[key]) {
       filename.push(key.slice(prefixLength));
     }
@@ -63,8 +58,7 @@ describe("App", () => {
    * @returns {string}
    */
   function byId(id) {
-    // @ts-expect-error — TS cannot know that our config includes `platformName`
-    const platform = client.capabilities["platformName"];
+    const platform = config.capabilities["platformName"];
     switch (platform) {
       case "Android":
         return `//*[@resource-id="${id}"]`;
@@ -82,8 +76,7 @@ describe("App", () => {
    * @returns {string}
    */
   function byLabel(id) {
-    // @ts-expect-error — TS cannot know that our config includes `platformName`
-    const platform = client.capabilities["platformName"];
+    const platform = config.capabilities["platformName"];
     switch (platform) {
       case "Android":
         return `//*[@text="${id}"]`;
@@ -112,13 +105,13 @@ describe("App", () => {
     equal(await reactNative.getText(), reactNativeVersion);
 
     const hermes = await client.$(byId("hermes-value"));
-    equal(await hermes.getText(), getFeature(client, "hermes"));
+    equal(await hermes.getText(), getCapability("react:hermes"));
 
     const fabric = await client.$(byId("fabric-value"));
-    equal(await fabric.getText(), getFeature(client, "fabric"));
+    equal(await fabric.getText(), getCapability("react:fabric"));
 
     const concurrent = await client.$(byId("concurrent-react-value"));
-    equal(await concurrent.getText(), getFeature(client, "concurrent"));
+    equal(await concurrent.getText(), getCapability("react:concurrent"));
 
     await saveScreenshot(client);
   });
