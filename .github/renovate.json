@@ -48,6 +48,7 @@
       "matchPackageNames": [
         "@react-native/assets-registry",
         "@react-native/codegen",
+        "@react-native/config",
         "@react-native/gradle-plugin",
         "@react-native/js-polyfills",
         "@react-native/normalize-colors",

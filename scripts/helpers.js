@@ -76,7 +76,30 @@ function requireTransitive(dependencyChain, startDir = process.cwd()) {
   return require(p);
 }
 
+/**
+ * Returns the numerical value equivalent of the specified version string.
+ * @param {string} version
+ * @returns {number}
+ */
+function toVersionNumber(version) {
+  const [major, minor = 0, patch = 0] = version.split("-")[0].split(".");
+  return v(Number(major), Number(minor), Number(patch));
+}
+
+/**
+ * Returns the numerical value of the individual version identifiers combined.
+ * @param {number} major
+ * @param {number} minor
+ * @param {number} patch
+ * @returns {number}
+ */
+function v(major, minor, patch) {
+  return major * 1000000 + minor * 1000 + patch;
+}
+
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
 exports.readJSONFile = readJSONFile;
 exports.requireTransitive = requireTransitive;
+exports.toVersionNumber = toVersionNumber;
+exports.v = v;

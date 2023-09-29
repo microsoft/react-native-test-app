@@ -8,6 +8,8 @@
 
 #import <objc/runtime.h>
 
+#define MAKE_VERSION(maj, min, patch) ((maj * 1000000) + (min * 1000) + patch)
+
 IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
 {
     Method originalMethod = class_getInstanceMethod(class, originalSelector);
@@ -32,7 +34,7 @@ IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
 // MARK: - [0.70.0] Alerts don't show when using UIScene
 // See https://github.com/facebook/react-native/pull/35716
 
-#if !TARGET_OS_OSX && REACT_NATIVE_VERSION < 7200
+#if !TARGET_OS_OSX && REACT_NATIVE_VERSION < MAKE_VERSION(0, 72, 0)
 
 #import <React/RCTAlertController.h>
 #import <React/RCTUtils.h>
@@ -69,4 +71,4 @@ IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
 
 @end
 
-#endif  // !TARGET_OS_OSX && REACT_NATIVE_VERSION < 7100
+#endif  // !TARGET_OS_OSX && REACT_NATIVE_VERSION < 0.72.0

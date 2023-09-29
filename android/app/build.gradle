@@ -46,7 +46,7 @@ repositories {
     google()
 
     // TODO: Remove this block when we drop support for 0.64.
-    if (reactNativeVersion > 0 && reactNativeVersion < 6500) {
+    if (reactNativeVersion > 0 && reactNativeVersion < v(0, 65, 0)) {
         // Artifacts for 0.65+ are published to Maven Central. If we're on an
         // older version, we still need to use JCenter.
         // noinspection JcenterRepositoryObsolete
@@ -101,7 +101,7 @@ android {
 
     // TODO: Remove this block when minSdkVersion >= 24. See
     // https://stackoverflow.com/q/53402639 for details.
-    if (reactNativeVersion > 0 && reactNativeVersion < 6900) {
+    if (reactNativeVersion > 0 && reactNativeVersion < v(0, 69, 0)) {
         compileOptions {
             sourceCompatibility(JavaVersion.VERSION_1_8)
             targetCompatibility(JavaVersion.VERSION_1_8)
@@ -111,9 +111,9 @@ android {
     kotlinOptions {
         allWarningsAsErrors = true
         if (reactNativeVersion > 0) {
-            if (reactNativeVersion < 6900) {
+            if (reactNativeVersion < v(0, 69, 0)) {
                 jvmTarget = JavaVersion.VERSION_1_8
-            } else if (reactNativeVersion < 7300) {
+            } else if (reactNativeVersion < v(0, 73, 0)) {
                 jvmTarget = JavaVersion.VERSION_11
             }
             // else let `@react-native/gradle-plugin` handle this
@@ -147,7 +147,7 @@ android {
 
         if (enableNewArchitecture) {
             externalNativeBuild {
-                if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
+                if (reactNativeVersion > 0 && reactNativeVersion < v(0, 70, 0)) {
                     ndkBuild {
                         arguments "APP_PLATFORM=android-${project.ext.minSdkVersion}",
                                   "APP_STL=c++_shared",
@@ -190,7 +190,7 @@ android {
 
     if (enableNewArchitecture) {
         externalNativeBuild {
-            if (reactNativeVersion > 0 && reactNativeVersion < 7000) {
+            if (reactNativeVersion > 0 && reactNativeVersion < v(0, 70, 0)) {
                 ndkBuild {
                     path "${projectDir}/src/main/jni/Android.mk"
                 }
@@ -218,7 +218,7 @@ android {
                 preDebugBuild.dependsOn(packageReactNdkDebugLibs)
                 preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
 
-                if (reactNativeVersion < 7000) {
+                if (reactNativeVersion < v(0, 70, 0)) {
                     // Due to a bug in AGP, we have to explicitly set a dependency
                     // between configureNdkBuild* tasks and the preBuild tasks. This can
                     // be removed once this issue is resolved:
@@ -315,25 +315,25 @@ android {
 
             // TODO: Remove this block when we drop support for 0.67
             // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
-            reactNativeVersion > 0 && reactNativeVersion < 6800
+            reactNativeVersion > 0 && reactNativeVersion < v(0, 68, 0)
                 ? "src/reactinstanceeventlistener-pre-0.68/java"
                 : "src/reactinstanceeventlistener-0.68/java",
 
             // TODO: Remove this block when we drop support for 0.71
             // https://github.com/facebook/react-native/commit/e5dd9cdc6688e63e75a7e0bebf380be1a9a5fe2b
-            reactNativeVersion > 0 && reactNativeVersion < 7200
+            reactNativeVersion > 0 && reactNativeVersion < v(0, 72, 0)
                 ? "src/reactactivitydelegate-pre-0.72/java"
                 : "src/reactactivitydelegate-0.72/java",
 
             // TODO: Remove this block when we drop support for 0.72
             // https://github.com/facebook/react-native/commit/da358d0ec7a492edb804b9cdce70e7516ee518ae
-            reactNativeVersion > 0 && reactNativeVersion < 7300
+            reactNativeVersion > 0 && reactNativeVersion < v(0, 73, 0)
                 ? "src/devserverhelper-pre-0.73/java"
                 : "src/devserverhelper-0.73/java",
 
             // TODO: Remove this block when we drop support for 0.72
             // https://github.com/facebook/react-native/commit/c3f672cef7d4f287d3d729d33650f917ed132a0c
-            reactNativeVersion > 0 && reactNativeVersion < 7300
+            reactNativeVersion > 0 && reactNativeVersion < v(0, 73, 0)
                 ? "src/reactapplication-pre-0.73/java"
                 : "src/reactapplication-0.73/java",
         ]
@@ -359,7 +359,7 @@ dependencies {
     if (project.ext.react.enableHermes) {
         if (autodetectReactNativeVersion) {
             implementation("com.facebook.react:hermes-android")
-        } else if (reactNativeVersion >= 6900) {
+        } else if (reactNativeVersion >= v(0, 69, 0)) {
             implementation("com.facebook.react:hermes-engine:+") {
                 exclude(group: "com.facebook.fbjni")
             }
@@ -389,7 +389,7 @@ dependencies {
         implementation("com.facebook.react:react-native:${version}")
     }
 
-    if (reactNativeVersion > 0 && reactNativeVersion < 6800) {
+    if (reactNativeVersion > 0 && reactNativeVersion < v(0, 68, 0)) {
         // androidx.appcompat:appcompat:1.4.0+ breaks TextInput. This was fixed
         // in react-native 0.68. For more details, see
         // https://github.com/facebook/react-native/issues/31572.

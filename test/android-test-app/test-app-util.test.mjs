@@ -1,6 +1,7 @@
 // @ts-check
 import { equal, match } from "node:assert/strict";
 import { after, describe, it } from "node:test";
+import { toVersionNumber, v } from "../../scripts/helpers.js";
 import {
   reactNativeVersion,
   removeProject,
@@ -36,16 +37,6 @@ describe("test-app-util.gradle", () => {
    */
   function runGradle(setupFiles) {
     return runGradleWithProject(defaultTestProject, ["android"], setupFiles);
-  }
-
-  /**
-   * Returns version number.
-   * @param {string} version
-   * @returns
-   */
-  function toVersionNumber(version) {
-    const [major, minor, patch] = version.split("-")[0].split(".");
-    return Number(major) * 10000 + Number(minor) * 100 + Number(patch);
   }
 
   after(() => removeProject(defaultTestProject));
@@ -218,7 +209,7 @@ describe("test-app-util.gradle", () => {
     });
 
     equal(status, 0);
-    match(stdout, /getPackageVersionNumber\(\) = 10203/);
+    match(stdout, new RegExp(`getPackageVersionNumber\\(\\) = ${v(1, 2, 3)}`));
   });
 
   it("getSigningConfigs() fails if `storeFile` is missing", async () => {

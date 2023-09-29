@@ -39,7 +39,7 @@ def resolve_module_uncached(request, start_dir)
 end
 
 def supports_new_architecture?(react_native_version)
-  react_native_version.zero? || react_native_version >= 6800
+  react_native_version.zero? || react_native_version >= v(0, 68, 0)
 end
 
 def try_pod(name, podspec, project_root)
@@ -47,7 +47,7 @@ def try_pod(name, podspec, project_root)
 end
 
 def use_new_architecture!(options)
-  new_arch_enabled = new_architecture_enabled?(options, 10_000_000)
+  new_arch_enabled = new_architecture_enabled?(options, v(1_000, 0, 0))
 
   if new_arch_enabled || options[:fabric_enabled]
     Pod::UI.warn(
@@ -72,4 +72,8 @@ def use_new_architecture!(options)
   options[:new_arch_enabled] = true
   options[:turbomodule_enabled] = true
   ENV['RCT_NEW_ARCH_ENABLED'] = '1'
+end
+
+def v(major, minor, patch)
+  (major * 1_000_000) + (minor * 1_000) + patch
 end

@@ -7,9 +7,10 @@ import {
   findNearest,
   getPackageVersion,
   requireTransitive,
+  toVersionNumber,
 } from "../scripts/helpers.js";
 
-describe("findNearest", () => {
+describe("findNearest()", () => {
   it("returns null for non-existent files", () => {
     equal(findNearest("thisFileShouldNotExist"), null);
   });
@@ -38,7 +39,7 @@ describe("findNearest", () => {
   });
 });
 
-describe("getPackageVersion", () => {
+describe("getPackageVersion()", () => {
   const nodeModulesPath = fileURLToPath(
     new URL("__fixtures__/test_app/node_modules", import.meta.url)
   );
@@ -53,7 +54,7 @@ describe("getPackageVersion", () => {
   });
 });
 
-describe("requireTransitive", () => {
+describe("requireTransitive()", () => {
   it("imports transitive dependencies", () => {
     const mustache = requireTransitive([
       "react-native-windows",
@@ -76,5 +77,21 @@ describe("requireTransitive", () => {
     );
     notEqual(mustache, null);
     equal(typeof mustache.parse, "function");
+  });
+});
+
+describe("toVersionNumber()", () => {
+  it("converts a version string to its numerical value equivalent", () => {
+    equal(toVersionNumber("0.0.0-rc.1"), 0);
+    equal(toVersionNumber("0.0.0"), 0);
+    equal(toVersionNumber("0.0.1"), 1);
+    equal(toVersionNumber("0.1.0"), 1000);
+    equal(toVersionNumber("0.1.1"), 1001);
+    equal(toVersionNumber("1.0.0"), 1000000);
+    equal(toVersionNumber("1.0.1"), 1000001);
+    equal(toVersionNumber("1.1.0"), 1001000);
+    equal(toVersionNumber("1.1.1"), 1001001);
+    equal(toVersionNumber("1.1"), 1001000);
+    equal(toVersionNumber("1"), 1000000);
   });
 });

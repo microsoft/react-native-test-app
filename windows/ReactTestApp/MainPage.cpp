@@ -336,10 +336,6 @@ void MainPage::InitializeDebugMenu()
         SetFastRefreshMenuItem(FastRefreshMenuItem(), reactInstance_.UseFastRefresh());
         FastRefreshMenuItem().IsEnabled(reactInstance_.IsFastRefreshAvailable());
 
-        if constexpr (ReactInstance::Version < 6300) {
-            ConfigureBundlerMenuItem().Visibility(Visibility::Collapsed);
-        }
-
         DebugMenuBarItem().IsEnabled(true);
     }
 }
