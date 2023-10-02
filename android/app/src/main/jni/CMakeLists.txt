@@ -14,8 +14,8 @@ set(REACTTESTAPP_SOURCE_FILES
 
 # Suppress 'Manually-specified variables were not used by the project' warning
 set(UNUSED_VARIABLES
-  ${NODE_MODULES_DIR}         # No longer used in 0.72
-  ${REACT_ANDROID_BUILD_DIR}  # No longer used in 0.72
+  ${NODE_MODULES_DIR}         # TODO: No longer used in 0.72
+  ${REACT_ANDROID_BUILD_DIR}  # TODO: No longer used in 0.72
   ${REACT_COMMON_DIR}
   ${REACT_JNILIBS_DIR}
 )

@@ -39,7 +39,7 @@ def resolve_module_uncached(request, start_dir)
 end
 
 def supports_new_architecture?(react_native_version)
-  react_native_version.zero? || react_native_version >= v(0, 68, 0)
+  react_native_version.zero? || react_native_version >= v(0, 71, 0)
 end
 
 def try_pod(name, podspec, project_root)

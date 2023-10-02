@@ -233,22 +233,21 @@ ext.getVersionName = {
 }
 
 ext.isFabricEnabled = { project ->
-    if (isNewArchitectureEnabled(project)) {
-        return true
-    }
-
-    if (isPropertySet(project, "USE_FABRIC", "1")) {
-        def version = getPackageVersionNumber("react-native", project.rootDir)
-        return version == 0 || version >= v(0, 68, 0)
-    }
-
-    return false
+    return isNewArchitectureEnabled(project)
 }
 
 ext.isNewArchitectureEnabled = { project ->
     if (isPropertySet(project, "newArchEnabled", "true")) {
         def version = getPackageVersionNumber("react-native", project.rootDir)
-        return version == 0 || version >= v(0, 68, 0)
+        def isSupported = version == 0 || version >= v(0, 71, 0)
+        if (!isSupported) {
+            throw new GradleException([
+                "react-native 0.71 or greater is required for New",
+                "Architecture — disable `newArchEnabled` in your",
+                "`gradle.properties` or upgrade `react-native`"
+            ].join(" "))
+        }
+        return isSupported
     }
     return false
 }

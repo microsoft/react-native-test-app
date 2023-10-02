@@ -61,7 +61,6 @@ project.ext.react = [
     architectures        : getArchitectures(),
     bundleInRelease      : false,
     enableCamera         : !getSingleAppMode(),
-    enableFabric         : isFabricEnabled(project),
     enableHermes         : true,
     enableNewArchitecture: enableNewArchitecture,
 ]
@@ -118,7 +117,7 @@ android {
         def singleApp = getSingleAppMode()
         buildConfigField "String", "ReactTestApp_singleApp", singleApp ? "\"${singleApp}\"" : "null"
 
-        buildConfigField "boolean", "ReactTestApp_useFabric", project.ext.react.enableFabric.toString()
+        buildConfigField "boolean", "ReactTestApp_useFabric", enableNewArchitecture.toString()
 
         resValue "string", "app_name", project.ext.react.appName
 
@@ -126,28 +125,12 @@ android {
 
         if (enableNewArchitecture) {
             externalNativeBuild {
-                if (reactNativeVersion > 0 && reactNativeVersion < v(0, 70, 0)) {
-                    ndkBuild {
-                        arguments "APP_PLATFORM=android-${project.ext.minSdkVersion}",
-                                  "APP_STL=c++_shared",
-                                  "NDK_TOOLCHAIN_VERSION=clang",
-                                  "GENERATED_SRC_DIR=${buildDir}/generated/source",
-                                  "NODE_MODULES_DIR=${reactNativePath}/..",
-                                  "PROJECT_BUILD_DIR=${buildDir}",
-                                  "REACT_ANDROID_DIR=${reactNativePath}/ReactAndroid",
-                                  "REACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build"
-                        cFlags "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
-                        cppFlags "-std=c++17"
-                        targets "reacttestapp_appmodules"
-                    }
-                } else {
-                    cmake {
-                        arguments "-DANDROID_STL=c++_shared",
-                                  "-DNODE_MODULES_DIR=${reactNativePath}/..",
-                                  "-DPROJECT_BUILD_DIR=${buildDir}",
-                                  "-DREACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build",
-                                  "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid"
-                    }
+                cmake {
+                    arguments "-DANDROID_STL=c++_shared",
+                              "-DNODE_MODULES_DIR=${reactNativePath}/..",
+                              "-DPROJECT_BUILD_DIR=${buildDir}",
+                              "-DREACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build",
+                              "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid"
                 }
             }
             if (!project.ext.react.abiSplit) {
@@ -167,96 +150,31 @@ android {
         }
     }
 
-    if (enableNewArchitecture) {
-        externalNativeBuild {
-            if (reactNativeVersion > 0 && reactNativeVersion < v(0, 70, 0)) {
-                ndkBuild {
-                    path "${projectDir}/src/main/jni/Android.mk"
-                }
-            } else {
-                cmake {
-                    path "${projectDir}/src/main/jni/CMakeLists.txt"
-                }
-            }
+    externalNativeBuild {
+        cmake {
+            path "${projectDir}/src/main/jni/CMakeLists.txt"
+        }
+    }
+
+    if (!enableNewArchitecture && !usePrefabs) {
+        def version = getPackageVersion("react-native", rootDir)
+        def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
+
+        def prepareDebugJSI = tasks.register("prepareDebugJSI", Copy) {
+            def debugAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-debug.aar")
+            from(zipTree(debugAar.exists() ? debugAar : allAar).matching({ it.include "**/libjsi.so" }))
+            into("${buildDir}/outputs/jniLibs/debug")
         }
 
-        if (!usePrefabs) {
-            def reactAndroidProjectDir = project(":ReactAndroid").projectDir
-            def packageReactNdkDebugLibs = tasks.register("packageReactNdkDebugLibs", Copy) {
-                dependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck")
-                from("${reactAndroidProjectDir}/src/main/jni/prebuilt/lib")
-                into("${buildDir}/react-ndk/exported")
-            }
-            def packageReactNdkReleaseLibs = tasks.register("packageReactNdkReleaseLibs", Copy) {
-                dependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck")
-                from("${reactAndroidProjectDir}/src/main/jni/prebuilt/lib")
-                into("${buildDir}/react-ndk/exported")
-            }
-
-            afterEvaluate {
-                preDebugBuild.dependsOn(packageReactNdkDebugLibs)
-                preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
-
-                if (reactNativeVersion < v(0, 70, 0)) {
-                    // Due to a bug in AGP, we have to explicitly set a dependency
-                    // between configureNdkBuild* tasks and the preBuild tasks. This can
-                    // be removed once this issue is resolved:
-                    // https://issuetracker.google.com/issues/207403732
-                    configureNdkBuildRelease.dependsOn(preReleaseBuild)
-                    configureNdkBuildDebug.dependsOn(preDebugBuild)
-                    project.ext.react.architectures.each { architecture ->
-                        tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
-                            dependsOn("preDebugBuild")
-                        }
-                        tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
-                            dependsOn("preReleaseBuild")
-                        }
-                    }
-                } else {
-                    // Due to a bug in AGP, we have to explicitly set a dependency
-                    // between configureCMakeDebug* tasks and the preBuild tasks. This can
-                    // be removed once this issue is resolved:
-                    // https://issuetracker.google.com/issues/207403732
-                    configureCMakeDebug.dependsOn(preDebugBuild)
-                    configureCMakeRelWithDebInfo.dependsOn(preReleaseBuild)
-                    project.ext.react.architectures.each { architecture ->
-                        tasks.findByName("configureCMakeDebug[${architecture}]")?.configure {
-                            dependsOn("preDebugBuild")
-                        }
-                        tasks.findByName("configureCMakeRelWithDebInfo[${architecture}]")?.configure {
-                            dependsOn("preReleaseBuild")
-                        }
-                    }
-                }
-            }
-        }
-    } else {
-        externalNativeBuild {
-            cmake {
-                path "${projectDir}/src/main/jni/CMakeLists.txt"
-            }
+        def prepareReleaseJSI = tasks.register("prepareReleaseJSI", Copy) {
+            def releaseAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-release.aar")
+            from(zipTree(releaseAar.exists() ? releaseAar : allAar).matching({ it.include "**/libjsi.so" }))
+            into("${buildDir}/outputs/jniLibs/release")
         }
 
-        if (!usePrefabs) {
-            def version = getPackageVersion("react-native", rootDir)
-            def allAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}.aar")
-
-            def prepareDebugJSI = tasks.register("prepareDebugJSI", Copy) {
-                def debugAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-debug.aar")
-                from(zipTree(debugAar.exists() ? debugAar : allAar).matching({ it.include "**/libjsi.so" }))
-                into("${buildDir}/outputs/jniLibs/debug")
-            }
-
-            def prepareReleaseJSI = tasks.register("prepareReleaseJSI", Copy) {
-                def releaseAar = file("${reactNativePath}/android/com/facebook/react/react-native/${version}/react-native-${version}-release.aar")
-                from(zipTree(releaseAar.exists() ? releaseAar : allAar).matching({ it.include "**/libjsi.so" }))
-                into("${buildDir}/outputs/jniLibs/release")
-            }
-
-            afterEvaluate {
-                preDebugBuild.dependsOn(prepareDebugJSI)
-                preReleaseBuild.dependsOn(prepareReleaseJSI)
-            }
+        afterEvaluate {
+            preDebugBuild.dependsOn(prepareDebugJSI)
+            preReleaseBuild.dependsOn(prepareReleaseJSI)
         }
     }
 
@@ -287,7 +205,7 @@ android {
             project.ext.react.enableCamera ? "src/camera/java" : "src/no-camera/java",
 
             // TODO: Remove this block when we drop support for 0.67
-            project.ext.react.enableFabric ? "src/fabric/java" : "src/no-fabric/java",
+            enableNewArchitecture ? "src/fabric/java" : "src/no-fabric/java",
 
             // TODO: Remove this block when we drop support for 0.67
             // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
@@ -352,10 +270,6 @@ dependencies {
 
     if (autodetectReactNativeVersion) {
         implementation("com.facebook.react:react-android")
-    } else if (enableNewArchitecture) {
-        // This is only valid for 0.68 - 0.70. From 0.71 and on, we should be
-        // using prefabs.
-        implementation project(":ReactAndroid")
     } else {
         def version = getPackageVersion("react-native", rootDir)
         implementation("com.facebook.react:react-native:${version}")
@@ -390,25 +304,14 @@ dependencies {
     }
 }
 
-if (!usePrefabs) {
+if (!enableNewArchitecture && !usePrefabs) {
     configurations.all {
-        if (enableNewArchitecture) {
-            resolutionStrategy.dependencySubstitution {
-                substitute(module("com.facebook.react:react-native"))
-                    .using(project(":ReactAndroid"))
-                    .because("On New Architecture, we are building React Native from source")
-                substitute(module("com.facebook.react:hermes-engine"))
-                    .using(project(":ReactAndroid:hermes-engine"))
-                    .because("On New Architecture, we are building Hermes from source")
-            }
-        } else {
-            resolutionStrategy {
-                // Force version here otherwise Gradle will pick up a newer version:
-                // https://github.com/facebook/react-native/issues/35210
-                def version = getPackageVersion("react-native", rootDir)
-                force("com.facebook.react:react-native:${version}")
-                force("com.facebook.react:hermes-engine:${version}")
-            }
+        resolutionStrategy {
+            // Force version here otherwise Gradle will pick up a newer version:
+            // https://github.com/facebook/react-native/issues/35210
+            def version = getPackageVersion("react-native", rootDir)
+            force("com.facebook.react:react-native:${version}")
+            force("com.facebook.react:hermes-engine:${version}")
         }
     }
 }

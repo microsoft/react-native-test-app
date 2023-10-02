@@ -126,7 +126,9 @@ def generate_assets_catalog!(project_root, target_platform, destination)
 end
 
 def react_native_pods(version)
-  if version.zero? || version >= v(0, 70, 0)
+  if version.zero? || version >= v(0, 71, 0)
+    'use_react_native-0.71'
+  elsif version >= v(0, 70, 0)
     'use_react_native-0.70'
   elsif version >= v(0, 68, 0)
     'use_react_native-0.68'
