@@ -128,6 +128,7 @@ function inferReactNativeVersion({ name, version, dependencies }) {
     9: "^0.70",
     10: "^0.71",
     11: "^0.72",
+    12: "^0.73",
   }[m[1]];
   if (!v) {
     throw new Error(`Unsupported '${cliPackage}' version: ${cliVersion}`);
@@ -318,21 +319,29 @@ async function getProfile(v) {
     }
 
     default: {
+      const coreOnly = process.argv.includes("--core-only");
       const [
-        { version: rnMetroConfig },
+        { version: rnBabelPresetVersion },
+        { version: rnMetroConfigVersion },
         reactNative,
         { version: rnmVersion },
         { version: rnwVersion },
       ] = await Promise.all([
+        fetchPackageInfo(`@react-native/babel-preset@^${v}.0-0`),
         fetchPackageInfo(`@react-native/metro-config@^${v}.0-0`),
         fetchPackageInfo(`react-native@^${v}.0-0`),
-        fetchPackageInfo(`react-native-macos@^${v}.0-0`),
-        fetchPackageInfo(`react-native-windows@^${v}.0-0`),
+        coreOnly
+          ? Promise.resolve({ version: undefined })
+          : fetchPackageInfo(`react-native-macos@^${v}.0-0`),
+        coreOnly
+          ? Promise.resolve({ version: undefined })
+          : fetchPackageInfo(`react-native-windows@^${v}.0-0`),
       ]);
       const commonDeps = await resolveCommonDependencies(reactNative);
       return {
         ...commonDeps,
-        "@react-native/metro-config": rnMetroConfig,
+        "@react-native/babel-preset": rnBabelPresetVersion,
+        "@react-native/metro-config": rnMetroConfigVersion,
         "react-native": reactNative.version,
         "react-native-macos": rnmVersion,
         "react-native-windows": rnwVersion,
