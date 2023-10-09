@@ -393,6 +393,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
       :ios => config.resolve_build_setting('IPHONEOS_DEPLOYMENT_TARGET'),
       :macos => config.resolve_build_setting('MACOSX_DEPLOYMENT_TARGET'),
     },
+    :react_native_version => rn_version,
     :use_fabric => use_fabric,
     :use_turbomodule => use_turbomodule,
     :code_sign_identity => code_sign_identity || '',
@@ -408,7 +409,9 @@ def use_test_app_internal!(target_platform, options)
   project_target = make_project!(xcodeproj, project_root, target_platform, options)
   xcodeproj_dst, platforms = project_target.values_at(:xcodeproj_path, :platforms)
 
-  install! 'cocoapods', :deterministic_uuids => false if project_target[:use_turbomodule]
+  if project_target[:use_turbomodule] || project_target[:react_native_version] >= 7300
+    install! 'cocoapods', :deterministic_uuids => false
+  end
 
   require_relative(autolink_script_path(project_root, target_platform))
 
