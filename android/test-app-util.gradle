@@ -21,7 +21,7 @@ ext.checkEnvironment = { rootDir ->
     // Gradle version can be found in the template:
     // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/gradle/wrapper/gradle-wrapper.properties
     def (major, minor, patch) = gradle.gradleVersion.findAll(/\d+/)
-    def gradleVersion = (major as int) * 10000 + (minor as int) * 100 + (patch as int)
+    def gradleVersion = (major as int) * 10000 + (minor as int) * 100 + ((patch ?: 0) as int)
 
     def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
     if (reactNativeVersion == 0 || reactNativeVersion >= 7300) {
