@@ -50,7 +50,7 @@ class ComponentActivity : ReactActivity() {
         findClass(componentName)?.let {
             @Suppress("UNCHECKED_CAST")
             val fragmentClass = it as Class<Fragment>
-            val fragment = fragmentClass.newInstance()
+            val fragment = fragmentClass.getDeclaredConstructor().newInstance()
 
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()

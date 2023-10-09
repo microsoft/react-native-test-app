@@ -35,6 +35,8 @@ static String getKspVersion(String kotlinVersion) {
     return [
         // Run `scripts/update-ksp-versions.mjs` to update this list
         // update-ksp-versions start
+        "1.9.10-1.0.13",
+        "1.9.0-1.0.13",
         "1.8.22-1.0.11",
         "1.8.21-1.0.11",
         "1.8.20-1.0.11",
@@ -66,9 +68,9 @@ static int toVersionNumber(String version) {
 ext {
     apply(from: "${buildscript.sourceFile.getParent()}/test-app-util.gradle")
 
-    compileSdkVersion = 33
+    compileSdkVersion = 34
     minSdkVersion = 23
-    targetSdkVersion = 29
+    targetSdkVersion = 33
 
     reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
     autodetectReactNativeVersion = reactNativeVersion == 0 || reactNativeVersion >= 7100

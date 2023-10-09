@@ -23,7 +23,7 @@ function pod_install {
 function prepare {
   terminate_dev_server
   git checkout .
-  npm run set-react-version ${VERSION}
+  npm run set-react-version ${VERSION} -- --core-only
   git clean -dfqx --exclude='.yarn/cache' --exclude='example/*.png'
   ${PACKAGE_MANAGER} install
   pushd example 1> /dev/null
