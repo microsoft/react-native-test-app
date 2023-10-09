@@ -68,11 +68,16 @@ static int toVersionNumber(String version) {
 ext {
     apply(from: "${buildscript.sourceFile.getParent()}/test-app-util.gradle")
 
+    reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+
     compileSdkVersion = 34
     minSdkVersion = 23
-    targetSdkVersion = 33
 
-    reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+    // A bug in an older version of OkHttp causes it to throw 'expected Android
+    // API level 21+ but was 33'.
+    // TODO: Remove when we drop support for 0.64
+    targetSdkVersion = reactNativeVersion > 0 && reactNativeVersion < 6500 ? 29 : 33
+
     autodetectReactNativeVersion = reactNativeVersion == 0 || reactNativeVersion >= 7100
     enableNewArchitecture = isNewArchitectureEnabled(project)
     usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= 7100
