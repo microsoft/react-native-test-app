@@ -67,7 +67,7 @@ async function checkEnvironment() {
   // See https://nodejs.org/en/blog/release/v18.14.0.
 
   const [major, minor] = process.versions.node.split(".");
-  const nodeVersion = Number.parseInt(major) * 100 + Number.parseInt(minor);
+  const nodeVersion = Number(major) * 100 + Number(minor);
   if (nodeVersion < 1814) {
     console.error("Node.js v18.14 or greater is required");
     return false;
@@ -86,8 +86,7 @@ async function checkEnvironment() {
       npmVersion.on("close", () => {
         const version = Buffer.concat(npmVersionBuffer).toString().trim();
         const [major, minor] = version.split(".");
-        const npmVersion =
-          Number.parseInt(major) * 100 + Number.parseInt(minor);
+        const npmVersion = Number(major) * 100 + Number(minor);
         if (npmVersion < 903) {
           reject();
         } else {

@@ -10,6 +10,8 @@ const {
   getPackageVersion,
   readJSONFile,
   requireTransitive,
+  toVersionNumber,
+  v,
 } = require("../scripts/helpers");
 const { parseArgs } = require("../scripts/parseargs");
 
@@ -591,24 +593,6 @@ function getHermesVersion(rnwPath, fs = require("fs")) {
 }
 
 /**
- * Returns a single number for the specified version, suitable as a value for a
- * preprocessor definition.
- * @param {string} version
- * @returns {number}
- */
-function getVersionNumber(version) {
-  const components = version.split("-")[0].split(".");
-  const lastIndex = components.length - 1;
-  return components.reduce(
-    /** @type {(sum: number, value: string, index: number) => number} */
-    (sum, value, index) => {
-      return sum + parseInt(value) * Math.pow(100, lastIndex - index);
-    },
-    0
-  );
-}
-
-/**
  * Generates Visual Studio solution.
  * @param {string} destPath Destination path.
  * @param {{ autolink: boolean; useHermes: boolean | undefined; useNuGet: boolean; }} options
@@ -678,12 +662,12 @@ function generateSolution(
     rnWindowsPath,
     fs
   );
-  const rnWindowsVersionNumber = getVersionNumber(rnWindowsVersion);
+  const rnWindowsVersionNumber = toVersionNumber(rnWindowsVersion);
   const hermesVersion = useHermes && getHermesVersion(rnWindowsPath, fs);
   const usePackageReferences =
-    rnWindowsVersionNumber === 0 || rnWindowsVersionNumber >= 6800;
+    rnWindowsVersionNumber === 0 || rnWindowsVersionNumber >= v(0, 68, 0);
   const xamlVersion =
-    rnWindowsVersionNumber > 0 && rnWindowsVersionNumber < 6700
+    rnWindowsVersionNumber > 0 && rnWindowsVersionNumber < v(0, 67, 0)
       ? "2.6.0"
       : "2.7.0";
 
@@ -700,7 +684,7 @@ function generateSolution(
     [
       "ReactTestApp.vcxproj",
       {
-        "REACT_NATIVE_VERSION=10000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
+        "REACT_NATIVE_VERSION=1000000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
         "\\$\\(ReactTestAppPackageManifest\\)": appxManifest,
         "\\$\\(ReactNativeWindowsNpmVersion\\)": rnWindowsVersion,
         "<!-- ReactTestApp asset items -->": assetItems,
@@ -845,7 +829,7 @@ function generateSolution(
   // TODO: Remove when we drop support for 0.67.
   // Patch building with Visual Studio 2022. For more details, see
   // https://github.com/microsoft/react-native-windows/issues/9559
-  if (rnWindowsVersionNumber < 6800) {
+  if (rnWindowsVersionNumber < v(0, 68, 0)) {
     const dispatchQueue = path.join(
       rnWindowsPath,
       "Mso",
@@ -867,7 +851,7 @@ function generateSolution(
   // TODO: Remove when we drop support for 0.69.
   // Patch building with Visual Studio 2022. For more details, see
   // https://github.com/microsoft/react-native-windows/pull/10373
-  if (rnWindowsVersionNumber < 7000) {
+  if (rnWindowsVersionNumber < v(0, 70, 0)) {
     const helpers = path.join(
       rnWindowsPath,
       "Microsoft.ReactNative",
@@ -951,7 +935,6 @@ exports.findUserProjects = findUserProjects;
 exports.generateSolution = generateSolution;
 exports.getBundleResources = getBundleResources;
 exports.getHermesVersion = getHermesVersion;
-exports.getVersionNumber = getVersionNumber;
 exports.nuGetPackage = nuGetPackage;
 exports.parseResources = parseResources;
 exports.replaceContent = replaceContent;

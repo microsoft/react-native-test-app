@@ -3,7 +3,7 @@ const { createRunOncePlugin } = require("@expo/config-plugins");
 const {
   mergeContents,
 } = require("@expo/config-plugins/build/utils/generateCode");
-const fs = require("fs");
+const { getPackageVersion, toVersionNumber, v } = require("../scripts/helpers");
 const { withReactNativeHost } = require("./index");
 
 /**
@@ -38,9 +38,10 @@ function addContents(tag, src, newSrc, anchor) {
  * @returns {[string, string]}
  */
 function installerFor(version, indent = "    ") {
-  const minorVersion = Math.trunc(version / 100) % 100;
+  const minor = v(0, 1, 0);
+  const minorVersion = Math.trunc(version / minor) % minor;
 
-  if (version > 0 && version < 7200) {
+  if (version > 0 && version < v(0, 72, 0)) {
     const header = [
       "#if !USE_TURBOMODULE",
       "#pragma clang diagnostic push",
@@ -83,19 +84,6 @@ function installerFor(version, indent = "    ") {
 }
 
 /**
- * Returns the version number of the specified package.
- * @param {string} pkg
- * @returns {number} The version number
- */
-function versionOf(pkg) {
-  const manifestPath = require.resolve(pkg + "/package.json");
-  const manifest = fs.readFileSync(manifestPath, { encoding: "utf-8" });
-  const { version } = JSON.parse(manifest);
-  const [major, minor, patch] = version.split("-")[0].split(".").map(Number);
-  return major * 10000 + minor * 100 + patch;
-}
-
-/**
  * Plugin to inject Reanimated's JSI executor in the React bridge delegate.
  *
  * Only applies to iOS.
@@ -111,7 +99,8 @@ function withReanimatedExecutor(config) {
       );
     }
 
-    const [header, installer] = installerFor(versionOf("react-native"));
+    const rnVersion = toVersionNumber(getPackageVersion("react-native"));
+    const [header, installer] = installerFor(rnVersion);
 
     // Add Reanimated headers
     config.modResults.contents = addContents(

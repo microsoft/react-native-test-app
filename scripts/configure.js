@@ -8,8 +8,14 @@ const chalk = require("chalk");
 const fs = require("fs");
 const path = require("path");
 const semver = require("semver");
-const { findNearest, getPackageVersion, readJSONFile } = require("./helpers");
 const { parseArgs } = require("../scripts/parseargs");
+const {
+  findNearest,
+  getPackageVersion,
+  readJSONFile,
+  toVersionNumber,
+  v,
+} = require("./helpers");
 
 /**
  * @typedef {{ source: string; }} FileCopy;
@@ -66,7 +72,6 @@ const { parseArgs } = require("../scripts/parseargs");
  *   };
  * }} ProjectParams
  */
-const cliPlatformIOS = "@react-native-community/cli-platform-ios";
 
 /** @type {{ encoding: "utf-8" }} */
 const utf8 = { encoding: "utf-8" };
@@ -151,20 +156,24 @@ function projectRelativePath({
 }
 
 /**
- * Returns whether installed package satisfies specified version range.
- * @param {string} pkg
- * @param {string} versionRange
- * @returns {boolean}
+ * Returns the version number of `@react-native-community/cli-platform-ios`.
+ * @param {string} reactNativeDir
+ * @returns {number}
  */
-const packageSatisfiesVersionRange = (() => {
-  /** @type {Record<string, string>} */
-  const cache = {};
-  /** @type {(pkg: string, versionRange: string, startDir?: string) => boolean} */
-  return (pkg, versionRange, startDir = process.cwd()) => {
-    if (!cache[pkg]) {
-      cache[pkg] = getPackageVersion(pkg, startDir);
+const cliPlatformIOSVersion = (() => {
+  /** @type {number} */
+  let version;
+  /** @type {(reactNativeDir: string) => number} */
+  return (reactNativeDir) => {
+    if (!version) {
+      version = toVersionNumber(
+        getPackageVersion(
+          "@react-native-community/cli-platform-ios",
+          reactNativeDir
+        )
+      );
     }
-    return semver.satisfies(cache[pkg], versionRange);
+    return version;
   };
 })();
 
@@ -247,22 +256,14 @@ function androidManifestPath(sourceDir) {
  */
 function iosProjectPath(sourceDir) {
   const rnDir = path.dirname(require.resolve("react-native/package.json"));
-  const needsDummyProject = packageSatisfiesVersionRange(
-    cliPlatformIOS,
-    "<5.0.2",
-    rnDir
-  );
+  const needsDummyProject = cliPlatformIOSVersion(rnDir) < v(5, 0, 2);
   if (needsDummyProject) {
     // Prior to @react-native-community/cli-platform-ios v5.0.0, `project` was
     // only used to infer `sourceDir` and `podfile`.
     return path.join(sourceDir, "ReactTestApp-Dummy.xcodeproj");
   }
 
-  const needsProjectPath = packageSatisfiesVersionRange(
-    cliPlatformIOS,
-    "<8.0.0",
-    rnDir
-  );
+  const needsProjectPath = cliPlatformIOSVersion(rnDir) < v(8, 0, 0);
   if (needsProjectPath) {
     // `sourceDir` and `podfile` detection was fixed in
     // @react-native-community/cli-platform-ios v5.0.2 (see
@@ -319,7 +320,7 @@ function configureProjects({ android, ios, windows }) {
     // `ios.sourceDir` was added in 8.0.0
     // https://github.com/react-native-community/cli/commit/25eec7c695f09aea0ace7c0b591844fe8828ccc5
     const rnDir = path.dirname(require.resolve("react-native/package.json"));
-    if (packageSatisfiesVersionRange(cliPlatformIOS, ">=8.0.0", rnDir)) {
+    if (cliPlatformIOSVersion(rnDir) >= v(8, 0, 0)) {
       config.ios = ios;
     }
     const project = iosProjectPath(path.basename(ios.sourceDir));
@@ -468,7 +469,7 @@ const getConfig = (() => {
 
       const rnDir = path.dirname(require.resolve("react-native/package.json"));
       const projectPathFlag =
-        flatten && packageSatisfiesVersionRange(cliPlatformIOS, "<8.0.0", rnDir)
+        flatten && cliPlatformIOSVersion(rnDir) < v(8, 0, 0)
           ? " --project-path ."
           : "";
       const testAppRelPath = projectRelativePath(params);
@@ -977,7 +978,6 @@ exports.iosProjectPath = iosProjectPath;
 exports.isDestructive = isDestructive;
 exports.join = join;
 exports.mergeConfig = mergeConfig;
-exports.packageSatisfiesVersionRange = packageSatisfiesVersionRange;
 exports.projectRelativePath = projectRelativePath;
 exports.reactNativeConfig = reactNativeConfig;
 exports.readJSONFile = readJSONFile;

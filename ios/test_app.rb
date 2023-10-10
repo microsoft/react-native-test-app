@@ -279,7 +279,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
   react_native = react_native_path(project_root, target_platform)
   rn_version = package_version(react_native.to_s).segments
-  rn_version = (rn_version[0] * 10_000) + (rn_version[1] * 100) + rn_version[2]
+  rn_version = v(rn_version[0], rn_version[1], rn_version[2])
   version_macro = "REACT_NATIVE_VERSION=#{rn_version}"
 
   build_settings = {}
@@ -329,9 +329,9 @@ def make_project!(xcodeproj, project_root, target_platform, options)
       # https://developer.apple.com/documentation/xcode-release-notes/xcode-15-release-notes#Deprecations
       # Upstream issue: https://github.com/facebook/react-native/issues/37748
       enable_cxx17_removed_unary_binary_function =
-        (rn_version >= 7200 && rn_version < 7205) ||
-        (rn_version >= 7100 && rn_version < 7114) ||
-        (rn_version.positive? && rn_version < 7014)
+        (rn_version >= v(0, 72, 0) && rn_version < v(0, 72, 5)) ||
+        (rn_version >= v(0, 71, 0) && rn_version < v(0, 71, 4)) ||
+        (rn_version.positive? && rn_version < v(0, 70, 14))
       target.build_configurations.each do |config|
         use_flipper = config.name == 'Debug' && supports_flipper
 
@@ -409,7 +409,7 @@ def use_test_app_internal!(target_platform, options)
   project_target = make_project!(xcodeproj, project_root, target_platform, options)
   xcodeproj_dst, platforms = project_target.values_at(:xcodeproj_path, :platforms)
 
-  if project_target[:use_turbomodule] || project_target[:react_native_version] >= 7300
+  if project_target[:use_turbomodule] || project_target[:react_native_version] >= v(0, 73, 0)
     install! 'cocoapods', :deterministic_uuids => false
   end
 

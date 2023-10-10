@@ -20,18 +20,17 @@ ext.checkEnvironment = { rootDir ->
 
     // Gradle version can be found in the template:
     // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/gradle/wrapper/gradle-wrapper.properties
-    def (major, minor, patch) = gradle.gradleVersion.findAll(/\d+/)
-    def gradleVersion = (major as int) * 10000 + (minor as int) * 100 + ((patch ?: 0) as int)
+    def gradleVersion = toVersionNumber(gradle.gradleVersion)
 
     def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
-    if (reactNativeVersion == 0 || reactNativeVersion >= 7300) {
-        if (gradleVersion < 80100) {
+    if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 73, 0)) {
+        if (gradleVersion < v(8, 1, 0)) {
             warnGradle("8.1.1", "8.1.x", "0.73 and newer")
         }
-    } else if (reactNativeVersion >= 7200) {
+    } else if (reactNativeVersion >= v(0, 72, 0)) {
         // Gradle 7.5+ seems to be working with 0.72 so we will only recommend a
         // newer version if it's older.
-        if (gradleVersion < 70501) {
+        if (gradleVersion < v(7, 5, 1)) {
             warnGradle("8.0.2", "8.0.x", "0.72")
             logger.warn([
                 "> If you still need to work with older versions of React Native, ",
@@ -39,7 +38,7 @@ ext.checkEnvironment = { rootDir ->
             ].join(""))
         }
     } else {
-        if (gradleVersion < 70501 || gradleVersion >= 80000) {
+        if (gradleVersion < v(7, 5, 1) || gradleVersion >= v(8, 0, 0)) {
             warnGradle("7.6.1", "7.x", "0.71 and older")
         }
     }
@@ -182,9 +181,7 @@ ext.getPackageVersion = { packageName, baseDir ->
 }
 
 ext.getPackageVersionNumber = { packageName, baseDir ->
-    def version = getPackageVersion(packageName, baseDir)
-    def (major, minor, patch) = version.findAll(/\d+/)
-    return (major as int) * 10000 + (minor as int) * 100 + (patch as int)
+    return toVersionNumber(getPackageVersion(packageName, baseDir))
 }
 
 ext.getSigningConfigs = {
@@ -269,7 +266,7 @@ ext.isFabricEnabled = { project ->
 
     if (isPropertySet(project, "USE_FABRIC", "1")) {
         def version = getPackageVersionNumber("react-native", project.rootDir)
-        return version == 0 || version >= 6800
+        return version == 0 || version >= v(0, 68, 0)
     }
 
     return false
@@ -278,13 +275,22 @@ ext.isFabricEnabled = { project ->
 ext.isNewArchitectureEnabled = { project ->
     if (isPropertySet(project, "newArchEnabled", "true")) {
         def version = getPackageVersionNumber("react-native", project.rootDir)
-        return version == 0 || version >= 6800
+        return version == 0 || version >= v(0, 68, 0)
     }
     return false
 }
 
 ext.isPropertySet = { project, propertyName, value ->
     return project.hasProperty(propertyName) && project.getProperty(propertyName) == value
+}
+
+ext.toVersionNumber = { version ->
+    def (major, minor, patch) = version.findAll(/\d+/)
+    return v(major as int, minor as int, (patch ?: 0) as int)
+}
+
+ext.v = { major, minor, patch ->
+    return (major * 1000000) + (minor * 1000) + patch
 }
 
 ext.validateManifest = { baseDir ->

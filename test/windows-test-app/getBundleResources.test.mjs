@@ -109,9 +109,9 @@ describe("getBundleResources()", () => {
       packageCertificate: "",
     });
 
-    equal(
+    match(
       spy(console.warn).calls[0].arguments[0],
-      "Could not parse 'app.json':\nUnexpected end of JSON input"
+      /^Could not parse 'app.json':\n/
     );
   });
 
