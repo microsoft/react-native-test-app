@@ -26,7 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
-    "@react-native/metro-config": "^0.73.0",
+    "@react-native/metro-config": "^0.72.11",
     "@types/react": "~18.2.0",
     "appium": "^2.0.0",
     "metro-react-native-babel-preset": "^0.76.8",
