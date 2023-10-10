@@ -123,12 +123,12 @@ function inferReactNativeVersion({ name, version, dependencies }) {
   }
 
   const v = {
-    7: "^0.68",
-    8: "^0.69",
-    9: "^0.70",
-    10: "^0.71",
-    11: "^0.72",
-    12: "^0.73",
+    7: "^0.68.0-0",
+    8: "^0.69.0-0",
+    9: "^0.70.0-0",
+    10: "^0.71.0-0",
+    11: "^0.72.0-0",
+    12: "^0.73.0-0",
   }[m[1]];
   if (!v) {
     throw new Error(`Unsupported '${cliPackage}' version: ${cliVersion}`);
