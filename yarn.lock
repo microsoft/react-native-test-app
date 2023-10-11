@@ -1889,10 +1889,11 @@ __metadata:
   linkType: hard
 
 "@expo/config-plugins@npm:^7.0.0":
-  version: 7.4.0
-  resolution: "@expo/config-plugins@npm:7.4.0"
+  version: 7.5.0
+  resolution: "@expo/config-plugins@npm:7.5.0"
   dependencies:
     "@expo/config-types": ^50.0.0-alpha.1
+    "@expo/fingerprint": ^0.2.0
     "@expo/json-file": ~8.2.37
     "@expo/plist": ^0.0.20
     "@expo/sdk-runtime-versions": ^1.0.0
@@ -1907,7 +1908,7 @@ __metadata:
     slash: ^3.0.0
     xcode: ^3.0.1
     xml2js: 0.6.0
-  checksum: bf46881e4cb13b237b3dd69cbb67a330f7b763e3937671e208c52f5fe6fb2a9740008f17fc3dc06e46269472dd55d77da06f9228bbd2c933e1a6776c6fd44bce
+  checksum: 107f02b61ca815df6bb7a8b493b102aa77d2ae869d96a3b3959a6d7b14162a0b1e942754d3a38feab3d126a95c052d3127903f1ec6b103bc3140f7a791f66c69
   languageName: node
   linkType: hard
 
@@ -1915,6 +1916,23 @@ __metadata:
   version: 50.0.0-alpha.1
   resolution: "@expo/config-types@npm:50.0.0-alpha.1"
   checksum: 85783161b330abbf79c8f45e673fe07389640511aeb4ec4e765449fb5bd24c3fa5b23c25f0c861b7726f48656c61e39d938d26e5ec5bbe1ef53405b59681023c
+  languageName: node
+  linkType: hard
+
+"@expo/fingerprint@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@expo/fingerprint@npm:0.2.0"
+  dependencies:
+    "@expo/spawn-async": ^1.5.0
+    chalk: ^4.1.2
+    debug: ^4.3.4
+    find-up: ^5.0.0
+    minimatch: ^3.0.4
+    p-limit: ^3.1.0
+    resolve-from: ^5.0.0
+  bin:
+    fingerprint: bin/cli.js
+  checksum: b98a1d3924b93bec2f1681f7f053f98548b37436ef219a471f7e15e898eb4c94f0ad1cf8ad4304433a29d717710fe6137dc8c3e4f424d99e4ec40214feae5e33
   languageName: node
   linkType: hard
 
@@ -1944,6 +1962,15 @@ __metadata:
   version: 1.0.0
   resolution: "@expo/sdk-runtime-versions@npm:1.0.0"
   checksum: 0942d5a356f590e8dc795761456cc48b3e2d6a38ad2a02d6774efcdc5a70424e05623b4e3e5d2fec0cdc30f40dde05c14391c781607eed3971bf8676518bfd9d
+  languageName: node
+  linkType: hard
+
+"@expo/spawn-async@npm:^1.5.0":
+  version: 1.7.2
+  resolution: "@expo/spawn-async@npm:1.7.2"
+  dependencies:
+    cross-spawn: ^7.0.3
+  checksum: d99e5ff6d303ec9b0105f97c4fa6c65bca526c7d4d0987997c35cc745fa8224adf009942d01808192ebb9fa30619a53316641958631e85cf17b773d9eeda2597
   languageName: node
   linkType: hard
 
@@ -10351,7 +10378,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"p-limit@npm:^3.0.2":
+"p-limit@npm:^3.0.2, p-limit@npm:^3.1.0":
   version: 3.1.0
   resolution: "p-limit@npm:3.1.0"
   dependencies:
