@@ -11243,15 +11243,15 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native@npm:^0.72.0":
-  version: 0.72.4
-  resolution: "react-native@npm:0.72.4"
+  version: 0.72.6
+  resolution: "react-native@npm:0.72.6"
   dependencies:
     "@jest/create-cache-key-function": ^29.2.1
-    "@react-native-community/cli": 11.3.6
-    "@react-native-community/cli-platform-android": 11.3.6
-    "@react-native-community/cli-platform-ios": 11.3.6
+    "@react-native-community/cli": 11.3.7
+    "@react-native-community/cli-platform-android": 11.3.7
+    "@react-native-community/cli-platform-ios": 11.3.7
     "@react-native/assets-registry": ^0.72.0
-    "@react-native/codegen": ^0.72.6
+    "@react-native/codegen": ^0.72.7
     "@react-native/gradle-plugin": ^0.72.11
     "@react-native/js-polyfills": ^0.72.1
     "@react-native/normalize-colors": ^0.72.0
@@ -11286,7 +11286,7 @@ fsevents@^2.3.2:
     react: 18.2.0
   bin:
     react-native: cli.js
-  checksum: c66afb143b5df75bbbd7d88a885ef268cc8957213625f0d6eac1950a4748cd19d56ad4beea1ec0e0aa687e2dd1866df386134b6c96207c950c2203194c81c57b
+  checksum: 3cf0af092c0d6b9b6e67795664e324136f6d1a41c6a889737fb612e5ddb93d0537c890fe733e751fe3bbc139cbb4f9f6d9eff4467e8d8dc67194ac8b382fa168
   languageName: node
   linkType: hard
 
