@@ -13,12 +13,14 @@ import { fileURLToPath } from "node:url";
 import { readJSONFile } from "./helpers.js";
 
 /**
- * @typedef {{
- *   name?: string;
- *   version?: string;
- *   dependencies?: Record<string, string>;
- *   peerDependencies?: Record<string, string>;
- * }} Manifest
+ * @typedef {Partial<{
+ *   name: string;
+ *   version: string;
+ *   dependencies: Record<string, string>;
+ *   peerDependencies: Record<string, string>;
+ *   devDependencies: Record<string, string | undefined>;
+ *   resolutions: Record<string, string | undefined>;
+ * }>} Manifest
  */
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];
@@ -368,17 +370,21 @@ getProfile(version)
 
     const manifests = ["package.json", "example/package.json"];
     for (const manifestPath of manifests) {
-      const manifest =
-        /** @type {{ devDependencies: Record<string, string | undefined>; resolutions?: Record<string, string | undefined>; }} */ (
-          readJSONFile(manifestPath)
-        );
+      const manifest = /** @type {Manifest} */ (readJSONFile(manifestPath));
+      const { dependencies, devDependencies, resolutions } = manifest;
+      if (!devDependencies) {
+        throw new Error("Expected 'devDependencies' to be declared");
+      }
+
       for (const packageName of keys(profile)) {
+        const deps = dependencies?.[packageName]
+          ? dependencies
+          : devDependencies;
         const version = profile[packageName];
-        manifest["devDependencies"][packageName] = version;
+        deps[packageName] = version;
       }
 
       // Reset resolutions so we don't get old packages
-      const resolutions = manifest["resolutions"];
       if (resolutions) {
         for (const pkg of Object.keys(resolutions)) {
           if (
