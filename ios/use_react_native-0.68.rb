@@ -10,6 +10,11 @@ def include_react_native!(options)
 
   require_relative(File.join(project_root, react_native, 'scripts', 'react_native_pods'))
 
+  if target_platform == :ios && flipper_versions
+    Pod::UI.warn('Flipper is deprecated and is removed from react-native in 0.74')
+    Pod::UI.warn('Flipper will be removed from react-native-test-app in 3.0')
+  end
+
   use_new_architecture!(options)
   use_flipper!(flipper_versions) if target_platform == :ios && flipper_versions
   use_react_native!(options)
