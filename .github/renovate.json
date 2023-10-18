@@ -22,11 +22,6 @@
       "matchPackagePrefixes": ["androidx.test.ext"]
     },
     {
-      "groupName": "Definitely Typed",
-      "matchDatasources": ["npm"],
-      "matchPackagePrefixes": ["@types/"]
-    },
-    {
       "groupName": "Kotlin",
       "matchDatasources": ["maven"],
       "matchPackagePrefixes": ["org.jetbrains.kotlin"]
@@ -40,6 +35,11 @@
       "groupName": "Moshi",
       "matchDatasources": ["maven"],
       "matchPackagePrefixes": ["com.squareup.moshi"]
+    },
+    {
+      "groupName": "TypeScript type definitions",
+      "matchDatasources": ["npm"],
+      "matchPackagePrefixes": ["@types/"]
     },
     {
       "groupName": "WebdriverIO",
