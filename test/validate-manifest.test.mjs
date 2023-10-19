@@ -16,12 +16,6 @@ describe("validate-manifest", () => {
   /** @type {typeof validateManifestActual} */
   const validateManifest = (p) => validateManifestActual(p, fs);
 
-  /*
-  jest.spyOn(global.process, "exit").mockImplementation((code) => {
-    throw new Error(code?.toString() ?? "0");
-  });
-  */
-
   afterEach(() => {
     fs.__setMockFiles();
   });

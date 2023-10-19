@@ -352,6 +352,7 @@ async function getProfile(v) {
 }
 
 if (!(await checkEnvironment())) {
+  // eslint-disable-next-line local/no-process-exit
   process.exit(1);
 }
 
@@ -361,6 +362,7 @@ if (!isValidVersion(version)) {
   console.log(
     `Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`
   );
+  // eslint-disable-next-line local/no-process-exit
   process.exit(1);
 }
 
