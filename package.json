@@ -74,6 +74,7 @@
     "prepack": "node scripts/pack.mjs pre",
     "postpack": "node scripts/pack.mjs post",
     "set-react-version": "node scripts/set-react-version.mjs",
+    "show-affected": "node scripts/affected.mjs",
     "test:js": "node --test --experimental-test-coverage $(git ls-files '*.test.mjs')",
     "test:rb": "bundle exec ruby -Ilib:test -e \"Dir.glob('test/test_*.rb').each { |file| require_relative file }\""
   },
@@ -123,6 +124,7 @@
     "eslint": "^8.0.0",
     "js-yaml": "^4.1.0",
     "memfs": "^4.0.0",
+    "minimatch": "^9.0.0",
     "prettier": "^3.0.0",
     "react": "18.2.0",
     "react-native": "^0.72.0",

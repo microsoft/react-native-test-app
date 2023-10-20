@@ -1,16 +1,24 @@
 "platform: Android":
   - android/**/*
+  - common/**/*
   - example/android/**/*
+  - scripts/*.js
   - test/android-test-app/**/*
   - test-app.gradle
 "platform: iOS":
+  - Gemfile*
   - ReactTestApp-DevSupport.podspec
+  - common/**/*
   - example/ios/**/*
   - ios/**/*
+  - scripts/*.js
+  - scripts/xcodebuild.sh
   - test/*.rb
   - test_app.rb
 "platform: macOS":
+  - Gemfile*
   - ReactTestApp-DevSupport.podspec
+  - common/**/*
   - example/macos/**/*
   - ios/*.rb
   - ios/ReactTestApp/Manifest.swift
@@ -20,8 +28,13 @@
   - ios/ReactTestApp/Session.swift
   - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
   - macos/**/*
+  - scripts/*.js
+  - scripts/xcodebuild.sh
   - test/*.rb
 "platform: Windows":
+  - common/**/*
   - example/windows/**/*
+  - scripts/*.ps1
+  - scripts/*.js
   - test/windows-test-app/**/*
   - windows/**/*

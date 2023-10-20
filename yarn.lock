@@ -11158,6 +11158,7 @@ fsevents@^2.3.2:
     fast-xml-parser: ^4.0.0
     js-yaml: ^4.1.0
     memfs: ^4.0.0
+    minimatch: ^9.0.0
     minimist: ^1.2.8
     prettier: ^3.0.0
     prompts: ^2.4.0
