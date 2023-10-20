@@ -167,10 +167,7 @@ jobs:
         working-directory: example
       - name: Determine whether the iOS app needs to be built
         id: affected
-        run: |
-          if [[ "$(yarn show-affected origin/${{ github.base_ref }})" = *"ios"* ]]; then
-            echo 'ios=true' >> $GITHUB_OUTPUT
-          fi
+        uses: ./.github/actions/affected
       - name: Install Pods
         if: ${{ steps.affected.outputs.ios != '' }}
         uses: ./.github/actions/cocoapods
@@ -222,10 +219,7 @@ jobs:
         working-directory: template-example
       - name: Determine whether the iOS app needs to be built
         id: affected
-        run: |
-          if [[ "$(yarn show-affected origin/${{ github.base_ref }})" = *"ios"* ]]; then
-            echo 'ios=true' >> $GITHUB_OUTPUT
-          fi
+        uses: ./.github/actions/affected
       - name: Determine project directory
         id: configure
         if: ${{ steps.affected.outputs.ios != '' }}
@@ -293,11 +287,7 @@ jobs:
         id: affected
         # Nightlies currently fail on Windows because of wrong path separators.
         if: ${{ github.event_name != 'schedule' || runner.os != 'Windows' }}
-        run: |
-          if [[ "$(yarn show-affected origin/${{ github.base_ref }})" = *"android"* ]]; then
-            echo 'android=true' >> $GITHUB_OUTPUT
-          fi
-        shell: bash
+        uses: ./.github/actions/affected
       - name: Build
         if: ${{ steps.affected.outputs.android != '' }}
         uses: ./.github/actions/gradle
@@ -333,11 +323,7 @@ jobs:
         working-directory: template-example
       - name: Determine whether the Android app needs to be built
         id: affected
-        run: |
-          if [[ "$(yarn show-affected origin/${{ github.base_ref }})" = *"android"* ]]; then
-            echo 'android=true' >> $GITHUB_OUTPUT
-          fi
-        shell: bash
+        uses: ./.github/actions/affected
       - name: Build
         if: ${{ steps.affected.outputs.android != '' }}
         uses: ./.github/actions/gradle
@@ -379,10 +365,7 @@ jobs:
         working-directory: example
       - name: Determine whether the macOS app needs to be built
         id: affected
-        run: |
-          if [[ "$(yarn show-affected origin/${{ github.base_ref }})" = *"macos"* ]]; then
-            echo 'macos=true' >> $GITHUB_OUTPUT
-          fi
+        uses: ./.github/actions/affected
       - name: Install Pods
         if: ${{ steps.affected.outputs.macos != '' }}
         uses: ./.github/actions/cocoapods
@@ -450,10 +433,7 @@ jobs:
         working-directory: template-example
       - name: Determine whether the macOS app needs to be built
         id: affected
-        run: |
-          if [[ "$(yarn show-affected origin/${{ github.base_ref }})" = *"macos"* ]]; then
-            echo 'macos=true' >> $GITHUB_OUTPUT
-          fi
+        uses: ./.github/actions/affected
       - name: Determine project directory
         id: configure
         if: ${{ steps.affected.outputs.macos != '' }}
@@ -511,11 +491,7 @@ jobs:
         working-directory: example
       - name: Determine whether the Windows app needs to be built
         id: affected
-        run: |
-          if [[ "$(yarn show-affected origin/${{ github.base_ref }})" = *"windows"* ]]; then
-            echo 'windows=true' >> $GITHUB_OUTPUT
-          fi
-        shell: bash
+        uses: ./.github/actions/affected
       - name: Set up NuGet sources
         if: ${{ steps.affected.outputs.windows != '' && github.event_name == 'schedule' }}
         run: |
@@ -567,11 +543,7 @@ jobs:
         working-directory: template-example
       - name: Determine whether the Windows app needs to be built
         id: affected
-        run: |
-          if [[ "$(yarn show-affected origin/${{ github.base_ref }})" = *"windows"* ]]; then
-            echo 'windows=true' >> $GITHUB_OUTPUT
-          fi
-        shell: bash
+        uses: ./.github/actions/affected
       - name: Build
         if: ${{ steps.affected.outputs.windows != '' }}
         run: |
