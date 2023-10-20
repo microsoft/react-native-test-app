@@ -253,14 +253,14 @@ jobs:
       - name: Bundle JavaScript
         # Metro on nightlies currently fails with "SHA-1 for file index.js is
         # not computed" so we'll skip this step for now.
-        if: ${{ github.event_name != 'schedule' || runner.os != 'Windows' }}
+        if: ${{ github.event_name != 'schedule' || matrix.os == 'ubuntu-latest' }}
         run: |
           yarn build:android || yarn build:android
         shell: bash
         working-directory: example
       - name: Build
         # Nightlies currently fail on Windows because of wrong path separators.
-        if: ${{ github.event_name != 'schedule' || runner.os != 'Windows' }}
+        if: ${{ github.event_name != 'schedule' || matrix.os == 'ubuntu-latest' }}
         uses: ./.github/actions/gradle
         with:
           project-root: example
