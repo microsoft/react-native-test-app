@@ -130,7 +130,7 @@ function getAffectedPlatforms(baseCommit = getBaseCommit()) {
 }
 
 const { [2]: base } = process.argv;
-const output = getAffectedPlatforms(base).join("\n");
-if (output) {
-  console.log(output);
+const platforms = getAffectedPlatforms(base);
+if (platforms.length > 0) {
+  console.log(platforms.join("\n"));
 }

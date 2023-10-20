@@ -1,4 +1,8 @@
 "platform: Android":
+  - .github/actions/gradle/*
+  - .github/actions/init-test-app/*
+  - .github/actions/setup-toolchain/*
+  - .github/workflows/build.yml
   - android/**/*
   - common/**/*
   - example/android/**/*
@@ -6,6 +10,10 @@
   - test/android-test-app/**/*
   - test-app.gradle
 "platform: iOS":
+  - .github/actions/cocoapods/*
+  - .github/actions/init-test-app/*
+  - .github/actions/setup-toolchain/*
+  - .github/workflows/build.yml
   - Gemfile*
   - ReactTestApp-DevSupport.podspec
   - common/**/*
@@ -16,6 +24,10 @@
   - test/*.rb
   - test_app.rb
 "platform: macOS":
+  - .github/actions/cocoapods/*
+  - .github/actions/init-test-app/*
+  - .github/actions/setup-toolchain/*
+  - .github/workflows/build.yml
   - Gemfile*
   - ReactTestApp-DevSupport.podspec
   - common/**/*
@@ -32,6 +44,9 @@
   - scripts/xcodebuild.sh
   - test/*.rb
 "platform: Windows":
+  - .github/actions/init-test-app/*
+  - .github/actions/setup-toolchain/*
+  - .github/workflows/build.yml
   - common/**/*
   - example/windows/**/*
   - scripts/*.ps1
