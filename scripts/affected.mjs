@@ -42,10 +42,11 @@ function getDefaultBranch() {
 
 /**
  * Returns the commit from which this branch was forked.
+ * @param {string} targetBranch
  * @returns {string}
  */
-function getBaseCommit() {
-  const base = git("merge-base", "--fork-point", getDefaultBranch());
+function getBaseCommit(targetBranch) {
+  const base = git("merge-base", "--fork-point", targetBranch);
   if (!base) {
     throw new Error("Failed to determine base commit");
   }
@@ -98,10 +99,11 @@ function makeMatchers() {
 
 /**
  * Returns platforms affected by changed files.
- * @param {string=} baseCommit
+ * @param {string=} targetBranch
  * @returns {string[]}
  */
-function getAffectedPlatforms(baseCommit = getBaseCommit()) {
+function getAffectedPlatforms(targetBranch = getDefaultBranch()) {
+  const baseCommit = getBaseCommit(targetBranch)
   const changedFiles = getChangedFiles(baseCommit);
   if (changedFiles.length === 0) {
     return [];
@@ -129,8 +131,8 @@ function getAffectedPlatforms(baseCommit = getBaseCommit()) {
   return affectedPlatforms.size > 0 ? clean(Array.from(affectedPlatforms)) : [];
 }
 
-const { [2]: base } = process.argv;
-const platforms = getAffectedPlatforms(base);
+const { [2]: targetBranch } = process.argv;
+const platforms = getAffectedPlatforms(targetBranch);
 if (platforms.length > 0) {
   console.log(platforms.join("\n"));
 }
