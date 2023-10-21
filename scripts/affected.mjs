@@ -103,7 +103,7 @@ function makeMatchers() {
  * @returns {string[]}
  */
 function getAffectedPlatforms(targetBranch = getDefaultBranch()) {
-  const baseCommit = getBaseCommit(targetBranch)
+  const baseCommit = getBaseCommit(targetBranch);
   const changedFiles = getChangedFiles(baseCommit);
   if (changedFiles.length === 0) {
     return [];
