@@ -1881,7 +1881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.51.0":
+"@eslint/js@npm:8.51.0, @eslint/js@npm:^8.0.0":
   version: 8.51.0
   resolution: "@eslint/js@npm:8.51.0"
   checksum: 0228bf1e1e0414843e56d9ff362a2a72d579c078f93174666f29315690e9e30a8633ad72c923297f7fd7182381b5a476805ff04dac8debe638953eb1ded3ac73
@@ -11139,6 +11139,8 @@ fsevents@^2.3.2:
   dependencies:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
+    "@eslint/eslintrc": ^2.1.2
+    "@eslint/js": ^8.0.0
     "@expo/config-plugins": ^7.0.0
     "@microsoft/eslint-plugin-sdl": ^0.2.0
     "@react-native-community/cli": ^11.3.6

@@ -110,6 +110,8 @@
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
+    "@eslint/eslintrc": "^2.1.2",
+    "@eslint/js": "^8.0.0",
     "@expo/config-plugins": "^7.0.0",
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^11.3.6",
@@ -160,9 +162,6 @@
   "workspaces": [
     "example"
   ],
-  "eslintConfig": {
-    "extends": "./.github/eslint.config.js"
-  },
   "prettier": "./.github/prettierrc.json",
   "release": {
     "extends": "./.github/semantic-release.json"
