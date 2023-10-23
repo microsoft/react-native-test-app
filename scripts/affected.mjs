@@ -33,6 +33,14 @@ function git(...args) {
  * @returns {string}
  */
 function getDefaultBranch() {
+  if (process.env["CI"]) {
+    // CIs don't clone the repo, but use a different way to checkout a branch.
+    // This means that `origin/HEAD` is never created, which in turn means that
+    // we don't have a reliable way to get the default branch. For now, just
+    // return a hard-coded value.
+    return "origin/trunk";
+  }
+
   const defaultBranch = git("rev-parse", "--abbrev-ref", "origin/HEAD");
   if (!defaultBranch) {
     throw new Error("Failed to determine default branch");
