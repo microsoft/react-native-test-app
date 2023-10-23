@@ -134,6 +134,7 @@ ext.getArchitectures = {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
+// TODO: this will not work 0.74 onward.
 ext.getFlipperRecommendedVersion = { baseDir ->
     def reactNativePath = findNodeModulesPath("react-native", baseDir)
     def props = new Properties()
