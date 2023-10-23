@@ -1,16 +1,36 @@
 "platform: Android":
+  - .github/actions/gradle/*
+  - .github/actions/init-test-app/*
+  - .github/actions/setup-toolchain/*
+  - .github/workflows/build.yml
   - android/**/*
+  - common/**/*
   - example/android/**/*
+  - scripts/*.js
   - test/android-test-app/**/*
   - test-app.gradle
 "platform: iOS":
+  - .github/actions/cocoapods/*
+  - .github/actions/init-test-app/*
+  - .github/actions/setup-toolchain/*
+  - .github/workflows/build.yml
+  - Gemfile*
   - ReactTestApp-DevSupport.podspec
+  - common/**/*
   - example/ios/**/*
   - ios/**/*
+  - scripts/*.js
+  - scripts/xcodebuild.sh
   - test/*.rb
   - test_app.rb
 "platform: macOS":
+  - .github/actions/cocoapods/*
+  - .github/actions/init-test-app/*
+  - .github/actions/setup-toolchain/*
+  - .github/workflows/build.yml
+  - Gemfile*
   - ReactTestApp-DevSupport.podspec
+  - common/**/*
   - example/macos/**/*
   - ios/*.rb
   - ios/ReactTestApp/Manifest.swift
@@ -20,8 +40,16 @@
   - ios/ReactTestApp/Session.swift
   - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
   - macos/**/*
+  - scripts/*.js
+  - scripts/xcodebuild.sh
   - test/*.rb
 "platform: Windows":
+  - .github/actions/init-test-app/*
+  - .github/actions/setup-toolchain/*
+  - .github/workflows/build.yml
+  - common/**/*
   - example/windows/**/*
+  - scripts/*.ps1
+  - scripts/*.js
   - test/windows-test-app/**/*
   - windows/**/*

@@ -1,0 +1,37 @@
+name: Affected Platforms
+description: Determines which platforms are affected by the current changes
+inputs:
+  project-directory:
+    description: The path to the root of the project directory
+    required: true
+  working-directory:
+    description: The directory where commands are run
+    required: true
+outputs:
+  android:
+    value: ${{ steps.affected.outputs.android }}
+  ios:
+    value: ${{ steps.affected.outputs.ios }}
+  macos:
+    value: ${{ steps.affected.outputs.macos }}
+  windows:
+    value: ${{ steps.affected.outputs.windows }}
+runs:
+  using: composite
+  steps:
+    - id: affected
+      run: |
+        affected="$(yarn show-affected origin/${{ github.base_ref }})"
+        if [[ "$affected" = *"android"* ]]; then
+          echo 'android=true' >> $GITHUB_OUTPUT
+        fi
+        if [[ "$affected" = *"ios"* ]]; then
+          echo 'ios=true' >> $GITHUB_OUTPUT
+        fi
+        if [[ "$affected" = *"macos"* ]]; then
+          echo 'macos=true' >> $GITHUB_OUTPUT
+        fi
+        if [[ "$affected" = *"windows"* ]]; then
+          echo 'windows=true' >> $GITHUB_OUTPUT
+        fi
+      shell: bash

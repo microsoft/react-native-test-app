@@ -24,6 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          filter: blob:none
           fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
@@ -43,7 +44,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 64
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -141,6 +143,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -160,20 +165,27 @@ jobs:
         run: |
           yarn build:ios || yarn build:ios
         working-directory: example
+      - name: Determine whether the iOS app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
       - name: Install Pods
+        if: ${{ steps.affected.outputs.ios != '' }}
         uses: ./.github/actions/cocoapods
         with:
           project-directory: ios
           working-directory: example
       - name: Build
+        if: ${{ steps.affected.outputs.ios != '' }}
         run: |
           ../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test `react-native config`
+        if: ${{ steps.affected.outputs.ios != '' }}
         run: |
           node --test test/config.test.mjs
         working-directory: example
       - name: Test
+        if: ${{ steps.affected.outputs.ios != '' }}
         run: |
           ../scripts/xcodebuild.sh ios/Example.xcworkspace test-without-building
         working-directory: example
@@ -188,6 +200,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -202,8 +217,12 @@ jobs:
         run: |
           yarn build:ios || yarn build:ios
         working-directory: template-example
+      - name: Determine whether the iOS app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
       - name: Determine project directory
         id: configure
+        if: ${{ steps.affected.outputs.ios != '' }}
         run: |
           if [[ ${{ matrix.template }} == ios ]]; then
             echo 'project-directory=.' >> $GITHUB_OUTPUT
@@ -211,14 +230,17 @@ jobs:
             echo 'project-directory=ios' >> $GITHUB_OUTPUT
           fi
       - name: Install Pods
+        if: ${{ steps.affected.outputs.ios != '' }}
         run: |
           USE_FLIPPER=0 pod install --project-directory=${{ steps.configure.outputs.project-directory }}
         working-directory: template-example
       - name: Build
+        if: ${{ steps.affected.outputs.ios != '' }}
         run: |
           ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
       - name: react-native run-ios
+        if: ${{ steps.affected.outputs.ios != '' }}
         run: |
           ../test/react-native.mjs run-ios
         working-directory: template-example
@@ -232,6 +254,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -253,14 +278,18 @@ jobs:
       - name: Bundle JavaScript
         # Metro on nightlies currently fails with "SHA-1 for file index.js is
         # not computed" so we'll skip this step for now.
-        if: ${{ github.event_name != 'schedule' || matrix.os == 'ubuntu-latest' }}
+        if: ${{ github.event_name != 'schedule' || runner.os != 'Windows' }}
         run: |
           yarn build:android || yarn build:android
         shell: bash
         working-directory: example
-      - name: Build
+      - name: Determine whether the Android app needs to be built
+        id: affected
         # Nightlies currently fail on Windows because of wrong path separators.
-        if: ${{ github.event_name != 'schedule' || matrix.os == 'ubuntu-latest' }}
+        if: ${{ github.event_name != 'schedule' || runner.os != 'Windows' }}
+        uses: ./.github/actions/affected
+      - name: Build
+        if: ${{ steps.affected.outputs.android != '' }}
         uses: ./.github/actions/gradle
         with:
           project-root: example
@@ -276,6 +305,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -289,11 +321,16 @@ jobs:
           yarn build:android || yarn build:android
         shell: bash
         working-directory: template-example
+      - name: Determine whether the Android app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
       - name: Build
+        if: ${{ steps.affected.outputs.android != '' }}
         uses: ./.github/actions/gradle
         with:
           project-root: template-example
       - name: react-native run-android
+        if: ${{ steps.affected.outputs.android != '' }}
         run: |
           ../test/react-native.mjs run-android
         working-directory: template-example
@@ -304,6 +341,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -323,34 +363,43 @@ jobs:
         run: |
           yarn build:macos || yarn build:macos
         working-directory: example
+      - name: Determine whether the macOS app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
       - name: Install Pods
+        if: ${{ steps.affected.outputs.macos != '' }}
         uses: ./.github/actions/cocoapods
         with:
           project-directory: macos
           working-directory: example
       - name: Build x86
+        if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test `react-native config`
+        if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           node --test test/config.test.mjs
         working-directory: example
       - name: Test
-        if: ${{ github.event_name != 'schedule' }}
+        if: ${{ steps.affected.outputs.macos != '' && github.event_name != 'schedule' }}
         run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
         working-directory: example
       - name: Prepare for arm64 build
+        if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           rm -fr macos/build
         working-directory: example
       - name: Install Pods
+        if: ${{ steps.affected.outputs.macos != '' }}
         uses: ./.github/actions/cocoapods
         with:
           project-directory: macos
           working-directory: example
       - name: Build arm64
+        if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           ../scripts/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
         working-directory: example
@@ -365,6 +414,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -379,8 +431,12 @@ jobs:
         run: |
           yarn build:macos || yarn build:macos
         working-directory: template-example
+      - name: Determine whether the macOS app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
       - name: Determine project directory
         id: configure
+        if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           if [[ ${{ matrix.template }} == macos ]]; then
             echo 'project-directory=.' >> $GITHUB_OUTPUT
@@ -388,10 +444,12 @@ jobs:
             echo 'project-directory=macos' >> $GITHUB_OUTPUT
           fi
       - name: Install Pods
+        if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           pod install --project-directory=${{ steps.configure.outputs.project-directory }}
         working-directory: template-example
       - name: Build
+        if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
@@ -406,6 +464,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -428,13 +489,17 @@ jobs:
         run: |
           node --test test/config.test.mjs
         working-directory: example
+      - name: Determine whether the Windows app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
       - name: Set up NuGet sources
-        if: ${{ github.event_name == 'schedule' }}
+        if: ${{ steps.affected.outputs.windows != '' && github.event_name == 'schedule' }}
         run: |
           nuget sources Add -Name react-native-windows -Source https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json -ConfigFile NuGet.Config
           cp NuGet.Config ../node_modules/.generated/windows/ReactTestApp
         working-directory: example/windows
       - name: Build
+        if: ${{ steps.affected.outputs.windows != '' }}
         run: |
           if ("${{ matrix.configuration }}" -eq "Release") {
             yarn ci:windows --release --arch ${{ matrix.platform }}
@@ -443,7 +508,7 @@ jobs:
           }
         working-directory: example/windows
       - name: Test
-        if: ${{ matrix.platform == 'x64' }}
+        if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' }}
         run: |
           ../../../scripts/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactTestAppTests.vcxproj
           VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll
@@ -459,6 +524,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
         with:
@@ -473,7 +541,11 @@ jobs:
           if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app --use-nuget }
           else { yarn install-windows-test-app --project-directory=. --use-nuget }
         working-directory: template-example
+      - name: Determine whether the Windows app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
       - name: Build
+        if: ${{ steps.affected.outputs.windows != '' }}
         run: |
           if ("${{ matrix.template }}" -eq "all") {
             yarn react-native run-windows --logging --no-packager --no-launch --no-deploy
@@ -502,6 +574,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/setup-toolchain
       - name: Install npm dependencies
