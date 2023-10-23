@@ -61,7 +61,7 @@ function getBaseCommit(targetBranch) {
 function getChangedFiles(since) {
   const changedFiles = git("diff", "--name-only", since);
   if (!changedFiles) {
-    throw new Error("Failed to find changed files");
+    return [];
   }
   return changedFiles.split("\n");
 }
@@ -99,17 +99,18 @@ function makeMatchers() {
 
 /**
  * Returns platforms affected by changed files.
- * @param {string=} targetBranch
+ * @param {string | undefined} targetBranch
  * @returns {string[]}
  */
-function getAffectedPlatforms(targetBranch = getDefaultBranch()) {
-  const baseCommit = getBaseCommit(targetBranch);
+function getAffectedPlatforms(targetBranch) {
+  const platformMatchers = makeMatchers();
+
+  const baseCommit = getBaseCommit(targetBranch || getDefaultBranch());
   const changedFiles = getChangedFiles(baseCommit);
   if (changedFiles.length === 0) {
-    return changedFiles;
+    // If there are no files, we are building default branch
+    return clean(Object.keys(platformMatchers));
   }
-
-  const platformMatchers = makeMatchers();
 
   // All platforms are affected if `react-native` related packages are changed
   const lockfile = "yarn.lock";
