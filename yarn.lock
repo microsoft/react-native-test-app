@@ -2813,7 +2813,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/codegen@npm:^0.72.6, @react-native/codegen@npm:^0.72.7":
+"@react-native/codegen@npm:^0.72.7":
   version: 0.72.7
   resolution: "@react-native/codegen@npm:0.72.7"
   dependencies:
@@ -11076,16 +11076,16 @@ fsevents@^2.3.2:
   linkType: hard
 
 "react-native-macos@npm:^0.72.0":
-  version: 0.72.0
-  resolution: "react-native-macos@npm:0.72.0"
+  version: 0.72.4
+  resolution: "react-native-macos@npm:0.72.4"
   dependencies:
     "@jest/create-cache-key-function": ^29.2.1
-    "@react-native-community/cli": 11.3.6
-    "@react-native-community/cli-platform-android": 11.3.6
-    "@react-native-community/cli-platform-ios": 11.3.6
+    "@react-native-community/cli": 11.3.7
+    "@react-native-community/cli-platform-android": 11.3.7
+    "@react-native-community/cli-platform-ios": 11.3.7
     "@react-native-mac/virtualized-lists": ^0.72.0
     "@react-native/assets-registry": ^0.72.0
-    "@react-native/codegen": ^0.72.6
+    "@react-native/codegen": ^0.72.7
     "@react-native/gradle-plugin": ^0.72.11
     "@react-native/js-polyfills": ^0.72.1
     "@react-native/normalize-colors": ^0.72.0
@@ -11119,7 +11119,7 @@ fsevents@^2.3.2:
     react: 18.2.0
   bin:
     react-native-macos: cli.js
-  checksum: 030b6ad57c78e59e667aef0f6c946e3591156bc44b997bf52c4d86e6120220ce504bc409ef6baff49f2473db47cf74113b560b01ccf46cff4cb4411ca26471f2
+  checksum: ca1c936d6e1ed8fd8935e4c930bf631cbed32f4b6664eed3b8220aba4205809f4ec62401f6a73a90988af5b100f8f66e76776333c9cf0dd1be45225bca7fac1a
   languageName: node
   linkType: hard
 
