@@ -42,10 +42,14 @@ function getDefaultBranch() {
 
 /**
  * Returns the commit from which this branch was forked.
- * @param {string} targetBranch
+ * @param {string | undefined} targetBranch
  * @returns {string}
  */
 function getBaseCommit(targetBranch) {
+  targetBranch =
+    !targetBranch || targetBranch.endsWith("/")
+      ? getDefaultBranch()
+      : targetBranch;
   const base = git("merge-base", "--fork-point", targetBranch);
   if (!base) {
     throw new Error("Failed to determine base commit");
@@ -105,7 +109,7 @@ function makeMatchers() {
 function getAffectedPlatforms(targetBranch) {
   const platformMatchers = makeMatchers();
 
-  const baseCommit = getBaseCommit(targetBranch || getDefaultBranch());
+  const baseCommit = getBaseCommit(targetBranch);
   const changedFiles = getChangedFiles(baseCommit);
   if (changedFiles.length === 0) {
     // If there are no files, we are building default branch
