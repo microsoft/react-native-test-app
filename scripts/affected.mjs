@@ -106,7 +106,7 @@ function getAffectedPlatforms(targetBranch = getDefaultBranch()) {
   const baseCommit = getBaseCommit(targetBranch);
   const changedFiles = getChangedFiles(baseCommit);
   if (changedFiles.length === 0) {
-    return [];
+    return changedFiles;
   }
 
   const platformMatchers = makeMatchers();
