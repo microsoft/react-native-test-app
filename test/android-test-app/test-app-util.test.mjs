@@ -141,6 +141,11 @@ describe("test-app-util.gradle", () => {
         ...buildGradle,
         'println("getFlipperVersion() = " + ext.getFlipperVersion(rootDir))',
       ],
+      "gradle.properties": [
+        "android.useAndroidX=true",
+        "android.enableJetifier=true",
+        "#FLIPPER_VERSION=0.0.0-test",
+      ],
     });
 
     equal(status, 0);
