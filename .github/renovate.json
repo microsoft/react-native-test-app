@@ -44,7 +44,7 @@
     },
     {
       "groupName": "WebdriverIO",
-      "matchSourceUrlPrefixes": ["https://github.com/webdriverio/webdriverio"],
+      "matchSourceUrlPrefixes": ["https://github.com/webdriverio/webdriverio"]
     },
     {
       "matchPackageNames": ["com.facebook.react:hermes-engine", "react"],

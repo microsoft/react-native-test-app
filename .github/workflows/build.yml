@@ -80,10 +80,10 @@ jobs:
         if: ${{ matrix.platform == 'macos' }}
         run: |
           echo "::add-matcher::.github/rubocop.json"
-          bundle exec rubocop
+          yarn lint:rb
           echo "::remove-matcher owner=rubocop::"
           echo "::add-matcher::.github/minitest.json"
-          bundle exec ruby -Ilib:test test/test_test_app.rb
+          yarn test:rb
           echo "::remove-matcher owner=minitest::"
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
