@@ -418,6 +418,8 @@ dependencies {
     }
 
     if (project.ext.react.enableFlipper) {
+        logger.warn("\nFlipper is deprecated and is removed from react-native in 0.74")
+        logger.warn("\nFlipper will be removed from react-native-test-app in 3.0")
         def flipperVersion = project.ext.react.enableFlipper
         debugImplementation("com.facebook.flipper:flipper:${flipperVersion}") {
             exclude(group: "com.facebook.fbjni")
