@@ -19,3 +19,6 @@ guidelines = 80
 [*.{gradle,kt}]
 max_line_length = 100
 guidelines = 100
+
+[*.kt]
+ktlint_code_style = android_studio

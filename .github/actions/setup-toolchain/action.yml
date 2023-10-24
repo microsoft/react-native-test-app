@@ -54,7 +54,7 @@ runs:
       if: ${{ inputs.platform == 'windows' }}
       uses: microsoft/setup-msbuild@v1.3
     - name: Set up Ruby
-      if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' || inputs.platform == 'node' }}
+      if: ${{ runner.os != 'Windows' }}
       uses: ruby/setup-ruby@v1.156.0
       with:
         ruby-version: "3.0"
@@ -66,7 +66,7 @@ runs:
     - name: Set up Node.js
       uses: actions/setup-node@v3.8.1
       with:
-        node-version: "18"
+        node-version: "20"
         cache: ${{ inputs.cache-npm-dependencies }}
     - name: Set up Xcode
       if: ${{ inputs.xcode-developer-dir != '' }}
