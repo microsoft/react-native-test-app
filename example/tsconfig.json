@@ -5,7 +5,7 @@
     "jsx": "react-native"
   },
   "include": [
-    "App.js",
+    "App.tsx",
     "index.js"
   ]
 }
