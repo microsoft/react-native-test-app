@@ -8,7 +8,7 @@ index 4ab4e21..9831319 100644
  # Automatically convert third-party libraries to use AndroidX
 -android.enableJetifier=true
 +android.enableJetifier=false
-
+ 
  # Version of Flipper to use with React Native. Default value is whatever React
  # Native defaults to. To enable Flipper, set the value to `X.Y.Z` (version you want to use).
 diff --git a/example/android/gradle/wrapper/gradle-wrapper.properties b/example/android/gradle/wrapper/gradle-wrapper.properties
