@@ -103,7 +103,7 @@ class TestAppReactNativeHost(
         }
     }
 
-    fun addReactInstanceEventListener(listener: (ReactContext) -> Unit) {
+    fun addReactInstanceEventListener(listener: ReactInstanceEventListener) {
         reactInstanceEventListeners.add(listener)
         reactInstanceManager.addReactInstanceEventListener(listener)
     }

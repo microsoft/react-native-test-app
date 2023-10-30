@@ -18,6 +18,7 @@ import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.google.android.material.appbar.MaterialToolbar
 import com.microsoft.reacttestapp.camera.canUseCamera
 import com.microsoft.reacttestapp.camera.scanForQrCode
+import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 import com.microsoft.reacttestapp.component.ComponentActivity
 import com.microsoft.reacttestapp.component.ComponentBottomSheetDialogFragment
 import com.microsoft.reacttestapp.component.ComponentListAdapter
@@ -78,33 +79,41 @@ class MainActivity : ReactActivity() {
 
                 useAppRegistry = components.isEmpty()
                 if (useAppRegistry) {
-                    testApp.reactNativeHost.addReactInstanceEventListener {
-                        it.runOnJSQueueThread {
-                            val appKeys = AppRegistry.getAppKeys(it as ReactApplicationContext)
-                            val viewModels = appKeys.map { appKey ->
-                                ComponentViewModel(appKey, appKey, null, null)
-                            }
-                            mainThreadHandler.post {
-                                componentListAdapter.setComponents(viewModels)
-                                if (isTopResumedActivity && viewModels.count() == 1) {
-                                    startComponent(viewModels[0])
+                    val reactInstanceListener = object : ReactInstanceEventListener {
+                        override fun onReactContextInitialized(context: ReactContext) {
+                            val ctx = context as ReactApplicationContext
+                            ctx.runOnJSQueueThread {
+                                val appKeys = AppRegistry.getAppKeys(ctx)
+                                val viewModels = appKeys.map { appKey ->
+                                    ComponentViewModel(appKey, appKey, null, null)
+                                }
+                                mainThreadHandler.post {
+                                    componentListAdapter.setComponents(viewModels)
+                                    if (isTopResumedActivity && viewModels.count() == 1) {
+                                        startComponent(viewModels[0])
+                                    }
                                 }
                             }
                         }
                     }
+                    testApp.reactNativeHost.addReactInstanceEventListener(reactInstanceListener)
                 } else {
                     val index =
                         if (components.count() == 1) 0 else session.lastOpenedComponent(checksum)
                     index?.let {
                         val component = newComponentViewModel(components[it])
-                        val startInitialComponent = { _: ReactContext ->
-                            if (isTopResumedActivity) {
-                                startComponent(component)
+                        val startInitialComponent = object : ReactInstanceEventListener {
+                            override fun onReactContextInitialized(context: ReactContext) {
+                                if (isTopResumedActivity) {
+                                    startComponent(component)
+                                }
                             }
                         }
                         testApp.reactNativeHost.apply {
                             addReactInstanceEventListener(startInitialComponent)
-                            reactInstanceManager.currentReactContext?.let(startInitialComponent)
+                            reactInstanceManager.currentReactContext?.let {
+                                startInitialComponent.onReactContextInitialized(it)
+                            }
                         }
                     }
                 }
