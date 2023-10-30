@@ -3305,16 +3305,16 @@ __metadata:
   linkType: hard
 
 "@types/minimist@npm:^1.2.2":
-  version: 1.2.3
-  resolution: "@types/minimist@npm:1.2.3"
-  checksum: 666ea4f8c39dcbdfbc3171fe6b3902157c845cc9cb8cee33c10deb706cda5e0cc80f98ace2d6d29f6774b0dc21180c96cd73c592a1cbefe04777247c7ba0e84b
+  version: 1.2.4
+  resolution: "@types/minimist@npm:1.2.4"
+  checksum: d7912f9a466312cbc1333800272b9208178140ef4da2ccec3fa82231c8e67f57f84275b3c19109c4f68f1b7b057baeacc6b80af1de14b58b46e6b54233e44c6a
   languageName: node
   linkType: hard
 
 "@types/mustache@npm:^4.0.0":
-  version: 4.2.3
-  resolution: "@types/mustache@npm:4.2.3"
-  checksum: c2c7cf749a84a622648c7088fb10350b84ea935145514b6c51d17e808a4b4972fb137273339f4d93160a3c496a3943dab3be93251d74c185730daa300a299e2f
+  version: 4.2.4
+  resolution: "@types/mustache@npm:4.2.4"
+  checksum: ed6ad7a5a6178bf93cc7b6febd7245b6d69f539b278a4203fd5edc2075ef1e605d81574ea5ccadd9f29340afd9afbdae4cae27bf2da8752f5d67066372525f67
   languageName: node
   linkType: hard
 
@@ -3365,12 +3365,12 @@ __metadata:
   linkType: hard
 
 "@types/prompts@npm:~2.4.0":
-  version: 2.4.6
-  resolution: "@types/prompts@npm:2.4.6"
+  version: 2.4.7
+  resolution: "@types/prompts@npm:2.4.7"
   dependencies:
     "@types/node": "*"
     kleur: ^3.0.3
-  checksum: 4e1388b6a96e5995d532efc40aee663fdae07cbd579d919245cbc9d7d91e39c780c2383c8fcf3aeff30459595ea1da9f29b8ad090b70a9b9033735bd85c124e3
+  checksum: 2c57b3c419b4be72039dcd0d099c4643a5f7d06cf20156709e87498cd4f6cb4000edc1cafde95786b46d137eb5ace01e3ba83dbc5f29cb69f4b778fdd42b7d81
   languageName: node
   linkType: hard
 
@@ -3396,13 +3396,13 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:~18.2.0":
-  version: 18.2.28
-  resolution: "@types/react@npm:18.2.28"
+  version: 18.2.33
+  resolution: "@types/react@npm:18.2.33"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 81381bedeba83278f4c9febb0b83e0bd3f42a25897a50b9cb36ef53651d34b3d50f87ebf11211ea57ea575131f85d31e93e496ce46478a00b0f9bf7b26b5917a
+  checksum: 75903c4d53898c69dd23d0b2730eac4676dc5ade15c25c793dec855f0d7c650cb823832bb1dd881efe8895724f15b06d4bf7081ea0b82391aa3059512ad49ccf
   languageName: node
   linkType: hard
 
@@ -3423,9 +3423,9 @@ __metadata:
   linkType: hard
 
 "@types/semver@npm:^7.3.6, @types/semver@npm:^7.5.0":
-  version: 7.5.3
-  resolution: "@types/semver@npm:7.5.3"
-  checksum: 349fdd1ab6c213bac5c991bac766bd07b8b12e63762462bb058740dcd2eb09c8193d068bb226f134661275f2022976214c0e727a4e5eb83ec1b131127c980d3e
+  version: 7.5.4
+  resolution: "@types/semver@npm:7.5.4"
+  checksum: 120c0189f6fec5f2d12d0d71ac8a4cfa952dc17fa3d842e8afddb82bba8828a4052f8799c1653e2b47ae1977435f38e8985658fde971905ce5afb8e23ee97ecf
   languageName: node
   linkType: hard
 
