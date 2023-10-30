@@ -18,7 +18,6 @@
 		19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D7232ED425003D8557 /* SceneDelegate.swift */; };
 		19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D9232ED425003D8557 /* ContentView.swift */; };
 		19ECD0DC232ED427003D8557 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19ECD0DB232ED427003D8557 /* Assets.xcassets */; };
-		19ECD0E2232ED427003D8557 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19ECD0E0232ED427003D8557 /* LaunchScreen.storyboard */; };
 		19ECD0ED232ED428003D8557 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0EC232ED428003D8557 /* ReactTestAppTests.swift */; };
 		19ECD0F8232ED428003D8557 /* ReactTestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0F7232ED428003D8557 /* ReactTestAppUITests.swift */; };
 /* End PBXBuildFile section */
@@ -60,7 +59,6 @@
 		19ECD0D7232ED425003D8557 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		19ECD0D9232ED425003D8557 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		19ECD0DB232ED427003D8557 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
-		19ECD0E1232ED427003D8557 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		19ECD0E3232ED427003D8557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19ECD0E8232ED427003D8557 /* ReactTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19ECD0EC232ED428003D8557 /* ReactTestAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactTestAppTests.swift; sourceTree = "<group>"; };
@@ -132,7 +130,6 @@
 				1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */,
 				1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */,
 				19ECD0DB232ED427003D8557 /* Assets.xcassets */,
-				19ECD0E0232ED427003D8557 /* LaunchScreen.storyboard */,
 				19ECD0E3232ED427003D8557 /* Info.plist */,
 				196C7216232F6CD9006556ED /* ReactTestApp.entitlements */,
 				192F052724AD3CC500A48456 /* ReactTestApp.common.xcconfig */,
@@ -267,7 +264,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				19ECD0DC232ED427003D8557 /* Assets.xcassets in Resources */,
-				19ECD0E2232ED427003D8557 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,17 +353,6 @@
 			targetProxy = 19ECD0F4232ED428003D8557 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		19ECD0E0232ED427003D8557 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				19ECD0E1232ED427003D8557 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		19ECD0FA232ED428003D8557 /* Debug */ = {

@@ -116,7 +116,6 @@ describe("npm pack", () => {
       "ios/ReactTestApp/AppRegistryModule.mm",
       "ios/ReactTestApp/Assets.xcassets/AppIcon.appiconset/Contents.json",
       "ios/ReactTestApp/Assets.xcassets/Contents.json",
-      "ios/ReactTestApp/Base.lproj/LaunchScreen.storyboard",
       "ios/ReactTestApp/ContentView.swift",
       "ios/ReactTestApp/Info.plist",
       "ios/ReactTestApp/Manifest+Decoder.swift",
