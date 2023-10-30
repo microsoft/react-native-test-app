@@ -28,6 +28,10 @@
       "matchPackagePrefixes": ["org.jetbrains.kotlin"]
     },
     {
+      "groupName": "ESLint",
+      "matchSourceUrlPrefixes": ["https://github.com/eslint/eslint"]
+    },
+    {
       "groupName": "Metro",
       "matchSourceUrlPrefixes": ["https://github.com/facebook/metro"],
       "allowedVersions": "^0.76.0"
