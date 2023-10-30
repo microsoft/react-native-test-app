@@ -68,7 +68,7 @@ class TestAppReactNativeHost(
         }
 
         val reactInstanceListener = object : ReactInstanceEventListener {
-            override fun onReactContextInitialized(context: ReactContext?) {
+            override fun onReactContextInitialized(context: ReactContext) {
                 afterReactNativeInit()
 
                 // proactively removing the listener to avoid leaking memory
