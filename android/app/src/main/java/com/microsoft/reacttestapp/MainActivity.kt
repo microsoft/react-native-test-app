@@ -79,24 +79,25 @@ class MainActivity : ReactActivity() {
 
                 useAppRegistry = components.isEmpty()
                 if (useAppRegistry) {
-                    val reactInstanceListener = object : ReactInstanceEventListener {
-                        override fun onReactContextInitialized(context: ReactContext) {
-                            val ctx = context as ReactApplicationContext
-                            ctx.runOnJSQueueThread {
-                                val appKeys = AppRegistry.getAppKeys(ctx)
-                                val viewModels = appKeys.map { appKey ->
-                                    ComponentViewModel(appKey, appKey, null, null)
-                                }
-                                mainThreadHandler.post {
-                                    componentListAdapter.setComponents(viewModels)
-                                    if (isTopResumedActivity && viewModels.count() == 1) {
-                                        startComponent(viewModels[0])
+                    testApp.reactNativeHost.addReactInstanceEventListener(
+                        object : ReactInstanceEventListener {
+                            override fun onReactContextInitialized(context: ReactContext) {
+                                val ctx = context as ReactApplicationContext
+                                ctx.runOnJSQueueThread {
+                                    val appKeys = AppRegistry.getAppKeys(ctx)
+                                    val viewModels = appKeys.map { appKey ->
+                                        ComponentViewModel(appKey, appKey, null, null)
+                                    }
+                                    mainThreadHandler.post {
+                                        componentListAdapter.setComponents(viewModels)
+                                        if (isTopResumedActivity && viewModels.count() == 1) {
+                                            startComponent(viewModels[0])
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    testApp.reactNativeHost.addReactInstanceEventListener(reactInstanceListener)
+                    )
                 } else {
                     val index =
                         if (components.count() == 1) 0 else session.lastOpenedComponent(checksum)
