@@ -3,19 +3,19 @@ import { deepEqual, equal, match } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
 import { getBundleResources as getBundleResourcesActual } from "../../windows/test-app.js";
-import fs from "../fs.mock.js";
-import spy from "../spy.mjs";
+import { fs, setMockFiles } from "../fs.mock.mjs";
+import { spy } from "../spy.mjs";
 
 describe("getBundleResources()", () => {
   /** @type {typeof getBundleResourcesActual} */
   const getBundleResources = (p) => getBundleResourcesActual(p, fs);
 
-  afterEach(() => fs.__setMockFiles());
+  afterEach(() => setMockFiles());
 
   it("returns app name and bundle resources", () => {
     const assets = path.join("dist", "assets");
     const bundle = path.join("dist", "main.bundle");
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": JSON.stringify({
         name: "Example",
         resources: [assets, bundle],
@@ -59,7 +59,7 @@ describe("getBundleResources()", () => {
   });
 
   it("returns package manifest", () => {
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": JSON.stringify({
         windows: {
           appxManifest: "windows/Example/Package.appxmanifest",
@@ -98,7 +98,7 @@ describe("getBundleResources()", () => {
 
   it("handles invalid manifest", (t) => {
     t.mock.method(console, "warn", () => null);
-    fs.__setMockFiles({ "app.json": "-" });
+    setMockFiles({ "app.json": "-" });
 
     deepEqual(getBundleResources("app.json"), {
       appName: "ReactTestApp",
@@ -116,7 +116,7 @@ describe("getBundleResources()", () => {
   });
 
   it("returns package certificate", () => {
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": JSON.stringify({
         windows: {
           certificateKeyFile: "windows/ReactTestApp_TemporaryKey.pfx",

@@ -2,7 +2,7 @@
 import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { error, warn } from "../../scripts/configure.js";
-import spy from "../spy.mjs";
+import { spy } from "../spy.mjs";
 
 describe("console", () => {
   it("error() is just a fancy console.error()", (t) => {

@@ -18,6 +18,18 @@ module.exports = [
     },
     rules: {
       "local/no-process-exit": "error",
+      "no-restricted-exports": [
+        "error",
+        {
+          restrictDefaultExports: {
+            direct: true,
+            named: true,
+            defaultFrom: true,
+            namedFrom: true,
+            namespaceFrom: true,
+          },
+        },
+      ],
     },
   },
 ];

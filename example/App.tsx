@@ -182,7 +182,9 @@ function DevMenu(): React.ReactElement | null {
   );
 }
 
-function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
+export function App({
+  concurrentRoot,
+}: AppProps): React.ReactElement<AppProps> {
   const isDarkMode = useColorScheme() === "dark";
   const styles = useStyles();
   const [isFabric, setIsFabric] = useIsFabricComponent();
@@ -214,5 +216,3 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
     </SafeAreaProvider>
   );
 }
-
-export default App;

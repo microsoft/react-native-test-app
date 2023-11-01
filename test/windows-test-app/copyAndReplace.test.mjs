@@ -3,8 +3,8 @@ import { equal, fail, match, rejects } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { promisify } from "node:util";
 import { copyAndReplace as copyAndReplaceActual } from "../../windows/test-app.js";
-import fs from "../fs.mock.js";
-import spy from "../spy.mjs";
+import { fs, setMockFiles } from "../fs.mock.mjs";
+import { spy } from "../spy.mjs";
 
 describe("copyAndReplace()", () => {
   /** @type {typeof copyAndReplaceActual} */
@@ -13,11 +13,11 @@ describe("copyAndReplace()", () => {
 
   const copyAndReplaceAsync = promisify(copyAndReplace);
 
-  afterEach(() => fs.__setMockFiles());
+  afterEach(() => setMockFiles());
 
   it("copies files if no modifications are needed", async (t) => {
     t.mock.method(fs, "copyFile");
-    fs.__setMockFiles({
+    setMockFiles({
       "ReactTestApp.png": "binary",
       "test/.placeholder": "",
     });
@@ -37,7 +37,7 @@ describe("copyAndReplace()", () => {
 
   it("replaces file content", async (t) => {
     t.mock.method(fs, "copyFile");
-    fs.__setMockFiles({
+    setMockFiles({
       "ReactTestApp.png": "binary",
       "test/.placeholder": "",
     });

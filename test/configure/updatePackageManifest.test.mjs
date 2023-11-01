@@ -2,17 +2,17 @@
 import { deepEqual } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { updatePackageManifest as updatePackageManifestActual } from "../../scripts/configure.js";
-import fs from "../fs.mock.js";
+import { fs, setMockFiles } from "../fs.mock.mjs";
 
 describe("updatePackageManifest()", () => {
   /** @type {typeof updatePackageManifestActual} */
   const updatePackageManifest = (p, cfg) =>
     updatePackageManifestActual(p, cfg, fs);
 
-  afterEach(() => fs.__setMockFiles());
+  afterEach(() => setMockFiles());
 
   it("adds `scripts` field if missing", () => {
-    fs.__setMockFiles({ "package.json": `{ "key": "value" }` });
+    setMockFiles({ "package.json": `{ "key": "value" }` });
 
     const config = {
       scripts: {
@@ -37,7 +37,7 @@ describe("updatePackageManifest()", () => {
   });
 
   it("adds to existing `scripts` field", () => {
-    fs.__setMockFiles({
+    setMockFiles({
       "package.json": JSON.stringify({
         key: "value",
         scripts: {

@@ -2,8 +2,8 @@
 import { equal } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { isDestructive as isDestructiveActual } from "../../scripts/configure.js";
-import fs from "../fs.mock.js";
-import spy from "../spy.mjs";
+import { fs, setMockFiles } from "../fs.mock.mjs";
+import { spy } from "../spy.mjs";
 
 describe("isDestructive()", () => {
   /**
@@ -31,7 +31,7 @@ describe("isDestructive()", () => {
    */
   const isDestructive = (p, cfg) => isDestructiveActual(p, cfg, fs);
 
-  afterEach(() => fs.__setMockFiles());
+  afterEach(() => setMockFiles());
 
   it("returns false when there are no files to modify", () => {
     equal(
@@ -60,7 +60,7 @@ describe("isDestructive()", () => {
     equal(isDestructive(".", config), false);
     equal(spy(console.warn).calls.length, 0);
 
-    fs.__setMockFiles({ "metro.config.js": "" });
+    setMockFiles({ "metro.config.js": "" });
 
     equal(isDestructive(".", config), true);
     equal(spy(console.warn).calls.length, 2);
@@ -81,7 +81,7 @@ describe("isDestructive()", () => {
     equal(isDestructive(".", config), false);
     equal(spy(console.warn).calls.length, 0);
 
-    fs.__setMockFiles({ "Podfile.lock": "" });
+    setMockFiles({ "Podfile.lock": "" });
 
     equal(isDestructive(".", config), true);
     equal(spy(console.warn).calls.length, 2);
@@ -104,7 +104,7 @@ describe("isDestructive()", () => {
     equal(isDestructive(".", config), false);
     equal(spy(console.warn).calls.length, 0);
 
-    fs.__setMockFiles({
+    setMockFiles({
       "Podfile.lock": "",
       "babel.config.js": "",
       "metro.config.js": "",

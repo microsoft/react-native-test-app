@@ -2,7 +2,7 @@
 import { deepEqual, equal, throws } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { getPlatformPackage } from "../../scripts/configure.js";
-import spy from "../spy.mjs";
+import { spy } from "../spy.mjs";
 
 describe("getPlatformPackage()", () => {
   const name = "react-native";
