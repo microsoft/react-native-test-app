@@ -2,8 +2,8 @@
 import { deepEqual, equal, match } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { parseResources as parseResourcesActual } from "../../windows/test-app.js";
-import fs from "../fs.mock.js";
-import spy from "../spy.mjs";
+import { fs, setMockFiles } from "../fs.mock.mjs";
+import { spy } from "../spy.mjs";
 
 describe("parseResources()", () => {
   /** @type {typeof parseResourcesActual} */
@@ -11,7 +11,7 @@ describe("parseResources()", () => {
 
   const empty = { assetFilters: "", assetItemFilters: "", assetItems: "" };
 
-  afterEach(() => fs.__setMockFiles());
+  afterEach(() => setMockFiles());
 
   it("returns empty strings for no resources", () => {
     deepEqual(parseResources(undefined, ""), empty);
@@ -21,7 +21,7 @@ describe("parseResources()", () => {
   });
 
   it("returns references to existing assets", () => {
-    fs.__setMockFiles({
+    setMockFiles({
       "dist/assets/node_modules/arnold/portrait.png": "{}",
       "dist/assets/splash.png": "{}",
       "dist/main.jsbundle": "'use strict';",

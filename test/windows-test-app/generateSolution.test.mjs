@@ -3,7 +3,7 @@ import { equal } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import { generateSolution as generateSolutionActual } from "../../windows/test-app.js";
-import fs from "../fs.mock.js";
+import { fs, setMockFiles } from "../fs.mock.mjs";
 
 describe("generateSolution()", () => {
   /** @type {typeof generateSolutionActual} */
@@ -24,7 +24,7 @@ describe("generateSolution()", () => {
   });
 
   afterEach(() => {
-    fs.__setMockFiles();
+    setMockFiles();
     process.chdir(cwd);
   });
 
@@ -37,7 +37,7 @@ describe("generateSolution()", () => {
   });
 
   it("exits if 'react-native-windows' folder cannot be found", () => {
-    fs.__setMockFiles({
+    setMockFiles({
       [path.resolve("", "package.json")]: testManifest,
       [path.resolve("", "node_modules", ".bin")]: "directory",
     });
@@ -49,7 +49,7 @@ describe("generateSolution()", () => {
   });
 
   it("exits if 'react-native-test-app' folder cannot be found", () => {
-    fs.__setMockFiles({
+    setMockFiles({
       [path.resolve("", "package.json")]: testManifest,
       [path.resolve(
         "",

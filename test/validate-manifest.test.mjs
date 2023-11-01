@@ -5,8 +5,8 @@ import {
   findFile as findFileActual,
   validateManifest as validateManifestActual,
 } from "../scripts/validate-manifest.js";
-import fs from "./fs.mock.js";
-import spy from "./spy.mjs";
+import { fs, setMockFiles } from "./fs.mock.mjs";
+import { spy } from "./spy.mjs";
 
 describe("validate-manifest", () => {
   /** @type {typeof findFileActual} */
@@ -17,11 +17,11 @@ describe("validate-manifest", () => {
   const validateManifest = (p) => validateManifestActual(p, fs);
 
   afterEach(() => {
-    fs.__setMockFiles();
+    setMockFiles();
   });
 
   it("finds app manifest", () => {
-    fs.__setMockFiles({
+    setMockFiles({
       "example/app.json": `{ "name": "Example" }`,
       "example/node_modules/react-native-test-app/package.json": `{ "name": "Example" }`,
     });
@@ -46,7 +46,7 @@ describe("validate-manifest", () => {
 
   it("catches missing root properties", (t) => {
     t.mock.method(console, "error", () => null);
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": `{ "name": "Example" }`,
     });
 
@@ -64,7 +64,7 @@ describe("validate-manifest", () => {
 
   it("catches missing component properties", (t) => {
     t.mock.method(console, "error", () => null);
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",
@@ -95,7 +95,7 @@ describe("validate-manifest", () => {
 
   it("catches invalid values for `presentationStyle`", (t) => {
     t.mock.method(console, "error", () => null);
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",
@@ -122,7 +122,7 @@ describe("validate-manifest", () => {
 
   it("catches invalid values for resources", (t) => {
     t.mock.method(console, "error", () => null);
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",
@@ -147,7 +147,7 @@ describe("validate-manifest", () => {
 
   it("catches duplicate resources", (t) => {
     t.mock.method(console, "error", () => null);
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",
@@ -172,7 +172,7 @@ describe("validate-manifest", () => {
   for (const platform of ["android", "ios", "macos", "windows"]) {
     it(`catches duplicate, ${platform} specific resources`, (t) => {
       t.mock.method(console, "error", () => null);
-      fs.__setMockFiles({
+      setMockFiles({
         "app.json": `{
           "name": "Example",
           "displayName": "Example",
@@ -205,7 +205,7 @@ describe("validate-manifest", () => {
 
   it("is silent on valid manifests", (t) => {
     t.mock.method(console, "error", () => null);
-    fs.__setMockFiles({
+    setMockFiles({
       "app.json": `{
         "name": "Example",
         "displayName": "Example",

@@ -1,5 +1,5 @@
 diff --git a/example/App.tsx b/example/App.tsx
-index a256f50..3343dfa 100644
+index 35fea8c..56c1c0c 100644
 --- a/example/App.tsx
 +++ b/example/App.tsx
 @@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
@@ -18,7 +18,7 @@ index a256f50..3343dfa 100644
  // @ts-expect-error no type definitions available
  import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
  import { Colors, Header } from "react-native/Libraries/NewAppScreen";
-@@ -187,7 +187,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
+@@ -190,7 +190,6 @@ export function App({
    const [isFabric, setIsFabric] = useIsFabricComponent();
  
    return (
@@ -26,11 +26,10 @@ index a256f50..3343dfa 100644
        <SafeAreaView style={styles.body}>
          <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
          <ScrollView
-@@ -210,7 +209,6 @@ function App({ concurrentRoot }: AppProps): React.ReactElement<AppProps> {
+@@ -213,6 +212,5 @@ export function App({
            </View>
          </ScrollView>
        </SafeAreaView>
 -    </SafeAreaProvider>
    );
  }
- 

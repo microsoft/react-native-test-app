@@ -5,6 +5,6 @@
  * @param {unknown} obj
  * @returns {Mock["mock"]}
  */
-export default function spy(obj) {
+export function spy(obj) {
   return /** @type {Mock} */ (obj).mock;
 }

@@ -3,17 +3,17 @@ import { equal, rejects, throws } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
 import { writeAllFiles as writeAllFilesActual } from "../../scripts/configure.js";
-import fsp from "../fs-promises.mock.js";
-import fs from "../fs.mock.js";
+import { fs, setMockFiles } from "../fs.mock.mjs";
 
 describe("writeAllFiles()", () => {
   /** @type {typeof writeAllFilesActual} */
-  const writeAllFiles = (files, dest) => writeAllFilesActual(files, dest, fsp);
+  const writeAllFiles = (files, dest) =>
+    writeAllFilesActual(files, dest, fs.promises);
 
-  afterEach(() => fs.__setMockFiles());
+  afterEach(() => setMockFiles());
 
   it("writes all files to disk", async () => {
-    fs.__setMockFiles({ "file-on-disk": "0" });
+    setMockFiles({ "file-on-disk": "0" });
     await writeAllFiles(
       {
         file0: { source: "file-on-disk" },

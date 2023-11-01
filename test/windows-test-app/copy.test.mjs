@@ -2,7 +2,7 @@
 import { equal, match } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { copy as copyActual } from "../../windows/test-app.js";
-import fs from "../fs.mock.js";
+import { fs, setMockFiles, toJSON } from "../fs.mock.mjs";
 
 /**
  * Waits until the specified predicate returns `true`.
@@ -22,11 +22,11 @@ describe("copy()", () => {
   /** @type {typeof copyActual} */
   const copy = (src, dest) => copyActual(src, dest, fs);
 
-  afterEach(() => fs.__setMockFiles());
+  afterEach(() => setMockFiles());
 
   it("recursively copies all files under directory", async () => {
     const pngMagic = "‰PNG␍␊␚␊";
-    fs.__setMockFiles({
+    setMockFiles({
       "assets/1.png": pngMagic,
       "assets/2.png": pngMagic,
       "assets/3.png": pngMagic,
@@ -37,7 +37,7 @@ describe("copy()", () => {
 
     // Wait until all files have been copied
     const writeDone = waitUntil(() => {
-      const files = Object.keys(fs.__toJSON());
+      const files = Object.keys(toJSON());
       return files.length === 12;
     });
 
@@ -58,7 +58,7 @@ describe("copy()", () => {
       /\/assets copy\/more\/2\.png$/,
       /\/assets copy\/more\/3\.png$/,
     ];
-    const files = Object.keys(fs.__toJSON());
+    const files = Object.keys(toJSON());
 
     equal(files.length, expected.length);
     for (let i = 0; i < expected.length; ++i) {
