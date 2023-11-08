@@ -23,6 +23,9 @@ function pod_install {
 function prepare {
   terminate_dev_server
   git checkout .
+  # FIXME: This is only necessary while we're on 0.72 and need to test 0.73
+  git apply scripts/android-nightly.patch
+  git apply scripts/disable-safe-area-context.patch
   npm run set-react-version ${VERSION} -- --core-only
   git clean -dfqx --exclude='.yarn/cache' --exclude='example/*.png'
   ${PACKAGE_MANAGER} install
@@ -118,8 +121,6 @@ echo
 
 popd 1> /dev/null
 prepare
-# `react-native-safe-area-context` doesn't support latest New Arch changes
-git apply ../scripts/disable-safe-area-context.patch
 sed -i '' 's/"react-native-safe-area-context": ".[.0-9]*",//' package.json
 
 echo
