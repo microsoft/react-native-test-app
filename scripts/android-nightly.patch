@@ -1,5 +1,5 @@
 diff --git a/example/android/gradle.properties b/example/android/gradle.properties
-index 4ab4e21..9831319 100644
+index 2577d91..bf833ad 100644
 --- a/example/android/gradle.properties
 +++ b/example/android/gradle.properties
 @@ -25,7 +25,7 @@ org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryEr
@@ -8,9 +8,9 @@ index 4ab4e21..9831319 100644
  # Automatically convert third-party libraries to use AndroidX
 -android.enableJetifier=true
 +android.enableJetifier=false
+ # Jetifier randomly fails on these libraries
+ android.jetifier.ignorelist=hermes-android
  
- # Version of Flipper to use with React Native. Default value is whatever React
- # Native defaults to. To enable Flipper, set the value to `X.Y.Z` (version you want to use).
 diff --git a/example/android/gradle/wrapper/gradle-wrapper.properties b/example/android/gradle/wrapper/gradle-wrapper.properties
 index 878fe04..3fa8f86 100644
 --- a/example/android/gradle/wrapper/gradle-wrapper.properties
