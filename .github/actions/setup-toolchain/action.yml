@@ -64,7 +64,7 @@ runs:
       if: ${{ inputs.platform == 'windows' }}
       uses: darenm/Setup-VSTest@v1.2
     - name: Set up Node.js
-      uses: actions/setup-node@v3.8.2
+      uses: actions/setup-node@v4.0.0
       with:
         node-version: "20"
         cache: ${{ inputs.cache-npm-dependencies }}
