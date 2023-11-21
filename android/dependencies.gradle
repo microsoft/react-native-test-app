@@ -2,9 +2,10 @@
  * Find the latest version of KSP that supports the specified Kotlin version.
  */
 static String getKspVersion(String kotlinVersion) {
-    return [
+    def availableVersions = [
         // Run `scripts/update-ksp-versions.mjs` to update this list
         // update-ksp-versions start
+        "1.9.20-1.0.14",
         "1.9.10-1.0.13",
         "1.9.0-1.0.13",
         "1.8.22-1.0.11",
@@ -24,7 +25,9 @@ static String getKspVersion(String kotlinVersion) {
         "1.5.31-1.0.1",
         "1.5.30-1.0.0",
         // update-ksp-versions end
-    ].find { it.startsWith(kotlinVersion) }
+    ]
+    def version = availableVersions.find { it.startsWith(kotlinVersion) }
+    return version ?: availableVersions[0]
 }
 
 ext {
