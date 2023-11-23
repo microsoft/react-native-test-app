@@ -6303,6 +6303,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-wdio@npm:^8.20.0":
+  version: 8.20.0
+  resolution: "eslint-plugin-wdio@npm:8.20.0"
+  checksum: 4c6333cb4b414c82e3d282e0118f5dda9f72b988afa7632ccf24eb2b4063d7f196039fd4db2aeab1e18e9262096921bec638d1df99cc0c6907521c6d8df54d9f
+  languageName: node
+  linkType: hard
+
 "eslint-scope@npm:^7.2.2":
   version: 7.2.2
   resolution: "eslint-scope@npm:7.2.2"
@@ -11173,6 +11180,7 @@ fsevents@^2.3.2:
     chalk: ^4.1.0
     cliui: ^8.0.0
     eslint: ^8.0.0
+    eslint-plugin-wdio: ^8.20.0
     fast-xml-parser: ^4.0.0
     js-yaml: ^4.1.0
     memfs: ^4.0.0

@@ -7,9 +7,15 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
+  {
+    plugins: {
+      wdio: require("eslint-plugin-wdio"),
+    },
+  },
   ...compat.extends(
     "plugin:@microsoft/sdl/required",
-    "plugin:@rnx-kit/recommended"
+    "plugin:@rnx-kit/recommended",
+    "plugin:wdio/recommended"
   ),
   {
     ignores: ["!.yarn"],
