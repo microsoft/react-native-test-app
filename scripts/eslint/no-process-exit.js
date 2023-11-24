@@ -32,9 +32,8 @@ module.exports = {
     type: "suggestion",
     docs: {
       description: "disallow the use of `process.exit()`",
-      category: "Possible Errors",
       recommended: false,
-      url: "https://github.com/eslint-community/eslint-plugin-n/blob/16.2.0/docs/rules/no-process-exit.md",
+      url: "https://github.com/eslint-community/eslint-plugin-n/blob/16.3.1/docs/rules/no-process-exit.md",
     },
     fixable: null,
     schema: [],
