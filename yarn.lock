@@ -2207,13 +2207,15 @@ __metadata:
   linkType: hard
 
 "@microsoft/eslint-plugin-sdl@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@microsoft/eslint-plugin-sdl@npm:0.2.0"
+  version: 0.2.2
+  resolution: "@microsoft/eslint-plugin-sdl@npm:0.2.2"
   dependencies:
     eslint-plugin-node: 11.1.0
-    eslint-plugin-react: 7.24.0
+    eslint-plugin-react: 7.33.0
     eslint-plugin-security: 1.4.0
-  checksum: 44fd7a0d29ebed48fc935d0b0f96394dea4e3a055467b0b53173c76ce44fb33ddf2b5913db6920e92cc5da1974b5c4e7942500f5f22f60f36f8fe1a3b2eae6c6
+  peerDependencies:
+    eslint: ^4.19.1 || ^5 || ^6 || ^7 || ^8
+  checksum: 06abc73ce5b3bc9098370c170e261b8ac5b1f641c457067d97fd3a0c48fe466fe00c830d4d5895624731878a3d5cae850b29c91dade12fec8d33467a6a3308d1
   languageName: node
   linkType: hard
 
