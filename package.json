@@ -146,7 +146,7 @@
     "@appium/support/@types/semver": "^7.5.5",
     "@expo/config-plugins/glob": "^7.1.6",
     "@expo/json-file/@babel/code-frame": "^7.10.4",
-    "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.26.0",
+    "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.33.0",
     "@pnpm/network.ca-file/graceful-fs": "~4.2.10",
     "@react-native-community/cli": "^11.3.6",
     "@react-native-community/cli-platform-android": "^11.3.6",
