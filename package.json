@@ -156,6 +156,7 @@
     "appium/yaml": "^2.3.4",
     "body-parser": "~1.20.2",
     "bplist-parser": "~0.3.2",
+    "deprecated-react-native-prop-types": "^4.2.3",
     "deprecated-react-native-prop-types/@react-native/normalize-colors": "^0.72.0",
     "react-native-windows/metro-source-map": "^0.76.8",
     "safe-buffer": "~5.2.1"
