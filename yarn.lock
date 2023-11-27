@@ -6383,7 +6383,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.26.0, eslint-plugin-react@npm:^7.33.0":
+"eslint-plugin-react@npm:^7.33.0":
   version: 7.33.2
   resolution: "eslint-plugin-react@npm:7.33.2"
   dependencies:
