@@ -140,7 +140,7 @@
   "engines": {
     "node": ">=14.15"
   },
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@4.0.2",
   "resolutions": {
     "@appium/docutils": "link:./example",
     "@appium/support/@types/semver": "^7.5.5",
