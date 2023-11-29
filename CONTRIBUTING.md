@@ -259,7 +259,8 @@ While the PR is open:
 - Hold off on merging until the release crew has agreed to promote a release
   candidate to stable
 - Keep an eye on the release discussion for new issues
-- Re-run the test script as new release candidates are published
+- Re-run the test script as new release candidates are published and keep the
+  screenshots up to date
 
 Once the PR is ready to merge:
 
