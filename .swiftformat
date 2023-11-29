@@ -1,0 +1,3 @@
+--swiftversion 5.8
+--ifdef no-indent
+--stripunusedargs closure-only

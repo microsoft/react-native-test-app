@@ -62,7 +62,7 @@
   "scripts": {
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
     "format:js": "prettier --write --log-level error $(git ls-files '*.[cm]js' '*.[jt]s' '*.tsx' '*.yml' 'CONTRIBUTING.md' 'README.md' 'test/**/*.json' ':!:.yarn/releases')",
-    "format:swift": "swiftformat --swiftversion 5.8 --quiet --ifdef no-indent --stripunusedargs closure-only ios macos",
+    "format:swift": "swiftformat ios macos",
     "generate:code": "node scripts/generate-manifest.mjs",
     "generate:docs": "node scripts/generate-manifest-docs.mjs",
     "generate:schema": "node scripts/generate-schema.mjs",
