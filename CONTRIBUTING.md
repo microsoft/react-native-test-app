@@ -19,10 +19,8 @@ additional questions or comments.
 
 ## Commit Messages
 
-This repository adheres to the
-[conventional commit format](https://conventionalcommits.org) via
-[commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint).
-Commit messages must match the pattern:
+This repository adheres to the [conventional commit format][] via
+[commitlint-lite][]. Commit messages must match the pattern:
 
 ```sh
 type(scope?): subject
@@ -33,9 +31,11 @@ delimiters.
 
 Following this is necessary to pass CI.
 
-> Note that if you need to push additional changes to an existing PR, you don't
-> need to follow this convention. We squash all commits before merging. Only the
-> first commit needs to adhere.
+> [!NOTE]
+>
+> If you're pushing additional changes to an existing PR, you don't need to
+> follow this convention. We squash all commits before merging. Only the first
+> commit needs to adhere.
 
 ## Additional Dependencies
 
@@ -106,9 +106,10 @@ workspace:
 open ios/Example.xcworkspace
 ```
 
-> **Note:** If you made changes to `app.json` or any other assets, you should
-> re-run `pod install` to make sure that the changes are included in the Xcode
-> project.
+> [!NOTE]
+>
+> If you made changes to `app.json` or any other assets, you should re-run
+> `pod install` to make sure that the changes are included in the Xcode project.
 
 ### macOS
 
@@ -133,9 +134,10 @@ workspace:
 open macos/Example.xcworkspace
 ```
 
-> **Note:** If you made changes to `app.json` or any other assets, you should
-> re-run `pod install` to make sure that the changes are included in the Xcode
-> project.
+> [!NOTE]
+>
+> If you made changes to `app.json` or any other assets, you should re-run
+> `pod install` to make sure that the changes are included in the Xcode project.
 
 ### Windows
 
@@ -161,9 +163,11 @@ start windows/Example.sln
 If you choose to use Visual Studio, remember to first set the target platform to
 `x64`. It may be set to `ARM64` by default.
 
-> **Note:** If you made changes to `app.json` or any other assets, you should
-> re-run `install-windows-test-app` to make sure that the changes are included
-> in the Visual Studio project.
+> [!NOTE]
+>
+> If you made changes to `app.json` or any other assets, you should re-run
+> `install-windows-test-app` to make sure that the changes are included in the
+> Visual Studio project.
 
 ## Adding New Files
 
@@ -198,11 +202,48 @@ yarn
 
 ## Adding Support For New React Native Versions
 
-First, create a new issue using the "New `react-native` version" template,
-update the title, and fill out all the required fields.
+First, create a new issue using the _"New `react-native` version"_ template,
+update the title and fill out all the required fields. You can find the relevant
+discussion link at [`react-native-releases`][].
 
-When opening a PR, link to the issue that was created, and use the table below
-to paste in screenshots as you test the different configurations:
+Use the [`test-matrix.sh`][] script to both test and capture screenshots. We'll
+need the screenshots for the PR we'll create later. For instance, to test 0.73,
+run:
+
+```sh
+scripts/test-matrix.sh 0.73
+```
+
+At the minimum, we should be testing the lowest supported version (0.64 at the
+time of writing) in addition to the new version.
+
+As you run the script, you will hit issues. Depending on the root cause, these
+are the things that you need to do:
+
+- If the issue is in RNTA or [`@rnx-kit/react-native-host`][]:
+  - We own these pieces and should fix them ourselves.
+  - Fixes should go directly to `trunk` if possible.
+  - If we're adding version specific patches, make sure to add a `TODO` in the
+    code as well as updating the [Patches page][] in the wiki. This is to make
+    it easier to identify and remove unused code as we drop support for older
+    React Native versions.
+- Check if others are reporting the same issue in the releases discussion:
+  - If this is the case, see if they need a minimal repro. This is something we
+    can easily provide using our example app.
+  - Otherwise, identify the root cause and file an issue in the relevant
+    repository, then link to it in the discussion.
+    - If it's a simple fix, consider fixing it as you already have the context
+      and it will save time for everyone.
+- In any case, always put a link to the relevant comment/issue/PR in the
+  description of the issue we created at the start of this process.
+
+If the test script succeeds, we are ready to open a PR:
+
+- Update [`package.json`][] to include this new version
+- When opening the PR, make sure to link to the issue we created earlier
+- Copy and paste the table below into the description, modify it to fit the
+  scope of the current PR
+  - The test script we ran should have generated screenshots for the table
 
 ```markdown
 | Configuration   | Android | iOS  | macOS | Windows |
@@ -213,12 +254,37 @@ to paste in screenshots as you test the different configurations:
 | Fabric + Hermes |  TODO   | TODO | TODO  |  TODO   |
 ```
 
-You can use the test script to both test and capture screenshots. For instance,
-to test 0.71, run:
+While the PR is open:
 
-```sh
-scripts/test-matrix.sh 0.71
-```
+- Hold off on merging until the release crew has agreed to promote a release
+  candidate to stable
+- Keep an eye on the release discussion for new issues
+- Re-run the test script as new release candidates are published
 
-At the minimum, we should be testing the lowest supported version (0.64 at the
-time of writing) in addition to the new version.
+Once the PR is ready to merge:
+
+- Update the [supported versions table][] in the wiki
+- Update the appropriate [`@rnx-kit/align-deps`][] profile
+
+For reference, here's the issue (and PR) for 0.73:
+https://github.com/microsoft/react-native-test-app/issues/1637
+([and PR](https://github.com/microsoft/react-native-test-app/pull/1690))
+
+<!-- References -->
+
+[Patches page]: https://github.com/microsoft/react-native-test-app/wiki/Patches
+[`@rnx-kit/align-deps`]:
+  https://github.com/microsoft/rnx-kit/tree/main/packages/align-deps#contribution
+[`@rnx-kit/react-native-host`]:
+  https://github.com/microsoft/rnx-kit/tree/main/packages/react-native-host#readme
+[`package.json`]:
+  https://github.com/microsoft/react-native-test-app/blob/trunk/package.json
+[`react-native-releases`]:
+  https://github.com/reactwg/react-native-releases/discussions
+[`test-matrix.sh`]:
+  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/test-matrix.sh
+[commitlint-lite]:
+  https://github.com/microsoft/rnx-kit/tree/main/incubator/commitlint-lite#readme
+[conventional commit format]: https://conventionalcommits.org
+[supported versions table]:
+  https://github.com/microsoft/react-native-test-app/wiki#react-native-versions
