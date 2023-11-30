@@ -57,8 +57,11 @@ if [[ "$CCACHE_DISABLE" != "1" ]]; then
 
   ccache --zero-stats 1> /dev/null
 fi
+if ! command -v xcbeautify 1> /dev/null; then
+  brew install xcbeautify
+fi
 
-eval "$build_cmd"
+eval "$build_cmd" | xcbeautify
 
 if [[ "$CCACHE_DISABLE" != "1" ]]; then
   ccache --show-stats --verbose
