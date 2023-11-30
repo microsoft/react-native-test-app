@@ -14,6 +14,8 @@ function check_appium_server {
 function install_appium_driver {
   if [[ $($appium driver list --installed 2>&1) != *"$1"* ]]; then
     $appium driver install "$1"
+  else
+    $appium driver update "$1"
   fi
 }
 

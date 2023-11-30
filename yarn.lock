@@ -2923,12 +2923,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.2.8":
-  version: 0.2.8
-  resolution: "@rnx-kit/react-native-host@npm:0.2.8"
+"@rnx-kit/react-native-host@npm:^0.2.9":
+  version: 0.2.9
+  resolution: "@rnx-kit/react-native-host@npm:0.2.9"
   peerDependencies:
     react-native: ">=0.64"
-  checksum: 1d5608548adaf0cb51bf3f43c90e022a29c870df31200dc450acc3ff55e142e996d3e9c3ff78eba64da9edce8c99f80f8f5ae5ea37a1dd5e1b2be470701c4a4d
+  checksum: 5a0fdfc6550d329d6c6569b8fbcbde2a5e82bc5acb0ea47925a18055b5c27f50bc68d1c3112719679e50ada78f2a84acecbc9da88d3c0bf012f7e69a7686b802
   languageName: node
   linkType: hard
 
@@ -6598,8 +6598,8 @@ __metadata:
     react-native-windows: "npm:^0.72.0"
     webdriverio: "npm:^8.11.2"
   peerDependencies:
-    react: ~17.0.1 || ~18.0.0 || ~18.1.0 || ~18.2.0
-    react-native: ^0.0.0-0 || 0.64 - 0.72 || 1000.0.0
+    react: 17.0.1 - 18.2
+    react-native: ^0.0.0-0 || 0.64 - 0.73 || 1000.0.0
     react-native-macos: ^0.0.0-0 || 0.64 || 0.66 || 0.68 || 0.71 - 0.72
     react-native-windows: ^0.0.0-0 || 0.64 - 0.72
   languageName: unknown
@@ -11478,7 +11478,7 @@ __metadata:
     "@microsoft/eslint-plugin-sdl": "npm:^0.2.0"
     "@react-native-community/cli": "npm:^11.3.6"
     "@rnx-kit/eslint-plugin": "npm:^0.6.0"
-    "@rnx-kit/react-native-host": "npm:^0.2.8"
+    "@rnx-kit/react-native-host": "npm:^0.2.9"
     "@types/js-yaml": "npm:^4.0.5"
     "@types/minimist": "npm:^1.2.2"
     "@types/mustache": "npm:^4.0.0"
@@ -11509,8 +11509,8 @@ __metadata:
     uuid: "npm:^8.3.2"
   peerDependencies:
     "@expo/config-plugins": ">=5.0"
-    react: ~17.0.1 || ~18.0.0 || ~18.1.0 || ~18.2.0
-    react-native: ^0.0.0-0 || 0.64 - 0.72 || 1000.0.0
+    react: 17.0.1 - 18.2
+    react-native: ^0.0.0-0 || 0.64 - 0.73 || 1000.0.0
     react-native-macos: ^0.0.0-0 || 0.64 || 0.66 || 0.68 || 0.71 - 0.72
     react-native-windows: ^0.0.0-0 || 0.64 - 0.72
   peerDependenciesMeta:
