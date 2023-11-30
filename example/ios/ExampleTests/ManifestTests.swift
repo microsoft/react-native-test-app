@@ -84,7 +84,8 @@ class ManifestTests: XCTestCase {
         """
 
         guard let data = json.data(using: .utf8),
-              let (manifest, checksum) = Manifest.from(data: data) else {
+              let (manifest, checksum) = Manifest.from(data: data)
+        else {
             XCTFail("Failed to read manifest")
             return
         }
@@ -155,7 +156,8 @@ class ManifestTests: XCTestCase {
         guard let data = json.data(using: .utf8),
               let (manifest, _) = Manifest.from(data: data),
               let component = manifest.components?.first,
-              let initialProperties = component.initialProperties else {
+              let initialProperties = component.initialProperties
+        else {
             XCTFail("Failed to read manifest")
             return
         }

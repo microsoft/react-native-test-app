@@ -1,4 +1,13 @@
 {
   "trailingComma": "es5",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": ["*.md", "*.mdx"],
+      "options": {
+        "organizeImportsSkipDestructiveCodeActions": true,
+        "proseWrap": "always"
+      }
+    }
+  ]
 }
