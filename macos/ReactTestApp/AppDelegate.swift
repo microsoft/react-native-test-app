@@ -15,6 +15,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }()
 
     private var manifestChecksum: String?
+    private var contentDidAppearToken: NSObjectProtocol?
 
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
         true
@@ -237,18 +238,19 @@ extension AppDelegate {
             let modalFrame = NSRect(size: WindowSize.modalSize)
             rootView.frame = modalFrame
 
-            var token: NSObjectProtocol?
-            token = NotificationCenter.default.addObserver(
+            contentDidAppearToken = NotificationCenter.default.addObserver(
                 forName: .RCTContentDidAppear,
                 object: rootView,
                 queue: nil,
-                using: { _ in
+                using: { [weak self] _ in
                     #if USE_FABRIC
                     rootView.frame = modalFrame
                     #else
                     (rootView as? RCTRootView)?.contentView.frame = modalFrame
                     #endif
-                    NotificationCenter.default.removeObserver(token!)
+                    if let token = self?.contentDidAppearToken {
+                        NotificationCenter.default.removeObserver(token)
+                    }
                 }
             )
 
