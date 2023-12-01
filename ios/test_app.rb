@@ -432,12 +432,15 @@ def use_test_app_internal!(target_platform, options)
 
     installer.pods_project.targets.each do |target|
       case target.name
-      when /\AReact/
+      when /\AReact/, 'RCT-Folly', 'Yoga'
         target.build_configurations.each do |config|
-          # Xcode 10.2 requires suppression of nullability for React
-          # https://stackoverflow.com/questions/37691049/xcode-compile-flag-to-suppress-nullability-warnings-not-working
-          config.build_settings['WARNING_CFLAGS'] ||= ['$(inherited)']
-          config.build_settings['WARNING_CFLAGS'] << '-Wno-nullability-completeness'
+          # TODO: Drop `_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION` when
+          #       we no longer support 0.72
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] <<
+            '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
+          config.build_settings['WARNING_CFLAGS'] ||= []
+          config.build_settings['WARNING_CFLAGS'] << '-w'
         end
       when 'RNReanimated'
         # Reanimated tries to automatically install itself by swizzling a method
