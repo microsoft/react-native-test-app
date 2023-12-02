@@ -392,7 +392,7 @@ PODS:
     - React-jsi (= 0.72.8)
     - React-logger (= 0.72.8)
     - React-perflogger (= 0.72.8)
-  - ReactNativeHost (0.2.9):
+  - ReactNativeHost (0.3.1):
     - React-Core
     - React-cxxreact
     - ReactCommon/turbomodule/core
@@ -543,7 +543,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  boost: 57d2868c099736d80fcd648bf211b4431e51a558
+  boost: 7dcd2de282d72e344012f7d6564d024930a6a440
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   Example-Tests: e3a0c1aa41706608d102daa2239aa6d79fcb6e51
   FBLazyVector: df077ae30c8148bcfdc8f886450eb2eefb94a5be
@@ -583,12 +583,12 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 8b86ce0ad4bfdc548ccbbf66808536ddb3c5330c
   React-utils: 96f4588532614099a6d67a2b7c5912e1a35d6403
   ReactCommon: 51f5967b52c51868fa20850c53557616e9a86945
-  ReactNativeHost: 3cc863b178e289d813b92816b149a3acde276d6e
-  ReactTestApp-DevSupport: 5fd0815a03f06e26b120ac7b8a7ff29824fa700b
-  ReactTestApp-Resources: 1f512f66574607bcfa614e9c0d30e7a990fecf30
+  ReactNativeHost: 60ee30b89d14716f0e10f7c09313f1cdef855a52
+  ReactTestApp-DevSupport: 684f374b53c868cd08a0337839a7fcc5ce1e25aa
+  ReactTestApp-Resources: da77347b3f02b5d79ba3fecb3ad328b2f6a7ef4d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 11d7931afb89721f39cf553a78767b81c7fbea1f
 
-PODFILE CHECKSUM: 19cfcdb843222a5ebf8b3f3f3f0f7d3203b15a99
+PODFILE CHECKSUM: 870582483dda68180ae1f996147f31dc3551ce31
 
 COCOAPODS: 1.14.2

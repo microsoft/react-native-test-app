@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
   s.dependency 'React-jsi'
 
   s.pod_target_xcconfig = {
-    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++20',
     'DEFINES_MODULE' => 'YES',
   }
 
