@@ -16,6 +16,15 @@ const {
   toVersionNumber,
   v,
 } = require("./helpers");
+const {
+  buildGradle,
+  podfileIOS,
+  podfileMacOS,
+  reactNativeConfigAndroidFlat,
+  reactNativeConfigAppleFlat,
+  reactNativeConfigWindowsFlat,
+  settingsGradle,
+} = require("./template");
 
 /**
  * @typedef {{ source: string; }} FileCopy;
@@ -82,15 +91,6 @@ const utf8 = { encoding: "utf-8" };
  */
 function error(message) {
   console.error(chalk.red(`[!] ${message}`));
-}
-
-/**
- * Joins all specified lines into a single string.
- * @param {...string} lines
- * @returns {string}
- */
-function join(...lines) {
-  return lines.join("\n");
 }
 
 /**
@@ -351,73 +351,14 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
   if (shouldFlatten) {
     switch (platforms[0]) {
       case "android":
-        return join(
-          "const project = (() => {",
-          "  try {",
-          '    const { configureProjects } = require("react-native-test-app");',
-          "    return configureProjects({",
-          "      android: {",
-          '        sourceDir: ".",',
-          "      },",
-          "    });",
-          "  } catch (_) {",
-          "    return undefined;",
-          "  }",
-          "})();",
-          "",
-          "module.exports = {",
-          "  ...(project ? { project } : undefined),",
-          "};",
-          ""
-        );
+        return reactNativeConfigAndroidFlat();
 
-      case "macos":
       case "ios":
-        return join(
-          "const project = (() => {",
-          "  try {",
-          '    const { configureProjects } = require("react-native-test-app");',
-          "    return configureProjects({",
-          "      ios: {",
-          '        sourceDir: ".",',
-          "      },",
-          "    });",
-          "  } catch (_) {",
-          "    return undefined;",
-          "  }",
-          "})();",
-          "",
-          "module.exports = {",
-          "  ...(project ? { project } : undefined),",
-          "};",
-          ""
-        );
+      case "macos":
+        return reactNativeConfigAppleFlat();
 
       case "windows":
-        return join(
-          "const project = (() => {",
-          '  const path = require("path");',
-          '  const sourceDir = "windows";',
-          "  try {",
-          '    const { windowsProjectPath } = require("react-native-test-app");',
-          "    return {",
-          "      windows: {",
-          "        sourceDir,",
-          `        solutionFile: "${name}.sln",`,
-          "        project: windowsProjectPath(path.join(__dirname, sourceDir)),",
-          "      },",
-          "    };",
-          "  } catch (_) {",
-          "    return undefined;",
-          "  }",
-          "})();",
-          "",
-          "module.exports = {",
-          "  ...(project ? { project } : undefined),",
-          '  reactNativePath: "node_modules/react-native-windows",',
-          "};",
-          ""
-        );
+        return reactNativeConfigWindowsFlat(name);
 
       default:
         throw new Error(`Unknown platform: ${platforms[0]}`);
@@ -542,38 +483,7 @@ const getConfig = (() => {
         },
         android: {
           files: {
-            "build.gradle": join(
-              "buildscript {",
-              `    def androidTestAppDir = "${testAppRelPath}/android"`,
-              '    apply(from: "${androidTestAppDir}/dependencies.gradle")',
-              "",
-              "    repositories {",
-              "        mavenCentral()",
-              "        google()",
-              "    }",
-              "",
-              "    dependencies {",
-              "        getReactNativeDependencies().each { dependency ->",
-              "            classpath(dependency)",
-              "        }",
-              "    }",
-              "}",
-              "",
-              "allprojects {",
-              "    repositories {",
-              "        maven {",
-              "            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm",
-              `            url("\${rootDir}/${path.posix.join(
-                path.dirname(testAppRelPath),
-                "react-native"
-              )}/android")`,
-              "        }",
-              "        mavenCentral()",
-              "        google()",
-              "    }",
-              "}",
-              ""
-            ),
+            "build.gradle": buildGradle(testAppRelPath),
             "gradle/wrapper/gradle-wrapper.jar": {
               source: path.join(
                 testAppPath,
@@ -613,21 +523,7 @@ const getConfig = (() => {
                 "gradlew.bat"
               ),
             },
-            "settings.gradle": join(
-              "pluginManagement {",
-              "    repositories {",
-              "        gradlePluginPortal()",
-              "        mavenCentral()",
-              "        google()",
-              "    }",
-              "}",
-              "",
-              `rootProject.name = "${name}"`,
-              "",
-              `apply(from: "${testAppRelPath}/test-app.gradle")`,
-              "applyTestAppSettings(settings)",
-              ""
-            ),
+            "settings.gradle": settingsGradle(name, testAppRelPath),
           },
           oldFiles: [],
           scripts: {
@@ -640,16 +536,7 @@ const getConfig = (() => {
         },
         ios: {
           files: {
-            Podfile: join(
-              `require_relative '${testAppRelPath}/test_app'`,
-              "",
-              "use_flipper! false unless ENV['USE_FLIPPER'] == '1'",
-              "",
-              `workspace '${name}.xcworkspace'`,
-              "",
-              `use_test_app!`,
-              ""
-            ),
+            Podfile: podfileIOS(name, testAppRelPath),
           },
           oldFiles: [
             "Podfile.lock",
@@ -667,14 +554,7 @@ const getConfig = (() => {
         },
         macos: {
           files: {
-            Podfile: join(
-              `require_relative '${testAppRelPath}/macos/test_app'`,
-              "",
-              `workspace '${name}.xcworkspace'`,
-              "",
-              `use_test_app!`,
-              ""
-            ),
+            Podfile: podfileMacOS(name, testAppRelPath),
           },
           oldFiles: [
             "Podfile.lock",
@@ -976,7 +856,6 @@ exports.getConfig = getConfig;
 exports.getPlatformPackage = getPlatformPackage;
 exports.iosProjectPath = iosProjectPath;
 exports.isDestructive = isDestructive;
-exports.join = join;
 exports.mergeConfig = mergeConfig;
 exports.projectRelativePath = projectRelativePath;
 exports.reactNativeConfig = reactNativeConfig;

@@ -1,10 +1,8 @@
 // @ts-check
 import { deepEqual } from "node:assert/strict";
 import { describe, it } from "node:test";
-import {
-  gatherConfig as gatherConfigActual,
-  join,
-} from "../../scripts/configure.js";
+import { gatherConfig as gatherConfigActual } from "../../scripts/configure.js";
+import { join } from "../../scripts/template.js";
 import { mockParams } from "./mockParams.mjs";
 
 describe("gatherConfig()", () => {
