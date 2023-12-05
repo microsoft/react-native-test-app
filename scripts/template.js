@@ -20,6 +20,7 @@ function serialize(obj) {
 
 /**
  * @param {string} name
+ * @returns {string}
  */
 function appManifest(name) {
   return serialize({
@@ -42,6 +43,7 @@ function appManifest(name) {
 
 /**
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
+ * @returns {string}
  */
 function buildGradle(testAppRelPath) {
   const rnPath = path.posix.join(path.dirname(testAppRelPath), "react-native");
@@ -79,6 +81,7 @@ function buildGradle(testAppRelPath) {
 /**
  * @param {string} name Root project name
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
+ * @returns {string}
  */
 function podfileIOS(name, testAppRelPath) {
   return join(
@@ -96,6 +99,7 @@ function podfileIOS(name, testAppRelPath) {
 /**
  * @param {string} name Root project name
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
+ * @returns {string}
  */
 function podfileMacOS(name, testAppRelPath) {
   return join(
@@ -108,6 +112,9 @@ function podfileMacOS(name, testAppRelPath) {
   );
 }
 
+/**
+ * @returns {string}
+ */
 function reactNativeConfigAndroidFlat() {
   return join(
     "const project = (() => {",
@@ -130,6 +137,9 @@ function reactNativeConfigAndroidFlat() {
   );
 }
 
+/**
+ * @returns {string}
+ */
 function reactNativeConfigAppleFlat() {
   return join(
     "const project = (() => {",
@@ -154,6 +164,7 @@ function reactNativeConfigAppleFlat() {
 
 /**
  * @param {string} name Solution file name (without extension)
+ * @returns {string}
  */
 function reactNativeConfigWindowsFlat(name) {
   return join(
@@ -185,6 +196,7 @@ function reactNativeConfigWindowsFlat(name) {
 /**
  * @param {string} name Root project name
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
+ * @returns {string}
  */
 function settingsGradle(name, testAppRelPath) {
   return join(
