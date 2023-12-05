@@ -17,12 +17,14 @@ const {
   v,
 } = require("./helpers");
 const {
+  appManifest,
   buildGradle,
   podfileIOS,
   podfileMacOS,
   reactNativeConfigAndroidFlat,
   reactNativeConfigAppleFlat,
   reactNativeConfigWindowsFlat,
+  serialize,
   settingsGradle,
 } = require("./template");
 
@@ -176,15 +178,6 @@ const cliPlatformIOSVersion = (() => {
     return version;
   };
 })();
-
-/**
- * Converts an object or value to a pretty JSON string.
- * @param {Record<string, unknown>} obj
- * @return {string}
- */
-function serialize(obj) {
-  return JSON.stringify(obj, undefined, 2) + "\n";
-}
 
 /**
  * Sort the keys in specified object.
@@ -450,22 +443,7 @@ const getConfig = (() => {
                     : {
                         "App.js": { source: path.join(templateDir, "App.js") },
                       }),
-                  "app.json": serialize({
-                    name,
-                    displayName: name,
-                    components: [
-                      {
-                        appKey: name,
-                        displayName: name,
-                      },
-                    ],
-                    resources: {
-                      android: ["dist/res", "dist/main.android.jsbundle"],
-                      ios: ["dist/assets", "dist/main.ios.jsbundle"],
-                      macos: ["dist/assets", "dist/main.macos.jsbundle"],
-                      windows: ["dist/assets", "dist/main.windows.bundle"],
-                    },
-                  }),
+                  "app.json": appManifest(name),
                   "index.js": {
                     source: path.join(templateDir, "index.js"),
                   },

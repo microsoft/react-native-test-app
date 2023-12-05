@@ -10,6 +10,37 @@ function join(...lines) {
 }
 
 /**
+ * Converts an object or value to a pretty JSON string.
+ * @param {Record<string, unknown>} obj
+ * @return {string}
+ */
+function serialize(obj) {
+  return JSON.stringify(obj, undefined, 2) + "\n";
+}
+
+/**
+ * @param {string} name
+ */
+function appManifest(name) {
+  return serialize({
+    name,
+    displayName: name,
+    components: [
+      {
+        appKey: name,
+        displayName: name,
+      },
+    ],
+    resources: {
+      android: ["dist/res", "dist/main.android.jsbundle"],
+      ios: ["dist/assets", "dist/main.ios.jsbundle"],
+      macos: ["dist/assets", "dist/main.macos.jsbundle"],
+      windows: ["dist/assets", "dist/main.windows.bundle"],
+    },
+  });
+}
+
+/**
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
  */
 function buildGradle(testAppRelPath) {
@@ -173,6 +204,7 @@ function settingsGradle(name, testAppRelPath) {
   );
 }
 
+exports.appManifest = appManifest;
 exports.buildGradle = buildGradle;
 exports.join = join;
 exports.podfileIOS = podfileIOS;
@@ -180,4 +212,5 @@ exports.podfileMacOS = podfileMacOS;
 exports.reactNativeConfigAndroidFlat = reactNativeConfigAndroidFlat;
 exports.reactNativeConfigAppleFlat = reactNativeConfigAppleFlat;
 exports.reactNativeConfigWindowsFlat = reactNativeConfigWindowsFlat;
+exports.serialize = serialize;
 exports.settingsGradle = settingsGradle;
