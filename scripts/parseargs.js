@@ -29,14 +29,16 @@
  * @template {Options} O
  * @typedef {InferredOptionTypes<O> & { _: string[] }} Args;
  */
+
 /**
- * @typedef {{
- *   string: string[];
- *   boolean: string[];
- *   alias: Record<string, string>;
- *   default: Record<string, string | boolean | string[]>;
- * }} MinimistOptions;
+ * @template {Options} O
+ * @param {NonNullable<unknown>} values
+ * @param {O} _options (Unused; only present for type inference)
+ * @returns {values is Args<O>}
  */
+function coerce(values, _options) {
+  return Boolean(typeof values === "object" && "help" in values);
+}
 
 /**
  * Generates help message.
@@ -74,42 +76,7 @@ function formatHelp(description, options) {
 }
 
 /**
- * Converts options to the format required by minimist.
- * @param {Options} options
- * @returns {MinimistOptions}
- */
-function minimistOptions(options) {
-  /** @type {MinimistOptions} */
-  const minimist = {
-    string: [],
-    boolean: [],
-    alias: {},
-    default: {},
-  };
-
-  for (const [flag, option] of Object.entries(options)) {
-    if (option.type === "boolean") {
-      minimist.boolean.push(flag);
-    } else {
-      minimist.string.push(flag);
-    }
-
-    if (option.short) {
-      minimist.alias[option.short] = flag;
-    }
-
-    if (option.default) {
-      minimist.default[flag] = option.default;
-    }
-  }
-
-  return minimist;
-}
-
-/**
  * Parses command line arguments.
- *
- * Note: In the future, we can replace minimist with `util.parseArgs`.
  *
  * @see {@link https://nodejs.org/api/util.html#utilparseargsconfig}
  *
@@ -135,18 +102,27 @@ function parseArgs(description, options, callback) {
     ...options,
   };
 
-  const args = require("minimist")(
-    process.argv.slice(2),
-    minimistOptions(mergedOptions)
-  );
+  const { parseArgs } = require("node:util");
+  const { values, positionals } = parseArgs({
+    args: process.argv.slice(2),
+    options: mergedOptions,
+    strict: true,
+    allowPositionals: true,
+    tokens: false,
+  });
 
-  if (args["help"]) {
+  if (!coerce(values, mergedOptions)) {
+    throw new Error("Failed to parse command-line arguments");
+  }
+
+  if (values.help) {
     console.log(formatHelp(description, mergedOptions));
-  } else if (args["version"]) {
+  } else if (values.version) {
     const { name, version } = require("../package.json");
     console.log(`${name} ${version}`);
   } else {
-    callback(/** @type {Args<O>} */ (args));
+    values._ = positionals;
+    callback(values);
   }
 }
 

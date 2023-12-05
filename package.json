@@ -84,7 +84,6 @@
     "chalk": "^4.1.0",
     "cliui": "^8.0.0",
     "fast-xml-parser": "^4.0.0",
-    "minimist": "^1.2.8",
     "prompts": "^2.4.0",
     "semver": "^7.3.5",
     "uuid": "^8.3.2"
@@ -118,7 +117,6 @@
     "@rnx-kit/eslint-plugin": "^0.6.0",
     "@rnx-kit/tsconfig": "^1.0.0",
     "@types/js-yaml": "^4.0.5",
-    "@types/minimist": "^1.2.2",
     "@types/mustache": "^4.0.0",
     "@types/node": "^20.0.0",
     "@types/prompts": "~2.4.0",
