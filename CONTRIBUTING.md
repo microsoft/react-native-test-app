@@ -332,7 +332,8 @@ additions.
 > We should automate this so it runs at least once a week. Alternatively, we
 > should look into how we can generate code from `app.json`. This way we longer
 > need to parse JSON at runtime, eliminating the need for Moshi and KSP
-> altogether.
+> altogether. See also
+> https://github.com/microsoft/react-native-test-app/issues/1722.
 
 <!-- References -->
 
