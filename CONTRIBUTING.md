@@ -277,51 +277,62 @@ We use [Renovate][] to keep dependencies up to date. They are currently
 scheduled to run [every Monday morning][]. You can also manually trigger updates
 via the [Dependency Dashboard].
 
-- Direct dependencies:
-  - **Patch bumps:** As long as the CI is green, these should be good to merge
-    without having to touch `package.json`. The only thing to watch out for is
-    whether duplicates are introduced in `yarn.lock`:
-    - Sometimes, running `yarn dedupe` is enough to get rid of duplicates.
-    - Other times, we have to look at the dependency chain and dedupe by bumping
-      one of the dependees.
-    - As a last resort, and only if one of the dependees are using an
-      unnecessarily strict version range, we can add a `resolutions` entry in
-      `package.json`.
-    - Finally, make sure the commit message is prefixed with `chore` and not
-      `fix` to avoid publishing a new version with zero changes.
-  - **Minor bumps:** Semantically, minor bumps should only include additions and
-    not break anything. Check the change log to be sure. Otherwise, see the
-    notes on patch bumps.
-  - **Major bumps:** In general, we only do major bumps manually. This is to
-    ensure that we aren't unnecessarily adding more dependencies on the consumer
-    side or make things more complicated to maintain. An example of us holding
-    back is the [`uuid`][] package. As of writing, the latest version is 9.x but
-    we're on 8.x still because that's the version being used by most of our
-    dependencies. Another example is [`chalk`][]; we are stuck on 4.x until
-    `@react-native-community/cli` migrates to ESM.
-- Development dependencies:
-  - Consumers never see these so we can be less conservative, especially when it
-    comes to major bumps. Otherwise, everything mentioned above still applies.
-- Android dependencies:
-  - Always check the change log for potentially breaking changes as they
-    typically do not follow semantic versioning. In particular, be on the
-    lookout for changes to:
-    - Minimum target version
-    - Android SDK version
-    - Kotlin version
-  - If the bump contains potentially breaking changes, consider whether we need
-    to gate them behind a version check. For example, we only use
-    `androidx.core:core-ktx:1.10.1` when on Kotlin 1.8 or higher. See
-    [`dependencies.gradle`][] for other examples.
-  - Besides direct dependencies, we also need to keep the list of KSP versions
-    up to date as they are tied to specific versions of Kotlin. The reason for
-    this is because Kotlin has not yet reached API stability. Until it does, we
-    will have to periodically run `node scripts/update-ksp-versions.mjs` and
-    check in the additions.
-    - [TODO] We should automate this so it runs at least once a week.
-    - [TODO] If we can generate code from `app.json`, we will no longer need to
-      parse JSON at runtime. This will eliminate the need for Moshi and KSP
-      altogether.
+### Direct Dependencies
+
+- **Patch bumps:** As long as the CI is green, these should be good to merge
+  without having to touch `package.json`. The only thing to watch out for is
+  whether duplicates are introduced in `yarn.lock`:
+  - Sometimes, running `yarn dedupe` is enough to get rid of duplicates.
+  - Other times, we have to look at the dependency chain and dedupe by bumping
+    one of the dependees.
+  - As a last resort, and only if one of the dependees are using an
+    unnecessarily strict version range, we can add a `resolutions` entry in
+    `package.json`.
+  - Finally, make sure the commit message is prefixed with `chore` and not `fix`
+    to avoid publishing a new version with zero changes.
+- **Minor bumps:** Semantically, minor bumps should only include additions and
+  not break anything. Check the change log to be sure. Otherwise, see the notes
+  on patch bumps.
+- **Major bumps:** In general, we only do major bumps manually. This is to
+  ensure that we aren't unnecessarily adding more dependencies on the consumer
+  side or make things more complicated to maintain. An example of us holding
+  back is the [`uuid`][] package. As of writing, the latest version is 9.x but
+  we're on 8.x still because that's the version being used by most of our
+  dependencies. Another example is [`chalk`][]; we are stuck on 4.x until
+  `@react-native-community/cli` migrates to ESM.
+
+### Development Dependencies
+
+Consumers never see these so we can be less conservative, especially when it
+comes to major bumps. Otherwise, everything mentioned above still applies.
+
+### Android Dependencies:
+
+Always check the change log for potentially breaking changes as they typically
+do not follow semantic versioning. In particular, be on the lookout for changes
+to:
+
+- Minimum target version
+- Android SDK version
+- Kotlin version
+
+If the bump contains potentially breaking changes, consider whether we need to
+gate them behind a version check. For example, we only use
+`androidx.core:core-ktx:1.10.1` when on Kotlin 1.8 or higher. See
+[`dependencies.gradle`][] for other examples.
+
+Besides direct dependencies, we also need to keep the list of KSP versions up to
+date as they are tied to specific versions of Kotlin. The reason for this is
+because Kotlin has not yet reached API stability. Until it does, we will have to
+periodically run `node scripts/update-ksp-versions.mjs` and check in the
+additions.
+
+> [!TIP]
+>
+> We should automate this so it runs at least once a week. Alternatively, we
+> should look into how we can generate code from `app.json`. This way we longer
+> need to parse JSON at runtime, eliminating the need for Moshi and KSP
+> altogether.
 
 <!-- References -->
 
