@@ -296,7 +296,7 @@ via the [Dependency Dashboard].
 - **Major bumps:** In general, we only do major bumps manually. This is to
   ensure that we aren't unnecessarily adding more dependencies on the consumer
   side or make things more complicated to maintain. An example of us holding
-  back is the [`uuid`][] package. As of writing, the latest version is 9.x but
+  back is the [`uuid`][] package; as of writing, the latest version is 9.x but
   we're on 8.x still because that's the version being used by most of our
   dependencies. Another example is [`chalk`][]; we are stuck on 4.x until
   `@react-native-community/cli` migrates to ESM.
