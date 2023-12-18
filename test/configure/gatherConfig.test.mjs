@@ -13,8 +13,8 @@ describe("gatherConfig()", () => {
    * File content should not be normalized because they should only contain
    * forward-slashes.
    *
-   * @param {import("../../scripts/configure").ConfigureParams} params
-   * @returns {import("../../scripts/configure").Configuration}
+   * @param {import("../../scripts/configure.js").ConfigureParams} params
+   * @returns {import("../../scripts/configure.js").Configuration}
    */
   function gatherConfig(params) {
     /** @type {(p: string) => string} */

@@ -116,6 +116,7 @@
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^11.3.6",
     "@rnx-kit/eslint-plugin": "^0.6.0",
+    "@rnx-kit/tsconfig": "^1.0.0",
     "@types/js-yaml": "^4.0.5",
     "@types/minimist": "^1.2.2",
     "@types/mustache": "^4.0.0",

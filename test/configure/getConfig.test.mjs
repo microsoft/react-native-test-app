@@ -12,8 +12,8 @@ describe("getConfig()", () => {
 
   /**
    * Gets the list of dependencies from specified config.
-   * @param {import("../../scripts/configure").Configuration} config
-   * @param {import("../../scripts/configure").ConfigureParams} params
+   * @param {import("../../scripts/configure.js").Configuration} config
+   * @param {import("../../scripts/configure.js").ConfigureParams} params
    * @returns {string[] | undefined}
    */
   function getDependencies({ getDependencies }, params) {

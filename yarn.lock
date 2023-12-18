@@ -2932,6 +2932,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rnx-kit/tsconfig@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@rnx-kit/tsconfig@npm:1.0.0"
+  checksum: 1c1c911dfae07c57d70fe272bd9d1c988a0f12be17e68a90d7cf75c8cd2c3f9dd59d568d4be78c1b3ff8e829ea17f0b261b21656e70062202f5a5d8d10aa1ebe
+  languageName: node
+  linkType: hard
+
 "@semantic-release/commit-analyzer@npm:^11.0.0":
   version: 11.0.0
   resolution: "@semantic-release/commit-analyzer@npm:11.0.0"
@@ -11452,6 +11459,7 @@ __metadata:
     "@react-native-community/cli": "npm:^11.3.6"
     "@rnx-kit/eslint-plugin": "npm:^0.6.0"
     "@rnx-kit/react-native-host": "npm:^0.2.9"
+    "@rnx-kit/tsconfig": "npm:^1.0.0"
     "@types/js-yaml": "npm:^4.0.5"
     "@types/minimist": "npm:^1.2.2"
     "@types/mustache": "npm:^4.0.0"
