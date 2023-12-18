@@ -4,12 +4,12 @@ import { findFile } from "../validate-manifest.js";
 import { BaseMods } from "./ExpoConfigPlugins.mjs";
 
 /**
- * @typedef {import("@expo/config-plugins/build/plugins/createBaseMod").ForwardedBaseModOptions} ForwardedBaseModOptions
+ * @typedef {import("@expo/config-plugins/build/plugins/createBaseMod.js").ForwardedBaseModOptions} ForwardedBaseModOptions
  */
 /**
  * @template ModType
  * @template {ForwardedBaseModOptions} Props
- * @typedef {import("@expo/config-plugins/build/plugins/createBaseMod").BaseModProviderMethods<ModType, Props>} BaseModProviderMethods
+ * @typedef {import("@expo/config-plugins/build/plugins/createBaseMod.js").BaseModProviderMethods<ModType, Props>} BaseModProviderMethods
  */
 
 export function makeNullProvider(defaultRead = {}) {
