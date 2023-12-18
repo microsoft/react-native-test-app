@@ -2722,14 +2722,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/cli@npm:0.72.3":
-  version: 0.72.3
-  resolution: "@react-native-windows/cli@npm:0.72.3"
+"@react-native-windows/cli@npm:0.72.4":
+  version: 0.72.4
+  resolution: "@react-native-windows/cli@npm:0.72.4"
   dependencies:
-    "@react-native-windows/codegen": "npm:0.72.2"
-    "@react-native-windows/fs": "npm:0.72.0"
-    "@react-native-windows/package-utils": "npm:0.72.0"
-    "@react-native-windows/telemetry": "npm:0.72.1"
+    "@react-native-windows/codegen": "npm:0.72.3"
+    "@react-native-windows/fs": "npm:0.72.1"
+    "@react-native-windows/package-utils": "npm:0.72.1"
+    "@react-native-windows/telemetry": "npm:0.72.2"
     "@xmldom/xmldom": "npm:^0.7.7"
     chalk: "npm:^4.1.0"
     cli-spinners: "npm:^2.2.0"
@@ -2749,15 +2749,15 @@ __metadata:
     xpath: "npm:^0.0.27"
   peerDependencies:
     react-native: "*"
-  checksum: 37738891ebfafa4b3e85dc1d1f1f99cbb0986f5c71c02623f427928fd717aca774023642e5ddfa1b80c261bf750396c50fc002e057cc0c54416d1ddf20f56c01
+  checksum: 028170f9e11e12cf1f9fe0fad86bece3db2240417cb3bb85da46db2c48eeb785da8ead61dbaf362e9f0c9d238bf440f003d4e9189bbe9b571d67a44e46347d2a
   languageName: node
   linkType: hard
 
-"@react-native-windows/codegen@npm:0.72.2":
-  version: 0.72.2
-  resolution: "@react-native-windows/codegen@npm:0.72.2"
+"@react-native-windows/codegen@npm:0.72.3":
+  version: 0.72.3
+  resolution: "@react-native-windows/codegen@npm:0.72.3"
   dependencies:
-    "@react-native-windows/fs": "npm:0.72.0"
+    "@react-native-windows/fs": "npm:0.72.1"
     chalk: "npm:^4.1.0"
     globby: "npm:^11.0.4"
     mustache: "npm:^4.0.1"
@@ -2767,46 +2767,46 @@ __metadata:
     react-native: "*"
   bin:
     react-native-windows-codegen: bin.js
-  checksum: a650014ac1a86ddc5930d2a3aa0922049068b1ca4ec941caa62f896f556fd8601444dfbc01313f6ae8c40aa9aabbad6e0f270fac6a777fb69094d1bdb7e46ea0
+  checksum: 4f57b4ce7459e04471be0de4decdea0896ede5daf0561cc6b0422bccba50b52c7cbdac91af9dbc7667c41fb6acf737a9bd0c4c8e68c46546f62e855fee044112
   languageName: node
   linkType: hard
 
-"@react-native-windows/find-repo-root@npm:0.72.0":
-  version: 0.72.0
-  resolution: "@react-native-windows/find-repo-root@npm:0.72.0"
+"@react-native-windows/find-repo-root@npm:0.72.1":
+  version: 0.72.1
+  resolution: "@react-native-windows/find-repo-root@npm:0.72.1"
   dependencies:
-    "@react-native-windows/fs": "npm:0.72.0"
+    "@react-native-windows/fs": "npm:0.72.1"
     find-up: "npm:^4.1.0"
-  checksum: ffed6fef5a123569eb60e2f1c007d50337fada7da48f48a2ea2b1b3d94a1ef767d027888531fa6f69cc8c4b8d19ec8e4cf29d2827cd9b9659ec44a9458c482d2
+  checksum: da4059c7c0e1768f39531ed3a1c7e4a447a9b93d598e09e43d382ff41453a4b620635d1fefd52621ec1f3c3b020d67253417a435a8c05bfccac4e1ccb0884c02
   languageName: node
   linkType: hard
 
-"@react-native-windows/fs@npm:0.72.0":
-  version: 0.72.0
-  resolution: "@react-native-windows/fs@npm:0.72.0"
+"@react-native-windows/fs@npm:0.72.1":
+  version: 0.72.1
+  resolution: "@react-native-windows/fs@npm:0.72.1"
   dependencies:
     graceful-fs: "npm:^4.2.8"
-  checksum: 74d2f387973291f6040424d7d6767ce0c97e20d09ce10cbac0fe6f4d1b6ec139d9b04adf0f3c0a86d2e9350a8c36d38b59ed1eda52d08eb99677cdbfa74b3efb
+  checksum: bcd3c6390ef405cbb5acc319163ed1e3e62df5c48d995b6c0ee540023b707f04876dd2cec281344de5b20bd34a93f8bc35e31d08edd4fa5a07f8d5e8828deafa
   languageName: node
   linkType: hard
 
-"@react-native-windows/package-utils@npm:0.72.0":
-  version: 0.72.0
-  resolution: "@react-native-windows/package-utils@npm:0.72.0"
+"@react-native-windows/package-utils@npm:0.72.1":
+  version: 0.72.1
+  resolution: "@react-native-windows/package-utils@npm:0.72.1"
   dependencies:
-    "@react-native-windows/find-repo-root": "npm:0.72.0"
-    "@react-native-windows/fs": "npm:0.72.0"
+    "@react-native-windows/find-repo-root": "npm:0.72.1"
+    "@react-native-windows/fs": "npm:0.72.1"
     get-monorepo-packages: "npm:^1.2.0"
     lodash: "npm:^4.17.15"
-  checksum: f900c9eedb42086c89718631afa61923bb860ee41cd69e58080c6ee0329ccb0b63aa3a1fade7abd0656910e0344d1fdb902242c66001d1e9d0618d338a8e1202
+  checksum: e2115c6426c65efcdca824298d43c5488e3e0e3214181397fb9c4a39a957458baf05f83de456fb8c1552f0a5ce452f6b77dc204e986f9b0493a00e5126abf838
   languageName: node
   linkType: hard
 
-"@react-native-windows/telemetry@npm:0.72.1":
-  version: 0.72.1
-  resolution: "@react-native-windows/telemetry@npm:0.72.1"
+"@react-native-windows/telemetry@npm:0.72.2":
+  version: 0.72.2
+  resolution: "@react-native-windows/telemetry@npm:0.72.2"
   dependencies:
-    "@react-native-windows/fs": "npm:0.72.0"
+    "@react-native-windows/fs": "npm:0.72.1"
     "@xmldom/xmldom": "npm:^0.7.7"
     applicationinsights: "npm:^2.3.1"
     ci-info: "npm:^3.2.0"
@@ -2814,7 +2814,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     os-locale: "npm:^5.0.0"
     xpath: "npm:^0.0.27"
-  checksum: 2e3336f22d58f39d8f6f615953f0033ef08d51a914fa0f51740b369a5d5f30913d9b1af117b1ce63739e1d70e9dc78dd1c12fed678f12c038698bd5b4113744a
+  checksum: c6c4d1a43fcc16b2fef90afd58f253677f154068220ae19d85edb5132282fecb4be791b8747a47a26c1c6ea983064fc51a28a8753431a2fbe6b6197ee7c06d49
   languageName: node
   linkType: hard
 
@@ -11502,15 +11502,15 @@ __metadata:
   linkType: soft
 
 "react-native-windows@npm:^0.72.0":
-  version: 0.72.20
-  resolution: "react-native-windows@npm:0.72.20"
+  version: 0.72.22
+  resolution: "react-native-windows@npm:0.72.22"
   dependencies:
     "@babel/runtime": "npm:^7.0.0"
     "@jest/create-cache-key-function": "npm:^29.2.1"
     "@react-native-community/cli": "npm:11.3.7"
     "@react-native-community/cli-platform-android": "npm:11.3.7"
     "@react-native-community/cli-platform-ios": "npm:11.3.7"
-    "@react-native-windows/cli": "npm:0.72.3"
+    "@react-native-windows/cli": "npm:0.72.4"
     "@react-native/assets": "npm:1.0.0"
     "@react-native/assets-registry": "npm:^0.72.0"
     "@react-native/codegen": "npm:^0.72.7"
@@ -11548,7 +11548,7 @@ __metadata:
   peerDependencies:
     react: 18.2.0
     react-native: ^0.72.6
-  checksum: c412d7ead55d9b13f5d2f9c9cd16158afed356f4b63e2bfccb03ae7f04f0bb9e6a54c5a4aa85412b30535bbf1dd36f8af7e0dc4b4f0688ea9936cf613ffea575
+  checksum: 9fc8d68a468654d5485f467774b0203b4d837a642b4b9742695b71156437e59499bac09b7584f1ea2bdc543acea5825a024a4c037b5349fded7428e490eeadd5
   languageName: node
   linkType: hard
 
