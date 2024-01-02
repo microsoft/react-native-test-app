@@ -60,7 +60,7 @@ function getBaseCommit(targetBranch) {
       : targetBranch;
   const base = git("merge-base", "--fork-point", targetBranch);
   if (!base) {
-    throw new Error("Failed to determine base commit");
+    console.error("❌", "Failed to determine base commit");
   }
   return base;
 }
@@ -85,7 +85,7 @@ function getChangedFiles(since) {
  */
 function loadLabels() {
   const yml = fs.readFileSync(".github/labeler.yml", { encoding: "utf-8" });
-  return /**@type {Record<string, string[] | undefined>} */ (yaml.load(yml));
+  return /** @type {Record<string, string[] | undefined>} */ (yaml.load(yml));
 }
 
 /**
@@ -118,6 +118,11 @@ function getAffectedPlatforms(targetBranch) {
   const platformMatchers = makeMatchers();
 
   const baseCommit = getBaseCommit(targetBranch);
+  if (!baseCommit) {
+    // Match all platforms if we cannot find base commit
+    return clean(Object.keys(platformMatchers));
+  }
+
   const changedFiles = getChangedFiles(baseCommit);
   if (changedFiles.length === 0) {
     // If there are no files, we are building default branch
