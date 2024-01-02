@@ -7,6 +7,11 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 
 /**
+ * @typedef {{ "any-glob-to-any-file": string[] }} MatchChangedFiles;
+ * @typedef {{ "changed-files": MatchChangedFiles[]; }} Match
+ */
+
+/**
  * Cleans up the given array.
  * @param {string[]} platforms
  */
@@ -81,11 +86,11 @@ function getChangedFiles(since) {
 /**
  * Loads labels from Pull Request Labeler action configuration.
  * @see {@link https://github.com/actions/labeler}
- * @returns {Record<string, string[] | undefined>}
+ * @returns {Record<string, Match[] | undefined>}
  */
 function loadLabels() {
   const yml = fs.readFileSync(".github/labeler.yml", { encoding: "utf-8" });
-  return /** @type {Record<string, string[] | undefined>} */ (yaml.load(yml));
+  return /** @type {Record<string, Match[] | undefined>} */ (yaml.load(yml));
 }
 
 /**
