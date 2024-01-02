@@ -90,6 +90,9 @@ ext {
         // default. See also
         // https://developer.android.com/studio/releases/gradle-plugin#compatibility-7-3-0
         ndkVersion = "23.1.7779620"
+    } else if (reactNativeVersion >= v(0, 74, 0)) {
+        // https://github.com/facebook/react-native/commit/9ce7b564131c5b2075489c09ff05325ddc28014a
+        ndkVersion = "26.1.10909125"
     }
 
     def kotlinVersionNumber = toVersionNumber(kotlinVersion)

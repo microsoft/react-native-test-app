@@ -123,6 +123,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        def cppStd = reactNativeVersion >= v(0, 74, 0) ? "-std=c++20" : "-std=c++17"
         if (enableNewArchitecture) {
             externalNativeBuild {
                 cmake {
@@ -131,6 +132,7 @@ android {
                               "-DPROJECT_BUILD_DIR=${buildDir}",
                               "-DREACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build",
                               "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid"
+                    cppFlags cppStd, "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
                 }
             }
             if (!project.ext.react.abiSplit) {
@@ -144,7 +146,7 @@ android {
                     arguments "-DANDROID_STL=c++_shared",
                               "-DREACT_COMMON_DIR=${reactNativePath}/ReactCommon",
                               "-DREACT_JNILIBS_DIR=${buildDir}/outputs/jniLibs"
-                    cppFlags "-std=c++17"
+                    cppFlags cppStd, "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
                 }
             }
         }
@@ -204,8 +206,13 @@ android {
         main.java.srcDirs += [
             project.ext.react.enableCamera ? "src/camera/java" : "src/no-camera/java",
 
-            // TODO: Remove this block when we drop support for 0.67
-            enableNewArchitecture ? "src/fabric/java" : "src/no-fabric/java",
+            !enableNewArchitecture
+                ? "src/old-arch/java"
+                // TODO: Remove this block when we drop support for 0.73
+                // https://github.com/facebook/react-native/commit/65552055392a5996bf50548018953875dde4560b
+                : reactNativeVersion >= v(0, 74, 0)
+                    ? "src/new-arch-0.74/java"
+                    : "src/new-arch/java",
 
             // TODO: Remove this block when we drop support for 0.67
             // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
@@ -213,17 +220,24 @@ android {
                 ? "src/reactinstanceeventlistener-pre-0.68/java"
                 : "src/reactinstanceeventlistener-0.68/java",
 
-            // TODO: Remove this block when we drop support for 0.71
-            // https://github.com/facebook/react-native/commit/e5dd9cdc6688e63e75a7e0bebf380be1a9a5fe2b
-            reactNativeVersion > 0 && reactNativeVersion < v(0, 72, 0)
-                ? "src/reactactivitydelegate-pre-0.72/java"
-                : "src/reactactivitydelegate-0.72/java",
+            // TODO: Remove this block when we drop support for 0.73
+            reactNativeVersion >= v(0, 74, 0)
+                ? "src/reactactivitydelegate-0.74/java"
+                // TODO: Remove this block when we drop support for 0.71
+                // https://github.com/facebook/react-native/commit/e5dd9cdc6688e63e75a7e0bebf380be1a9a5fe2b
+                : reactNativeVersion >= v(0, 72, 0)
+                    ? "src/reactactivitydelegate-0.72/java"
+                    : "src/reactactivitydelegate-pre-0.72/java",
 
-            // TODO: Remove this block when we drop support for 0.72
-            // https://github.com/facebook/react-native/commit/da358d0ec7a492edb804b9cdce70e7516ee518ae
-            reactNativeVersion > 0 && reactNativeVersion < v(0, 73, 0)
-                ? "src/devserverhelper-pre-0.73/java"
-                : "src/devserverhelper-0.73/java",
+            // TODO: Remove this block when we drop support for 0.73
+            // https://github.com/facebook/react-native/commit/cfa02eec50469059542ccbacbc51643b525ad461
+            reactNativeVersion >= v(0, 74, 0)
+                ? "src/devserverhelper-0.74/java"
+                // TODO: Remove this block when we drop support for 0.72
+                // https://github.com/facebook/react-native/commit/da358d0ec7a492edb804b9cdce70e7516ee518ae
+                : reactNativeVersion >= v(0, 73, 0)
+                    ? "src/devserverhelper-0.73/java"
+                    : "src/devserverhelper-pre-0.73/java",
 
             // TODO: Remove this block when we drop support for 0.72
             // https://github.com/facebook/react-native/commit/c3f672cef7d4f287d3d729d33650f917ed132a0c

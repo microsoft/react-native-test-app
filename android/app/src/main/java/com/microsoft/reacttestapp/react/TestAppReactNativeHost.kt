@@ -8,7 +8,6 @@ import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactPackage
-import com.facebook.react.bridge.JSIModulePackage
 import com.facebook.react.bridge.JavaScriptExecutorFactory
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.devsupport.interfaces.DevSupportManager
@@ -18,7 +17,6 @@ import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
 import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 import com.microsoft.reacttestapp.compat.ReactNativeHostCompat
-import com.microsoft.reacttestapp.fabric.FabricJSIModulePackage
 import java.util.Collections.synchronizedList
 import java.util.concurrent.CountDownLatch
 
@@ -141,14 +139,6 @@ class TestAppReactNativeHost(
     override fun getJavaScriptExecutorFactory(): JavaScriptExecutorFactory {
         SoLoader.init(application, false)
         return HermesExecutorFactory()
-    }
-
-    override fun getJSIModulePackage(): JSIModulePackage? {
-        return if (BuildConfig.ReactTestApp_useFabric) {
-            FabricJSIModulePackage(this)
-        } else {
-            null
-        }
     }
 
     override fun getJSMainModuleName() = "index"

@@ -23,15 +23,3 @@ index 878fe04..3fa8f86 100644
  networkTimeout=10000
  validateDistributionUrl=true
  zipStoreBase=GRADLE_USER_HOME
-diff --git a/example/package.json b/example/package.json
-index 4bcbc7a..b6adc1e 100644
---- a/example/package.json
-+++ b/example/package.json
-@@ -21,7 +21,6 @@
-     "react": "18.2.0",
-     "react-native": "^0.72.0",
-     "react-native-macos": "^0.72.0",
--    "react-native-safe-area-context": "~4.7.4",
-     "react-native-windows": "^0.72.0"
-   },
-   "devDependencies": {
