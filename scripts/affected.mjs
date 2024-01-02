@@ -98,10 +98,12 @@ function makeMatchers() {
   const options = { dot: true };
   const labels = loadLabels();
 
-  for (const [label, patterns] of Object.entries(labels)) {
-    if (!Array.isArray(patterns)) {
+  for (const [label, match] of Object.entries(labels)) {
+    if (!Array.isArray(match)) {
       continue;
     }
+
+    const patterns = match[0]["changed-files"][0]["any-glob-to-any-file"];
     const platform = label.split(": ")[1];
     matchers[platform] = patterns.map((m) => new Minimatch(m, options));
   }
