@@ -7,6 +7,11 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 
 /**
+ * @typedef {{ "any-glob-to-any-file": string[] }} MatchChangedFiles;
+ * @typedef {{ "changed-files": MatchChangedFiles[]; }} Match
+ */
+
+/**
  * Cleans up the given array.
  * @param {string[]} platforms
  */
@@ -81,11 +86,11 @@ function getChangedFiles(since) {
 /**
  * Loads labels from Pull Request Labeler action configuration.
  * @see {@link https://github.com/actions/labeler}
- * @returns {Record<string, string[] | undefined>}
+ * @returns {Record<string, Match[] | undefined>}
  */
 function loadLabels() {
   const yml = fs.readFileSync(".github/labeler.yml", { encoding: "utf-8" });
-  return /** @type {Record<string, string[] | undefined>} */ (yaml.load(yml));
+  return /** @type {Record<string, Match[] | undefined>} */ (yaml.load(yml));
 }
 
 /**
@@ -98,10 +103,12 @@ function makeMatchers() {
   const options = { dot: true };
   const labels = loadLabels();
 
-  for (const [label, patterns] of Object.entries(labels)) {
-    if (!Array.isArray(patterns)) {
+  for (const [label, match] of Object.entries(labels)) {
+    if (!Array.isArray(match)) {
       continue;
     }
+
+    const patterns = match[0]["changed-files"][0]["any-glob-to-any-file"];
     const platform = label.split(": ")[1];
     matchers[platform] = patterns.map((m) => new Minimatch(m, options));
   }
