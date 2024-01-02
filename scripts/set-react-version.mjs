@@ -321,22 +321,23 @@ async function getProfile(v, coreOnly) {
     }
 
     default: {
+      const [reactNative, { version: rnmVersion }, { version: rnwVersion }] =
+        await Promise.all([
+          fetchPackageInfo(`react-native@^${v}.0-0`),
+          coreOnly
+            ? Promise.resolve({ version: undefined })
+            : fetchPackageInfo(`react-native-macos@^${v}.0-0`),
+          coreOnly
+            ? Promise.resolve({ version: undefined })
+            : fetchPackageInfo(`react-native-windows@^${v}.0-0`),
+        ]);
+      const target = reactNative.version?.includes("-") ? `^${v}.0-0` : `^${v}`;
       const [
         { version: rnBabelPresetVersion },
         { version: rnMetroConfigVersion },
-        reactNative,
-        { version: rnmVersion },
-        { version: rnwVersion },
       ] = await Promise.all([
-        fetchPackageInfo(`@react-native/babel-preset@^${v}.0-0`),
-        fetchPackageInfo(`@react-native/metro-config@^${v}.0-0`),
-        fetchPackageInfo(`react-native@^${v}.0-0`),
-        coreOnly
-          ? Promise.resolve({ version: undefined })
-          : fetchPackageInfo(`react-native-macos@^${v}.0-0`),
-        coreOnly
-          ? Promise.resolve({ version: undefined })
-          : fetchPackageInfo(`react-native-windows@^${v}.0-0`),
+        fetchPackageInfo(`@react-native/babel-preset@${target}`),
+        fetchPackageInfo(`@react-native/metro-config@${target}`),
       ]);
       const commonDeps = await resolveCommonDependencies(reactNative);
       return {
