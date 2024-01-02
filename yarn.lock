@@ -12181,8 +12181,8 @@ __metadata:
   linkType: hard
 
 "semantic-release@npm:^22.0.0":
-  version: 22.0.8
-  resolution: "semantic-release@npm:22.0.8"
+  version: 22.0.12
+  resolution: "semantic-release@npm:22.0.12"
   dependencies:
     "@semantic-release/commit-analyzer": "npm:^11.0.0"
     "@semantic-release/error": "npm:^4.0.0"
@@ -12215,7 +12215,7 @@ __metadata:
     yargs: "npm:^17.5.1"
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: d89e82317ed5131bb90ec4289f5108ca0e8f17a130b54a10bff4b1463e598326b0b48d3f6a37f0c30dcd21b8676163acd8e3aac63463450b48bc152f23f51e17
+  checksum: 13e86ab9e16e32fd51b09f486ec5ea950bb541c5ea3cd4e66b0527d2a7108cfd3488510d5f29cefc83c86d279e6d5075f886bad8478c88a74cc7d5942e936722
   languageName: node
   linkType: hard
 
