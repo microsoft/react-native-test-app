@@ -40,10 +40,7 @@ module.exports = [
     },
   },
   {
-    files: [
-      "scripts/set-react-version.mjs",
-      "scripts/test-matrix.mjs"
-    ],
+    files: ["scripts/set-react-version.mjs", "scripts/test-matrix.mjs"],
     rules: {
       "no-restricted-imports": [
         "error",
