@@ -229,7 +229,7 @@ const start = !process.stdin.isTTY
   : new Promise((resolve) => {
       const stdin = process.stdin;
       const rawMode = stdin.isRaw;
-      const encoding = stdin.readableEncoding;
+      const encoding = stdin.readableEncoding || undefined;
       stdin.setRawMode(true);
       stdin.setEncoding("utf-8");
       stdin.resume();
@@ -238,12 +238,12 @@ const start = !process.stdin.isTTY
         stdin.pause();
         stdin.setEncoding(encoding);
         stdin.setRawMode(rawMode);
-        if (key === "\u0003") {
+        if (typeof key === "string" && key === "\u0003") {
           console.log("❌ Canceled");
           // eslint-disable-next-line local/no-process-exit
           process.exit(1);
         }
-        resolve();
+        resolve(true);
       });
       process.stdout.write(
         "Before continuing, make sure all emulators/simulators and Appium/Metro instances are closed.\n\nPress any key to continue..."
