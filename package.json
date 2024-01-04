@@ -131,7 +131,7 @@
     "minimatch": "^9.0.0",
     "prettier": "^3.0.0",
     "react": "18.2.0",
-    "react-native": "^0.72.0",
+    "react-native": "patch:react-native@npm%3A0.72.8#~/.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch",
     "react-native-macos": "^0.72.0",
     "react-native-windows": "^0.72.0",
     "semantic-release": "^22.0.0",
