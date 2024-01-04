@@ -39,4 +39,21 @@ module.exports = [
       ],
     },
   },
+  {
+    files: ["scripts/set-react-version.mjs", "scripts/test-matrix.mjs"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["[a-z]*", "!./*", "!node:*"],
+              message:
+                "External dependencies are not allowed in this file because it needs to be runnable before install.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];

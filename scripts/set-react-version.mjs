@@ -258,9 +258,10 @@ async function resolveCommonDependencies({ dependencies, peerDependencies }) {
 /**
  * Returns a profile for specified version.
  * @param {string} v
+ * @param {boolean} coreOnly
  * @return {Promise<Record<string, string | undefined>>}
  */
-async function getProfile(v) {
+async function getProfile(v, coreOnly) {
   switch (v) {
     case "canary-macos": {
       const info = await fetchPackageInfo("react-native-macos@canary");
@@ -320,7 +321,6 @@ async function getProfile(v) {
     }
 
     default: {
-      const coreOnly = process.argv.includes("--core-only");
       const [
         { version: rnBabelPresetVersion },
         { version: rnMetroConfigVersion },
@@ -351,62 +351,74 @@ async function getProfile(v) {
   }
 }
 
-if (!(await checkEnvironment())) {
-  // eslint-disable-next-line local/no-process-exit
-  process.exit(1);
-}
+/**
+ * Sets specified React Native version.
+ * @param {string} version
+ * @param {boolean} coreOnly
+ * @return {Promise<void>}
+ */
+export function setReactVersion(version, coreOnly) {
+  return getProfile(version, coreOnly)
+    .then((profile) => {
+      console.dir(profile, { depth: null });
 
-const { [2]: version } = process.argv;
-if (!isValidVersion(version)) {
-  const script = path.basename(fileURLToPath(import.meta.url));
-  console.log(
-    `Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`
-  );
-  // eslint-disable-next-line local/no-process-exit
-  process.exit(1);
-}
+      const manifests = ["package.json", "example/package.json"];
+      for (const manifestPath of manifests) {
+        const manifest = /** @type {Manifest} */ (readJSONFile(manifestPath));
+        const { dependencies, devDependencies, resolutions } = manifest;
+        if (!devDependencies) {
+          throw new Error("Expected 'devDependencies' to be declared");
+        }
 
-getProfile(version)
-  .then((profile) => {
-    console.dir(profile, { depth: null });
+        for (const packageName of keys(profile)) {
+          const deps = dependencies?.[packageName]
+            ? dependencies
+            : devDependencies;
+          const version = profile[packageName];
+          deps[packageName] = version;
+        }
 
-    const manifests = ["package.json", "example/package.json"];
-    for (const manifestPath of manifests) {
-      const manifest = /** @type {Manifest} */ (readJSONFile(manifestPath));
-      const { dependencies, devDependencies, resolutions } = manifest;
-      if (!devDependencies) {
-        throw new Error("Expected 'devDependencies' to be declared");
-      }
-
-      for (const packageName of keys(profile)) {
-        const deps = dependencies?.[packageName]
-          ? dependencies
-          : devDependencies;
-        const version = profile[packageName];
-        deps[packageName] = version;
-      }
-
-      // Reset resolutions so we don't get old packages
-      if (resolutions) {
-        for (const pkg of Object.keys(resolutions)) {
-          if (
-            pkg.startsWith("@react-native-community/cli") ||
-            pkg.startsWith("metro")
-          ) {
-            resolutions[pkg] = undefined;
+        // Reset resolutions so we don't get old packages
+        if (resolutions) {
+          for (const pkg of Object.keys(resolutions)) {
+            if (
+              pkg.startsWith("@react-native-community/cli") ||
+              pkg.startsWith("metro")
+            ) {
+              resolutions[pkg] = undefined;
+            }
           }
         }
-      }
 
-      const tmpFile = `${manifestPath}.tmp`;
-      fs.writeFileSync(
-        tmpFile,
-        JSON.stringify(manifest, undefined, 2) + os.EOL
-      );
-      fs.renameSync(tmpFile, manifestPath);
-    }
-  })
-  .catch((e) => {
-    console.error(e);
-    process.exitCode = 1;
-  });
+        const tmpFile = `${manifestPath}.tmp`;
+        fs.writeFileSync(
+          tmpFile,
+          JSON.stringify(manifest, undefined, 2) + os.EOL
+        );
+        fs.renameSync(tmpFile, manifestPath);
+      }
+    })
+    .catch((e) => {
+      console.error(e);
+      process.exitCode = 1;
+    });
+}
+
+const { [1]: script, [2]: version } = process.argv;
+if (import.meta.url.endsWith(script)) {
+  if (!(await checkEnvironment())) {
+    // eslint-disable-next-line local/no-process-exit
+    process.exit(1);
+  }
+
+  if (!isValidVersion(version)) {
+    const script = path.basename(fileURLToPath(import.meta.url));
+    console.log(
+      `Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`
+    );
+    // eslint-disable-next-line local/no-process-exit
+    process.exit(1);
+  }
+
+  setReactVersion(version, process.argv.includes("--core-only"));
+}

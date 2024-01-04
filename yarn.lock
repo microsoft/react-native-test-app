@@ -6597,7 +6597,7 @@ __metadata:
     react: "npm:18.2.0"
     react-native: "patch:react-native@npm%3A0.72.8#~/.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch"
     react-native-macos: "npm:^0.72.0"
-    react-native-safe-area-context: "npm:^4.5.3"
+    react-native-safe-area-context: "npm:~4.7.4"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.72.0"
     webdriverio: "npm:^8.11.2"
@@ -11434,13 +11434,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^4.5.3":
-  version: 4.8.2
-  resolution: "react-native-safe-area-context@npm:4.8.2"
+"react-native-safe-area-context@npm:~4.7.4":
+  version: 4.7.4
+  resolution: "react-native-safe-area-context@npm:4.7.4"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 5430ef5d4f3510debd964423aa7ae2f9f4f3aea6e928b0dc6f7e63c21e967f3e71377a3b5df0bd5ceca291c4818670ee77afb3fc7a1091061449ae0fd3ed00b2
+  checksum: 72744331ec2487e8f4a04efda0343e5fae75a2db95762711f2ae18c5b16c25eec89262e8f8cffb6224410b103c5077251c201a8489179259f5fd161b7f8baf13
   languageName: node
   linkType: hard
 
