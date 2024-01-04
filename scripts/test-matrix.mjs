@@ -224,6 +224,32 @@ async function withReactNativeVersion(version, proc) {
   }
 }
 
+const start = !process.stdin.isTTY
+  ? Promise.resolve()
+  : new Promise((resolve) => {
+      const stdin = process.stdin;
+      const rawMode = stdin.isRaw;
+      const encoding = stdin.readableEncoding;
+      stdin.setRawMode(true);
+      stdin.setEncoding("utf-8");
+      stdin.resume();
+      stdin.once("data", (key) => {
+        process.stdout.write("\n");
+        stdin.pause();
+        stdin.setEncoding(encoding);
+        stdin.setRawMode(rawMode);
+        if (key === "\u0003") {
+          console.log("❌ Canceled");
+          // eslint-disable-next-line local/no-process-exit
+          process.exit(1);
+        }
+        resolve();
+      });
+      process.stdout.write(
+        "Before continuing, make sure all emulators/simulators and Appium/Metro instances are closed.\n\nPress any key to continue..."
+      );
+    });
+
 const { [2]: version } = process.argv;
 [{ newArch: false }, { newArch: true }]
   .reduce((job, config) => {
@@ -254,7 +280,7 @@ const { [2]: version } = process.argv;
         }
       })
     );
-  }, Promise.resolve())
+  }, start)
   .then(() => {
     showBanner(`Initialize new app`);
     $(
