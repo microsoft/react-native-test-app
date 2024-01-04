@@ -1,0 +1,16 @@
+diff --git a/ReactCommon/react/renderer/core/PropsParserContext.h b/ReactCommon/react/renderer/core/PropsParserContext.h
+index 7297fbba321e86e7b5eb3438a1eae7063988dddd..c589380bd27382e97dc98ff0fe983d6d3c3864ad 100644
+--- a/ReactCommon/react/renderer/core/PropsParserContext.h
++++ b/ReactCommon/react/renderer/core/PropsParserContext.h
+@@ -17,6 +17,11 @@ namespace react {
+ // It should be used as infrequently as possible - most props can and should
+ // be parsed without any context.
+ struct PropsParserContext {
++  PropsParserContext(
++      SurfaceId const surfaceId,
++      ContextContainer const &contextContainer)
++      : surfaceId(surfaceId), contextContainer(contextContainer) {}
++
+   // Non-copyable
+   PropsParserContext(const PropsParserContext &) = delete;
+   PropsParserContext &operator=(const PropsParserContext &) = delete;
