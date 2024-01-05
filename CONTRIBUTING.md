@@ -206,12 +206,12 @@ First, create a new issue using the _"New `react-native` version"_ template,
 update the title and fill out all the required fields. You can find the relevant
 discussion link at [`react-native-releases`][].
 
-Use the [`test-matrix.sh`][] script to both test and capture screenshots. We'll
+Use the [`test-matrix.mjs`][] script to both test and capture screenshots. We'll
 need the screenshots for the PR we'll create later. For instance, to test 0.73,
 run:
 
 ```sh
-scripts/test-matrix.sh 0.73
+node scripts/test-matrix.mjs 0.73
 ```
 
 At the minimum, we should be testing the lowest supported version (0.64 at the
@@ -352,8 +352,8 @@ additions.
   https://github.com/microsoft/react-native-test-app/blob/trunk/package.json
 [`react-native-releases`]:
   https://github.com/reactwg/react-native-releases/discussions
-[`test-matrix.sh`]:
-  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/test-matrix.sh
+[`test-matrix.mjs`]:
+  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/test-matrix.mjs
 [`uuid`]: https://github.com/uuidjs/uuid
 [commitlint-lite]:
   https://github.com/microsoft/rnx-kit/tree/main/incubator/commitlint-lite#readme

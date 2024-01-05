@@ -197,8 +197,8 @@ async function withReactNativeVersion(version, proc) {
     "git",
     "clean",
     "-dfqx",
-    "--exclude='.yarn/cache'",
-    "--exclude='example/*.png'"
+    "--exclude=.yarn/cache",
+    "--exclude=example/*.png"
   );
 
   if (version) {
