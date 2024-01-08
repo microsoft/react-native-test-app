@@ -55,7 +55,7 @@ runs:
       uses: microsoft/setup-msbuild@v1.3
     - name: Set up Ruby
       if: ${{ runner.os != 'Windows' }}
-      uses: ruby/setup-ruby@v1.163.0
+      uses: ruby/setup-ruby@v1.165.1
       with:
         ruby-version: "3.0"
         bundler: Gemfile.lock
