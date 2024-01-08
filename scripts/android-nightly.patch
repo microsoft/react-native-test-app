@@ -24,13 +24,13 @@ index 878fe04..3fa8f86 100644
  validateDistributionUrl=true
  zipStoreBase=GRADLE_USER_HOME
 diff --git a/example/package.json b/example/package.json
-index 426763d..6d6a21d 100644
+index fd4c65f..e5b8bed 100644
 --- a/example/package.json
 +++ b/example/package.json
 @@ -33,7 +33,6 @@
      "react": "18.2.0",
      "react-native": "patch:react-native@npm%3A0.72.8#~/.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch",
-     "react-native-macos": "^0.72.0",
+     "react-native-macos": "patch:react-native-macos@npm%3A0.72.12#~/.yarn/patches/react-native-macos-npm-0.72.12-61bf1f8441.patch",
 -    "react-native-safe-area-context": "~4.7.4",
      "react-native-test-app": "workspace:*",
      "react-native-windows": "^0.72.0",

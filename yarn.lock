@@ -6596,7 +6596,7 @@ __metadata:
     metro-react-native-babel-preset: "npm:^0.76.8"
     react: "npm:18.2.0"
     react-native: "patch:react-native@npm%3A0.72.8#~/.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch"
-    react-native-macos: "npm:^0.72.0"
+    react-native-macos: "patch:react-native-macos@npm%3A0.72.12#~/.yarn/patches/react-native-macos-npm-0.72.12-61bf1f8441.patch"
     react-native-safe-area-context: "npm:~4.7.4"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.72.0"
@@ -11386,7 +11386,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-macos@npm:^0.72.0":
+"react-native-macos@npm:0.72.12":
   version: 0.72.12
   resolution: "react-native-macos@npm:0.72.12"
   dependencies:
@@ -11431,6 +11431,54 @@ __metadata:
   bin:
     react-native-macos: cli.js
   checksum: 1bfef95689fff318b32161165037abf7eb2720457a2579300e5320ac22da5ad71aa5657450d8d0a9ba4f76a7b87ae444628f8cdac49192d653124423ef5c113a
+  languageName: node
+  linkType: hard
+
+"react-native-macos@patch:react-native-macos@npm%3A0.72.12#~/.yarn/patches/react-native-macos-npm-0.72.12-61bf1f8441.patch":
+  version: 0.72.12
+  resolution: "react-native-macos@patch:react-native-macos@npm%3A0.72.12#~/.yarn/patches/react-native-macos-npm-0.72.12-61bf1f8441.patch::version=0.72.12&hash=bbd813"
+  dependencies:
+    "@jest/create-cache-key-function": "npm:^29.2.1"
+    "@react-native-community/cli": "npm:11.3.7"
+    "@react-native-community/cli-platform-android": "npm:11.3.7"
+    "@react-native-community/cli-platform-ios": "npm:11.3.7"
+    "@react-native-mac/virtualized-lists": "npm:^0.72.0"
+    "@react-native/assets-registry": "npm:^0.72.0"
+    "@react-native/codegen": "npm:^0.72.7"
+    "@react-native/gradle-plugin": "npm:^0.72.11"
+    "@react-native/js-polyfills": "npm:^0.72.1"
+    "@react-native/normalize-colors": "npm:^0.72.0"
+    abort-controller: "npm:^3.0.0"
+    anser: "npm:^1.4.9"
+    base64-js: "npm:^1.1.2"
+    deprecated-react-native-prop-types: "npm:4.1.0"
+    event-target-shim: "npm:^5.0.1"
+    flow-enums-runtime: "npm:^0.0.5"
+    invariant: "npm:^2.2.4"
+    jest-environment-node: "npm:^29.2.1"
+    jsc-android: "npm:^250231.0.0"
+    memoize-one: "npm:^5.0.0"
+    metro-runtime: "npm:0.76.8"
+    metro-source-map: "npm:0.76.8"
+    mkdirp: "npm:^0.5.1"
+    nullthrows: "npm:^1.1.1"
+    pretty-format: "npm:^26.5.2"
+    promise: "npm:^8.3.0"
+    react-devtools-core: "npm:^4.27.2"
+    react-refresh: "npm:^0.4.0"
+    react-shallow-renderer: "npm:^16.15.0"
+    regenerator-runtime: "npm:^0.13.2"
+    scheduler: "npm:0.24.0-canary-efb381bbf-20230505"
+    stacktrace-parser: "npm:^0.1.10"
+    use-sync-external-store: "npm:^1.0.0"
+    whatwg-fetch: "npm:^3.0.0"
+    ws: "npm:^6.2.2"
+    yargs: "npm:^17.6.2"
+  peerDependencies:
+    react: 18.2.0
+  bin:
+    react-native-macos: cli.js
+  checksum: 5e517ba9a12fd582c4e83f649fa1d50507df7491b5a4ebd22d28d8817f95eb354ed8d42d2d61f09267e35bbc69c8cb1362182056978bdad1cd9dba5293101fcd
   languageName: node
   linkType: hard
 
@@ -11479,7 +11527,7 @@ __metadata:
     prompts: "npm:^2.4.0"
     react: "npm:18.2.0"
     react-native: "patch:react-native@npm%3A0.72.8#~/.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch"
-    react-native-macos: "npm:^0.72.0"
+    react-native-macos: "patch:react-native-macos@npm%3A0.72.12#~/.yarn/patches/react-native-macos-npm-0.72.12-61bf1f8441.patch"
     react-native-windows: "npm:^0.72.0"
     semantic-release: "npm:^22.0.0"
     semver: "npm:^7.3.5"
@@ -11609,7 +11657,7 @@ __metadata:
 
 "react-native@patch:react-native@npm%3A0.72.8#~/.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch":
   version: 0.72.8
-  resolution: "react-native@patch:react-native@npm%3A0.72.8#~/.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch::version=0.72.8&hash=55998a"
+  resolution: "react-native@patch:react-native@npm%3A0.72.8#~/.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch::version=0.72.8&hash=dd4c68"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.2.1"
     "@react-native-community/cli": "npm:11.3.10"
@@ -11652,7 +11700,7 @@ __metadata:
     react: 18.2.0
   bin:
     react-native: cli.js
-  checksum: 7c03e2a1d703497198855974efab2baf921886d94168755faa88eb824db279a76a685e594ac9b9eaf4f9cad1145297d0e40298ac8f999e096c2820b38cc9238a
+  checksum: c423720b27debe7865684b52fe1f4e6add8bbc5ed97561fa8a91c5ae2a8f8b84fe85d7c4a7c7dbf84c80e77f525fa09df190f436efdd0a2f545928d5ca1488b3
   languageName: node
   linkType: hard
 
