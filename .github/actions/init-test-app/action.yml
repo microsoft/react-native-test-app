@@ -20,3 +20,8 @@ runs:
         fi
       shell: bash
       working-directory: template-example
+    - name: Workaround for 'Verification checksum was incorrect'
+      run: |
+        patch < ../../../.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch
+      shell: bash
+      working-directory: template-example/node_modules/react-native
