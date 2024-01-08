@@ -11,15 +11,3 @@ index 2577d91..bf833ad 100644
  # Jetifier randomly fails on these libraries
  android.jetifier.ignorelist=hermes-android
  
-diff --git a/example/android/gradle/wrapper/gradle-wrapper.properties b/example/android/gradle/wrapper/gradle-wrapper.properties
-index 878fe04..3fa8f86 100644
---- a/example/android/gradle/wrapper/gradle-wrapper.properties
-+++ b/example/android/gradle/wrapper/gradle-wrapper.properties
-@@ -1,6 +1,6 @@
- distributionBase=GRADLE_USER_HOME
- distributionPath=wrapper/dists
--distributionUrl=https\://services.gradle.org/distributions/gradle-7.6.3-bin.zip
-+distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip
- networkTimeout=10000
- validateDistributionUrl=true
- zipStoreBase=GRADLE_USER_HOME

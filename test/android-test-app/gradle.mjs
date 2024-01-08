@@ -7,7 +7,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import { gatherConfig, writeAllFiles } from "../../scripts/configure.js";
-import { findNearest } from "../../scripts/helpers.js";
+import { findNearest, readJSONFile } from "../../scripts/helpers.js";
 
 /**
  * Joins the strings if an array is passed, otherwise returns the string.
@@ -77,8 +77,11 @@ export function reactNativeVersion() {
     throw new Error("Cannot find module 'react-native'");
   }
 
-  const manifest = fs.readFileSync(rnPath, { encoding: "utf-8" });
-  const { version } = JSON.parse(manifest);
+  const { version } = readJSONFile(rnPath);
+  if (typeof version !== "string") {
+    throw new Error(`Invalid version string for 'react-native': ${version}`);
+  }
+
   return version;
 }
 

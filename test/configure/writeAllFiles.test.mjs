@@ -3,9 +3,13 @@ import { equal, rejects, throws } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
 import { writeAllFiles as writeAllFilesActual } from "../../scripts/configure.js";
+import { readTextFile as readTextFileActual } from "../../scripts/helpers.js";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 
 describe("writeAllFiles()", () => {
+  /** @type {typeof readTextFileActual} */
+  const readTextFile = (p) => readTextFileActual(p, fs);
+
   /** @type {typeof writeAllFilesActual} */
   const writeAllFiles = (files, dest) =>
     writeAllFilesActual(files, dest, fs.promises);
@@ -23,9 +27,9 @@ describe("writeAllFiles()", () => {
       "test"
     );
 
-    equal(fs.readFileSync(path.join("test", "file0"), "utf-8"), "0");
-    equal(fs.readFileSync(path.join("test", "file1"), "utf-8"), "1");
-    equal(fs.readFileSync(path.join("test", "file2"), "utf-8"), "2");
+    equal(readTextFile(path.join("test", "file0")), "0");
+    equal(readTextFile(path.join("test", "file1")), "1");
+    equal(readTextFile(path.join("test", "file2")), "2");
   });
 
   it("ignores files with no content", async () => {
@@ -38,9 +42,9 @@ describe("writeAllFiles()", () => {
       "."
     );
 
-    equal(fs.readFileSync("file1", "utf-8"), "1");
-    equal(fs.readFileSync("file2", "utf-8"), "2");
-    throws(() => fs.readFileSync("file3"), "ENOENT");
+    equal(readTextFile("file1"), "1");
+    equal(readTextFile("file2"), "2");
+    throws(() => readTextFile("file3"), "ENOENT");
   });
 
   it("rethrows write exceptions", async () => {
@@ -69,8 +73,8 @@ describe("writeAllFiles()", () => {
       )
     );
 
-    equal(fs.readFileSync("file1", "utf-8"), "1");
-    equal(fs.readFileSync("file2", "utf-8"), "2");
-    throws(() => fs.readFileSync(""), "EISDIR");
+    equal(readTextFile("file1"), "1");
+    equal(readTextFile("file2"), "2");
+    throws(() => readTextFile(""), "EISDIR");
   });
 });

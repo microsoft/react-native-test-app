@@ -32,13 +32,22 @@ function findNearest(
 }
 
 /**
+ * Reads text file at specified path.
+ * @param {import("node:fs").PathLike} path
+ * @returns {string}
+ */
+function readTextFile(path, fs = require("node:fs")) {
+  return fs.readFileSync(path, { encoding: "utf-8" });
+}
+
+/**
  * Reads and parses JSON file at specified path.
  * @template [T = Record<string, unknown>]
  * @param {import("node:fs").PathLike} path
  * @returns {T}
  */
 function readJSONFile(path, fs = require("node:fs")) {
-  return JSON.parse(fs.readFileSync(path, { encoding: "utf-8" }));
+  return JSON.parse(readTextFile(path, fs));
 }
 
 /**
@@ -100,6 +109,7 @@ function v(major, minor, patch) {
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
 exports.readJSONFile = readJSONFile;
+exports.readTextFile = readTextFile;
 exports.requireTransitive = requireTransitive;
 exports.toVersionNumber = toVersionNumber;
 exports.v = v;

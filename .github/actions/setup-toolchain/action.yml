@@ -12,7 +12,7 @@ inputs:
     default: yarn
   java-version:
     description: Desired Java version
-    default: "11"
+    default: "17"
   xcode-developer-dir:
     description: Set the path for the active Xcode developer directory
 runs:
