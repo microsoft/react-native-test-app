@@ -285,7 +285,7 @@ PODS:
   - React-jsinspector (0.72.8)
   - React-logger (0.72.8):
     - glog
-  - react-native-safe-area-context (4.8.2):
+  - react-native-safe-area-context (4.7.4):
     - React-Core
   - React-NativeModulesApple (0.72.8):
     - React-callinvoker
@@ -565,7 +565,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 818e03cc244596c7c2468e8cf086ba36ba7b1ad4
   React-jsinspector: fdf0a09bddecf9ce8da830bcb89a9814230c04a4
   React-logger: c2e7bb772d6e9fc3d0109d1243b81546a9c93c0f
-  react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
+  react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   React-NativeModulesApple: 6c4ffd70a5ea234a3c574bd6488ee97d25d4f151
   React-perflogger: 2a7d221549cd5b69e95c5afa2e8d336f0465e1ec
   React-RCTActionSheet: 449042d31545790748a97d9b35d4acb683e2ad00
