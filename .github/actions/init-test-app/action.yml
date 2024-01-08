@@ -25,7 +25,7 @@ runs:
       run: |
         if [[ ${{ inputs.platform }} != "macos" ]]; then
           patch < ../../../.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch
-        end
+        fi
       shell: bash
       working-directory: template-example/node_modules/react-native
     - name: Workaround for 'Verification checksum was incorrect' (macOS)
@@ -33,6 +33,6 @@ runs:
       run: |
         if [[ ${{ inputs.platform }} != "ios" ]]; then
           patch < ../../../.yarn/patches/react-native-macos-npm-0.72.12-61bf1f8441.patch
-        end
+        fi
       shell: bash
       working-directory: template-example/node_modules/react-native-macos
