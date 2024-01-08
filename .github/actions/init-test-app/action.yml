@@ -20,8 +20,15 @@ runs:
         fi
       shell: bash
       working-directory: template-example
-    - name: Workaround for 'Verification checksum was incorrect'
+    - name: Workaround for 'Verification checksum was incorrect' (iOS)
+      if: ${{ runner.os == 'macOS' }}
       run: |
         patch < ../../../.yarn/patches/react-native-npm-0.72.8-5af30d9693.patch
       shell: bash
       working-directory: template-example/node_modules/react-native
+    - name: Workaround for 'Verification checksum was incorrect' (macOS)
+      if: ${{ runner.os == 'macOS' }}
+      run: |
+        patch < ../../../.yarn/patches/react-native-macos-npm-0.72.12-61bf1f8441.patch
+      shell: bash
+      working-directory: template-example/node_modules/react-native-macos
