@@ -130,7 +130,12 @@ function configure(platform, { hermes, newArch }) {
  * @param {"ios" | "macos"} platform
  */
 function installPods(platform) {
-  const options = { force: true, maxRetries: 3, recursive: true };
+  const options = {
+    force: true,
+    maxRetries: 3,
+    recursive: true,
+    retryDelay: 500,
+  };
   fs.rmSync(`${platform}/Podfile.lock`, options);
   fs.rmSync(`${platform}/Pods`, options);
   fs.rmSync(`${platform}/build`, options);
