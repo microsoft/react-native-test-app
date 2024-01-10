@@ -10,28 +10,16 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import { toVersionNumber, v } from "./helpers.js";
 import { setReactVersion } from "./set-react-version.mjs";
+import { $, test } from "./test-e2e.mjs";
 
 /**
  * @typedef {"android" | "ios"} Platform
  */
 
 const PACKAGE_MANAGER = "yarn";
+const TAG = "┃";
 
 const rootDir = new URL("..", import.meta.url).pathname;
-
-/**
- * Invokes a shell command with optional arguments.
- * @param {string} command
- * @param {...string} args
- */
-function $(command, ...args) {
-  const { status } = spawnSync(command, args, { stdio: "inherit" });
-  if (status !== 0) {
-    throw new Error(
-      `An error has occurred while executing: ${command} ${args.join(" ")}`
-    );
-  }
-}
 
 const getIOSSimulatorName = (() => {
   let deviceName = "";
@@ -65,7 +53,7 @@ const getIOSSimulatorName = (() => {
 })();
 
 function log(message = "") {
-  console.log("┃", message);
+  console.log(TAG, message);
 }
 
 /**
@@ -151,14 +139,6 @@ function run(script, logPath) {
 }
 
 /**
- * Runs end-to-end tests.
- * @param {...string} args
- */
-function runTests(...args) {
-  $(new URL("./test-e2e.sh", import.meta.url).pathname, ...args);
-}
-
-/**
  * @param {string} message
  */
 function showBanner(message) {
@@ -170,8 +150,8 @@ function showBanner(message) {
 /**
  * Starts Appium server.
  */
-function startAppiumServer(logPath = "appium.log") {
-  runTests("prepare");
+async function startAppiumServer(logPath = "appium.log") {
+  await test("prepare");
   log(`Appium log path: ${logPath}`);
   return run("appium", logPath);
 }
@@ -187,7 +167,7 @@ function startDevServer(logPath = "metro.server.log") {
 /**
  * Invokes callback within the context of specified React Native version.
  * @param {string} version
- * @param {() => void} proc
+ * @param {() => Promise<void>} proc
  */
 async function withReactNativeVersion(version, proc) {
   log("Resetting...");
@@ -215,9 +195,9 @@ async function withReactNativeVersion(version, proc) {
   let devServer;
   try {
     process.chdir("example");
-    appiumServer = startAppiumServer();
+    appiumServer = await startAppiumServer();
     devServer = startDevServer();
-    proc();
+    await proc();
   } finally {
     appiumServer?.kill();
     devServer?.kill();
@@ -246,7 +226,7 @@ const start = !process.stdin.isTTY
         resolve(true);
       });
       process.stdout.write(
-        "Before continuing, make sure all emulators/simulators and Appium/Metro instances are closed.\n\nPress any key to continue..."
+        `${TAG} Before continuing, make sure all emulators/simulators and Appium/Metro instances are closed.\n${TAG}\n${TAG} Press any key to continue...`
       );
     });
 
@@ -254,14 +234,14 @@ const { [2]: version } = process.argv;
 [{ newArch: false }, { newArch: true }]
   .reduce((job, config) => {
     return job.then(() =>
-      withReactNativeVersion(version, () => {
+      withReactNativeVersion(version, async () => {
         const newArch = config.newArch ? "fabric" : "paper";
 
         showBanner(`Build Android [hermes, ${newArch}]`);
 
         configure("android", config);
         buildAndRun("android");
-        runTests("android", "hermes", newArch);
+        await test("android", ["hermes", newArch]);
 
         if (os.platform() === "darwin") {
           showBanner(`Build iOS [jsc, ${newArch}]`);
@@ -269,14 +249,14 @@ const { [2]: version } = process.argv;
           configure("ios", config);
           installPods("ios");
           buildAndRun("ios");
-          runTests("ios", newArch);
+          await test("ios", [newArch]);
 
           showBanner(`Build iOS [hermes, ${newArch}]`);
 
           configure("ios", { ...config, hermes: true });
           installPods("ios");
           buildAndRun("ios");
-          runTests("ios", "hermes", newArch);
+          await test("ios", ["hermes", newArch]);
         }
       })
     );
