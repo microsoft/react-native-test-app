@@ -3,27 +3,6 @@ require('minitest/autorun')
 require_relative('../ios/pod_helpers')
 
 class TestPodHelpers < Minitest::Test
-  def test_fabric_enabled?
-    ENV.delete('RCT_NEW_ARCH_ENABLED')
-
-    refute(fabric_enabled?({}, 0))
-    refute(fabric_enabled?({}, v(0, 68, 0)))
-
-    # Fabric is first publicly available in 0.68, but we'll require 0.71
-    refute(fabric_enabled?({ :fabric_enabled => true }, v(0, 70, 999)))
-    assert(fabric_enabled?({ :fabric_enabled => true }, v(0, 71, 0)))
-
-    # TurboModule implies Fabric
-    refute(fabric_enabled?({ :turbomodule_enabled => true }, v(0, 70, 999)))
-    assert(fabric_enabled?({ :turbomodule_enabled => true }, v(0, 71, 0)))
-
-    # `RCT_NEW_ARCH_ENABLED` enables everything
-    ENV['RCT_NEW_ARCH_ENABLED'] = '1'
-
-    refute(fabric_enabled?({}, v(0, 70, 999)))
-    assert(fabric_enabled?({}, v(0, 71, 0)))
-  end
-
   def test_new_architecture_enabled?
     ENV.delete('RCT_NEW_ARCH_ENABLED')
 
@@ -31,11 +10,12 @@ class TestPodHelpers < Minitest::Test
     refute(new_architecture_enabled?({}, v(0, 71, 0)))
 
     # New architecture is first publicly available in 0.68, but we'll require 0.71
+    refute(new_architecture_enabled?({ :fabric_enabled => true }, v(0, 70, 999)))
+    assert(new_architecture_enabled?({ :fabric_enabled => true }, v(0, 71, 0)))
+
+    # TODO: `:turbomodule_enabled` is scheduled for removal in 4.0
     refute(new_architecture_enabled?({ :turbomodule_enabled => true }, v(0, 70, 999)))
     assert(new_architecture_enabled?({ :turbomodule_enabled => true }, v(0, 71, 0)))
-
-    # Fabric does not imply TurboModule
-    refute(new_architecture_enabled?({ :fabric_enabled => true }, v(0, 71, 0)))
 
     # `RCT_NEW_ARCH_ENABLED` enables everything
     ENV['RCT_NEW_ARCH_ENABLED'] = '1'
