@@ -180,7 +180,7 @@ extension AppDelegate {
 
     private func onComponentsRegistered(_ components: [Component], enable: Bool) {
         removeAllComponentsFromMenu()
-        components.enumerated().forEach { index, component in
+        for (index, component) in components.enumerated() {
             let title = component.displayName ?? component.appKey
             let item = reactMenu.addItem(
                 withTitle: title,
