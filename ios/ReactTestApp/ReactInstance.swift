@@ -6,7 +6,15 @@ final class ReactInstance: NSObject, RNXHostConfig {
         NSNotification.Name("ReactInstance.scanForQRCodeNotification")
 
     static func jsBundleURL() -> URL {
-        RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index") { nil }
+        RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index") {
+            RCTBundleURLProvider.jsBundleURL(
+                forBundleRoot: "index",
+                packagerHost: "localhost",
+                enableDev: true,
+                enableMinification: false,
+                inlineSourceMap: true
+            )
+        }
     }
 
     var remoteBundleURL: URL? {
