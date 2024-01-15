@@ -5,6 +5,8 @@ import android.app.Application
 import android.content.Context
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
+import com.facebook.react.ReactHost
+import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.manifest.ManifestProvider
 import com.microsoft.reacttestapp.react.ReactBundleNameProvider
@@ -20,6 +22,9 @@ class TestApp : Application(), ReactApplication {
 
     override val reactNativeHost: TestAppReactNativeHost
         get() = reactNativeHostInternal
+
+    override val reactHost: ReactHost
+        get() = getDefaultReactHost(this.applicationContext, reactNativeHost)
 
     private lateinit var manifestProviderInternal: ManifestProvider
     private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
