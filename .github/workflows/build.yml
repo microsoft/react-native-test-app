@@ -336,6 +336,7 @@ jobs:
   macos:
     name: "macOS"
     runs-on: macos-13
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
