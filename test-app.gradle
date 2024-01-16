@@ -44,21 +44,6 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
         settings.includeBuild(reactNativeGradlePlugin)
     }
 
-    // This logic is copied from `android/dependencies.gradle`. Importing it
-    // currently causes build failure because `project` is not yet defined.
-    def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
-    def usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
-
-    if (isNewArchitectureEnabled(settings) && !usePrefabs) {
-        settings.include(":ReactAndroid")
-        settings.project(":ReactAndroid")
-            .projectDir = file("${reactNativeDir}/ReactAndroid")
-
-        settings.include(":ReactAndroid:hermes-engine")
-        settings.project(":ReactAndroid:hermes-engine")
-            .projectDir = file("${reactNativeDir}/ReactAndroid/hermes-engine")
-    }
-
     applyNativeModulesSettingsGradle(settings)
 }
 
