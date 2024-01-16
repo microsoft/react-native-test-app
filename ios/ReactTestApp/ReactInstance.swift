@@ -33,7 +33,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
         super.init()
 
-        #if USE_TURBOMODULE
+        #if USE_FABRIC
         RCTEnableTurboModule(true)
         #endif
 

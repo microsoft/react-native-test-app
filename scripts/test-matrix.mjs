@@ -103,8 +103,8 @@ function configure(platform, { hermes, newArch }) {
       }
       if (newArch) {
         content = content.replace(
-          ":turbomodule_enabled => false",
-          ":turbomodule_enabled => true"
+          ":fabric_enabled => false",
+          ":fabric_enabled => true"
         );
       }
       fs.writeFileSync(podfile, content);

@@ -5,7 +5,6 @@ workspace 'Example.xcworkspace'
 options = {
   :fabric_enabled => false,
   :hermes_enabled => false,
-  :turbomodule_enabled => false,
 }
 
 use_test_app! options do |target|

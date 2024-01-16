@@ -303,9 +303,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   build_number = platform_config('buildNumber', project_root, target_platform)
   build_settings['PRODUCT_BUILD_NUMBER'] = build_number || '1'
 
-  use_fabric = fabric_enabled?(options, rn_version)
-  use_turbomodule = new_architecture_enabled?(options, rn_version)
-
+  use_new_arch = new_architecture_enabled?(options, rn_version)
   app_project = Xcodeproj::Project.open(xcodeproj_dst)
   app_project.native_targets.each do |target|
     case target.name
@@ -321,15 +319,14 @@ def make_project!(xcodeproj, project_root, target_platform, options)
       target.build_configurations.each do |config|
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << version_macro
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1' if use_fabric
         if enable_cxx17_removed_unary_binary_function
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] <<
             '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
         end
-        if use_turbomodule
+        if use_new_arch
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'RCT_NEW_ARCH_ENABLED=1'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_TURBOMODULE=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1'
         end
 
         build_settings.each do |setting, value|
@@ -337,8 +334,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
         end
 
         config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
-        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FABRIC' if use_fabric
-        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_TURBOMODULE' if use_turbomodule
+        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FABRIC' if use_new_arch
         if single_app.is_a? String
           config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
         end
@@ -370,8 +366,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
       :macos => config.resolve_build_setting('MACOSX_DEPLOYMENT_TARGET'),
     },
     :react_native_version => rn_version,
-    :use_fabric => use_fabric,
-    :use_turbomodule => use_turbomodule,
+    :use_new_arch => use_new_arch,
     :code_sign_identity => code_sign_identity || '',
     :development_team => development_team || '',
   }
@@ -385,7 +380,7 @@ def use_test_app_internal!(target_platform, options)
   project_target = make_project!(xcodeproj, project_root, target_platform, options)
   xcodeproj_dst, platforms = project_target.values_at(:xcodeproj_path, :platforms)
 
-  if project_target[:use_turbomodule] || project_target[:react_native_version] >= v(0, 73, 0)
+  if project_target[:use_new_arch] || project_target[:react_native_version] >= v(0, 73, 0)
     install! 'cocoapods', :deterministic_uuids => false
   end
 
