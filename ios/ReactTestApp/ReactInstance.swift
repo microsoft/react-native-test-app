@@ -7,13 +7,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
     static func jsBundleURL() -> URL {
         RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index") {
-            RCTBundleURLProvider.jsBundleURL(
-                forBundleRoot: "index",
-                packagerHost: "localhost",
-                enableDev: true,
-                enableMinification: false,
-                inlineSourceMap: true
-            )
+            RTADefaultJSBundleURL()
         }
     }
 

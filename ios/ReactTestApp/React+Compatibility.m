@@ -8,6 +8,8 @@
 
 #import <objc/runtime.h>
 
+#import <React/RCTBundleURLProvider.h>
+
 #define MAKE_VERSION(maj, min, patch) ((maj * 1000000) + (min * 1000) + patch)
 
 IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
@@ -29,6 +31,25 @@ IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
     }
 
     return originalImpl;
+}
+
+// MARK: - [0.71.13] The additional `inlineSourceMap:` was added in 0.71.13
+// See https://github.com/facebook/react-native/commit/f7219ec02d71d2f0f6c71af4d5c3d4850a898fd8
+
+NSURL *RTADefaultJSBundleURL()
+{
+#if REACT_NATIVE_VERSION < MAKE_VERSION(0, 71, 13)
+    return [RCTBundleURLProvider jsBundleURLForBundleRoot:@"index"
+                                             packagerHost:@"localhost"
+                                                enableDev:YES
+                                       enableMinification:NO];
+#else
+    return [RCTBundleURLProvider jsBundleURLForBundleRoot:@"index"
+                                             packagerHost:@"localhost"
+                                                enableDev:YES
+                                       enableMinification:NO
+                                          inlineSourceMap:YES];
+#endif
 }
 
 // MARK: - [0.70.0] Alerts don't show when using UIScene
