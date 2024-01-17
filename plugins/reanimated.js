@@ -43,7 +43,7 @@ function installerFor(version, indent = "    ") {
 
   if (version > 0 && version < v(0, 72, 0)) {
     const header = [
-      "#if !USE_TURBOMODULE",
+      "#if !USE_FABRIC",
       "#pragma clang diagnostic push",
       '#pragma clang diagnostic ignored "-Wnullability-completeness"',
       "",
@@ -62,7 +62,7 @@ function installerFor(version, indent = "    ") {
       "#endif",
       "",
       "#pragma clang diagnostic pop",
-      "#endif  // !USE_TURBOMODULE",
+      "#endif  // !USE_FABRIC",
     ].join("\n");
     const installer = [
       `${indent}const auto installer = reanimated::REAJSIExecutorRuntimeInstaller(bridge, nullptr);`,
@@ -74,10 +74,10 @@ function installerFor(version, indent = "    ") {
     // As of React Native 0.72, we need to call `REAInitializer` instead. See
     // https://github.com/software-mansion/react-native-reanimated/commit/a8206f383e51251e144cb9fd5293e15d06896df0.
     const header = [
-      "#if !USE_TURBOMODULE",
+      "#if !USE_FABRIC",
       `#define REACT_NATIVE_MINOR_VERSION ${minorVersion}`,
       "#import <RNReanimated/REAInitializer.h>",
-      "#endif  // !USE_TURBOMODULE",
+      "#endif  // !USE_FABRIC",
     ].join("\n");
     return [header, `${indent}reanimated::REAInitializer(bridge);`];
   }
@@ -115,7 +115,7 @@ function withReanimatedExecutor(config) {
       "installer",
       config.modResults.contents,
       installer,
-      /\/\/ jsExecutorFactoryForBridge: \(USE_TURBOMODULE=0\)/
+      /\/\/ jsExecutorFactoryForBridge: \(USE_FABRIC=0\)/
     );
 
     return config;
