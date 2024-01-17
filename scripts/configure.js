@@ -734,9 +734,11 @@ function updatePackageManifest(
     name: reactTestAppName,
     version: reactTestAppVersion,
   } = require("../package.json");
+
   manifest["devDependencies"] = mergeObjects(manifest["devDependencies"], {
-    [reactTestAppName]: `^${reactTestAppVersion}`,
+    "@rnx-kit/metro-config": "^1.3.14",
     mkdirp: "^1.0.0",
+    [reactTestAppName]: `^${reactTestAppVersion}`,
   });
 
   return manifest;
