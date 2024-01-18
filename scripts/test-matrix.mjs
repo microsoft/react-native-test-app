@@ -155,8 +155,7 @@ function showBanner(message) {
 /**
  * Starts Appium server.
  */
-async function startAppiumServer(logPath = "appium.log") {
-  await test("prepare");
+function startAppiumServer(logPath = "appium.log") {
   log(`Appium log path: ${logPath}`);
   return run("appium", logPath);
 }
@@ -208,7 +207,7 @@ async function withReactNativeVersion(version, proc) {
   let devServer;
   try {
     process.chdir("example");
-    appiumServer = await startAppiumServer();
+    appiumServer = startAppiumServer();
     devServer = startDevServer();
     await proc();
   } finally {
