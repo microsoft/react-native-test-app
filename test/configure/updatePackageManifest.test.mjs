@@ -30,6 +30,7 @@ describe("updatePackageManifest()", () => {
       },
       dependencies: {},
       devDependencies: {
+        "@rnx-kit/metro-config": "^1.3.14",
         mkdirp: "^1.0.0",
         "react-native-test-app": "^0.0.1-dev",
       },
@@ -63,6 +64,7 @@ describe("updatePackageManifest()", () => {
       },
       dependencies: {},
       devDependencies: {
+        "@rnx-kit/metro-config": "^1.3.14",
         mkdirp: "^1.0.0",
         "react-native-test-app": "^0.0.1-dev",
       },
