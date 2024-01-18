@@ -117,7 +117,7 @@ function parseArgs(description, options, callback) {
 
   if (values.help) {
     console.log(formatHelp(description, mergedOptions));
-  } else if (values.version) {
+  } else if (typeof values.version === "boolean" && values.version) {
     const { name, version } = require("../package.json");
     console.log(`${name} ${version}`);
   } else {

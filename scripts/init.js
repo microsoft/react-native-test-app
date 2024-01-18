@@ -218,6 +218,11 @@ function main() {
           description: "Destination path for the app",
           type: "string",
         },
+        version: {
+          description: "React Native version",
+          type: "string",
+          short: "v",
+        },
       },
       async (args) => {
         const prompts = require("prompts");
