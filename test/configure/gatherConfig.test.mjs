@@ -2,6 +2,7 @@
 import { deepEqual } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { gatherConfig as gatherConfigActual } from "../../scripts/configure.js";
+import { readTextFile } from "../../scripts/helpers.js";
 import { join } from "../../scripts/template.js";
 import { mockParams } from "./mockParams.mjs";
 
@@ -32,6 +33,10 @@ describe("gatherConfig()", () => {
     config.oldFiles = config.oldFiles.map(normalize);
     return config;
   }
+
+  const gradleWrapper = readTextFile(
+    "example/android/gradle/wrapper/gradle-wrapper.properties"
+  ).replace(/\r/g, "");
 
   it("returns configuration for all platforms", () => {
     deepEqual(gatherConfig(mockParams()), {
@@ -81,9 +86,7 @@ describe("gatherConfig()", () => {
         "android/gradle/wrapper/gradle-wrapper.jar": {
           source: "example/android/gradle/wrapper/gradle-wrapper.jar",
         },
-        "android/gradle/wrapper/gradle-wrapper.properties": {
-          source: "example/android/gradle/wrapper/gradle-wrapper.properties",
-        },
+        "android/gradle/wrapper/gradle-wrapper.properties": gradleWrapper,
         "android/gradlew": {
           source: "example/android/gradlew",
         },
@@ -390,9 +393,7 @@ describe("gatherConfig()", () => {
         "android/gradle/wrapper/gradle-wrapper.jar": {
           source: "example/android/gradle/wrapper/gradle-wrapper.jar",
         },
-        "android/gradle/wrapper/gradle-wrapper.properties": {
-          source: "example/android/gradle/wrapper/gradle-wrapper.properties",
-        },
+        "android/gradle/wrapper/gradle-wrapper.properties": gradleWrapper,
         "android/gradlew": {
           source: "example/android/gradlew",
         },
@@ -572,9 +573,7 @@ describe("gatherConfig()", () => {
         "android/gradle/wrapper/gradle-wrapper.jar": {
           source: "example/android/gradle/wrapper/gradle-wrapper.jar",
         },
-        "android/gradle/wrapper/gradle-wrapper.properties": {
-          source: "example/android/gradle/wrapper/gradle-wrapper.properties",
-        },
+        "android/gradle/wrapper/gradle-wrapper.properties": gradleWrapper,
         "android/gradlew": {
           source: "example/android/gradlew",
         },

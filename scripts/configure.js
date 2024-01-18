@@ -384,7 +384,8 @@ const getConfig = (() => {
     disableCache = false
   ) => {
     if (disableCache || typeof configuration === "undefined") {
-      const { name, templatePath, testAppPath, flatten, init } = params;
+      const { name, templatePath, testAppPath, targetVersion, flatten, init } =
+        params;
 
       // `.gitignore` files are only renamed when published.
       const gitignore = ["_gitignore", ".gitignore"].find((filename) => {
@@ -465,16 +466,24 @@ const getConfig = (() => {
                 "gradle-wrapper.jar"
               ),
             },
-            "gradle/wrapper/gradle-wrapper.properties": {
-              source: path.join(
+            "gradle/wrapper/gradle-wrapper.properties": (() => {
+              const gradleWrapperProperties = path.join(
                 testAppPath,
                 "example",
                 "android",
                 "gradle",
                 "wrapper",
                 "gradle-wrapper.properties"
-              ),
-            },
+              );
+              const props = readTextFile(gradleWrapperProperties);
+              if (toVersionNumber(targetVersion) < v(0, 73, 0)) {
+                return props.replace(
+                  /gradle-[.0-9]*-bin\.zip/,
+                  "gradle-7.6.3-bin.zip"
+                );
+              }
+              return props;
+            })(),
             "gradle.properties": {
               source: path.join(
                 testAppPath,
