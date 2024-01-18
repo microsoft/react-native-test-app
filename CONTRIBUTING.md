@@ -180,13 +180,19 @@ npm pack --dry-run --verbose
 
 If your files are missing, you can modify the `files` section in `package.json`.
 
+Also make sure that you update the test to include the new files:
+
+```sh
+node --test test/pack.test.mjs
+```
+
 ## Testing Specific React Native Versions
 
 `react-native-test-app` supports multiple versions of React Native. Use
-`set-react-version` to set the version, e.g. to use 0.68:
+`set-react-version` to set the version, e.g. to use 0.73:
 
 ```sh
-npm run set-react-version 0.68
+npm run set-react-version 0.73
 ```
 
 This will modify both `package.json` and `example/package.json` to use packages
@@ -197,7 +203,12 @@ To avoid issues, remember to clear out `node_modules` folders before you run
 
 ```sh
 yarn clean
-yarn
+```
+
+And remove `Podfile.lock`:
+
+```sh
+rm example/ios/Podfile.lock example/macos/Podfile.lock
 ```
 
 ## Adding Support For New React Native Versions
