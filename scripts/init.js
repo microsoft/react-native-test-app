@@ -110,8 +110,20 @@ function getVersion(platforms) {
     return process.argv[index + 1];
   }
 
+  /** @type {(version: string, reason: string) => void} */
+  const logVersion = (version, reason) => {
+    const chalk = require("chalk");
+    const fmtVersionFlag = chalk.bold("--version");
+    const fmtTarget = chalk.bold(version);
+    console.log(
+      `Using ${fmtTarget} because ${reason} (use ${fmtVersionFlag} to ` +
+        `specify another version)`
+    );
+  };
+
   const version = getInstalledVersion();
   if (version) {
+    logVersion(version, "the current project uses it");
     return version;
   }
 
@@ -132,14 +144,7 @@ function getVersion(platforms) {
   const minor = maxSupportedVersion % 100;
 
   const target = `^${major}.${minor}`;
-
-  const chalk = require("chalk");
-  const fmtTarget = chalk.bold(target);
-  const fmtVersionFlag = chalk.bold("--version");
-  console.log(
-    `Using ${fmtTarget} because it supports all specified platforms (use ` +
-      `${fmtVersionFlag} to manually specify a version)`
-  );
+  logVersion(target, "it supports all specified platforms");
 
   return target;
 }
