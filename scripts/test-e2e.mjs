@@ -67,25 +67,6 @@ function ensureAppiumAvailable() {
   });
 }
 
-/**
- * Install or update specified Appium driver.
- */
-const installAppiumDriver = (() => {
-  const appium = new URL("../example/node_modules/.bin/appium", import.meta.url)
-    .pathname;
-
-  const installedDrivers = /** @type {string[]} */ ([]);
-  /** @type {(driver: string) => void} */
-  return (driver) => {
-    if (!installedDrivers.includes(driver)) {
-      installedDrivers.push(driver);
-      const drivers = $$(appium, "driver", "list", "--installed");
-      const action = drivers.includes(driver) ? "update" : "install";
-      $(appium, "driver", action, driver);
-    }
-  };
-})();
-
 function prepareAndroid(androidHome = process.env["ANDROID_HOME"]) {
   // Note: Ubuntu agents can't run Android emulators — see
   // https://github.com/actions/runner-images/issues/6253#issuecomment-1255952240
@@ -125,11 +106,6 @@ export async function test(target, args = []) {
 
     case "ios":
       break;
-
-    case "prepare":
-      installAppiumDriver("uiautomator2");
-      installAppiumDriver("xcuitest");
-      return 0;
 
     default:
       console.error(`Unknown target: ${target}`);
