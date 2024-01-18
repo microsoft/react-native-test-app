@@ -36,7 +36,7 @@ describe("gatherConfig()", () => {
 
   const gradleWrapper = readTextFile(
     "example/android/gradle/wrapper/gradle-wrapper.properties"
-  );
+  ).replace(/\r/g, "");
 
   it("returns configuration for all platforms", () => {
     deepEqual(gatherConfig(mockParams()), {
