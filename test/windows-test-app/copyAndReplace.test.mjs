@@ -2,6 +2,7 @@
 import { equal, fail, match, rejects } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { promisify } from "node:util";
+import { readTextFile as readTextFileActual } from "../../scripts/helpers.js";
 import { copyAndReplace as copyAndReplaceActual } from "../../windows/test-app.js";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 import { spy } from "../spy.mjs";
@@ -12,6 +13,9 @@ describe("copyAndReplace()", () => {
     copyAndReplaceActual(src, dst, r, cb, fs);
 
   const copyAndReplaceAsync = promisify(copyAndReplace);
+
+  /** @type {typeof readTextFileActual} */
+  const readTextFile = (p) => readTextFileActual(p, fs);
 
   afterEach(() => setMockFiles());
 
@@ -29,10 +33,7 @@ describe("copyAndReplace()", () => {
     );
 
     equal(spy(fs.copyFile).calls.length, 1);
-    equal(
-      fs.readFileSync("test/ReactTestApp.png", { encoding: "utf-8" }),
-      "binary"
-    );
+    equal(readTextFile("test/ReactTestApp.png"), "binary");
   });
 
   it("replaces file content", async (t) => {
@@ -47,10 +48,7 @@ describe("copyAndReplace()", () => {
     });
 
     equal(spy(fs.copyFile).calls.length, 0);
-    equal(
-      fs.readFileSync("test/ReactTestApp.png", { encoding: "utf-8" }),
-      "text"
-    );
+    equal(readTextFile("test/ReactTestApp.png"), "text");
   });
 
   it("throws on error", async () => {

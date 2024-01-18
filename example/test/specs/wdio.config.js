@@ -32,7 +32,7 @@ exports.config = {
           platformName: "iOS",
           "appium:app": "com.microsoft.ReactTestApp",
           "appium:deviceName": "iPhone 15 Pro",
-          "appium:platformVersion": "17.0",
+          "appium:platformVersion": "17.2",
           "appium:automationName": "XCUITest",
           ...features,
         };

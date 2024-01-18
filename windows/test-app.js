@@ -9,6 +9,7 @@ const {
   findNearest,
   getPackageVersion,
   readJSONFile,
+  readTextFile,
   requireTransitive,
   toVersionNumber,
   v,
@@ -54,9 +55,6 @@ const uniqueFilterIdentifier = "e48dc53e-40b1-40cb-970a-f89935452892";
 /** @type {{ recursive: true, mode: 0o755 }} */
 const mkdirRecursiveOptions = { recursive: true, mode: 0o755 };
 
-/** @type {{ encoding: "utf-8" }} */
-const textFileReadOptions = { encoding: "utf-8" };
-
 /** @type {{ encoding: "utf-8", mode: 0o644 }} */
 const textFileWriteOptions = { encoding: "utf-8", mode: 0o644 };
 
@@ -95,7 +93,7 @@ function findUserProjects(projectDir, projects = []) {
         findUserProjects(fullPath, projects);
       }
     } else if (fullPath.endsWith(".vcxproj")) {
-      const vcxproj = fs.readFileSync(fullPath, textFileReadOptions);
+      const vcxproj = readTextFile(fullPath, fs);
       const guidMatch = vcxproj.match(
         /<ProjectGuid>({[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}})<\/ProjectGuid>/
       );
@@ -180,7 +178,7 @@ function getNuGetDependencies(rnWindowsPath) {
     //     </Project>
     //
     for (const vcxproj of projects) {
-      const proj = xml.parse(fs.readFileSync(vcxproj, textFileReadOptions));
+      const proj = xml.parse(readTextFile(vcxproj, fs));
       const itemGroup = proj.project?.itemgroup;
       if (!itemGroup) {
         continue;
@@ -213,9 +211,7 @@ function getNuGetDependencies(rnWindowsPath) {
 
   // Remove dependencies managed by us
   const config = path.join(__dirname, "ReactTestApp", "packages.config");
-  const matches = fs
-    .readFileSync(config, textFileReadOptions)
-    .matchAll(/package id="(.+?)"/g);
+  const matches = readTextFile(config, fs).matchAll(/package id="(.+?)"/g);
   for (const m of matches) {
     const id = m[1].toLowerCase();
     delete packageRefs[id];
@@ -496,7 +492,7 @@ function copyAndReplace(
     fs.copyFile(srcPath, destPath, callback);
   } else {
     // Treat as text file
-    fs.readFile(srcPath, textFileReadOptions, (err, data) => {
+    fs.readFile(srcPath, { encoding: "utf-8" }, (err, data) => {
       if (err) {
         callback(err);
         return;
@@ -587,7 +583,7 @@ function getHermesVersion(rnwPath, fs = require("node:fs")) {
     "PropertySheets",
     "JSEngine.props"
   );
-  const props = fs.readFileSync(jsEnginePropsPath, textFileReadOptions);
+  const props = readTextFile(jsEnginePropsPath, fs);
   const m = props.match(/<HermesVersion.*?>(.+?)<\/HermesVersion>/);
   return m && m[1];
 }
@@ -784,7 +780,7 @@ function generateSolution(
   const solutionTask = fs.writeFile(
     path.join(destPath, `${appName}.sln`),
     mustache
-      .render(fs.readFileSync(solutionTemplatePath, textFileReadOptions), {
+      .render(readTextFile(solutionTemplatePath, fs), {
         ...templateView,
         useExperimentalNuget: useNuGet,
       })
@@ -901,10 +897,7 @@ function generateSolution(
     if (nugetConfigPath && !fs.existsSync(nugetConfigDestPath)) {
       fs.writeFile(
         nugetConfigDestPath,
-        mustache.render(
-          fs.readFileSync(nugetConfigPath, textFileReadOptions),
-          {}
-        ),
+        mustache.render(readTextFile(nugetConfigPath, fs), {}),
         textFileWriteOptions,
         rethrow
       );

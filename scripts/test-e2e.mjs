@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 // @ts-check
 
+/**
+ * Reminder that this script is meant to be runnable without installing
+ * dependencies. It can therefore not rely on any external libraries.
+ */
 import { spawnSync } from "node:child_process";
 import { Socket } from "node:net";
 

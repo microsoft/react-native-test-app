@@ -5,7 +5,7 @@
     {
       "groupName": "@react-native-community/cli",
       "matchPackagePrefixes": ["@react-native-community/cli"],
-      "allowedVersions": "^11.0.0"
+      "allowedVersions": "^12.0.0"
     },
     {
       "groupName": "Android",
@@ -34,7 +34,7 @@
     {
       "groupName": "Metro",
       "matchSourceUrlPrefixes": ["https://github.com/facebook/metro"],
-      "allowedVersions": "^0.76.0"
+      "allowedVersions": "^0.80.0"
     },
     {
       "groupName": "Moshi",
@@ -76,7 +76,7 @@
         "react-native-macos",
         "react-native-windows"
       ],
-      "allowedVersions": "^0.72.0"
+      "allowedVersions": "^0.73.0"
     }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],

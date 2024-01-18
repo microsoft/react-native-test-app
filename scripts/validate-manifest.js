@@ -3,7 +3,7 @@
 "use strict";
 
 const path = require("node:path");
-const { readJSONFile } = require("./helpers");
+const { readJSONFile, readTextFile } = require("./helpers");
 const { generateSchema } = require("./schema");
 
 const APP_JSON = "app.json";
@@ -138,7 +138,7 @@ function validate(
 
     if (
       !fs.existsSync(manifestCopyDest) ||
-      cppHeader !== fs.readFileSync(manifestCopyDest, { encoding: "utf-8" })
+      cppHeader !== readTextFile(manifestCopyDest, fs)
     ) {
       const options = { recursive: true, mode: 0o755 };
       fs.mkdirSync(path.dirname(manifestCopyDest), options);

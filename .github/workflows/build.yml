@@ -260,7 +260,6 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: android
-          java-version: ${{ github.event_name == 'schedule' && '17' || '11' }}
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         uses: ./.github/actions/setup-react-native

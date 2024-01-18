@@ -13,6 +13,7 @@ const {
   findNearest,
   getPackageVersion,
   readJSONFile,
+  readTextFile,
   toVersionNumber,
   v,
 } = require("./helpers");
@@ -351,7 +352,7 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
   }
 
   const config = path.join(testAppPath, "example", "react-native.config.js");
-  return fs.readFileSync(config, utf8).replace(/Example/g, name);
+  return readTextFile(config, fs).replace(/Example/g, name);
 }
 
 /**

@@ -5,7 +5,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { after, before, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { findNearest } from "../../scripts/helpers.js";
+import { findNearest, readJSONFile } from "../../scripts/helpers.js";
 
 function getCliVersion() {
   const cli = findNearest(
@@ -15,7 +15,13 @@ function getCliVersion() {
     throw new Error("Could not find '@react-native-community/cli'");
   }
 
-  const { version } = JSON.parse(fs.readFileSync(cli, { encoding: "utf-8" }));
+  const { version } = readJSONFile(cli);
+  if (typeof version !== "string") {
+    throw new Error(
+      `Invalid version string for '@react-native-community/cli': ${version}`
+    );
+  }
+
   return version;
 }
 
