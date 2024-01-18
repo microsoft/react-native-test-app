@@ -9,6 +9,12 @@ describe("updatePackageManifest()", () => {
   const updatePackageManifest = (p, cfg) =>
     updatePackageManifestActual(p, cfg, fs);
 
+  const devDependencies = {
+    "@rnx-kit/metro-config": "^1.3.14",
+    mkdirp: "^1.0.0",
+    "react-native-test-app": "^0.0.1-dev",
+  };
+
   afterEach(() => setMockFiles());
 
   it("adds `scripts` field if missing", () => {
@@ -29,11 +35,7 @@ describe("updatePackageManifest()", () => {
         test: "jest",
       },
       dependencies: {},
-      devDependencies: {
-        "@rnx-kit/metro-config": "^1.3.14",
-        mkdirp: "^1.0.0",
-        "react-native-test-app": "^0.0.1-dev",
-      },
+      devDependencies,
     });
   });
 
@@ -63,11 +65,7 @@ describe("updatePackageManifest()", () => {
         test: "jest",
       },
       dependencies: {},
-      devDependencies: {
-        "@rnx-kit/metro-config": "^1.3.14",
-        mkdirp: "^1.0.0",
-        "react-native-test-app": "^0.0.1-dev",
-      },
+      devDependencies,
     });
   });
 });
