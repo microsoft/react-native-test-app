@@ -2,6 +2,7 @@
 /**
  * @typedef {{
  *   projectRoot: string;
+ *   platforms: string[];
  *   packageJsonPath: string;
  *   appJsonPath: string;
  * }} ProjectInfo

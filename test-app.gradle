@@ -5,7 +5,7 @@ import org.gradle.initialization.DefaultSettings
 import java.nio.file.Paths
 
 private static void applyConfigPlugins(String testAppDir, File rootDir) {
-    String[] patch = ["node", "${testAppDir}/scripts/apply-config-plugins.mjs"]
+    String[] patch = ["node", "${testAppDir}/scripts/apply-config-plugins.mjs", "--android"]
     def stderr = new StringBuffer()
     def proc = Runtime.runtime.exec(patch, null, rootDir)
     proc.waitForProcessOutput(null, stderr)
