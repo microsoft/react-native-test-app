@@ -223,10 +223,53 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
 
 /**
  * Returns an object with common dependencies.
+ * @param {string} v
  * @param {Manifest} manifest
  * @return {Promise<Record<string, string | undefined>>}
  */
-async function resolveCommonDependencies({ dependencies, peerDependencies }) {
+async function resolveCommonDependencies(
+  v,
+  { version, dependencies, peerDependencies }
+) {
+  const [rnBabelPresetVersion, rnMetroConfigVersion, metroBabelPresetVersion] =
+    await (async () => {
+      if (v === "nightly") {
+        return [v, v, undefined];
+      }
+
+      const target = version?.includes("-") ? `^${v}.0-0` : `^${v}`;
+      const [
+        { version: rnBabelPresetVersion },
+        { version: rnMetroConfigVersion },
+        { version: metroBabelPresetVersion },
+      ] = await Promise.all([
+        fetchPackageInfo(`@react-native/babel-preset@${target}`),
+        fetchPackageInfo(`@react-native/metro-config@${target}`),
+        (async () => {
+          // Metro bumps and publishes all packages together, meaning we can use
+          // `metro-react-native-babel-transformer` to determine the version of
+          // `metro-react-native-babel-preset` that should be used.
+          const version =
+            dependencies?.["metro-react-native-babel-transformer"];
+          if (version) {
+            return { version };
+          }
+
+          // `metro-react-native-babel-transformer` is no longer a direct dependency
+          // of `react-native`. As of 0.72, we should go through
+          // `@react-native-community/cli-plugin-metro` instead.
+          const cliPluginMetro = "@react-native-community/cli-plugin-metro";
+          const metroPluginInfo = await fetchPackageInfo(cliPluginMetro);
+          return { version: metroPluginInfo.dependencies?.["metro"] };
+        })(),
+      ]);
+      return [
+        rnBabelPresetVersion,
+        rnMetroConfigVersion,
+        metroBabelPresetVersion,
+      ];
+    })();
+
   return {
     "@react-native-community/cli":
       dependencies?.["@react-native-community/cli"],
@@ -234,23 +277,10 @@ async function resolveCommonDependencies({ dependencies, peerDependencies }) {
       dependencies?.["@react-native-community/cli-platform-android"],
     "@react-native-community/cli-platform-ios":
       dependencies?.["@react-native-community/cli-platform-ios"],
+    "@react-native/babel-preset": rnBabelPresetVersion,
+    "@react-native/metro-config": rnMetroConfigVersion,
     "hermes-engine": dependencies?.["hermes-engine"],
-    "metro-react-native-babel-preset": await (async () => {
-      // Metro bumps and publishes all packages together, meaning we can use
-      // `metro-react-native-babel-transformer` to determine the version of
-      // `metro-react-native-babel-preset` that should be used.
-      const version = dependencies?.["metro-react-native-babel-transformer"];
-      if (version) {
-        return version;
-      }
-
-      // `metro-react-native-babel-transformer` is no longer a direct dependency
-      // of `react-native`. As of 0.72, we should go through
-      // `@react-native-community/cli-plugin-metro` instead.
-      const cliPluginMetro = "@react-native-community/cli-plugin-metro";
-      const metroPluginInfo = await fetchPackageInfo(cliPluginMetro);
-      return metroPluginInfo.dependencies?.["metro"];
-    })(),
+    "metro-react-native-babel-preset": metroBabelPresetVersion,
     react: peerDependencies?.["react"],
   };
 }
@@ -265,7 +295,7 @@ async function getProfile(v, coreOnly) {
   switch (v) {
     case "canary-macos": {
       const info = await fetchPackageInfo("react-native-macos@canary");
-      const commonDeps = await resolveCommonDependencies(info);
+      const commonDeps = await resolveCommonDependencies(v, info);
       return {
         ...commonDeps,
         "react-native": inferReactNativeVersion(info),
@@ -279,7 +309,7 @@ async function getProfile(v, coreOnly) {
         process.env["CI"] || process.env["NUGET_EXE"]
           ? await fetchReactNativeWindowsCanaryInfoViaNuGet()
           : await fetchPackageInfo("react-native-windows@canary");
-      const commonDeps = await resolveCommonDependencies(info);
+      const commonDeps = await resolveCommonDependencies(v, info);
       return {
         ...commonDeps,
         "react-native": info.peerDependencies?.["react-native"] || "^0.0.0-0",
@@ -295,7 +325,7 @@ async function getProfile(v, coreOnly) {
         throw new Error("Could not determine dependencies");
       }
 
-      const commonDeps = await resolveCommonDependencies(info);
+      const commonDeps = await resolveCommonDependencies(v, info);
       const codegen = await fetchPackageInfo(
         "react-native-codegen@" + dependencies["react-native-codegen"]
       );
@@ -310,10 +340,9 @@ async function getProfile(v, coreOnly) {
 
     case "nightly": {
       const info = await fetchPackageInfo("react-native@nightly");
-      const commonDeps = await resolveCommonDependencies(info);
+      const commonDeps = await resolveCommonDependencies(v, info);
       return {
         ...commonDeps,
-        "@react-native/metro-config": "latest",
         "react-native": "nightly",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
@@ -331,19 +360,9 @@ async function getProfile(v, coreOnly) {
             ? Promise.resolve({ version: undefined })
             : fetchPackageInfo(`react-native-windows@^${v}.0-0`),
         ]);
-      const target = reactNative.version?.includes("-") ? `^${v}.0-0` : `^${v}`;
-      const [
-        { version: rnBabelPresetVersion },
-        { version: rnMetroConfigVersion },
-      ] = await Promise.all([
-        fetchPackageInfo(`@react-native/babel-preset@${target}`),
-        fetchPackageInfo(`@react-native/metro-config@${target}`),
-      ]);
-      const commonDeps = await resolveCommonDependencies(reactNative);
+      const commonDeps = await resolveCommonDependencies(v, reactNative);
       return {
         ...commonDeps,
-        "@react-native/babel-preset": rnBabelPresetVersion,
-        "@react-native/metro-config": rnMetroConfigVersion,
         "react-native": reactNative.version,
         "react-native-macos": rnmVersion,
         "react-native-windows": rnwVersion,
