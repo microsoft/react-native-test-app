@@ -206,13 +206,7 @@ android {
         main.java.srcDirs += [
             project.ext.react.enableCamera ? "src/camera/java" : "src/no-camera/java",
 
-            !enableNewArchitecture
-                ? "src/old-arch/java"
-                // TODO: Remove this block when we drop support for 0.73
-                // https://github.com/facebook/react-native/commit/65552055392a5996bf50548018953875dde4560b
-                : reactNativeVersion >= v(0, 74, 0)
-                    ? "src/new-arch-0.74/java"
-                    : "src/new-arch/java",
+            enableNewArchitecture ? "src/new-arch/java" : "src/old-arch/java",
 
             // TODO: Remove this block when we drop support for 0.67
             // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4

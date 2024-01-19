@@ -83,6 +83,9 @@ ext {
     // We need only set `ndkVersion` when building react-native from source.
     if (rootProject.hasProperty("ANDROID_NDK_VERSION")) {
         ndkVersion = rootProject.properties["ANDROID_NDK_VERSION"]
+    } else if (reactNativeVersion >= v(0, 74, 0)) {
+        // https://github.com/facebook/react-native/commit/9ce7b564131c5b2075489c09ff05325ddc28014a
+        ndkVersion = "26.1.10909125"
     } else if (System.properties["os.arch"] == "aarch64" && androidPluginVersion == "7.2.2") {
         // NDK r23c has been patched to support Apple M1 and is default in AGP
         // 7.3.0. Prior to 0.71, we still need to set `ndkVersion` because we'll
@@ -91,9 +94,6 @@ ext {
         // default. See also
         // https://developer.android.com/studio/releases/gradle-plugin#compatibility-7-3-0
         ndkVersion = "23.1.7779620"
-    } else if (reactNativeVersion >= v(0, 74, 0)) {
-        // https://github.com/facebook/react-native/commit/9ce7b564131c5b2075489c09ff05325ddc28014a
-        ndkVersion = "26.1.10909125"
     }
 
     def kotlinVersionNumber = toVersionNumber(kotlinVersion)
