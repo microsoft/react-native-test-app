@@ -24,7 +24,7 @@ def app_config(project_root)
   [manifest['name'], manifest['displayName'], manifest['version'], manifest['singleApp']]
 end
 
-def apply_config_plugins(project_root)
+def apply_config_plugins(project_root, target_platform)
   begin
     resolve_module('@expo/config-plugins')
   rescue StandardError
@@ -33,7 +33,7 @@ def apply_config_plugins(project_root)
   end
 
   apply_config_plugins = File.join(__dir__, '..', 'scripts', 'apply-config-plugins.mjs')
-  result = system("node \"#{apply_config_plugins}\" \"#{project_root}\"")
+  result = system("node \"#{apply_config_plugins}\" \"#{project_root}\" --#{target_platform}")
   raise 'Failed to apply config plugins' unless result
 end
 
@@ -472,7 +472,7 @@ def use_test_app_internal!(target_platform, options)
       end
     end
 
-    apply_config_plugins(project_root)
+    apply_config_plugins(project_root, target_platform)
 
     Pod::UI.notice(
       "`#{xcodeproj}` was sourced from `react-native-test-app`. " \
