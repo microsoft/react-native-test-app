@@ -7,6 +7,7 @@ import { parseArgs } from "node:util";
 import { findFile } from "./validate-manifest.js";
 
 /**
+ * @typedef {import("./config-plugins/types.mjs").ProjectInfo["platforms"]} Platforms
  * @param {string} projectRoot
  * @param {string[]} platforms
  */
@@ -29,7 +30,7 @@ async function main(projectRoot = process.cwd(), platforms) {
   const { applyConfigPlugins } = await import("./config-plugins/index.mjs");
   return applyConfigPlugins({
     projectRoot: path.dirname(appJsonPath),
-    platforms,
+    platforms: /** @type {Platforms} */ (platforms),
     packageJsonPath,
     appJsonPath,
   });

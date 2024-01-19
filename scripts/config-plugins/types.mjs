@@ -2,7 +2,7 @@
 /**
  * @typedef {{
  *   projectRoot: string;
- *   platforms: string[];
+ *   platforms: import("@expo/config-plugins").ModPlatform[];
  *   packageJsonPath: string;
  *   appJsonPath: string;
  * }} ProjectInfo
