@@ -217,19 +217,19 @@ First, create a new issue using the _"New `react-native` version"_ template,
 update the title and fill out all the required fields. You can find the relevant
 discussion link at [`react-native-releases`][].
 
-Use the [`test-matrix.mjs`][] script to both test and capture screenshots. We'll
+Use the [`test:matrix`][] script to both test and capture screenshots. We'll
 need the screenshots for the PR we'll create later. For instance, to test 0.73,
 run:
 
 ```sh
-node scripts/test-matrix.mjs 0.73
+npm run test:matrix 0.73
 ```
 
-At the minimum, we should be testing the lowest supported version (0.64 at the
+At the minimum, we should be testing the lowest supported version (0.66 at the
 time of writing) in addition to the new version.
 
 As you run the script, you will hit issues. Depending on the root cause, these
-are the things that you need to do:
+are the things that you'll need to do:
 
 - If the issue is in RNTA or [`@rnx-kit/react-native-host`][]:
   - We own these pieces and should fix them ourselves.
@@ -317,7 +317,7 @@ via the [Dependency Dashboard].
 Consumers never see these so we can be less conservative, especially when it
 comes to major bumps. Otherwise, everything mentioned above still applies.
 
-### Android Dependencies:
+### Android Dependencies
 
 Always check the change log for potentially breaking changes as they typically
 do not follow semantic versioning. In particular, be on the lookout for changes
@@ -363,7 +363,7 @@ additions.
   https://github.com/microsoft/react-native-test-app/blob/trunk/package.json
 [`react-native-releases`]:
   https://github.com/reactwg/react-native-releases/discussions
-[`test-matrix.mjs`]:
+[`test:matrix`]:
   https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/test-matrix.mjs
 [`uuid`]: https://github.com/uuidjs/uuid
 [commitlint-lite]:
