@@ -39,7 +39,7 @@ ext.checkEnvironment = { rootDir ->
         }
     } else {
         if (gradleVersion < v(7, 5, 1) || gradleVersion >= v(8, 0, 0)) {
-            warnGradle("7.6.1", "7.x", "0.71 and older")
+            warnGradle("7.6.3", "7.x", "0.71 and older")
         }
     }
 }

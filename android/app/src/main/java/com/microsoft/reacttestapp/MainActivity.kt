@@ -190,7 +190,7 @@ class MainActivity : ReactActivity() {
                 ReactNativeVersion.VERSION["major"] as Int,
                 ReactNativeVersion.VERSION["minor"] as Int,
                 ReactNativeVersion.VERSION["patch"] as Int,
-                reactInstanceManager.jsExecutorName,
+                testApp.reactNativeHost.jsExecutorName,
                 if (BuildConfig.ReactTestApp_useFabric) "+Fabric" else ""
             )
         }
