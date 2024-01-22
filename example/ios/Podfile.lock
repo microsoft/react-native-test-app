@@ -1020,7 +1020,7 @@ PODS:
     - React-jsi (= 0.73.2)
     - React-logger (= 0.73.2)
     - React-perflogger (= 0.73.2)
-  - ReactNativeHost (0.4.0):
+  - ReactNativeHost (0.4.2):
     - React-Core
     - React-cxxreact
     - ReactCommon/turbomodule/core
@@ -1248,12 +1248,12 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 6517c0cdfae3ea29b599759e069ae97746163248
   React-utils: f5bc61e7ea3325c0732ae2d755f4441940163b85
   ReactCommon: a42e89b49d88c3890dfb6fd98a33ac80d555be19
-  ReactNativeHost: e17481b59ed2f3a1c65db1e83f03c1abf9afcd14
+  ReactNativeHost: 87c7181cb3b0ce016e094ede3cc03b4f61c97dd5
   ReactTestApp-DevSupport: 684f374b53c868cd08a0337839a7fcc5ce1e25aa
   ReactTestApp-Resources: da77347b3f02b5d79ba3fecb3ad328b2f6a7ef4d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 13c8ef87792450193e117976337b8527b49e8c03
 
-PODFILE CHECKSUM: 66243ee27b434ad0f296253272b27b383190853c
+PODFILE CHECKSUM: 0f9a8fd4217f943391e46a62ec8cad034e331d4f
 
 COCOAPODS: 1.14.2

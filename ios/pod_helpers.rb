@@ -1,3 +1,10 @@
+def bridgeless_enabled?(options, react_native_version)
+  return false unless new_architecture_enabled?(options, react_native_version)
+
+  supports_bridgeless = react_native_version.zero? || react_native_version >= v(0, 73, 0)
+  supports_bridgeless && options[:bridgeless_enabled]
+end
+
 def find_file(file_name, current_dir)
   return if current_dir.expand_path.to_s == '/'
 
@@ -40,9 +47,8 @@ def try_pod(name, podspec, project_root)
   pod name, :podspec => podspec if File.exist?(File.join(project_root, podspec))
 end
 
-def use_new_architecture!(options)
-  new_arch_enabled = new_architecture_enabled?(options, v(1_000, 0, 0))
-  return unless new_arch_enabled
+def use_new_architecture!(options, react_native_version)
+  return unless new_architecture_enabled?(options, react_native_version)
 
   Pod::UI.warn(
     'As of writing, New Architecture (Fabric) is still experimental and ' \
@@ -53,6 +59,7 @@ def use_new_architecture!(options)
   options[:fabric_enabled] = true
   options[:new_arch_enabled] = true
   ENV['RCT_NEW_ARCH_ENABLED'] = '1'
+  ENV['USE_BRIDGELESS'] = '1' if bridgeless_enabled?(options, react_native_version)
 end
 
 def v(major, minor, patch)

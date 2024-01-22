@@ -3292,12 +3292,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@rnx-kit/react-native-host@npm:0.4.0"
+"@rnx-kit/react-native-host@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@rnx-kit/react-native-host@npm:0.4.2"
   peerDependencies:
     react-native: ">=0.66"
-  checksum: 7a03ee90caacf6f015e1c720ca8e1b50ff7af866265d01079ee4ef0f9689884e7839dd83940ffa97462232e5913f152a3a17b3975dd7b1aebb83f7a3ac88dae4
+  checksum: 691a7b66791d976c07036f67c95947ee7828dfe63c6d8a94edfda8dfb08b87795dd0762df4f96032e668c71114eb4608090bb445f0d53f0744667b31604d2432
   languageName: node
   linkType: hard
 
@@ -12087,7 +12087,7 @@ __metadata:
     "@microsoft/eslint-plugin-sdl": "npm:^0.2.0"
     "@react-native-community/cli": "npm:^12.3.0"
     "@rnx-kit/eslint-plugin": "npm:^0.6.0"
-    "@rnx-kit/react-native-host": "npm:^0.4.0"
+    "@rnx-kit/react-native-host": "npm:^0.4.2"
     "@rnx-kit/tsconfig": "npm:^1.0.0"
     "@types/js-yaml": "npm:^4.0.5"
     "@types/mustache": "npm:^4.0.0"

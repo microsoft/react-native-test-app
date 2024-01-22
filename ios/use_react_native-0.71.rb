@@ -3,11 +3,11 @@ require 'open3'
 require_relative('pod_helpers')
 
 def include_react_native!(options)
-  react_native, project_root = options.values_at(:path, :rta_project_root)
+  react_native, project_root, version = options.values_at(:path, :rta_project_root, :version)
 
   require_relative(File.join(project_root, react_native, 'scripts', 'react_native_pods'))
 
-  use_new_architecture!(options)
+  use_new_architecture!(options, version)
   use_react_native!(
     path: react_native,
     fabric_enabled: options[:fabric_enabled] == true,
