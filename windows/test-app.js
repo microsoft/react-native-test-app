@@ -663,9 +663,11 @@ function generateSolution(
   const usePackageReferences =
     rnWindowsVersionNumber === 0 || rnWindowsVersionNumber >= v(0, 68, 0);
   const xamlVersion =
-    rnWindowsVersionNumber > 0 && rnWindowsVersionNumber < v(0, 67, 0)
-      ? "2.6.0"
-      : "2.7.0";
+    rnWindowsVersionNumber === 0 || rnWindowsVersionNumber >= v(0, 73, 0)
+      ? "2.8.0"
+      : rnWindowsVersionNumber >= v(0, 67, 0)
+        ? "2.7.0"
+        : "2.6.0";
 
   const nuGetDependencies = getNuGetDependencies(rnWindowsPath);
 
@@ -813,8 +815,10 @@ function generateSolution(
       path.join(__dirname, experimentalFeaturesPropsFilename),
       experimentalFeaturesPropsPath,
       {
-        ...(hermesVersion
-          ? { "<UseHermes>false</UseHermes>": `<UseHermes>true</UseHermes>` }
+        ...(useHermes != null && (usePackageReferences || hermesVersion)
+          ? {
+              "<!-- UseHermes>true</UseHermes -->": `<UseHermes>${useHermes}</UseHermes>`,
+            }
           : undefined),
       },
       undefined,
@@ -954,7 +958,6 @@ if (require.main === module) {
       "use-hermes": {
         description: "Use Hermes JavaScript engine (experimental)",
         type: "boolean",
-        default: false,
       },
       "use-nuget": {
         description: "Use NuGet packages (experimental)",
