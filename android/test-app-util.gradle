@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 import java.security.MessageDigest
 
-ext.manifest = null
+ext._manifest = null
 
 ext.checkEnvironment = { rootDir ->
     def warnGradle = { gradleVersion, gradleVersionRange, reactNativeVersion ->
@@ -100,6 +100,10 @@ ext.findNodeModulesPath = { packageName, baseDir ->
     return null
 }
 
+ext.tryGetProperty = { project, property ->
+    return project.hasProperty(property) ? project.getProperty(property) : null
+}
+
 ext.getAppName = {
     def manifest = getManifest()
     if (manifest != null) {
@@ -129,21 +133,28 @@ ext.getApplicationId = {
     return "com.microsoft.reacttestapp"
 }
 
-ext.getArchitectures = {
-    def value = project.getProperties().get("reactNativeArchitectures")
-    return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+ext.getArchitectures = { project ->
+    def reactArchs = tryGetProperty(project, "react.nativeArchitectures")
+    if (reactArchs != null) {
+        return reactArchs.split(",")
+    }
+
+    def archs = tryGetProperty(project, "reactNativeArchitectures")
+    return archs != null
+        ? archs.split(",")
+        : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
 ext.getManifest = {
-    if (manifest == null) {
+    if (_manifest == null) {
         def manifestFile = findFile("app.json")
         if (manifestFile == null) {
             return null
         }
 
-        manifest = new JsonSlurper().parseText(manifestFile.text)
+        _manifest = new JsonSlurper().parseText(manifestFile.text)
     }
-    return manifest
+    return _manifest
 }
 
 ext.getPackageVersion = { packageName, baseDir ->
@@ -237,23 +248,21 @@ ext.isFabricEnabled = { project ->
 }
 
 ext.isNewArchitectureEnabled = { project ->
-    if (isPropertySet(project, "newArchEnabled", "true")) {
+    def reactNewArchEnabled = tryGetProperty(project, "react.newArchEnabled")
+    def newArchEnabled = tryGetProperty(project, "newArchEnabled")
+    if (reactNewArchEnabled == "true" || newArchEnabled == "true") {
         def version = getPackageVersionNumber("react-native", project.rootDir)
         def isSupported = version == 0 || version >= v(0, 71, 0)
         if (!isSupported) {
             throw new GradleException([
-                "react-native 0.71 or greater is required for New",
-                "Architecture — disable `newArchEnabled` in your",
-                "`gradle.properties` or upgrade `react-native`"
+                "react-native 0.71 or greater is required for New Architecture",
+                "— disable `newArchEnabled` in your `gradle.properties` or",
+                "upgrade `react-native`"
             ].join(" "))
         }
         return isSupported
     }
     return false
-}
-
-ext.isPropertySet = { project, propertyName, value ->
-    return project.hasProperty(propertyName) && project.getProperty(propertyName) == value
 }
 
 ext.toVersionNumber = { version ->

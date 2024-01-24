@@ -58,7 +58,7 @@ project.ext.react = [
     abiSplit             : false,
     appName              : getAppName(),
     applicationId        : getApplicationId(),
-    architectures        : getArchitectures(),
+    architectures        : getArchitectures(project),
     bundleInRelease      : false,
     enableCamera         : !getSingleAppMode(),
     enableHermes         : true,

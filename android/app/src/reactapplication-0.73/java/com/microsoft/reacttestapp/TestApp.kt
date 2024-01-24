@@ -20,11 +20,11 @@ class TestApp : Application(), ReactApplication {
     val manifestProvider: ManifestProvider
         get() = manifestProviderInternal
 
-    override val reactNativeHost: TestAppReactNativeHost
-        get() = reactNativeHostInternal
-
     override val reactHost: ReactHost
         get() = getDefaultReactHost(this.applicationContext, reactNativeHost)
+
+    override val reactNativeHost: TestAppReactNativeHost
+        get() = reactNativeHostInternal
 
     private lateinit var manifestProviderInternal: ManifestProvider
     private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
