@@ -47,7 +47,7 @@ product.
 
 ...[and many more!](https://github.com/microsoft/react-native-test-app/network/dependents)
 
-_Are you using `react-native-test-app`? Submit a PR to add it to the list!_
+_Are you using RNTA? Submit a PR to add it to the list!_
 
 ## Quick Start ⚡
 
