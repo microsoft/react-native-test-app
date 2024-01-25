@@ -92,7 +92,7 @@ Once the dependencies are installed, follow the
 [platform specific instructions](https://github.com/microsoft/react-native-test-app/wiki/Quick-Start#platform-specific-instructions)
 in the wiki.
 
-## Learn more 🔍
+## Learn More 🔍
 
 - 🗣️ If you want to learn how RNTA is used at Microsoft, check out the following
   talks:
