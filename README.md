@@ -8,7 +8,7 @@
 - [Quick Start](#quick-start-)
 - [Migrate an Existing Test App](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)
 - [Configuring the Test App](https://github.com/microsoft/react-native-test-app/wiki/Manifest-%28app.json%29)
-- [Known Issues](#known-issues-⚠️)
+- [Known Issues](#known-issues-%EF%B8%8F)
 
 React Native Test App (RNTA) provides test apps for all platforms as a package.
 It handles the native bits for you so you can focus on what's important: your
