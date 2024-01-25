@@ -5,7 +5,7 @@
 [![build](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml)
 [![npm version](https://img.shields.io/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
 
-- [Quick Start](#quick-start-⚡)
+- [Quick Start](#quick-start-)
 - [Migrate an Existing Test App](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)
 - [Configuring the Test App](https://github.com/microsoft/react-native-test-app/wiki/Manifest-%28app.json%29)
 - [Known Issues](#known-issues-⚠️)
