@@ -16,6 +16,10 @@ product.
 
 ## Libraries Using RNTA 📚
 
+<table>
+<tr>
+<td>
+
 - Microsoft's
   [fluentui-react-native](https://github.com/microsoft/fluentui-react-native)
 - Microsoft's [rnx-kit](https://github.com/microsoft/rnx-kit)
@@ -25,6 +29,10 @@ product.
 - [react-native-google-signin](https://github.com/react-native-google-signin/google-signin)
 - [react-native-masked-view](https://github.com/react-native-masked-view/masked-view)
 - [react-native-menu](https://github.com/react-native-menu/menu)
+
+</td>
+<td>
+
 - [react-native-add-calendar-event](https://github.com/vonovak/react-native-add-calendar-event)
 - [react-native-apple-authentication](https://github.com/invertase/react-native-apple-authentication)
 - [react-native-blur](https://github.com/Kureev/react-native-blur)
@@ -34,7 +42,11 @@ product.
 - [react-native-segmented-control](https://github.com/react-native-segmented-control/segmented-control)
 - [sparkfabrik-react-native-idfa-aaid](https://github.com/sparkfabrik/sparkfabrik-react-native-idfa-aaid)
 
-- ...[and many more!](https://github.com/microsoft/react-native-test-app/network/dependents)
+</td>
+</tr>
+</table>
+
+...[and many more!](https://github.com/microsoft/react-native-test-app/network/dependents)
 
 _Are you using `react-native-test-app`? Submit a PR to add it to the list!_
 
