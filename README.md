@@ -5,6 +5,10 @@
 [![build](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml)
 [![npm version](https://img.shields.io/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
 
+> React Native Test App (RNTA) provides test apps for all platforms as a
+> package. It handles the native bits for you so you can focus on what's
+> important: your product.
+
 - [Quick Start ⚡](#quick-start-)
 - [Migrate an Existing Test App 📖](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)
 - [Configuring the Test App 📖](https://github.com/microsoft/react-native-test-app/wiki/Manifest-%28app.json%29)
@@ -13,10 +17,6 @@
 - [Known Issues ⚠️](#known-issues-️)
 - [Contributing 🤝](#contributing-)
 - [License 📝](#license-)
-
-React Native Test App (RNTA) provides test apps for all platforms as a package.
-It handles the native bits for you so you can focus on what's important: your
-product.
 
 ## Quick Start ⚡
 
@@ -85,29 +85,32 @@ in the wiki.
 - [microsoft/fluentui-react-native](https://github.com/microsoft/fluentui-react-native)
 - [microsoft/rnx-kit](https://github.com/microsoft/rnx-kit)
 - [shopify/restyle](https://github.com/Shopify/restyle)
+- [react-native-add-calendar-event](https://github.com/vonovak/react-native-add-calendar-event)
+- [react-native-apple-authentication](https://github.com/invertase/react-native-apple-authentication)
 - [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
-- [react-native-datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)
-- [react-native-google-signin](https://github.com/react-native-google-signin/google-signin)
-- [react-native-masked-view](https://github.com/react-native-masked-view/masked-view)
-- [react-native-menu](https://github.com/react-native-menu/menu)
 
 </td>
 <td>
 
-- [react-native-add-calendar-event](https://github.com/vonovak/react-native-add-calendar-event)
-- [react-native-apple-authentication](https://github.com/invertase/react-native-apple-authentication)
 - [react-native-blur](https://github.com/Kureev/react-native-blur)
+- [react-native-datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)
+- [react-native-google-signin](https://github.com/react-native-google-signin/google-signin)
 - [react-native-image-editor](https://github.com/callstack/react-native-image-editor)
 - [react-native-netinfo](https://github.com/react-native-netinfo/react-native-netinfo)
-- [react-native-webview](https://github.com/react-native-webview/react-native-webview)
+- [react-native-masked-view](https://github.com/react-native-masked-view/masked-view)
+
+</td>
+<td>
+
+- [react-native-menu](https://github.com/react-native-menu/menu)
 - [react-native-segmented-control](https://github.com/react-native-segmented-control/segmented-control)
+- [react-native-webview](https://github.com/react-native-webview/react-native-webview)
 - [sparkfabrik-react-native-idfa-aaid](https://github.com/sparkfabrik/sparkfabrik-react-native-idfa-aaid)
+- ...[and many more!](https://github.com/microsoft/react-native-test-app/network/dependents)
 
 </td>
 </tr>
 </table>
-
-...[and many more!](https://github.com/microsoft/react-native-test-app/network/dependents)
 
 _Are you using RNTA? Submit a PR to add it to the list!_
 
