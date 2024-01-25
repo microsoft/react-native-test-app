@@ -23,16 +23,14 @@
 _If you want to migrate an existing test app for a library, follow the
 [dedicated guide in the wiki](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)._
 
-Install `react-native-test-app` as a dev dependency. We will use the wizard to
-generate your test app:
+You can generate a new project using `npx`:
 
 ```sh
-yarn add react-native-test-app --dev
-yarn init-test-app
+npx --package react-native-test-app@latest init
 ```
 
-In this example, we will create a project named "sample" in `sample` with test
-apps for all platforms:
+In this example, we will create a project named "sample" in `sample` with apps
+for all platforms:
 
 ```sh
 ✔ What is the name of your test app? … sample
@@ -49,11 +47,20 @@ Instructions:
 ✔ Where should we create the new project?? … sample
 ```
 
-Run `yarn` inside the new project folder:
+Install npm dependencies inside the new project folder:
+
+**Yarn:**
 
 ```sh
 cd sample
 yarn
+```
+
+**npm:**
+
+```sh
+cd sample
+npm install
 ```
 
 Once the dependencies are installed, follow the
