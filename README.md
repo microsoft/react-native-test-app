@@ -20,10 +20,9 @@ product.
 <tr>
 <td>
 
-- Microsoft's
-  [fluentui-react-native](https://github.com/microsoft/fluentui-react-native)
-- Microsoft's [rnx-kit](https://github.com/microsoft/rnx-kit)
-- Shopify's [restyle](https://github.com/Shopify/restyle)
+- [microsoft/fluentui-react-native](https://github.com/microsoft/fluentui-react-native)
+- [microsoft/rnx-kit](https://github.com/microsoft/rnx-kit)
+- [shopify/restyle](https://github.com/Shopify/restyle)
 - [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
 - [react-native-datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)
 - [react-native-google-signin](https://github.com/react-native-google-signin/google-signin)
