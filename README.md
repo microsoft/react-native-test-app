@@ -5,27 +5,20 @@
 [![build](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/microsoft/react-native-test-app/actions/workflows/build.yml)
 [![npm version](https://img.shields.io/npm/v/react-native-test-app)](https://www.npmjs.com/package/react-native-test-app)
 
-- [Quick Start](https://github.com/microsoft/react-native-test-app/wiki/Quick-Start)
-- [Configuring the Test App](#configuring-the-test-app)
-- [Migrate an Existing Test App](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)
-- [Known Issues](#known-issues)
+> React Native Test App (RNTA) provides test apps for all platforms as a
+> package. It handles the native bits for you so you can focus on what's
+> important: your product.
 
-React Native Test App (RNTA) provides test apps for all platforms as a package.
-It handles the native bits for you so you can focus on what's important: your
-product.
+- [Quick Start ⚡](#quick-start-)
+- [Migrate an Existing Test App 📖](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)
+- [Configuring the Test App 📖](https://github.com/microsoft/react-native-test-app/wiki/Manifest-%28app.json%29)
+- [Learn More 🔍](#learn-more-)
+- [Libraries Using RNTA 📚](#libraries-using-rnta-)
+- [Known Issues ⚠️](#known-issues-️)
+- [Contributing 🤝](#contributing-)
+- [License 📝](#license-)
 
-If you want to learn how RNTA is used at Microsoft, and see a demo of how to add
-it to an existing library - you can watch the
-["Improve all the repos – exploring Microsoft’s DevExp"](https://youtu.be/DAEnPV78rQc?t=499)
-talk by [@kelset](https://github.com/kelset) and
-[@tido64](https://github.com/tido64) from React Native Europe 2021.
-
-In the wiki, you can read more about
-[the motivation](https://github.com/microsoft/react-native-test-app/wiki#motivation)
-and [the design](https://github.com/microsoft/react-native-test-app/wiki/Design)
-of this tool.
-
-## Quick Start
+## Quick Start ⚡
 
 _If you want to migrate an existing test app for a library, follow the
 [dedicated guide in the wiki](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)._
@@ -67,30 +60,72 @@ Once the dependencies are installed, follow the
 [platform specific instructions](https://github.com/microsoft/react-native-test-app/wiki/Quick-Start#platform-specific-instructions)
 in the wiki.
 
-## Configuring the Test App
+## Learn More 🔍
 
-All configuration of the test app is done via `app.json` (otherwise known as the
-manifest). You can learn more about that
-[in the dedicated wiki section](https://github.com/microsoft/react-native-test-app/wiki/Manifest-%28app.json%29).
+- 🗣️ If you want to learn how RNTA is used at Microsoft, check out the following
+  talks:
+  - ["Improve all the repos – exploring Microsoft’s DevExp"](https://youtu.be/DAEnPV78rQc)
+    by [@kelset](https://github.com/kelset) and
+    [@tido64](https://github.com/tido64) from React Native Europe 2021.
+  - ["Our Journey of Making React Native a Preferred Choice"](https://www.youtube.com/watch?v=PYMMxfttOug)
+    by [@kelset](https://github.com/kelset) and
+    [@tido64](https://github.com/tido64) from React Native Europe 2023.
+- 📖 In the wiki, you can read more about
+  [the motivation](https://github.com/microsoft/react-native-test-app/wiki#motivation)
+  and
+  [the design](https://github.com/microsoft/react-native-test-app/wiki/Design)
+  of this tool.
 
-Additionally, you can find platform specific documentation below:
+## Libraries Using RNTA 📚
 
-- [Android](https://github.com/microsoft/react-native-test-app/wiki/Android-Specifics)
-- [iOS/macOS](https://github.com/microsoft/react-native-test-app/wiki/iOS-and-macOS-Specifics)
-- [Windows](https://github.com/microsoft/react-native-test-app/wiki/Windows-Specifics)
+<table>
+<tr>
+<td>
 
-## Known Issues
+- [microsoft/fluentui-react-native](https://github.com/microsoft/fluentui-react-native)
+- [microsoft/rnx-kit](https://github.com/microsoft/rnx-kit)
+- [shopify/restyle](https://github.com/Shopify/restyle)
+- [react-native-add-calendar-event](https://github.com/vonovak/react-native-add-calendar-event)
+- [react-native-apple-authentication](https://github.com/invertase/react-native-apple-authentication)
+- [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
+
+</td>
+<td>
+
+- [react-native-blur](https://github.com/Kureev/react-native-blur)
+- [react-native-datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)
+- [react-native-google-signin](https://github.com/react-native-google-signin/google-signin)
+- [react-native-image-editor](https://github.com/callstack/react-native-image-editor)
+- [react-native-netinfo](https://github.com/react-native-netinfo/react-native-netinfo)
+- [react-native-masked-view](https://github.com/react-native-masked-view/masked-view)
+
+</td>
+<td>
+
+- [react-native-menu](https://github.com/react-native-menu/menu)
+- [react-native-segmented-control](https://github.com/react-native-segmented-control/segmented-control)
+- [react-native-webview](https://github.com/react-native-webview/react-native-webview)
+- [sparkfabrik-react-native-idfa-aaid](https://github.com/sparkfabrik/sparkfabrik-react-native-idfa-aaid)
+- ...[and many more!](https://github.com/microsoft/react-native-test-app/network/dependents)
+
+</td>
+</tr>
+</table>
+
+_Are you using RNTA? Submit a PR to add it to the list!_
+
+## Known Issues ⚠️
 
 For a list of known issues and workarounds, please refer to the
 [Troubleshooting wiki](https://github.com/microsoft/react-native-test-app/wiki/Troubleshooting).
 
-## Contributing
+## Contributing 🤝
 
 Thank you for your interest in this project! We welcome all contributions and
 suggestions!
 
 Take a look at [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-## License
+## License 📝
 
 `react-native-test-app` is [MIT licensed](./LICENSE).
