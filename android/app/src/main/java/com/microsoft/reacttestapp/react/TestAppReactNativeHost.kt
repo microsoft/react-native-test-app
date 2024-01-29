@@ -46,6 +46,9 @@ class TestAppReactNativeHost(
     application: Application,
     private val reactBundleNameProvider: ReactBundleNameProvider
 ) : ReactNativeHostCompat(application) {
+    val jsExecutorName: String
+        get() = javaScriptExecutorFactory.toString()
+
     var source: BundleSource =
         if (reactBundleNameProvider.bundleName == null || isPackagerRunning(application)) {
             BundleSource.Server

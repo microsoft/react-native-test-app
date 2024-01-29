@@ -13,10 +13,8 @@ abstract class ReactNativeHostCompat(application: Application) : DefaultReactNat
         init {
             try {
                 DefaultNewArchitectureEntryPoint.load(
-                    /* turboModulesEnabled */
-                    BuildConfig.ReactTestApp_useFabric,
-                    /* fabricEnabled */
-                    BuildConfig.ReactTestApp_useFabric
+                    turboModulesEnabled = BuildConfig.ReactTestApp_useFabric,
+                    fabricEnabled = BuildConfig.ReactTestApp_useFabric
                 )
             } catch (e: UnsatisfiedLinkError) {
                 // Older versions of `DefaultNewArchitectureEntryPoint` is
