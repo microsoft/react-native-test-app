@@ -17,4 +17,4 @@ OTHER_CFLAGS = $(inherited) -fstack-protector-strong
 OTHER_LDFLAGS = $(inherited) -fstack-protector-strong
 SDKROOT = macosx
 SWIFT_TREAT_WARNINGS_AS_ERRORS = YES
-WARNING_CFLAGS = -Wall
+WARNING_CFLAGS = -Wall -Wno-error=undef-prefix
