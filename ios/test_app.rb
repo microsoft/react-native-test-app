@@ -373,6 +373,12 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 end
 
 def use_test_app_internal!(target_platform, options)
+  if Pod::VERSION == '1.15.0'
+    raise 'CocoaPods 1.15.0 is not compatible with React Native; for details ' \
+          'and workaround, see ' \
+          'https://github.com/facebook/react-native/issues/42698'
+  end
+
   assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
 
   xcodeproj = 'ReactTestApp.xcodeproj'
