@@ -19,6 +19,7 @@ const expoProviders = BaseMods.getIosModFileProviders();
 /** @type {typeof expoProviders & Record<string, unknown>} */
 const defaultProviders = {
   dangerous: expoProviders.dangerous,
+  finalized: expoProviders.finalized,
   appDelegate: modifyFilePath(
     expoProviders.appDelegate,
     "ReactTestApp/AppDelegate.swift"
