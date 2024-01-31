@@ -20,7 +20,7 @@ runs:
       shell: bash
     - name: Cache /${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
       if: ${{ steps.find-lockfile.outputs.path }}
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
         key: ${{ runner.os }}-pods-${{ hashFiles(steps.find-lockfile.outputs.path) }}
