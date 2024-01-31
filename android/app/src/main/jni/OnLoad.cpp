@@ -8,11 +8,6 @@
 
 #include <ReactCommon/CallInvoker.h>
 
-namespace facebook::react
-{
-    class TurboModule;
-}
-
 using facebook::react::CallInvoker;
 using facebook::react::DefaultComponentsRegistry;
 using facebook::react::DefaultTurboModuleManagerDelegate;
