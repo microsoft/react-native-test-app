@@ -1951,8 +1951,8 @@ __metadata:
   linkType: hard
 
 "@expo/config-plugins@npm:^7.0.0":
-  version: 7.8.3
-  resolution: "@expo/config-plugins@npm:7.8.3"
+  version: 7.8.4
+  resolution: "@expo/config-plugins@npm:7.8.4"
   dependencies:
     "@expo/config-types": "npm:^50.0.0-alpha.1"
     "@expo/fingerprint": "npm:^0.6.0"
@@ -1971,7 +1971,7 @@ __metadata:
     slugify: "npm:^1.6.6"
     xcode: "npm:^3.0.1"
     xml2js: "npm:0.6.0"
-  checksum: af482c806f50331527d8392bcb20529aa6366e65eebdc2b3e60b205a181fb201d96ce3d37f7f4765c9ea7d8b5add7b0fc7fd08be43fb2b68ba22bef5c8028786
+  checksum: 2ec1459e3a08cd10a712578c07473664fa89ea6aaa4e712c6a5e997d3acdf8358f47dfd47c479fd0aaad87ac11bf945eee82a5555505016f227ca3a08f42dafc
   languageName: node
   linkType: hard
 
