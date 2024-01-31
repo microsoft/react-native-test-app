@@ -75,7 +75,7 @@ runs:
       shell: bash
     - name: Cache /.ccache
       if: ${{ steps.setup-ccache.outputs.cache-key }}
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .ccache
         key: ${{ runner.os }}-${{ inputs.cache-key-prefix }}-ccache-${{ steps.setup-ccache.outputs.cache-key }}-1
