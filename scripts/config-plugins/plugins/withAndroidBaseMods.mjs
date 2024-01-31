@@ -12,6 +12,7 @@ const expoProviders = BaseMods.getAndroidModFileProviders();
 /** @type {typeof expoProviders} */
 const defaultProviders = {
   dangerous: expoProviders.dangerous,
+  finalized: expoProviders.finalized,
   manifest: modifyFilePath(
     expoProviders.manifest,
     "app/src/main/AndroidManifest.xml"

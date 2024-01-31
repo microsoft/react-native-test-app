@@ -24,6 +24,7 @@ const defaultProviders = {
     "ReactTestApp/AppDelegate.swift"
   ),
   expoPlist: nullProvider,
+  finalized: expoProviders.finalized,
   xcodeproj: modifyFilePath(
     expoProviders.xcodeproj,
     "ReactTestApp.xcodeproj/project.pbxproj"
