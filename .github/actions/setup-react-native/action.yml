@@ -9,7 +9,6 @@ runs:
   steps:
     - name: Set up react-native@${{ inputs.version }}
       run: |
-        git apply scripts/disable-safe-area-context.patch
         git apply scripts/android-nightly.patch
         rm example/ios/Podfile.lock
         rm example/macos/Podfile.lock

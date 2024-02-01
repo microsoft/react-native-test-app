@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { NativeSyntheticEvent } from "react-native";
 import {
   NativeModules,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -10,7 +11,6 @@ import {
   useColorScheme,
   View,
 } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 // @ts-expect-error no type definitions available
 import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
@@ -96,6 +96,17 @@ function useIsFabricComponent() {
     [setIsFabric]
   );
   return [isFabric, setter] as const;
+}
+
+function useLocalStorageStatus() {
+  const [localValue, setLocalValue] = useState("Checking");
+  useEffect(() => {
+    const key = "sample/local-storage";
+    window?.localStorage?.setItem(key, "Available");
+    setLocalValue(window?.localStorage?.getItem(key) ?? "Error");
+    return () => window?.localStorage?.removeItem(key);
+  }, []);
+  return localValue;
 }
 
 function useStyles() {
@@ -188,33 +199,35 @@ export function App({
   const isDarkMode = useColorScheme() === "dark";
   const styles = useStyles();
   const [isFabric, setIsFabric] = useIsFabricComponent();
+  const localStorageStatus = useLocalStorageStatus();
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.body}>
-        <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          onLayout={setIsFabric}
-          style={styles.body}
-        >
-          <Header />
-          <DevMenu />
-          <View style={styles.group}>
-            <Feature value={getReactNativeVersion()}>React Native</Feature>
-            <Separator />
-            <Feature value={isOnOrOff(getHermesVersion())}>Hermes</Feature>
-            <Separator />
-            <Feature value={isOnOrOff(isFabric)}>Fabric</Feature>
-            <Separator />
-            <Feature value={isOnOrOff(isFabric && concurrentRoot)}>
-              Concurrent React
-            </Feature>
-            <Separator />
-            <Feature value={isOnOrOff(isBridgeless())}>Bridgeless</Feature>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <SafeAreaView style={styles.body}>
+      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        onLayout={setIsFabric}
+        style={styles.body}
+      >
+        <Header />
+        <DevMenu />
+        <View style={styles.group}>
+          <Feature value={localStorageStatus}>window.localStorage</Feature>
+        </View>
+        <View style={styles.group}>
+          <Feature value={getReactNativeVersion()}>React Native</Feature>
+          <Separator />
+          <Feature value={isOnOrOff(getHermesVersion())}>Hermes</Feature>
+          <Separator />
+          <Feature value={isOnOrOff(isFabric)}>Fabric</Feature>
+          <Separator />
+          <Feature value={isOnOrOff(isFabric && concurrentRoot)}>
+            Concurrent React
+          </Feature>
+          <Separator />
+          <Feature value={isOnOrOff(isBridgeless())}>Bridgeless</Feature>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

@@ -1026,6 +1026,10 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
+  - RNWWebStorage (0.1.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - SocketRocket (0.7.0)
   - Yoga (1.14.0)
 
@@ -1083,6 +1087,7 @@ DEPENDENCIES:
   - "ReactNativeHost (from `../../node_modules/@rnx-kit/react-native-host`)"
   - ReactTestApp-DevSupport (from `../node_modules/react-native-test-app`)
   - ReactTestApp-Resources (from `..`)
+  - "RNWWebStorage (from `../node_modules/@react-native-webapis/web-storage`)"
   - SocketRocket (from `../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec`)
   - Yoga (from `../node_modules/react-native-macos/ReactCommon/yoga`)
 
@@ -1189,6 +1194,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-test-app"
   ReactTestApp-Resources:
     :path: ".."
+  RNWWebStorage:
+    :path: "../node_modules/@react-native-webapis/web-storage"
   SocketRocket:
     :podspec: "../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec"
   Yoga:
@@ -1246,6 +1253,7 @@ SPEC CHECKSUMS:
   ReactNativeHost: 87c7181cb3b0ce016e094ede3cc03b4f61c97dd5
   ReactTestApp-DevSupport: 8e43ae85b0a63bc023596bc70a9dc76f0ada60ef
   ReactTestApp-Resources: 8539dac0f8d2ef3821827a537e37812104c6ff78
+  RNWWebStorage: f46f833581f2a43ad41e10dedcf3246d8e0862df
   SocketRocket: f6c6249082c011e6de2de60ed641ef8bbe0cfac9
   Yoga: a70dc333c0bbc9ff8b1321e79d9a62a12320b6b3
 

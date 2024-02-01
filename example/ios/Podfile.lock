@@ -855,8 +855,6 @@ PODS:
   - React-Mapbuffer (0.73.2):
     - glog
     - React-debug
-  - react-native-safe-area-context (4.8.2):
-    - React-Core
   - React-nativeconfig (0.73.2)
   - React-NativeModulesApple (0.73.2):
     - glog
@@ -1028,6 +1026,10 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
+  - RNWWebStorage (0.1.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
 
@@ -1061,7 +1063,6 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
-  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -1085,6 +1086,7 @@ DEPENDENCIES:
   - "ReactNativeHost (from `../../node_modules/@rnx-kit/react-native-host`)"
   - ReactTestApp-DevSupport (from `../node_modules/react-native-test-app`)
   - ReactTestApp-Resources (from `..`)
+  - "RNWWebStorage (from `../node_modules/@react-native-webapis/web-storage`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1147,8 +1149,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
-  react-native-safe-area-context:
-    :path: "../node_modules/react-native-safe-area-context"
   React-nativeconfig:
     :path: "../node_modules/react-native/ReactCommon"
   React-NativeModulesApple:
@@ -1195,6 +1195,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-test-app"
   ReactTestApp-Resources:
     :path: ".."
+  RNWWebStorage:
+    :path: "../node_modules/@react-native-webapis/web-storage"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1227,7 +1229,6 @@ SPEC CHECKSUMS:
   React-jsinspector: 03644c063fc3621c9a4e8bf263a8150909129618
   React-logger: 66b168e2b2bee57bd8ce9e69f739d805732a5570
   React-Mapbuffer: 9ee041e1d7be96da6d76a251f92e72b711c651d6
-  react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
   React-nativeconfig: d753fbbc8cecc8ae413d615599ac378bbf6999bb
   React-NativeModulesApple: 22c25a1baa4b0d0d4845dad2578fc017b0805589
   React-perflogger: 29efe63b7ef5fbaaa50ef6eaa92482f98a24b97e
@@ -1251,6 +1252,7 @@ SPEC CHECKSUMS:
   ReactNativeHost: 87c7181cb3b0ce016e094ede3cc03b4f61c97dd5
   ReactTestApp-DevSupport: 8e43ae85b0a63bc023596bc70a9dc76f0ada60ef
   ReactTestApp-Resources: da77347b3f02b5d79ba3fecb3ad328b2f6a7ef4d
+  RNWWebStorage: f46f833581f2a43ad41e10dedcf3246d8e0862df
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 13c8ef87792450193e117976337b8527b49e8c03
 
