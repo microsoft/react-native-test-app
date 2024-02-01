@@ -55,9 +55,9 @@ runs:
       uses: microsoft/setup-msbuild@v1.3
     - name: Set up Ruby
       if: ${{ runner.os != 'Windows' }}
-      uses: ruby/setup-ruby@v1.169.0
+      uses: ruby/setup-ruby@v1.171.0
       with:
-        ruby-version: "3.0"
+        ruby-version: "3.2.3"
         bundler: Gemfile.lock
         bundler-cache: true
     - name: Set up VSTest.console.exe
