@@ -27,10 +27,6 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
         super.init()
 
-        #if USE_FABRIC
-        RCTEnableTurboModule(true)
-        #endif
-
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(onJavaScriptLoaded(_:)),

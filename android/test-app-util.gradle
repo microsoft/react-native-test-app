@@ -243,6 +243,26 @@ ext.getVersionName = {
     return "1.0"
 }
 
+ext.isBridgelessEnabled = { project, isNewArchEnabled ->
+    if (isNewArchEnabled) {
+        def reactBridgelessEnabled = tryGetProperty(project, "react.bridgelessEnabled")
+        def bridgelessEnabled = tryGetProperty(project, "bridgelessEnabled")
+        if (reactBridgelessEnabled == "true" || bridgelessEnabled == "true") {
+            def version = getPackageVersionNumber("react-native", project.rootDir)
+            def isSupported = version == 0 || version >= v(0, 73, 0)
+            if (!isSupported) {
+                logger.warn([
+                    "react-native 0.73 or greater is required for Bridgeless",
+                    "Mode — disable `bridgelessEnabled` in your",
+                    "`gradle.properties` or upgrade `react-native`"
+                ].join(" "))
+            }
+            return isSupported
+        }
+    }
+    return false
+}
+
 ext.isFabricEnabled = { project ->
     return isNewArchitectureEnabled(project)
 }

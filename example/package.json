@@ -45,7 +45,7 @@
     "kitType": "app",
     "alignDeps": {
       "requirements": [
-        "react-native@0.72"
+        "react-native@0.73"
       ],
       "capabilities": [
         "core-android",

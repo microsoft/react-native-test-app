@@ -72,6 +72,7 @@ ext {
     reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
     autodetectReactNativeVersion = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
     enableNewArchitecture = isNewArchitectureEnabled(project)
+    enableBridgeless = isBridgelessEnabled(project, enableNewArchitecture)
     usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
 
     androidPluginVersion = getDefaultGradlePluginVersion(reactNativeVersion)

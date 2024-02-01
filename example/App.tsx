@@ -88,7 +88,7 @@ function testID(label: string): string {
 }
 
 function useIsFabricComponent() {
-  const [isFabric, setIsFabric] = useState(false);
+  const [isFabric, setIsFabric] = useState(isBridgeless());
   const setter = useCallback(
     ({ currentTarget }: NativeSyntheticEvent<unknown>) => {
       setIsFabric(isFabricInstance(currentTarget));
@@ -210,6 +210,8 @@ export function App({
             <Feature value={isOnOrOff(isFabric && concurrentRoot)}>
               Concurrent React
             </Feature>
+            <Separator />
+            <Feature value={isOnOrOff(isBridgeless())}>Bridgeless</Feature>
           </View>
         </ScrollView>
       </SafeAreaView>

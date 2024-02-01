@@ -198,7 +198,8 @@ def use_react_native!(project_root, target_platform, options)
   include_react_native!(**options,
                         app_path: find_file('package.json', project_root).parent.to_s,
                         path: react_native.relative_path_from(project_root).to_s,
-                        rta_project_root: project_root)
+                        rta_project_root: project_root,
+                        version: version)
 end
 
 def make_project!(xcodeproj, project_root, target_platform, options)
@@ -304,6 +305,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   build_settings['PRODUCT_BUILD_NUMBER'] = build_number || '1'
 
   use_new_arch = new_architecture_enabled?(options, rn_version)
+  use_bridgeless = bridgeless_enabled?(options, rn_version)
   app_project = Xcodeproj::Project.open(xcodeproj_dst)
   app_project.native_targets.each do |target|
     case target.name
@@ -327,6 +329,9 @@ def make_project!(xcodeproj, project_root, target_platform, options)
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'RCT_NEW_ARCH_ENABLED=1'
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1'
+          if use_bridgeless
+            config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_BRIDGELESS=1'
+          end
         end
 
         build_settings.each do |setting, value|
@@ -335,6 +340,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
         config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
         config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FABRIC' if use_new_arch
+        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_BRIDGELESS' if use_bridgeless
         if single_app.is_a? String
           config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
         end

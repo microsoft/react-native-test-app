@@ -118,6 +118,7 @@ android {
         buildConfigField "String", "ReactTestApp_singleApp", singleApp ? "\"${singleApp}\"" : "null"
 
         buildConfigField "boolean", "ReactTestApp_useFabric", enableNewArchitecture.toString()
+        buildConfigField "boolean", "ReactTestApp_useBridgeless", enableBridgeless.toString()
 
         resValue "string", "app_name", project.ext.react.appName
 
@@ -206,7 +207,11 @@ android {
         main.java.srcDirs += [
             project.ext.react.enableCamera ? "src/camera/java" : "src/no-camera/java",
 
-            enableNewArchitecture ? "src/new-arch/java" : "src/old-arch/java",
+            !enableNewArchitecture
+                ? "src/old-arch/java"
+                : enableBridgeless
+                    ? "src/new-arch-0.73/java"
+                    : "src/new-arch/java",
 
             // TODO: Remove this block when we drop support for 0.67
             // https://github.com/facebook/react-native/commit/ce74aa4ed335d4c36ce722d47937b582045e05c4
