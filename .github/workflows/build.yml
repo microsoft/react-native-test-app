@@ -509,7 +509,7 @@ jobs:
         if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' }}
         run: |
           ../../../scripts/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactTestAppTests.vcxproj
-          VSTest.Console.exe ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll
+          ../../../scripts/VSTest.ps1 ${{ matrix.platform }}\${{ matrix.configuration }}\ReactTestAppTests.dll
         working-directory: example/windows/ReactTestAppTests
     timeout-minutes: 60
   windows-template:

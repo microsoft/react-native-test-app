@@ -52,7 +52,7 @@ runs:
         java-version: ${{ inputs.java-version }}
     - name: Set up MSBuild
       if: ${{ inputs.platform == 'windows' }}
-      uses: microsoft/setup-msbuild@v1.3
+      uses: microsoft/setup-msbuild@v2
     - name: Set up Ruby
       if: ${{ runner.os != 'Windows' }}
       uses: ruby/setup-ruby@v1.171.0
@@ -60,9 +60,6 @@ runs:
         ruby-version: "3.2.3"
         bundler: Gemfile.lock
         bundler-cache: true
-    - name: Set up VSTest.console.exe
-      if: ${{ inputs.platform == 'windows' }}
-      uses: darenm/Setup-VSTest@v1.2
     - name: Set up Node.js
       uses: actions/setup-node@v4.0.1
       with:
