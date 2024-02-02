@@ -5,10 +5,8 @@ final class ReactInstance: NSObject, RNXHostConfig {
     public static let scanForQRCodeNotification =
         NSNotification.Name("ReactInstance.scanForQRCodeNotification")
 
-    static func jsBundleURL() -> URL {
-        RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index") {
-            RTADefaultJSBundleURL()
-        }
+    static func jsBundleURL() -> URL? {
+        RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index") { nil }
     }
 
     var remoteBundleURL: URL? {
@@ -117,7 +115,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
                 )
             }
             .first
-        return embeddedBundleURL ?? ReactInstance.jsBundleURL()
+        return embeddedBundleURL ?? ReactInstance.jsBundleURL() ?? RTADefaultJSBundleURL()
     }
 
     // MARK: - Private
