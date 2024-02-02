@@ -1,4 +1,5 @@
 import Cocoa
+import ReactTestApp_DevSupport
 
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate {

@@ -14,8 +14,6 @@
 #import <React/RCTVersion.h>
 #pragma clang diagnostic pop
 
-@import ReactTestApp_DevSupport;
-
 #import "React+Compatibility.h"
 #import "UIViewController+ReactTestApp.h"
 

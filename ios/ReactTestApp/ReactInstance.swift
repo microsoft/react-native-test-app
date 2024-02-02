@@ -1,5 +1,6 @@
 import Foundation
 import ReactNativeHost
+import ReactTestApp_DevSupport
 
 final class ReactInstance: NSObject, RNXHostConfig {
     public static let scanForQRCodeNotification =
