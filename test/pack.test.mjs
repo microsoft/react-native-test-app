@@ -120,6 +120,7 @@ describe("npm pack", () => {
       "ios/ReactTestApp/Info.plist",
       "ios/ReactTestApp/Manifest+Decoder.swift",
       "ios/ReactTestApp/Manifest.swift",
+      "ios/ReactTestApp/Public/ReactTestApp-DevSupport-Bridging-Header.h",
       "ios/ReactTestApp/Public/ReactTestApp-DevSupport.h",
       "ios/ReactTestApp/QRCodeScannerViewController.swift",
       "ios/ReactTestApp/React+Compatibility.h",
