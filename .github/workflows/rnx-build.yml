@@ -43,7 +43,7 @@ jobs:
       - name: Install npm dependencies
         run: ${{ github.event.inputs.packageManager }} install
       - name: Build Android app
-        uses: gradle/gradle-build-action@v2.12.0
+        uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: wrapper
           arguments: --no-daemon clean assembleDebug
@@ -58,7 +58,7 @@ jobs:
   build-ios:
     name: Build iOS
     if: ${{ github.event.inputs.platform == 'ios' }}
-    runs-on: macos-13
+    runs-on: macos-14
     env:
       CERTIFICATE_FILE: build-certificate.p12
       KEYCHAIN_FILE: app-signing.keychain-db
@@ -117,7 +117,7 @@ jobs:
   build-macos:
     name: Build macOS
     if: ${{ github.event.inputs.platform == 'macos' }}
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
