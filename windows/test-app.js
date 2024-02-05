@@ -17,31 +17,9 @@ const {
 const { parseArgs } = require("../scripts/parseargs");
 
 /**
- * @typedef {{
- *   assetItems: string[];
- *   assetItemFilters: string[];
- *   assetFilters: string[];
- * }} AssetItems;
- *
- * @typedef {{
- *   assetItems: string;
- *   assetItemFilters: string;
- *   assetFilters: string;
- * }} Assets;
- *
- * @typedef {string[] | { windows?: string[] }} Resources;
- *
- * @typedef {{
- *   name?: string;
- *   singleApp?: string;
- *   resources?: Resources;
- *   windows?: {
- *     appxManifest?: string;
- *     certificateKeyFile?: string;
- *     certificatePassword?: string;
- *     certificateThumbprint?: string;
- *   };
- * }} AppManifest
+ * @typedef {import("../scripts/types").AppManifest} AppManifest
+ * @typedef {import("../scripts/types").AssetItems} AssetItems;
+ * @typedef {import("../scripts/types").Assets} Assets;
  */
 
 const templateView = {
