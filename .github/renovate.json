@@ -58,6 +58,7 @@
       "enabled": false
     },
     {
+      "groupName": "react-native",
       "matchPackageNames": [
         "@react-native/assets-registry",
         "@react-native/babel-plugin-codegen",
