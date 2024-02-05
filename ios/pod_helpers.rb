@@ -1,3 +1,22 @@
+def assert(condition, message)
+  raise message unless condition
+end
+
+def assert_version(pod_version)
+  if pod_version == '1.15.0'
+    raise 'CocoaPods 1.15.0 is not compatible with React Native; for details ' \
+          'and workaround, see ' \
+          'https://github.com/facebook/react-native/issues/42698'
+  end
+
+  version = Gem::Version.new(pod_version).segments
+  version = v(version[0], version[1], version[2])
+  return unless version < v(1, 13, 0)
+
+  raise 'React Native requires a more recent version of CocoaPods; found ' \
+        "#{pod_version}, expected >=1.13 <1.15"
+end
+
 def bridgeless_enabled?(options, react_native_version)
   return false unless new_architecture_enabled?(options, react_native_version)
 
