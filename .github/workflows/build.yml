@@ -556,17 +556,15 @@ jobs:
     permissions:
       contents: write # create releases (semantic-release)
     needs:
-      [
-        review,
-        ios,
-        ios-template,
-        android,
-        android-template,
-        macos,
-        macos-template,
-        windows,
-        windows-template,
-      ]
+      - review
+      - ios
+      - ios-template
+      - android
+      - android-template
+      - macos
+      - macos-template
+      - windows
+      - windows-template
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'schedule' }}
     steps:
