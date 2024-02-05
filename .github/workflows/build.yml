@@ -481,7 +481,7 @@ jobs:
       - name: Build bundle and create solution
         run: |
           yarn build:windows
-          yarn install-windows-test-app --use-nuget
+          yarn install-windows-test-app
         working-directory: example
       - name: Test `react-native config`
         run: |
@@ -536,8 +536,8 @@ jobs:
       - name: Build bundle and create solution
         run: |
           yarn build:windows
-          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app --use-nuget }
-          else { yarn install-windows-test-app --project-directory=. --use-nuget }
+          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app }
+          else { yarn install-windows-test-app --project-directory=. }
         working-directory: template-example
       - name: Determine whether the Windows app needs to be built
         id: affected
