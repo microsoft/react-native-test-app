@@ -3,6 +3,22 @@ require('minitest/autorun')
 require_relative('../ios/pod_helpers')
 
 class TestPodHelpers < Minitest::Test
+  def test_assert_version
+    assert_raises(RuntimeError) do
+      assert_version('1.12.999')
+    end
+
+    assert_raises(RuntimeError) do
+      assert_version('1.15.0')
+    end
+
+    assert_silent do
+      assert_version('1.13.0')
+      assert_version('1.14.0')
+      assert_version('1.15.1')
+    end
+  end
+
   def test_bridgeless_enabled?
     ENV.delete('RCT_NEW_ARCH_ENABLED')
 

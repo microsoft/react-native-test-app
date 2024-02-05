@@ -3,10 +3,6 @@ require('pathname')
 
 require_relative('pod_helpers')
 
-def assert(condition, message)
-  raise message unless condition
-end
-
 def app_manifest(project_root)
   @app_manifest ||= {}
   return @app_manifest[project_root] if @app_manifest.key?(project_root)
@@ -379,12 +375,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 end
 
 def use_test_app_internal!(target_platform, options)
-  if Pod::VERSION == '1.15.0'
-    raise 'CocoaPods 1.15.0 is not compatible with React Native; for details ' \
-          'and workaround, see ' \
-          'https://github.com/facebook/react-native/issues/42698'
-  end
-
+  assert_version(Pod::VERSION)
   assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
 
   xcodeproj = 'ReactTestApp.xcodeproj'
