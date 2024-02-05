@@ -7,21 +7,8 @@ import { fileURLToPath } from "node:url";
 import { generateSchema } from "./schema.js";
 
 /**
- * @typedef {{
- *   options: {
- *     indent: string;
- *     level: number;
- *     footer?: string;
- *     header?: string;
- *   };
- *   arrayProperty: (name: string, type: string, required: boolean) => string;
- *   objectProperty: (name: string, required: boolean) => string;
- *   stringProperty: (name: string, required: boolean) => string;
- *   structBegin: (name: string) => string;
- *   structEnd: string;
- * }} Language
- *
  * @typedef {import("ajv").SchemaObject} SchemaObject
+ * @typedef {import("./types").Language} Language
  */
 const thisScript = fileURLToPath(import.meta.url);
 

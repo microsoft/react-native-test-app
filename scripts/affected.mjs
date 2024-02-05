@@ -7,8 +7,7 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 
 /**
- * @typedef {{ "any-glob-to-any-file": string[] }} MatchChangedFiles;
- * @typedef {{ "changed-files": MatchChangedFiles[]; }} Match
+ * @typedef {import("./types").Match} Match
  */
 
 /**

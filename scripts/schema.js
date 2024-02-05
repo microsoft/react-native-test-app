@@ -1,26 +1,5 @@
 /**
- * @typedef {{
- *   introduction: string;
- *   bundleRoot: string;
- *   components: string;
- *   resources: string;
- *   singleApp: string;
- *   version: string;
- *   "android.icons": string;
- *   "android.signingConfigs": string;
- *   "android.versionCode": string;
- *   "ios.buildNumber": string;
- *   "ios.codeSignEntitlements": string;
- *   "ios.codeSignIdentity": string;
- *   "ios.developmentTeam": string;
- *   "ios.icons": string;
- *   "ios.icons.primaryIcon": string;
- *   "ios.icons.alternateIcons": string;
- *   "windows.appxManifest": string;
- *   "windows.certificateKeyFile": string;
- *   "windows.certificatePassword": string;
- *   "windows.certificateThumbprint": string;
- * }} Docs
+ * @typedef {import("./types").Docs} Docs
  */
 
 /**

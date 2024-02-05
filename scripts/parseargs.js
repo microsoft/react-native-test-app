@@ -2,32 +2,11 @@
 "use strict";
 
 /**
- * @typedef {{
- *    description: string;
- *    type: "string" | "boolean";
- *    multiple?: boolean;
- *    short?: string;
- *    default?: string | boolean | string[];
- * }} Option;
- *
- * @typedef {{ [key: string]: Option }} Options;
- */
-/**
- * @template {Option} O
- * @typedef {O extends { type: "boolean" }
- *             ? boolean
- *             : O extends { type: "string", multiple: true }
- *               ? string[]
- *               : string
- * } InferredOptionType<O>;
+ * @typedef {import("./types").Options} Options;
  */
 /**
  * @template {Options} O
- * @typedef {{ [key in keyof O]: InferredOptionType<O[key]> }} InferredOptionTypes<O>;
- */
-/**
- * @template {Options} O
- * @typedef {InferredOptionTypes<O> & { _: string[] }} Args;
+ * @typedef {import("./types").Args<O>} Args;
  */
 
 /**

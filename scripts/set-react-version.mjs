@@ -13,14 +13,7 @@ import { fileURLToPath } from "node:url";
 import { readJSONFile } from "./helpers.js";
 
 /**
- * @typedef {Partial<{
- *   name: string;
- *   version: string;
- *   dependencies: Record<string, string>;
- *   peerDependencies: Record<string, string>;
- *   devDependencies: Record<string, string | undefined>;
- *   resolutions: Record<string, string | undefined>;
- * }>} Manifest
+ * @typedef {import("./types").Manifest} Manifest
  */
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];

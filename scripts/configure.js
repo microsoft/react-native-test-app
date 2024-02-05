@@ -30,59 +30,13 @@ const {
 } = require("./template");
 
 /**
- * @typedef {{ source: string; }} FileCopy;
- *
- * @typedef {{
- *   files: Record<string, string | FileCopy>;
- *   oldFiles: string[];
- *   scripts: Record<string, string>;
- *   dependencies: Record<string, string>;
- *   getDependencies?: (params: ConfigureParams) => Record<string, string> | undefined;
- * }} Configuration;
- *
- * @typedef {{
- *   common: Configuration;
- *   android: Configuration;
- *   ios: Configuration;
- *   macos: Configuration;
- *   windows: Configuration;
- * }} PlatformConfiguration;
- *
- * @typedef {keyof PlatformConfiguration} Platform;
- *
- * @typedef {{
- *   name: string;
- *   packagePath: string;
- *   templatePath?: string;
- *   testAppPath: string;
- *   targetVersion: string;
- *   platforms: Platform[];
- *   flatten: boolean;
- *   force: boolean;
- *   init: boolean;
- * }} ConfigureParams;
- *
- * @typedef {{
- *   android?: { sourceDir: string; };
- *   ios?: { sourceDir: string; };
- *   windows?: { sourceDir: string; solutionFile: string; };
- * }} ProjectConfig
- *
- * @typedef {{
- *   android: {
- *     sourceDir: string;
- *     manifestPath: string;
- *   };
- *   ios: {
- *     sourceDir?: string;
- *     project?: string;
- *   };
- *   windows: {
- *     sourceDir: string;
- *     solutionFile: string;
- *     project: { projectFile: string; };
- *   };
- * }} ProjectParams
+ * @typedef {import("./types").Configuration} Configuration
+ * @typedef {import("./types").ConfigureParams} ConfigureParams
+ * @typedef {import("./types").FileCopy} FileCopy
+ * @typedef {import("./types").PlatformConfiguration} PlatformConfiguration
+ * @typedef {import("./types").Platform} Platform
+ * @typedef {import("./types").ProjectConfig} ProjectConfig
+ * @typedef {import("./types").ProjectParams} ProjectParams
  */
 
 /** @type {{ encoding: "utf-8" }} */
