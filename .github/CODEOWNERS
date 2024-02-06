@@ -13,6 +13,7 @@ ios/       @Saadnajmi
 macos/  @Saadnajmi
 
 # Windows
+windows/  @acoates-ms
 
 # Miscellaneous
 /CODE_OF_CONDUCT.md  @microsoftopensource
