@@ -6,4 +6,5 @@ module.exports = {
       return ["module:metro-react-native-babel-preset"];
     }
   })(),
+  plugins: [[require("@rnx-kit/polyfills")]],
 };

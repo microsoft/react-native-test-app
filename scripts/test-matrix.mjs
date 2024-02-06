@@ -186,7 +186,6 @@ async function withReactNativeVersion(version, proc) {
   );
 
   if (version) {
-    $("git", "apply", "scripts/disable-safe-area-context.patch");
     if (toVersionNumber(version) >= v(0, 74, 0)) {
       $("git", "apply", "scripts/android-nightly.patch");
     } else if (toVersionNumber(version) < v(0, 73, 0)) {

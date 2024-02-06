@@ -282,7 +282,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.1.6, @babel/core@npm:^7.13.16, @babel/core@npm:^7.20.0":
+"@babel/core@npm:^7.0.0, @babel/core@npm:^7.1.6, @babel/core@npm:^7.13.16, @babel/core@npm:^7.20.0":
   version: 7.23.9
   resolution: "@babel/core@npm:7.23.9"
   dependencies:
@@ -2941,6 +2941,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-webapis/web-storage@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@react-native-webapis/web-storage@npm:0.1.3"
+  peerDependencies:
+    react: ">=18.2.0"
+    react-native: ">=0.71.0-0"
+  checksum: a500a02f2a85b534cb0a55e0e91ba33ac54773321015926e60c660211e619a17035e40ffe508a05aa46b8ed9df45f322cb3d446f1e431b05acd3c43e98913f54
+  languageName: node
+  linkType: hard
+
 "@react-native-windows/cli@npm:0.73.1":
   version: 0.73.1
   resolution: "@react-native-windows/cli@npm:0.73.1"
@@ -3289,6 +3299,24 @@ __metadata:
     "@react-native/metro-config":
       optional: true
   checksum: a523d76d5e69629569b4a675063cc0623f02593f41c0b1551c206bedde66a002cbf38633a18e934d0577d0c7a2e97742133cd0b63eb47cfcccf71e825a3348ff
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/polyfills@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@rnx-kit/polyfills@npm:0.1.1"
+  dependencies:
+    "@babel/core": "npm:^7.0.0"
+    "@babel/helper-plugin-utils": "npm:^7.0.0"
+    "@babel/template": "npm:^7.0.0"
+    "@rnx-kit/console": "npm:^1.0.0"
+    "@rnx-kit/tools-node": "npm:^2.0.0"
+  peerDependencies:
+    "@react-native/js-polyfills": "*"
+  peerDependenciesMeta:
+    "@react-native/js-polyfills":
+      optional: true
+  checksum: cdc3d9aaa1dce734f36f0eb80d224bbe1551b5f2eb4e26a8e129364fdf099778796f928536d13a586f177aefb189f72cd1363e0ed24d689ba5a2836b9e0cb147
   languageName: node
   linkType: hard
 
@@ -7235,9 +7263,11 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.1.6"
     "@babel/preset-env": "npm:^7.1.6"
+    "@react-native-webapis/web-storage": "npm:^0.1.3"
     "@react-native/babel-preset": "npm:^0.73.19"
     "@react-native/metro-config": "npm:^0.73.3"
     "@rnx-kit/metro-config": "npm:^1.3.14"
+    "@rnx-kit/polyfills": "npm:^0.1.1"
     "@types/react": "npm:~18.2.0"
     appium: "npm:^2.0.0"
     appium-uiautomator2-driver: "npm:^2.42.1"
@@ -7245,7 +7275,6 @@ __metadata:
     react: "npm:18.2.0"
     react-native: "npm:^0.73.0"
     react-native-macos: "npm:^0.73.0"
-    react-native-safe-area-context: "npm:~4.8.2"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.73.0"
     webdriverio: "npm:^8.11.2"
@@ -12062,16 +12091,6 @@ __metadata:
   bin:
     react-native-macos: cli.js
   checksum: d1494c7a05af5c0b25b9bbbb21e4ea5a0131166f9a037bb92e9329954edb258f5123a700747f06423c50e0d080d1b3e09df0330aa74b0db27b50652d4e630610
-  languageName: node
-  linkType: hard
-
-"react-native-safe-area-context@npm:~4.8.2":
-  version: 4.8.2
-  resolution: "react-native-safe-area-context@npm:4.8.2"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 5430ef5d4f3510debd964423aa7ae2f9f4f3aea6e928b0dc6f7e63c21e967f3e71377a3b5df0bd5ceca291c4818670ee77afb3fc7a1091061449ae0fd3ed00b2
   languageName: node
   linkType: hard
 
