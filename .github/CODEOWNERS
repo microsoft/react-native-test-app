@@ -1,19 +1,19 @@
-* @tido64
+*  @kelset @tido64
 
 # Android
 *.gradle  @ArazAbishov @sweggersen
 android/  @ArazAbishov @sweggersen
 
 # iOS
-*.podspec     @tido64
-*.rb          @tido64
-Podfile       @tido64
-Podfile.lock  @tido64
-ios/          @tido64
+*.podspec  @Saadnajmi
+*.rb       @Saadnajmi
+ios/       @Saadnajmi
 
 # macOS
+macos/  @Saadnajmi
 
 # Windows
+windows/  @acoates-ms
 
 # Miscellaneous
 /CODE_OF_CONDUCT.md  @microsoftopensource
