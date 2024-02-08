@@ -16,7 +16,7 @@ private static void applyConfigPlugins(String testAppDir, File rootDir) {
 
 private static boolean isFontFile(File file) {
     // https://github.com/facebook/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L28
-    return file.name.endsWith(".ttf") || file.name.endsWith(".otf")
+    return [".otf", ".ttf"].any { file.name.endsWith(it) }
 }
 
 def testAppDir = buildscript.sourceFile.getParent()
