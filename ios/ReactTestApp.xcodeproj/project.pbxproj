@@ -59,7 +59,7 @@
 		19ECD0D7232ED425003D8557 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		19ECD0D9232ED425003D8557 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		19ECD0DB232ED427003D8557 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
-		19ECD0E3232ED427003D8557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19ECD0E3232ED427003D8557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		19ECD0E8232ED427003D8557 /* ReactTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19ECD0EC232ED428003D8557 /* ReactTestAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactTestAppTests.swift; sourceTree = "<group>"; };
 		19ECD0EE232ED428003D8557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -220,8 +220,8 @@
 		19ECD0CA232ED425003D8557 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1341;
-				LastUpgradeCheck = 1341;
+				LastSwiftUpdateCheck = 1520;
+				LastUpgradeCheck = 1520;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					19ECD0D1232ED425003D8557 = {
@@ -379,7 +379,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = UBF8T346G9;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = ReactTestApp/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -403,7 +403,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = UBF8T346G9;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = ReactTestApp/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
