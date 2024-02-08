@@ -272,7 +272,6 @@ async function resolveCommonDependencies(
       dependencies?.["@react-native-community/cli-platform-ios"],
     "@react-native/babel-preset": rnBabelPresetVersion,
     "@react-native/metro-config": rnMetroConfigVersion,
-    "hermes-engine": dependencies?.["hermes-engine"],
     "metro-react-native-babel-preset": metroBabelPresetVersion,
     react: peerDependencies?.["react"],
   };
@@ -378,7 +377,7 @@ export function setReactVersion(version, coreOnly) {
       const manifests = ["package.json", "example/package.json"];
       for (const manifestPath of manifests) {
         const manifest = /** @type {Manifest} */ (readJSONFile(manifestPath));
-        const { dependencies, devDependencies, resolutions } = manifest;
+        const { dependencies, devDependencies, resolutions = {} } = manifest;
         if (!devDependencies) {
           throw new Error("Expected 'devDependencies' to be declared");
         }
@@ -387,19 +386,17 @@ export function setReactVersion(version, coreOnly) {
           const deps = dependencies?.[packageName]
             ? dependencies
             : devDependencies;
-          const version = profile[packageName];
-          deps[packageName] = version;
+          deps[packageName] = profile[packageName];
+
+          // Reset resolutions so we don't get old packages
+          resolutions[packageName] = undefined;
         }
 
-        // Reset resolutions so we don't get old packages
-        if (resolutions) {
-          for (const pkg of Object.keys(resolutions)) {
-            if (
-              pkg.startsWith("@react-native-community/cli") ||
-              pkg.startsWith("metro")
-            ) {
-              resolutions[pkg] = undefined;
-            }
+        // Reset resolutions of the nested type e.g.,
+        // `@react-native/community-cli-plugin/@react-native-community/cli-server-api`
+        for (const pkg of Object.keys(resolutions)) {
+          if (pkg.startsWith("@react-native")) {
+            resolutions[pkg] = undefined;
           }
         }
 
