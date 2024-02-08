@@ -87,7 +87,7 @@ class TestAppReactNativeHost(
         reactInstanceManager.addReactInstanceEventListener(listener)
     }
 
-    fun reload(activity: Activity?, newSource: BundleSource) {
+    fun reload(activity: Activity, newSource: BundleSource) {
         if (BuildConfig.DEBUG && !hasInstance()) {
             error("init() must be called the first time ReactInstanceManager is created")
         }
@@ -104,9 +104,7 @@ class TestAppReactNativeHost(
 
                 reactInstanceManager.run {
                     createReactContextInBackground()
-                    if (activity != null) {
-                        onHostResume(activity)
-                    }
+                    onHostResume(activity)
                 }
             }
         }
@@ -114,13 +112,13 @@ class TestAppReactNativeHost(
         onBundleSourceChanged?.invoke(newSource)
     }
 
-    fun reloadJSFromServer(activity: Activity?, bundleURL: String) {
+    fun reloadJSFromServer(activity: Activity, bundleURL: String) {
         val uri = Uri.parse(bundleURL)
         PackagerConnectionSettings(activity).debugServerHost =
             if (uri.port > 0) {
                 "${uri.host}:${uri.port}"
             } else {
-                uri.host
+                uri.host ?: "localhost"
             }
         reload(activity, BundleSource.Server)
     }
@@ -166,12 +164,14 @@ class TestAppReactNativeHost(
         devSupportManager.addCustomDevOption(bundleOption) {
             when (source) {
                 BundleSource.Disk -> {
-                    val currentActivity = reactInstanceManager.currentReactContext?.currentActivity
-                    reload(currentActivity, BundleSource.Server)
+                    reactInstanceManager.currentReactContext?.currentActivity?.let {
+                        reload(it, BundleSource.Server)
+                    }
                 }
                 BundleSource.Server -> {
-                    val currentActivity = reactInstanceManager.currentReactContext?.currentActivity
-                    reload(currentActivity, BundleSource.Disk)
+                    reactInstanceManager.currentReactContext?.currentActivity?.let {
+                        reload(it, BundleSource.Disk)
+                    }
                 }
             }
         }

@@ -30,7 +30,7 @@ class TestApp : Application(), ReactApplication {
     private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
     private lateinit var reactNativeHostInternal: TestAppReactNativeHost
 
-    fun reloadJSFromServer(activity: Activity?, bundleURL: String) {
+    fun reloadJSFromServer(activity: Activity, bundleURL: String) {
         reactNativeHostInternal.reloadJSFromServer(activity, bundleURL)
     }
 
