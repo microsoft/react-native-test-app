@@ -19,6 +19,31 @@ private static boolean isFontFile(File file) {
     return [".otf", ".ttf"].any { file.name.endsWith(it) }
 }
 
+private static boolean isMediaFile(File file) {
+    // https://developer.android.com/media/platform/supported-formats
+    return [
+        ".3gp",
+        ".aac",
+        ".amr",
+        ".flac",
+        ".imy",
+        ".m4a",
+        ".mid",
+        ".mkv",
+        ".mp3",
+        ".mp4",
+        ".mxmf",
+        ".ogg",
+        ".ota",
+        ".rtttl",
+        ".rtx",
+        ".ts",
+        ".wav",
+        ".webm",
+        ".xmf",
+    ].any { file.name.endsWith(it) }
+}
+
 def testAppDir = buildscript.sourceFile.getParent()
 apply(from: "${testAppDir}/android/test-app-util.gradle")
 
@@ -107,7 +132,7 @@ ext.applyTestAppModule = { Project project ->
 
     preBuild.dependsOn(tasks.register("copyAssets", Copy) {
         androidResourceFiles.each {
-            if (!isFontFile(it)) {
+            if (!isFontFile(it) && !isMediaFile(it)) {
                 from(it)
             }
         }
@@ -129,6 +154,22 @@ ext.applyTestAppModule = { Project project ->
         }
 
         into(generatedFontsDir)
+    })
+
+    preBuild.dependsOn(tasks.register("copyRawResources", Copy) {
+        androidResourceFiles.each {
+            if (isMediaFile(it)) {
+                from(it) {
+                    // File-based resource names must contain only lowercase
+                    // a-z, 0-9, or underscore
+                    rename {
+                        it.toLowerCase()
+                    }
+                }
+            }
+        }
+
+        into(generatedRawDir)
     })
 
     preBuild.dependsOn(tasks.register("copyResources", Copy) {
