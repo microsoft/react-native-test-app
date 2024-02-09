@@ -47,7 +47,7 @@ describe("App", () => {
 
     const manifest = fs.readFileSync(rnPath, { encoding: "utf-8" });
     const { version } = JSON.parse(manifest);
-    return version;
+    return version.replace("-nightly-", "-nightly\n");
   })();
 
   /** @type {Browser} */
