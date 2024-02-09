@@ -47,7 +47,7 @@ function getHermesVersion(): string | undefined {
 function getReactNativeVersion(): string {
   const { major, minor, patch, prerelease } = coreVersion;
   const version = `${major}.${minor}.${patch}`;
-  return prerelease ? `${version}-${prerelease}` : version;
+  return prerelease ? `${version}-${prerelease.replace("-", "\n")}` : version;
 }
 
 function isBridgeless() {
@@ -142,6 +142,7 @@ function useStyles() {
       groupItemValue: {
         color: isDarkMode ? Colors.light : Colors.dark,
         fontSize: fontSize,
+        textAlign: "right",
       },
       separator: {
         backgroundColor: isDarkMode ? Colors.dark : Colors.light,

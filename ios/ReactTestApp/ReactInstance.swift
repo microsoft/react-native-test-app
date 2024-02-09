@@ -102,7 +102,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
     // MARK: - RCTBridgeDelegate details
 
-    func sourceURL(for _: RCTBridge) -> URL {
+    func sourceURL(for _: RCTBridge) -> URL? {
         if let remoteBundleURL {
             return remoteBundleURL
         }
@@ -116,7 +116,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
                 )
             }
             .first
-        return embeddedBundleURL ?? ReactInstance.jsBundleURL() ?? RTADefaultJSBundleURL()
+        return embeddedBundleURL ?? ReactInstance.jsBundleURL()
     }
 
     // MARK: - Private
