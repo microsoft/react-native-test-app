@@ -35,9 +35,13 @@ For each entry, you can declare additional (optional) properties:
 }
 ```
 
-If you're on React Native 0.69 and want to enable
-[Concurrent React](https://reactjs.org/blog/2022/03/29/react-v18.html#what-is-concurrent-react),
-set `"concurrentRoot": true` in `initialProperties`.
+> [!NOTE]
+>
+> [Concurrent React](https://reactjs.org/blog/2022/03/29/react-v18.html#what-is-concurrent-react)
+> is enabled by default when you enable New Architecture. If this is
+> undesirable, you can opt out by adding `"concurrentRoot": false` to
+> `initialProperties`. This is not recommended, and won't be possible starting
+> with 0.74.
 
 <a name='android-adding-fragments' />
 

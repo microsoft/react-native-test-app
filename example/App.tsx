@@ -54,6 +54,14 @@ function isBridgeless() {
   return "RN$Bridgeless" in global && RN$Bridgeless === true;
 }
 
+function isConcurrentReactEnabled(props: AppProps, isFabric: boolean): boolean {
+  const { major, minor } = coreVersion;
+  const version = major * 10000 + minor;
+  // As of 0.74, it won't be possible to opt-out:
+  // https://github.com/facebook/react-native/commit/30d186c3683228d4fb7a42f804eb2fdfa7c8ac03
+  return isFabric && (version >= 74 || props.concurrentRoot !== false);
+}
+
 function isFabricInstance<T>(
   ref: NativeSyntheticEvent<T>["currentTarget"]
 ): boolean {
@@ -194,9 +202,7 @@ function DevMenu(): React.ReactElement | null {
   );
 }
 
-export function App({
-  concurrentRoot,
-}: AppProps): React.ReactElement<AppProps> {
+export function App(props: AppProps): React.ReactElement<AppProps> {
   const isDarkMode = useColorScheme() === "dark";
   const styles = useStyles();
   const [isFabric, setIsFabric] = useIsFabricComponent();
@@ -222,7 +228,7 @@ export function App({
           <Separator />
           <Feature value={isOnOrOff(isFabric)}>Fabric</Feature>
           <Separator />
-          <Feature value={isOnOrOff(isFabric && concurrentRoot)}>
+          <Feature value={isOnOrOff(isConcurrentReactEnabled(props, isFabric))}>
             Concurrent React
           </Feature>
           <Separator />
