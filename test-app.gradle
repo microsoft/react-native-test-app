@@ -143,13 +143,7 @@ ext.applyTestAppModule = { Project project ->
     preBuild.dependsOn(tasks.register("copyFonts", Copy) {
         androidResourceFiles.each {
             if (isFontFile(it)) {
-                from(it) {
-                    // File-based resource names must contain only lowercase
-                    // a-z, 0-9, or underscore
-                    rename {
-                        it.toLowerCase()
-                    }
-                }
+                from(it)
             }
         }
 
