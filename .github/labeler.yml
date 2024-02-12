@@ -49,6 +49,28 @@
           - scripts/*.js
           - scripts/xcodebuild.sh
           - test/*.rb
+"platform: visionOS":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/actions/cocoapods/*
+          - .github/actions/init-test-app/*
+          - .github/actions/setup-toolchain/*
+          - .github/workflows/build.yml
+          - Gemfile*
+          - ReactTestApp-DevSupport.podspec
+          - common/**/*
+          - example/visionos/**/*
+          - visionos/*.rb
+          - visionos/ReactTestApp/Manifest.swift
+          - visionos/ReactTestApp/React+Compatibility.{h,m}
+          - visionos/ReactTestApp/ReactInstance.swift
+          - visionos/ReactTestApp/ReactTestApp-Bridging-Header.h
+          - visionos/ReactTestApp/Session.swift
+          - visionos/ReactTestApp/UIViewController+ReactTestApp.{h,m}
+          - visionos/**/*
+          - scripts/*.js
+          - scripts/xcodebuild.sh
+          - test/*.rb
 "platform: Windows":
   - changed-files:
       - any-glob-to-any-file:

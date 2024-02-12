@@ -6,12 +6,12 @@ require 'json'
 deployment_target = lambda do |target_platform|
   xcodeproj = File.join(__dir__, target_platform, 'ReactTestApp.xcodeproj')
   project = Xcodeproj::Project.open(xcodeproj)
-  setting = case target_platform
-            when 'ios'
-              'IPHONEOS_DEPLOYMENT_TARGET'
-            when 'macos'
-              'MACOSX_DEPLOYMENT_TARGET'
-            end
+  settings = {
+    'ios' => 'IPHONEOS_DEPLOYMENT_TARGET',
+    'macos' => 'MACOSX_DEPLOYMENT_TARGET',
+    'visionos' => 'XROS_DEPLOYMENT_TARGET',
+  }
+  setting = settings[target_platform]
   project.build_configurations[0].resolve_build_setting(setting)
 end
 
@@ -29,6 +29,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = deployment_target.call('ios')
   s.osx.deployment_target = deployment_target.call('macos')
+  s.visionos.deployment_target = deployment_target.call('visionos')
 
   s.dependency 'React-Core'
   s.dependency 'React-jsi'

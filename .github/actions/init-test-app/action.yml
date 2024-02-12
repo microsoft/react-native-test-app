@@ -14,7 +14,7 @@ runs:
     - name: Initialize a new app
       run: |
         if [[ ${{ inputs.platform }} == "all" ]]; then
-          yarn init-test-app --destination test-app --name TestApp -p android -p ios -p macos -p windows
+          yarn init-test-app --destination test-app --name TestApp -p android -p ios -p macos -p visionos -p windows
         else
           yarn init-test-app --destination test-app --name TestApp --platform ${{ inputs.platform }}
         fi

@@ -68,11 +68,13 @@ def react_native_path(project_root, target_platform)
   react_native_path = platform_config('reactNativePath', project_root, target_platform)
   return Pathname.new(resolve_module(react_native_path)) if react_native_path.is_a? String
 
-  react_native = case target_platform
-                 when :ios then 'react-native'
-                 when :macos then 'react-native-macos'
-                 else raise "Unsupported target platform: #{target_platform}"
-                 end
+  react_native_packages = {
+    'ios' => 'react-native',
+    'macos' => 'react-native-macos',
+    'visionos' => 'react-native-macos',
+  }
+  react_native = react_native_packages[target_platform.to_s]
+  assert(!react_native.nil?, "Unsupported target platform: #{target_platform}")
   Pathname.new(resolve_module(react_native))
 end
 
@@ -197,6 +199,7 @@ def resources_pod(project_root, target_platform, platforms)
     'platforms' => {
       'ios' => platforms[:ios],
       'osx' => platforms[:macos],
+      'visionos' => platforms[:visionos],
     },
     'resources' => resources,
   }
@@ -394,6 +397,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
     :platforms => {
       :ios => config.resolve_build_setting('IPHONEOS_DEPLOYMENT_TARGET'),
       :macos => config.resolve_build_setting('MACOSX_DEPLOYMENT_TARGET'),
+      :visionos => config.resolve_build_setting('XROS_DEPLOYMENT_TARGET'),
     },
     :react_native_version => rn_version,
     :use_new_arch => use_new_arch,
@@ -404,7 +408,8 @@ end
 
 def use_test_app_internal!(target_platform, options)
   assert_version(Pod::VERSION)
-  assert(%i[ios macos].include?(target_platform), "Unsupported platform: #{target_platform}")
+  assert(%i[ios macos visionos].include?(target_platform),
+         "Unsupported platform: #{target_platform}")
 
   xcodeproj = 'ReactTestApp.xcodeproj'
   project_root = Pod::Config.instance.installation_root
@@ -420,6 +425,7 @@ def use_test_app_internal!(target_platform, options)
   begin
     platform :ios, platforms[:ios] if target_platform == :ios
     platform :osx, platforms[:macos] if target_platform == :macos
+    platform :visionos, platforms[:visionos] if target_platform == :visionos
   rescue StandardError
     # Allow platform deployment target to be overridden
   end

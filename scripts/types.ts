@@ -19,6 +19,7 @@ export type PlatformConfiguration = {
   android: Configuration;
   ios: Configuration;
   macos: Configuration;
+  visionos: Configuration;
   windows: Configuration;
 };
 

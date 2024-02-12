@@ -113,6 +113,8 @@ function getPackageName(platform) {
       return "react-native";
     case "macos":
       return "react-native-macos";
+      case "visionos":
+        return "react-native-macos";
     case "windows":
       return "react-native-windows";
     default:
@@ -283,6 +285,7 @@ function main() {
               { title: "Android", value: "android", selected: true },
               { title: "iOS", value: "ios", selected: true },
               { title: "macOS", value: "macos", selected: true },
+              { title: "visionOS (Experimental)", value: "visionos", selected: false },
               { title: "Windows", value: "windows", selected: true },
             ],
             min: 1,

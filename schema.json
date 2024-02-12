@@ -302,6 +302,21 @@
         }
       }
     },
+    "visionos": {
+      "description": "visionOS specific properties go here.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/apple"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "reactNativePath": {
+          "description": "Sets a custom path to React Native for visionOS. Useful for when `require(\"react-native-macos\")` does not return the desired path.",
+          "type": "string"
+        }
+      }
+    },
     "windows": {
       "description": "Windows specific properties go here.",
       "type": "object",

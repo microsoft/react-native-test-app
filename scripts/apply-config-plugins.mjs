@@ -51,6 +51,10 @@ const { values, positionals } = parseArgs({
       description: "Apply macOS config plugins",
       type: "boolean",
     },
+    visionos: {
+      description: "Apply visionOS config plugins",
+      type: "boolean",
+    },
     windows: {
       description: "Apply Windows config plugins",
       type: "boolean",

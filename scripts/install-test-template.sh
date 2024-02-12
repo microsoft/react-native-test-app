@@ -2,7 +2,7 @@
 set -eo pipefail
 
 install=true
-platforms=(all android ios macos windows)
+platforms=(all android ios macos visionos windows)
 version=$(node --print 'require("./package.json").version')
 tarball=react-native-test-app-$version.$(git rev-parse --short HEAD).tgz
 
@@ -44,6 +44,7 @@ if [[ "$platform" == "all" ]]; then
     --platform android              \
     --platform ios                  \
     --platform macos                \
+    --platform visionos             \
     --platform windows
 else
   yarn init-test-app                \

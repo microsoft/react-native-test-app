@@ -4,10 +4,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private weak var application: UIApplication?
 
-    // TODO: `window` no longer exists but RedBox has not been updated to
-    //       support UIScene yet. Revisit when we bump React Native.
     @objc var window: UIWindow? {
-        get { application?.windows.first }
+        get { RCTKeyWindow() }
         // swiftlint:disable:next unused_setter_value
         set {}
     }

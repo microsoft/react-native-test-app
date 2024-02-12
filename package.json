@@ -37,6 +37,7 @@
     "example/{metro,react-native}.config.js",
     "ios",
     "macos",
+    "visionos",
     "plugins",
     "react-native.config.js",
     "schema.json",

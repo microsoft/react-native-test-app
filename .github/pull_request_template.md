@@ -22,6 +22,7 @@ Resolves #244.
 - [ ] Android
 - [ ] iOS
 - [ ] macOS
+- [ ] visionOS
 - [ ] Windows
 
 ### Test plan
