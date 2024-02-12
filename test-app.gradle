@@ -14,6 +14,36 @@ private static void applyConfigPlugins(String testAppDir, File rootDir) {
     }
 }
 
+private static boolean isFontFile(File file) {
+    // https://github.com/facebook/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L28
+    return [".otf", ".ttf"].any { file.name.endsWith(it) }
+}
+
+private static boolean isMediaFile(File file) {
+    // https://developer.android.com/media/platform/supported-formats
+    return [
+        ".3gp",
+        ".aac",
+        ".amr",
+        ".flac",
+        ".imy",
+        ".m4a",
+        ".mid",
+        ".mkv",
+        ".mp3",
+        ".mp4",
+        ".mxmf",
+        ".ogg",
+        ".ota",
+        ".rtttl",
+        ".rtx",
+        ".ts",
+        ".wav",
+        ".webm",
+        ".xmf",
+    ].any { file.name.endsWith(it) }
+}
+
 def testAppDir = buildscript.sourceFile.getParent()
 apply(from: "${testAppDir}/android/test-app-util.gradle")
 
@@ -93,15 +123,47 @@ ext.applyTestAppModule = { Project project ->
     def generatedResDir = file("${buildDir}/generated/rncli/src/main/res/")
     generatedResDir.mkdirs()
 
+    // https://github.com/facebook/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L25
+    def generatedFontsDir = file("${generatedAssetsDir}/fonts")
+    generatedFontsDir.mkdirs()
+
     def generatedRawDir = file("${generatedResDir}/raw")
     generatedRawDir.mkdirs()
 
     preBuild.dependsOn(tasks.register("copyAssets", Copy) {
         androidResourceFiles.each {
-            from(it)
+            if (!isFontFile(it) && !isMediaFile(it)) {
+                from(it)
+            }
         }
 
         into(generatedAssetsDir)
+    })
+
+    preBuild.dependsOn(tasks.register("copyFonts", Copy) {
+        androidResourceFiles.each {
+            if (isFontFile(it)) {
+                from(it)
+            }
+        }
+
+        into(generatedFontsDir)
+    })
+
+    preBuild.dependsOn(tasks.register("copyRawResources", Copy) {
+        androidResourceFiles.each {
+            if (isMediaFile(it)) {
+                from(it) {
+                    // File-based resource names must contain only lowercase
+                    // a-z, 0-9, or underscore
+                    rename {
+                        it.toLowerCase()
+                    }
+                }
+            }
+        }
+
+        into(generatedRawDir)
     })
 
     preBuild.dependsOn(tasks.register("copyResources", Copy) {

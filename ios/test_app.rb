@@ -1,3 +1,4 @@
+require('cfpropertylist')
 require('json')
 require('pathname')
 
@@ -121,6 +122,34 @@ def generate_assets_catalog!(project_root, target_platform, destination)
   end
 end
 
+def generate_info_plist!(project_root, target_platform, destination)
+  manifest = app_manifest(project_root)
+  return if manifest.nil?
+
+  infoplist_src = project_path('ReactTestApp/Info.plist', target_platform)
+  infoplist_dst = File.join(destination, File.basename(infoplist_src))
+
+  plist = CFPropertyList::List.new(file: infoplist_src)
+  info = CFPropertyList.native_types(plist.value)
+
+  # Register fonts
+  font_files = ['.otf', '.ttf']
+  fonts = []
+  resources = resolve_resources(manifest, target_platform)
+  resources.each do |filename|
+    fonts << File.basename(filename) if font_files.include?(File.extname(filename))
+  end
+  unless fonts.empty?
+    # https://developer.apple.com/documentation/bundleresources/information_property_list/atsapplicationfontspath
+    info['ATSApplicationFontsPath'] = '.' if target_platform == :macos
+    # https://developer.apple.com/documentation/uikit/text_display_and_fonts/adding_a_custom_font_to_your_app
+    info['UIAppFonts'] = fonts unless target_platform == :macos
+  end
+
+  plist.value = CFPropertyList.guess(info)
+  plist.save(infoplist_dst, CFPropertyList::List::FORMAT_XML, { :formatted => true })
+end
+
 def react_native_pods(version)
   if version.zero? || version >= v(0, 71, 0)
     'use_react_native-0.71'
@@ -226,6 +255,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   end
 
   generate_assets_catalog!(project_root, target_platform, destination)
+  generate_info_plist!(project_root, target_platform, destination)
 
   # Copy localization files and replace instances of `ReactTestApp` with app display name
   product_name = display_name || name
@@ -251,13 +281,11 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
   # Note the location of Node so we can use it later in script phases
   File.open(File.join(project_root, '.xcode.env'), 'w') do |f|
-    node_bin = `which node`
-    node_bin.strip!
+    node_bin = `which node`.strip!
     f.write("export NODE_BINARY=#{node_bin}\n")
   end
   File.open(File.join(destination, '.env'), 'w') do |f|
-    node_bin = `dirname $(which node)`
-    node_bin.strip!
+    node_bin = `dirname $(which node)`.strip!
     f.write("export PATH=#{node_bin}:$PATH\n")
   end
 
