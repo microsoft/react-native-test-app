@@ -99,6 +99,10 @@ async function checkEnvironment() {
 
 /**
  * Disables [Jetifier](https://developer.android.com/tools/jetifier).
+ *
+ * Jetifier is only necessary when you depend on code that has not yet migrated
+ * to AndroidX. If we only deal with modern code, disabling it makes builds
+ * slightly faster.
  */
 function disableJetifier() {
   const gradleProperties = "example/android/gradle.properties";
