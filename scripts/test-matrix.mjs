@@ -8,7 +8,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
-import { readTextFile, toVersionNumber, v } from "./helpers.js";
+import { readTextFile } from "./helpers.js";
 import { setReactVersion } from "./set-react-version.mjs";
 import { $, test } from "./test-e2e.mjs";
 
