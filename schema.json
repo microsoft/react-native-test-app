@@ -44,8 +44,8 @@
               ]
             },
             "alternateIcons": {
-              "description": "The primary icon for the Home screen and Settings app, among others.",
-              "markdownDescription": "The primary icon for the Home screen and Settings app, among others.\n\nThe equivalent key in `Info.plist` is\n[`CFBundleAlternateIcons`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleicons/cfbundlealternateicons).",
+              "description": "List of alternate icons for the Home screen and Settings app.",
+              "markdownDescription": "List of alternate icons for the Home screen and Settings app.\n\nThe equivalent key in `Info.plist` is\n[`CFBundleAlternateIcons`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleicons/cfbundlealternateicons).",
               "type": "object",
               "additionalProperties": {
                 "allOf": [
