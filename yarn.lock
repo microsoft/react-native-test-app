@@ -4688,9 +4688,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-webdriveragent@npm:~5.15.9":
-  version: 5.15.9
-  resolution: "appium-webdriveragent@npm:5.15.9"
+"appium-webdriveragent@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "appium-webdriveragent@npm:7.0.0"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/strongbox": "npm:^0.x"
@@ -4705,7 +4705,7 @@ __metadata:
     node-simctl: "npm:^7.0.1"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 42af0d3ef270c28fb28688d7c85db055b0e1f2e097e8d1a75a1c8a8f07c76b9d947299d48fe165ca26feb8c450133ede5427e3e04ce53059fb2a14bb59a4d766
+  checksum: 0769bd6b469b71dccb1332b6d4f21b6103b0d924550cb803ec27ac85057d3fd2f30439969927b85a1981372595a5dbeb1d657eea4c66c4fc3721095c2b8cfa98
   languageName: node
   linkType: hard
 
@@ -4726,16 +4726,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-xcuitest-driver@npm:^5.14.0":
-  version: 5.16.1
-  resolution: "appium-xcuitest-driver@npm:5.16.1"
+"appium-xcuitest-driver@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "appium-xcuitest-driver@npm:7.0.0"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
     appium-ios-device: "npm:^2.5.4"
     appium-ios-simulator: "npm:^5.5.1"
     appium-remote-debugger: "npm:^10.0.0"
-    appium-webdriveragent: "npm:~5.15.9"
+    appium-webdriveragent: "npm:^7.0.0"
     appium-xcode: "npm:^5.1.4"
     async-lock: "npm:^1.4.0"
     asyncbox: "npm:^3.0.0"
@@ -4755,7 +4755,7 @@ __metadata:
     ws: "npm:^8.13.0"
   peerDependencies:
     appium: ^2.4.1
-  checksum: d6428f64bbe251750f598a9825d2114a67d683ab720b3099368545ff00ad40363fde2e9db695a8b62c5494311528d7d9a4c39a5b5d894c2b67d610f2e8006032
+  checksum: 9298ca4cc2f156900b115c4fd7a146e10990669b47b462298435ab14a546338a4b4c754b1f9835f7442e1ea7dedd36d74495dfd559a2deb8c0792a0d13172518
   languageName: node
   linkType: hard
 
@@ -7271,7 +7271,7 @@ __metadata:
     "@types/react": "npm:~18.2.0"
     appium: "npm:^2.0.0"
     appium-uiautomator2-driver: "npm:^2.42.1"
-    appium-xcuitest-driver: "npm:^5.14.0"
+    appium-xcuitest-driver: "npm:^7.0.0"
     react: "npm:18.2.0"
     react-native: "npm:^0.73.0"
     react-native-macos: "npm:^0.73.0"
