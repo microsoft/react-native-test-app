@@ -38,10 +38,10 @@ For each entry, you can declare additional (optional) properties:
 > [!NOTE]
 >
 > [Concurrent React](https://reactjs.org/blog/2022/03/29/react-v18.html#what-is-concurrent-react)
-> is enabled by default when you enable New Architecture. If this is
-> undesirable, you can opt out by adding `"concurrentRoot": false` to
-> `initialProperties`. This is not recommended, and won't be possible starting
-> with 0.74.
+> is enabled by default when you enable New Architecture starting with 0.71. If
+> this is undesirable, you can opt out by adding `"concurrentRoot": false` to
+> `initialProperties`. This is not recommended, and won't be possible from 0.74
+> on.
 
 <a name='android-adding-fragments' />
 
