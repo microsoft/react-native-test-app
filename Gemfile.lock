@@ -49,6 +49,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  CFPropertyList
   minitest
   rubocop
   rubocop-minitest
