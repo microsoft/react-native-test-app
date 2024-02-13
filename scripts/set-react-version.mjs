@@ -10,7 +10,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { readJSONFile } from "./helpers.js";
+import { readJSONFile, readTextFile, toVersionNumber, v } from "./helpers.js";
 
 /**
  * @typedef {import("./types").Manifest} Manifest
@@ -98,6 +98,24 @@ async function checkEnvironment() {
 }
 
 /**
+ * Disables [Jetifier](https://developer.android.com/tools/jetifier).
+ *
+ * Jetifier is only necessary when you depend on code that has not yet migrated
+ * to AndroidX. If we only deal with modern code, disabling it makes builds
+ * slightly faster.
+ */
+function disableJetifier() {
+  const gradleProperties = "example/android/gradle.properties";
+  fs.writeFileSync(
+    gradleProperties,
+    readTextFile(gradleProperties).replace(
+      "android.enableJetifier=true",
+      "android.enableJetifier=false"
+    )
+  );
+}
+
+/**
  * Infer the React Native version an out-of-tree platform package is based on.
  * @param {Manifest} manifest
  * @returns {string}
@@ -123,6 +141,7 @@ function inferReactNativeVersion({ name, version, dependencies }) {
     10: "^0.71.0-0",
     11: "^0.72.0-0",
     12: "^0.73.0-0",
+    13: "^0.74.0-0",
   }[m[1]];
   if (!v) {
     throw new Error(`Unsupported '${cliPackage}' version: ${cliVersion}`);
@@ -364,6 +383,22 @@ async function getProfile(v, coreOnly) {
 }
 
 /**
+ * Sets Gradle Wrapper to specified version.
+ * @param {string} version
+ */
+function setGradleVersion(version) {
+  const gradleWrapperProperties =
+    "example/android/gradle/wrapper/gradle-wrapper.properties";
+  fs.writeFileSync(
+    gradleWrapperProperties,
+    readTextFile(gradleWrapperProperties).replace(
+      /gradle-[.0-9]*-bin\.zip/,
+      `gradle-${version}-bin.zip`
+    )
+  );
+}
+
+/**
  * Sets specified React Native version.
  * @param {string} version
  * @param {boolean} coreOnly
@@ -417,18 +452,24 @@ export function setReactVersion(version, coreOnly) {
 const { [1]: script, [2]: version } = process.argv;
 if (import.meta.url.endsWith(script)) {
   if (!(await checkEnvironment())) {
-    // eslint-disable-next-line local/no-process-exit
-    process.exit(1);
-  }
-
-  if (!isValidVersion(version)) {
+    process.exitCode = 1;
+  } else if (!isValidVersion(version)) {
     const script = path.basename(fileURLToPath(import.meta.url));
     console.log(
       `Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`
     );
-    // eslint-disable-next-line local/no-process-exit
-    process.exit(1);
+    process.exitCode = 1;
+  } else {
+    setReactVersion(version, process.argv.includes("--core-only")).then(() => {
+      const numVersion =
+        version === "nightly"
+          ? Number.MAX_SAFE_INTEGER
+          : toVersionNumber(version);
+      if (numVersion >= v(0, 74, 0)) {
+        disableJetifier();
+      } else if (numVersion < v(0, 73, 0)) {
+        setGradleVersion("7.6.3");
+      }
+    });
   }
-
-  setReactVersion(version, process.argv.includes("--core-only"));
 }

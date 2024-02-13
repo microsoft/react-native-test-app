@@ -8,7 +8,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
-import { readTextFile, toVersionNumber, v } from "./helpers.js";
+import { readTextFile } from "./helpers.js";
 import { setReactVersion } from "./set-react-version.mjs";
 import { $, test } from "./test-e2e.mjs";
 
@@ -186,17 +186,6 @@ async function withReactNativeVersion(version, proc) {
   );
 
   if (version) {
-    if (toVersionNumber(version) >= v(0, 74, 0)) {
-      $("git", "apply", "scripts/android-nightly.patch");
-    } else if (toVersionNumber(version) < v(0, 73, 0)) {
-      const gradleWrapperProperties =
-        "example/android/gradle/wrapper/gradle-wrapper.properties";
-      const props = readTextFile(gradleWrapperProperties);
-      fs.writeFileSync(
-        gradleWrapperProperties,
-        props.replace(/gradle-[.0-9]*-bin\.zip/, "gradle-7.6.3-bin.zip")
-      );
-    }
     await setReactVersion(version, true);
   }
 
