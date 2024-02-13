@@ -52,15 +52,16 @@ function ensureAppiumAvailable() {
     const socket = new Socket();
     socket.setTimeout(60);
 
-    const onError = () => {
+    /** @type {(e: Error) => void} */
+    const onError = (e) => {
       socket.destroy();
-      reject(new Error("Could not find Appium server"));
+      reject(new Error(`Could not connect to Appium server: ${e}`));
     };
 
     socket.once("error", onError);
     socket.once("timeout", onError);
 
-    socket.connect(4723, "localhost", () => {
+    socket.connect(4723, "127.0.0.1", () => {
       socket.end();
       resolve();
     });

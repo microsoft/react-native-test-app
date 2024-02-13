@@ -34,7 +34,7 @@
     "@types/react": "~18.2.0",
     "appium": "^2.0.0",
     "appium-uiautomator2-driver": "^2.42.1",
-    "appium-xcuitest-driver": "^5.14.0",
+    "appium-xcuitest-driver": "^7.0.0",
     "react-native-test-app": "workspace:*",
     "webdriverio": "^8.11.2"
   },

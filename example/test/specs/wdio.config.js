@@ -14,7 +14,7 @@ exports.config = {
     const features = {
       "react:hermes": flags.includes("hermes"),
       "react:fabric": flags.includes("fabric"),
-      "react:concurrent": flags.includes("concurrent"),
+      "react:concurrent": flags.includes("fabric"),
     };
 
     switch (targetPlatform) {
