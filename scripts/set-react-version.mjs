@@ -470,6 +470,18 @@ if (import.meta.url.endsWith(script)) {
       } else if (numVersion < v(0, 73, 0)) {
         setGradleVersion("7.6.3");
       }
+
+      // `@react-native-webapis/web-storage` is not compatible with codegen 0.71
+      if (numVersion < v(0, 72, 0)) {
+        const exampleManifest = "example/package.json";
+        fs.writeFileSync(
+          exampleManifest,
+          readTextFile(exampleManifest).replace(
+            /\s+"@react-native-webapis\/web-storage":.*/,
+            ""
+          )
+        );
+      }
     });
   }
 }
