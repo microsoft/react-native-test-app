@@ -98,6 +98,20 @@ async function checkEnvironment() {
 }
 
 /**
+ * Disables [Jetifier](https://developer.android.com/tools/jetifier).
+ */
+function disableJetifier() {
+  const gradleProperties = "example/android/gradle.properties";
+  fs.writeFileSync(
+    gradleProperties,
+    readTextFile(gradleProperties).replace(
+      "android.enableJetifier=true",
+      "android.enableJetifier=false"
+    )
+  );
+}
+
+/**
  * Infer the React Native version an out-of-tree platform package is based on.
  * @param {Manifest} manifest
  * @returns {string}
@@ -365,6 +379,22 @@ async function getProfile(v, coreOnly) {
 }
 
 /**
+ * Sets Gradle Wrapper to specified version.
+ * @param {string} version
+ */
+function setGradleVersion(version) {
+  const gradleWrapperProperties =
+    "example/android/gradle/wrapper/gradle-wrapper.properties";
+  fs.writeFileSync(
+    gradleWrapperProperties,
+    readTextFile(gradleWrapperProperties).replace(
+      /gradle-[.0-9]*-bin\.zip/,
+      `gradle-${version}-bin.zip`
+    )
+  );
+}
+
+/**
  * Sets specified React Native version.
  * @param {string} version
  * @param {boolean} coreOnly
@@ -432,24 +462,9 @@ if (import.meta.url.endsWith(script)) {
           ? Number.MAX_SAFE_INTEGER
           : toVersionNumber(version);
       if (numVersion >= v(0, 74, 0)) {
-        const gradleProperties = "example/android/gradle.properties";
-        fs.writeFileSync(
-          gradleProperties,
-          readTextFile(gradleProperties).replace(
-            "android.enableJetifier=true",
-            "android.enableJetifier=false"
-          )
-        );
+        disableJetifier();
       } else if (numVersion < v(0, 73, 0)) {
-        const gradleWrapperProperties =
-          "example/android/gradle/wrapper/gradle-wrapper.properties";
-        fs.writeFileSync(
-          gradleWrapperProperties,
-          readTextFile(gradleWrapperProperties).replace(
-            /gradle-[.0-9]*-bin\.zip/,
-            "gradle-7.6.3-bin.zip"
-          )
-        );
+        setGradleVersion("7.6.3");
       }
     });
   }
