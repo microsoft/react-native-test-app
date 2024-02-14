@@ -4,18 +4,16 @@ require_relative('../ios/pod_helpers')
 
 class TestPodHelpers < Minitest::Test
   def test_assert_version
-    assert_raises(RuntimeError) do
-      assert_version('1.12.999')
-    end
-
-    assert_raises(RuntimeError) do
-      assert_version('1.15.0')
+    ['1.12.999', '1.15.0', '1.15.1'].each do |version|
+      assert_raises(RuntimeError) do
+        assert_version(version)
+      end
     end
 
     assert_silent do
-      assert_version('1.13.0')
-      assert_version('1.14.0')
-      assert_version('1.15.1')
+      ['1.13.0', '1.14.0', '1.15.2'].each do |version|
+        assert_version(version)
+      end
     end
   end
 

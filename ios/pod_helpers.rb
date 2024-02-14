@@ -3,9 +3,9 @@ def assert(condition, message)
 end
 
 def assert_version(pod_version)
-  if pod_version == '1.15.0'
-    raise 'CocoaPods 1.15.0 has a known issue with React Native; upgrade to ' \
-          '1.15.1 or higher'
+  if ['1.15.0', '1.15.1'].include?(pod_version)
+    raise "CocoaPods #{pod_version} does not work with React Native; upgrade " \
+          'to 1.15.2 or higher'
   end
 
   version = Gem::Version.new(pod_version).segments
