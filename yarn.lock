@@ -2941,13 +2941,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-webapis/web-storage@npm:^0.1.3":
-  version: 0.1.3
-  resolution: "@react-native-webapis/web-storage@npm:0.1.3"
+"@react-native-webapis/web-storage@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@react-native-webapis/web-storage@npm:0.2.0"
   peerDependencies:
     react: ">=18.2.0"
-    react-native: ">=0.71.0-0"
-  checksum: a500a02f2a85b534cb0a55e0e91ba33ac54773321015926e60c660211e619a17035e40ffe508a05aa46b8ed9df45f322cb3d446f1e431b05acd3c43e98913f54
+    react-native: ">=0.72.0-0"
+  checksum: c2e420a1ab765409f49ac95de6663478669a1dc942508ffddfc6e3ef91a69e25689148feb59ac867c4c84c149c6a230b2033720d9c375413a18fd88a3d49530a
   languageName: node
   linkType: hard
 
@@ -7263,7 +7263,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.1.6"
     "@babel/preset-env": "npm:^7.1.6"
-    "@react-native-webapis/web-storage": "npm:^0.1.3"
+    "@react-native-webapis/web-storage": "npm:^0.2.0"
     "@react-native/babel-preset": "npm:^0.73.19"
     "@react-native/metro-config": "npm:^0.73.3"
     "@rnx-kit/metro-config": "npm:^1.3.14"
