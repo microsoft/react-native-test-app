@@ -55,20 +55,6 @@ ext {
         }
     }
 
-    /**
-     * Returns the recommended Kotlin version for the specified React Native
-     * version.
-     */
-    def getDefaultKotlinVersion = { reactNativeVersion ->
-        // Kotlin version can be found in the template:
-        // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/build.gradle
-        if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 73, 0)) {
-            return "1.8.22"
-        } else {
-            return "1.7.21"
-        }
-    }
-
     reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
     autodetectReactNativeVersion = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
     enableNewArchitecture = isNewArchitectureEnabled(project)
@@ -78,7 +64,7 @@ ext {
     androidPluginVersion = getDefaultGradlePluginVersion(reactNativeVersion)
     kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
         ? rootProject.properties["KOTLIN_VERSION"]
-        : getDefaultKotlinVersion(reactNativeVersion)
+        : getKotlinVersion(rootDir)
     kspVersion = getKspVersion(kotlinVersion)
 
     // We need only set `ndkVersion` when building react-native from source.

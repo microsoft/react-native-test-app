@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 import java.security.MessageDigest
 
+ext._dependencies = [:]
 ext._manifest = null
 
 ext.checkEnvironment = { rootDir ->
@@ -83,6 +84,11 @@ ext.findFile = { fileName ->
  * path is a string.
  */
 ext.findNodeModulesPath = { packageName, baseDir ->
+    def module = _dependencies[packageName]
+    if (module != null) {
+        return module.path
+    }
+
     def basePath = baseDir.toPath().normalize()
 
     // Node's module resolution algorithm searches up to the root directory,
@@ -91,7 +97,9 @@ ext.findNodeModulesPath = { packageName, baseDir ->
         def candidatePath = Paths.get(basePath.toString(), "node_modules", packageName)
         if (candidatePath.toFile().exists()) {
             // Resolve the real path in case we're dealing with symlinks
-            return candidatePath.toRealPath().toString()
+            def resolvedPath = candidatePath.toRealPath().toString()
+            _dependencies[packageName] = [path: resolvedPath]
+            return resolvedPath
         }
 
         basePath = basePath.getParent()
@@ -145,6 +153,21 @@ ext.getArchitectures = { project ->
         : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
+ext.getKotlinVersion = { baseDir ->
+    def fallbackVersion = "1.7.21"
+
+    def packagePath = findNodeModulesPath("react-native", baseDir)
+    def versionCatalog = file("${packagePath}/gradle/libs.versions.toml")
+    if (!versionCatalog.exists()) {
+        return fallbackVersion
+    }
+
+    def m = versionCatalog.text =~ /kotlin = "([.0-9]+)"/
+    def version = m.size() > 0 ? m[0][1] : fallbackVersion
+    logger.info("Detected Kotlin version: ${version}")
+    return version
+}
+
 ext.getManifest = {
     if (_manifest == null) {
         def manifestFile = findFile("app.json")
@@ -157,10 +180,21 @@ ext.getManifest = {
     return _manifest
 }
 
-ext.getPackageVersion = { packageName, baseDir ->
+ext.getPackageManifest = { packageName, baseDir ->
+    def module = _dependencies[packageName]
+    if (module != null && module.manifest != null) {
+        return module.manifest
+    }
+
     def packagePath = findNodeModulesPath(packageName, baseDir)
     def packageJson = file("${packagePath}/package.json")
     def manifest = new JsonSlurper().parseText(packageJson.text)
+    _dependencies[packageName].manifest = manifest
+    return manifest
+}
+
+ext.getPackageVersion = { packageName, baseDir ->
+    def manifest = getPackageManifest(packageName, baseDir)
     return manifest["version"]
 }
 
