@@ -1,19 +1,19 @@
-*  @kelset @tido64
+*                    @kelset @tido64
 
 # Android
-*.gradle  @ArazAbishov @sweggersen
-android/  @ArazAbishov @sweggersen
+*.gradle             @kelset @tido64
+android/             @kelset @tido64
 
 # iOS
-*.podspec  @Saadnajmi
-*.rb       @Saadnajmi
-ios/       @Saadnajmi
+*.podspec            @Saadnajmi @kelset @tido64
+*.rb                 @Saadnajmi @kelset @tido64
+ios/                 @Saadnajmi @kelset @tido64
 
 # macOS
-macos/  @Saadnajmi
+macos/               @Saadnajmi @kelset @tido64
 
 # Windows
-windows/  @acoates-ms
+windows/             @acoates-ms @kelset @tido64
 
 # Miscellaneous
 /CODE_OF_CONDUCT.md  @microsoftopensource
