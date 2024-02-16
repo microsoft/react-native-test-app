@@ -136,7 +136,7 @@ def generate_info_plist!(project_root, target_platform, destination)
   font_files = ['.otf', '.ttf']
   fonts = []
   resources = resolve_resources(manifest, target_platform)
-  resources.each do |filename|
+  resources&.each do |filename|
     fonts << File.basename(filename) if font_files.include?(File.extname(filename))
   end
   unless fonts.empty?
