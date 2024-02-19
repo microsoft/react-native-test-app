@@ -1,7 +1,18 @@
 // @ts-check
 "use strict";
 
+const { spawnSync } = require("node:child_process");
 const path = require("node:path");
+const os = require("node:os");
+
+/**
+ * Escapes given string for use in Command Prompt.
+ * @param {string} str
+ * @returns {string}
+ */
+function cmdEscape(str) {
+  return str.replace(/([\^])/g, "^^^$1");
+}
 
 /**
  * Finds nearest relative path to a file or directory from current path.
@@ -29,6 +40,27 @@ function findNearest(
   }
 
   return null;
+}
+
+/**
+ * Invokes `npm` on the command line.
+ * @param {...string} args
+ */
+function npm(...args) {
+  switch (os.platform()) {
+    case "win32": {
+      return spawnSync(
+        "cmd.exe",
+        ["/d", "/s", "/c", `"npm ${args.map(cmdEscape).join(" ")}"`],
+        {
+          encoding: "utf-8",
+          windowsVerbatimArguments: true,
+        }
+      );
+    }
+    default:
+      return spawnSync("npm", args, { encoding: "utf-8" });
+  }
 }
 
 /**
@@ -108,6 +140,7 @@ function v(major, minor, patch) {
 
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
+exports.npm = npm;
 exports.readJSONFile = readJSONFile;
 exports.readTextFile = readTextFile;
 exports.requireTransitive = requireTransitive;

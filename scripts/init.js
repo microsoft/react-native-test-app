@@ -4,6 +4,7 @@
 
 const { spawnSync } = require("node:child_process");
 const path = require("node:path");
+const { npm: npmSync } = require("./helpers");
 
 /**
  * @template T
@@ -26,9 +27,7 @@ function memo(fn) {
  * @param {...string} args
  */
 function npm(...args) {
-  const { error, stderr, stdout } = spawnSync("npm", args, {
-    encoding: "utf-8",
-  });
+  const { error, stderr, stdout } = npmSync(...args);
   if (!stdout) {
     if (stderr) {
       console.error(stderr);
