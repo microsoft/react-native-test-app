@@ -1,18 +1,13 @@
 // @ts-check
 import { deepEqual, equal } from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import * as os from "node:os";
 import { describe, it } from "node:test";
+import { npm } from "../scripts/helpers.js";
 
 describe("npm pack", () => {
   // Ensure we include all files regardless of future changes in `npm-packlist`.
   // For more details, see https://github.com/npm/npm-packlist/issues/152.
   it("includes all files", () => {
-    const { status, stdout } = spawnSync(
-      os.platform() === "win32" ? "npm.cmd" : "npm",
-      ["pack", "--silent", "--dry-run", "--json"],
-      { encoding: "utf-8" }
-    );
+    const { status, stdout } = npm("pack", "--silent", "--dry-run", "--json");
 
     equal(status, 0);
 
