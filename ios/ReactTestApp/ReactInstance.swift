@@ -26,10 +26,19 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
         super.init()
 
+        // Bridged
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(onJavaScriptLoaded(_:)),
             name: .RCTJavaScriptDidLoad,
+            object: nil
+        )
+
+        // Bridgeless
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onJavaScriptLoaded(_:)),
+            name: .ReactInstanceDidLoadBundle,
             object: nil
         )
 
@@ -103,10 +112,12 @@ final class ReactInstance: NSObject, RNXHostConfig {
     // MARK: - RCTBridgeDelegate details
 
     func sourceURL(for _: RCTBridge) -> URL? {
-        if let remoteBundleURL {
-            return remoteBundleURL
-        }
+        return remoteBundleURL ?? bundleURL()
+    }
 
+    // MARK: - Private
+
+    private func bundleURL() -> URL? {
         let embeddedBundleURL = entryFiles()
             .lazy
             .compactMap {
@@ -118,8 +129,6 @@ final class ReactInstance: NSObject, RNXHostConfig {
             .first
         return embeddedBundleURL ?? ReactInstance.jsBundleURL()
     }
-
-    // MARK: - Private
 
     private func entryFiles() -> [String] {
         #if os(iOS)
@@ -140,20 +149,14 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
     @objc
     private func onJavaScriptLoaded(_ notification: Notification) {
-        guard let bridge = notification.userInfo?["bridge"] as? RCTBridge,
-              let currentBundleURL = bridge.bundleURL
-        else {
-            return
-        }
-
-        RCTExecuteOnMainQueue { [weak self] in
-            guard let devMenu = bridge.devMenu else {
+        host?.using(module: RCTDevMenu.self) { [weak self] module in
+            guard let devMenu = module as? RCTDevMenu else {
                 return
             }
 
             devMenu.add(RCTDevMenuItem.buttonItem(
                 titleBlock: {
-                    currentBundleURL.isFileURL
+                    self?.remoteBundleURL == nil
                         ? "Load From Dev Server"
                         : "Load Embedded JS Bundle"
                 },
@@ -162,10 +165,10 @@ final class ReactInstance: NSObject, RNXHostConfig {
                         return
                     }
 
-                    if currentBundleURL.isFileURL {
+                    if strongSelf.remoteBundleURL == nil {
                         strongSelf.remoteBundleURL = ReactInstance.jsBundleURL()
                     } else {
-                        strongSelf.remoteBundleURL = nil
+                        strongSelf.remoteBundleURL = strongSelf.bundleURL()
                     }
                 }
             ))

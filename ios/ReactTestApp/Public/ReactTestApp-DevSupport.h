@@ -10,4 +10,6 @@ extern NSNotificationName const ReactTestAppDidRegisterAppsNotification;
 
 extern NSNotificationName const ReactTestAppSceneDidOpenURLNotification;
 
+extern NSNotificationName const ReactInstanceDidLoadBundle;
+
 NS_ASSUME_NONNULL_END

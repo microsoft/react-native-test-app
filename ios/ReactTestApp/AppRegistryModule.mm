@@ -16,8 +16,6 @@ using facebook::jsi::Runtime;
 
 @implementation RTAAppRegistryModule
 
-@synthesize bridge = _bridge;
-
 RCT_EXPORT_MODULE();
 
 + (BOOL)requiresMainQueueSetup
@@ -38,13 +36,14 @@ RCT_EXPORT_MODULE();
 
 - (void)javascriptDidLoadNotification:(NSNotification *)note
 {
-    if (![self.bridge isKindOfClass:[RCTCxxBridge class]] ||
-        ![self.bridge respondsToSelector:@selector(runtime)] ||
-        ![self.bridge respondsToSelector:@selector(invokeAsync:)]) {
+    id bridge = note.userInfo[@"bridge"];
+    if (![bridge isKindOfClass:[RCTCxxBridge class]] ||
+        ![bridge respondsToSelector:@selector(runtime)] ||
+        ![bridge respondsToSelector:@selector(invokeAsync:)]) {
         return;
     }
 
-    auto batchedBridge = (RCTCxxBridge *)self.bridge;
+    RCTCxxBridge *batchedBridge = (RCTCxxBridge *)bridge;
     [batchedBridge invokeAsync:[batchedBridge] {
         auto runtime = static_cast<Runtime *>(batchedBridge.runtime);
         if (runtime == nullptr) {
