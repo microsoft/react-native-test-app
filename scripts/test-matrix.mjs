@@ -14,7 +14,8 @@ import { setReactVersion } from "./set-react-version.mjs";
 import { $, test } from "./test-e2e.mjs";
 
 /**
- * @typedef {"android" | "ios"} Platform
+ * @typedef {"ios" | "macos" | "visionos"} ApplePlatform
+ * @typedef {ApplePlatform | "android" | "windows"} Platform
  */
 
 const PACKAGE_MANAGER = "yarn";
@@ -53,8 +54,8 @@ const getIOSSimulatorName = (() => {
   };
 })();
 
-function log(message = "") {
-  console.log(TAG, message);
+function log(message = "", tag = TAG) {
+  console.log(tag, message);
 }
 
 /**
@@ -116,7 +117,7 @@ function configure(platform, { hermes, newArch }) {
 
 /**
  * Invokes `pod install` for specified platform.
- * @param {"ios" | "macos"} platform
+ * @param {ApplePlatform} platform
  */
 function installPods(platform) {
   const options = {
@@ -149,8 +150,8 @@ function run(script, logPath) {
  */
 function showBanner(message) {
   log();
-  log(message);
-  log();
+  log(message, "┗━━▶");
+  log("", "");
 }
 
 /**
@@ -188,9 +189,12 @@ async function withReactNativeVersion(version, proc) {
 
   if (version) {
     await setReactVersion(version, true);
+  } else {
+    log();
   }
 
   $(PACKAGE_MANAGER, "install");
+  log();
 
   let appiumServer;
   let devServer;

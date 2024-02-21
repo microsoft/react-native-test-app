@@ -10,7 +10,7 @@ describe("updatePackageManifest()", () => {
     updatePackageManifestActual(p, cfg, fs);
 
   const devDependencies = {
-    "@rnx-kit/metro-config": "^1.3.14",
+    "@rnx-kit/metro-config": "^1.3.15",
     mkdirp: "^1.0.0",
     "react-native-test-app": "^0.0.1-dev",
   };

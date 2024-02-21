@@ -584,7 +584,7 @@ export function updatePackageManifest(
     readManifest();
 
   manifest["devDependencies"] = mergeObjects(manifest["devDependencies"], {
-    "@rnx-kit/metro-config": "^1.3.14",
+    "@rnx-kit/metro-config": "^1.3.15",
     mkdirp: "^1.0.0",
     [reactTestAppName]: `^${reactTestAppVersion}`,
   });

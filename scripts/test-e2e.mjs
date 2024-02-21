@@ -7,7 +7,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { Socket } from "node:net";
-import { isMain } from "./helpers";
+import { isMain } from "./helpers.js";
 
 /**
  * Invokes a shell command with optional arguments.
