@@ -251,18 +251,18 @@ are the things that you'll need to do:
 If the test script succeeds, we are ready to open a PR:
 
 - Update [`package.json`][] to include this new version
-- When opening the PR, make sure to link to the issue we created earlier
+- When opening the PR, make sure to [link to the issue][] we created earlier
 - Copy and paste the table below into the description, modify it to fit the
   scope of the current PR
   - The test script we ran should have generated screenshots for the table
 
 ```markdown
-| Configuration   | Android | iOS  | macOS | Windows |
-| :-------------- | :-----: | :--: | :---: | :-----: |
-| JSC             |  TODO   | TODO | TODO  |  TODO   |
-| Hermes          |  TODO   | TODO | TODO  |  TODO   |
-| Fabric          |  TODO   | TODO | TODO  |  TODO   |
-| Fabric + Hermes |  TODO   | TODO | TODO  |  TODO   |
+| Configuration | JSC  | Hermes | Fabric | Fabric + Hermes |
+| :------------ | :--: | :----: | :----: | :-------------: |
+| Android       | n/a  |  TODO  |  n/a   |      TODO       |
+| iOS           | TODO |  TODO  |  TODO  |      TODO       |
+| macOS         | TODO |  TODO  |  TODO  |      TODO       |
+| Windows       | n/a  |  TODO  |  n/a   |      TODO       |
 ```
 
 While the PR is open:
@@ -371,5 +371,7 @@ additions.
 [conventional commit format]: https://conventionalcommits.org
 [every Monday morning]:
   https://github.com/microsoft/react-native-test-app/blob/trunk/.github/renovate.json
+[link to the issue]:
+  https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue
 [supported versions table]:
   https://github.com/microsoft/react-native-test-app/wiki#react-native-versions
