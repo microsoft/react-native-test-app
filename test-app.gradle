@@ -76,7 +76,7 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
 
     applyNativeModulesSettingsGradle(settings)
 
-    if (tryGetProperty(settings, "react.buildFromSource") == "true") {
+    if (settings.hasProperty("react.buildFromSource") && settings["react.buildFromSource"] == "true") {
         // https://reactnative.dev/contributing/how-to-build-from-source
         settings.includeBuild(reactNativeDir) {
             dependencySubstitution {

@@ -62,9 +62,7 @@ ext {
     usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
 
     androidPluginVersion = getDefaultGradlePluginVersion(reactNativeVersion)
-    kotlinVersion = rootProject.hasProperty("KOTLIN_VERSION")
-        ? rootProject.properties["KOTLIN_VERSION"]
-        : getKotlinVersion(rootDir)
+    kotlinVersion = rootProject.findProperty("KOTLIN_VERSION") ?: getKotlinVersion(rootDir)
     kspVersion = getKspVersion(kotlinVersion)
 
     // We need only set `ndkVersion` when building react-native from source.
