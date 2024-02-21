@@ -159,7 +159,6 @@
     "appium/yaml": "^2.3.4",
     "body-parser": "~1.20.2",
     "bplist-parser": "~0.3.2",
-    "ip": "2.0.1",
     "safe-buffer": "~5.2.1"
   },
   "workspaces": [
