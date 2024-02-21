@@ -39,6 +39,7 @@ module.exports = {
         }
 
         const noop = () => null;
+        const mkdirOptions = { recursive: true, mode: 0o755 };
         const rmOptions = { force: true, maxRetries: 3, recursive: true };
 
         const projectRoot = normalize(project.cwd);
@@ -62,6 +63,8 @@ module.exports = {
               ) {
                 if (err?.code !== "ENOENT") {
                   fs.rmSync(linkPath, rmOptions);
+                } else {
+                  fs.mkdirSync(nodeModulesDir, mkdirOptions);
                 }
                 if (os.platform() === "win32") {
                   fs.symlink(projectRoot, linkPath, "junction", noop);
