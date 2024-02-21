@@ -50,9 +50,10 @@ test("react-native config", async (t) => {
   const cliMajorVersion = Number(getCliVersion().split(".")[0]);
 
   const currentDir = process.cwd();
-  const exampleRoot = path.sep + path.join("react-native-test-app", "example");
+  const projectRoot = path.sep + "react-native-test-app";
+  const exampleRoot = path.join(projectRoot, "example");
   const reactNativePath = path.join(
-    exampleRoot,
+    projectRoot,
     "node_modules",
     "react-native"
   );
