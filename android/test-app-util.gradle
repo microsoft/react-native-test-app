@@ -108,10 +108,6 @@ ext.findNodeModulesPath = { packageName, baseDir ->
     return null
 }
 
-ext.tryGetProperty = { project, property ->
-    return project.hasProperty(property) ? project.getProperty(property) : null
-}
-
 ext.getAppName = {
     def manifest = getManifest()
     if (manifest != null) {
@@ -142,12 +138,8 @@ ext.getApplicationId = {
 }
 
 ext.getArchitectures = { project ->
-    def reactArchs = tryGetProperty(project, "react.nativeArchitectures")
-    if (reactArchs != null) {
-        return reactArchs.split(",")
-    }
-
-    def archs = tryGetProperty(project, "reactNativeArchitectures")
+    def archs = project.findProperty("react.nativeArchitectures")
+        ?: project.findProperty("reactNativeArchitectures")
     return archs != null
         ? archs.split(",")
         : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
@@ -279,9 +271,9 @@ ext.getVersionName = {
 
 ext.isBridgelessEnabled = { project, isNewArchEnabled ->
     if (isNewArchEnabled) {
-        def reactBridgelessEnabled = tryGetProperty(project, "react.bridgelessEnabled")
-        def bridgelessEnabled = tryGetProperty(project, "bridgelessEnabled")
-        if (reactBridgelessEnabled == "true" || bridgelessEnabled == "true") {
+        def bridgelessEnabled = project.findProperty("react.bridgelessEnabled")
+            ?: project.findProperty("bridgelessEnabled")
+        if (bridgelessEnabled == "true") {
             def version = getPackageVersionNumber("react-native", project.rootDir)
             def isSupported = version == 0 || version >= v(0, 73, 0)
             if (!isSupported) {
@@ -302,9 +294,9 @@ ext.isFabricEnabled = { project ->
 }
 
 ext.isNewArchitectureEnabled = { project ->
-    def reactNewArchEnabled = tryGetProperty(project, "react.newArchEnabled")
-    def newArchEnabled = tryGetProperty(project, "newArchEnabled")
-    if (reactNewArchEnabled == "true" || newArchEnabled == "true") {
+    def newArchEnabled = project.findProperty("react.newArchEnabled")
+        ?: project.findProperty("newArchEnabled")
+    if (newArchEnabled == "true") {
         def version = getPackageVersionNumber("react-native", project.rootDir)
         def isSupported = version == 0 || version >= v(0, 71, 0)
         if (!isSupported) {
