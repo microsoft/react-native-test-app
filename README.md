@@ -12,6 +12,7 @@
 - [Quick Start ⚡](#quick-start-)
 - [Migrate an Existing Test App 📖](https://github.com/microsoft/react-native-test-app/wiki/Migrate-an-Existing-Test-App)
 - [Configuring the Test App 📖](https://github.com/microsoft/react-native-test-app/wiki/Manifest-%28app.json%29)
+- [Upgrading the Test App 📖](https://github.com/microsoft/react-native-test-app/wiki/Upgrading)
 - [Learn More 🔍](#learn-more-)
 - [Libraries Using RNTA 📚](#libraries-using-rnta-)
 - [Known Issues ⚠️](#known-issues-️)
