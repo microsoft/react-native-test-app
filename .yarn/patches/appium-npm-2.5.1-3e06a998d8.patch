@@ -1,0 +1,25 @@
+diff --git a/build/lib/extension/manifest.js b/build/lib/extension/manifest.js
+index 5b650a6ff4dbe737ffdf8821e255e9e4e3d89da3..6179965231285c3ae1d3cddee0c45c57ab3fba03 100644
+--- a/build/lib/extension/manifest.js
++++ b/build/lib/extension/manifest.js
+@@ -195,12 +195,14 @@ class Manifest {
+             onMatch(path_1.default.join(__classPrivateFieldGet(this, _Manifest_appiumHome, "f"), 'package.json'), true),
+         ];
+         // add dependencies to the queue
+-        const filepaths = await support_1.fs.glob('node_modules/{*,@*/*}/package.json', {
+-            cwd: __classPrivateFieldGet(this, _Manifest_appiumHome, "f"),
+-            absolute: true,
+-        });
+-        for (const filepath of filepaths) {
+-            queue.push(onMatch(filepath));
++        const appPkgPath = path_1.default.join(process.cwd(), 'package.json');
++        const appPkg = JSON.parse(await support_1.fs.readFile(appPkgPath, 'utf8'));
++        for (const name of Object.keys(appPkg.devDependencies)) {
++          try {
++            queue.push(onMatch(require.resolve(name + "/package.json")));
++          } catch (_) {
++            // Ignore packages that don't export `./package.json`
++          }
+         }
+         // wait for everything to finish
+         await bluebird_1.default.all(queue);
