@@ -24,7 +24,7 @@ class TurboModuleManagerDelegate protected constructor(
     packages: PackagesList?
 ) : ReactTurboModuleManagerDelegate(reactApplicationContext, packages) {
 
-    external override fun initHybrid(): HybridData?
+    external override fun initHybrid(): HybridData
 
     external fun canCreateTurboModule(moduleName: String?): Boolean
 
