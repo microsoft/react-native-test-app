@@ -15,10 +15,14 @@ using facebook::react::TurboModule;
 
 namespace
 {
-    std::shared_ptr<TurboModule> cxxModuleProvider(const std::string &,
-                                                   const std::shared_ptr<CallInvoker> &)
+    std::shared_ptr<TurboModule> cxxModuleProvider(const std::string &name,
+                                                   const std::shared_ptr<CallInvoker> &jsInvoker)
     {
+#if __has_include(<ReactCommon/CxxReactPackage.h>)
+        return facebook::react::rncli_cxxModuleProvider(name, jsInvoker);
+#else
         return nullptr;
+#endif  // __has_include(<ReactCommon/CxxReactPackage.h>)
     }
 }  // namespace
 
