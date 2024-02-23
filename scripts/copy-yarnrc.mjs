@@ -6,7 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 /**
- * Copies specied `.yarnrc.yaml`.
+ * Copies specified `.yarnrc.yaml`.
  * @param {string} src
  * @param {string} dst
  */
