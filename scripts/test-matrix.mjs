@@ -8,6 +8,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
+import { fileURLToPath } from "node:url";
 import { readTextFile } from "./helpers.js";
 import { setReactVersion } from "./set-react-version.mjs";
 import { $, test } from "./test-e2e.mjs";
@@ -19,7 +20,7 @@ import { $, test } from "./test-e2e.mjs";
 const PACKAGE_MANAGER = "yarn";
 const TAG = "┃";
 
-const rootDir = new URL("..", import.meta.url).pathname;
+const rootDir = fileURLToPath(new URL("..", import.meta.url));
 
 const getIOSSimulatorName = (() => {
   let deviceName = "";

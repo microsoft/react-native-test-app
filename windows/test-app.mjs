@@ -5,6 +5,7 @@ import { spawn } from "node:child_process";
 import * as nodefs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 import { v5 as uuidv5 } from "uuid";
 import {
   findNearest,
@@ -189,8 +190,9 @@ function getNuGetDependencies(rnWindowsPath, fs = nodefs) {
   }
 
   // Remove dependencies managed by us
-  const config = new URL("ReactTestApp/packages.config", import.meta.url)
-    .pathname;
+  const config = fileURLToPath(
+    new URL("ReactTestApp/packages.config", import.meta.url)
+  );
   const matches = readTextFile(config, fs).matchAll(/package id="(.+?)"/g);
   for (const m of matches) {
     const id = m[1].toLowerCase();
@@ -711,7 +713,7 @@ export function generateSolution(
 
   const copyTasks = projectFiles.map(([file, replacements]) =>
     copyAndReplace(
-      new URL(`${projDir}/${file}`, import.meta.url).pathname,
+      fileURLToPath(new URL(`${projDir}/${file}`, import.meta.url)),
       path.join(projectFilesDestPath, file),
       replacements,
       undefined,
@@ -781,7 +783,9 @@ export function generateSolution(
   );
   if (!fs.existsSync(experimentalFeaturesPropsPath)) {
     copyAndReplace(
-      new URL(experimentalFeaturesPropsFilename, import.meta.url).pathname,
+      fileURLToPath(
+        new URL(experimentalFeaturesPropsFilename, import.meta.url)
+      ),
       experimentalFeaturesPropsPath,
       {
         ...(useHermes != null && (usePackageReferences || hermesVersion)

@@ -7,6 +7,7 @@ import * as https from "node:https";
 import { createRequire } from "node:module";
 import * as os from "node:os";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 import prompts from "prompts";
 import { configure } from "./configure.js";
 import { npm as npmSync, readJSONFile } from "./helpers.js";
@@ -305,7 +306,7 @@ function main() {
           name,
           packagePath,
           templatePath,
-          testAppPath: new URL("..", import.meta.url).pathname,
+          testAppPath: fileURLToPath(new URL("..", import.meta.url)),
           targetVersion,
           platforms,
           flatten: true,
