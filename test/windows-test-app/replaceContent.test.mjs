@@ -1,7 +1,7 @@
 // @ts-check
 import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
-import { replaceContent } from "../../windows/test-app.js";
+import { replaceContent } from "../../windows/test-app.mjs";
 
 describe("replaceContent()", () => {
   it("returns same string with no replacements", () => {

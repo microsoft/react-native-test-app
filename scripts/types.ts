@@ -82,9 +82,9 @@ type InferredOptionTypes<O> = { [key in keyof O]: InferredOptionType<O[key]> };
 
 export type Args<O> = InferredOptionTypes<O> & { _: string[] };
 
-/***********************
- * windows/test-app.js *
- ***********************/
+/************************
+ * windows/test-app.mjs *
+ ************************/
 
 type Resources = string[] | { windows?: string[] };
 

@@ -2,6 +2,7 @@
 "use strict";
 
 const { spawnSync } = require("node:child_process");
+const nodefs = require("node:fs");
 const path = require("node:path");
 const os = require("node:os");
 
@@ -23,7 +24,7 @@ function cmdEscape(str) {
 function findNearest(
   fileOrDirName,
   currentDir = path.resolve(""),
-  fs = require("node:fs")
+  fs = nodefs
 ) {
   const rootDirectory =
     process.platform === "win32"
@@ -68,7 +69,7 @@ function npm(...args) {
  * @param {import("node:fs").PathLike} path
  * @returns {string}
  */
-function readTextFile(path, fs = require("node:fs")) {
+function readTextFile(path, fs = nodefs) {
   return fs.readFileSync(path, { encoding: "utf-8" });
 }
 
@@ -78,7 +79,7 @@ function readTextFile(path, fs = require("node:fs")) {
  * @param {import("node:fs").PathLike} path
  * @returns {T}
  */
-function readJSONFile(path, fs = require("node:fs")) {
+function readJSONFile(path, fs = nodefs) {
   return JSON.parse(readTextFile(path, fs));
 }
 
@@ -87,11 +88,7 @@ function readJSONFile(path, fs = require("node:fs")) {
  * @param {string} module
  * @returns {string}
  */
-function getPackageVersion(
-  module,
-  startDir = process.cwd(),
-  fs = require("node:fs")
-) {
+function getPackageVersion(module, startDir = process.cwd(), fs = nodefs) {
   const options = { paths: [startDir] };
   const manifestPath = require.resolve(`${module}/package.json`, options);
   const mod = readJSONFile(manifestPath, fs);

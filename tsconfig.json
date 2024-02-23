@@ -6,7 +6,6 @@
   "include": [
     "plugins/**/*.js",
     "react-native.config.js",
-    "scripts/**/*.js",
-    "windows/test-app.js"
+    "scripts/**/*.js"
   ]
 }

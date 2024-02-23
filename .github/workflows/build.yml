@@ -134,7 +134,7 @@ jobs:
           echo "::remove-matcher owner=swiftlint::"
       - name: Smoke test `npx --package react-native-test-app@latest init`
         run: |
-          node ./react-native-test-app/scripts/init.js --destination app --name App -p android -p ios -p macos -p windows
+          node ./react-native-test-app/scripts/init.mjs --destination app --name App -p android -p ios -p macos -p windows
         working-directory: ..
       - name: Smoke test `setup-react-native` action
         uses: ./.github/actions/setup-react-native

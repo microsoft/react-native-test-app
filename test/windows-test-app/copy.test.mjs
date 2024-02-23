@@ -1,7 +1,7 @@
 // @ts-check
 import { equal, match } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
-import { copy as copyActual } from "../../windows/test-app.js";
+import { copy as copyActual } from "../../windows/test-app.mjs";
 import { fs, setMockFiles, toJSON } from "../fs.mock.mjs";
 
 /**

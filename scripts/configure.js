@@ -2,13 +2,14 @@
 // @ts-check
 "use strict";
 
-require("./link")(module);
-
+/**
+ * This script (and its dependencies) currently cannot be converted to ESM
+ * because it is consumed in `react-native.config.js`.
+ */
 const chalk = require("chalk");
-const fs = require("node:fs");
+const nodefs = require("node:fs");
 const path = require("node:path");
 const semver = require("semver");
-const { parseArgs } = require("../scripts/parseargs");
 const {
   findNearest,
   getPackageVersion,
@@ -17,6 +18,7 @@ const {
   toVersionNumber,
   v,
 } = require("./helpers");
+const { parseArgs } = require("./parseargs");
 const {
   appManifest,
   buildGradle,
@@ -237,7 +239,7 @@ function windowsProjectPath(sourceDir) {
  * @param {ProjectConfig} configuration
  * @returns {Partial<ProjectParams>}
  */
-function configureProjects({ android, ios, windows }) {
+function configureProjects({ android, ios, windows }, fs = nodefs) {
   const reactNativeConfig = findNearest("react-native.config.js");
   if (!reactNativeConfig) {
     throw new Error("Failed to find `react-native.config.js`");
@@ -286,7 +288,10 @@ function configureProjects({ android, ios, windows }) {
  * @param {ConfigureParams} params
  * @returns {string | FileCopy}
  */
-function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
+function reactNativeConfig(
+  { name, testAppPath, platforms, flatten },
+  fs = nodefs
+) {
   const shouldFlatten = flatten && platforms.length === 1;
   if (shouldFlatten) {
     switch (platforms[0]) {
@@ -329,7 +334,7 @@ function reactNativeConfig({ name, testAppPath, platforms, flatten }) {
  * Additionally, there is a common {@link Configuration} object that is always
  * included by {@link gatherConfig} during {@link configure}.
  */
-const getConfig = (() => {
+const getConfig = ((fs = nodefs) => {
   /** @type {PlatformConfiguration} */
   let configuration;
   return (
@@ -605,7 +610,7 @@ function gatherConfig(params, disableCache = false) {
  * @param {string} packagePath
  * @returns {string}
  */
-function getAppName(packagePath, fs = require("node:fs")) {
+function getAppName(packagePath, fs = nodefs) {
   try {
     const { name } = readJSONFile(path.join(packagePath, "app.json"), fs);
     if (typeof name === "string" && name) {
@@ -625,11 +630,7 @@ function getAppName(packagePath, fs = require("node:fs")) {
  * @param {Configuration} config
  * @returns {boolean}
  */
-function isDestructive(
-  packagePath,
-  { files, oldFiles },
-  fs = require("node:fs")
-) {
+function isDestructive(packagePath, { files, oldFiles }, fs = nodefs) {
   const modified = Object.keys(files).reduce((result, file) => {
     const targetPath = path.join(packagePath, file);
     if (fs.existsSync(targetPath)) {
@@ -676,15 +677,11 @@ function removeAllFiles(files, destination, fs = require("node:fs/promises")) {
 
 /**
  * Returns the package manifest with additions for react-native-test-app.
- * @param {fs.PathLike} path
+ * @param {import("node:fs").PathLike} path
  * @param {Configuration} config
  * @returns {Record<string, unknown>}
  */
-function updatePackageManifest(
-  path,
-  { dependencies, scripts },
-  fs = require("node:fs")
-) {
+function updatePackageManifest(path, { dependencies, scripts }, fs = nodefs) {
   const manifest = readJSONFile(path, fs);
 
   manifest["scripts"] = mergeObjects(manifest["scripts"], scripts);
@@ -753,7 +750,7 @@ function writeAllFiles(files, destination, fs = require("node:fs/promises")) {
  * @param {ConfigureParams} params
  * @returns {number}
  */
-function configure(params) {
+function configure(params, fs = nodefs) {
   const { force, packagePath } = params;
   const config = gatherConfig(params);
 
@@ -799,7 +796,6 @@ exports.isDestructive = isDestructive;
 exports.mergeConfig = mergeConfig;
 exports.projectRelativePath = projectRelativePath;
 exports.reactNativeConfig = reactNativeConfig;
-exports.readJSONFile = readJSONFile;
 exports.removeAllFiles = removeAllFiles;
 exports.sortByKeys = sortByKeys;
 exports.updatePackageManifest = updatePackageManifest;

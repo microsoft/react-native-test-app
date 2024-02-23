@@ -3,7 +3,7 @@ import { equal, fail, match, rejects } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { promisify } from "node:util";
 import { readTextFile as readTextFileActual } from "../../scripts/helpers.js";
-import { copyAndReplace as copyAndReplaceActual } from "../../windows/test-app.js";
+import { copyAndReplace as copyAndReplaceActual } from "../../windows/test-app.mjs";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 import { spy } from "../spy.mjs";
 

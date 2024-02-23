@@ -12144,9 +12144,9 @@ __metadata:
       optional: true
   bin:
     configure-test-app: scripts/configure.js
-    init: scripts/init.js
-    init-test-app: scripts/init.js
-    install-windows-test-app: windows/test-app.js
+    init: scripts/init.mjs
+    init-test-app: scripts/init.mjs
+    install-windows-test-app: windows/test-app.mjs
   languageName: unknown
   linkType: soft
 
