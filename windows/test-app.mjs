@@ -899,7 +899,7 @@ export function generateSolution(
 }
 
 const [, script] = process.argv;
-if (import.meta.url.endsWith(script)) {
+if (script === fileURLToPath(import.meta.url)) {
   parseArgs(
     "Generate a Visual Studio solution for React Test App",
     {
