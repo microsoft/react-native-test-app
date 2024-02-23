@@ -9,7 +9,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import prompts from "prompts";
-import { configure } from "./configure.js";
+import { configure } from "./configure.mjs";
 import { npm as npmSync, readJSONFile } from "./helpers.js";
 import { parseArgs } from "./parseargs.js";
 
@@ -129,7 +129,7 @@ function getPackageName(platform) {
  *   - Currently installed `react-native` version
  *   - Latest version from npm
  *
- * @param {import("./configure").Platform[]} platforms
+ * @param {import("./configure.mjs").Platform[]} platforms
  * @returns {string}
  */
 function getVersion(platforms) {
@@ -178,7 +178,7 @@ function getVersion(platforms) {
 
 /**
  * Returns the React Native version and path to the template.
- * @param {import("./configure").Platform[]} platforms
+ * @param {import("./configure.mjs").Platform[]} platforms
  * @returns {Promise<[string] | [string, string]>}
  */
 function getTemplate(platforms) {
@@ -264,7 +264,7 @@ function main() {
          * @type {{
          *   name?: string;
          *   packagePath?: string;
-         *   platforms?: import("./configure").Platform[];
+         *   platforms?: import("./configure.mjs").Platform[];
          * }}
          */
         const { name, packagePath, platforms } = await prompts([

@@ -1,7 +1,7 @@
 // @ts-check
 import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
-import { error, warn } from "../../scripts/configure.js";
+import { error, warn } from "../../scripts/configure.mjs";
 import { spy } from "../spy.mjs";
 
 describe("console", () => {

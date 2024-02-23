@@ -1,6 +1,6 @@
-/****************
- * configure.js *
- ****************/
+/*****************
+ * configure.mjs *
+ *****************/
 
 export type FileCopy = { source: string };
 

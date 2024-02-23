@@ -1,7 +1,7 @@
 // @ts-check
 import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
-import { join } from "../../scripts/template.js";
+import { join } from "../../scripts/template.mjs";
 
 describe("join()", () => {
   it("joins lines", () => {

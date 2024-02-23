@@ -1,7 +1,7 @@
 // @ts-check
 import { equal } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
-import { isDestructive as isDestructiveActual } from "../../scripts/configure.js";
+import { isDestructive as isDestructiveActual } from "../../scripts/configure.mjs";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 import { spy } from "../spy.mjs";
 
@@ -9,7 +9,7 @@ describe("isDestructive()", () => {
   /**
    * Example output:
    *
-   *   % ../scripts/configure.js
+   *   % ../scripts/configure.mjs
    *   [!] The following files will be overwritten:
    *            .watchmanconfig
    *            android/build.gradle

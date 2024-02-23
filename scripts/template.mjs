@@ -1,11 +1,11 @@
-const path = require("node:path");
+import * as path from "node:path";
 
 /**
  * Joins all specified lines into a single string.
  * @param {...string} lines
  * @returns {string}
  */
-function join(...lines) {
+export function join(...lines) {
   return lines.join("\n");
 }
 
@@ -14,7 +14,7 @@ function join(...lines) {
  * @param {Record<string, unknown>} obj
  * @return {string}
  */
-function serialize(obj) {
+export function serialize(obj) {
   return JSON.stringify(obj, undefined, 2) + "\n";
 }
 
@@ -22,7 +22,7 @@ function serialize(obj) {
  * @param {string} name
  * @returns {string}
  */
-function appManifest(name) {
+export function appManifest(name) {
   return serialize({
     name,
     displayName: name,
@@ -45,7 +45,7 @@ function appManifest(name) {
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
  * @returns {string}
  */
-function buildGradle(testAppRelPath) {
+export function buildGradle(testAppRelPath) {
   const rnPath = path.posix.join(path.dirname(testAppRelPath), "react-native");
   return join(
     "buildscript {",
@@ -83,7 +83,7 @@ function buildGradle(testAppRelPath) {
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
  * @returns {string}
  */
-function podfileIOS(name, testAppRelPath) {
+export function podfileIOS(name, testAppRelPath) {
   return join(
     `require_relative '${testAppRelPath}/test_app'`,
     "",
@@ -99,7 +99,7 @@ function podfileIOS(name, testAppRelPath) {
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
  * @returns {string}
  */
-function podfileMacOS(name, testAppRelPath) {
+export function podfileMacOS(name, testAppRelPath) {
   return join(
     `require_relative '${testAppRelPath}/macos/test_app'`,
     "",
@@ -113,7 +113,7 @@ function podfileMacOS(name, testAppRelPath) {
 /**
  * @returns {string}
  */
-function reactNativeConfigAndroidFlat() {
+export function reactNativeConfigAndroidFlat() {
   return join(
     "const project = (() => {",
     "  try {",
@@ -138,7 +138,7 @@ function reactNativeConfigAndroidFlat() {
 /**
  * @returns {string}
  */
-function reactNativeConfigAppleFlat() {
+export function reactNativeConfigAppleFlat() {
   return join(
     "const project = (() => {",
     "  try {",
@@ -164,20 +164,17 @@ function reactNativeConfigAppleFlat() {
  * @param {string} name Solution file name (without extension)
  * @returns {string}
  */
-function reactNativeConfigWindowsFlat(name) {
+export function reactNativeConfigWindowsFlat(name) {
   return join(
     "const project = (() => {",
-    '  const path = require("node:path");',
-    '  const sourceDir = "windows";',
     "  try {",
-    '    const { windowsProjectPath } = require("react-native-test-app");',
-    "    return {",
+    '    const { configureProjects } = require("react-native-test-app");',
+    "    return configureProjects({",
     "      windows: {",
-    "        sourceDir,",
+    '        sourceDir: ".",',
     `        solutionFile: "${name}.sln",`,
-    "        project: windowsProjectPath(path.join(__dirname, sourceDir)),",
     "      },",
-    "    };",
+    "    });",
     "  } catch (_) {",
     "    return undefined;",
     "  }",
@@ -196,7 +193,7 @@ function reactNativeConfigWindowsFlat(name) {
  * @param {string} testAppRelPath Relative path to `react-native-test-app`
  * @returns {string}
  */
-function settingsGradle(name, testAppRelPath) {
+export function settingsGradle(name, testAppRelPath) {
   return join(
     "pluginManagement {",
     "    repositories {",
@@ -213,14 +210,3 @@ function settingsGradle(name, testAppRelPath) {
     ""
   );
 }
-
-exports.appManifest = appManifest;
-exports.buildGradle = buildGradle;
-exports.join = join;
-exports.podfileIOS = podfileIOS;
-exports.podfileMacOS = podfileMacOS;
-exports.reactNativeConfigAndroidFlat = reactNativeConfigAndroidFlat;
-exports.reactNativeConfigAppleFlat = reactNativeConfigAppleFlat;
-exports.reactNativeConfigWindowsFlat = reactNativeConfigWindowsFlat;
-exports.serialize = serialize;
-exports.settingsGradle = settingsGradle;

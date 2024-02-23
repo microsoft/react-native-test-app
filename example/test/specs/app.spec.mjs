@@ -1,9 +1,8 @@
 // @ts-check
 import { equal } from "node:assert/strict";
-import * as fs from "node:fs";
 import { after, before, describe, it } from "node:test";
 import { remote } from "webdriverio";
-import { findNearest } from "../../../scripts/helpers.js";
+import { findNearest, readTextFile } from "../../../scripts/helpers.js";
 import { config } from "./wdio.config.js";
 
 /**
@@ -45,7 +44,7 @@ describe("App", () => {
       throw new Error("Could not find 'react-native'");
     }
 
-    const manifest = fs.readFileSync(rnPath, { encoding: "utf-8" });
+    const manifest = readTextFile(rnPath);
     const { version } = JSON.parse(manifest);
     return version.replace("-nightly-", "-nightly\n");
   })();

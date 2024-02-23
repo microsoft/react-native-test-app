@@ -1,25 +1,21 @@
 #!/usr/bin/env node
 // @ts-check
-"use strict";
-
-/**
- * This script (and its dependencies) currently cannot be converted to ESM
- * because it is consumed in `react-native.config.js`.
- */
-const chalk = require("chalk");
-const nodefs = require("node:fs");
-const path = require("node:path");
-const semver = require("semver");
-const {
-  findNearest,
+import chalk from "chalk";
+import nodefs from "node:fs";
+import { createRequire } from "node:module";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import semver from "semver";
+import { cliPlatformIOSVersion } from "./configure-projects.js";
+import {
   getPackageVersion,
   readJSONFile,
   readTextFile,
   toVersionNumber,
   v,
-} = require("./helpers");
-const { parseArgs } = require("./parseargs");
-const {
+} from "./helpers.js";
+import { parseArgs } from "./parseargs.js";
+import {
   appManifest,
   buildGradle,
   podfileIOS,
@@ -29,7 +25,7 @@ const {
   reactNativeConfigWindowsFlat,
   serialize,
   settingsGradle,
-} = require("./template");
+} from "./template.mjs";
 
 /**
  * @typedef {import("./types").Configuration} Configuration
@@ -37,18 +33,32 @@ const {
  * @typedef {import("./types").FileCopy} FileCopy
  * @typedef {import("./types").PlatformConfiguration} PlatformConfiguration
  * @typedef {import("./types").Platform} Platform
- * @typedef {import("./types").ProjectConfig} ProjectConfig
- * @typedef {import("./types").ProjectParams} ProjectParams
+ * @typedef {Required<import("./types").Manifest>} Manifest
  */
 
-/** @type {{ encoding: "utf-8" }} */
-const utf8 = { encoding: "utf-8" };
+/**
+ * Merges two objects.
+ * @param {unknown} lhs
+ * @param {Record<string, unknown>} rhs
+ * @returns {Record<string, unknown>}
+ */
+function mergeObjects(lhs, rhs) {
+  return typeof lhs === "object"
+    ? sortByKeys({ ...lhs, ...rhs })
+    : sortByKeys(rhs);
+}
+
+function readManifest() {
+  return /** @type {Manifest} */ (
+    readJSONFile(new URL("../package.json", import.meta.url))
+  );
+}
 
 /**
  * Prints an error message to the console.
  * @param {string} message
  */
-function error(message) {
+export function error(message) {
   console.error(chalk.red(`[!] ${message}`));
 }
 
@@ -58,7 +68,7 @@ function error(message) {
  * @param {Configuration} rhs
  * @returns {Configuration}
  */
-function mergeConfig(lhs, rhs) {
+export function mergeConfig(lhs, rhs) {
   return {
     files: {
       ...lhs.files,
@@ -77,24 +87,12 @@ function mergeConfig(lhs, rhs) {
 }
 
 /**
- * Merges two objects.
- * @param {unknown} lhs
- * @param {Record<string, unknown>} rhs
- * @returns {Record<string, unknown>}
- */
-function mergeObjects(lhs, rhs) {
-  return typeof lhs === "object"
-    ? sortByKeys({ ...lhs, ...rhs })
-    : sortByKeys(rhs);
-}
-
-/**
  * Returns the relative path to react-native-test-app depending on current
  * running mode.
  * @param {ConfigureParams} params
  * @returns {string}
  */
-function projectRelativePath({
+export function projectRelativePath({
   packagePath,
   testAppPath,
   platforms,
@@ -115,32 +113,10 @@ function projectRelativePath({
 }
 
 /**
- * Returns the version number of `@react-native-community/cli-platform-ios`.
- * @param {string} reactNativeDir
- * @returns {number}
- */
-const cliPlatformIOSVersion = (() => {
-  /** @type {number} */
-  let version;
-  /** @type {(reactNativeDir: string) => number} */
-  return (reactNativeDir) => {
-    if (!version) {
-      version = toVersionNumber(
-        getPackageVersion(
-          "@react-native-community/cli-platform-ios",
-          reactNativeDir
-        )
-      );
-    }
-    return version;
-  };
-})();
-
-/**
  * Sort the keys in specified object.
  * @param {Record<string, unknown>} obj
  */
-function sortByKeys(obj) {
+export function sortByKeys(obj) {
   return Object.keys(obj)
     .sort()
     .reduce((sorted, key) => {
@@ -154,7 +130,7 @@ function sortByKeys(obj) {
  * @param {string} message
  * @param {string=} tag
  */
-function warn(message, tag = "[!]") {
+export function warn(message, tag = "[!]") {
   console.warn(chalk.yellow(`${tag} ${message}`));
 }
 
@@ -164,13 +140,13 @@ function warn(message, tag = "[!]") {
  * @param {string} targetVersion
  * @returns {Record<string, string> | undefined}
  */
-function getPlatformPackage(packageName, targetVersion) {
+export function getPlatformPackage(packageName, targetVersion) {
   const v = semver.coerce(targetVersion);
   if (!v) {
     throw new Error(`Invalid ${packageName} version: ${targetVersion}`);
   }
 
-  const { peerDependencies } = require("../package.json");
+  const { peerDependencies } = readManifest();
   const versionRange = peerDependencies[packageName];
   if (!semver.satisfies(v.version, versionRange)) {
     warn(
@@ -183,112 +159,11 @@ function getPlatformPackage(packageName, targetVersion) {
 }
 
 /**
- * @param {string} sourceDir
- * @returns {string}
- */
-function androidManifestPath(sourceDir) {
-  return path.relative(
-    sourceDir,
-    path.join(
-      path.dirname(require.resolve("../package.json")),
-      "android",
-      "app",
-      "src",
-      "main",
-      "AndroidManifest.xml"
-    )
-  );
-}
-
-/**
- * @returns {string | undefined}
- */
-function iosProjectPath() {
-  const rnDir = path.dirname(require.resolve("react-native/package.json"));
-  const needsProjectPath = cliPlatformIOSVersion(rnDir) < v(8, 0, 0);
-  if (needsProjectPath) {
-    // `sourceDir` and `podfile` detection was fixed in
-    // @react-native-community/cli-platform-ios v5.0.2 (see
-    // https://github.com/react-native-community/cli/pull/1444).
-    return "node_modules/.generated/ios/ReactTestApp.xcodeproj";
-  }
-
-  return undefined;
-}
-
-/**
- * @param {string} sourceDir
- * @returns {ProjectParams["windows"]["project"]}
- */
-function windowsProjectPath(sourceDir) {
-  return {
-    projectFile: path.relative(
-      sourceDir,
-      path.join(
-        "node_modules",
-        ".generated",
-        "windows",
-        "ReactTestApp",
-        "ReactTestApp.vcxproj"
-      )
-    ),
-  };
-}
-
-/**
- * @param {ProjectConfig} configuration
- * @returns {Partial<ProjectParams>}
- */
-function configureProjects({ android, ios, windows }, fs = nodefs) {
-  const reactNativeConfig = findNearest("react-native.config.js");
-  if (!reactNativeConfig) {
-    throw new Error("Failed to find `react-native.config.js`");
-  }
-
-  /** @type {Partial<ProjectParams>} */
-  const config = {};
-  const projectRoot = path.dirname(reactNativeConfig);
-
-  if (android) {
-    config.android = {
-      sourceDir: android.sourceDir,
-      manifestPath: androidManifestPath(
-        path.resolve(projectRoot, android.sourceDir)
-      ),
-    };
-  }
-
-  if (ios) {
-    // `ios.sourceDir` was added in 8.0.0
-    // https://github.com/react-native-community/cli/commit/25eec7c695f09aea0ace7c0b591844fe8828ccc5
-    const rnDir = path.dirname(require.resolve("react-native/package.json"));
-    if (cliPlatformIOSVersion(rnDir) >= v(8, 0, 0)) {
-      config.ios = ios;
-    }
-    const project = iosProjectPath();
-    if (project) {
-      config.ios = config.ios ?? {};
-      config.ios.project = project;
-    }
-  }
-
-  if (windows && fs.existsSync(windows.solutionFile)) {
-    config.windows = {
-      sourceDir: windows.sourceDir,
-      solutionFile: path.relative(windows.sourceDir, windows.solutionFile),
-      project: windowsProjectPath(path.resolve(projectRoot, windows.sourceDir)),
-    };
-  }
-
-  return config;
-}
-
-/**
  * Returns the appropriate `react-native.config.js` for specified parameters.
  * @param {ConfigureParams} params
  * @returns {string | FileCopy}
  */
-function reactNativeConfig(
+export function reactNativeConfig(
   { name, testAppPath, platforms, flatten },
   fs = nodefs
 ) {
@@ -334,7 +209,7 @@ function reactNativeConfig(
  * Additionally, there is a common {@link Configuration} object that is always
  * included by {@link gatherConfig} during {@link configure}.
  */
-const getConfig = (() => {
+export const getConfig = (() => {
   /** @type {PlatformConfiguration} */
   let configuration;
   return (
@@ -355,6 +230,7 @@ const getConfig = (() => {
         throw new Error("Failed to find `.gitignore`");
       }
 
+      const require = createRequire(import.meta.url);
       const rnDir = path.dirname(require.resolve("react-native/package.json"));
       const projectPathFlag =
         flatten && cliPlatformIOSVersion(rnDir) < v(8, 0, 0)
@@ -401,9 +277,10 @@ const getConfig = (() => {
                   "index.js": {
                     source: path.join(templateDir, "index.js"),
                   },
-                  "package.json": fs
-                    .readFileSync(path.join(templateDir, "package.json"), utf8)
-                    .replace(/HelloWorld/g, name),
+                  "package.json": readTextFile(
+                    path.join(templateDir, "package.json"),
+                    fs
+                  ).replace(/HelloWorld/g, name),
                 }),
           },
           oldFiles: [],
@@ -526,7 +403,7 @@ const getConfig = (() => {
           scripts: {
             "build:windows":
               "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
-            windows: `react-native run-windows --sln windows/${name}.sln`,
+            windows: `react-native run-windows --sln ${flatten ? "" : "windows/"}${name}.sln`,
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
@@ -544,7 +421,7 @@ const getConfig = (() => {
  * @param {ConfigureParams} params
  * @returns Configuration
  */
-function gatherConfig(params, disableCache = false) {
+export function gatherConfig(params, disableCache = false) {
   const { flatten, platforms } = params;
   const shouldFlatten = flatten && platforms.length === 1;
   const options = { ...params, flatten: shouldFlatten };
@@ -611,7 +488,7 @@ function gatherConfig(params, disableCache = false) {
  * @param {string} packagePath
  * @returns {string}
  */
-function getAppName(packagePath, fs = nodefs) {
+export function getAppName(packagePath, fs = nodefs) {
   try {
     const { name } = readJSONFile(path.join(packagePath, "app.json"), fs);
     if (typeof name === "string" && name) {
@@ -631,7 +508,7 @@ function getAppName(packagePath, fs = nodefs) {
  * @param {Configuration} config
  * @returns {boolean}
  */
-function isDestructive(packagePath, { files, oldFiles }, fs = nodefs) {
+export function isDestructive(packagePath, { files, oldFiles }, fs = nodefs) {
   const modified = Object.keys(files).reduce((result, file) => {
     const targetPath = path.join(packagePath, file);
     if (fs.existsSync(targetPath)) {
@@ -669,7 +546,7 @@ function isDestructive(packagePath, { files, oldFiles }, fs = nodefs) {
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
-function removeAllFiles(files, destination, fs = nodefs.promises) {
+export function removeAllFiles(files, destination, fs = nodefs.promises) {
   const options = { force: true, maxRetries: 3, recursive: true };
   return Promise.all(
     files.map((filename) => fs.rm(path.join(destination, filename), options))
@@ -682,7 +559,11 @@ function removeAllFiles(files, destination, fs = nodefs.promises) {
  * @param {Configuration} config
  * @returns {Record<string, unknown>}
  */
-function updatePackageManifest(path, { dependencies, scripts }, fs = nodefs) {
+export function updatePackageManifest(
+  path,
+  { dependencies, scripts },
+  fs = nodefs
+) {
   const manifest = readJSONFile(path, fs);
 
   manifest["scripts"] = mergeObjects(manifest["scripts"], scripts);
@@ -692,10 +573,8 @@ function updatePackageManifest(path, { dependencies, scripts }, fs = nodefs) {
     dependencies
   );
 
-  const {
-    name: reactTestAppName,
-    version: reactTestAppVersion,
-  } = require("../package.json");
+  const { name: reactTestAppName, version: reactTestAppVersion } =
+    readManifest();
 
   manifest["devDependencies"] = mergeObjects(manifest["devDependencies"], {
     "@rnx-kit/metro-config": "^1.3.14",
@@ -712,7 +591,7 @@ function updatePackageManifest(path, { dependencies, scripts }, fs = nodefs) {
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
-function writeAllFiles(files, destination, fs = nodefs.promises) {
+export function writeAllFiles(files, destination, fs = nodefs.promises) {
   const options = { recursive: true, mode: 0o755 };
   return Promise.all(
     Object.keys(files).map(async (filename) => {
@@ -751,7 +630,7 @@ function writeAllFiles(files, destination, fs = nodefs.promises) {
  * @param {ConfigureParams} params
  * @returns {number}
  */
-function configure(params, fs = nodefs) {
+export function configure(params, fs = nodefs) {
   const { force, packagePath } = params;
   const config = gatherConfig(params);
 
@@ -784,27 +663,8 @@ function configure(params, fs = nodefs) {
   return 0;
 }
 
-exports.androidManifestPath = androidManifestPath;
-exports.configure = configure;
-exports.configureProjects = configureProjects;
-exports.error = error;
-exports.gatherConfig = gatherConfig;
-exports.getAppName = getAppName;
-exports.getConfig = getConfig;
-exports.getPlatformPackage = getPlatformPackage;
-exports.iosProjectPath = iosProjectPath;
-exports.isDestructive = isDestructive;
-exports.mergeConfig = mergeConfig;
-exports.projectRelativePath = projectRelativePath;
-exports.reactNativeConfig = reactNativeConfig;
-exports.removeAllFiles = removeAllFiles;
-exports.sortByKeys = sortByKeys;
-exports.updatePackageManifest = updatePackageManifest;
-exports.warn = warn;
-exports.windowsProjectPath = windowsProjectPath;
-exports.writeAllFiles = writeAllFiles;
-
-if (require.main === module) {
+const [, script] = process.argv;
+if (script === fileURLToPath(import.meta.url)) {
   /** @type {Platform[]} */
   const platformChoices = ["android", "ios", "macos", "windows"];
   const defaultPlatforms = platformChoices.join(", ");
@@ -871,7 +731,7 @@ if (require.main === module) {
       process.exitCode = configure({
         name: typeof name === "string" && name ? name : getAppName(packagePath),
         packagePath,
-        testAppPath: path.dirname(require.resolve("../package.json")),
+        testAppPath: fileURLToPath(new URL("..", import.meta.url)),
         targetVersion: getPackageVersion("react-native"),
         platforms: validatePlatforms(platforms),
         flatten,

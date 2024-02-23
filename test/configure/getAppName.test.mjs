@@ -1,7 +1,7 @@
 // @ts-check
 import { equal } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
-import { getAppName as getAppNameActual } from "../../scripts/configure.js";
+import { getAppName as getAppNameActual } from "../../scripts/configure.mjs";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 import { spy } from "../spy.mjs";
 

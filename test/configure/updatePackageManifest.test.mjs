@@ -1,7 +1,7 @@
 // @ts-check
 import { deepEqual } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
-import { updatePackageManifest as updatePackageManifestActual } from "../../scripts/configure.js";
+import { updatePackageManifest as updatePackageManifestActual } from "../../scripts/configure.mjs";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 
 describe("updatePackageManifest()", () => {

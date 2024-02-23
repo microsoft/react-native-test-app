@@ -2,7 +2,7 @@
 import { deepEqual } from "node:assert/strict";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { getConfig as getConfigActual } from "../../scripts/configure.js";
+import { getConfig as getConfigActual } from "../../scripts/configure.mjs";
 import { mockParams } from "./mockParams.mjs";
 
 describe("getConfig()", () => {
@@ -12,8 +12,8 @@ describe("getConfig()", () => {
 
   /**
    * Gets the list of dependencies from specified config.
-   * @param {import("../../scripts/configure.js").Configuration} config
-   * @param {import("../../scripts/configure.js").ConfigureParams} params
+   * @param {import("../../scripts/configure.mjs").Configuration} config
+   * @param {import("../../scripts/configure.mjs").ConfigureParams} params
    * @returns {string[] | undefined}
    */
   function getDependencies({ getDependencies }, params) {

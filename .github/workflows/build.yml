@@ -549,11 +549,7 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.windows != '' }}
         run: |
-          if ("${{ matrix.template }}" -eq "all") {
-            yarn react-native run-windows --logging --no-packager --no-launch --no-deploy
-          } else {
-            yarn react-native run-windows --logging --no-packager --no-launch --no-deploy --sln TemplateExample.sln
-          }
+          yarn windows --logging --no-packager --no-launch --no-deploy
         working-directory: template-example
     timeout-minutes: 60
   release:
