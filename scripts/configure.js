@@ -669,7 +669,7 @@ function isDestructive(packagePath, { files, oldFiles }, fs = nodefs) {
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
-function removeAllFiles(files, destination, fs = require("node:fs/promises")) {
+function removeAllFiles(files, destination, fs = nodefs.promises) {
   const options = { force: true, maxRetries: 3, recursive: true };
   return Promise.all(
     files.map((filename) => fs.rm(path.join(destination, filename), options))
@@ -712,7 +712,7 @@ function updatePackageManifest(path, { dependencies, scripts }, fs = nodefs) {
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
-function writeAllFiles(files, destination, fs = require("node:fs/promises")) {
+function writeAllFiles(files, destination, fs = nodefs.promises) {
   const options = { recursive: true, mode: 0o755 };
   return Promise.all(
     Object.keys(files).map(async (filename) => {
