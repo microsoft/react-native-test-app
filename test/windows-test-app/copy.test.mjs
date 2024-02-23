@@ -14,7 +14,7 @@ async function waitUntil(predicate) {
       break;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 33));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
 

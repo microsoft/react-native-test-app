@@ -334,13 +334,14 @@ function reactNativeConfig(
  * Additionally, there is a common {@link Configuration} object that is always
  * included by {@link gatherConfig} during {@link configure}.
  */
-const getConfig = ((fs = nodefs) => {
+const getConfig = (() => {
   /** @type {PlatformConfiguration} */
   let configuration;
   return (
     /** @type {ConfigureParams} */ params,
     /** @type {Platform} */ platform,
-    disableCache = false
+    disableCache = false,
+    fs = nodefs
   ) => {
     if (disableCache || typeof configuration === "undefined") {
       const { name, templatePath, testAppPath, targetVersion, flatten, init } =
