@@ -1,5 +1,7 @@
 // @ts-check
-"use strict";
+import cliui from "cliui";
+import * as path from "node:path";
+import * as util from "node:util";
 
 /**
  * @typedef {import("./types").Options} Options;
@@ -30,19 +32,19 @@ function formatHelp(description, options) {
   const indent = "  ";
   const minWidth =
     Math.max(...flags.map(([flag]) => flag.length)) + indent.length * 2;
+  const padding = [0, 0, 0, 0];
 
-  // @ts-expect-error This expression is not callable
-  const ui = require("cliui")();
+  const ui = cliui({ width: process.stdout.columns ?? 80 });
   for (const [flag, config] of flags) {
     ui.div(
-      { text: "", width: 2 },
-      { text: config.short ? `-${config.short},` : "", width: 4 },
-      { text: `--${flag}`, width: minWidth + 2 },
-      { text: config.description }
+      { text: "", width: 2, padding },
+      { text: config.short ? `-${config.short},` : "", width: 4, padding },
+      { text: `--${flag}`, width: minWidth + 2, padding },
+      { text: config.description, padding }
     );
   }
 
-  const script = require("node:path").basename(process.argv[1]);
+  const script = path.basename(process.argv[1]);
   return [
     `usage: ${script} [options]`,
     "",
@@ -64,7 +66,7 @@ function formatHelp(description, options) {
  * @param {O} options
  * @param {(args: Args<O>) => void} callback
  */
-function parseArgs(description, options, callback) {
+export function parseArgs(description, options, callback) {
   const mergedOptions = {
     help: {
       description: "Show this help message",
@@ -81,8 +83,7 @@ function parseArgs(description, options, callback) {
     ...options,
   };
 
-  const { parseArgs } = require("node:util");
-  const { values, positionals } = parseArgs({
+  const { values, positionals } = util.parseArgs({
     args: process.argv.slice(2),
     options: mergedOptions,
     strict: true,
@@ -104,5 +105,3 @@ function parseArgs(description, options, callback) {
     callback(values);
   }
 }
-
-exports.parseArgs = parseArgs;

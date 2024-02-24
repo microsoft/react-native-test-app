@@ -14,7 +14,7 @@ import {
   toVersionNumber,
   v,
 } from "./helpers.js";
-import { parseArgs } from "./parseargs.js";
+import { parseArgs } from "./parseargs.mjs";
 import {
   appManifest,
   buildGradle,

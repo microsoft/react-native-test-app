@@ -178,7 +178,7 @@ describe("npm pack", () => {
       "scripts/configure.mjs",
       "scripts/helpers.js",
       "scripts/init.mjs",
-      "scripts/parseargs.js",
+      "scripts/parseargs.mjs",
       "scripts/schema.js",
       "scripts/template.mjs",
       "scripts/validate-manifest.js",

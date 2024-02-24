@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 import prompts from "prompts";
 import { configure } from "./configure.mjs";
 import { npm as npmSync, readJSONFile } from "./helpers.js";
-import { parseArgs } from "./parseargs.js";
+import { parseArgs } from "./parseargs.mjs";
 
 /**
  * @template T
