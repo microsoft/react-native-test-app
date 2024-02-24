@@ -2,6 +2,11 @@
 // @ts-check
 "use strict";
 
+/**
+ * This script (and its dependencies) currently cannot be converted to ESM
+ * because it is consumed via `node -e`.
+ */
+const nodefs = require("node:fs");
 const path = require("node:path");
 const { readJSONFile, readTextFile } = require("./helpers");
 const { generateSchema } = require("./schema");
@@ -25,7 +30,7 @@ const BUILD_PROPS = [
  * @param {string=} startDir
  * @returns {string | undefined}
  */
-function findFile(file, startDir = process.cwd(), fs = require("node:fs")) {
+function findFile(file, startDir = process.cwd(), fs = nodefs) {
   let currentDir = startDir;
   let candidate = path.join(currentDir, file);
   while (!fs.existsSync(candidate)) {
@@ -53,7 +58,7 @@ function makeValidator() {
  * @param {import("node:fs").PathLike | undefined} manifestPath
  * @returns {Record<string, unknown> | number}
  */
-function validateManifest(manifestPath, fs = require("node:fs")) {
+function validateManifest(manifestPath, fs = nodefs) {
   if (!manifestPath) {
     console.error(
       `Failed to find '${APP_JSON}'. Please make sure you're in the right directory.`
@@ -92,7 +97,7 @@ function validateManifest(manifestPath, fs = require("node:fs")) {
 function validate(
   outputMode = "stdout",
   projectRoot = process.cwd(),
-  fs = require("node:fs")
+  fs = nodefs
 ) {
   const manifestPath = findFile(APP_JSON, projectRoot, fs);
   const manifest = validateManifest(manifestPath, fs);

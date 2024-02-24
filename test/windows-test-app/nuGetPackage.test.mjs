@@ -1,7 +1,7 @@
 // @ts-check
 import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
-import { nuGetPackage } from "../../windows/test-app.js";
+import { nuGetPackage } from "../../windows/test-app.mjs";
 
 describe("nuGetPackage()", () => {
   it("returns a NuGet package entry", () => {

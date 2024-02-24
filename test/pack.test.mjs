@@ -176,8 +176,7 @@ describe("npm pack", () => {
       "scripts/config-plugins/types.mjs",
       "scripts/configure.js",
       "scripts/helpers.js",
-      "scripts/init.js",
-      "scripts/link.js",
+      "scripts/init.mjs",
       "scripts/parseargs.js",
       "scripts/schema.js",
       "scripts/template.js",
@@ -219,7 +218,7 @@ describe("npm pack", () => {
       "windows/ReactTestApp/packages.config",
       "windows/ReactTestApp/pch.cpp",
       "windows/ReactTestApp/pch.h",
-      "windows/test-app.js",
+      "windows/test-app.mjs",
     ]);
   });
 });

@@ -1,10 +1,17 @@
 #!/usr/bin/env node
 // @ts-check
-"use strict";
-
-const { spawnSync } = require("node:child_process");
-const path = require("node:path");
-const { npm: npmSync } = require("./helpers");
+import chalk from "chalk";
+import { spawnSync } from "node:child_process";
+import * as fs from "node:fs";
+import * as https from "node:https";
+import { createRequire } from "node:module";
+import * as os from "node:os";
+import * as path from "node:path";
+import { fileURLToPath } from "node:url";
+import prompts from "prompts";
+import { configure } from "./configure.js";
+import { npm as npmSync, readJSONFile } from "./helpers.js";
+import { parseArgs } from "./parseargs.js";
 
 /**
  * @template T
@@ -69,8 +76,9 @@ function untar(archive) {
  * @returns {string | null}
  */
 const getInstalledReactNativeManifest = memo(() => {
+  const require = createRequire(import.meta.url);
+  const options = { paths: [process.cwd()] };
   try {
-    const options = { paths: [process.cwd()] };
     return require.resolve("react-native/package.json", options);
   } catch (_) {
     return null;
@@ -84,8 +92,10 @@ const getInstalledReactNativeManifest = memo(() => {
 const getInstalledVersion = memo(() => {
   const manifestPath = getInstalledReactNativeManifest();
   if (manifestPath) {
-    const { version } = require(manifestPath);
-    return version;
+    const { version } = readJSONFile(manifestPath);
+    if (typeof version === "string") {
+      return version;
+    }
   }
 
   return null;
@@ -130,7 +140,6 @@ function getVersion(platforms) {
 
   /** @type {(version: string, reason: string) => void} */
   const logVersion = (version, reason) => {
-    const chalk = require("chalk");
     const fmtVersionFlag = chalk.bold("--version");
     const fmtTarget = chalk.bold(version);
     console.log(
@@ -194,11 +203,8 @@ function getTemplate(platforms) {
 
     console.log(`Downloading ${path.basename(url)}...`);
 
-    require("node:https")
+    https
       .get(url, (res) => {
-        const fs = require("node:fs");
-        const os = require("node:os");
-
         const tmpDir = path.join(os.tmpdir(), "react-native-test-app");
         fs.mkdirSync(tmpDir, { recursive: true });
 
@@ -222,7 +228,6 @@ function getTemplate(platforms) {
 
 function main() {
   return new Promise((resolve) => {
-    const { parseArgs } = require("./parseargs");
     parseArgs(
       "Initializes a new app project from template",
       {
@@ -248,7 +253,6 @@ function main() {
         },
       },
       async (args) => {
-        const prompts = require("prompts");
         prompts.override({
           name: args.name,
           platforms:
@@ -297,14 +301,12 @@ function main() {
           return;
         }
 
-        const { configure } = require("./configure");
-
         const [targetVersion, templatePath] = await getTemplate(platforms);
         const result = configure({
           name,
           packagePath,
           templatePath,
-          testAppPath: path.resolve(__dirname, ".."),
+          testAppPath: fileURLToPath(new URL("..", import.meta.url)),
           targetVersion,
           platforms,
           flatten: true,

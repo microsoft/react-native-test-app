@@ -450,13 +450,12 @@ export function setReactVersion(version, coreOnly) {
 }
 
 const { [1]: script, [2]: version } = process.argv;
-if (import.meta.url.endsWith(script)) {
+if (script === fileURLToPath(import.meta.url)) {
   if (!(await checkEnvironment())) {
     process.exitCode = 1;
   } else if (!isValidVersion(version)) {
-    const script = path.basename(fileURLToPath(import.meta.url));
     console.log(
-      `Usage: ${script} [<version number> | ${VALID_TAGS.join(" | ")}]`
+      `Usage: ${path.basename(script)} [<version number> | ${VALID_TAGS.join(" | ")}]`
     );
     process.exitCode = 1;
   } else {

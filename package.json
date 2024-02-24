@@ -43,17 +43,18 @@
     "scripts/*.js",
     "scripts/apply-config-plugins.mjs",
     "scripts/config-plugins/**/*.mjs",
+    "scripts/init.mjs",
     "test-app.gradle",
     "test_app.rb",
-    "windows/*.{js,props}",
+    "windows/*.{mjs,props}",
     "windows/ReactTestApp"
   ],
   "main": "scripts/configure.js",
   "bin": {
     "configure-test-app": "scripts/configure.js",
-    "init": "scripts/init.js",
-    "init-test-app": "scripts/init.js",
-    "install-windows-test-app": "windows/test-app.js"
+    "init": "scripts/init.mjs",
+    "init-test-app": "scripts/init.mjs",
+    "install-windows-test-app": "windows/test-app.mjs"
   },
   "repository": {
     "type": "git",

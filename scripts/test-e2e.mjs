@@ -7,6 +7,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { Socket } from "node:net";
+import { fileURLToPath } from "node:url";
 
 /**
  * Invokes a shell command with optional arguments.
@@ -127,7 +128,7 @@ export async function test(target, args = []) {
 }
 
 const [, script, target, ...args] = process.argv;
-if (import.meta.url.endsWith(script)) {
+if (script === fileURLToPath(import.meta.url)) {
   test(target, args).then((exitCode) => {
     process.exitCode = exitCode;
   });

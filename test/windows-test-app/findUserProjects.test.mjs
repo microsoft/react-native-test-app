@@ -3,7 +3,7 @@ import { deepEqual, equal } from "node:assert/strict";
 import * as os from "node:os";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { findUserProjects, toProjectEntry } from "../../windows/test-app.js";
+import { findUserProjects, toProjectEntry } from "../../windows/test-app.mjs";
 
 describe("findUserProjects()", () => {
   it("finds all user projects, ignoring android/ios/macos/node_modules", () => {

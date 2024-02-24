@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 // @ts-check
-"use strict";
-
-const fs = require("node:fs");
-const os = require("node:os");
-const path = require("node:path");
-const {
+import { XMLParser } from "fast-xml-parser";
+import { spawn } from "node:child_process";
+import * as nodefs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+import { fileURLToPath } from "node:url";
+import { v5 as uuidv5 } from "uuid";
+import {
   findNearest,
   getPackageVersion,
   readJSONFile,
@@ -13,8 +15,9 @@ const {
   requireTransitive,
   toVersionNumber,
   v,
-} = require("../scripts/helpers");
-const { parseArgs } = require("../scripts/parseargs");
+} from "../scripts/helpers.js";
+import { parseArgs } from "../scripts/parseargs.js";
+import { validate } from "../scripts/validate-manifest.js";
 
 /**
  * @typedef {import("../scripts/types").AppManifest} AppManifest
@@ -41,7 +44,7 @@ const textFileWriteOptions = { encoding: "utf-8", mode: 0o644 };
  * @param {string} src
  * @param {string} dest
  */
-function copy(src, dest, fs = require("node:fs")) {
+export function copy(src, dest, fs = nodefs) {
   fs.mkdir(dest, mkdirRecursiveOptions, (err) => {
     rethrow(err);
     fs.readdir(src, { withFileTypes: true }, (err, files) => {
@@ -63,7 +66,7 @@ function copy(src, dest, fs = require("node:fs")) {
  * @param {{ path: string; name: string; guid: string; }[]=} projects
  * @returns {{ path: string; name: string; guid: string; }[]}
  */
-function findUserProjects(projectDir, projects = []) {
+export function findUserProjects(projectDir, projects = [], fs = nodefs) {
   return fs.readdirSync(projectDir).reduce((projects, file) => {
     const fullPath = path.join(projectDir, file);
     if (fs.lstatSync(fullPath).isDirectory()) {
@@ -102,7 +105,7 @@ function findUserProjects(projectDir, projects = []) {
  * @param {string} rnWindowsPath
  * @returns {[string, string][]}
  */
-function getNuGetDependencies(rnWindowsPath) {
+function getNuGetDependencies(rnWindowsPath, fs = nodefs) {
   const pkgJson = findNearest("package.json");
   if (!pkgJson) {
     return [];
@@ -115,7 +118,6 @@ function getNuGetDependencies(rnWindowsPath) {
   );
   const dependencies = Object.values(loadConfig().dependencies);
 
-  const { XMLParser } = require("fast-xml-parser");
   const xml = new XMLParser({
     ignoreAttributes: false,
     transformTagName: (tag) => tag.toLowerCase(),
@@ -188,7 +190,9 @@ function getNuGetDependencies(rnWindowsPath) {
   }
 
   // Remove dependencies managed by us
-  const config = path.join(__dirname, "ReactTestApp", "packages.config");
+  const config = fileURLToPath(
+    new URL("ReactTestApp/packages.config", import.meta.url)
+  );
   const matches = readTextFile(config, fs).matchAll(/package id="(.+?)"/g);
   for (const m of matches) {
     const id = m[1].toLowerCase();
@@ -236,7 +240,7 @@ function normalizePath(p) {
  * @param {string} version NuGet package version
  * @returns {string}
  */
-function nuGetPackage(id, version) {
+export function nuGetPackage(id, version) {
   return `<package id="${id}" version="${version}" targetFramework="native"/>`;
 }
 
@@ -286,19 +290,8 @@ function generateContentItems(
   assets = { assetFilters: [], assetItemFilters: [], assetItems: [] },
   currentFilter = "Assets",
   source = "",
-  fs = require("node:fs")
+  fs = nodefs
 ) {
-  const uuidv5 = (() => {
-    try {
-      // @ts-expect-error export only exists in uuid@3.x and older
-      return require("uuid/v5");
-    } catch (_) {
-      // uuid@7.x and above
-      const { v5 } = require("uuid");
-      return v5;
-    }
-  })();
-
   const { assetFilters, assetItemFilters, assetItems } = assets;
   for (const resource of resources) {
     const resourcePath = path.isAbsolute(resource)
@@ -370,7 +363,7 @@ function generateContentItems(
  * @param {string} projectPath
  * @returns {Assets}
  */
-function parseResources(resources, projectPath, fs = require("node:fs")) {
+export function parseResources(resources, projectPath, fs = nodefs) {
   if (!Array.isArray(resources)) {
     if (resources && resources.windows) {
       return parseResources(resources.windows, projectPath, fs);
@@ -414,7 +407,7 @@ function projectRelativePath(projectPath, assetPath) {
  * @param {{ [pattern: string]: string }} replacements e.g. {'TextToBeReplaced': 'Replacement'}
  * @returns {string} The contents of the file with the replacements applied.
  */
-function replaceContent(content, replacements) {
+export function replaceContent(content, replacements) {
   return Object.keys(replacements).reduce(
     (content, regex) =>
       content.replace(new RegExp(regex, "g"), replacements[regex]),
@@ -437,7 +430,7 @@ function rethrow(error) {
  * @param {{ path: string; name: string; guid: string; }} project
  * @param {string} destPath
  */
-function toProjectEntry(project, destPath) {
+export function toProjectEntry(project, destPath) {
   return [
     `Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "${
       project.name
@@ -456,12 +449,12 @@ function toProjectEntry(project, destPath) {
  * @param {Record<string, string> | undefined} replacements e.g. {'TextToBeReplaced': 'Replacement'}
  * @param {(error: Error | null) => void=} callback Callback for when the copy operation is done.
  */
-function copyAndReplace(
+export function copyAndReplace(
   srcPath,
   destPath,
   replacements,
   callback = rethrow,
-  fs = require("node:fs")
+  fs = nodefs
 ) {
   const stat = fs.statSync(srcPath);
   if (stat.isDirectory()) {
@@ -502,7 +495,7 @@ function copyAndReplace(
  *   singleApp?: string;
  * }} Application name, and paths to directories and files to include.
  */
-function getBundleResources(manifestFilePath, fs = require("node:fs")) {
+export function getBundleResources(manifestFilePath, fs = nodefs) {
   // Default value if manifest or 'name' field don't exist.
   const defaultName = "ReactTestApp";
 
@@ -555,7 +548,7 @@ function getBundleResources(manifestFilePath, fs = require("node:fs")) {
  * @param {string} rnwPath Path to `react-native-windows`.
  * @returns {string | null}
  */
-function getHermesVersion(rnwPath, fs = require("node:fs")) {
+export function getHermesVersion(rnwPath, fs = nodefs) {
   const jsEnginePropsPath = path.join(
     rnwPath,
     "PropertySheets",
@@ -572,10 +565,10 @@ function getHermesVersion(rnwPath, fs = require("node:fs")) {
  * @param {{ autolink: boolean; useHermes: boolean | undefined; useNuGet: boolean; }} options
  * @returns {string | undefined} An error message; `undefined` otherwise.
  */
-function generateSolution(
+export function generateSolution(
   destPath,
   { autolink, useHermes, useNuGet },
-  fs = require("node:fs")
+  fs = nodefs
 ) {
   if (!destPath) {
     return "Missing or invalid destination path";
@@ -618,7 +611,7 @@ function generateSolution(
   fs.mkdirSync(projectFilesDestPath, mkdirRecursiveOptions);
   fs.mkdirSync(destPath, mkdirRecursiveOptions);
 
-  require("../scripts/validate-manifest").validate("file", destPath);
+  validate("file", destPath);
 
   const manifestFilePath = findNearest("app.json", destPath, fs);
   const {
@@ -720,7 +713,7 @@ function generateSolution(
 
   const copyTasks = projectFiles.map(([file, replacements]) =>
     copyAndReplace(
-      path.join(__dirname, projDir, file),
+      fileURLToPath(new URL(`${projDir}/${file}`, import.meta.url)),
       path.join(projectFilesDestPath, file),
       replacements,
       undefined,
@@ -728,7 +721,7 @@ function generateSolution(
     )
   );
 
-  const additionalProjectEntries = findUserProjects(destPath)
+  const additionalProjectEntries = findUserProjects(destPath, undefined, fs)
     .map((project) => toProjectEntry(project, destPath))
     .join(os.EOL);
 
@@ -790,7 +783,9 @@ function generateSolution(
   );
   if (!fs.existsSync(experimentalFeaturesPropsPath)) {
     copyAndReplace(
-      path.join(__dirname, experimentalFeaturesPropsFilename),
+      fileURLToPath(
+        new URL(experimentalFeaturesPropsFilename, import.meta.url)
+      ),
       experimentalFeaturesPropsPath,
       {
         ...(useHermes != null && (usePackageReferences || hermesVersion)
@@ -888,7 +883,6 @@ function generateSolution(
 
   if (autolink) {
     Promise.all([...copyTasks, solutionTask]).then(() => {
-      const { spawn } = require("node:child_process");
       spawn(
         path.join(path.dirname(process.argv0), "npx.cmd"),
         ["react-native", "autolink-windows", "--proj", reactTestAppProjectPath],
@@ -904,20 +898,8 @@ function generateSolution(
   return undefined;
 }
 
-exports.copy = copy;
-exports.copyAndReplace = copyAndReplace;
-exports.findUserProjects = findUserProjects;
-exports.generateSolution = generateSolution;
-exports.getBundleResources = getBundleResources;
-exports.getHermesVersion = getHermesVersion;
-exports.nuGetPackage = nuGetPackage;
-exports.parseResources = parseResources;
-exports.replaceContent = replaceContent;
-exports.toProjectEntry = toProjectEntry;
-
-if (require.main === module) {
-  require("../scripts/link")(module);
-
+const [, script] = process.argv;
+if (script === fileURLToPath(import.meta.url)) {
   parseArgs(
     "Generate a Visual Studio solution for React Test App",
     {
@@ -931,7 +913,7 @@ if (require.main === module) {
       autolink: {
         description: `Run autolink after generating the solution (this is the default on Windows)`,
         type: "boolean",
-        default: require("node:os").platform() === "win32",
+        default: os.platform() === "win32",
       },
       "use-hermes": {
         description: "Use Hermes JavaScript engine (experimental)",

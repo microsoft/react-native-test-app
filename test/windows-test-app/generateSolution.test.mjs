@@ -2,7 +2,7 @@
 import { equal } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import { generateSolution as generateSolutionActual } from "../../windows/test-app.js";
+import { generateSolution as generateSolutionActual } from "../../windows/test-app.mjs";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 
 describe("generateSolution()", () => {
