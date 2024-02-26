@@ -245,7 +245,7 @@ async function resolveCommonDependencies(
 ) {
   const [rnBabelPresetVersion, rnMetroConfigVersion, metroBabelPresetVersion] =
     await (async () => {
-      if (v === "nightly") {
+      if (["^", "canary", "nightly"].some((tag) => v.includes(tag))) {
         return [v, v, undefined];
       }
 
@@ -306,10 +306,11 @@ async function getProfile(v, coreOnly) {
   switch (v) {
     case "canary-macos": {
       const info = await fetchPackageInfo("react-native-macos@canary");
-      const commonDeps = await resolveCommonDependencies(v, info);
+      const coreVersion = inferReactNativeVersion(info);
+      const commonDeps = await resolveCommonDependencies(coreVersion, info);
       return {
         ...commonDeps,
-        "react-native": inferReactNativeVersion(info),
+        "react-native": coreVersion,
         "react-native-macos": "canary",
         "react-native-windows": undefined,
       };
@@ -320,32 +321,13 @@ async function getProfile(v, coreOnly) {
         process.env["CI"] || process.env["NUGET_EXE"]
           ? await fetchReactNativeWindowsCanaryInfoViaNuGet()
           : await fetchPackageInfo("react-native-windows@canary");
-      const commonDeps = await resolveCommonDependencies(v, info);
+      const coreVersion = info.peerDependencies?.["react-native"] || "nightly";
+      const commonDeps = await resolveCommonDependencies(coreVersion, info);
       return {
         ...commonDeps,
-        "react-native": info.peerDependencies?.["react-native"] || "^0.0.0-0",
+        "react-native": coreVersion,
         "react-native-macos": undefined,
         "react-native-windows": info.version,
-      };
-    }
-
-    case "main": {
-      const info = await fetchPackageInfo("react-native@nightly");
-      const { dependencies } = info;
-      if (!dependencies) {
-        throw new Error("Could not determine dependencies");
-      }
-
-      const commonDeps = await resolveCommonDependencies(v, info);
-      const codegen = await fetchPackageInfo(
-        "react-native-codegen@" + dependencies["react-native-codegen"]
-      );
-      return {
-        ...commonDeps,
-        ...codegen.dependencies,
-        "react-native": "facebook/react-native",
-        "react-native-macos": undefined,
-        "react-native-windows": undefined,
       };
     }
 
