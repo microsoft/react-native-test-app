@@ -16,6 +16,28 @@ function cmdEscape(str) {
 }
 
 /**
+ * Finds the specified file using Node module resolution.
+ * @param {string} file
+ * @param {string=} startDir
+ * @returns {string | undefined}
+ */
+function findFile(file, startDir = process.cwd(), fs = nodefs) {
+  let currentDir = startDir;
+  let candidate = path.join(currentDir, file);
+  while (!fs.existsSync(candidate)) {
+    const nextDir = path.dirname(currentDir);
+    if (nextDir === currentDir) {
+      return undefined;
+    }
+
+    currentDir = nextDir;
+    candidate = path.join(currentDir, file);
+  }
+
+  return candidate;
+}
+
+/**
  * Finds nearest relative path to a file or directory from current path.
  * @param {string} fileOrDirName Path to the file or directory to find.
  * @param {string=} currentDir The current working directory. Mostly used for unit tests.
@@ -26,21 +48,8 @@ function findNearest(
   currentDir = path.resolve(""),
   fs = nodefs
 ) {
-  const rootDirectory =
-    process.platform === "win32"
-      ? currentDir.split(path.sep)[0] + path.sep
-      : "/";
-  while (currentDir !== rootDirectory) {
-    const candidatePath = path.join(currentDir, fileOrDirName);
-    if (fs.existsSync(candidatePath)) {
-      return path.relative("", candidatePath);
-    }
-
-    // Get parent folder
-    currentDir = path.dirname(currentDir);
-  }
-
-  return null;
+  const result = findFile(fileOrDirName, currentDir, fs);
+  return result ? path.relative("", result) : null;
 }
 
 /**
@@ -135,6 +144,7 @@ function v(major, minor, patch) {
   return major * 1000000 + minor * 1000 + patch;
 }
 
+exports.findFile = findFile;
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
 exports.npm = npm;

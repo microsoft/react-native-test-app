@@ -1,10 +1,8 @@
 // @ts-check
 import { deepEqual, equal, match, notEqual } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
-import {
-  findFile as findFileActual,
-  validateManifest as validateManifestActual,
-} from "../scripts/validate-manifest.js";
+import { findFile as findFileActual } from "../scripts/helpers.js";
+import { validateManifest as validateManifestActual } from "../scripts/validate-manifest.js";
 import { fs, setMockFiles } from "./fs.mock.mjs";
 import { spy } from "./spy.mjs";
 
