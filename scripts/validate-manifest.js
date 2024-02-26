@@ -8,7 +8,7 @@
  */
 const nodefs = require("node:fs");
 const path = require("node:path");
-const { readJSONFile, readTextFile } = require("./helpers");
+const { findFile, readJSONFile, readTextFile } = require("./helpers");
 const { generateSchema } = require("./schema");
 
 const APP_JSON = "app.json";
@@ -23,28 +23,6 @@ const BUILD_PROPS = [
   "plugins",
   "resources",
 ];
-
-/**
- * Finds the specified file using Node module resolution.
- * @param {string} file
- * @param {string=} startDir
- * @returns {string | undefined}
- */
-function findFile(file, startDir = process.cwd(), fs = nodefs) {
-  let currentDir = startDir;
-  let candidate = path.join(currentDir, file);
-  while (!fs.existsSync(candidate)) {
-    const nextDir = path.dirname(currentDir);
-    if (nextDir === currentDir) {
-      return undefined;
-    }
-
-    currentDir = nextDir;
-    candidate = path.join(currentDir, file);
-  }
-
-  return candidate;
-}
 
 function makeValidator() {
   const { default: Ajv } = require("ajv");
@@ -154,6 +132,5 @@ function validate(
   }
 }
 
-exports.findFile = findFile;
 exports.validate = validate;
 exports.validateManifest = validateManifest;

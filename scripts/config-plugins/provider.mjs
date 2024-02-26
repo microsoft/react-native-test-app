@@ -1,6 +1,6 @@
 // @ts-check
 import * as path from "node:path";
-import { findFile } from "../validate-manifest.js";
+import { findFile } from "../helpers.js";
 import { BaseMods } from "./ExpoConfigPlugins.mjs";
 
 /**

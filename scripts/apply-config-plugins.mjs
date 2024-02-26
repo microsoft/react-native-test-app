@@ -4,7 +4,7 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { parseArgs } from "node:util";
-import { findFile } from "./validate-manifest.js";
+import { findFile } from "./helpers.js";
 
 /**
  * @typedef {import("./config-plugins/types.mjs").ProjectInfo["platforms"]} Platforms
