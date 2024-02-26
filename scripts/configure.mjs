@@ -5,8 +5,8 @@ import * as nodefs from "node:fs";
 import { createRequire } from "node:module";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import semverCoerce from "semver/functions/coerce";
-import semverSatisfies from "semver/functions/satisfies";
+import semverCoerce from "semver/functions/coerce.js";
+import semverSatisfies from "semver/functions/satisfies.js";
 import { cliPlatformIOSVersion } from "./configure-projects.js";
 import {
   getPackageVersion,
