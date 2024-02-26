@@ -6,7 +6,7 @@ import * as fsp from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { gatherConfig, writeAllFiles } from "../../scripts/configure.js";
+import { gatherConfig, writeAllFiles } from "../../scripts/configure.mjs";
 import { findNearest, readJSONFile } from "../../scripts/helpers.js";
 
 /**
@@ -29,7 +29,7 @@ function projectPath(name) {
 /**
  * Initializes a React Native project.
  * @param {string} name
- * @param {import("../../scripts/configure.js").ConfigureParams["platforms"]} platforms
+ * @param {import("../../scripts/configure.mjs").ConfigureParams["platforms"]} platforms
  * @param {Record<string, string | string[]>=} setupFiles
  */
 async function makeProject(name, platforms, setupFiles = {}) {
@@ -113,7 +113,7 @@ function runGradle(cwd, ...args) {
 /**
  * Initializes a new React Native project and runs Gradle.
  * @param {string} name
- * @param {import("../../scripts/configure.js").ConfigureParams["platforms"]} platforms
+ * @param {import("../../scripts/configure.mjs").ConfigureParams["platforms"]} platforms
  * @param {Record<string, string | string[]>=} setupFiles
  */
 export async function runGradleWithProject(name, platforms, setupFiles = {}) {

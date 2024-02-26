@@ -1,9 +1,9 @@
 // @ts-check
 import { deepEqual } from "node:assert/strict";
 import { describe, it } from "node:test";
-import { gatherConfig as gatherConfigActual } from "../../scripts/configure.js";
+import { gatherConfig as gatherConfigActual } from "../../scripts/configure.mjs";
 import { readTextFile } from "../../scripts/helpers.js";
-import { join } from "../../scripts/template.js";
+import { join } from "../../scripts/template.mjs";
 import { mockParams } from "./mockParams.mjs";
 
 describe("gatherConfig()", () => {
@@ -14,8 +14,8 @@ describe("gatherConfig()", () => {
    * File content should not be normalized because they should only contain
    * forward-slashes.
    *
-   * @param {import("../../scripts/configure.js").ConfigureParams} params
-   * @returns {import("../../scripts/configure.js").Configuration}
+   * @param {import("../../scripts/configure.mjs").ConfigureParams} params
+   * @returns {import("../../scripts/configure.mjs").Configuration}
    */
   function gatherConfig(params) {
     /** @type {(p: string) => string} */

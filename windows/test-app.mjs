@@ -16,7 +16,7 @@ import {
   toVersionNumber,
   v,
 } from "../scripts/helpers.js";
-import { parseArgs } from "../scripts/parseargs.js";
+import { parseArgs } from "../scripts/parseargs.mjs";
 import { validate } from "../scripts/validate-manifest.js";
 
 /**

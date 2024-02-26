@@ -1,7 +1,7 @@
 // @ts-check
 import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
-import { projectRelativePath } from "../../scripts/configure.js";
+import { projectRelativePath } from "../../scripts/configure.mjs";
 import { mockParams } from "./mockParams.mjs";
 
 describe("projectRelativePath()", () => {

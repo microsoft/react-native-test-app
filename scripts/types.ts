@@ -1,6 +1,6 @@
-/****************
- * configure.js *
- ****************/
+/*****************
+ * configure.mjs *
+ *****************/
 
 export type FileCopy = { source: string };
 
@@ -58,9 +58,9 @@ export type ProjectParams = {
   };
 };
 
-/****************
- * parseargs.js *
- ****************/
+/*****************
+ * parseargs.mjs *
+ *****************/
 
 type Option = {
   description: string;

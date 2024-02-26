@@ -1,7 +1,7 @@
 // @ts-check
 import { deepEqual } from "node:assert/strict";
 import { describe, it } from "node:test";
-import { mergeConfig } from "../../scripts/configure.js";
+import { mergeConfig } from "../../scripts/configure.mjs";
 
 describe("mergeConfig()", () => {
   it("merges empty configs", () => {

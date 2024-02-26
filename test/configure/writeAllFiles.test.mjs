@@ -2,7 +2,7 @@
 import { equal, rejects, throws } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
-import { writeAllFiles as writeAllFilesActual } from "../../scripts/configure.js";
+import { writeAllFiles as writeAllFilesActual } from "../../scripts/configure.mjs";
 import { readTextFile as readTextFileActual } from "../../scripts/helpers.js";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 

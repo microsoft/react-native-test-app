@@ -1,11 +1,11 @@
 // @ts-check
 import { equal, fail, throws } from "node:assert/strict";
 import { describe, it } from "node:test";
-import { reactNativeConfig as reactNativeConfigActual } from "../../scripts/configure.js";
+import { reactNativeConfig as reactNativeConfigActual } from "../../scripts/configure.mjs";
 import { mockParams } from "./mockParams.mjs";
 
 describe("reactNativeConfig()", () => {
-  /** @type {(params: import("../../scripts/configure.js").ConfigureParams) => string} */
+  /** @type {(params: import("../../scripts/configure.mjs").ConfigureParams) => string} */
   const reactNativeConfig = (params) => {
     const config = reactNativeConfigActual(params);
     if (typeof config !== "string") {
