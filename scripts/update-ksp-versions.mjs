@@ -2,7 +2,7 @@
 // @ts-check
 
 import * as fs from "node:fs";
-import https from "node:https";
+import * as https from "node:https";
 
 const dependenciesGradle = "android/dependencies.gradle";
 const groupId = "com.google.devtools.ksp";

@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // @ts-check
 import chalk from "chalk";
-import nodefs from "node:fs";
+import * as nodefs from "node:fs";
 import { createRequire } from "node:module";
-import path from "node:path";
+import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import semver from "semver";
+import semverCoerce from "semver/functions/coerce";
+import semverSatisfies from "semver/functions/satisfies";
 import { cliPlatformIOSVersion } from "./configure-projects.js";
 import {
   getPackageVersion,
@@ -141,14 +142,14 @@ export function warn(message, tag = "[!]") {
  * @returns {Record<string, string> | undefined}
  */
 export function getPlatformPackage(packageName, targetVersion) {
-  const v = semver.coerce(targetVersion);
+  const v = semverCoerce(targetVersion);
   if (!v) {
     throw new Error(`Invalid ${packageName} version: ${targetVersion}`);
   }
 
   const { peerDependencies } = readManifest();
   const versionRange = peerDependencies[packageName];
-  if (!semver.satisfies(v.version, versionRange)) {
+  if (!semverSatisfies(v.version, versionRange)) {
     warn(
       `${packageName}@${v.major}.${v.minor} cannot be added because it does not exist or is unsupported`
     );

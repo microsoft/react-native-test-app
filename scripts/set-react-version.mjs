@@ -16,7 +16,7 @@ import { readJSONFile, readTextFile, toVersionNumber, v } from "./helpers.js";
  * @typedef {import("./types").Manifest} Manifest
  */
 
-const VALID_TAGS = ["canary-macos", "canary-windows", "main", "nightly"];
+const VALID_TAGS = ["canary-macos", "canary-windows", "nightly"];
 
 /**
  * Escapes given string for use in Command Prompt.
