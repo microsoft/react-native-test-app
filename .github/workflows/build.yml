@@ -496,7 +496,8 @@ jobs:
         uses: ./.github/actions/affected
       - name: Set up NuGet sources
         # Temporarily disabled since builds using NuGet artifacts randomly fail
-        # with architecture mismatch error
+        # with architecture mismatch error:
+        # https://github.com/microsoft/react-native-test-app/issues/1879
         if: false # ${{ steps.affected.outputs.windows != '' && github.event_name == 'schedule' }}
         run: |
           nuget sources Add -Name react-native-windows -Source https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json -ConfigFile NuGet.Config
