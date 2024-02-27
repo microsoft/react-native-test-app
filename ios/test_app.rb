@@ -369,7 +369,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
           config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
         end
 
-        config.build_settings['USER_HEADER_SEARCH_PATHS'] ||= []
+        config.build_settings['USER_HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
         config.build_settings['USER_HEADER_SEARCH_PATHS'] << File.dirname(destination)
       end
     when 'ReactTestAppTests'
