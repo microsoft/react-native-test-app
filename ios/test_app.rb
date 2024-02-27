@@ -198,7 +198,7 @@ def resources_pod(project_root, target_platform, platforms)
       'ios' => platforms[:ios],
       'osx' => platforms[:macos],
     },
-    'resources' => [*resources],
+    'resources' => resources,
   }
 
   podspec_path = File.join(app_dir, 'ReactTestApp-Resources.podspec.json')
