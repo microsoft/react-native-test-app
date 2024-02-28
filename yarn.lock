@@ -2939,7 +2939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-webapis/web-storage@npm:^0.2.1":
+"@react-native-webapis/web-storage@npm:^0.2.2":
   version: 0.2.2
   resolution: "@react-native-webapis/web-storage@npm:0.2.2"
   peerDependencies:
@@ -7281,7 +7281,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.1.6"
     "@babel/preset-env": "npm:^7.1.6"
-    "@react-native-webapis/web-storage": "npm:^0.2.1"
+    "@react-native-webapis/web-storage": "npm:^0.2.2"
     "@react-native/babel-preset": "npm:^0.73.19"
     "@react-native/metro-config": "npm:^0.73.3"
     "@rnx-kit/metro-config": "npm:^1.3.14"

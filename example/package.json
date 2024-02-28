@@ -17,7 +17,7 @@
     "windows": "react-native run-windows --no-packager"
   },
   "dependencies": {
-    "@react-native-webapis/web-storage": "^0.2.1",
+    "@react-native-webapis/web-storage": "^0.2.2",
     "react": "18.2.0",
     "react-native": "^0.73.0",
     "react-native-macos": "^0.73.0",
