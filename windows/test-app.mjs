@@ -299,7 +299,7 @@ function generateContentItems(
       ? path.relative(projectPath, resource)
       : resource;
     if (!fs.existsSync(resourcePath)) {
-      console.warn(`warning: resource with path '${resource}' was not found`);
+      console.warn(`warning: resource not found: ${resource}`);
       continue;
     }
 
