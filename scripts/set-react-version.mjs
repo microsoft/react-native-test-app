@@ -9,8 +9,13 @@ import { spawn } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
-import { readJSONFile, readTextFile, toVersionNumber, v } from "./helpers.js";
+import {
+  isMain,
+  readJSONFile,
+  readTextFile,
+  toVersionNumber,
+  v,
+} from "./helpers.js";
 
 /**
  * @typedef {import("./types").Manifest} Manifest
@@ -432,7 +437,7 @@ export function setReactVersion(version, coreOnly) {
 }
 
 const { [1]: script, [2]: version } = process.argv;
-if (script === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   if (!(await checkEnvironment())) {
     process.exitCode = 1;
   } else if (!isValidVersion(version)) {

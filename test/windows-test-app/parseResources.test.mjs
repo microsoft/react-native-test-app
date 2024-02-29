@@ -68,11 +68,11 @@ describe("parseResources()", () => {
 
     equal(
       spy(console.warn).calls[0].arguments[0],
-      "warning: resource with path 'dist/assets' was not found"
+      "warning: resource not found: dist/assets"
     );
     equal(
       spy(console.warn).calls[1].arguments[0],
-      "warning: resource with path 'dist/main.bundle' was not found"
+      "warning: resource not found: dist/main.bundle"
     );
   });
 });
