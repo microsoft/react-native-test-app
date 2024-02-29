@@ -5,6 +5,7 @@ const { spawnSync } = require("node:child_process");
 const nodefs = require("node:fs");
 const path = require("node:path");
 const os = require("node:os");
+const { fileURLToPath } = require("node:url");
 
 /**
  * Escapes given string for use in Command Prompt.
@@ -50,6 +51,18 @@ function findNearest(
 ) {
   const result = findFile(fileOrDirName, currentDir, fs);
   return result ? path.relative("", result) : null;
+}
+
+/**
+ * Returns whether the current module is main.
+ * @param {string} url
+ * @param {string} script
+ * @returns {boolean}
+ */
+function isMain(url, script = process.argv[1]) {
+  return Boolean(
+    url && script && fileURLToPath(url) === require.resolve(script)
+  );
 }
 
 /**
@@ -147,6 +160,7 @@ function v(major, minor, patch) {
 exports.findFile = findFile;
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
+exports.isMain = isMain;
 exports.npm = npm;
 exports.readJSONFile = readJSONFile;
 exports.readTextFile = readTextFile;

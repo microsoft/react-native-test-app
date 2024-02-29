@@ -10,6 +10,7 @@ import { v5 as uuidv5 } from "uuid";
 import {
   findNearest,
   getPackageVersion,
+  isMain,
   readJSONFile,
   readTextFile,
   requireTransitive,
@@ -898,8 +899,7 @@ export function generateSolution(
   return undefined;
 }
 
-const [, script] = process.argv;
-if (script === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   parseArgs(
     "Generate a Visual Studio solution for React Test App",
     {

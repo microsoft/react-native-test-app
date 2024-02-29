@@ -10,6 +10,7 @@ import semverSatisfies from "semver/functions/satisfies.js";
 import { cliPlatformIOSVersion } from "./configure-projects.js";
 import {
   getPackageVersion,
+  isMain,
   readJSONFile,
   readTextFile,
   toVersionNumber,
@@ -664,8 +665,7 @@ export function configure(params, fs = nodefs) {
   return 0;
 }
 
-const [, script] = process.argv;
-if (script === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   /** @type {Platform[]} */
   const platformChoices = ["android", "ios", "macos", "windows"];
   const defaultPlatforms = platformChoices.join(", ");
