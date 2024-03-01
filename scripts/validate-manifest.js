@@ -71,6 +71,7 @@ function validateManifest(manifestPath, fs = nodefs) {
 /**
  * @param {("file" | "stdout")=} outputMode Whether to output to `file` or `stdout`
  * @param {string=} projectRoot Path to root of project
+ * @returns {number}
  */
 function validate(
   outputMode = "stdout",
@@ -81,7 +82,7 @@ function validate(
   const manifest = validateManifest(manifestPath, fs);
   if (typeof manifest === "number") {
     process.exitCode = manifest;
-    return;
+    return manifest;
   }
 
   const nodeModulesPath = findFile(NODE_MODULES, projectRoot, fs);
@@ -90,7 +91,7 @@ function validate(
       `Failed to find '${NODE_MODULES}'. Please make sure you've installed npm dependencies.`
     );
     process.exitCode = 2;
-    return;
+    return 2;
   }
 
   const copy = JSON.stringify(manifest);
@@ -103,14 +104,11 @@ function validate(
       .digest("hex");
     const cppHeader = [
       "// clang-format off",
-      "#ifndef REACTTESTAPP_APP_JSON_H_",
-      "#define REACTTESTAPP_APP_JSON_H_",
+      "#pragma once",
       "",
       `#define ReactTestApp_AppManifest "${escapedCopy}"`,
       `#define ReactTestApp_AppManifestChecksum "${checksum}"`,
       `#define ReactTestApp_AppManifestLength ${copy.length}`,
-      "",
-      "#endif  // REACTTESTAPP_APP_JSON_H_",
       "",
     ].join("\n");
     const manifestCopyDest = path.join(
@@ -130,6 +128,8 @@ function validate(
   } else {
     console.log(escapedCopy);
   }
+
+  return 0;
 }
 
 exports.validate = validate;

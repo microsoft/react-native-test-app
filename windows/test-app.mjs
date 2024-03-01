@@ -1,65 +1,33 @@
 #!/usr/bin/env node
 // @ts-check
-import { XMLParser } from "fast-xml-parser";
 import { spawn } from "node:child_process";
 import * as nodefs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { v5 as uuidv5 } from "uuid";
 import {
   findNearest,
-  getPackageVersion,
   isMain,
-  readJSONFile,
   readTextFile,
   requireTransitive,
-  toVersionNumber,
   v,
+  writeTextFile,
 } from "../scripts/helpers.js";
 import { parseArgs } from "../scripts/parseargs.mjs";
 import { validate } from "../scripts/validate-manifest.js";
+import { projectInfo } from "./project.mjs";
+import { configureForUWP } from "./uwp.mjs";
+import { configureForWin32 } from "./win32.mjs";
 
 /**
- * @typedef {import("../scripts/types").AppManifest} AppManifest
- * @typedef {import("../scripts/types").AssetItems} AssetItems;
- * @typedef {import("../scripts/types").Assets} Assets;
+ * @typedef {import("../scripts/types").MSBuildProjectOptions} MSBuildProjectOptions;
  */
 
 const templateView = {
-  name: "ReactTestApp",
-  projectGuidUpper: "{B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D}",
+  packageGuidUpper: "{B44CEAD7-FBFF-4A17-95EB-FF5434BBD79D}", // .wapproj
+  projectGuidUpper: "{B44CEAD7-FBFF-4A17-95EA-FF5434BBD79D}", // .vcxproj
   useExperimentalNuget: false,
 };
-
-const uniqueFilterIdentifier = "e48dc53e-40b1-40cb-970a-f89935452892";
-
-/** @type {{ recursive: true, mode: 0o755 }} */
-const mkdirRecursiveOptions = { recursive: true, mode: 0o755 };
-
-/** @type {{ encoding: "utf-8", mode: 0o644 }} */
-const textFileWriteOptions = { encoding: "utf-8", mode: 0o644 };
-
-/**
- * Copies the specified directory.
- * @param {string} src
- * @param {string} dest
- */
-export function copy(src, dest, fs = nodefs) {
-  fs.mkdir(dest, mkdirRecursiveOptions, (err) => {
-    rethrow(err);
-    fs.readdir(src, { withFileTypes: true }, (err, files) => {
-      rethrow(err);
-      files.forEach((file) => {
-        const source = path.join(src, file.name);
-        const target = path.join(dest, file.name);
-        file.isDirectory()
-          ? copy(source, target, fs)
-          : fs.copyFile(source, target, rethrow);
-      });
-    });
-  });
-}
 
 /**
  * Finds all Visual Studio projects in specified directory.
@@ -97,312 +65,6 @@ export function findUserProjects(projectDir, projects = [], fs = nodefs) {
 }
 
 /**
- * Finds NuGet dependencies.
- *
- * Visual Studio (?) currently does not download transitive dependencies. This
- * is a workaround until `react-native-windows` autolinking adds support.
- *
- * @see {@link https://github.com/microsoft/react-native-windows/issues/9578}
- * @param {string} rnWindowsPath
- * @returns {[string, string][]}
- */
-function getNuGetDependencies(rnWindowsPath, fs = nodefs) {
-  const pkgJson = findNearest("package.json");
-  if (!pkgJson) {
-    return [];
-  }
-
-  /** @type {import("@react-native-community/cli")} */
-  const { loadConfig } = requireTransitive(
-    ["@react-native-community/cli"],
-    rnWindowsPath
-  );
-  const dependencies = Object.values(loadConfig().dependencies);
-
-  const xml = new XMLParser({
-    ignoreAttributes: false,
-    transformTagName: (tag) => tag.toLowerCase(),
-  });
-
-  const lowerCase = (/** @type{Record<string, string>} */ refs) => {
-    for (const key of Object.keys(refs)) {
-      refs[key.toLowerCase()] = refs[key];
-    }
-    return refs;
-  };
-
-  /** @type {Record<string, [string, string]>} */
-  const packageRefs = {};
-
-  for (const { root, platforms } of dependencies) {
-    /** @type {{ projects?: Record<string, string>[]; sourceDir?: string; }?} */
-    const windows = platforms?.["windows"];
-    if (!windows || !Array.isArray(windows.projects)) {
-      continue;
-    }
-
-    const projects = windows.projects.map(({ projectFile }) =>
-      path.join(root, windows.sourceDir || ".", projectFile)
-    );
-
-    if (!Array.isArray(projects)) {
-      continue;
-    }
-
-    // Look for `PackageReference` entries:
-    //
-    //     <Project>
-    //         <ImportGroup>
-    //             <PackageReference ... />
-    //             <PackageReference ... />
-    //         </ImportGroup>
-    //     </Project>
-    //
-    for (const vcxproj of projects) {
-      const proj = xml.parse(readTextFile(vcxproj, fs));
-      const itemGroup = proj.project?.itemgroup;
-      if (!itemGroup) {
-        continue;
-      }
-
-      const itemGroups = Array.isArray(itemGroup) ? itemGroup : [itemGroup];
-      for (const group of itemGroups) {
-        const pkgRef = group["packagereference"];
-        if (!pkgRef) {
-          continue;
-        }
-
-        const refs = Array.isArray(pkgRef) ? pkgRef : [pkgRef];
-        for (const ref of refs) {
-          // Attributes are not case-sensitive
-          lowerCase(ref);
-
-          const id = ref["@_include"];
-          const version = ref["@_version"];
-          if (!id || !version) {
-            continue;
-          }
-
-          // Package ids are not case-sensitive
-          packageRefs[id.toLowerCase()] = [id, version];
-        }
-      }
-    }
-  }
-
-  // Remove dependencies managed by us
-  const config = fileURLToPath(
-    new URL("ReactTestApp/packages.config", import.meta.url)
-  );
-  const matches = readTextFile(config, fs).matchAll(/package id="(.+?)"/g);
-  for (const m of matches) {
-    const id = m[1].toLowerCase();
-    delete packageRefs[id];
-  }
-
-  return Object.values(packageRefs);
-}
-
-/**
- * Maps NuGet dependencies to `<Import>` elements.
- * @param {[string, string][]} refs
- * @returns {string}
- */
-function importTargets(refs) {
-  return refs
-    .map(
-      ([id, version]) =>
-        `<Import Project="$(SolutionDir)packages\\${id}.${version}\\build\\native\\${id}.targets" Condition="Exists('$(SolutionDir)packages\\${id}.${version}\\build\\native\\${id}.targets')" />`
-    )
-    .join("\n    ");
-}
-
-/**
- * Returns whether specified object is Error-like.
- * @param {unknown} e
- * @returns {e is Error}
- */
-function isErrorLike(e) {
-  return typeof e === "object" && e !== null && "name" in e && "message" in e;
-}
-
-/**
- * Normalizes specified path.
- * @param {string} p
- * @returns {string}
- */
-function normalizePath(p) {
-  return p.replace(/[/\\]+/g, "\\");
-}
-
-/**
- * Returns a NuGet package entry for specified package id and version.
- * @param {string} id NuGet package id
- * @param {string} version NuGet package version
- * @returns {string}
- */
-export function nuGetPackage(id, version) {
-  return `<package id="${id}" version="${version}" targetFramework="native"/>`;
-}
-
-/**
- * @param {Required<AppManifest>["windows"]} certificate
- * @param {string} projectPath
- * @returns {string}
- */
-function generateCertificateItems(
-  { certificateKeyFile, certificateThumbprint, certificatePassword },
-  projectPath
-) {
-  const items = [];
-  if (typeof certificateKeyFile === "string") {
-    items.push(
-      "<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>",
-      `<PackageCertificateKeyFile>$(ProjectRootDir)\\${projectRelativePath(
-        projectPath,
-        certificateKeyFile
-      )}</PackageCertificateKeyFile>`
-    );
-  }
-  if (typeof certificateThumbprint === "string") {
-    items.push(
-      `<PackageCertificateThumbprint>${certificateThumbprint}</PackageCertificateThumbprint>`
-    );
-  }
-  if (typeof certificatePassword === "string") {
-    items.push(
-      `<PackageCertificatePassword>${certificatePassword}</PackageCertificatePassword>`
-    );
-  }
-  return items.join("\n    ");
-}
-
-/**
- * @param {string[]} resources
- * @param {string} projectPath
- * @param {AssetItems} assets
- * @param {string} currentFilter
- * @param {string} source
- * @returns {AssetItems}
- */
-function generateContentItems(
-  resources,
-  projectPath,
-  assets = { assetFilters: [], assetItemFilters: [], assetItems: [] },
-  currentFilter = "Assets",
-  source = "",
-  fs = nodefs
-) {
-  const { assetFilters, assetItemFilters, assetItems } = assets;
-  for (const resource of resources) {
-    const resourcePath = path.isAbsolute(resource)
-      ? path.relative(projectPath, resource)
-      : resource;
-    if (!fs.existsSync(resourcePath)) {
-      console.warn(`warning: resource not found: ${resource}`);
-      continue;
-    }
-
-    if (fs.statSync(resourcePath).isDirectory()) {
-      const filter =
-        "Assets\\" +
-        normalizePath(
-          source ? path.relative(source, resource) : path.basename(resource)
-        );
-      const id = uuidv5(filter, uniqueFilterIdentifier);
-      assetFilters.push(
-        `<Filter Include="${filter}">`,
-        `  <UniqueIdentifier>{${id}}</UniqueIdentifier>`,
-        `</Filter>`
-      );
-
-      const files = fs
-        .readdirSync(resourcePath)
-        .map((file) => path.join(resource, file));
-      generateContentItems(
-        files,
-        projectPath,
-        assets,
-        filter,
-        source || path.dirname(resource),
-        fs
-      );
-    } else {
-      const assetPath = normalizePath(path.relative(projectPath, resourcePath));
-      /**
-       * When a resources folder is included in the manifest, the directory
-       * structure within the folder must be maintained. For example, given
-       * `dist/assets`, we must output:
-       *
-       *     `<DestinationFolders>$(OutDir)\\Bundle\\assets\\...</DestinationFolders>`
-       *     `<DestinationFolders>$(OutDir)\\Bundle\\assets\\node_modules\\...</DestinationFolders>`
-       *     ...
-       *
-       * Resource paths are always prefixed with `$(OutDir)\\Bundle`.
-       */
-      const destination =
-        source &&
-        `\\${normalizePath(path.relative(source, path.dirname(resource)))}`;
-      assetItems.push(
-        `<CopyFileToFolders Include="$(ProjectRootDir)\\${assetPath}">`,
-        `  <DestinationFolders>$(OutDir)\\Bundle${destination}</DestinationFolders>`,
-        "</CopyFileToFolders>"
-      );
-      assetItemFilters.push(
-        `<CopyFileToFolders Include="$(ProjectRootDir)\\${assetPath}">`,
-        `  <Filter>${currentFilter}</Filter>`,
-        "</CopyFileToFolders>"
-      );
-    }
-  }
-
-  return assets;
-}
-
-/**
- * @param {string[] | { windows?: string[] } | undefined} resources
- * @param {string} projectPath
- * @returns {Assets}
- */
-export function parseResources(resources, projectPath, fs = nodefs) {
-  if (!Array.isArray(resources)) {
-    if (resources && resources.windows) {
-      return parseResources(resources.windows, projectPath, fs);
-    }
-    return { assetItems: "", assetItemFilters: "", assetFilters: "" };
-  }
-
-  const { assetItems, assetItemFilters, assetFilters } = generateContentItems(
-    resources,
-    projectPath,
-    /* assets */ undefined,
-    /* currentFilter */ undefined,
-    /* source */ undefined,
-    fs
-  );
-
-  return {
-    assetItems: assetItems.join("\n    "),
-    assetItemFilters: assetItemFilters.join("\n    "),
-    assetFilters: assetFilters.join("\n    "),
-  };
-}
-
-/**
- * Returns path to the specified asset relative to the project path.
- * @param {string} projectPath
- * @param {string} assetPath
- * @returns {string}
- */
-function projectRelativePath(projectPath, assetPath) {
-  return normalizePath(
-    path.isAbsolute(assetPath)
-      ? path.relative(projectPath, assetPath)
-      : assetPath
-  );
-}
-
-/**
  * Replaces parts in specified content.
  * @param {string} content Content to be replaced.
  * @param {{ [pattern: string]: string }} replacements e.g. {'TextToBeReplaced': 'Replacement'}
@@ -414,16 +76,6 @@ export function replaceContent(content, replacements) {
       content.replace(new RegExp(regex, "g"), replacements[regex]),
     content
   );
-}
-
-/**
- * Rethrows specified error.
- * @param {Error | null} error
- */
-function rethrow(error) {
-  if (error) {
-    throw error;
-  }
 }
 
 /**
@@ -448,129 +100,30 @@ export function toProjectEntry(project, destPath) {
  * @param {string} srcPath Path to the file to be copied.
  * @param {string} destPath Destination path.
  * @param {Record<string, string> | undefined} replacements e.g. {'TextToBeReplaced': 'Replacement'}
- * @param {(error: Error | null) => void=} callback Callback for when the copy operation is done.
+ * @returns {Promise<void>}
  */
-export function copyAndReplace(
+export async function copyAndReplace(
   srcPath,
   destPath,
   replacements,
-  callback = rethrow,
-  fs = nodefs
+  fs = nodefs.promises
 ) {
-  const stat = fs.statSync(srcPath);
-  if (stat.isDirectory()) {
-    copy(srcPath, destPath, fs);
-  } else if (!replacements) {
-    fs.copyFile(srcPath, destPath, callback);
-  } else {
-    // Treat as text file
-    fs.readFile(srcPath, { encoding: "utf-8" }, (err, data) => {
-      if (err) {
-        callback(err);
-        return;
-      }
-
-      fs.writeFile(
-        destPath,
-        replaceContent(data, replacements),
-        {
-          encoding: "utf-8",
-          mode: stat.mode,
-        },
-        callback
-      );
-    });
-  }
-}
-
-/**
- * Reads manifest file and and resolves paths to bundle resources.
- * @param {string | null} manifestFilePath Path to the closest manifest file.
- * @returns {{
- *   appName: string;
- *   appxManifest: string;
- *   assetItems: string;
- *   assetItemFilters: string;
- *   assetFilters: string;
- *   packageCertificate: string;
- *   singleApp?: string;
- * }} Application name, and paths to directories and files to include.
- */
-export function getBundleResources(manifestFilePath, fs = nodefs) {
-  // Default value if manifest or 'name' field don't exist.
-  const defaultName = "ReactTestApp";
-
-  // Default `Package.appxmanifest` path. The project will automatically use our
-  // fallback if there is no file at this path.
-  const defaultAppxManifest = "windows/Package.appxmanifest";
-
-  if (manifestFilePath) {
-    try {
-      /** @type {AppManifest} */
-      const manifest = readJSONFile(manifestFilePath, fs);
-      const { name, singleApp, resources, windows } = manifest;
-      const projectPath = path.dirname(manifestFilePath);
-      return {
-        appName: name || defaultName,
-        singleApp,
-        appxManifest: projectRelativePath(
-          projectPath,
-          (windows && windows.appxManifest) || defaultAppxManifest
-        ),
-        packageCertificate: generateCertificateItems(
-          windows || {},
-          projectPath
-        ),
-        ...parseResources(resources, projectPath, fs),
-      };
-    } catch (e) {
-      if (isErrorLike(e)) {
-        console.warn(`Could not parse 'app.json':\n${e.message}`);
-      } else {
-        throw e;
-      }
-    }
-  } else {
-    console.warn("Could not find 'app.json' file.");
+  if (!replacements) {
+    return fs.cp(srcPath, destPath, { recursive: true });
   }
 
-  return {
-    appName: defaultName,
-    appxManifest: defaultAppxManifest,
-    assetItems: "",
-    assetItemFilters: "",
-    assetFilters: "",
-    packageCertificate: "",
-  };
-}
-
-/**
- * Returns the version of Hermes that should be installed.
- * @param {string} rnwPath Path to `react-native-windows`.
- * @returns {string | null}
- */
-export function getHermesVersion(rnwPath, fs = nodefs) {
-  const jsEnginePropsPath = path.join(
-    rnwPath,
-    "PropertySheets",
-    "JSEngine.props"
-  );
-  const props = readTextFile(jsEnginePropsPath, fs);
-  const m = props.match(/<HermesVersion.*?>(.+?)<\/HermesVersion>/);
-  return m && m[1];
+  // Treat as text file
+  const data = await fs.readFile(srcPath, { encoding: "utf-8" });
+  return writeTextFile(destPath, replaceContent(data, replacements), fs);
 }
 
 /**
  * Generates Visual Studio solution.
  * @param {string} destPath Destination path.
- * @param {{ autolink: boolean; useHermes: boolean | undefined; useNuGet: boolean; }} options
+ * @param {MSBuildProjectOptions} options
  * @returns {string | undefined} An error message; `undefined` otherwise.
  */
-export function generateSolution(
-  destPath,
-  { autolink, useHermes, useNuGet },
-  fs = nodefs
-) {
+export function generateSolution(destPath, options, fs = nodefs) {
   if (!destPath) {
     return "Missing or invalid destination path";
   }
@@ -591,16 +144,21 @@ export function generateSolution(
     return "Could not find 'react-native-windows'";
   }
 
-  const rnTestAppPath = findNearest(
-    path.join(nodeModulesDir, "react-native-test-app"),
-    undefined,
-    fs
-  );
-  if (!rnTestAppPath) {
-    return "Could not find 'react-native-test-app'";
+  if (validate("file", destPath) !== 0) {
+    return "App manifest validation failed!";
   }
 
-  const projDir = "ReactTestApp";
+  const info = projectInfo(options, rnWindowsPath, destPath, fs);
+  const { projDir, projectFileName, projectFiles, solutionTemplatePath } =
+    info.useFabric
+      ? configureForWin32(info, options)
+      : configureForUWP(info, options);
+
+  const solutionTemplate = path.join(rnWindowsPath, solutionTemplatePath);
+  if (!fs.existsSync(solutionTemplate)) {
+    return "Could not find solution template";
+  }
+
   const projectFilesDestPath = path.join(
     path.dirname(projectManifest),
     nodeModulesDir,
@@ -609,116 +167,19 @@ export function generateSolution(
     projDir
   );
 
+  const mkdirRecursiveOptions = { recursive: true, mode: 0o755 };
   fs.mkdirSync(projectFilesDestPath, mkdirRecursiveOptions);
   fs.mkdirSync(destPath, mkdirRecursiveOptions);
 
-  validate("file", destPath);
-
-  const manifestFilePath = findNearest("app.json", destPath, fs);
-  const {
-    appName,
-    appxManifest,
-    assetItems,
-    assetItemFilters,
-    assetFilters,
-    packageCertificate,
-    singleApp,
-  } = getBundleResources(manifestFilePath, fs);
-
-  const rnWindowsVersion = getPackageVersion(
-    "react-native-windows",
-    rnWindowsPath,
-    fs
-  );
-  const rnWindowsVersionNumber = toVersionNumber(rnWindowsVersion);
-  const hermesVersion = useHermes && getHermesVersion(rnWindowsPath, fs);
-  const usePackageReferences =
-    rnWindowsVersionNumber === 0 || rnWindowsVersionNumber >= v(0, 68, 0);
-  const xamlVersion =
-    rnWindowsVersionNumber === 0 || rnWindowsVersionNumber >= v(0, 73, 0)
-      ? "2.8.0"
-      : rnWindowsVersionNumber >= v(0, 67, 0)
-        ? "2.7.0"
-        : "2.6.0";
-
-  const nuGetDependencies = getNuGetDependencies(rnWindowsPath);
-
-  /** @type {[string, Record<string, string>?][]} */
-  const projectFiles = [
-    ["Assets"],
-    ["AutolinkedNativeModules.g.cpp"],
-    ["AutolinkedNativeModules.g.props"],
-    ["AutolinkedNativeModules.g.targets"],
-    ["Package.appxmanifest"],
-    ["PropertySheet.props"],
-    [
-      "ReactTestApp.vcxproj",
-      {
-        "REACT_NATIVE_VERSION=1000000000;": `REACT_NATIVE_VERSION=${rnWindowsVersionNumber};`,
-        "\\$\\(ReactTestAppPackageManifest\\)": appxManifest,
-        "\\$\\(ReactNativeWindowsNpmVersion\\)": rnWindowsVersion,
-        "<!-- ReactTestApp asset items -->": assetItems,
-        "<!-- ReactTestApp additional targets -->":
-          importTargets(nuGetDependencies),
-        ...(typeof singleApp === "string"
-          ? { "ENABLE_SINGLE_APP_MODE=0;": "ENABLE_SINGLE_APP_MODE=1;" }
-          : undefined),
-        ...(useNuGet
-          ? {
-              "<UseExperimentalNuget>false</UseExperimentalNuget>":
-                "<UseExperimentalNuget>true</UseExperimentalNuget>",
-              "<WinUI2xVersionDisabled />": `<WinUI2xVersion>${xamlVersion}</WinUI2xVersion>`,
-            }
-          : undefined),
-        ...(packageCertificate
-          ? {
-              "<AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>":
-                packageCertificate,
-            }
-          : undefined),
-      },
-    ],
-    [
-      "ReactTestApp.vcxproj.filters",
-      {
-        "<!-- ReactTestApp asset item filters -->": assetItemFilters,
-        "<!-- ReactTestApp asset filters -->": assetFilters,
-        "\\$\\(ReactTestAppPackageManifest\\)": appxManifest,
-      },
-    ],
-    [
-      "packages.config",
-      {
-        '<package id="Microsoft.UI.Xaml" version="0.0.0" targetFramework="native"/>':
-          nuGetPackage("Microsoft.UI.Xaml", xamlVersion),
-        "<!-- additional packages -->": nuGetDependencies
-          .map(([id, version]) => nuGetPackage(id, version))
-          .join("\n  "),
-        ...(useNuGet && !usePackageReferences
-          ? {
-              '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native"/ -->':
-                nuGetPackage("Microsoft.ReactNative", rnWindowsVersion),
-              '<!-- package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native"/ -->':
-                nuGetPackage("Microsoft.ReactNative.Cxx", rnWindowsVersion),
-            }
-          : undefined),
-        ...(hermesVersion && !usePackageReferences
-          ? {
-              '<!-- package id="ReactNative.Hermes.Windows" version="0.0.0" targetFramework="native"/ -->':
-                nuGetPackage("ReactNative.Hermes.Windows", hermesVersion),
-            }
-          : undefined),
-      },
-    ],
-  ];
+  /** @type {typeof copyAndReplace} */
+  const copyAndReplaceAsync = (src, dst, r) =>
+    copyAndReplace(src, dst, r, fs.promises);
 
   const copyTasks = projectFiles.map(([file, replacements]) =>
-    copyAndReplace(
+    copyAndReplaceAsync(
       fileURLToPath(new URL(`${projDir}/${file}`, import.meta.url)),
       path.join(projectFilesDestPath, file),
-      replacements,
-      undefined,
-      fs
+      replacements
     )
   );
 
@@ -726,55 +187,44 @@ export function generateSolution(
     .map((project) => toProjectEntry(project, destPath))
     .join(os.EOL);
 
-  const solutionTemplatePath = findNearest(
-    path.join(
-      nodeModulesDir,
-      "react-native-windows",
-      "template",
-      "cpp-app",
-      "proj",
-      "MyApp.sln"
-    ),
-    undefined,
-    fs
-  );
-  if (!solutionTemplatePath) {
-    throw new Error("Failed to find solution template");
-  }
-
   /** @type {import("mustache")} */
   const mustache = requireTransitive(
     ["@react-native-windows/cli", "mustache"],
     rnWindowsPath
   );
-  const reactTestAppProjectPath = path.join(
-    projectFilesDestPath,
-    "ReactTestApp.vcxproj"
-  );
-  const solutionTask = fs.writeFile(
-    path.join(destPath, `${appName}.sln`),
-    mustache
-      .render(readTextFile(solutionTemplatePath, fs), {
-        ...templateView,
-        useExperimentalNuget: useNuGet,
-      })
-      // The current version of this template (v0.63.18) assumes that
-      // `react-native-windows` is always installed in
-      // `..\node_modules\react-native-windows`.
-      .replace(
-        /"\.\.\\node_modules\\react-native-windows\\/g,
-        `"${path.relative(destPath, rnWindowsPath)}\\`
-      )
-      .replace(
-        "ReactTestApp\\ReactTestApp.vcxproj",
-        path.relative(destPath, reactTestAppProjectPath)
-      )
-      .replace(
-        /EndProject\r?\nGlobal/,
-        ["EndProject", additionalProjectEntries, "Global"].join(os.EOL)
-      ),
-    textFileWriteOptions,
-    rethrow
+  const vcxprojPath = path.join(projectFilesDestPath, projectFileName);
+  const vcxprojLocalPath = path.relative(destPath, vcxprojPath);
+  copyTasks.push(
+    writeTextFile(
+      path.join(destPath, `${info.bundle.appName}.sln`),
+      mustache
+        .render(readTextFile(solutionTemplate, fs), {
+          ...templateView,
+          name: path.basename(projectFileName, path.extname(projectFileName)),
+          useExperimentalNuget: info.useExperimentalNuGet,
+        })
+        // The current version of this template (v0.63.18) assumes that
+        // `react-native-windows` is always installed in
+        // `..\node_modules\react-native-windows`.
+        .replace(
+          /"\.\.\\node_modules\\react-native-windows\\/g,
+          `"${path.relative(destPath, rnWindowsPath)}\\`
+        )
+        .replace("ReactApp\\ReactApp.vcxproj", vcxprojLocalPath) // Win32
+        .replace(
+          "ReactApp.Package\\ReactApp.Package.wapproj", // Win32
+          vcxprojLocalPath.replace(
+            "ReactApp.vcxproj",
+            "ReactApp.Package.wapproj"
+          )
+        )
+        .replace("ReactTestApp\\ReactTestApp.vcxproj", vcxprojLocalPath) // UWP
+        .replace(
+          /EndProject\r?\nGlobal/,
+          ["EndProject", additionalProjectEntries, "Global"].join(os.EOL)
+        ),
+      fs.promises
+    )
   );
 
   const experimentalFeaturesPropsFilename = "ExperimentalFeatures.props";
@@ -783,110 +233,92 @@ export function generateSolution(
     experimentalFeaturesPropsFilename
   );
   if (!fs.existsSync(experimentalFeaturesPropsPath)) {
-    copyAndReplace(
-      fileURLToPath(
-        new URL(experimentalFeaturesPropsFilename, import.meta.url)
-      ),
-      experimentalFeaturesPropsPath,
-      {
-        ...(useHermes != null && (usePackageReferences || hermesVersion)
-          ? {
-              "<!-- UseHermes>true</UseHermes -->": `<UseHermes>${useHermes}</UseHermes>`,
-            }
-          : undefined),
-      },
-      undefined,
-      fs
-    );
+    const { useHermes } = options;
+    const {
+      hermesVersion,
+      useExperimentalNuGet,
+      useFabric,
+      usePackageReferences,
+    } = info;
+    const url = new URL(experimentalFeaturesPropsFilename, import.meta.url);
+    copyAndReplaceAsync(fileURLToPath(url), experimentalFeaturesPropsPath, {
+      "<UseFabric>false</UseFabric>": `<UseFabric>${useFabric}</UseFabric>`,
+      "<UseHermes>true</UseHermes>": `<UseHermes>${Boolean(hermesVersion) || (useHermes != null && usePackageReferences)}</UseHermes>`,
+      "<UseWinUI3>false</UseWinUI3>": `<UseWinUI3>${useFabric}</UseWinUI3>`,
+      "<UseExperimentalNuget>false</UseExperimentalNuget>": `<UseExperimentalNuget>${useExperimentalNuGet}</UseExperimentalNuget>`,
+    });
   }
 
   // TODO: Remove when we drop support for 0.67.
   // Patch building with Visual Studio 2022. For more details, see
   // https://github.com/microsoft/react-native-windows/issues/9559
-  if (rnWindowsVersionNumber < v(0, 68, 0)) {
+  if (info.versionNumber < v(0, 68, 0)) {
     const dispatchQueue = path.join(
       rnWindowsPath,
       "Mso",
       "dispatchQueue",
       "dispatchQueue.h"
     );
-    copyAndReplace(
-      dispatchQueue,
-      dispatchQueue,
-      {
-        "template <typename T>\\s*inline void MustBeNoExceptVoidFunctor\\(\\) {\\s*static_assert\\(false":
-          "namespace details {\n  template <typename>\n  constexpr bool always_false = false;\n}\n\ntemplate <typename T>\ninline void MustBeNoExceptVoidFunctor() {\n  static_assert(details::always_false<T>",
-      },
-      undefined,
-      fs
-    );
+    copyAndReplaceAsync(dispatchQueue, dispatchQueue, {
+      "template <typename T>\\s*inline void MustBeNoExceptVoidFunctor\\(\\) {\\s*static_assert\\(false":
+        "namespace details {\n  template <typename>\n  constexpr bool always_false = false;\n}\n\ntemplate <typename T>\ninline void MustBeNoExceptVoidFunctor() {\n  static_assert(details::always_false<T>",
+    });
   }
 
   // TODO: Remove when we drop support for 0.69.
   // Patch building with Visual Studio 2022. For more details, see
   // https://github.com/microsoft/react-native-windows/pull/10373
-  if (rnWindowsVersionNumber < v(0, 70, 0)) {
+  if (info.versionNumber < v(0, 70, 0)) {
     const helpers = path.join(
       rnWindowsPath,
       "Microsoft.ReactNative",
       "Utils",
       "Helpers.h"
     );
-    copyAndReplace(
-      helpers,
-      helpers,
-      {
-        "inline typename T asEnum": "inline T asEnum",
-      },
-      undefined,
-      fs
-    );
+    copyAndReplaceAsync(helpers, helpers, {
+      "inline typename T asEnum": "inline T asEnum",
+    });
   }
 
-  if (useNuGet) {
-    const nugetConfigPath =
-      findNearest(
-        // In 0.70, the template was renamed from `NuGet.Config` to `NuGet_Config`
-        path.join(
-          nodeModulesDir,
-          "react-native-windows",
-          "template",
-          "shared-app",
-          "proj",
-          "NuGet_Config"
-        ),
-        undefined,
-        fs
-      ) ||
-      findNearest(
-        // In 0.64, the template was moved into `react-native-windows`
-        path.join(
-          nodeModulesDir,
-          "react-native-windows",
-          "template",
-          "shared-app",
-          "proj",
-          "NuGet.Config"
-        ),
-        undefined,
-        fs
-      );
+  if (info.useExperimentalNuGet) {
+    // In 0.64, the template was moved into `react-native-windows`
+    const nugetConfigPath0_64 = path.join(
+      rnWindowsPath,
+      "template",
+      "shared-app",
+      "proj",
+      "NuGet.Config"
+    );
+    // In 0.70, the template was renamed from `NuGet.Config` to `NuGet_Config`
+    const nugetConfigPath0_70 = path.join(
+      rnWindowsPath,
+      "template",
+      "shared-app",
+      "proj",
+      "NuGet_Config"
+    );
+    const nugetConfigPath = fs.existsSync(nugetConfigPath0_70)
+      ? nugetConfigPath0_70
+      : fs.existsSync(nugetConfigPath0_64)
+        ? nugetConfigPath0_64
+        : null;
     const nugetConfigDestPath = path.join(destPath, "NuGet.Config");
     if (nugetConfigPath && !fs.existsSync(nugetConfigDestPath)) {
-      fs.writeFile(
-        nugetConfigDestPath,
-        mustache.render(readTextFile(nugetConfigPath, fs), {}),
-        textFileWriteOptions,
-        rethrow
+      copyTasks.push(
+        writeTextFile(
+          nugetConfigDestPath,
+          mustache.render(readTextFile(nugetConfigPath, fs), {}),
+          fs.promises
+        )
       );
     }
   }
 
-  if (autolink) {
-    Promise.all([...copyTasks, solutionTask]).then(() => {
+  if (options.autolink) {
+    Promise.all(copyTasks).then(() => {
       spawn(
         path.join(path.dirname(process.argv0), "npx.cmd"),
-        ["react-native", "autolink-windows", "--proj", reactTestAppProjectPath],
+        ["react-native", "autolink-windows", "--proj", vcxprojPath],
         { stdio: "inherit" }
       ).on("close", (code) => {
         if (code !== 0) {
@@ -901,7 +333,7 @@ export function generateSolution(
 
 if (isMain(import.meta.url)) {
   parseArgs(
-    "Generate a Visual Studio solution for React Test App",
+    "Generate a Visual Studio solution for a React Native app",
     {
       "project-directory": {
         description:
@@ -915,12 +347,17 @@ if (isMain(import.meta.url)) {
         type: "boolean",
         default: os.platform() === "win32",
       },
+      "use-fabric": {
+        description: "Use New Architecture [experimental] (supported on 0.73+)",
+        type: "boolean",
+      },
       "use-hermes": {
-        description: "Use Hermes JavaScript engine (experimental)",
+        description:
+          "Use Hermes instead of Chakra as the JS engine (enabled by default on 0.73+)",
         type: "boolean",
       },
       "use-nuget": {
-        description: "Use NuGet packages (experimental)",
+        description: "Use NuGet packages [experimental]",
         type: "boolean",
         default: false,
       },
@@ -928,10 +365,11 @@ if (isMain(import.meta.url)) {
     ({
       "project-directory": projectDirectory,
       autolink,
+      "use-fabric": useFabric,
       "use-hermes": useHermes,
       "use-nuget": useNuGet,
     }) => {
-      const options = { autolink, useHermes, useNuGet };
+      const options = { autolink, useFabric, useHermes, useNuGet };
       const error = generateSolution(path.resolve(projectDirectory), options);
       if (error) {
         console.error(error);

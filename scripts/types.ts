@@ -86,6 +86,51 @@ type InferredOptionTypes<O> = { [key in keyof O]: InferredOptionType<O[key]> };
 
 export type Args<O> = InferredOptionTypes<O> & { _: string[] };
 
+/***********************
+ * windows/project.mjs *
+ ***********************/
+
+export type AppxBundle = {
+  appName: string;
+  appxManifest: string;
+  assetItems: string;
+  assetItemFilters: string;
+  assetFilters: string;
+  packageCertificate: string;
+  singleApp?: string;
+};
+
+export type MSBuildProjectOptions = {
+  autolink: boolean;
+  useFabric?: boolean;
+  useHermes?: boolean;
+  useNuGet: boolean;
+};
+
+export type MSBuildProjectParams = {
+  projDir: string;
+  projectFileName: string;
+  projectFiles: [string, Record<string, string>?][];
+  solutionTemplatePath: string;
+};
+
+export type ProjectInfo = {
+  version: string;
+  versionNumber: number;
+  bundle: AppxBundle;
+  hermesVersion: string | false | null;
+  nugetDependencies: [string, string][];
+  useExperimentalNuGet: boolean;
+  useFabric: boolean;
+  usePackageReferences: boolean;
+  xamlVersion: string;
+};
+
+export type MSBuildProjectConfigurator = (
+  info: ProjectInfo,
+  options: MSBuildProjectOptions
+) => MSBuildProjectParams;
+
 /************************
  * windows/test-app.mjs *
  ************************/

@@ -10,6 +10,10 @@
 #include <winrt/Microsoft.ReactNative.h>
 #include <winrt/Windows.Foundation.h>
 
+#if __has_include(<winrt/Microsoft.UI.Composition.h>)
+#include <winrt/Microsoft.UI.Composition.h>
+#endif  // __has_include(<winrt/Microsoft.UI.Composition.h>)
+
 #include <ReactContext.h>
 
 namespace ReactTestApp
@@ -29,6 +33,10 @@ namespace ReactTestApp
         static constexpr uint32_t Version = REACT_NATIVE_VERSION;
 
         ReactInstance();
+
+#if __has_include(<winrt/Microsoft.UI.Composition.h>)
+        ReactInstance(HWND hwnd, winrt::Microsoft::UI::Composition::Compositor const &);
+#endif  // __has_include(<winrt/Microsoft.UI.Composition.h>)
 
         auto const &ReactHost() const
         {
@@ -94,7 +102,6 @@ namespace ReactTestApp
         OnComponentsRegistered onComponentsRegistered_;
     };
 
-    std::optional<winrt::hstring> GetBundleName(std::optional<winrt::hstring> const &bundleRoot);
     winrt::Windows::Foundation::IAsyncOperation<bool> IsDevServerRunning();
 
 }  // namespace ReactTestApp

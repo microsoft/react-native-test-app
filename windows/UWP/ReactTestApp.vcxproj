@@ -16,22 +16,20 @@
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
   </PropertyGroup>
-  <PropertyGroup Label="NuGet">
-    <ResolveNuGetPackages>false</ResolveNuGetPackages>
-    <UseExperimentalNuget>false</UseExperimentalNuget>
-  </PropertyGroup>
   <PropertyGroup Label="ReactNativeWindowsProps">
-    <ProjectRootDir Condition="'$(ProjectRootDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ProjectRootDir>
-    <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
-    <ReactTestAppDir Condition="'$(ReactTestAppDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows\ReactTestApp</ReactTestAppDir>
-    <ReactTestAppCommonDir Condition="'$(ReactTestAppCommonDir)' == ''">$(ReactTestAppDir)\..\..\common</ReactTestAppCommonDir>
-    <ReactTestAppGeneratedDir Condition="'$(ReactTestAppGeneratedDir)' == ''">$(MSBuildProjectDirectory)\..\..</ReactTestAppGeneratedDir>
+    <ProjectRootDir Condition="'$(ProjectRootDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ProjectRootDir>
+    <ReactAppWinDir Condition="'$(ReactAppWinDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows</ReactAppWinDir>
+    <ReactAppCommonDir Condition="'$(ReactAppCommonDir)'==''">$(ReactAppWinDir)\..\common</ReactAppCommonDir>
+    <ReactAppSharedDir Condition="'$(ReactAppSharedDir)'==''">$(ReactAppWinDir)\Shared</ReactAppSharedDir>
+    <ReactAppUniversalDir Condition="'$(ReactAppUniversalDir)'==''">$(ReactAppWinDir)\UWP</ReactAppUniversalDir>
+    <ReactAppGeneratedDir Condition="'$(ReactAppGeneratedDir)'==''">$(MSBuildProjectDirectory)\..\..</ReactAppGeneratedDir>
+    <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
     <WinUI2xVersionDisabled />
   </PropertyGroup>
   <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props')" />
   <PropertyGroup Label="Fallback Windows SDK Versions">
-    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion Condition=" '$(WindowsTargetPlatformMinVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)'==''">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion Condition="'$(WindowsTargetPlatformMinVersion)'==''">10.0.17763.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -88,7 +86,7 @@
     <Import Project="$(SolutionDir)packages\$(WinUIPackageProps)" Condition="'$(WinUIPackageProps)' != '' And Exists('$(SolutionDir)packages\$(WinUIPackageProps)')" />
   </ImportGroup>
   <PropertyGroup>
-    <IncludePath>$(ReactTestAppDir);$(ReactTestAppCommonDir);$(ReactTestAppGeneratedDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactAppUniversalDir);$(ReactAppSharedDir);$(ReactAppCommonDir);$(ReactAppGeneratedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -116,25 +114,25 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="$(ReactTestAppDir)\pch.h" />
-    <ClInclude Include="$(ReactTestAppDir)\App.h">
-      <DependentUpon>$(ReactTestAppDir)\App.xaml</DependentUpon>
+    <ClInclude Include="$(ReactAppUniversalDir)\pch.h" />
+    <ClInclude Include="$(ReactAppUniversalDir)\App.h">
+      <DependentUpon>$(ReactAppUniversalDir)\App.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="$(ReactTestAppCommonDir)\AppRegistry.h" />
-    <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
-    <ClInclude Include="$(ReactTestAppDir)\MainPage.h">
-      <DependentUpon>$(ReactTestAppDir)\MainPage.xaml</DependentUpon>
+    <ClInclude Include="$(ReactAppCommonDir)\AppRegistry.h" />
+    <ClInclude Include="$(ReactAppUniversalDir)\AutolinkedNativeModules.g.h" />
+    <ClInclude Include="$(ReactAppSharedDir)\JSValueWriterHelper.h" />
+    <ClInclude Include="$(ReactAppUniversalDir)\MainPage.h">
+      <DependentUpon>$(ReactAppUniversalDir)\MainPage.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />
-    <ClInclude Include="$(ReactTestAppDir)\ReactInstance.h" />
-    <ClInclude Include="$(ReactTestAppDir)\ReactPackageProvider.h" />
-    <ClInclude Include="$(ReactTestAppDir)\Session.h" />
+    <ClInclude Include="$(ReactAppSharedDir)\Manifest.h" />
+    <ClInclude Include="$(ReactAppSharedDir)\ReactInstance.h" />
+    <ClInclude Include="$(ReactAppSharedDir)\Session.h" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="$(ReactTestAppDir)\App.xaml">
+    <ApplicationDefinition Include="$(ReactAppUniversalDir)\App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="$(ReactTestAppDir)\MainPage.xaml">
+    <Page Include="$(ReactAppUniversalDir)\MainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -142,7 +140,7 @@
     <AppxManifest Include="$(ProjectRootDir)\$(ReactTestAppPackageManifest)" Condition="Exists('$(ProjectRootDir)\$(ReactTestAppPackageManifest)')">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" Condition="!Exists('$(ProjectRootDir)\$(ReactTestAppPackageManifest)')">
+    <AppxManifest Include="$(ReactAppUniversalDir)\Package.appxmanifest" Condition="!Exists('$(ProjectRootDir)\$(ReactTestAppPackageManifest)')">
       <SubType>Designer</SubType>
     </AppxManifest>
   </ItemGroup>
@@ -156,30 +154,29 @@
     <!-- ReactTestApp asset items -->
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(ReactTestAppDir)\pch.cpp">
+    <ClCompile Include="$(ReactAppUniversalDir)\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="$(ReactTestAppDir)\App.cpp">
-      <DependentUpon>$(ReactTestAppDir)\App.xaml</DependentUpon>
+    <ClCompile Include="$(ReactAppUniversalDir)\App.cpp">
+      <DependentUpon>$(ReactAppUniversalDir)\App.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="$(ReactTestAppCommonDir)\AppRegistry.cpp">
+    <ClCompile Include="$(ReactAppCommonDir)\AppRegistry.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AutolinkedNativeModules.g.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp">
-      <DependentUpon>$(ReactTestAppDir)\MainPage.xaml</DependentUpon>
+    <ClCompile Include="$(ReactAppUniversalDir)\MainPage.cpp">
+      <DependentUpon>$(ReactAppUniversalDir)\MainPage.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
-    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\ReactInstance.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\ReactPackageProvider.cpp" />
+    <ClCompile Include="$(ReactAppSharedDir)\Manifest.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)\module.g.cpp" />
+    <ClCompile Include="$(ReactAppSharedDir)\ReactInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="$(ReactTestAppDir)\App.idl">
-      <DependentUpon>$(ReactTestAppDir)\App.xaml</DependentUpon>
+    <Midl Include="$(ReactAppUniversalDir)\App.idl">
+      <DependentUpon>$(ReactAppUniversalDir)\App.xaml</DependentUpon>
     </Midl>
-    <Midl Include="$(ReactTestAppDir)\MainPage.idl">
-      <DependentUpon>$(ReactTestAppDir)\MainPage.xaml</DependentUpon>
+    <Midl Include="$(ReactAppUniversalDir)\MainPage.idl">
+      <DependentUpon>$(ReactAppUniversalDir)\MainPage.xaml</DependentUpon>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -189,7 +186,7 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ReactNativeWindowsTargets">
-    <Import Project="$(ReactTestAppDir)\ValidateManifest.targets" />
+    <Import Project="$(ReactAppSharedDir)\ValidateManifest.targets" />
     <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets')" />
   </ImportGroup>
   <Target Name="EnsureReactNativeWindowsTargets" BeforeTargets="PrepareForBuild">
@@ -200,13 +197,13 @@
     <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets'))" />
   </Target>
   <PropertyGroup Label="ReactNativeWindowsProps">
-    <ReactNativeWindowsVersion Condition="'$(ReactNativeWindowsVersion)' == ''">$(ReactNativeWindowsNpmVersion)</ReactNativeWindowsVersion>
+    <ReactNativeWindowsVersion Condition="'$(ReactNativeWindowsVersion)'==''">$(ReactNativeWindowsNpmVersion)</ReactNativeWindowsVersion>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
     <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.ReactNative.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.targets')" />
     <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets')" />
-    <Import Project="$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets" Condition="Exists('$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets') AND '$(UseHermes)' == 'true'" />
+    <Import Project="$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets" Condition="Exists('$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets') AND '$(UseHermes)'=='true'" />
     <Import Project="$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets" Condition="Exists('$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets')" />
     <Import Project="$(SolutionDir)packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets" Condition="Exists('$(SolutionDir)packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets')" />
     <!-- ReactTestApp additional targets -->

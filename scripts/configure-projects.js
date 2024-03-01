@@ -10,6 +10,7 @@ const path = require("node:path");
 const {
   findNearest,
   getPackageVersion,
+  readTextFile,
   toVersionNumber,
   v,
 } = require("./helpers");
@@ -76,22 +77,15 @@ function iosProjectPath() {
 }
 
 /**
- * @param {string} sourceDir
+ * @param {string} solutionFile
  * @returns {ProjectParams["windows"]["project"]}
  */
-function windowsProjectPath(sourceDir) {
-  return {
-    projectFile: path.relative(
-      sourceDir,
-      path.join(
-        "node_modules",
-        ".generated",
-        "windows",
-        "ReactTestApp",
-        "ReactTestApp.vcxproj"
-      )
-    ),
-  };
+function windowsProjectPath(solutionFile, fs = nodefs) {
+  const sln = readTextFile(solutionFile, fs);
+  const m = sln.match(
+    /([^"]*?node_modules[/\\].generated[/\\]windows[/\\].*?\.vcxproj)/
+  );
+  return { projectFile: m ? m[1] : `(Failed to parse '${solutionFile}')` };
 }
 
 /**
@@ -132,10 +126,11 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
   }
 
   if (windows && fs.existsSync(windows.solutionFile)) {
+    const { sourceDir, solutionFile } = windows;
     config.windows = {
-      sourceDir: windows.sourceDir,
-      solutionFile: path.relative(windows.sourceDir, windows.solutionFile),
-      project: windowsProjectPath(path.resolve(projectRoot, windows.sourceDir)),
+      sourceDir,
+      solutionFile: path.relative(sourceDir, solutionFile),
+      project: windowsProjectPath(solutionFile, fs),
     };
   }
 

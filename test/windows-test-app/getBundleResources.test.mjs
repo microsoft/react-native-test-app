@@ -2,7 +2,7 @@
 import { deepEqual, equal, match } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
-import { getBundleResources as getBundleResourcesActual } from "../../windows/test-app.mjs";
+import { getBundleResources as getBundleResourcesActual } from "../../windows/project.mjs";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 import { spy } from "../spy.mjs";
 

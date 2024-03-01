@@ -6,5 +6,5 @@
 namespace winrt::Microsoft::ReactNative
 {
     void RegisterAutolinkedNativeModulePackages(
-        Windows::Foundation::Collections::IVector<IReactPackageProvider> const &);
+        winrt::Windows::Foundation::Collections::IVector<IReactPackageProvider> const &);
 }

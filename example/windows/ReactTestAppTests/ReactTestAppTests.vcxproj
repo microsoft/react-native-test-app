@@ -59,11 +59,11 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <ReactTestAppDir Condition="'$(ReactTestAppDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows\ReactTestApp\</ReactTestAppDir>
-    <ReactTestAppProjectDir Condition="'$(ReactTestAppProjectDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\.generated\windows\ReactTestApp\ReactTestApp.vcxproj'))\node_modules\.generated\windows\ReactTestApp\</ReactTestAppProjectDir>
+    <ReactAppProjectDir Condition="'$(ReactAppProjectDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\.generated\windows\UWP\ReactTestApp.vcxproj'))\node_modules\.generated\windows\UWP</ReactAppProjectDir>
+    <ReactAppSharedDir Condition="'$(ReactAppSharedDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows\Shared</ReactAppSharedDir>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>$(ReactTestAppDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ReactAppSharedDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -78,7 +78,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories);$(ReactTestAppProjectDir)\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories);$(ReactAppProjectDir)\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies);Manifest.obj;pch.obj</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

@@ -10,6 +10,7 @@
 #include <winrt/Windows.UI.Xaml.Automation.Peers.h>
 #include <winrt/Windows.UI.Xaml.Automation.Provider.h>
 
+#include "JSValueWriterHelper.h"
 #include "MainPage.g.cpp"
 #include "Session.h"
 
@@ -83,38 +84,6 @@ namespace
             sender, value, L"Enable Remote JS Debugging", L"Disable Remote JS Debugging");
     }
 
-    void WritePropertyValue(std::any const &propertyValue, IJSValueWriter const &writer)
-    {
-        if (propertyValue.type() == typeid(bool)) {
-            writer.WriteBoolean(std::any_cast<bool>(propertyValue));
-        } else if (propertyValue.type() == typeid(std::int64_t)) {
-            writer.WriteInt64(std::any_cast<std::int64_t>(propertyValue));
-        } else if (propertyValue.type() == typeid(std::uint64_t)) {
-            writer.WriteInt64(std::any_cast<std::uint64_t>(propertyValue));
-        } else if (propertyValue.type() == typeid(double)) {
-            writer.WriteDouble(std::any_cast<double>(propertyValue));
-        } else if (propertyValue.type() == typeid(std::nullopt)) {
-            writer.WriteNull();
-        } else if (propertyValue.type() == typeid(std::string)) {
-            writer.WriteString(winrt::to_hstring(std::any_cast<std::string>(propertyValue)));
-        } else if (propertyValue.type() == typeid(std::vector<std::any>)) {
-            writer.WriteArrayBegin();
-            for (auto &&e : std::any_cast<std::vector<std::any>>(propertyValue)) {
-                WritePropertyValue(e, writer);
-            }
-            writer.WriteArrayEnd();
-        } else if (propertyValue.type() == typeid(std::map<std::string, std::any>)) {
-            writer.WriteObjectBegin();
-            for (auto &&e : std::any_cast<std::map<std::string, std::any>>(propertyValue)) {
-                writer.WritePropertyName(winrt::to_hstring(e.first));
-                WritePropertyValue(e.second, writer);
-            }
-            writer.WriteObjectEnd();
-        } else {
-            assert(false);
-        }
-    }
-
     void InitializeReactRootView(ReactNativeHost const &reactNativeHost,
                                  ReactRootView reactRootView,
                                  Component const &component)
@@ -128,10 +97,9 @@ namespace
             [initialProps = component.initialProperties](IJSValueWriter const &writer) {
                 if (initialProps.has_value()) {
                     writer.WriteObjectBegin();
-                    for (auto &&property : initialProps.value()) {
-                        auto &value = property.second;
-                        writer.WritePropertyName(winrt::to_hstring(property.first));
-                        WritePropertyValue(value, writer);
+                    for (auto &[key, value] : initialProps.value()) {
+                        writer.WritePropertyName(winrt::to_hstring(key));
+                        ReactApp::JSValueWriterWriteValue(writer, value);
                     }
                     writer.WriteObjectEnd();
                 }

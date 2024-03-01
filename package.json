@@ -50,8 +50,8 @@
     "test-app.gradle",
     "test_app.rb",
     "visionos",
-    "windows/*.{mjs,props}",
-    "windows/ReactTestApp"
+    "windows",
+    "!.clang-format"
   ],
   "main": "scripts/configure-projects.js",
   "bin": {
