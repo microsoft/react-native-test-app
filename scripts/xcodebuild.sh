@@ -32,6 +32,7 @@ elif [[ $platform == visionos/* ]]; then
   else
     destination='-destination "generic/platform=visionOS Simulator"'
   fi
+
   skip_testing='-skip-testing:ReactTestAppTests/ReactNativePerformanceTests'
 else
   echo "Cannot detect platform: $workspace"

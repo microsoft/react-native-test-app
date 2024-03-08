@@ -504,11 +504,12 @@ jobs:
         run: |
           node --test test/config.test.mjs
         working-directory: example
-      - name: Test
-        if: ${{ steps.affected.outputs.visionos != '' }}
-        run: |
-          ../scripts/xcodebuild.sh visionos/Example.xcworkspace test-without-building
-        working-directory: example
+      # Disable as the VisionOS Simator seems to crash in CI
+      # - name: Test
+      #   if: ${{ steps.affected.outputs.visionos != '' }}
+      #   run: |
+      #     ../scripts/xcodebuild.sh visionos/Example.xcworkspace test-without-building
+      #   working-directory: example
     timeout-minutes: 60
   visionos-template:
     name: "visionOS [template]"
