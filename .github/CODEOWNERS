@@ -12,6 +12,9 @@ ios/                 @Saadnajmi @kelset @tido64
 # macOS
 macos/               @Saadnajmi @kelset @tido64
 
+# visionOS
+visionOS/            @Saadnajmi @kelset @tido64
+
 # Windows
 windows/             @acoates-ms @kelset @tido64
 
