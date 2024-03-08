@@ -288,7 +288,7 @@ function generateSchema(docs = {}) {
         properties: {
           reactNativePath: {
             description:
-              'Sets a custom path to React Native for visionOS. Useful for when `require("react-native-macos")` does not return the desired path.',
+              'Sets a custom path to React Native for visionOS. Useful for when `require("@callstack/react-native-visionos")` does not return the desired path.',
             type: "string",
           },
         },

@@ -71,7 +71,7 @@ def react_native_path(project_root, target_platform)
   react_native_packages = {
     'ios' => 'react-native',
     'macos' => 'react-native-macos',
-    'visionos' => 'react-native-macos',
+    'visionos' => '@callstack/react-native-visionos',
   }
   react_native = react_native_packages[target_platform.to_s]
   assert(!react_native.nil?, "Unsupported target platform: #{target_platform}")

@@ -139,7 +139,7 @@ export function warn(message, tag = "[!]") {
 
 /**
  * Returns platform package at target version if it satisfies version range.
- * @param {"react-native" | "react-native-macos" | "react-native-windows"} packageName
+ * @param {"react-native" | "react-native-macos" | "react-native-windows" | "@callstack/react-native-visionos"} packageName
  * @param {string} targetVersion
  * @returns {Record<string, string> | undefined}
  */
@@ -410,7 +410,7 @@ export const getConfig = (() => {
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
-            return getPlatformPackage("react-native-macos", targetVersion);
+            return getPlatformPackage("@callstack/react-native-visionos", targetVersion);
           },
         },
         windows: {

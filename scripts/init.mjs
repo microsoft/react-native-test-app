@@ -113,8 +113,8 @@ function getPackageName(platform) {
       return "react-native";
     case "macos":
       return "react-native-macos";
-      case "visionos":
-        return "react-native-macos";
+    case "visionos":
+      return "@callstack/react-native-visionos";
     case "windows":
       return "react-native-windows";
     default:

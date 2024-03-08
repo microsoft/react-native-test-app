@@ -60,6 +60,7 @@
     {
       "groupName": "react-native",
       "matchPackageNames": [
+        "@callstack/react-native-visionos",
         "@react-native/assets-registry",
         "@react-native/babel-plugin-codegen",
         "@react-native/babel-preset",
