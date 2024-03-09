@@ -33,9 +33,10 @@ import {
  * @typedef {import("./types").Configuration} Configuration
  * @typedef {import("./types").ConfigureParams} ConfigureParams
  * @typedef {import("./types").FileCopy} FileCopy
- * @typedef {import("./types").PlatformConfiguration} PlatformConfiguration
- * @typedef {import("./types").Platform} Platform
  * @typedef {Required<import("./types").Manifest>} Manifest
+ * @typedef {import("./types").PlatformConfiguration} PlatformConfiguration
+ * @typedef {import("./types").PlatformPackage} PlatformPackage
+ * @typedef {import("./types").Platform} Platform
  */
 
 /**
@@ -137,8 +138,27 @@ export function warn(message, tag = "[!]") {
 }
 
 /**
+ * Returns the default npm package name for the specified platform.
+ * @param {Platform} platform
+ * @returns {PlatformPackage}
+ */
+export function getDefaultPlatformPackageName(platform) {
+  switch (platform) {
+    case "android":
+    case "ios":
+      return "react-native";
+    case "macos":
+      return "react-native-macos";
+    case "windows":
+      return "react-native-windows";
+    default:
+      throw new Error(`Unsupported platform: ${platform}`);
+  }
+}
+
+/**
  * Returns platform package at target version if it satisfies version range.
- * @param {"react-native" | "react-native-macos" | "react-native-windows"} packageName
+ * @param {PlatformPackage} packageName
  * @param {string} targetVersion
  * @returns {Record<string, string> | undefined}
  */
@@ -388,7 +408,8 @@ export const getConfig = (() => {
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
-            return getPlatformPackage("react-native-macos", targetVersion);
+            const pkgName = getDefaultPlatformPackageName("macos");
+            return getPlatformPackage(pkgName, targetVersion);
           },
         },
         windows: {
@@ -409,7 +430,8 @@ export const getConfig = (() => {
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
-            return getPlatformPackage("react-native-windows", targetVersion);
+            const pkgName = getDefaultPlatformPackageName("windows");
+            return getPlatformPackage(pkgName, targetVersion);
           },
         },
       };
