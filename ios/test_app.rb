@@ -69,11 +69,11 @@ def react_native_path(project_root, target_platform)
   return Pathname.new(resolve_module(react_native_path)) if react_native_path.is_a? String
 
   react_native_packages = {
-    'ios' => 'react-native',
-    'macos' => 'react-native-macos',
-    'visionos' => '@callstack/react-native-visionos',
+    ios: 'react-native',
+    macos: 'react-native-macos',
+    visionos: '@callstack/react-native-visionos',
   }
-  react_native = react_native_packages[target_platform.to_s]
+  react_native = react_native_packages[target_platform]
   assert(!react_native.nil?, "Unsupported target platform: #{target_platform}")
   Pathname.new(resolve_module(react_native))
 end

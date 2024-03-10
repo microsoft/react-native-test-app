@@ -332,6 +332,6 @@ extension ContentViewController {
         }
     }
 }
-#endif
+#endif // os(iOS)
 
 #endif // !ENABLE_SINGLE_APP_MODE

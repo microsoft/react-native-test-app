@@ -44,7 +44,6 @@ build_cmd=$(
     -workspace "$workspace" \
     -scheme ReactTestApp \
     "$destination" \
-    "$sdk" \
     -derivedDataPath $(dirname $workspace)/build \
     "$skip_testing" \
     CODE_SIGNING_ALLOWED=NO \

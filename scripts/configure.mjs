@@ -429,7 +429,7 @@ export const getConfig = (() => {
           scripts: {
             "build:visionos":
               "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.visionos.jsbundle --assets-dest dist",
-            visionos: `react-native run-visionos${projectPathFlag}`,
+            visionos: "react-native run-visionos",
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
