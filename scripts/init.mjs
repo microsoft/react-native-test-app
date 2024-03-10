@@ -9,7 +9,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import prompts from "prompts";
-import { configure } from "./configure.mjs";
+import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
 import { npm as npmSync, readJSONFile } from "./helpers.js";
 import { parseArgs } from "./parseargs.mjs";
 
@@ -102,27 +102,6 @@ const getInstalledVersion = memo(() => {
 });
 
 /**
- * Returns the npm package name for the specified platform.
- * @param {string} platform
- * @returns {string}
- */
-function getPackageName(platform) {
-  switch (platform) {
-    case "android":
-    case "ios":
-      return "react-native";
-    case "macos":
-      return "react-native-macos";
-    case "visionos":
-      return "@callstack/react-native-visionos";
-    case "windows":
-      return "react-native-windows";
-    default:
-      throw new Error(`Unsupported platform: ${platform}`);
-  }
-}
-
-/**
  * Returns the desired `react-native` version.
  *
  * Checks the following in order:
@@ -131,7 +110,7 @@ function getPackageName(platform) {
  *   - Currently installed `react-native` version
  *   - Latest version from npm
  *
- * @param {import("./configure.mjs").Platform[]} platforms
+ * @param {import("./types").Platform[]} platforms
  * @returns {string}
  */
 function getVersion(platforms) {
@@ -159,7 +138,7 @@ function getVersion(platforms) {
   console.log("No version was specified; fetching available versions...");
 
   const maxSupportedVersion = platforms.reduce((result, p) => {
-    const pkgName = getPackageName(p);
+    const pkgName = getDefaultPlatformPackageName(p);
     if (!pkgName) {
       return result;
     }
@@ -180,7 +159,7 @@ function getVersion(platforms) {
 
 /**
  * Returns the React Native version and path to the template.
- * @param {import("./configure.mjs").Platform[]} platforms
+ * @param {import("./types").Platform[]} platforms
  * @returns {Promise<[string] | [string, string]>}
  */
 function getTemplate(platforms) {
@@ -266,7 +245,7 @@ function main() {
          * @type {{
          *   name?: string;
          *   packagePath?: string;
-         *   platforms?: import("./configure.mjs").Platform[];
+         *   platforms?: import("./types").Platform[];
          * }}
          */
         const { name, packagePath, platforms } = await prompts([
