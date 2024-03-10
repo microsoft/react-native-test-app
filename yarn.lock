@@ -12313,13 +12313,15 @@ __metadata:
     typescript: "npm:^5.0.0"
     uuid: "npm:^8.3.2"
   peerDependencies:
-    "@callstack/react-native-visionos": ^0.0.0-0 || 0.73
+    "@callstack/react-native-visionos": 0.73
     "@expo/config-plugins": ">=5.0"
     react: 17.0.1 - 18.2
     react-native: ^0.0.0-0 || 0.66 - 0.73 || 1000.0.0
     react-native-macos: ^0.0.0-0 || 0.66 || 0.68 || 0.71 - 0.73
     react-native-windows: ^0.0.0-0 || 0.66 - 0.73
   peerDependenciesMeta:
+    "@callstack/react-native-visionos":
+      optional: true
     "@expo/config-plugins":
       optional: true
     react-native-macos:
