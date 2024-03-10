@@ -103,6 +103,9 @@
     "react-native-windows": "^0.0.0-0 || 0.66 - 0.73"
   },
   "peerDependenciesMeta": {
+    "@callstack/react-native-visionos": {
+      "optional": true
+    },
     "@expo/config-plugins": {
       "optional": true
     },
