@@ -60,13 +60,13 @@
           - ReactTestApp-DevSupport.podspec
           - common/**/*
           - example/visionos/**/*
-          - visionos/*.rb
-          - visionos/ReactTestApp/Manifest.swift
-          - visionos/ReactTestApp/React+Compatibility.{h,m}
-          - visionos/ReactTestApp/ReactInstance.swift
-          - visionos/ReactTestApp/ReactTestApp-Bridging-Header.h
-          - visionos/ReactTestApp/Session.swift
-          - visionos/ReactTestApp/UIViewController+ReactTestApp.{h,m}
+          - ios/*.rb
+          - ios/ReactTestApp/Manifest.swift
+          - ios/ReactTestApp/React+Compatibility.{h,m}
+          - ios/ReactTestApp/ReactInstance.swift
+          - ios/ReactTestApp/ReactTestApp-Bridging-Header.h
+          - ios/ReactTestApp/Session.swift
+          - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
           - visionos/**/*
           - scripts/*.js
           - scripts/xcodebuild.sh
