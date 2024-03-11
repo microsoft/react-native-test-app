@@ -61,12 +61,7 @@
           - common/**/*
           - example/visionos/**/*
           - ios/*.rb
-          - ios/ReactTestApp/Manifest.swift
-          - ios/ReactTestApp/React+Compatibility.{h,m}
-          - ios/ReactTestApp/ReactInstance.swift
-          - ios/ReactTestApp/ReactTestApp-Bridging-Header.h
-          - ios/ReactTestApp/Session.swift
-          - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
+          - ios/ReactTestApp/*.{h,m,mm,swift}
           - visionos/**/*
           - scripts/*.js
           - scripts/xcodebuild.sh

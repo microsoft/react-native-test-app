@@ -27,9 +27,9 @@ Pod::Spec.new do |s|
   s.source    = { :git => package['repository']['url'], :tag => version }
   s.summary   = package['description']
 
-  s.ios.deployment_target = deployment_target.call('ios')
-  s.osx.deployment_target = deployment_target.call('macos')
-  s.visionos.deployment_target = deployment_target.call('visionos')
+  s.ios.deployment_target = deployment_target.call(:ios)
+  s.osx.deployment_target = deployment_target.call(:macos)
+  s.visionos.deployment_target = deployment_target.call(:visionos)
 
   s.dependency 'React-Core'
   s.dependency 'React-jsi'
