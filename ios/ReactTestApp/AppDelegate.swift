@@ -7,17 +7,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     @objc var window: UIWindow? {
         get {
             // Copy the implementation of RCTKeyWindow() as it changes a lot upstream
-            for scene in RCTSharedApplication()?.connectedScenes {
-                guard scene is UIScene, scene.activationState == .foregroundActive else {
-                  continue
-                }
-                let windowScene = scene as UIWindowScene
-                windowScene.windows.forEach { window in
-                    if window.isKeyWindow {
+            if let connectedScenes = application?.connectedScenes {
+                for scene in connectedScenes {
+                    guard let windowScene = scene as? UIWindowScene,
+                          scene.activationState == .foregroundActive
+                    else {
+                        continue
+                    }
+
+                    if #available(iOS 15.0, *) {
+                        return windowScene.keyWindow
+                    }
+
+                    for window in windowScene.windows where window.isKeyWindow {
                         return window
                     }
                 }
             }
+
+            return nil
         }
         // swiftlint:disable:next unused_setter_value
         set {}
