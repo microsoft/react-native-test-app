@@ -459,6 +459,7 @@ jobs:
   visionos:
     name: "visionOS"
     runs-on: macos-14
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
