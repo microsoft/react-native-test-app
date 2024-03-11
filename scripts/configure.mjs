@@ -6,7 +6,6 @@ import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import semverCoerce from "semver/functions/coerce.js";
 import semverSatisfies from "semver/functions/satisfies.js";
-import { cliPlatformIOSVersion } from "./configure-projects.js";
 import {
   getPackageVersion,
   isMain,
@@ -248,10 +247,6 @@ export const getConfig = (() => {
       }
 
       const require = createRequire(import.meta.url);
-      const projectPathFlag =
-        flatten && cliPlatformIOSVersion() < v(8, 0, 0)
-          ? " --project-path ."
-          : "";
       const templateDir =
         templatePath ||
         path.relative(
@@ -384,7 +379,7 @@ export const getConfig = (() => {
           scripts: {
             "build:ios":
               "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
-            ios: `react-native run-ios${projectPathFlag}`,
+            ios: "react-native run-ios",
           },
           dependencies: {},
         },
@@ -401,7 +396,7 @@ export const getConfig = (() => {
           scripts: {
             "build:macos":
               "npm run mkdist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
-            macos: `react-native run-macos --scheme ${name}${projectPathFlag}`,
+            macos: `react-native run-macos --scheme ${name}`,
           },
           dependencies: {},
         },

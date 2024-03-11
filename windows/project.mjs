@@ -289,8 +289,9 @@ function getNuGetDependencies(rnWindowsPath, fs = nodefs) {
   }
 
   // Remove dependencies managed by us
-  const config = fileURLToPath(new URL("UWP/packages.config", import.meta.url));
-  const matches = readTextFile(config, fs).matchAll(/package id="(.+?)"/g);
+  const vcxprojUrl = new URL("UWP/ReactTestApp.vcxproj", import.meta.url);
+  const vcxproj = readTextFile(fileURLToPath(vcxprojUrl), fs);
+  const matches = vcxproj.matchAll(/PackageReference Include="(.+?)"/g);
   for (const m of matches) {
     const id = m[1].toLowerCase();
     delete packageRefs[id];
@@ -311,16 +312,6 @@ export function importTargets(refs) {
         `<Import Project="$(SolutionDir)packages\\${id}.${version}\\build\\native\\${id}.targets" Condition="Exists('$(SolutionDir)packages\\${id}.${version}\\build\\native\\${id}.targets')" />`
     )
     .join("\n    ");
-}
-
-/**
- * Returns a NuGet package entry for specified package id and version.
- * @param {string} id NuGet package id
- * @param {string} version NuGet package version
- * @returns {string}
- */
-export function nugetPackage(id, version) {
-  return `<package id="${id}" version="${version}" targetFramework="native"/>`;
 }
 
 /**
@@ -406,29 +397,13 @@ export function getBundleResources(manifestFilePath, fs = nodefs) {
 }
 
 /**
- * Returns the version of Hermes that should be installed.
- * @param {string} rnwPath Path to `react-native-windows`.
- * @returns {string | null}
- */
-export function getHermesVersion(rnwPath, fs = nodefs) {
-  const jsEnginePropsPath = path.join(
-    rnwPath,
-    "PropertySheets",
-    "JSEngine.props"
-  );
-  const props = readTextFile(jsEnginePropsPath, fs);
-  const m = props.match(/<HermesVersion.*?>(.+?)<\/HermesVersion>/);
-  return m && m[1];
-}
-
-/**
  * @param {MSBuildProjectOptions} options
  * @param {string} rnWindowsPath
  * @param {string} destPath
  * @returns {ProjectInfo}
  */
 export function projectInfo(
-  { useFabric, useHermes, useNuGet },
+  { useFabric, useNuGet },
   rnWindowsPath,
   destPath,
   fs = nodefs
@@ -446,18 +421,8 @@ export function projectInfo(
     version,
     versionNumber,
     bundle: getBundleResources(findNearest("app.json", destPath, fs), fs),
-    hermesVersion:
-      (newArch || (useHermes ?? versionNumber >= v(0, 73, 0))) &&
-      getHermesVersion(rnWindowsPath, fs),
     nugetDependencies: getNuGetDependencies(rnWindowsPath),
     useExperimentalNuGet: newArch || useNuGet,
     useFabric: newArch,
-    usePackageReferences: versionNumber === 0 || versionNumber >= v(0, 68, 0),
-    xamlVersion:
-      versionNumber === 0 || versionNumber >= v(0, 73, 0)
-        ? "2.8.0"
-        : versionNumber >= v(0, 67, 0)
-          ? "2.7.0"
-          : "2.6.0",
   };
 }

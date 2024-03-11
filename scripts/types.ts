@@ -154,17 +154,13 @@ export type ProjectInfo = {
   version: string;
   versionNumber: number;
   bundle: AppxBundle;
-  hermesVersion: string | false | null;
   nugetDependencies: [string, string][];
   useExperimentalNuGet: boolean;
   useFabric: boolean;
-  usePackageReferences: boolean;
-  xamlVersion: string;
 };
 
 export type MSBuildProjectConfigurator = (
-  info: ProjectInfo,
-  options: MSBuildProjectOptions
+  info: ProjectInfo
 ) => MSBuildProjectParams;
 
 /************************
