@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)ExperimentalFeatures.props" Condition="Exists('$(SolutionDir)ExperimentalFeatures.props')" />
-  <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -194,7 +193,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(ProjectRootDir)\app.json" />
-    <None Include="packages.config" Condition="$(ReactNativeWindowsVersionNumber)==0 OR $(ReactNativeWindowsVersionNumber)>=68000" />
     <None Include="PropertySheet.props" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
@@ -213,11 +211,6 @@
     <ReactNativeWindowsVersion Condition="'$(ReactNativeWindowsVersion)'==''">$(ReactNativeWindowsNpmVersion)</ReactNativeWindowsVersion>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
-    <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.ReactNative.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.targets')" />
-    <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets')" />
-    <Import Project="$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets') AND '$(UseHermes)'=='true'" />
-    <Import Project="$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets')" />
     <!-- ReactTestApp additional targets -->
   </ImportGroup>
 </Project>

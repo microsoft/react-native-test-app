@@ -67,10 +67,6 @@ def react_native_pods(version)
     'use_react_native-0.71'
   elsif version >= v(0, 70, 0)
     'use_react_native-0.70'
-  elsif version >= v(0, 68, 0)
-    'use_react_native-0.68'
-  elsif version >= v(0, 66, 0)
-    'use_react_native-0.64'
   else
     raise "Unsupported React Native version: #{version}"
   end

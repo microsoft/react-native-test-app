@@ -1,20 +1,14 @@
 // @ts-check
 import * as path from "node:path";
-import { importTargets, nugetPackage } from "./project.mjs";
+import { importTargets } from "./project.mjs";
 
 /** @type {import("../scripts/types.js").MSBuildProjectConfigurator} */
-export function configureForUWP(
-  {
-    bundle,
-    hermesVersion,
-    nugetDependencies,
-    usePackageReferences,
-    version,
-    versionNumber,
-    xamlVersion,
-  },
-  { useNuGet }
-) {
+export function configureForUWP({
+  bundle,
+  nugetDependencies,
+  version,
+  versionNumber,
+}) {
   /** @type {import("../scripts/types.js").MSBuildProjectParams["projectFiles"]} */
   const projectFiles = [
     ["Assets"],
@@ -53,35 +47,6 @@ export function configureForUWP(
       },
     ],
   ];
-
-  // TODO: `packages.config` was removed in 0.68
-  // https://github.com/microsoft/react-native-windows/commit/bcdf9ad68eeda2967062f5137bc0f248e2ce7897
-  if (!usePackageReferences) {
-    projectFiles.push([
-      "packages.config",
-      {
-        '<package id="Microsoft.UI.Xaml" version="0.0.0" targetFramework="native"/>':
-          nugetPackage("Microsoft.UI.Xaml", xamlVersion),
-        "<!-- additional packages -->": nugetDependencies
-          .map(([id, version]) => nugetPackage(id, version))
-          .join("\n  "),
-        ...(useNuGet
-          ? {
-              '<!-- package id="Microsoft.ReactNative" version="1000.0.0" targetFramework="native"/ -->':
-                nugetPackage("Microsoft.ReactNative", version),
-              '<!-- package id="Microsoft.ReactNative.Cxx" version="1000.0.0" targetFramework="native"/ -->':
-                nugetPackage("Microsoft.ReactNative.Cxx", version),
-            }
-          : undefined),
-        ...(hermesVersion
-          ? {
-              '<!-- package id="ReactNative.Hermes.Windows" version="0.0.0" targetFramework="native"/ -->':
-                nugetPackage("ReactNative.Hermes.Windows", hermesVersion),
-            }
-          : undefined),
-      },
-    ]);
-  }
 
   return {
     projDir: "UWP",
