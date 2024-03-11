@@ -12103,7 +12103,6 @@ __metadata:
     "@types/semver": "npm:^7.3.6"
     "@types/uuid": "npm:^8.3.1"
     ajv: "npm:^8.0.0"
-    chalk: "npm:^4.1.0"
     cliui: "npm:^8.0.0"
     eslint: "npm:^8.0.0"
     eslint-plugin-wdio: "npm:^8.20.0"
@@ -12122,6 +12121,7 @@ __metadata:
     suggestion-bot: "npm:^2.0.0"
     typescript: "npm:^5.0.0"
     uuid: "npm:^8.3.2"
+    yoctocolors: "npm:^2.0.0"
   peerDependencies:
     "@expo/config-plugins": ">=5.0"
     react: 17.0.1 - 18.2
@@ -15088,6 +15088,13 @@ __metadata:
   version: 1.0.0
   resolution: "yocto-queue@npm:1.0.0"
   checksum: 10c0/856117aa15cf5103d2a2fb173f0ab4acb12b4b4d0ed3ab249fdbbf612e55d1cadfd27a6110940e24746fb0a78cf640b522cc8bca76f30a3b00b66e90cf82abe0
+  languageName: node
+  linkType: hard
+
+"yoctocolors@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "yoctocolors@npm:2.0.0"
+  checksum: 10c0/994f5d99e7647a1b333331ffecbbf7c4463d9c2823e371b44e21146a4496cad0f14fbe2f73f44383312a6f843d93523f830f1360009f0ac93027b167ef5c63be
   languageName: node
   linkType: hard
 

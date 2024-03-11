@@ -309,8 +309,7 @@ via the [Dependency Dashboard].
   side or make things more complicated to maintain. An example of us holding
   back is the [`uuid`][] package; as of writing, the latest version is 9.x but
   we're on 8.x still because that's the version being used by most of our
-  dependencies. Another example is [`chalk`][]; we are stuck on 4.x until
-  `@react-native-community/cli` migrates to ESM.
+  dependencies.
 
 ### Development Dependencies
 
@@ -356,7 +355,6 @@ additions.
   https://github.com/microsoft/rnx-kit/tree/main/packages/align-deps#contribution
 [`@rnx-kit/react-native-host`]:
   https://github.com/microsoft/rnx-kit/tree/main/packages/react-native-host#readme
-[`chalk`]: https://github.com/chalk/chalk
 [`dependencies.gradle`]:
   https://github.com/microsoft/react-native-test-app/blob/trunk/android/dependencies.gradle
 [`package.json`]:
