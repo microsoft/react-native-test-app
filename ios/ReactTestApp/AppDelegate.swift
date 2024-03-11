@@ -5,7 +5,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private weak var application: UIApplication?
 
     @objc var window: UIWindow? {
-        get { RCTKeyWindow() }
+        get {
+            // Copy the implementation of RCTKeyWindow() as it changes a lot upstream
+            for scene in RCTSharedApplication()?.connectedScenes {
+                guard scene is UIScene, scene.activationState == .foregroundActive else {
+                  continue
+                }
+                let windowScene = scene as UIWindowScene
+                windowScene.windows.forEach { window in
+                    if window.isKeyWindow {
+                        return window
+                    }
+                }
+            }
+        }
         // swiftlint:disable:next unused_setter_value
         set {}
     }
