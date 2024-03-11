@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // @ts-check
-import chalk from "chalk";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as https from "node:https";
@@ -9,6 +8,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import prompts from "prompts";
+import * as colors from "yoctocolors";
 import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
 import { npm as npmSync, readJSONFile } from "./helpers.js";
 import { parseArgs } from "./parseargs.mjs";
@@ -121,11 +121,10 @@ function getVersion(platforms) {
 
   /** @type {(version: string, reason: string) => void} */
   const logVersion = (version, reason) => {
-    const fmtVersionFlag = chalk.bold("--version");
-    const fmtTarget = chalk.bold(version);
+    const bVersionFlag = colors.bold("--version");
+    const bTarget = colors.bold(version);
     console.log(
-      `Using ${fmtTarget} because ${reason} (use ${fmtVersionFlag} to ` +
-        `specify another version)`
+      `Using ${bTarget} because ${reason} (use ${bVersionFlag} to specify another version)`
     );
   };
 

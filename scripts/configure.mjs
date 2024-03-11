@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // @ts-check
-import chalk from "chalk";
 import * as nodefs from "node:fs";
 import { createRequire } from "node:module";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import semverCoerce from "semver/functions/coerce.js";
 import semverSatisfies from "semver/functions/satisfies.js";
+import * as colors from "yoctocolors";
 import { cliPlatformIOSVersion } from "./configure-projects.js";
 import {
   getPackageVersion,
@@ -63,7 +63,7 @@ function readManifest() {
  * @param {string} message
  */
 export function error(message) {
-  console.error(chalk.red(`[!] ${message}`));
+  console.error(colors.red(`[!] ${message}`));
 }
 
 /**
@@ -135,7 +135,7 @@ export function sortByKeys(obj) {
  * @param {string=} tag
  */
 export function warn(message, tag = "[!]") {
-  console.warn(chalk.yellow(`${tag} ${message}`));
+  console.warn(colors.yellow(`${tag} ${message}`));
 }
 
 /**
@@ -685,7 +685,7 @@ export function configure(params, fs = nodefs) {
   if (!force && isDestructive(packagePath, config)) {
     error("Destructive file operations are required.");
     console.log(
-      `Re-run with ${chalk.bold("--force")} if you're fine with this.`
+      `Re-run with ${colors.bold("--force")} if you're fine with this.`
     );
     return 1;
   }

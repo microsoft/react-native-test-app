@@ -87,12 +87,12 @@
   "dependencies": {
     "@rnx-kit/react-native-host": "^0.4.4",
     "ajv": "^8.0.0",
-    "chalk": "^4.1.0",
     "cliui": "^8.0.0",
     "fast-xml-parser": "^4.0.0",
     "prompts": "^2.4.0",
     "semver": "^7.3.5",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yoctocolors": "^2.0.0"
   },
   "peerDependencies": {
     "@callstack/react-native-visionos": "0.73",
@@ -161,6 +161,7 @@
     "@react-native-community/cli-platform-android": "^12.3.0",
     "@react-native-community/cli-platform-ios": "^12.3.0",
     "@react-native/babel-preset": "^0.73.0",
+    "@react-native/community-cli-plugin": "^0.73.0",
     "@react-native/community-cli-plugin/@react-native-community/cli-server-api": "^12.3.0",
     "@react-native/community-cli-plugin/@react-native-community/cli-tools": "^12.3.0",
     "@semantic-release/npm/npm": "link:./example",
