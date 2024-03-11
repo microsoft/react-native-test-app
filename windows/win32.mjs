@@ -3,10 +3,11 @@ import * as path from "node:path";
 import { importTargets } from "./project.mjs";
 
 /** @type {import("../scripts/types").MSBuildProjectConfigurator} */
-export function configureForWin32(
-  { bundle, nugetDependencies, versionNumber },
-  _options
-) {
+export function configureForWin32({
+  bundle,
+  nugetDependencies,
+  versionNumber,
+}) {
   return {
     projDir: "Win32",
     projectFileName: "ReactApp.vcxproj",

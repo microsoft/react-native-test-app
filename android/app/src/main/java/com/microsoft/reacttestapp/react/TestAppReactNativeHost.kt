@@ -6,6 +6,7 @@ import android.content.Context
 import android.net.Uri
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
+import com.facebook.react.ReactInstanceEventListener
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.JavaScriptExecutorFactory
@@ -15,7 +16,6 @@ import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.R
-import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 import com.microsoft.reacttestapp.compat.ReactNativeHostCompat
 import java.util.Collections.synchronizedList
 import java.util.concurrent.CountDownLatch

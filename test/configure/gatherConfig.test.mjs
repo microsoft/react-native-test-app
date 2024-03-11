@@ -41,8 +41,8 @@ describe("gatherConfig()", () => {
   it("returns configuration for all platforms", () => {
     deepEqual(gatherConfig(mockParams()), {
       dependencies: {
-        "react-native-macos": "^0.68.0",
-        "react-native-windows": "^0.68.0",
+        "react-native-macos": "^0.73.0",
+        "react-native-windows": "^0.73.0",
       },
       files: {
         ".gitignore": {

@@ -11,7 +11,7 @@ export function mockParams(overrides) {
     name: "Test",
     packagePath: "test",
     testAppPath: ".",
-    targetVersion: "^0.68.2",
+    targetVersion: "^0.73.6",
     platforms: ["android", "ios", "macos", "windows"],
     flatten: false,
     force: false,
