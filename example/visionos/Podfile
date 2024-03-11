@@ -2,10 +2,9 @@ require_relative '../node_modules/react-native-test-app/visionos/test_app'
 
 workspace 'Example.xcworkspace'
 
-platform :visionos, '1.0'
-
 options = {
   :fabric_enabled => false,
+  :bridgless_enabled => false,
   :hermes_enabled => false,
 }
 
