@@ -112,6 +112,5 @@
   <ItemGroup>
     <None Include="$(ProjectRootDir)\app.json" />
     <None Include="PropertySheet.props" />
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

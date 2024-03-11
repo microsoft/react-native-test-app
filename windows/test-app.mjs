@@ -145,9 +145,7 @@ export function generateSolution(destPath, options, fs = nodefs) {
 
   const info = projectInfo(options, rnWindowsPath, destPath, fs);
   const { projDir, projectFileName, projectFiles, solutionTemplatePath } =
-    info.useFabric
-      ? configureForWin32(info, options)
-      : configureForUWP(info, options);
+    info.useFabric ? configureForWin32(info) : configureForUWP(info);
 
   const solutionTemplate = path.join(rnWindowsPath, solutionTemplatePath);
   if (!fs.existsSync(solutionTemplate)) {
@@ -237,61 +235,17 @@ export function generateSolution(destPath, options, fs = nodefs) {
     console.log(colors.cyan(colors.bold("info")), `'${props}' already exists`);
   } else {
     const { useHermes } = options;
-    const {
-      hermesVersion,
-      useExperimentalNuGet,
-      useFabric,
-      usePackageReferences,
-    } = info;
+    const { useExperimentalNuGet, useFabric, versionNumber } = info;
     const url = new URL(experimentalFeaturesPropsFilename, import.meta.url);
     copyAndReplaceAsync(fileURLToPath(url), experimentalFeaturesPropsPath, {
       "<UseFabric>false</UseFabric>": `<UseFabric>${useFabric}</UseFabric>`,
-      "<UseHermes>true</UseHermes>": `<UseHermes>${Boolean(hermesVersion) || (useHermes != null && usePackageReferences)}</UseHermes>`,
+      "<UseHermes>true</UseHermes>": `<UseHermes>${useHermes == null ? versionNumber >= v(0, 73, 0) : useHermes}</UseHermes>`,
       "<UseWinUI3>false</UseWinUI3>": `<UseWinUI3>${useFabric}</UseWinUI3>`,
       "<UseExperimentalNuget>false</UseExperimentalNuget>": `<UseExperimentalNuget>${useExperimentalNuGet}</UseExperimentalNuget>`,
     });
   }
 
-  // TODO: Remove when we drop support for 0.67.
-  // Patch building with Visual Studio 2022. For more details, see
-  // https://github.com/microsoft/react-native-windows/issues/9559
-  if (info.versionNumber < v(0, 68, 0)) {
-    const dispatchQueue = path.join(
-      rnWindowsPath,
-      "Mso",
-      "dispatchQueue",
-      "dispatchQueue.h"
-    );
-    copyAndReplaceAsync(dispatchQueue, dispatchQueue, {
-      "template <typename T>\\s*inline void MustBeNoExceptVoidFunctor\\(\\) {\\s*static_assert\\(false":
-        "namespace details {\n  template <typename>\n  constexpr bool always_false = false;\n}\n\ntemplate <typename T>\ninline void MustBeNoExceptVoidFunctor() {\n  static_assert(details::always_false<T>",
-    });
-  }
-
-  // TODO: Remove when we drop support for 0.69.
-  // Patch building with Visual Studio 2022. For more details, see
-  // https://github.com/microsoft/react-native-windows/pull/10373
-  if (info.versionNumber < v(0, 70, 0)) {
-    const helpers = path.join(
-      rnWindowsPath,
-      "Microsoft.ReactNative",
-      "Utils",
-      "Helpers.h"
-    );
-    copyAndReplaceAsync(helpers, helpers, {
-      "inline typename T asEnum": "inline T asEnum",
-    });
-  }
-
   if (info.useExperimentalNuGet) {
-    // In 0.64, the template was moved into `react-native-windows`
-    const nugetConfigPath0_64 = path.join(
-      rnWindowsPath,
-      "template",
-      "shared-app",
-      "proj",
-      "NuGet.Config"
-    );
     // In 0.70, the template was renamed from `NuGet.Config` to `NuGet_Config`
     const nugetConfigPath0_70 = path.join(
       rnWindowsPath,
@@ -302,9 +256,7 @@ export function generateSolution(destPath, options, fs = nodefs) {
     );
     const nugetConfigPath = fs.existsSync(nugetConfigPath0_70)
       ? nugetConfigPath0_70
-      : fs.existsSync(nugetConfigPath0_64)
-        ? nugetConfigPath0_64
-        : null;
+      : null;
     if (nugetConfigPath) {
       const nugetConfigDest = path.join(destPath, "NuGet.Config");
       const nugetConfigCopy = path.join(projectFilesDestPath, "NuGet.Config");

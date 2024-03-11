@@ -1,28 +1,9 @@
 // @ts-check
-import { deepEqual, equal, match, notEqual, ok } from "node:assert/strict";
+import { equal, match, notEqual, ok } from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { after, before, test } from "node:test";
 import { URL, fileURLToPath } from "node:url";
-import { findNearest, readJSONFile } from "../../scripts/helpers.js";
-
-function getCliVersion() {
-  const cli = findNearest(
-    "node_modules/@react-native-community/cli/package.json"
-  );
-  if (!cli) {
-    throw new Error("Could not find '@react-native-community/cli'");
-  }
-
-  const { version } = readJSONFile(cli);
-  if (typeof version !== "string") {
-    throw new Error(
-      `Invalid version string for '@react-native-community/cli': ${version}`
-    );
-  }
-
-  return version;
-}
 
 async function getLoadConfig() {
   try {
@@ -50,7 +31,6 @@ function regexp(p) {
 
 test("react-native config", async (t) => {
   const loadConfig = await getLoadConfig();
-  const cliMajorVersion = Number(getCliVersion().split(".")[0]);
 
   const currentDir = process.cwd();
   const projectRoot = path.sep + "react-native-test-app";
@@ -65,109 +45,29 @@ test("react-native config", async (t) => {
 
   after(() => process.chdir(currentDir));
 
-  await t.test(
-    "contains Android config (@react-native-community/cli <8.0.0)",
-    { skip: cliMajorVersion >= 8 },
-    () => {
-      const sourceDir = path.join(exampleRoot, "android");
-      const config = loadConfig();
+  await t.test("contains Android config", () => {
+    const sourceDir = path.join(exampleRoot, "android");
+    const config = loadConfig();
 
-      equal(typeof config, "object");
-      match(config.root, regexp(exampleRoot));
-      match(config.reactNativePath, regexp(reactNativePath));
-      equal(
-        config.dependencies["react-native-test-app"].name,
-        "react-native-test-app"
-      );
-      deepEqual(config.assets, []);
-      notEqual(config.platforms.android, undefined);
-      match(config.project.android.sourceDir, regexp(sourceDir));
-      match(config.project.android.folder, regexp(exampleRoot));
-      match(
-        config.project.android.manifestPath,
-        regexp(
-          path.join(
-            "react-native-test-app",
-            "android",
-            "app",
-            "src",
-            "main",
-            "AndroidManifest.xml"
-          )
-        )
-      );
-      match(
-        config.project.android.buildGradlePath,
-        regexp(path.join(sourceDir, "build.gradle"))
-      );
-      match(
-        config.project.android.settingsGradlePath,
-        regexp(path.join(sourceDir, "settings.gradle"))
-      );
-      equal(config.project.android.packageName, "com.microsoft.reacttestapp");
-      equal(
-        config.project.android.packageFolder,
-        path.join("com", "microsoft", "reacttestapp")
-      );
-    }
-  );
+    equal(typeof config, "object");
+    match(config.root, regexp(exampleRoot));
+    match(config.reactNativePath, regexp(reactNativePath));
+    equal(
+      config.dependencies["react-native-test-app"].name,
+      "react-native-test-app"
+    );
+    notEqual(config.platforms.android, undefined);
+    match(config.project.android.sourceDir, regexp(sourceDir));
+    equal(
+      config.project.android.appName,
+      fs.existsSync("android/app") ? "app" : ""
+    );
+    equal(config.project.android.packageName, "com.microsoft.reacttestapp");
+  });
 
   await t.test(
-    "contains Android config (@react-native-community/cli >=8.0.0)",
-    { skip: cliMajorVersion < 8 },
-    () => {
-      const sourceDir = path.join(exampleRoot, "android");
-      const config = loadConfig();
-
-      equal(typeof config, "object");
-      match(config.root, regexp(exampleRoot));
-      match(config.reactNativePath, regexp(reactNativePath));
-      equal(
-        config.dependencies["react-native-test-app"].name,
-        "react-native-test-app"
-      );
-      notEqual(config.platforms.android, undefined);
-      match(config.project.android.sourceDir, regexp(sourceDir));
-      equal(
-        config.project.android.appName,
-        fs.existsSync("android/app") ? "app" : ""
-      );
-      equal(config.project.android.packageName, "com.microsoft.reacttestapp");
-    }
-  );
-
-  await t.test(
-    "contains iOS config (@react-native-community/cli <8.0.0)",
-    { skip: process.platform === "win32" || cliMajorVersion >= 8 },
-    () => {
-      const sourceDir = path.join(exampleRoot, "ios");
-      const config = loadConfig();
-
-      equal(typeof config, "object");
-      match(config.root, regexp(exampleRoot));
-      match(config.reactNativePath, regexp(reactNativePath));
-      equal(
-        config.dependencies["react-native-test-app"].name,
-        "react-native-test-app"
-      );
-      deepEqual(config.assets, []);
-      notEqual(config.platforms.ios, undefined);
-      match(config.project.ios.sourceDir, regexp(sourceDir));
-      match(config.project.ios.folder, regexp(exampleRoot));
-      match(
-        config.project.ios.podfile,
-        regexp(path.join(sourceDir, "Podfile"))
-      );
-      match(
-        config.project.ios.podspecPath,
-        regexp(path.join(exampleRoot, "Example-Tests.podspec"))
-      );
-    }
-  );
-
-  await t.test(
-    "contains iOS config (@react-native-community/cli >=8.0.0)",
-    { skip: process.platform === "win32" || cliMajorVersion < 8 },
+    "contains iOS config",
+    { skip: process.platform === "win32" },
     () => {
       const sourceDir = path.join(exampleRoot, "ios");
       const config = loadConfig();

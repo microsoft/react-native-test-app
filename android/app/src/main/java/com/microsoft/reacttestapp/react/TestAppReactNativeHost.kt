@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
+import com.facebook.react.ReactInstanceEventListener
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.JavaScriptExecutorFactory
@@ -18,7 +19,6 @@ import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.MainActivity
 import com.microsoft.reacttestapp.R
-import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 import com.microsoft.reacttestapp.compat.ReactNativeHostCompat
 import java.lang.ref.WeakReference
 import java.util.Collections.synchronizedList
