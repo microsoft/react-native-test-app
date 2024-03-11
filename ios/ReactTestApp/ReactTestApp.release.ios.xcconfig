@@ -1,0 +1,4 @@
+#include "ReactTestApp.release.xcconfig"
+
+IPHONEOS_DEPLOYMENT_TARGET = 14.0
+SDKROOT = iphoneos
