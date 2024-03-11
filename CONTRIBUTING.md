@@ -262,6 +262,7 @@ If the test script succeeds, we are ready to open a PR:
 | Android       | n/a  |  TODO  |  n/a   |      TODO       |
 | iOS           | TODO |  TODO  |  TODO  |      TODO       |
 | macOS         | TODO |  TODO  |  TODO  |      TODO       |
+| visionOS      | TODO |  TODO  |  TODO  |      TODO       |
 | Windows       | n/a  |  TODO  |  n/a   |      TODO       |
 ```
 

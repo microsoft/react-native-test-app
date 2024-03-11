@@ -62,10 +62,10 @@
           - example/visionos/**/*
           - ios/*.rb
           - ios/ReactTestApp/*.{h,m,mm,swift}
-          - visionos/**/*
           - scripts/*.js
           - scripts/xcodebuild.sh
           - test/*.rb
+          - visionos/**/*
 "platform: Windows":
   - changed-files:
       - any-glob-to-any-file:

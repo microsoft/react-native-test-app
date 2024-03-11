@@ -37,7 +37,6 @@
     "example/{metro,react-native}.config.js",
     "ios",
     "macos",
-    "visionos",
     "plugins",
     "react-native.config.js",
     "schema.json",
@@ -50,6 +49,7 @@
     "scripts/template.mjs",
     "test-app.gradle",
     "test_app.rb",
+    "visionos",
     "windows/*.{mjs,props}",
     "windows/ReactTestApp"
   ],
@@ -174,6 +174,13 @@
   "workspaces": [
     "example"
   ],
+  "defaultPlatformPackages": {
+    "android": "react-native",
+    "ios": "react-native",
+    "macos": "react-native-macos",
+    "visionos": "@callstack/react-native-visionos",
+    "windows": "react-native-windows"
+  },
   "prettier": "./.github/prettierrc.json",
   "release": {
     "extends": "./.github/semantic-release.json"

@@ -65,17 +65,22 @@ def project_path(file, target_platform)
 end
 
 def react_native_path(project_root, target_platform)
-  react_native_path = platform_config('reactNativePath', project_root, target_platform)
-  return Pathname.new(resolve_module(react_native_path)) if react_native_path.is_a? String
+  @react_native_path ||= {}
 
-  react_native_packages = {
-    ios: 'react-native',
-    macos: 'react-native-macos',
-    visionos: '@callstack/react-native-visionos',
-  }
-  react_native = react_native_packages[target_platform]
-  assert(!react_native.nil?, "Unsupported target platform: #{target_platform}")
-  Pathname.new(resolve_module(react_native))
+  unless @react_native_path.key?(target_platform)
+    react_native_path = platform_config('reactNativePath', project_root, target_platform)
+    if react_native_path.is_a? String
+      @react_native_path[target_platform] = Pathname.new(resolve_module(react_native_path))
+    else
+      manifest = JSON.parse(File.read(File.join(__dir__, '..', 'package.json')))
+      react_native = manifest['defaultPlatformPackages'][target_platform.to_s]
+      raise "Unsupported target platform: #{target_platform}" if react_native.nil?
+
+      @react_native_path[target_platform] = Pathname.new(resolve_module(react_native))
+    end
+  end
+
+  @react_native_path[target_platform]
 end
 
 def target_product_type(target)

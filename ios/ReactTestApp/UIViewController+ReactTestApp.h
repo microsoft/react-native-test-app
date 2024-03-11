@@ -1,5 +1,4 @@
-#include <TargetConditionals.h>
-#if TARGET_OS_IPHONE
+#if __has_include(<UIKit/UIViewController.h>)
 #import <UIKit/UIViewController.h>
 #define RTAViewController UIViewController
 #else

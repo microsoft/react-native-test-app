@@ -5,7 +5,7 @@ import { reactNativeConfig as reactNativeConfigActual } from "../../scripts/conf
 import { mockParams } from "./mockParams.mjs";
 
 describe("reactNativeConfig()", () => {
-  /** @type {(params: import("../../scripts/configure.mjs").ConfigureParams) => string} */
+  /** @type {(params: import("../../scripts/types").ConfigureParams) => string} */
   const reactNativeConfig = (params) => {
     const config = reactNativeConfigActual(params);
     if (typeof config !== "string") {

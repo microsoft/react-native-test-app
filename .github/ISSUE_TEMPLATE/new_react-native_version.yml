@@ -28,6 +28,7 @@ body:
         - label: Android
         - label: iOS
         - label: macOS
+        - label: visionOS
         - label: Windows
   - type: checkboxes
     id: checklist
@@ -42,6 +43,7 @@ body:
         - label: "iOS - Fabric: **enabled** / Hermes: disabled"
         - label: "iOS - Fabric: **enabled** / Hermes: **enabled**"
         - label: "macOS"
+        - label: "visionOS"
         - label: "Windows - NuGet: disabled"
         - label: "Windows - NuGet: **enabled**"
   - type: checkboxes
