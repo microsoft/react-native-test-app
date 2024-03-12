@@ -469,7 +469,7 @@ def use_test_app_internal!(target_platform, options)
 
     installer.pods_project.targets.each do |target|
       case target.name
-      when /\AReact/, 'RCT-Folly', 'SocketRocket', 'Yoga', 'fmt', 'glog'
+      when /\AReact/, 'RCT-Folly', 'SocketRocket', 'Yoga', 'fmt', 'glog', 'libevent'
         target.build_configurations.each do |config|
           # TODO: Drop `_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION` when
           #       we no longer support 0.72
