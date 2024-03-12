@@ -200,7 +200,7 @@ export function reactNativeConfig(
 
       case "ios":
       case "macos":
-      case "visionos":  
+      case "visionos":
         return reactNativeConfigAppleFlat();
 
       case "windows":
@@ -433,7 +433,10 @@ export const getConfig = (() => {
           },
           dependencies: {},
           getDependencies: ({ targetVersion }) => {
-            return getPlatformPackage("@callstack/react-native-visionos", targetVersion);
+            return getPlatformPackage(
+              "@callstack/react-native-visionos",
+              targetVersion
+            );
           },
         },
         windows: {

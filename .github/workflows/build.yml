@@ -104,8 +104,9 @@ jobs:
             if [[ -n "$GITHUB_TOKEN" ]]; then
               git diff | yarn suggestion-bot
             else
-              git diff --exit-code
+              git diff
             fi
+            git diff --exit-code
             echo "::add-matcher::.github/eslint-stylish.json"
             yarn lint:js
             echo "::remove-matcher owner=eslint-stylish::"
