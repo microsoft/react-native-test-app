@@ -124,7 +124,7 @@
     "@expo/config-plugins": "^7.0.0",
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^12.3.0",
-    "@rnx-kit/eslint-plugin": "^0.6.0",
+    "@rnx-kit/eslint-plugin": "^0.7.0",
     "@rnx-kit/tsconfig": "^1.0.0",
     "@types/js-yaml": "^4.0.5",
     "@types/mustache": "^4.0.0",
