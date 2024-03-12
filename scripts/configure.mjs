@@ -52,11 +52,16 @@ function mergeObjects(lhs, rhs) {
     : sortByKeys(rhs);
 }
 
-function readManifest() {
-  return /** @type {Manifest} */ (
-    readJSONFile(new URL("../package.json", import.meta.url))
-  );
-}
+const readManifest = (() => {
+  /** @type {Manifest} */
+  let manifest;
+  return () => {
+    if (!manifest) {
+      manifest = readJSONFile(new URL("../package.json", import.meta.url));
+    }
+    return manifest;
+  };
+})();
 
 /**
  * Prints an error message to the console.
@@ -144,28 +149,31 @@ export function warn(message, tag = "[!]") {
  * @returns {PlatformPackage}
  */
 export function getDefaultPlatformPackageName(platform) {
-  switch (platform) {
-    case "android":
-    case "ios":
-      return "react-native";
-    case "macos":
-      return "react-native-macos";
-    case "visionos":
-      return "@callstack/react-native-visionos";
-    case "windows":
-      return "react-native-windows";
-    default:
-      throw new Error(`Unsupported platform: ${platform}`);
+  if (platform === "common") {
+    return "react-native";
   }
+
+  const { defaultPlatformPackages } = readManifest();
+  const pkgName = defaultPlatformPackages[platform];
+  if (!pkgName) {
+    throw new Error(`Unsupported platform: ${platform}`);
+  }
+
+  return pkgName;
 }
 
 /**
  * Returns platform package at target version if it satisfies version range.
- * @param {PlatformPackage} packageName
+ * @param {Platform} platform
  * @param {string} targetVersion
  * @returns {Record<string, string> | undefined}
  */
-export function getPlatformPackage(packageName, targetVersion) {
+export function getPlatformPackage(platform, targetVersion) {
+  const packageName = getDefaultPlatformPackageName(platform);
+  if (packageName === "react-native") {
+    return {};
+  }
+
   const v = semverCoerce(targetVersion);
   if (!v) {
     throw new Error(`Invalid ${packageName} version: ${targetVersion}`);
@@ -226,10 +234,6 @@ export function reactNativeConfig(
  *   instead of a string.
  * - `oldFiles`: A list of files that will be deleted if found.
  * - `scripts`: Scripts that will be added to `package.json`.
- * - `getDependencies`: A function that returns dependencies that will be added
- *   to `package.json`. This function ensures that the returned dependencies are
- *   correct for the specified {@link ConfigureParams}, e.g.
- *   `react-native-macos`@^0.63 when the project is using `react-native`@0.63.4.
  *
  * There is a {@link Configuration} object for each supported platform.
  * Additionally, there is a common {@link Configuration} object that is always
@@ -314,7 +318,6 @@ export const getConfig = (() => {
             start: "react-native start",
           },
           dependencies: {},
-          getDependencies: () => ({}),
         },
         android: {
           files: {
@@ -375,7 +378,6 @@ export const getConfig = (() => {
               "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
           },
           dependencies: {},
-          getDependencies: () => ({}),
         },
         ios: {
           files: {
@@ -393,7 +395,6 @@ export const getConfig = (() => {
             ios: `react-native run-ios${projectPathFlag}`,
           },
           dependencies: {},
-          getDependencies: () => ({}),
         },
         macos: {
           files: {
@@ -411,10 +412,6 @@ export const getConfig = (() => {
             macos: `react-native run-macos --scheme ${name}${projectPathFlag}`,
           },
           dependencies: {},
-          getDependencies: ({ targetVersion }) => {
-            const pkgName = getDefaultPlatformPackageName("macos");
-            return getPlatformPackage(pkgName, targetVersion);
-          },
         },
         visionos: {
           files: {
@@ -432,12 +429,6 @@ export const getConfig = (() => {
             visionos: "react-native run-visionos",
           },
           dependencies: {},
-          getDependencies: ({ targetVersion }) => {
-            return getPlatformPackage(
-              "@callstack/react-native-visionos",
-              targetVersion
-            );
-          },
         },
         windows: {
           files: {
@@ -456,10 +447,6 @@ export const getConfig = (() => {
             windows: `react-native run-windows --sln ${flatten ? "" : "windows/"}${name}.sln`,
           },
           dependencies: {},
-          getDependencies: ({ targetVersion }) => {
-            const pkgName = getDefaultPlatformPackageName("windows");
-            return getPlatformPackage(pkgName, targetVersion);
-          },
         },
       };
     }
@@ -473,19 +460,14 @@ export const getConfig = (() => {
  * @returns Configuration
  */
 export function gatherConfig(params, disableCache = false) {
-  const { flatten, platforms } = params;
+  const { flatten, platforms, targetVersion } = params;
   const shouldFlatten = flatten && platforms.length === 1;
   const options = { ...params, flatten: shouldFlatten };
   const config = (() => {
     return platforms.reduce(
       (config, platform) => {
-        const { getDependencies, ...platformConfig } = getConfig(
-          options,
-          platform,
-          disableCache
-        );
-
-        const dependencies = getDependencies && getDependencies(params);
+        const platformConfig = getConfig(options, platform, disableCache);
+        const dependencies = getPlatformPackage(platform, targetVersion);
         if (!dependencies) {
           /* node:coverage ignore next */
           return config;

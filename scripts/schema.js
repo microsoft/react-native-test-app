@@ -16,6 +16,7 @@ function extractBrief(content = "") {
  * @returns {import("ajv").SchemaObject}
  */
 function generateSchema(docs = {}) {
+  const { defaultPlatformPackages } = require("../package.json");
   return {
     $defs: {
       appIconSet: {
@@ -263,8 +264,7 @@ function generateSchema(docs = {}) {
         type: "object",
         properties: {
           reactNativePath: {
-            description:
-              'Sets a custom path to React Native. Useful for when `require("react-native")` does not return the desired path.',
+            description: `Sets a custom path to React Native. Useful for when \`require("${defaultPlatformPackages.ios}")\` does not return the desired path.`,
             type: "string",
           },
         },
@@ -275,8 +275,7 @@ function generateSchema(docs = {}) {
         type: "object",
         properties: {
           reactNativePath: {
-            description:
-              'Sets a custom path to React Native for macOS. Useful for when `require("react-native-macos")` does not return the desired path.',
+            description: `Sets a custom path to React Native for macOS. Useful for when \`require("${defaultPlatformPackages.macos}")\` does not return the desired path.`,
             type: "string",
           },
         },
@@ -287,8 +286,7 @@ function generateSchema(docs = {}) {
         type: "object",
         properties: {
           reactNativePath: {
-            description:
-              'Sets a custom path to React Native for visionOS. Useful for when `require("@callstack/react-native-visionos")` does not return the desired path.',
+            description: `Sets a custom path to React Native for visionOS. Useful for when \`require("${defaultPlatformPackages.visionos}")\` does not return the desired path.`,
             type: "string",
           },
         },

@@ -9,9 +9,6 @@ export type Configuration = {
   oldFiles: string[];
   scripts: Record<string, string>;
   dependencies: Record<string, string>;
-  getDependencies?: (
-    params: ConfigureParams
-  ) => Record<string, string> | undefined;
 };
 
 export type PlatformConfiguration = {
@@ -183,4 +180,5 @@ export type Manifest = Partial<{
   peerDependencies: Record<string, string>;
   devDependencies: Record<string, string | undefined>;
   resolutions: Record<string, string | undefined>;
+  defaultPlatformPackages: Record<string, PlatformPackage | undefined>;
 }>;

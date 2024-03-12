@@ -2,7 +2,10 @@
 import { deepEqual } from "node:assert/strict";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { getConfig as getConfigActual } from "../../scripts/configure.mjs";
+import {
+  getConfig as getConfigActual,
+  getPlatformPackage,
+} from "../../scripts/configure.mjs";
 import { mockParams } from "./mockParams.mjs";
 
 describe("getConfig()", () => {
@@ -12,12 +15,12 @@ describe("getConfig()", () => {
 
   /**
    * Gets the list of dependencies from specified config.
-   * @param {import("../../scripts/configure.mjs").Configuration} config
-   * @param {import("../../scripts/configure.mjs").ConfigureParams} params
+   * @param {import("../../scripts/types").Platform} platform
+   * @param {import("../../scripts/types").ConfigureParams} params
    * @returns {string[] | undefined}
    */
-  function getDependencies({ getDependencies }, params) {
-    const dependencies = getDependencies && getDependencies(params);
+  function getDependencies(platform, { targetVersion }) {
+    const dependencies = getPlatformPackage(platform, targetVersion);
     return dependencies && Object.keys(dependencies);
   }
 
@@ -34,7 +37,7 @@ describe("getConfig()", () => {
     ]);
     deepEqual(config.oldFiles, []);
     deepEqual(Object.keys(config.scripts).sort(), ["start"]);
-    deepEqual(getDependencies(config, params), []);
+    deepEqual(getDependencies("common", params), []);
   });
 
   it("returns more common scripts and files when initializing", () => {
@@ -54,7 +57,7 @@ describe("getConfig()", () => {
     ]);
     deepEqual(config.oldFiles, []);
     deepEqual(Object.keys(config.scripts).sort(), ["start"]);
-    deepEqual(getDependencies(config, params), []);
+    deepEqual(getDependencies("common", params), []);
   });
 
   it("returns Android specific scripts and additional files", () => {
@@ -62,7 +65,7 @@ describe("getConfig()", () => {
     const config = getConfig(params, "android");
 
     deepEqual(Object.keys(config.scripts).sort(), ["android", "build:android"]);
-    deepEqual(getDependencies(config, params), []);
+    deepEqual(getDependencies("android", params), []);
     deepEqual(Object.keys(config.files).sort(), [
       "build.gradle",
       "gradle.properties",
@@ -80,7 +83,7 @@ describe("getConfig()", () => {
     const config = getConfig(params, "ios");
 
     deepEqual(Object.keys(config.scripts).sort(), ["build:ios", "ios"]);
-    deepEqual(getDependencies(config, params), []);
+    deepEqual(getDependencies("ios", params), []);
     deepEqual(Object.keys(config.files).sort(), ["Podfile"]);
     deepEqual(config.oldFiles.sort(), [
       "Podfile.lock",
@@ -96,7 +99,7 @@ describe("getConfig()", () => {
 
     deepEqual(Object.keys(config.scripts).sort(), ["build:macos", "macos"]);
     deepEqual(Object.keys(config.files).sort(), ["Podfile"]);
-    deepEqual(getDependencies(config, params), ["react-native-macos"]);
+    deepEqual(getDependencies("macos", params), ["react-native-macos"]);
     deepEqual(config.oldFiles.sort(), [
       "Podfile.lock",
       "Pods",
@@ -110,7 +113,7 @@ describe("getConfig()", () => {
     const config = getConfig(params, "windows");
 
     deepEqual(Object.keys(config.scripts).sort(), ["build:windows", "windows"]);
-    deepEqual(getDependencies(config, params), ["react-native-windows"]);
+    deepEqual(getDependencies("windows", params), ["react-native-windows"]);
     deepEqual(Object.keys(config.files).sort(), [".gitignore"]);
     deepEqual(config.oldFiles.sort(), [
       "Test.sln",

@@ -5,18 +5,18 @@ import { getPlatformPackage } from "../../scripts/configure.mjs";
 import { spy } from "../spy.mjs";
 
 describe("getPlatformPackage()", () => {
-  const name = "react-native";
+  const name = "react-native-macos";
 
   it("returns dependency when target version is inside range", (t) => {
     t.mock.method(console, "warn", () => null);
 
     for (const targetVersion of ["0.0.0-canary", "^0.0.0-canary"]) {
-      const pkg = getPlatformPackage(name, targetVersion);
+      const pkg = getPlatformPackage("macos", targetVersion);
       deepEqual(pkg, { [name]: "^0.0.0" });
     }
 
     for (const targetVersion of ["0.68", "0.68.2", "^0.68", "^0.68.2"]) {
-      const pkg = getPlatformPackage(name, targetVersion);
+      const pkg = getPlatformPackage("macos", targetVersion);
       deepEqual(pkg, { [name]: "^0.68.0" });
     }
 
@@ -28,7 +28,7 @@ describe("getPlatformPackage()", () => {
 
     const versions = ["0.59", "9999.0"];
     for (const targetVersion of versions) {
-      const pkg = getPlatformPackage(name, targetVersion);
+      const pkg = getPlatformPackage("macos", targetVersion);
       equal(pkg, undefined);
     }
 
