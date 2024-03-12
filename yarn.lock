@@ -1977,7 +1977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^2.1.2, @eslint/eslintrc@npm:^2.1.4":
+"@eslint/eslintrc@npm:^2.1.4":
   version: 2.1.4
   resolution: "@eslint/eslintrc@npm:2.1.4"
   dependencies:
@@ -1994,7 +1994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.57.0, @eslint/js@npm:^8.0.0, @eslint/js@npm:^8.56.0":
+"@eslint/js@npm:8.57.0, @eslint/js@npm:^8.56.0":
   version: 8.57.0
   resolution: "@eslint/js@npm:8.57.0"
   checksum: 10c0/9a518bb8625ba3350613903a6d8c622352ab0c6557a59fe6ff6178bf882bf57123f9d92aa826ee8ac3ee74b9c6203fe630e9ee00efb03d753962dcf65ee4bd94
@@ -7238,7 +7238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.0.0":
+"eslint@npm:^8.56.0":
   version: 8.57.0
   resolution: "eslint@npm:8.57.0"
   dependencies:
@@ -12173,8 +12173,8 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.1.6"
     "@babel/preset-env": "npm:^7.1.6"
-    "@eslint/eslintrc": "npm:^2.1.2"
-    "@eslint/js": "npm:^8.0.0"
+    "@eslint/eslintrc": "npm:^2.1.4"
+    "@eslint/js": "npm:^8.56.0"
     "@expo/config-plugins": "npm:^7.0.0"
     "@microsoft/eslint-plugin-sdl": "npm:^0.2.0"
     "@react-native-community/cli": "npm:^12.3.0"
@@ -12189,7 +12189,7 @@ __metadata:
     "@types/uuid": "npm:^8.3.1"
     ajv: "npm:^8.0.0"
     cliui: "npm:^8.0.0"
-    eslint: "npm:^8.0.0"
+    eslint: "npm:^8.56.0"
     eslint-plugin-wdio: "npm:^8.20.0"
     fast-xml-parser: "npm:^4.0.0"
     js-yaml: "npm:^4.1.0"
