@@ -22,6 +22,7 @@ import {
   buildGradle,
   podfileIOS,
   podfileMacOS,
+  podfileVisionOS,
   reactNativeConfigAndroidFlat,
   reactNativeConfigAppleFlat,
   reactNativeConfigWindowsFlat,
@@ -149,6 +150,8 @@ export function getDefaultPlatformPackageName(platform) {
       return "react-native";
     case "macos":
       return "react-native-macos";
+    case "visionos":
+      return "@callstack/react-native-visionos";
     case "windows":
       return "react-native-windows";
     default:
@@ -197,6 +200,7 @@ export function reactNativeConfig(
 
       case "ios":
       case "macos":
+      case "visionos":  
         return reactNativeConfigAppleFlat();
 
       case "windows":
@@ -410,6 +414,26 @@ export const getConfig = (() => {
           getDependencies: ({ targetVersion }) => {
             const pkgName = getDefaultPlatformPackageName("macos");
             return getPlatformPackage(pkgName, targetVersion);
+          },
+        },
+        visionos: {
+          files: {
+            Podfile: podfileVisionOS(name, testAppRelPath),
+          },
+          oldFiles: [
+            "Podfile.lock",
+            "Pods",
+            `${name}.xcodeproj`,
+            `${name}.xcworkspace`,
+          ],
+          scripts: {
+            "build:visionos":
+              "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.visionos.jsbundle --assets-dest dist",
+            visionos: "react-native run-visionos",
+          },
+          dependencies: {},
+          getDependencies: ({ targetVersion }) => {
+            return getPlatformPackage("@callstack/react-native-visionos", targetVersion);
           },
         },
         windows: {
@@ -700,6 +724,7 @@ if (isMain(import.meta.url)) {
         case "android":
         case "ios":
         case "macos":
+        case "visionos":
         case "windows":
           break;
         default:

@@ -40,6 +40,10 @@ function runWindows() {
   throw new Error("Function not implemented.");
 }
 
+function runVisionOS() {
+  throw new Error("Function not implemented.");
+}
+
 const { [2]: command } = process.argv;
 switch (command) {
   case "run-android":
@@ -52,6 +56,10 @@ switch (command) {
 
   case "run-macos":
     runMacOS();
+    break;
+
+  case "run-visionos":
+    runVisionOS();
     break;
 
   case "run-windows":

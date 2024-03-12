@@ -49,6 +49,23 @@
           - scripts/*.js
           - scripts/xcodebuild.sh
           - test/*.rb
+"platform: visionOS":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/actions/cocoapods/*
+          - .github/actions/init-test-app/*
+          - .github/actions/setup-toolchain/*
+          - .github/workflows/build.yml
+          - Gemfile*
+          - ReactTestApp-DevSupport.podspec
+          - common/**/*
+          - example/visionos/**/*
+          - ios/*.rb
+          - ios/ReactTestApp/*.{h,m,mm,swift}
+          - visionos/**/*
+          - scripts/*.js
+          - scripts/xcodebuild.sh
+          - test/*.rb
 "platform: Windows":
   - changed-files:
       - any-glob-to-any-file:

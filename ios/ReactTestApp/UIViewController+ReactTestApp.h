@@ -1,5 +1,5 @@
 #include <TargetConditionals.h>
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #import <UIKit/UIViewController.h>
 #define RTAViewController UIViewController
 #else

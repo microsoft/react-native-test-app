@@ -22,6 +22,18 @@ if [[ $platform == ios/* ]]; then
 elif [[ $platform == macos/* ]]; then
   destination=''
   skip_testing=''
+elif [[ $platform == visionos/* ]]; then
+  if [[ $action == 'test' || $action == 'test-without-building' ]]; then
+    device=$(xcrun simctl list devices visionOS available)
+    re='Apple Vision Pro \(([-0-9A-Fa-f]+)\)'
+    [[ $device =~ $re ]] || exit 1
+    shift || true
+    destination="-destination \"platform=visionOS Simulator,id=${BASH_REMATCH[1]}\""
+  else
+    destination='-destination "generic/platform=visionOS Simulator"'
+  fi
+
+  skip_testing='-skip-testing:ReactTestAppTests/ReactNativePerformanceTests'
 else
   echo "Cannot detect platform: $workspace"
   exit 1

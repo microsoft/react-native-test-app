@@ -14,6 +14,8 @@ outputs:
     value: ${{ steps.affected.outputs.ios }}
   macos:
     value: ${{ steps.affected.outputs.macos }}
+  visionos:
+    value: ${{ steps.affected.outputs.visionos }}
   windows:
     value: ${{ steps.affected.outputs.windows }}
 runs:
@@ -31,7 +33,11 @@ runs:
         if [[ "$affected" = *"macos"* ]]; then
           echo 'macos=true' >> $GITHUB_OUTPUT
         fi
+        if [[ "$affected" = *"visionos"* ]]; then
+          echo 'visionos=true' >> $GITHUB_OUTPUT
+        fi
         if [[ "$affected" = *"windows"* ]]; then
           echo 'windows=true' >> $GITHUB_OUTPUT
         fi
+        echo $affected
       shell: bash

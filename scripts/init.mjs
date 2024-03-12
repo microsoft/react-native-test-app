@@ -263,6 +263,7 @@ function main() {
               { title: "Android", value: "android", selected: true },
               { title: "iOS", value: "ios", selected: true },
               { title: "macOS", value: "macos", selected: true },
+              { title: "visionOS (Experimental)", value: "visionos", selected: false },
               { title: "Windows", value: "windows", selected: true },
             ],
             min: 1,

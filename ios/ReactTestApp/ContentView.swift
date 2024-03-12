@@ -82,12 +82,14 @@ final class ContentViewController: UITableViewController {
 
         title = manifest.displayName
 
+        #if os(iOS)
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "qrcode.viewfinder"),
             style: .plain,
             target: self,
             action: #selector(scanForQRCode)
         )
+        #endif
 
         let components = manifest.components ?? []
         if components.isEmpty {
@@ -142,12 +144,14 @@ final class ContentViewController: UITableViewController {
             footer: nil
         ))
 
+        #if os(iOS)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(scanForQRCode),
             name: ReactInstance.scanForQRCodeNotification,
             object: nil
         )
+        #endif
     }
 
     // MARK: - UITableViewDelegate overrides
@@ -281,6 +285,7 @@ final class ContentViewController: UITableViewController {
     }
 }
 
+#if os(iOS)
 extension ContentViewController {
     @objc
     private func scanForQRCode() {
@@ -327,5 +332,6 @@ extension ContentViewController {
         }
     }
 }
+#endif // os(iOS)
 
 #endif // !ENABLE_SINGLE_APP_MODE

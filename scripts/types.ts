@@ -19,13 +19,15 @@ export type PlatformConfiguration = {
   android: Configuration;
   ios: Configuration;
   macos: Configuration;
+  visionos: Configuration;
   windows: Configuration;
 };
 
 export type PlatformPackage =
   | "react-native"
   | "react-native-macos"
-  | "react-native-windows";
+  | "react-native-windows"
+  | "@callstack/react-native-visionos";
 
 export type Platform = keyof PlatformConfiguration;
 

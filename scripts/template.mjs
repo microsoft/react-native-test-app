@@ -111,6 +111,22 @@ export function podfileMacOS(name, testAppRelPath) {
 }
 
 /**
+ * @param {string} name Root project name
+ * @param {string} testAppRelPath Relative path to `react-native-test-app`
+ * @returns {string}
+ */
+export function podfileVisionOS(name, testAppRelPath) {
+  return join(
+    `require_relative '${testAppRelPath}/visionos/test_app'`,
+    "",
+    `workspace '${name}.xcworkspace'`,
+    "",
+    `use_test_app!`,
+    ""
+  );
+}
+
+/**
  * @returns {string}
  */
 export function reactNativeConfigAndroidFlat() {

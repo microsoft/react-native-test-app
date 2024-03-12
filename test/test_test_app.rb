@@ -99,7 +99,7 @@ class TestTestApp < Minitest::Test
     end
 
     define_method("test_#{target}_resources_pod_returns_spec_path") do
-      platforms = { :ios => '14.0', :macos => '11.0' }
+      platforms = { :ios => '14.0', :macos => '11.0', :visionos => '1.0' }
 
       assert_nil(resources_pod(Pathname.new('/'), target, platforms))
       assert_nil(resources_pod(Pathname.new('.'), target, platforms))
@@ -129,7 +129,7 @@ class TestTestApp < Minitest::Test
       # variances.
       GC.disable
 
-      platforms = { :ios => '14.0', :macos => '11.0' }
+      platforms = { :ios => '14.0', :macos => '11.0', :visionos => '1.0' }
       resources = %w[dist/assets dist/main.jsbundle]
       platform_resources = ["dist-#{target}/assets", "dist-#{target}/main.jsbundle"]
 

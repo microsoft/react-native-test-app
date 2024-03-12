@@ -7,6 +7,7 @@
     "build:android": "react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
     "build:ios": "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
     "build:macos": "react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
+    "build:visionos": "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.visionos.jsbundle --assets-dest dist",
     "build:windows": "react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
     "ci:windows": "react-native run-windows --logging --no-packager --no-launch --no-deploy --msbuildprops UseBundle=false --no-telemetry",
     "clean": "yarn workspace react-native-test-app clean",
@@ -17,6 +18,7 @@
     "windows": "react-native run-windows --no-packager"
   },
   "dependencies": {
+    "@callstack/react-native-visionos": "^0.73.0",
     "@react-native-webapis/web-storage": "^0.2.2",
     "react": "18.2.0",
     "react-native": "^0.73.0",

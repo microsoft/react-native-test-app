@@ -1,0 +1,15 @@
+require_relative '../node_modules/react-native-test-app/visionos/test_app'
+
+workspace 'Example.xcworkspace'
+
+options = {
+  :fabric_enabled => false,
+  :bridgless_enabled => false,
+  :hermes_enabled => false,
+}
+
+use_test_app! options do |target|
+  target.tests do
+    pod 'Example-Tests', :path => '..'
+  end
+end

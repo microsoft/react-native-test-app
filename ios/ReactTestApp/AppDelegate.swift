@@ -4,10 +4,29 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private weak var application: UIApplication?
 
-    // TODO: `window` no longer exists but RedBox has not been updated to
-    //       support UIScene yet. Revisit when we bump React Native.
     @objc var window: UIWindow? {
-        get { application?.windows.first }
+        get {
+            // Copy the implementation of RCTKeyWindow() as it changes a lot upstream
+            if let connectedScenes = application?.connectedScenes {
+                for scene in connectedScenes {
+                    guard let windowScene = scene as? UIWindowScene,
+                          scene.activationState == .foregroundActive
+                    else {
+                        continue
+                    }
+
+                    if #available(iOS 15.0, *) {
+                        return windowScene.keyWindow
+                    }
+
+                    for window in windowScene.windows where window.isKeyWindow {
+                        return window
+                    }
+                }
+            }
+
+            return nil
+        }
         // swiftlint:disable:next unused_setter_value
         set {}
     }

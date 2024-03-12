@@ -456,6 +456,107 @@ jobs:
           ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
     timeout-minutes: 60
+  visionos:
+    name: "visionOS"
+    runs-on: macos-14
+    if: ${{ github.event_name != 'schedule' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+        with:
+          platform: visionos
+          project-root: example
+          cache-key-prefix: example
+          xcode-developer-dir: /Applications/Xcode_15.2.app
+      - name: Set up react-native@nightly
+        if: ${{ github.event_name == 'schedule' }}
+        uses: ./.github/actions/setup-react-native
+        with:
+          version: nightly
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
+        with:
+          immutable: ${{ github.event_name != 'schedule' }}
+      - name: Bundle JavaScript
+        run: |
+          yarn build:visionos || yarn build:visionos
+        working-directory: example
+      - name: Determine whether the visionOS app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
+      - name: Install Pods
+        if: ${{ steps.affected.outputs.visionos != '' }}
+        uses: ./.github/actions/cocoapods
+        with:
+          project-directory: visionos
+          working-directory: example
+      - name: Build
+        if: ${{ steps.affected.outputs.visionos != '' }}
+        run: |
+          ../scripts/xcodebuild.sh visionos/Example.xcworkspace build-for-testing
+        working-directory: example
+      - name: Test `react-native config`
+        if: ${{ steps.affected.outputs.visionos != '' }}
+        run: |
+          node --test test/config.test.mjs
+        working-directory: example
+    timeout-minutes: 60
+  visionos-template:
+    name: "visionOS [template]"
+    strategy:
+      matrix:
+        template: [all, visionos]
+    runs-on: macos-14
+    if: ${{ github.event_name != 'schedule' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+        with:
+          platform: visionos
+          project-root: example
+          cache-key-prefix: template-${{ matrix.template }}
+          xcode-developer-dir: /Applications/Xcode_15.2.app
+      - name: Initialize test app
+        uses: ./.github/actions/init-test-app
+        with:
+          platform: ${{ matrix.template }}
+      - name: Bundle JavaScript
+        run: |
+          yarn build:visionos || yarn build:visionos
+        working-directory: template-example
+      - name: Determine whether the visionOS app needs to be built
+        id: affected
+        uses: ./.github/actions/affected
+      - name: Determine project directory
+        id: configure
+        if: ${{ steps.affected.outputs.visionos != '' }}
+        run: |
+          if [[ ${{ matrix.template }} == visionos ]]; then
+            echo 'project-directory=.' >> $GITHUB_OUTPUT
+          else
+            echo 'project-directory=visionos' >> $GITHUB_OUTPUT
+          fi
+      - name: Install Pods
+        if: ${{ steps.affected.outputs.visionos != '' }}
+        run: |
+          pod install --project-directory=${{ steps.configure.outputs.project-directory }}
+        working-directory: template-example
+      - name: Build
+        if: ${{ steps.affected.outputs.visionos != '' }}
+        run: |
+          ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
+        working-directory: template-example
+    timeout-minutes: 60
   windows:
     name: "Windows"
     runs-on: windows-latest

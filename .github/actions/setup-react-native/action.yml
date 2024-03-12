@@ -11,5 +11,6 @@ runs:
       run: |
         rm example/ios/Podfile.lock
         rm example/macos/Podfile.lock
+        rm example/visionos/Podfile.lock
         npm run set-react-version -- ${{ inputs.version }}
       shell: bash

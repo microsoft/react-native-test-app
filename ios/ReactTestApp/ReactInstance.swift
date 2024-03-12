@@ -49,7 +49,8 @@ final class ReactInstance: NSObject, RNXHostConfig {
             name: .didReceiveRemoteBundleURL,
             object: nil
         )
-        #else
+        #endif
+        #if os(macOS)
         NSAppleEventManager.shared().setEventHandler(
             RCTLinkingManager.self,
             andSelector: #selector(RCTLinkingManager.getUrlEventHandler(_:withReplyEvent:)),
@@ -133,6 +134,9 @@ final class ReactInstance: NSObject, RNXHostConfig {
     private func entryFiles() -> [String] {
         #if os(iOS)
         let extensions = [".ios", ".mobile", ".native", ""]
+        #elseif os(visionOS)
+        // Fallback to iOS extensions if visionOS is not present
+        let extensions = [".visionos", ".ios", ".mobile", ".native", ""]
         #elseif os(macOS)
         let extensions = [".macos", ".native", ""]
         #endif
@@ -195,7 +199,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
     }
 }
 
-#if os(iOS)
+#if canImport(UIKit)
 typealias RTAView = UIView
 #else
 typealias RTAView = NSView
