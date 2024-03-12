@@ -20,6 +20,7 @@
 		19ECD0DC232ED427003D8557 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19ECD0DB232ED427003D8557 /* Assets.xcassets */; };
 		19ECD0ED232ED428003D8557 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0EC232ED428003D8557 /* ReactTestAppTests.swift */; };
 		19ECD0F8232ED428003D8557 /* ReactTestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0F7232ED428003D8557 /* ReactTestAppUITests.swift */; };
+		ACF44B5D2B9F975900C3F78E /* ReactTestApp.release.ios.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = ACF44B5C2B9F975900C3F78E /* ReactTestApp.release.ios.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,8 @@
 		19ECD0F3232ED428003D8557 /* ReactTestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19ECD0F7232ED428003D8557 /* ReactTestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactTestAppUITests.swift; sourceTree = "<group>"; };
 		19ECD0F9232ED428003D8557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACF44B592B9F89C200C3F78E /* ReactTestApp.debug.ios.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.debug.ios.xcconfig; sourceTree = "<group>"; };
+		ACF44B5C2B9F975900C3F78E /* ReactTestApp.release.ios.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.release.ios.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,10 +134,12 @@
 				1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */,
 				19ECD0DB232ED427003D8557 /* Assets.xcassets */,
 				19ECD0E3232ED427003D8557 /* Info.plist */,
-				196C7216232F6CD9006556ED /* ReactTestApp.entitlements */,
 				192F052724AD3CC500A48456 /* ReactTestApp.common.xcconfig */,
 				192F052824AD3CC500A48456 /* ReactTestApp.debug.xcconfig */,
 				192F052624AD3CC500A48456 /* ReactTestApp.release.xcconfig */,
+				196C7216232F6CD9006556ED /* ReactTestApp.entitlements */,
+				ACF44B592B9F89C200C3F78E /* ReactTestApp.debug.ios.xcconfig */,
+				ACF44B5C2B9F975900C3F78E /* ReactTestApp.release.ios.xcconfig */,
 			);
 			path = ReactTestApp;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACF44B5D2B9F975900C3F78E /* ReactTestApp.release.ios.xcconfig in Resources */,
 				19ECD0DC232ED427003D8557 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,7 +383,7 @@
 /* Begin XCBuildConfiguration section */
 		19ECD0FA232ED428003D8557 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 192F052824AD3CC500A48456 /* ReactTestApp.debug.xcconfig */;
+			baseConfigurationReference = ACF44B592B9F89C200C3F78E /* ReactTestApp.debug.ios.xcconfig */;
 			buildSettings = {
 			};
 			name = Debug;
