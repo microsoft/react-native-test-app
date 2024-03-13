@@ -20,7 +20,7 @@ runs:
   steps:
     - name: Set up Ccache
       id: setup-ccache
-      if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' }}
+      if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' || inputs.platform == 'visionos' }}
       run: |
         podfile_lock="${{ inputs.project-root }}/${{ inputs.platform }}/Podfile.lock"
         if [[ -f $(git rev-parse --show-toplevel)/.ccache/ccache.conf ]] && [[ -f "$podfile_lock" ]]; then
