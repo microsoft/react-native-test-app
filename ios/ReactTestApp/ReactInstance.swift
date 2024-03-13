@@ -134,11 +134,11 @@ final class ReactInstance: NSObject, RNXHostConfig {
     private func entryFiles() -> [String] {
         #if os(iOS)
         let extensions = [".ios", ".mobile", ".native", ""]
-        #elseif os(visionOS)
-        // Fallback to iOS extensions if visionOS is not present
-        let extensions = [".visionos", ".ios", ".mobile", ".native", ""]
         #elseif os(macOS)
         let extensions = [".macos", ".native", ""]
+        #elseif swift(>=5.9) && os(visionOS)
+        // Fallback to iOS extensions if visionOS is not present
+        let extensions = [".visionos", ".ios", ".mobile", ".native", ""]
         #endif
 
         guard let bundleRoot else {
