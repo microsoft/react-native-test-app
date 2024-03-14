@@ -101,8 +101,9 @@ export function buildGradle() {
 export function podfile(name, prefix) {
   return join(
     "ws_dir = Pathname.new(__dir__)",
-    `ws_dir = ws_dir.parent until File.exist?("#{ws_dir}/node_modules/react-native-test-app/${prefix}test_app.rb") &&`,
-    "                             ws_dir.expand_path.to_s != '/'",
+    "ws_dir = ws_dir.parent until",
+    `  File.exist?("#{ws_dir}/node_modules/react-native-test-app/${prefix}test_app.rb") ||`,
+    "  ws_dir.expand_path.to_s == '/'",
     `require "#{ws_dir}/node_modules/react-native-test-app/${prefix}test_app.rb"`,
     "",
     `workspace '${name}.xcworkspace'`,
