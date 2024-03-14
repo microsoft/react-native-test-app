@@ -299,6 +299,9 @@ export const getConfig = (() => {
                         "App.tsx": {
                           source: path.join(templateDir, "App.tsx"),
                         },
+                        "tsconfig.json": {
+                          source: path.join(templateDir, "tsconfig.json"),
+                        },
                       }
                     : {
                         "App.js": { source: path.join(templateDir, "App.js") },
