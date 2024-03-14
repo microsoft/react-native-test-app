@@ -54,6 +54,7 @@ describe("getConfig()", () => {
       "metro.config.js",
       "package.json",
       "react-native.config.js",
+      "tsconfig.json",
     ]);
     deepEqual(config.oldFiles, []);
     deepEqual(Object.keys(config.scripts).sort(), ["start"]);
