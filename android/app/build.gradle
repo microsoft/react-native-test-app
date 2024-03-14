@@ -219,14 +219,18 @@ android {
                 ? "src/reactinstanceeventlistener-pre-0.68/java"
                 : "src/reactinstanceeventlistener-0.68/java",
 
-            // TODO: Remove this block when we drop support for 0.73
-            reactNativeVersion >= v(0, 74, 0)
-                ? "src/reactactivitydelegate-0.74/java"
-                // TODO: Remove this block when we drop support for 0.71
-                // https://github.com/facebook/react-native/commit/e5dd9cdc6688e63e75a7e0bebf380be1a9a5fe2b
-                : reactNativeVersion >= v(0, 72, 0)
-                    ? "src/reactactivitydelegate-0.72/java"
-                    : "src/reactactivitydelegate-pre-0.72/java",
+            // TODO: Remove this block when we drop support for 0.74
+            // https://github.com/facebook/react-native/commit/3283202248a36dbda553745afc46a3e3e2ab41a6
+            reactNativeVersion >= v(0, 75, 0)
+                ? "src/reactactivitydelegate-0.75/java"
+                // TODO: Remove this block when we drop support for 0.73
+                : reactNativeVersion >= v(0, 74, 0)
+                    ? "src/reactactivitydelegate-0.74/java"
+                    // TODO: Remove this block when we drop support for 0.71
+                    // https://github.com/facebook/react-native/commit/e5dd9cdc6688e63e75a7e0bebf380be1a9a5fe2b
+                    : reactNativeVersion >= v(0, 72, 0)
+                        ? "src/reactactivitydelegate-0.72/java"
+                        : "src/reactactivitydelegate-pre-0.72/java",
 
             // TODO: Remove this block when we drop support for 0.73
             // https://github.com/facebook/react-native/commit/cfa02eec50469059542ccbacbc51643b525ad461

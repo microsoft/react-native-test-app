@@ -82,6 +82,7 @@ describe("npm pack", () => {
       "android/app/src/old-arch/java/com/microsoft/reacttestapp/compat/ReactNativeHostCompat.kt",
       "android/app/src/reactactivitydelegate-0.72/java/com/microsoft/reacttestapp/component/ComponentActivityDelegate.kt",
       "android/app/src/reactactivitydelegate-0.74/java/com/microsoft/reacttestapp/component/ComponentActivityDelegate.kt",
+      "android/app/src/reactactivitydelegate-0.75/java/com/microsoft/reacttestapp/component/ComponentActivityDelegate.kt",
       "android/app/src/reactactivitydelegate-pre-0.72/java/com/microsoft/reacttestapp/component/ComponentActivityDelegate.kt",
       "android/app/src/reactapplication-0.73/java/com/microsoft/reacttestapp/TestApp.kt",
       "android/app/src/reactapplication-pre-0.73/java/com/microsoft/reacttestapp/TestApp.kt",
