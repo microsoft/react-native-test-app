@@ -20,9 +20,7 @@ import { parseArgs } from "./parseargs.mjs";
 import {
   appManifest,
   buildGradle,
-  podfileIOS,
-  podfileMacOS,
-  podfileVisionOS,
+  podfile,
   reactNativeConfigAndroidFlat,
   reactNativeConfigAppleFlat,
   reactNativeConfigWindowsFlat,
@@ -93,32 +91,6 @@ export function mergeConfig(lhs, rhs) {
       ...rhs.dependencies,
     },
   };
-}
-
-/**
- * Returns the relative path to react-native-test-app depending on current
- * running mode.
- * @param {ConfigureParams} params
- * @returns {string}
- */
-export function projectRelativePath({
-  packagePath,
-  testAppPath,
-  platforms,
-  flatten,
-  init,
-}) {
-  const shouldFlatten = flatten && platforms.length === 1;
-  if (init) {
-    const prefix = shouldFlatten ? "" : "../";
-    return `${prefix}node_modules/react-native-test-app`;
-  }
-
-  const normalizedPackagePath = packagePath.replace(/\\/g, "/");
-  return path.posix.relative(
-    shouldFlatten ? normalizedPackagePath : normalizedPackagePath + "/platform",
-    testAppPath.replace(/\\/g, "/")
-  );
 }
 
 /**
@@ -266,7 +238,6 @@ export const getConfig = (() => {
         flatten && cliPlatformIOSVersion(rnDir) < v(8, 0, 0)
           ? " --project-path ."
           : "";
-      const testAppRelPath = projectRelativePath(params);
       const templateDir =
         templatePath ||
         path.relative(
@@ -324,7 +295,7 @@ export const getConfig = (() => {
         },
         android: {
           files: {
-            "build.gradle": buildGradle(testAppRelPath),
+            "build.gradle": buildGradle(),
             "gradle/wrapper/gradle-wrapper.jar": {
               source: path.join(
                 testAppPath,
@@ -372,7 +343,7 @@ export const getConfig = (() => {
                 "gradlew.bat"
               ),
             },
-            "settings.gradle": settingsGradle(name, testAppRelPath),
+            "settings.gradle": settingsGradle(name),
           },
           oldFiles: [],
           scripts: {
@@ -384,7 +355,7 @@ export const getConfig = (() => {
         },
         ios: {
           files: {
-            Podfile: podfileIOS(name, testAppRelPath),
+            Podfile: podfile(name, ""),
           },
           oldFiles: [
             "Podfile.lock",
@@ -401,7 +372,7 @@ export const getConfig = (() => {
         },
         macos: {
           files: {
-            Podfile: podfileMacOS(name, testAppRelPath),
+            Podfile: podfile(name, "macos/"),
           },
           oldFiles: [
             "Podfile.lock",
@@ -418,7 +389,7 @@ export const getConfig = (() => {
         },
         visionos: {
           files: {
-            Podfile: podfileVisionOS(name, testAppRelPath),
+            Podfile: podfile(name, "visionos/"),
           },
           oldFiles: [
             "Podfile.lock",

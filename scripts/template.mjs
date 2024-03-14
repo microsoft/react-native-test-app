@@ -1,5 +1,3 @@
-import * as path from "node:path";
-
 /**
  * Joins all specified lines into a single string.
  * @param {...string} lines
@@ -42,15 +40,21 @@ export function appManifest(name) {
 }
 
 /**
- * @param {string} testAppRelPath Relative path to `react-native-test-app`
  * @returns {string}
  */
-export function buildGradle(testAppRelPath) {
-  const rnPath = path.posix.join(path.dirname(testAppRelPath), "react-native");
+export function buildGradle() {
   return join(
     "buildscript {",
-    `    def androidTestAppDir = "${testAppRelPath}/android"`,
-    '    apply(from: "${androidTestAppDir}/dependencies.gradle")',
+    "    apply(from: {",
+    "        def searchDir = rootDir.toPath()",
+    "        do {",
+    '            def p = searchDir.resolve("node_modules/react-native-test-app/android/dependencies.gradle")',
+    "            if (p.toFile().exists()) {",
+    "                return p.toRealPath().toString()",
+    "            }",
+    "        } while (searchDir = searchDir.getParent())",
+    '        throw new GradleException("Could not find `react-native-test-app`");',
+    "    }())",
     "",
     "    repositories {",
     "        mavenCentral()",
@@ -64,11 +68,22 @@ export function buildGradle(testAppRelPath) {
     "    }",
     "}",
     "",
+    // TODO: Remove this block when we drop support for 0.70
+    // https://github.com/facebook/react-native/commit/51a48d2e2c64a18012692b063368e369cd8ff797
     "allprojects {",
     "    repositories {",
     "        maven {",
     "            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm",
-    `            url("\${rootDir}/${rnPath}/android")`,
+    "            url({",
+    "                def searchDir = rootDir.toPath()",
+    "                do {",
+    '                    def p = searchDir.resolve("node_modules/react-native/android")',
+    "                    if (p.toFile().exists()) {",
+    "                        return p.toRealPath().toString()",
+    "                    }",
+    "                } while (searchDir = searchDir.getParent())",
+    '                throw new GradleException("Could not find `react-native`");',
+    "            }())",
     "        }",
     "        mavenCentral()",
     "        google()",
@@ -80,44 +95,15 @@ export function buildGradle(testAppRelPath) {
 
 /**
  * @param {string} name Root project name
- * @param {string} testAppRelPath Relative path to `react-native-test-app`
+ * @param {string} prefix Platform prefix
  * @returns {string}
  */
-export function podfileIOS(name, testAppRelPath) {
+export function podfile(name, prefix) {
   return join(
-    `require_relative '${testAppRelPath}/test_app'`,
-    "",
-    `workspace '${name}.xcworkspace'`,
-    "",
-    `use_test_app!`,
-    ""
-  );
-}
-
-/**
- * @param {string} name Root project name
- * @param {string} testAppRelPath Relative path to `react-native-test-app`
- * @returns {string}
- */
-export function podfileMacOS(name, testAppRelPath) {
-  return join(
-    `require_relative '${testAppRelPath}/macos/test_app'`,
-    "",
-    `workspace '${name}.xcworkspace'`,
-    "",
-    `use_test_app!`,
-    ""
-  );
-}
-
-/**
- * @param {string} name Root project name
- * @param {string} testAppRelPath Relative path to `react-native-test-app`
- * @returns {string}
- */
-export function podfileVisionOS(name, testAppRelPath) {
-  return join(
-    `require_relative '${testAppRelPath}/visionos/test_app'`,
+    "ws_dir = Pathname.new(__dir__)",
+    `ws_dir = ws_dir.parent until File.exist?("#{ws_dir}/node_modules/react-native-test-app/${prefix}test_app.rb") &&`,
+    "                             ws_dir.expand_path.to_s != '/'",
+    `require "#{ws_dir}/node_modules/react-native-test-app/${prefix}test_app.rb"`,
     "",
     `workspace '${name}.xcworkspace'`,
     "",
@@ -206,10 +192,9 @@ export function reactNativeConfigWindowsFlat(name) {
 
 /**
  * @param {string} name Root project name
- * @param {string} testAppRelPath Relative path to `react-native-test-app`
  * @returns {string}
  */
-export function settingsGradle(name, testAppRelPath) {
+export function settingsGradle(name) {
   return join(
     "pluginManagement {",
     "    repositories {",
@@ -221,7 +206,16 @@ export function settingsGradle(name, testAppRelPath) {
     "",
     `rootProject.name = "${name}"`,
     "",
-    `apply(from: "${testAppRelPath}/test-app.gradle")`,
+    "apply(from: {",
+    "    def searchDir = rootDir.toPath()",
+    "    do {",
+    '        def p = searchDir.resolve("node_modules/react-native-test-app/test-app.gradle")',
+    "        if (p.toFile().exists()) {",
+    "            return p.toRealPath().toString()",
+    "        }",
+    "    } while (searchDir = searchDir.getParent())",
+    '    throw new GradleException("Could not find `react-native-test-app`");',
+    "}())",
     "applyTestAppSettings(settings)",
     ""
   );
