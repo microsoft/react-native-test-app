@@ -132,14 +132,26 @@ final class ReactInstance: NSObject, RNXHostConfig {
     }
 
     private func entryFiles() -> [String] {
+        #if swift(>=5.9)
+
+        #if os(visionOS)
+        // Fallback to iOS extensions if visionOS is not present
+        let extensions = [".visionos", ".ios", ".mobile", ".native", ""]
+        #elseif os(iOS)
+        let extensions = [".ios", ".mobile", ".native", ""]
+        #elseif os(macOS)
+        let extensions = [".macos", ".native", ""]
+        #endif // os(visionOS)
+
+        #else // This block *must* be separate for Xcode 14
+
         #if os(iOS)
         let extensions = [".ios", ".mobile", ".native", ""]
         #elseif os(macOS)
         let extensions = [".macos", ".native", ""]
-        #elseif swift(>=5.9) && os(visionOS)
-        // Fallback to iOS extensions if visionOS is not present
-        let extensions = [".visionos", ".ios", ".mobile", ".native", ""]
-        #endif
+        #endif // os(iOS)
+
+        #endif // swift(>=5.9)
 
         guard let bundleRoot else {
             return extensions.reduce(into: []) { files, ext in
