@@ -51,7 +51,8 @@ def resolve_module_relative(request)
 end
 
 def resolve_module_uncached(request, start_dir)
-  package_json = find_file("node_modules/#{request}/package.json", start_dir)
+  # Always resolve `start_dir` as it may be a symlink
+  package_json = find_file("node_modules/#{request}/package.json", start_dir.realdirpath)
   raise "Cannot find module '#{request}'" if package_json.nil?
 
   package_json.dirname
