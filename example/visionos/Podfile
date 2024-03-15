@@ -8,7 +8,6 @@ workspace 'Example.xcworkspace'
 
 options = {
   :fabric_enabled => false,
-  :bridgless_enabled => false,
   :hermes_enabled => false,
 }
 

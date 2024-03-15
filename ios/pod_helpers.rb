@@ -17,10 +17,10 @@ def assert_version(pod_version)
 end
 
 def bridgeless_enabled?(options, react_native_version)
-  return false unless new_architecture_enabled?(options, react_native_version)
-
-  supports_bridgeless = react_native_version.zero? || react_native_version >= v(0, 73, 0)
-  supports_bridgeless && options[:bridgeless_enabled]
+  new_architecture_enabled?(options, react_native_version) && (
+    (react_native_version >= v(0, 74, 0) && options[:bridgeless_enabled] != false) ||
+    (react_native_version >= v(0, 73, 0) && options[:bridgeless_enabled])
+  )
 end
 
 def find_file(file_name, current_dir)

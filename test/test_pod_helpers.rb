@@ -23,6 +23,9 @@ class TestPodHelpers < Minitest::Test
     # Bridgeless mode is first publicly available in 0.73
     available_version = v(0, 73, 0)
 
+    # Bridgeless mode is enabled by default starting with 0.74
+    default_version = v(0, 74, 0)
+
     refute(bridgeless_enabled?({}, 0))
     refute(bridgeless_enabled?({}, available_version))
 
@@ -31,11 +34,18 @@ class TestPodHelpers < Minitest::Test
     refute(bridgeless_enabled?(options, v(0, 72, 999)))
     assert(bridgeless_enabled?(options, available_version))
 
+    # Bridgeless mode is enabled by default starting with 0.74 unless opted-out of
+    assert(bridgeless_enabled?({ :fabric_enabled => true }, default_version))
+    refute(bridgeless_enabled?({ :bridgeless_enabled => false, :fabric_enabled => true },
+                               default_version))
+
     # `RCT_NEW_ARCH_ENABLED` does not enable bridgeless
     ENV['RCT_NEW_ARCH_ENABLED'] = '1'
 
     refute(bridgeless_enabled?({}, v(0, 72, 999)))
     refute(bridgeless_enabled?({}, available_version))
+    assert(bridgeless_enabled?({}, default_version))
+    refute(bridgeless_enabled?({ :bridgeless_enabled => false }, default_version))
   end
 
   def test_new_architecture_enabled?
