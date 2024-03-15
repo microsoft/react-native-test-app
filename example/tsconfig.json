@@ -1,8 +1,8 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "@rnx-kit/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "jsx": "react-native"
+    "jsx": "react-native",
+    "noEmit": true
   },
   "include": [
     "App.tsx",
