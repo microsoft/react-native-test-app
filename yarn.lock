@@ -13819,8 +13819,8 @@ __metadata:
   linkType: hard
 
 "suggestion-bot@npm:^2.0.0":
-  version: 2.0.3
-  resolution: "suggestion-bot@npm:2.0.3"
+  version: 2.0.4
+  resolution: "suggestion-bot@npm:2.0.4"
   dependencies:
     "@octokit/core": "npm:^5.0"
     "@octokit/plugin-rest-endpoint-methods": "npm:^10.0"
@@ -13828,7 +13828,7 @@ __metadata:
     parse-diff: "npm:^0.11"
   bin:
     suggestion-bot: cli.js
-  checksum: 10c0/a2a5550ed63dfc0dbc7c1ba8670d088afe1dae6debaa0beec4cf4f2b7fd4e7d0429b9481a92b4868b72f5f0c8ce14507a8265f5fcf6fb5653887982ec9b25b1b
+  checksum: 10c0/ceab42166a37079454dfbd1d8a0c7c2d87dfaab2bfb490a1aee0b133f1e64f5d772ddb4b8eb1a503e1ff4fbe0caf0e45de29ec0dbe7f292c42940e0ffd0c879f
   languageName: node
   linkType: hard
 
