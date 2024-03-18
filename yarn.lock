@@ -12119,17 +12119,17 @@ __metadata:
   linkType: hard
 
 "react-native-macos@npm:^0.73.0":
-  version: 0.73.17
-  resolution: "react-native-macos@npm:0.73.17"
+  version: 0.73.21
+  resolution: "react-native-macos@npm:0.73.21"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.6.3"
-    "@react-native-community/cli": "npm:12.3.2"
-    "@react-native-community/cli-platform-android": "npm:12.3.2"
-    "@react-native-community/cli-platform-ios": "npm:12.3.2"
+    "@react-native-community/cli": "npm:12.3.6"
+    "@react-native-community/cli-platform-android": "npm:12.3.6"
+    "@react-native-community/cli-platform-ios": "npm:12.3.6"
     "@react-native-mac/virtualized-lists": "npm:^0.73.3"
     "@react-native/assets-registry": "npm:0.73.1"
     "@react-native/codegen": "npm:0.73.3"
-    "@react-native/community-cli-plugin": "npm:0.73.16"
+    "@react-native/community-cli-plugin": "npm:0.73.17"
     "@react-native/gradle-plugin": "npm:0.73.4"
     "@react-native/js-polyfills": "npm:0.73.1"
     "@react-native/normalize-colors": "npm:0.73.2"
@@ -12164,7 +12164,7 @@ __metadata:
     react: 18.2.0
   bin:
     react-native-macos: cli.js
-  checksum: 10c0/8ad4c4ddfdaa21c694df9dd35642210ecc8f3bec3ba55a5e3b3f3e7f8f0c2fbe7f64ff9f75dac7976215aca186481c1e41ed7e81d73a1c20971d9ae58c9d0415
+  checksum: 10c0/9489f0610b4b766412ec781737308493f75e41f3be73f8d47bf8b340f9c2075b66f95505f05b8bb665378590904c14f35557ef941cfef3c6c08a79d82be2563b
   languageName: node
   linkType: hard
 
@@ -12233,8 +12233,8 @@ __metadata:
   linkType: soft
 
 "react-native-windows@npm:^0.73.0":
-  version: 0.73.8
-  resolution: "react-native-windows@npm:0.73.8"
+  version: 0.73.10
+  resolution: "react-native-windows@npm:0.73.10"
   dependencies:
     "@babel/runtime": "npm:^7.0.0"
     "@jest/create-cache-key-function": "npm:^29.6.3"
@@ -12280,21 +12280,21 @@ __metadata:
   peerDependencies:
     react: 18.2.0
     react-native: ^0.73.0
-  checksum: 10c0/9e0b48f2e7629cf4aebf8aaf9405b603d130ebff727514650f8e0483fb3f87d69aed9795e7b8a588b7a1dc627b242f214b2040a57fa51e337e972a1ca255ffcd
+  checksum: 10c0/96f8cc52f93028cbcf54550e4a8f7ee908e995147b51530aaa7b56884f1b2b456882c05d90685fc8121f11b7c2d70a656996e26ed65fc5a90246a0b788a90381
   languageName: node
   linkType: hard
 
 "react-native@npm:^0.73.0":
-  version: 0.73.4
-  resolution: "react-native@npm:0.73.4"
+  version: 0.73.6
+  resolution: "react-native@npm:0.73.6"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.6.3"
-    "@react-native-community/cli": "npm:12.3.2"
-    "@react-native-community/cli-platform-android": "npm:12.3.2"
-    "@react-native-community/cli-platform-ios": "npm:12.3.2"
+    "@react-native-community/cli": "npm:12.3.6"
+    "@react-native-community/cli-platform-android": "npm:12.3.6"
+    "@react-native-community/cli-platform-ios": "npm:12.3.6"
     "@react-native/assets-registry": "npm:0.73.1"
     "@react-native/codegen": "npm:0.73.3"
-    "@react-native/community-cli-plugin": "npm:0.73.16"
+    "@react-native/community-cli-plugin": "npm:0.73.17"
     "@react-native/gradle-plugin": "npm:0.73.4"
     "@react-native/js-polyfills": "npm:0.73.1"
     "@react-native/normalize-colors": "npm:0.73.2"
@@ -12330,7 +12330,7 @@ __metadata:
     react: 18.2.0
   bin:
     react-native: cli.js
-  checksum: 10c0/31a8d6df0614ecb089304da8dde9cbc51e8344d8e511b41ef933334da6875babc519bfd3490025be98f3e06e000079538892acbc37c8c229561b5bd93d2ca889
+  checksum: 10c0/1185a5310ffa1f3ac49a0e3be96a49780f779f40d4bd186a8ecaeb796890382f8ba5a27e33f7fef239c7c6b4c6037628a6fc79195c05a3e1290b589976857f93
   languageName: node
   linkType: hard
 
