@@ -133,7 +133,7 @@ ext {
 
         if (autodetectReactNativeVersion || enableNewArchitecture) {
             dependencies << "com.facebook.react:react-native-gradle-plugin"
-            dependencies << "de.undercouch:gradle-download-task:5.5.0"
+            dependencies << "de.undercouch:gradle-download-task:5.6.0"
         }
 
         return dependencies
