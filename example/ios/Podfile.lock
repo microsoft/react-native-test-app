@@ -1026,7 +1026,7 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
-  - RNWWebStorage (0.2.2):
+  - RNWWebStorage (0.2.3):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1252,7 +1252,7 @@ SPEC CHECKSUMS:
   ReactNativeHost: 59d4565eee4fb44efb46d3bff7adbaf2cf29fa5f
   ReactTestApp-DevSupport: c4abadbb90a8a9903400407e9857c2a2ef0343fb
   ReactTestApp-Resources: 857244f3a23f2b3157b364fa06cf3e8866deff9c
-  RNWWebStorage: a3dfc6ff14dc8902de531f44100f29ffebc16fbd
+  RNWWebStorage: bbb916037df754d10075c18dccbcde6019a7e050
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
 
