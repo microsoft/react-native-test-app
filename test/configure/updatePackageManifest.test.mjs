@@ -21,7 +21,6 @@ describe("updatePackageManifest()", () => {
   const devDependencies = {
     "@rnx-kit/metro-config":
       exampleManifest["devDependencies"]?.["@rnx-kit/metro-config"],
-    mkdirp: "^1.0.0",
     "react-native-test-app": "^0.0.1-dev",
   };
 

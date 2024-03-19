@@ -289,6 +289,8 @@ export const getConfig = (() => {
           },
           oldFiles: [],
           scripts: {
+            mkdist:
+              'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
             start: "react-native start",
           },
           dependencies: {},
@@ -349,7 +351,7 @@ export const getConfig = (() => {
           scripts: {
             android: "react-native run-android",
             "build:android":
-              "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+              "npm run mkdist && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
           },
           dependencies: {},
         },
@@ -365,7 +367,7 @@ export const getConfig = (() => {
           ],
           scripts: {
             "build:ios":
-              "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+              "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
             ios: `react-native run-ios${projectPathFlag}`,
           },
           dependencies: {},
@@ -382,7 +384,7 @@ export const getConfig = (() => {
           ],
           scripts: {
             "build:macos":
-              "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
+              "npm run mkdist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
             macos: `react-native run-macos --scheme ${name}${projectPathFlag}`,
           },
           dependencies: {},
@@ -399,7 +401,7 @@ export const getConfig = (() => {
           ],
           scripts: {
             "build:visionos":
-              "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.visionos.jsbundle --assets-dest dist",
+              "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.visionos.jsbundle --assets-dest dist",
             visionos: "react-native run-visionos",
           },
           dependencies: {},
@@ -417,7 +419,7 @@ export const getConfig = (() => {
           ],
           scripts: {
             "build:windows":
-              "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
+              "npm run mkdist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
             windows: `react-native run-windows --sln ${flatten ? "" : "windows/"}${name}.sln`,
           },
           dependencies: {},
@@ -583,7 +585,6 @@ export function updatePackageManifest(
   const { name: rntaName, version: rntaVersion } = readManifest();
   manifest["devDependencies"] = mergeObjects(manifest["devDependencies"], {
     "@rnx-kit/metro-config": "^1.3.15",
-    mkdirp: "^1.0.0",
     [rntaName]: `^${rntaVersion}`,
   });
 

@@ -210,15 +210,17 @@ describe("gatherConfig()", () => {
       scripts: {
         android: "react-native run-android",
         "build:android":
-          "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
         "build:ios":
-          "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         "build:macos":
-          "mkdirp dist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
         "build:windows":
-          "mkdirp dist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
         ios: "react-native run-ios",
         macos: "react-native run-macos --scheme Test",
+        mkdist:
+          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
         start: "react-native start",
         windows: "react-native run-windows --sln windows/Test.sln",
       },
@@ -309,6 +311,8 @@ describe("gatherConfig()", () => {
       },
       oldFiles: [],
       scripts: {
+        mkdist:
+          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
         start: "react-native start",
       },
     });
@@ -378,8 +382,10 @@ describe("gatherConfig()", () => {
       ],
       scripts: {
         "build:ios":
-          "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
+        mkdist:
+          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
         start: "react-native start",
       },
     });
@@ -533,10 +539,12 @@ describe("gatherConfig()", () => {
       scripts: {
         android: "react-native run-android",
         "build:android":
-          "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
         "build:ios":
-          "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
+        mkdist:
+          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
         start: "react-native start",
       },
     });
@@ -594,8 +602,10 @@ describe("gatherConfig()", () => {
       oldFiles: ["Podfile.lock", "Pods", "Test.xcodeproj", "Test.xcworkspace"],
       scripts: {
         "build:ios":
-          "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
+        mkdist:
+          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
         start: "react-native start",
       },
     });
@@ -747,10 +757,12 @@ describe("gatherConfig()", () => {
       scripts: {
         android: "react-native run-android",
         "build:android":
-          "mkdirp dist/res && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
         "build:ios":
-          "mkdirp dist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+          "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
+        mkdist:
+          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
         start: "react-native start",
       },
     });
