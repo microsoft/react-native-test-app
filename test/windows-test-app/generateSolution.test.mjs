@@ -47,21 +47,4 @@ describe("generateSolution()", () => {
       "Could not find 'react-native-windows'"
     );
   });
-
-  it("exits if 'react-native-test-app' folder cannot be found", () => {
-    setMockFiles({
-      [path.resolve("", "package.json")]: testManifest,
-      [path.resolve(
-        "",
-        "node_modules",
-        "react-native-windows",
-        "package.json"
-      )]: "{}",
-    });
-
-    equal(
-      generateSolution("test", options),
-      "Could not find 'react-native-test-app'"
-    );
-  });
 });

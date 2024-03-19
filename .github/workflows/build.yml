@@ -584,9 +584,11 @@ jobs:
         uses: ./.github/actions/yarn
         with:
           immutable: ${{ github.event_name != 'schedule' }}
-      - name: Build bundle and create solution
+      - name: Bundle JavaScript
         run: |
           yarn build:windows
+      - name: Generate Visual Studio solution
+        run: |
           yarn install-windows-test-app
         working-directory: example
       - name: Test `react-native config`
@@ -642,9 +644,11 @@ jobs:
         uses: ./.github/actions/init-test-app
         with:
           platform: ${{ matrix.template }}
-      - name: Build bundle and create solution
+      - name: Bundle JavaScript
         run: |
           yarn build:windows
+      - name: Generate Visual Studio solution
+        run: |
           if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app }
           else { yarn install-windows-test-app --project-directory=. }
         working-directory: template-example

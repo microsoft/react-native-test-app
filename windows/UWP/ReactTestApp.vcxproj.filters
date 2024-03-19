@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ApplicationDefinition Include="$(ReactTestAppDir)\App.xaml" />
+    <ApplicationDefinition Include="$(ReactAppUniversalDir)\App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(ReactTestAppDir)\MainPage.xaml" />
+    <Page Include="$(ReactAppUniversalDir)\MainPage.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="$(ReactTestAppDir)\App.idl" />
-    <Midl Include="$(ReactTestAppDir)\MainPage.idl" />
+    <Midl Include="$(ReactAppUniversalDir)\App.idl" />
+    <Midl Include="$(ReactAppUniversalDir)\MainPage.idl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(ReactTestAppDir)\pch.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\App.cpp" />
-    <ClCompile Include="$(ReactTestAppCommonDir)\AppRegistry.cpp" />
+    <ClCompile Include="$(ReactAppUniversalDir)\pch.cpp" />
+    <ClCompile Include="$(ReactAppUniversalDir)\App.cpp" />
+    <ClCompile Include="$(ReactAppCommonDir)\AppRegistry.cpp" />
     <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\MainPage.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\Manifest.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\ReactInstance.cpp" />
-    <ClCompile Include="$(ReactTestAppDir)\ReactPackageProvider.cpp" />
-    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="$(ReactAppUniversalDir)\MainPage.cpp" />
+    <ClCompile Include="$(ReactAppSharedDir)\Manifest.cpp" />
+    <ClCompile Include="$(ReactAppSharedDir)\ReactInstance.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)\module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(ReactTestAppDir)\pch.h" />
-    <ClInclude Include="$(ReactTestAppDir)\App.h" />
-    <ClInclude Include="$(ReactTestAppCommonDir)\AppRegistry.h" />
-    <ClInclude Include="$(ReactTestAppDir)\AutolinkedNativeModules.g.h" />
-    <ClInclude Include="$(ReactTestAppDir)\MainPage.h" />
-    <ClInclude Include="$(ReactTestAppDir)\Manifest.h" />
-    <ClInclude Include="$(ReactTestAppDir)\ReactInstance.h" />
-    <ClInclude Include="$(ReactTestAppDir)\ReactPackageProvider.h" />
-    <ClInclude Include="$(ReactTestAppDir)\Session.h" />
+    <ClInclude Include="$(ReactAppUniversalDir)\pch.h" />
+    <ClInclude Include="$(ReactAppUniversalDir)\App.h" />
+    <ClInclude Include="$(ReactAppCommonDir)\AppRegistry.h" />
+    <ClInclude Include="$(ReactAppUniversalDir)\AutolinkedNativeModules.g.h" />
+    <ClInclude Include="$(ReactAppSharedDir)\JSValueWriterHelper.h" />
+    <ClInclude Include="$(ReactAppUniversalDir)\MainPage.h" />
+    <ClInclude Include="$(ReactAppSharedDir)\Manifest.h" />
+    <ClInclude Include="$(ReactAppSharedDir)\ReactInstance.h" />
+    <ClInclude Include="$(ReactAppSharedDir)\Session.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\SplashScreen.scale-200.png">
@@ -55,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="$(ProjectRootDir)\$(ReactTestAppPackageManifest)" />
-    <AppxManifest Include="$(ReactTestAppDir)\Package.appxmanifest" />
+    <AppxManifest Include="$(ReactAppUniversalDir)\Package.appxmanifest" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">

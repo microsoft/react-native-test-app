@@ -38,8 +38,7 @@ function getLanguage(output) {
           indent: "    ",
           level: 1,
           header: [
-            "#ifndef REACTTESTAPP_MANIFEST_H_",
-            "#define REACTTESTAPP_MANIFEST_H_",
+            "#pragma once",
             "",
             "#include <any>",
             "#include <map>",
@@ -55,8 +54,6 @@ function getLanguage(output) {
             "    std::optional<std::tuple<Manifest, std::string>> GetManifest(const char *const json = nullptr);",
             "",
             "}  // namespace ReactTestApp",
-            "",
-            "#endif  // REACTTESTAPP_MANIFEST_H_",
             "",
           ].join("\n"),
         },
@@ -234,7 +231,7 @@ function main() {
       "Manifest.kt"
     ),
     path.join(scriptsDir, "..", "ios", "ReactTestApp", "Manifest.swift"),
-    path.join(scriptsDir, "..", "windows", "ReactTestApp", "Manifest.h"),
+    path.join(scriptsDir, "..", "windows", "Shared", "Manifest.h"),
   ].forEach((output) => generate(schema, output).catch(console.error));
 }
 

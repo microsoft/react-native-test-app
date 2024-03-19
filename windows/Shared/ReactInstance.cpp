@@ -12,20 +12,26 @@
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Web.Http.Headers.h>
 
+#if __has_include("AppRegistry.h")
 #include "AppRegistry.h"
+#endif  // __has_include("AppRegistry.h")
 #include "AutolinkedNativeModules.g.h"
-#include "ReactPackageProvider.h"
 
 using facebook::jsi::Runtime;
 using ReactTestApp::ReactInstance;
-using winrt::Microsoft::ReactNative::InstanceLoadedEventArgs;
-using winrt::ReactTestApp::implementation::ReactPackageProvider;
-using winrt::Windows::Foundation::IAsyncOperation;
-using winrt::Windows::Foundation::IInspectable;
-using winrt::Windows::Foundation::PropertyValue;
-using winrt::Windows::Foundation::Uri;
-using winrt::Windows::Storage::ApplicationData;
-using winrt::Windows::Web::Http::HttpClient;
+
+namespace winrt
+{
+    using winrt::Microsoft::ReactNative::InstanceLoadedEventArgs;
+    using winrt::Microsoft::ReactNative::IReactPackageBuilder;
+    using winrt::Microsoft::ReactNative::IReactPackageProvider;
+    using winrt::Windows::Foundation::IAsyncOperation;
+    using winrt::Windows::Foundation::IInspectable;
+    using winrt::Windows::Foundation::PropertyValue;
+    using winrt::Windows::Foundation::Uri;
+    using winrt::Windows::Storage::ApplicationData;
+    using winrt::Windows::Web::Http::HttpClient;
+}  // namespace winrt
 
 namespace
 {
@@ -36,19 +42,53 @@ namespace
     winrt::hstring const kUseFastRefresh = L"useFastRefresh";
     winrt::hstring const kUseWebDebugger = L"useWebDebugger";
 
+    std::optional<winrt::hstring> GetBundleName(std::optional<winrt::hstring> const &bundleRoot)
+    {
+        constexpr std::wstring_view const bundleExtension = L".bundle";
+
+        std::filesystem::path bundlePath{L"Bundle\\"};
+        if (bundleRoot.has_value()) {
+            std::wstring_view root = bundleRoot.value();
+            for (auto &&ext : {L".windows", L".native", L""}) {
+                bundlePath.replace_filename(root).replace_extension(ext) += bundleExtension;
+                if (std::filesystem::exists(bundlePath)) {
+                    return winrt::hstring{bundlePath.stem().wstring()};
+                }
+            }
+        } else {
+            for (auto &&main : ReactTestApp::JSBundleNames) {
+                bundlePath.replace_filename(main) += bundleExtension;
+                if (std::filesystem::exists(bundlePath)) {
+                    return winrt::hstring{main};
+                }
+            }
+        }
+
+        return std::nullopt;
+    }
+
     bool RetrieveLocalSetting(winrt::hstring const &key, bool defaultValue)
     {
-        auto localSettings = ApplicationData::Current().LocalSettings();
+        auto localSettings = winrt::ApplicationData::Current().LocalSettings();
         auto values = localSettings.Values();
         return winrt::unbox_value_or<bool>(values.Lookup(key), defaultValue);
     }
 
     void StoreLocalSetting(winrt::hstring const &key, bool value)
     {
-        auto localSettings = ApplicationData::Current().LocalSettings();
+        auto localSettings = winrt::ApplicationData::Current().LocalSettings();
         auto values = localSettings.Values();
-        values.Insert(key, PropertyValue::CreateBoolean(value));
+        values.Insert(key, winrt::PropertyValue::CreateBoolean(value));
     }
+
+    struct ReactPackageProvider
+        : winrt::implements<ReactPackageProvider, winrt::IReactPackageProvider> {
+        // IReactPackageProvider details
+        void CreatePackage(winrt::IReactPackageBuilder const &packageBuilder) noexcept
+        {
+            AddAttributedModules(packageBuilder, true);
+        }
+    };
 }  // namespace
 
 std::vector<std::wstring_view> const ReactTestApp::JSBundleNames = {
@@ -67,10 +107,10 @@ ReactInstance::ReactInstance()
         reactNativeHost_.PackageProviders());
 
     reactNativeHost_.InstanceSettings().InstanceLoaded(
-        [this](IInspectable const & /*sender*/, InstanceLoadedEventArgs const &args) {
+        [this](winrt::IInspectable const & /*sender*/, winrt::InstanceLoadedEventArgs const &args) {
             context_ = args.Context();
 
-#if __has_include(<JSI/JsiApiContext.h>)
+#if __has_include("AppRegistry.h") && __has_include(<JSI/JsiApiContext.h>)
             if (!onComponentsRegistered_) {
                 return;
             }
@@ -86,9 +126,26 @@ ReactInstance::ReactInstance()
 #endif  // defined(_DEBUG) && !defined(DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION)
                 }
             });
-#endif  // __has_include(<JSI/JsiApiContext.h>)
+#endif  // __has_include("AppRegistry.h") && __has_include(<JSI/JsiApiContext.h>)
         });
 }
+
+#if __has_include(<winrt/Microsoft.UI.Composition.h>)
+ReactInstance::ReactInstance(HWND hwnd,
+                             winrt::Microsoft::UI::Composition::Compositor const &compositor)
+    : ReactInstance()
+{
+    winrt::Microsoft::ReactNative::ReactCoreInjection::SetTopLevelWindowId(
+        reactNativeHost_.InstanceSettings().Properties(), reinterpret_cast<uint64_t>(hwnd));
+
+    // By using the MicrosoftCompositionContextHelper here, React Native Windows
+    // will use Lifted Visuals for its tree.
+    winrt::Microsoft::ReactNative::Composition::CompositionUIService::SetCompositionContext(
+        reactNativeHost_.InstanceSettings().Properties(),
+        winrt::Microsoft::ReactNative::Composition::MicrosoftCompositionContextHelper::
+            CreateContext(compositor));
+}
+#endif  // __has_include(<winrt/Microsoft.UI.Composition.h>)
 
 bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
 {
@@ -151,7 +208,7 @@ void ReactInstance::BreakOnFirstLine(bool breakOnFirstLine)
 
 std::tuple<winrt::hstring, int> ReactInstance::BundlerAddress() const
 {
-    auto localSettings = ApplicationData::Current().LocalSettings();
+    auto localSettings = winrt::ApplicationData::Current().LocalSettings();
     auto values = localSettings.Values();
     auto host = winrt::unbox_value_or<winrt::hstring>(values.Lookup(kBundlerHost), {});
     auto port = winrt::unbox_value_or<int>(values.Lookup(kBundlerPort), 0);
@@ -160,19 +217,19 @@ std::tuple<winrt::hstring, int> ReactInstance::BundlerAddress() const
 
 void ReactInstance::BundlerAddress(winrt::hstring host, int port)
 {
-    auto localSettings = ApplicationData::Current().LocalSettings();
+    auto localSettings = winrt::ApplicationData::Current().LocalSettings();
     auto values = localSettings.Values();
 
     if (host.empty()) {
         values.Remove(kBundlerHost);
     } else {
-        values.Insert(kBundlerHost, PropertyValue::CreateString(host));
+        values.Insert(kBundlerHost, winrt::PropertyValue::CreateString(host));
     }
 
     if (port <= 0) {
         values.Remove(kBundlerPort);
     } else {
-        values.Insert(kBundlerPort, PropertyValue::CreateInt32(port));
+        values.Insert(kBundlerPort, winrt::PropertyValue::CreateInt32(port));
     }
 
     Reload();
@@ -228,36 +285,10 @@ void ReactInstance::UseWebDebugger(bool useWebDebugger)
     Reload();
 }
 
-std::optional<winrt::hstring>
-ReactTestApp::GetBundleName(std::optional<winrt::hstring> const &bundleRoot)
+winrt::IAsyncOperation<bool> ReactTestApp::IsDevServerRunning()
 {
-    constexpr std::wstring_view const bundleExtension = L".bundle";
-
-    std::filesystem::path bundlePath{L"Bundle\\"};
-    if (bundleRoot.has_value()) {
-        std::wstring_view root = bundleRoot.value();
-        for (auto &&ext : {L".windows", L".native", L""}) {
-            bundlePath.replace_filename(root).replace_extension(ext) += bundleExtension;
-            if (std::filesystem::exists(bundlePath)) {
-                return winrt::hstring{bundlePath.stem().wstring()};
-            }
-        }
-    } else {
-        for (auto &&main : JSBundleNames) {
-            bundlePath.replace_filename(main) += bundleExtension;
-            if (std::filesystem::exists(bundlePath)) {
-                return winrt::hstring{main};
-            }
-        }
-    }
-
-    return std::nullopt;
-}
-
-IAsyncOperation<bool> ReactTestApp::IsDevServerRunning()
-{
-    Uri uri(L"http://localhost:8081/status");
-    HttpClient httpClient;
+    winrt::Uri uri(L"http://localhost:8081/status");
+    winrt::HttpClient httpClient;
     try {
         auto r = co_await httpClient.GetAsync(uri);
         co_return r.IsSuccessStatusCode();

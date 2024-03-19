@@ -2,7 +2,7 @@
 import { equal } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
-import { getHermesVersion as getHermesVersionActual } from "../../windows/test-app.mjs";
+import { getHermesVersion as getHermesVersionActual } from "../../windows/project.mjs";
 import { fs, setMockFiles } from "../fs.mock.mjs";
 
 /**

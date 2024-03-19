@@ -106,23 +106,6 @@ function readJSONFile(path, fs = nodefs) {
 }
 
 /**
- * Returns version string of specified module.
- * @param {string} module
- * @returns {string}
- */
-function getPackageVersion(module, startDir = process.cwd(), fs = nodefs) {
-  const options = { paths: [startDir] };
-  const manifestPath = require.resolve(`${module}/package.json`, options);
-  const mod = readJSONFile(manifestPath, fs);
-  const version = mod["version"];
-  if (typeof version !== "string") {
-    throw new Error(`Invalid version number: ${module}@${version}`);
-  }
-
-  return version;
-}
-
-/**
  * @template T
  * @param {string[]} dependencyChain
  * @param {string=} startDir
@@ -157,6 +140,33 @@ function v(major, minor, patch) {
   return major * 1000000 + minor * 1000 + patch;
 }
 
+/**
+ * Writes data to specified file path.
+ * @param {string} file
+ * @param {string} data
+ * @returns {Promise<void>}
+ */
+function writeTextFile(file, data, fs = nodefs.promises) {
+  return fs.writeFile(file, data, { encoding: "utf-8", mode: 0o644 });
+}
+
+/**
+ * Returns version string of specified module.
+ * @param {string} module
+ * @returns {string}
+ */
+function getPackageVersion(module, startDir = process.cwd(), fs = nodefs) {
+  const options = { paths: [startDir] };
+  const manifestPath = require.resolve(`${module}/package.json`, options);
+  const mod = readJSONFile(manifestPath, fs);
+  const version = mod["version"];
+  if (typeof version !== "string") {
+    throw new Error(`Invalid version number: ${module}@${version}`);
+  }
+
+  return version;
+}
+
 exports.findFile = findFile;
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
@@ -167,3 +177,4 @@ exports.readTextFile = readTextFile;
 exports.requireTransitive = requireTransitive;
 exports.toVersionNumber = toVersionNumber;
 exports.v = v;
+exports.writeTextFile = writeTextFile;
