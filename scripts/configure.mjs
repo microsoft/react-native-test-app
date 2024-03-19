@@ -289,8 +289,7 @@ export const getConfig = (() => {
           },
           oldFiles: [],
           scripts: {
-            mkdist:
-              'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
+            mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
             start: "react-native start",
           },
           dependencies: {},

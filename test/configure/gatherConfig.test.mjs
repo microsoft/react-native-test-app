@@ -219,8 +219,7 @@ describe("gatherConfig()", () => {
           "npm run mkdist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
         ios: "react-native run-ios",
         macos: "react-native run-macos --scheme Test",
-        mkdist:
-          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
+        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
         windows: "react-native run-windows --sln windows/Test.sln",
       },
@@ -311,8 +310,7 @@ describe("gatherConfig()", () => {
       },
       oldFiles: [],
       scripts: {
-        mkdist:
-          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
+        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
       },
     });
@@ -384,8 +382,7 @@ describe("gatherConfig()", () => {
         "build:ios":
           "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
-        mkdist:
-          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
+        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
       },
     });
@@ -543,8 +540,7 @@ describe("gatherConfig()", () => {
         "build:ios":
           "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
-        mkdist:
-          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
+        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
       },
     });
@@ -604,8 +600,7 @@ describe("gatherConfig()", () => {
         "build:ios":
           "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
-        mkdist:
-          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
+        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
       },
     });
@@ -761,8 +756,7 @@ describe("gatherConfig()", () => {
         "build:ios":
           "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
-        mkdist:
-          'node -e \'require("node:fs").mkdirSync("dist", { recursive: true, mode: 0o755 })\'',
+        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
       },
     });
