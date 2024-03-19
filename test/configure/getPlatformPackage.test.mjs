@@ -15,9 +15,9 @@ describe("getPlatformPackage()", () => {
       deepEqual(pkg, { [name]: "^0.0.0" });
     }
 
-    for (const targetVersion of ["0.68", "0.68.2", "^0.68", "^0.68.2"]) {
+    for (const targetVersion of ["0.73", "0.73.2", "^0.73", "^0.73.2"]) {
       const pkg = getPlatformPackage("macos", targetVersion);
-      deepEqual(pkg, { [name]: "^0.68.0" });
+      deepEqual(pkg, { [name]: "^0.73.0" });
     }
 
     equal(spy(console.warn).calls.length, 0);
