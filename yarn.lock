@@ -4019,17 +4019,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:9.0.8":
+"@types/uuid@npm:9.0.8, @types/uuid@npm:^9.0.0":
   version: 9.0.8
   resolution: "@types/uuid@npm:9.0.8"
   checksum: 10c0/b411b93054cb1d4361919579ef3508a1f12bf15b5fdd97337d3d351bece6c921b52b6daeef89b62340fd73fd60da407878432a1af777f40648cbe53a01723489
-  languageName: node
-  linkType: hard
-
-"@types/uuid@npm:^8.3.1":
-  version: 8.3.4
-  resolution: "@types/uuid@npm:8.3.4"
-  checksum: 10c0/b9ac98f82fcf35962317ef7dc44d9ac9e0f6fdb68121d384c88fe12ea318487d5585d3480fa003cf28be86a3bbe213ca688ba786601dce4a97724765eb5b1cf2
   languageName: node
   linkType: hard
 
@@ -12163,7 +12156,7 @@ __metadata:
     "@types/node": "npm:^20.0.0"
     "@types/prompts": "npm:~2.4.0"
     "@types/semver": "npm:^7.3.6"
-    "@types/uuid": "npm:^8.3.1"
+    "@types/uuid": "npm:^9.0.0"
     ajv: "npm:^8.0.0"
     cliui: "npm:^8.0.0"
     eslint: "npm:^8.56.0"
