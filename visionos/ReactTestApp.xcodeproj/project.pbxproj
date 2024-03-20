@@ -39,23 +39,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		192DD200240FCAF5004E9CEB /* Manifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manifest.swift; path = ../ReactTestAppShared/Manifest.swift; sourceTree = "<group>"; };
+		192DD200240FCAF5004E9CEB /* Manifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manifest.swift; path = ../Shared/Manifest.swift; sourceTree = "<group>"; };
 		192F052624AD3CC500A48456 /* ReactTestApp.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.release.xcconfig; sourceTree = "<group>"; };
 		192F052724AD3CC500A48456 /* ReactTestApp.common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.common.xcconfig; sourceTree = "<group>"; };
 		192F052824AD3CC500A48456 /* ReactTestApp.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.debug.xcconfig; sourceTree = "<group>"; };
-		196C22602490CB7600449D3C /* React+Compatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "React+Compatibility.m"; path = "../ReactTestAppShared/React+Compatibility.m"; sourceTree = "<group>"; };
-		196C22612490CB7600449D3C /* React+Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "React+Compatibility.h"; path = "../ReactTestAppShared/React+Compatibility.h"; sourceTree = "<group>"; };
-		196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ReactTestApp-Bridging-Header.h"; path = "../ReactTestAppShared/ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		196C7214232F1788006556ED /* ReactInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReactInstance.swift; path = ../ReactTestAppShared/ReactInstance.swift; sourceTree = "<group>"; };
+		196C22602490CB7600449D3C /* React+Compatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "React+Compatibility.m"; path = "../Shared/React+Compatibility.m"; sourceTree = "<group>"; };
+		196C22612490CB7600449D3C /* React+Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "React+Compatibility.h"; path = "../Shared/React+Compatibility.h"; sourceTree = "<group>"; };
+		196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ReactTestApp-Bridging-Header.h"; path = "../Shared/ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		196C7214232F1788006556ED /* ReactInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReactInstance.swift; path = ../Shared/ReactInstance.swift; sourceTree = "<group>"; };
 		196C7216232F6CD9006556ED /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
-		197827F927710D3400AEC655 /* Manifest+Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Manifest+Decoder.swift"; path = "../ReactTestAppShared/Manifest+Decoder.swift"; sourceTree = "<group>"; };
-		1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ReactTestApp.h"; path = "../ReactTestAppShared/UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
-		1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ReactTestApp.m"; path = "../ReactTestAppShared/UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
-		19A624A3258C95F000032776 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = ../ReactTestAppShared/Session.swift; sourceTree = "<group>"; };
+		197827F927710D3400AEC655 /* Manifest+Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Manifest+Decoder.swift"; path = "../Shared/Manifest+Decoder.swift"; sourceTree = "<group>"; };
+		1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ReactTestApp.h"; path = "../Shared/UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
+		1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ReactTestApp.m"; path = "../Shared/UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
+		19A624A3258C95F000032776 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = ../Shared/Session.swift; sourceTree = "<group>"; };
 		19ECD0D2232ED425003D8557 /* ReactTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		19ECD0D5232ED425003D8557 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../ReactTestAppShared/AppDelegate.swift; sourceTree = "<group>"; };
-		19ECD0D7232ED425003D8557 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ../ReactTestAppShared/SceneDelegate.swift; sourceTree = "<group>"; };
-		19ECD0D9232ED425003D8557 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ../ReactTestAppShared/ContentView.swift; sourceTree = "<group>"; };
+		19ECD0D5232ED425003D8557 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../Shared/AppDelegate.swift; sourceTree = "<group>"; };
+		19ECD0D7232ED425003D8557 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ../Shared/SceneDelegate.swift; sourceTree = "<group>"; };
+		19ECD0D9232ED425003D8557 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ../Shared/ContentView.swift; sourceTree = "<group>"; };
 		19ECD0DB232ED427003D8557 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ReactTestApp/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		19ECD0E3232ED427003D8557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactTestApp/Info.plist; sourceTree = SOURCE_ROOT; };
 		19ECD0E8232ED427003D8557 /* ReactTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -387,7 +387,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "ReactTestAppShared/ReactTestApp-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/ReactTestApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
@@ -415,7 +415,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "ReactTestAppShared/ReactTestApp-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/ReactTestApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
 			};
