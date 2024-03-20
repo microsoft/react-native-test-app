@@ -12182,7 +12182,7 @@ __metadata:
     semver: "npm:^7.3.5"
     suggestion-bot: "npm:^3.0.0"
     typescript: "npm:^5.0.0"
-    uuid: "npm:^8.3.2"
+    uuid: "npm:^9.0.0"
     yoctocolors: "npm:^2.0.0"
   peerDependencies:
     "@callstack/react-native-visionos": 0.73
@@ -14515,7 +14515,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.3.0, uuid@npm:^8.3.2":
+"uuid@npm:^8.3.0":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
