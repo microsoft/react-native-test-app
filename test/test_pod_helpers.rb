@@ -61,10 +61,6 @@ class TestPodHelpers < Minitest::Test
     refute(new_architecture_enabled?({ fabric_enabled: true }, v(0, 70, 999)))
     assert(new_architecture_enabled?({ fabric_enabled: true }, available_version))
 
-    # TODO: `:turbomodule_enabled` is scheduled for removal in 4.0
-    refute(new_architecture_enabled?({ turbomodule_enabled: true }, v(0, 70, 999)))
-    assert(new_architecture_enabled?({ turbomodule_enabled: true }, available_version))
-
     # `RCT_NEW_ARCH_ENABLED` enables everything
     ENV['RCT_NEW_ARCH_ENABLED'] = '1'
 
