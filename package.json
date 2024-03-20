@@ -153,6 +153,7 @@
   "resolutions": {
     "@appium/docutils": "link:./example",
     "@appium/support/@types/semver": "^7.5.7",
+    "@appium/support/archiver": "^7.0.0",
     "@expo/config-plugins/glob": "^7.1.6",
     "@expo/json-file/@babel/code-frame": "^7.10.4",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.33.0",
