@@ -1067,7 +1067,7 @@ PODS:
     - React-jsi (= 0.73.7)
     - React-logger (= 0.73.7)
     - React-perflogger (= 0.73.7)
-  - ReactNativeHost (0.4.4):
+  - ReactNativeHost (0.4.5):
     - React-Core
     - React-cxxreact
     - ReactCommon/turbomodule/core
@@ -1315,7 +1315,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 770d4d6a77c7445d826264ec53b9d3d9883be421
   React-utils: 8067608526c1a61546761c1b7677672f216e1607
   ReactCommon: 0dbf32c98cf01a83e5b4d2c0dd91712a7d666903
-  ReactNativeHost: 59d4565eee4fb44efb46d3bff7adbaf2cf29fa5f
+  ReactNativeHost: ef266683ed8fa40fe48438b3f2ef0b5e3bb72201
   ReactTestApp-DevSupport: c4abadbb90a8a9903400407e9857c2a2ef0343fb
   ReactTestApp-Resources: 2ad57492ef72ab9b2c6f6e89ea198cc1999ca20b
   RNWWebStorage: b41688dc4431720c07c7e6c7226520b50e5eccfc
