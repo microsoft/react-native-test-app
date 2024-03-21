@@ -67,12 +67,12 @@ describe("parseResources()", () => {
     deepEqual(parseResources(["dist/assets", "dist/main.bundle"], "."), empty);
 
     equal(
-      spy(console.warn).calls[0].arguments[0],
-      "warning: resource not found: dist/assets"
+      spy(console.warn).calls[0].arguments[1],
+      "Resource not found: dist/assets"
     );
     equal(
-      spy(console.warn).calls[1].arguments[0],
-      "warning: resource not found: dist/main.bundle"
+      spy(console.warn).calls[1].arguments[1],
+      "Resource not found: dist/main.bundle"
     );
   });
 });

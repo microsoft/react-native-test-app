@@ -3,6 +3,7 @@ import { XMLParser } from "fast-xml-parser";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { v5 as uuidv5 } from "uuid";
+import * as colors from "yoctocolors";
 import {
   findNearest,
   getPackageVersion,
@@ -90,6 +91,14 @@ function generateCertificateItems(
 }
 
 /**
+ * @param {string} message
+ */
+function warn(message) {
+  const tag = colors.yellow(colors.bold("warn"));
+  console.warn(tag, message);
+}
+
+/**
  * @param {string[]} resources
  * @param {string} projectPath
  * @param {AssetItems} assets
@@ -111,7 +120,7 @@ function generateContentItems(
       ? path.relative(projectPath, resource)
       : resource;
     if (!fs.existsSync(resourcePath)) {
-      console.warn(`warning: resource not found: ${resource}`);
+      warn(`Resource not found: ${resource}`);
       continue;
     }
 
@@ -363,13 +372,13 @@ export function getBundleResources(manifestFilePath, fs = nodefs) {
       };
     } catch (e) {
       if (isErrorLike(e)) {
-        console.warn(`Could not parse 'app.json':\n${e.message}`);
+        warn(`Could not parse 'app.json':\n${e.message}`);
       } else {
         throw e;
       }
     }
   } else {
-    console.warn("Could not find 'app.json' file.");
+    warn("Could not find 'app.json' file.");
   }
 
   return {
@@ -416,9 +425,7 @@ export function projectInfo(
   const newArch =
     Boolean(useFabric) && (versionNumber === 0 || versionNumber >= v(0, 74, 0));
   if (useFabric && !newArch) {
-    console.warn(
-      "warning: New Architecture requires `react-native-windows` 0.74+"
-    );
+    warn("New Architecture requires `react-native-windows` 0.74+");
   }
 
   return {
