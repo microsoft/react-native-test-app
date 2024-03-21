@@ -5,6 +5,7 @@ import * as nodefs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import * as colors from "yoctocolors";
 import {
   findNearest,
   isMain,
@@ -232,7 +233,10 @@ export function generateSolution(destPath, options, fs = nodefs) {
     destPath,
     experimentalFeaturesPropsFilename
   );
-  if (!fs.existsSync(experimentalFeaturesPropsPath)) {
+  if (fs.existsSync(experimentalFeaturesPropsPath)) {
+    const props = path.relative(process.cwd(), experimentalFeaturesPropsPath);
+    console.log(colors.cyan(colors.bold("info")), `'${props}' already exists`);
+  } else {
     const { useHermes } = options;
     const {
       hermesVersion,
