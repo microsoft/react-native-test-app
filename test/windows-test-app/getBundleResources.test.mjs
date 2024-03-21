@@ -91,7 +91,7 @@ describe("getBundleResources()", () => {
     });
 
     equal(
-      spy(console.warn).calls[0].arguments[0],
+      spy(console.warn).calls[0].arguments[1],
       "Could not find 'app.json' file."
     );
   });
@@ -110,7 +110,7 @@ describe("getBundleResources()", () => {
     });
 
     match(
-      spy(console.warn).calls[0].arguments[0],
+      spy(console.warn).calls[0].arguments[1],
       /^Could not parse 'app.json':\n/
     );
   });
