@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)ExperimentalFeatures.props" Condition="Exists('$(SolutionDir)ExperimentalFeatures.props')" />
-  <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="$(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -24,7 +24,6 @@
     <ReactAppUniversalDir Condition="'$(ReactAppUniversalDir)'==''">$(ReactAppWinDir)\UWP</ReactAppUniversalDir>
     <ReactAppGeneratedDir Condition="'$(ReactAppGeneratedDir)'==''">$(MSBuildProjectDirectory)\..\..</ReactAppGeneratedDir>
     <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
-    <WinUI2xVersionDisabled />
   </PropertyGroup>
   <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props')" />
   <PropertyGroup Label="Fallback Windows SDK Versions">
@@ -145,6 +144,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\LockScreenLogo.scale-200.png" />
     <Image Include="Assets\SplashScreen.scale-200.png" />
     <Image Include="Assets\Square150x150Logo.scale-200.png" />
     <Image Include="Assets\Square44x44Logo.scale-200.png" />
@@ -181,8 +181,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(ProjectRootDir)\app.json" />
-    <None Include="packages.config" />
+    <None Include="packages.config" Condition="$(ReactNativeWindowsVersionNumber)>=68000" />
     <None Include="PropertySheet.props" />
+  </ItemGroup>
+  <ItemGroup Condition="$(ReactNativeWindowsVersionNumber)>=68000">
+    <PackageReference Include="nlohmann.json" Version="3.11.2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ReactNativeWindowsTargets">
@@ -200,20 +203,12 @@
     <ReactNativeWindowsVersion Condition="'$(ReactNativeWindowsVersion)'==''">$(ReactNativeWindowsNpmVersion)</ReactNativeWindowsVersion>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
-    <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.ReactNative.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.targets')" />
-    <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets')" />
-    <Import Project="$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets" Condition="Exists('$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets') AND '$(UseHermes)'=='true'" />
-    <Import Project="$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets" Condition="Exists('$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets')" />
-    <Import Project="$(SolutionDir)packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets" Condition="Exists('$(SolutionDir)packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets')" />
+    <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="$(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.targets" Condition="$(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.ReactNative.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.targets')" />
+    <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets" Condition="$(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets')" />
+    <Import Project="$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets" Condition="$(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets') AND '$(UseHermes)'=='true'" />
+    <Import Project="$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets" Condition="$(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets')" />
+    <Import Project="$(SolutionDir)packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets" Condition="$(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets')" />
     <!-- ReactTestApp additional targets -->
   </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
-    <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
-    <Error Condition="!Exists('$(SolutionDir)packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets'))" />
-  </Target>
 </Project>
