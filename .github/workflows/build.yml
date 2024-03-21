@@ -589,7 +589,7 @@ jobs:
           yarn build:windows
       - name: Generate Visual Studio solution
         run: |
-          yarn install-windows-test-app
+          yarn install-windows-test-app --use-nuget
         working-directory: example
       - name: Test `react-native config`
         run: |
@@ -649,8 +649,8 @@ jobs:
           yarn build:windows
       - name: Generate Visual Studio solution
         run: |
-          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app }
-          else { yarn install-windows-test-app --project-directory=. }
+          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app --use-nuget }
+          else { yarn install-windows-test-app --project-directory=. --use-nuget }
         working-directory: template-example
       - name: Determine whether the Windows app needs to be built
         id: affected
