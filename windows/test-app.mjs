@@ -311,7 +311,9 @@ export function generateSolution(destPath, options, fs = nodefs) {
       copyTasks.push(
         writeTextFile(
           nugetConfigDestPath,
-          mustache.render(readTextFile(nugetConfigPath, fs), {}),
+          mustache.render(readTextFile(nugetConfigPath, fs), {
+            nuGetADOFeed: info.version.startsWith("0.0.0-"),
+          }),
           fs.promises
         )
       );
