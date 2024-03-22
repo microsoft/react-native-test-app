@@ -13,7 +13,7 @@ def include_react_native!(options)
     fabric_enabled: options[:fabric_enabled] == true,
     new_arch_enabled: options[:new_arch_enabled] == true,
     production: options.key?(:production) ? options[:production] : ENV['PRODUCTION'] == '1',
-    hermes_enabled: options[:hermes_enabled] == true,
+    hermes_enabled: use_hermes?(options),
     app_path: options[:app_path] || '..',
     config_file_dir: options[:config_file_dir] || ''
   )

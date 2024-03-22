@@ -7,6 +7,7 @@ def include_react_native!(options)
 
   require_relative(File.join(project_root, react_native, 'scripts', 'react_native_pods'))
 
+  options[:hermes_enabled] = use_hermes?(options)
   use_react_native!(options)
 
   # If we're using react-native@main, we'll also need to prepare
