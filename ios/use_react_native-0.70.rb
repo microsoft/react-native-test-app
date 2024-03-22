@@ -10,7 +10,7 @@ def include_react_native!(options)
   use_react_native!(
     path: react_native,
     production: options.key?(:production) ? options[:production] : ENV['PRODUCTION'] == '1',
-    hermes_enabled: options[:hermes_enabled] == true,
+    hermes_enabled: use_hermes?(options),
     app_path: options[:app_path] || '..',
     config_file_dir: options[:config_file_dir] || ''
   )

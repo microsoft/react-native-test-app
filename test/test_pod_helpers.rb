@@ -29,14 +29,14 @@ class TestPodHelpers < Minitest::Test
     refute(bridgeless_enabled?({}, 0))
     refute(bridgeless_enabled?({}, available_version))
 
-    options = { :bridgeless_enabled => true, :fabric_enabled => true }
+    options = { bridgeless_enabled: true, fabric_enabled: true }
 
     refute(bridgeless_enabled?(options, v(0, 72, 999)))
     assert(bridgeless_enabled?(options, available_version))
 
     # Bridgeless mode is enabled by default starting with 0.74 unless opted-out of
-    assert(bridgeless_enabled?({ :fabric_enabled => true }, default_version))
-    refute(bridgeless_enabled?({ :bridgeless_enabled => false, :fabric_enabled => true },
+    assert(bridgeless_enabled?({ fabric_enabled: true }, default_version))
+    refute(bridgeless_enabled?({ bridgeless_enabled: false, fabric_enabled: true },
                                default_version))
 
     # `RCT_NEW_ARCH_ENABLED` does not enable bridgeless
@@ -45,7 +45,7 @@ class TestPodHelpers < Minitest::Test
     refute(bridgeless_enabled?({}, v(0, 72, 999)))
     refute(bridgeless_enabled?({}, available_version))
     assert(bridgeless_enabled?({}, default_version))
-    refute(bridgeless_enabled?({ :bridgeless_enabled => false }, default_version))
+    refute(bridgeless_enabled?({ bridgeless_enabled: false }, default_version))
   end
 
   def test_new_architecture_enabled?
@@ -58,18 +58,39 @@ class TestPodHelpers < Minitest::Test
     refute(new_architecture_enabled?({}, available_version))
 
     # New architecture is first publicly available in 0.68, but we'll require 0.71
-    refute(new_architecture_enabled?({ :fabric_enabled => true }, v(0, 70, 999)))
-    assert(new_architecture_enabled?({ :fabric_enabled => true }, available_version))
+    refute(new_architecture_enabled?({ fabric_enabled: true }, v(0, 70, 999)))
+    assert(new_architecture_enabled?({ fabric_enabled: true }, available_version))
 
     # TODO: `:turbomodule_enabled` is scheduled for removal in 4.0
-    refute(new_architecture_enabled?({ :turbomodule_enabled => true }, v(0, 70, 999)))
-    assert(new_architecture_enabled?({ :turbomodule_enabled => true }, available_version))
+    refute(new_architecture_enabled?({ turbomodule_enabled: true }, v(0, 70, 999)))
+    assert(new_architecture_enabled?({ turbomodule_enabled: true }, available_version))
 
     # `RCT_NEW_ARCH_ENABLED` enables everything
     ENV['RCT_NEW_ARCH_ENABLED'] = '1'
 
     refute(new_architecture_enabled?({}, v(0, 70, 999)))
     assert(new_architecture_enabled?({}, available_version))
+
+    ENV.delete('RCT_NEW_ARCH_ENABLED')
+  end
+
+  def test_use_hermes?
+    ENV.delete('USE_HERMES')
+
+    refute(use_hermes?({}))
+    assert(use_hermes?({ hermes_enabled: true }))
+
+    ENV['USE_HERMES'] = '0'
+
+    refute(use_hermes?({}))
+    refute(use_hermes?({ hermes_enabled: true }))
+
+    ENV['USE_HERMES'] = '1'
+
+    assert(use_hermes?({}))
+    assert(use_hermes?({ hermes_enabled: true }))
+
+    ENV.delete('USE_HERMES')
   end
 
   def test_v

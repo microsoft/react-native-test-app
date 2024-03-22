@@ -66,6 +66,13 @@ def try_pod(name, podspec, project_root)
   pod name, :podspec => podspec if File.exist?(File.join(project_root, podspec))
 end
 
+def use_hermes?(options)
+  use_hermes = ENV.fetch('USE_HERMES', nil)
+  return use_hermes == '1' unless use_hermes.nil?
+
+  options[:hermes_enabled] == true
+end
+
 def use_new_architecture!(options, react_native_version)
   return unless new_architecture_enabled?(options, react_native_version)
 
