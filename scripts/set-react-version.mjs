@@ -348,22 +348,35 @@ async function getProfile(v, coreOnly) {
     }
 
     default: {
-      const [reactNative, { version: rnmVersion }, { version: rnwVersion }] =
-        await Promise.all([
-          fetchPackageInfo(`react-native@^${v}.0-0`),
-          coreOnly
-            ? Promise.resolve({ version: undefined })
-            : fetchPackageInfo(`react-native-macos@^${v}.0-0`),
-          coreOnly
-            ? Promise.resolve({ version: undefined })
-            : fetchPackageInfo(`react-native-windows@^${v}.0-0`),
-        ]);
+      const manifest = /** @type {Manifest} */ (readJSONFile("package.json"));
+      const visionos = manifest.defaultPlatformPackages?.["visionos"];
+      if (!visionos) {
+        throw new Error("Missing platform package for visionOS");
+      }
+
+      const versions = {
+        core: fetchPackageInfo(`react-native@^${v}.0-0`),
+        macos: coreOnly
+          ? Promise.resolve({ version: undefined })
+          : fetchPackageInfo(`react-native-macos@^${v}.0-0`),
+        visionos: coreOnly
+          ? Promise.resolve({ version: undefined })
+          : fetchPackageInfo(`${visionos}@^${v}.0-0`),
+        windows: coreOnly
+          ? Promise.resolve({ version: undefined })
+          : fetchPackageInfo(`react-native-windows@^${v}.0-0`),
+      };
+      const reactNative = await versions.core;
       const commonDeps = await resolveCommonDependencies(v, reactNative);
+
+      /** @type {(manifest: Manifest) => string | undefined} */
+      const getVersion = ({ version }) => version;
       return {
         ...commonDeps,
         "react-native": reactNative.version,
-        "react-native-macos": rnmVersion,
-        "react-native-windows": rnwVersion,
+        "react-native-macos": await versions.macos.then(getVersion),
+        "react-native-windows": await versions.windows.then(getVersion),
+        [visionos]: await versions.visionos.then(getVersion),
       };
     }
   }
