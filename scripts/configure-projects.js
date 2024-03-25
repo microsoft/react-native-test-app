@@ -7,6 +7,7 @@
  */
 const nodefs = require("node:fs");
 const path = require("node:path");
+const tty = require("node:tty");
 const {
   findNearest,
   getPackageVersion,
@@ -43,6 +44,72 @@ const cliPlatformIOSVersion = (() => {
 })();
 
 /**
+ * Configures Gradle wrapper as necessary before the Android app is built.
+ * @param {string} sourceDir
+ */
+function configureGradleWrapper(sourceDir, fs = nodefs) {
+  const androidCommands = ["build-android", "run-android"];
+  if (
+    process.env["RNTA_CONFIGURE_GRADLE_WRAPPER"] === "0" ||
+    !process.argv.some((arg) => androidCommands.includes(arg))
+  ) {
+    return;
+  }
+
+  try {
+    const version = toVersionNumber(
+      getPackageVersion("react-native", sourceDir, fs)
+    );
+
+    const gradleWrapperProperties = path.join(
+      sourceDir,
+      "gradle",
+      "wrapper",
+      "gradle-wrapper.properties"
+    );
+    const props = readTextFile(gradleWrapperProperties);
+    const re = /gradle-([.0-9]*?)-.*?\.zip/;
+    const m = props.match(re);
+    if (!m) {
+      return;
+    }
+
+    const gradleVersion = (() => {
+      const gradleVersion = toVersionNumber(m[1]);
+      if (version === 0 || version >= v(0, 74, 0)) {
+        if (gradleVersion < v(8, 6, 0)) {
+          return "8.6";
+        }
+      } else if (version >= v(0, 73, 0)) {
+        if (gradleVersion < v(8, 3, 0)) {
+          return "8.3";
+        }
+      } else if (version >= v(0, 72, 0)) {
+        if (gradleVersion < v(8, 1, 1)) {
+          return "8.1.1";
+        }
+      } else if (gradleVersion < v(7, 5, 1) || gradleVersion >= v(8, 0, 0)) {
+        return "7.6.4";
+      }
+      return undefined;
+    })();
+
+    if (gradleVersion) {
+      const tag = tty.WriteStream.prototype.hasColors()
+        ? "\u001B[33m\u001B[1mwarn\u001B[22m\u001B[39m"
+        : "warn";
+      console.warn(tag, `Setting Gradle version ${gradleVersion}`);
+      fs.writeFileSync(
+        gradleWrapperProperties,
+        props.replace(re, `gradle-${gradleVersion}-bin.zip`)
+      );
+    }
+  } catch (_) {
+    // ignore
+  }
+}
+
+/**
  * @param {string} sourceDir
  * @returns {string}
  */
@@ -50,7 +117,7 @@ function androidManifestPath(sourceDir) {
   return path.relative(
     sourceDir,
     path.join(
-      path.dirname(require.resolve("../package.json")),
+      path.dirname(__dirname),
       "android",
       "app",
       "src",
@@ -109,6 +176,7 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
         path.resolve(projectRoot, android.sourceDir)
       ),
     };
+    configureGradleWrapper(android.sourceDir, fs);
   }
 
   if (ios) {
