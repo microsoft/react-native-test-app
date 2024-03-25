@@ -348,6 +348,12 @@ async function getProfile(v, coreOnly) {
     }
 
     default: {
+      const manifest = /** @type {Manifest} */ (readJSONFile("package.json"));
+      const visionos = manifest.defaultPlatformPackages?.["visionos"];
+      if (!visionos) {
+        throw new Error("Missing platform package for visionOS");
+      }
+
       const versions = {
         core: fetchPackageInfo(`react-native@^${v}.0-0`),
         macos: coreOnly
@@ -355,7 +361,7 @@ async function getProfile(v, coreOnly) {
           : fetchPackageInfo(`react-native-macos@^${v}.0-0`),
         visionos: coreOnly
           ? Promise.resolve({ version: undefined })
-          : fetchPackageInfo(`@callstack/react-native-visionos@^${v}.0-0`),
+          : fetchPackageInfo(`${visionos}@^${v}.0-0`),
         windows: coreOnly
           ? Promise.resolve({ version: undefined })
           : fetchPackageInfo(`react-native-windows@^${v}.0-0`),
@@ -367,11 +373,10 @@ async function getProfile(v, coreOnly) {
       const getVersion = ({ version }) => version;
       return {
         ...commonDeps,
-        "@callstack/react-native-visionos":
-          await versions.visionos.then(getVersion),
         "react-native": reactNative.version,
         "react-native-macos": await versions.macos.then(getVersion),
         "react-native-windows": await versions.windows.then(getVersion),
+        [visionos]: await versions.visionos.then(getVersion),
       };
     }
   }
