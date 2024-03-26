@@ -56,17 +56,21 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
     return;
   }
 
-  try {
-    const version = toVersionNumber(
-      getPackageVersion("react-native", sourceDir, fs)
-    );
+  const gradleWrapperProperties = path.join(
+    sourceDir,
+    "gradle",
+    "wrapper",
+    "gradle-wrapper.properties"
+  );
+  if (!fs.existsSync(gradleWrapperProperties)) {
+    return;
+  }
 
-    const gradleWrapperProperties = path.join(
-      sourceDir,
-      "gradle",
-      "wrapper",
-      "gradle-wrapper.properties"
-    );
+  const tag = tty.WriteStream.prototype.hasColors()
+    ? "\u001B[33m\u001B[1mwarn\u001B[22m\u001B[39m"
+    : "warn";
+
+  try {
     const props = readTextFile(gradleWrapperProperties);
     const re = /gradle-([.0-9]*?)-.*?\.zip/;
     const m = props.match(re);
@@ -76,6 +80,9 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
 
     const gradleVersion = (() => {
       const gradleVersion = toVersionNumber(m[1]);
+      const version = toVersionNumber(
+        getPackageVersion("react-native", sourceDir, fs)
+      );
       if (version === 0 || version >= v(0, 74, 0)) {
         if (gradleVersion < v(8, 6, 0)) {
           return "8.6";
@@ -95,9 +102,6 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
     })();
 
     if (gradleVersion) {
-      const tag = tty.WriteStream.prototype.hasColors()
-        ? "\u001B[33m\u001B[1mwarn\u001B[22m\u001B[39m"
-        : "warn";
       console.warn(tag, `Setting Gradle version ${gradleVersion}`);
       fs.writeFileSync(
         gradleWrapperProperties,
@@ -105,7 +109,7 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
       );
     }
   } catch (_) {
-    // ignore
+    console.warn(tag, "Failed to determine Gradle version");
   }
 }
 
