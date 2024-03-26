@@ -383,22 +383,6 @@ async function getProfile(v, coreOnly) {
 }
 
 /**
- * Sets Gradle Wrapper to specified version.
- * @param {string} version
- */
-function setGradleVersion(version) {
-  const gradleWrapperProperties =
-    "example/android/gradle/wrapper/gradle-wrapper.properties";
-  fs.writeFileSync(
-    gradleWrapperProperties,
-    readTextFile(gradleWrapperProperties).replace(
-      /gradle-[.0-9]*-bin\.zip/,
-      `gradle-${version}-bin.zip`
-    )
-  );
-}
-
-/**
  * Sets specified React Native version.
  * @param {string} version
  * @param {boolean} coreOnly
@@ -466,8 +450,6 @@ if (isMain(import.meta.url)) {
           : toVersionNumber(version);
       if (numVersion >= v(0, 74, 0)) {
         disableJetifier();
-      } else if (numVersion < v(0, 73, 0)) {
-        setGradleVersion("7.6.3");
       }
 
       // `@react-native-webapis/web-storage` is not compatible with codegen 0.71

@@ -18,8 +18,10 @@ if (autodetectReactNativeVersion || enableNewArchitecture) {
     react {
         reactNativeDir = reactNativePath
         codegenDir = file(
-            findNodeModulesPath("@react-native/codegen", reactNativePath)  // >= 0.72
-                ?: findNodeModulesPath("react-native-codegen", reactNativePath))  // < 0.72
+            reactNativeVersion >= v(0, 72, 0)
+                ? findNodeModulesPath("@react-native/codegen", reactNativePath)
+                : findNodeModulesPath("react-native-codegen", reactNativePath)
+        )
     }
 
     // We don't want the React plugin to bundle.
