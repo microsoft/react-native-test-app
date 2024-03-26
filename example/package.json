@@ -15,7 +15,7 @@
     "macos": "react-native run-macos --no-packager --scheme Example",
     "set-react-version": "yarn workspace react-native-test-app set-react-version",
     "start": "react-native start",
-    "visionos": "react-native run-visionos",
+    "visionos": "react-native run-visionos --no-packager",
     "windows": "react-native run-windows --no-packager"
   },
   "dependencies": {
