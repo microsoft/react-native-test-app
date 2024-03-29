@@ -306,17 +306,20 @@ export function generateSolution(destPath, options, fs = nodefs) {
       : fs.existsSync(nugetConfigPath0_64)
         ? nugetConfigPath0_64
         : null;
-    const nugetConfigDestPath = path.join(destPath, "NuGet.Config");
-    if (nugetConfigPath && !fs.existsSync(nugetConfigDestPath)) {
-      copyTasks.push(
-        writeTextFile(
-          nugetConfigDestPath,
-          mustache.render(readTextFile(nugetConfigPath, fs), {
-            nuGetADOFeed: info.version.startsWith("0.0.0-"),
-          }),
-          fs.promises
-        )
-      );
+    if (nugetConfigPath) {
+      const nugetConfigDest = path.join(destPath, "NuGet.Config");
+      const nugetConfigCopy = path.join(projectFilesDestPath, "NuGet.Config");
+      if (fs.existsSync(nugetConfigDest)) {
+        copyTasks.push(fs.promises.cp(nugetConfigDest, nugetConfigCopy));
+      } else {
+        const template = readTextFile(nugetConfigPath, fs);
+        const nuGetADOFeed = info.version.startsWith("0.0.0-");
+        const nugetConfig = mustache.render(template, { nuGetADOFeed });
+        copyTasks.push(
+          writeTextFile(nugetConfigDest, nugetConfig, fs.promises),
+          writeTextFile(nugetConfigCopy, nugetConfig, fs.promises)
+        );
+      }
     }
   }
 
