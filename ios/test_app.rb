@@ -191,7 +191,7 @@ def validate_resources(resources, app_dir)
 
   unless excluded.empty?
     items = excluded.join("\n  ")
-    Pod::UI.warn("CocoaPods does not allow resources outside the current directory:\n  #{items}")
+    Pod::UI.warn("CocoaPods does not allow resources outside the project root:\n  #{items}")
   end
 
   unless not_found.empty?
