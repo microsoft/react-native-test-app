@@ -70,7 +70,6 @@ async function makeProject(
     testAppPath: fileURLToPath(new URL("../..", import.meta.url)),
     targetVersion: reactNativeVersion(),
     platforms,
-    flatten: false,
     force: true,
     init: true,
   });

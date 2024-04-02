@@ -4,7 +4,11 @@ import { createRequire } from "node:module";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import prompts from "prompts";
-import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
+import {
+  configure,
+  getDefaultPlatformPackageName,
+  validatePlatforms,
+} from "./configure.mjs";
 import { memo, readJSONFile, toVersionNumber, v } from "./helpers.js";
 import * as colors from "./utils/colors.mjs";
 import { downloadPackage, fetchPackageMetadata } from "./utils/npm.mjs";
@@ -255,8 +259,7 @@ function main() {
           templatePath,
           testAppPath: fileURLToPath(new URL("..", import.meta.url)),
           targetVersion,
-          platforms,
-          flatten: true,
+          platforms: validatePlatforms(platforms),
           force: true,
           init: true,
         });

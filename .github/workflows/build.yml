@@ -226,24 +226,15 @@ jobs:
       - name: Determine whether the iOS app needs to be built
         id: affected
         uses: ./.github/actions/affected
-      - name: Determine project directory
-        id: configure
-        if: ${{ steps.affected.outputs.ios != '' }}
-        run: |
-          if [[ ${{ matrix.template }} == ios ]]; then
-            echo 'project-directory=.' >> $GITHUB_OUTPUT
-          else
-            echo 'project-directory=ios' >> $GITHUB_OUTPUT
-          fi
       - name: Install Pods
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          pod install --project-directory=${{ steps.configure.outputs.project-directory }}
+          pod install --project-directory=ios
         working-directory: template-example
       - name: Build
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
+          ../scripts/build/xcodebuild.sh ios/TemplateExample.xcworkspace build
         working-directory: template-example
       - name: react-native run-ios
         if: ${{ steps.affected.outputs.ios != '' }}
@@ -439,24 +430,15 @@ jobs:
       - name: Determine whether the macOS app needs to be built
         id: affected
         uses: ./.github/actions/affected
-      - name: Determine project directory
-        id: configure
-        if: ${{ steps.affected.outputs.macos != '' }}
-        run: |
-          if [[ ${{ matrix.template }} == macos ]]; then
-            echo 'project-directory=.' >> $GITHUB_OUTPUT
-          else
-            echo 'project-directory=macos' >> $GITHUB_OUTPUT
-          fi
       - name: Install Pods
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
-          pod install --project-directory=${{ steps.configure.outputs.project-directory }}
+          pod install --project-directory=macos
         working-directory: template-example
       - name: Build
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
+          ../scripts/build/xcodebuild.sh macos/TemplateExample.xcworkspace build
         working-directory: template-example
     timeout-minutes: 60
   visionos:
@@ -540,24 +522,15 @@ jobs:
       - name: Determine whether the visionOS app needs to be built
         id: affected
         uses: ./.github/actions/affected
-      - name: Determine project directory
-        id: configure
-        if: ${{ steps.affected.outputs.visionos != '' }}
-        run: |
-          if [[ ${{ matrix.template }} == visionos ]]; then
-            echo 'project-directory=.' >> $GITHUB_OUTPUT
-          else
-            echo 'project-directory=visionos' >> $GITHUB_OUTPUT
-          fi
       - name: Install Pods
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
-          pod install --project-directory=${{ steps.configure.outputs.project-directory }}
+          pod install --project-directory=visionos
         working-directory: template-example
       - name: Build
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
+          ../scripts/build/xcodebuild.sh visionos/TemplateExample.xcworkspace build
         working-directory: template-example
     timeout-minutes: 60
   windows:
@@ -642,8 +615,7 @@ jobs:
           yarn build:windows
       - name: Generate Visual Studio solution
         run: |
-          if ("${{ matrix.template }}" -eq "all") { yarn install-windows-test-app --use-nuget }
-          else { yarn install-windows-test-app --project-directory=. --use-nuget }
+          yarn install-windows-test-app --use-nuget
         working-directory: template-example
       - name: Determine whether the Windows app needs to be built
         id: affected
