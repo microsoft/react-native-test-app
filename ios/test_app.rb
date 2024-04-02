@@ -178,6 +178,35 @@ def resolve_resources(manifest, target_platform)
   resources.instance_of?(Array) ? resources : resources[target_platform.to_s]
 end
 
+def validate_resources(resources, app_dir)
+  excluded = []
+  not_found = []
+  resources.each do |r|
+    if r.start_with?('..')
+      excluded << r
+    elsif !File.exist?(File.join(app_dir, r))
+      not_found << r
+    end
+  end
+
+  unless excluded.empty?
+    items = excluded.join("\n  ")
+    Pod::UI.warn("CocoaPods does not allow resources outside the project root:\n  #{items}")
+  end
+
+  unless not_found.empty?
+    items = not_found.join("\n  ")
+    Pod::UI.warn(
+      "CocoaPods will not include resources it cannot find:\n  #{items}\n\n" \
+      'The app will still build and run if they are served by the dev ' \
+      'server. To include missing resources, make sure they exist, then run ' \
+      '`pod install` again to update the workspace.'
+    )
+  end
+
+  resources
+end
+
 def resources_pod(project_root, target_platform, platforms)
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
@@ -185,13 +214,6 @@ def resources_pod(project_root, target_platform, platforms)
   app_dir = File.dirname(app_manifest)
   resources = resolve_resources(app_manifest(project_root), target_platform)
   return if resources.nil? || resources.empty?
-
-  if resources.any? { |r| !File.exist?(File.join(app_dir, r)) }
-    Pod::UI.notice(
-      'One or more resources were not found and will not be included in the project. ' \
-      'If they are found later and you want to include them, run `pod install` again.'
-    )
-  end
 
   spec = {
     'name' => 'ReactTestApp-Resources',
@@ -206,7 +228,7 @@ def resources_pod(project_root, target_platform, platforms)
       'osx' => platforms[:macos],
       'visionos' => platforms[:visionos],
     },
-    'resources' => resources,
+    'resources' => validate_resources(resources, app_dir),
   }
 
   podspec_path = File.join(app_dir, 'ReactTestApp-Resources.podspec.json')
