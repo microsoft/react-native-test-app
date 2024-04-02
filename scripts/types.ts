@@ -70,7 +70,6 @@ export type ConfigureParams = {
   testAppPath: string;
   targetVersion: string;
   platforms: Platform[];
-  flatten: boolean;
   force: boolean;
   init: boolean;
 };
