@@ -13,7 +13,6 @@ export function mockParams(
     testAppPath: ".",
     targetVersion: "^0.73.6",
     platforms: ["android", "ios", "macos", "windows"],
-    flatten: false,
     force: false,
     init: false,
     ...overrides,

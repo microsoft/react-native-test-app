@@ -19,9 +19,6 @@ import {
   appManifest,
   buildGradle,
   podfile,
-  reactNativeConfigAndroidFlat,
-  reactNativeConfigAppleFlat,
-  reactNativeConfigWindowsFlat,
   serialize,
   settingsGradle,
 } from "./template.mjs";
@@ -182,29 +179,7 @@ export function getPlatformPackage(platform, targetVersion) {
  * @param {ConfigureParams} params
  * @returns {string | FileCopy}
  */
-export function reactNativeConfig(
-  { name, testAppPath, platforms, flatten },
-  fs = nodefs
-) {
-  const shouldFlatten = flatten && platforms.length === 1;
-  if (shouldFlatten) {
-    switch (platforms[0]) {
-      case "android":
-        return reactNativeConfigAndroidFlat();
-
-      case "ios":
-      case "macos":
-      case "visionos":
-        return reactNativeConfigAppleFlat();
-
-      case "windows":
-        return reactNativeConfigWindowsFlat(name);
-
-      default:
-        throw new Error(`Unknown platform: ${platforms[0]}`);
-    }
-  }
-
+export function reactNativeConfig({ name, testAppPath }, fs = nodefs) {
   const config = path.join(testAppPath, "example", "react-native.config.js");
   return readTextFile(config, fs).replaceAll("Example", name);
 }
@@ -235,8 +210,7 @@ export const getConfig = (() => {
     fs = nodefs
   ) => {
     if (disableCache || typeof configuration === "undefined") {
-      const { name, templatePath, testAppPath, targetVersion, flatten, init } =
-        params;
+      const { name, templatePath, testAppPath, targetVersion, init } = params;
 
       // `.gitignore` files are only renamed when published.
       const gitignore = ["_gitignore", ".gitignore"].find((filename) => {
@@ -431,7 +405,7 @@ export const getConfig = (() => {
           scripts: {
             "build:windows":
               "npm run mkdist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
-            windows: `react-native run-windows --sln ${flatten ? "" : "windows/"}${name}.sln`,
+            windows: "react-native run-windows",
           },
           dependencies: {},
         },
@@ -447,13 +421,11 @@ export const getConfig = (() => {
  * @returns Configuration
  */
 export function gatherConfig(params, disableCache = false) {
-  const { flatten, platforms, targetVersion } = params;
-  const shouldFlatten = flatten && platforms.length === 1;
-  const options = { ...params, flatten: shouldFlatten };
+  const { platforms, targetVersion } = params;
   const config = (() => {
     return platforms.reduce(
       (config, platform) => {
-        const platformConfig = getConfig(options, platform, disableCache);
+        const platformConfig = getConfig(params, platform, disableCache);
         const dependencies = getPlatformPackage(platform, targetVersion);
         if (!dependencies) {
           /* node:coverage ignore next */
@@ -463,23 +435,17 @@ export function gatherConfig(params, disableCache = false) {
         return mergeConfig(config, {
           ...platformConfig,
           dependencies,
-          files: shouldFlatten
-            ? platformConfig.files
-            : Object.fromEntries(
-                // Map each file into its platform specific folder, e.g.
-                // `Podfile` -> `ios/Podfile`
-                Object.entries(platformConfig.files).map(
-                  ([filename, content]) => [
-                    path.join(platform, filename),
-                    content,
-                  ]
-                )
-              ),
-          oldFiles: shouldFlatten
-            ? platformConfig.oldFiles
-            : platformConfig.oldFiles.map((file) => {
-                return path.join(platform, file);
-              }),
+          files: Object.fromEntries(
+            // Map each file into its platform specific folder, e.g.
+            // `Podfile` -> `ios/Podfile`
+            Object.entries(platformConfig.files).map(([filename, content]) => [
+              path.join(platform, filename),
+              content,
+            ])
+          ),
+          oldFiles: platformConfig.oldFiles.map((file) => {
+            return path.join(platform, file);
+          }),
         });
       },
       /** @type {Configuration} */ ({
@@ -500,7 +466,7 @@ export function gatherConfig(params, disableCache = false) {
     return config;
   }
 
-  return mergeConfig(getConfig(options, "common", disableCache), config);
+  return mergeConfig(getConfig(params, "common", disableCache), config);
 }
 
 /**
@@ -717,12 +683,6 @@ if (isMain(import.meta.url)) {
   parseArgs(
     "Configures React Test App in an existing package",
     {
-      flatten: {
-        description:
-          "Flatten the directory structure (when only one platform is selected)",
-        type: "boolean",
-        default: false,
-      },
       force: {
         description: "Allow destructive operations",
         type: "boolean",
@@ -750,7 +710,6 @@ if (isMain(import.meta.url)) {
     },
     async ({
       _: { [0]: name },
-      flatten,
       force,
       init,
       package: packagePath,
@@ -764,7 +723,6 @@ if (isMain(import.meta.url)) {
         testAppPath: fileURLToPath(new URL("..", import.meta.url)),
         targetVersion,
         platforms: validatePlatforms(platforms),
-        flatten,
         force,
         init,
       });
