@@ -1018,7 +1018,9 @@ PODS:
     - React-jsi (= 0.73.6)
     - React-logger (= 0.73.6)
     - React-perflogger (= 0.73.6)
-  - ReactNativeHost (0.4.5):
+  - ReactNativeHost (0.4.6):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-cxxreact
     - ReactCommon/turbomodule/core
@@ -1249,7 +1251,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 9daefa990db62f8874bc9d6e7e504272c6b6c57f
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 447281ad2034ea3252bf81a60d1f77d5afb0b636
-  ReactNativeHost: ef266683ed8fa40fe48438b3f2ef0b5e3bb72201
+  ReactNativeHost: 339df34d3c2050f37e8909ade6693465e8a947f7
   ReactTestApp-DevSupport: c4abadbb90a8a9903400407e9857c2a2ef0343fb
   ReactTestApp-Resources: 857244f3a23f2b3157b364fa06cf3e8866deff9c
   RNWWebStorage: bbb916037df754d10075c18dccbcde6019a7e050
