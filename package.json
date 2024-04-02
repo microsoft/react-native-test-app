@@ -151,6 +151,7 @@
   },
   "packageManager": "yarn@4.1.0",
   "resolutions": {
+    "@appium/base-driver/express": "^4.18.2",
     "@appium/docutils": "link:./example",
     "@appium/support/@types/semver": "^7.5.7",
     "@appium/support/archiver": "^7.0.0",
