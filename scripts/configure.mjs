@@ -264,7 +264,8 @@ export const getConfig = (() => {
             ...(!init
               ? undefined
               : {
-                  // starting with RN 0.71, App.js is no longer in the template
+                  // TODO: We will no longer need to consider `App.js` when we
+                  // drop support for 0.70
                   ...(fs.existsSync(path.join(templateDir, "App.tsx"))
                     ? {
                         "App.tsx": {
@@ -289,6 +290,8 @@ export const getConfig = (() => {
           },
           oldFiles: [],
           scripts: {
+            // TODO: Remove this script when we drop support for 0.72
+            // https://github.com/react-native-community/cli/commit/48d4c29bba4e8b16cbc8307bd1b4c5349f3651d8
             mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
             start: "react-native start",
           },
