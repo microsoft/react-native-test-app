@@ -1,3 +1,5 @@
 *                  text=auto
+*.bat              text eol=crlf
 *.pbxproj          -text
+*.sh               text eol=lf
 /.yarn/releases/*  binary
