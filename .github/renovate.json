@@ -8,11 +8,6 @@
       "allowedVersions": "^12.0.0"
     },
     {
-      "groupName": "Android",
-      "matchDatasources": ["maven"],
-      "matchPackagePrefixes": ["com.android."]
-    },
-    {
       "groupName": "Android CameraX",
       "matchDatasources": ["maven"],
       "matchPackagePrefixes": ["androidx.camera"]
