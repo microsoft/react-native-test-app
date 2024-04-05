@@ -95,15 +95,9 @@ ext {
      */
     libraries = [
         androidAppCompat            : "androidx.appcompat:appcompat:1.6.1",
-        androidCamera               : kotlinVersionNumber >= v(1, 8, 0)
-                                          ? "androidx.camera:camera-camera2:1.3.0-beta02"
-                                          : ["androidx.camera", "camera-camera2", "1.2.0-beta02"].join(":"),
-        androidCameraMlKitVision    : kotlinVersionNumber >= v(1, 8, 0)
-                                          ? "androidx.camera:camera-mlkit-vision:1.3.0-beta02"
-                                          : ["androidx.camera", "camera-mlkit-vision", "1.2.0-beta02"].join(":"),
-        androidCoreKotlinExtensions : kotlinVersionNumber >= v(1, 8, 0)
-                                          ? "androidx.core:core-ktx:1.12.0"
-                                          : ["androidx.core", "core-ktx", "1.9.0"].join(":"),
+        androidCamera               : "androidx.camera:camera-camera2:1.3.0-beta02",
+        androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.3.0-beta02",
+        androidCoreKotlinExtensions : "androidx.core:core-ktx:1.12.0",
         androidEspressoCore         : "androidx.test.espresso:espresso-core:3.5.1",
         androidJUnit                : "androidx.test.ext:junit:1.1.5",
         androidJUnitKotlinExtensions: "androidx.test.ext:junit-ktx:1.1.5",
@@ -113,13 +107,18 @@ ext {
         materialComponents          : "com.google.android.material:material:1.11.0",
         mlKitBarcodeScanning        : "com.google.mlkit:barcode-scanning:17.2.0",
         mockitoInline               : "org.mockito:mockito-inline:5.2.0",
-        moshiKotlin                 : kotlinVersionNumber >= v(1, 8, 0)
-                                          ? "com.squareup.moshi:moshi-kotlin:1.15.1"
-                                          : ["com.squareup.moshi", "moshi-kotlin", "1.14.0"].join(":"),
-        moshiKotlinCodegen          : kotlinVersionNumber >= v(1, 8, 0)
-                                          ? "com.squareup.moshi:moshi-kotlin-codegen:1.15.1"
-                                          : ["com.squareup.moshi", "moshi-kotlin-codegen", "1.14.0"].join(":"),
+        moshiKotlin                 : "com.squareup.moshi:moshi-kotlin:1.15.1",
+        moshiKotlinCodegen          : "com.squareup.moshi:moshi-kotlin-codegen:1.15.1",
     ]
+
+    // Separate block so bots can parse this file properly
+    if (kotlinVersionNumber < v(1, 8, 0)) {
+        libraries.androidCamera = ["androidx.camera", "camera-camera2", "1.2.0-beta02"].join(":")
+        libraries.androidCameraMlKitVision = ["androidx.camera", "camera-mlkit-vision", "1.2.0-beta02"].join(":")
+        libraries.androidCoreKotlinExtensions = ["androidx.core", "core-ktx", "1.9.0"].join(":")
+        libraries.moshiKotlin = ["com.squareup.moshi", "moshi-kotlin", "1.14.0"].join(":")
+        libraries.moshiKotlinCodegen = ["com.squareup.moshi", "moshi-kotlin-codegen", "1.14.0"].join(":")
+    }
 
     getReactNativeDependencies = {
         // Hint: Use `./gradlew buildEnvironment` to check whether these are
