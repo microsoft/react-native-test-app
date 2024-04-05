@@ -111,7 +111,7 @@ export function podfile(name, prefix) {
     "",
     `workspace '${name}.xcworkspace'`,
     "",
-    `use_test_app!`,
+    `use_test_app! :hermes_enabled => true`,
     ""
   );
 }
