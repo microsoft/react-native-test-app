@@ -147,7 +147,7 @@ describe("gatherConfig()", () => {
           "",
           "workspace 'Test.xcworkspace'",
           "",
-          "use_test_app!",
+          "use_test_app! :hermes_enabled => true",
           ""
         ),
         "macos/Podfile": join(
@@ -159,7 +159,7 @@ describe("gatherConfig()", () => {
           "",
           "workspace 'Test.xcworkspace'",
           "",
-          "use_test_app!",
+          "use_test_app! :hermes_enabled => true",
           ""
         ),
         "metro.config.js": {
@@ -340,7 +340,7 @@ describe("gatherConfig()", () => {
           "",
           "workspace 'Test.xcworkspace'",
           "",
-          "use_test_app!",
+          "use_test_app! :hermes_enabled => true",
           ""
         ),
         "metro.config.js": {
@@ -495,7 +495,7 @@ describe("gatherConfig()", () => {
           "",
           "workspace 'Test.xcworkspace'",
           "",
-          "use_test_app!",
+          "use_test_app! :hermes_enabled => true",
           ""
         ),
         "metro.config.js": {
