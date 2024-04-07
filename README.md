@@ -93,6 +93,7 @@ in the wiki.
 &bull; [react-native-apple-authentication](https://github.com/invertase/react-native-apple-authentication)
 &bull; [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
 &bull; [react-native-blur](https://github.com/Kureev/react-native-blur)
+&bull; [react-native-clipboard](https://github.com/react-native-clipboard/clipboard)
 &bull; [react-native-datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)
 &bull; [react-native-google-signin](https://github.com/react-native-google-signin/google-signin)
 &bull; [react-native-image-editor](https://github.com/callstack/react-native-image-editor)
