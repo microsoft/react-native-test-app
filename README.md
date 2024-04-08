@@ -86,39 +86,26 @@ in the wiki.
 
 ## Libraries Using RNTA 📚
 
-<table>
-<tr>
-<td>
-
-- [microsoft/fluentui-react-native](https://github.com/microsoft/fluentui-react-native)
-- [microsoft/rnx-kit](https://github.com/microsoft/rnx-kit)
-- [shopify/restyle](https://github.com/Shopify/restyle)
-- [react-native-add-calendar-event](https://github.com/vonovak/react-native-add-calendar-event)
-- [react-native-apple-authentication](https://github.com/invertase/react-native-apple-authentication)
-- [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
-
-</td>
-<td>
-
-- [react-native-blur](https://github.com/Kureev/react-native-blur)
-- [react-native-datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)
-- [react-native-google-signin](https://github.com/react-native-google-signin/google-signin)
-- [react-native-image-editor](https://github.com/callstack/react-native-image-editor)
-- [react-native-netinfo](https://github.com/react-native-netinfo/react-native-netinfo)
-- [react-native-masked-view](https://github.com/react-native-masked-view/masked-view)
-
-</td>
-<td>
-
-- [react-native-menu](https://github.com/react-native-menu/menu)
-- [react-native-segmented-control](https://github.com/react-native-segmented-control/segmented-control)
-- [react-native-webview](https://github.com/react-native-webview/react-native-webview)
-- [sparkfabrik-react-native-idfa-aaid](https://github.com/sparkfabrik/sparkfabrik-react-native-idfa-aaid)
-- ...[and many more!](https://github.com/microsoft/react-native-test-app/network/dependents)
-
-</td>
-</tr>
-</table>
+<!-- prettier-ignore -->
+[microsoft/fluentui-react-native](https://github.com/microsoft/fluentui-react-native)
+&bull; [microsoft/rnx-kit](https://github.com/microsoft/rnx-kit)
+&bull; [react-native-add-calendar-event](https://github.com/vonovak/react-native-add-calendar-event)
+&bull; [react-native-apple-authentication](https://github.com/invertase/react-native-apple-authentication)
+&bull; [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
+&bull; [react-native-blur](https://github.com/Kureev/react-native-blur)
+&bull; [react-native-clipboard](https://github.com/react-native-clipboard/clipboard)
+&bull; [react-native-datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker)
+&bull; [react-native-google-signin](https://github.com/react-native-google-signin/google-signin)
+&bull; [react-native-image-editor](https://github.com/callstack/react-native-image-editor)
+&bull; [react-native-masked-view](https://github.com/react-native-masked-view/masked-view)
+&bull; [react-native-menu](https://github.com/react-native-menu/menu)
+&bull; [react-native-netinfo](https://github.com/react-native-netinfo/react-native-netinfo)
+&bull; [react-native-segmented-control](https://github.com/react-native-segmented-control/segmented-control)
+&bull; [react-native-webview](https://github.com/react-native-webview/react-native-webview)
+&bull; [realm/realm-js](https://github.com/realm/realm-js)
+&bull; [shopify/restyle](https://github.com/Shopify/restyle)
+&bull; [sparkfabrik-react-native-idfa-aaid](https://github.com/sparkfabrik/sparkfabrik-react-native-idfa-aaid)
+&bull; [and many more…](https://github.com/microsoft/react-native-test-app/network/dependents)
 
 _Are you using RNTA? Submit a PR to add it to the list!_
 
