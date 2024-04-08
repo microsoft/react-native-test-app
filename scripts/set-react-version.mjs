@@ -211,37 +211,36 @@ export function fetchPackageInfo(pkg) {
  * @return {Promise<Manifest>}
  */
 function fetchReactNativeWindowsCanaryInfoViaNuGet() {
+  const rnwNuGetFeed =
+    "https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json";
   return new Promise((resolve, reject) => {
-    https.get(
-      "https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json",
-      (res) => {
-        const rawData = [];
-        res.on("data", (chunk) => rawData.push(chunk));
-        res.on("end", () => {
-          const { resources } = JSON.parse(rawData.join(""));
-          if (Array.isArray(resources)) {
-            const service = resources.find((svc) =>
-              svc["@type"].startsWith("RegistrationsBaseUrl")
-            );
-            if (service) {
-              resolve(service["@id"]);
-            } else {
-              reject(
-                new Error("Failed to find 'RegistrationsBaseUrl' resource")
-              );
-            }
+    https.get(rnwNuGetFeed, (res) => {
+      /** @type {string[]} */
+      const rawData = [];
+      res.on("data", (chunk) => rawData.push(chunk));
+      res.on("end", () => {
+        const { resources } = JSON.parse(rawData.join(""));
+        if (Array.isArray(resources)) {
+          const service = resources.find((svc) =>
+            svc["@type"].startsWith("RegistrationsBaseUrl")
+          );
+          if (service) {
+            resolve(service["@id"]);
           } else {
-            reject(
-              new Error("Unexpected format returned by the services endpoint")
-            );
+            reject(new Error("Failed to find 'RegistrationsBaseUrl' resource"));
           }
-        });
-      }
-    );
+        } else {
+          reject(
+            new Error("Unexpected format returned by the services endpoint")
+          );
+        }
+      });
+    });
   })
     .then((service) => {
       return new Promise((resolve, reject) => {
         https.get(service + "/Microsoft.ReactNative.Cxx/index.json", (res) => {
+          /** @type {string[]} */
           const rawData = [];
           res.on("data", (chunk) => rawData.push(chunk));
           res.on("end", () => {
@@ -254,9 +253,8 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
                     typeof version === "string" &&
                     version.startsWith("0.0.0")
                   ) {
-                    resolve(
-                      "react-native-windows@" + version.replace("-Fabric", "")
-                    );
+                    const v = version.replace("-Fabric", "");
+                    resolve("react-native-windows@" + v);
                     return;
                   }
                 }
