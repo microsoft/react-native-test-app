@@ -7,6 +7,7 @@
  */
 import { spawn } from "node:child_process";
 import * as fs from "node:fs";
+import * as https from "node:https";
 import * as os from "node:os";
 import * as path from "node:path";
 import {
@@ -210,40 +211,69 @@ export function fetchPackageInfo(pkg) {
  * @return {Promise<Manifest>}
  */
 function fetchReactNativeWindowsCanaryInfoViaNuGet() {
-  return new Promise((resolve) => {
-    // Example output:
-    //
-    //     Microsoft.ReactNative.Cxx 0.0.0-canary.798-Fabric
-    //     Microsoft.ReactNative.Cxx 0.0.0-canary.797-Fabric
-    //     Microsoft.ReactNative.Cxx 0.0.0-canary.798
-    //     Microsoft.ReactNative.Cxx 0.0.0-canary.797
-    const pattern = /Microsoft\.ReactNative\.Cxx ([-.\d]*canary[.\d]*)/;
-
-    let isResolved = false;
-    const list = spawn(process.env["NUGET_EXE"] || "nuget.exe", [
-      "list",
-      "Microsoft.ReactNative.Cxx",
-      "-Source",
+  return new Promise((resolve, reject) => {
+    https.get(
       "https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json",
-      "-AllVersions",
-      "-Prerelease",
-    ]);
-    list.stdout.on("data", (data) => {
-      if (isResolved) {
-        return;
+      (res) => {
+        const rawData = [];
+        res.on("data", (chunk) => rawData.push(chunk));
+        res.on("end", () => {
+          const { resources } = JSON.parse(rawData.join(""));
+          if (Array.isArray(resources)) {
+            const service = resources.find((svc) =>
+              svc["@type"].startsWith("RegistrationsBaseUrl")
+            );
+            if (service) {
+              resolve(service["@id"]);
+            } else {
+              reject(
+                new Error("Failed to find 'RegistrationsBaseUrl' resource")
+              );
+            }
+          } else {
+            reject(
+              new Error("Unexpected format returned by the services endpoint")
+            );
+          }
+        });
       }
-
-      const m = data.toString().match(pattern);
-      if (!m) {
-        return;
-      }
-
-      isResolved = true;
-      resolve(`react-native-windows@${m[1]}`);
-
-      list.kill();
-    });
-  }).then(fetchPackageInfo);
+    );
+  })
+    .then((service) => {
+      return new Promise((resolve, reject) => {
+        https.get(service + "/Microsoft.ReactNative.Cxx/index.json", (res) => {
+          const rawData = [];
+          res.on("data", (chunk) => rawData.push(chunk));
+          res.on("end", () => {
+            const { items } = JSON.parse(rawData.join(""));
+            if (Array.isArray(items)) {
+              for (const item of items) {
+                for (const pkg of item.items) {
+                  const version = pkg.catalogEntry?.version;
+                  if (
+                    typeof version === "string" &&
+                    version.startsWith("0.0.0")
+                  ) {
+                    resolve(
+                      "react-native-windows@" + version.replace("-Fabric", "")
+                    );
+                    return;
+                  }
+                }
+              }
+              reject(new Error("Failed to find canary builds"));
+            } else {
+              reject(
+                new Error(
+                  "Unexpected format returned by the 'RegistrationsBaseUrl' service"
+                )
+              );
+            }
+          });
+        });
+      });
+    })
+    .then(fetchPackageInfo);
 }
 
 /**
@@ -331,7 +361,7 @@ async function getProfile(v, coreOnly) {
 
     case "canary-windows": {
       const info =
-        process.env["CI"] || process.env["NUGET_EXE"]
+        process.env["CI"] || process.env["NUGET"] == "1"
           ? await fetchReactNativeWindowsCanaryInfoViaNuGet()
           : await fetchPackageInfo("react-native-windows@canary");
       const coreVersion = info.peerDependencies?.["react-native"] || "nightly";
