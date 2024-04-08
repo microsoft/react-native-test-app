@@ -119,7 +119,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
-    "@eslint/eslintrc": "^2.1.4",
+    "@eslint/eslintrc": "^3.0.0",
     "@eslint/js": "^8.56.0",
     "@expo/config-plugins": "^7.0.0",
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
