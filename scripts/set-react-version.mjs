@@ -147,6 +147,7 @@ function inferReactNativeVersion({ name, version, dependencies }) {
     11: "^0.72.0-0",
     12: "^0.73.0-0",
     13: "^0.74.0-0",
+    14: "^0.75.0-0",
   }[m[1]];
   if (!v) {
     throw new Error(`Unsupported '${cliPackage}' version: ${cliVersion}`);
@@ -175,6 +176,7 @@ export function fetchPackageInfo(pkg) {
         const result = JSON.parse(json);
         if (result.error) {
           if (result.error.code === "E404") {
+            console.warn(`Could not resolve '${pkg}'`);
             resolve({
               version: undefined,
               dependencies: {},
@@ -209,7 +211,13 @@ export function fetchPackageInfo(pkg) {
  */
 function fetchReactNativeWindowsCanaryInfoViaNuGet() {
   return new Promise((resolve) => {
-    const pattern = /Microsoft\.ReactNative\.Cxx ([-.\d]*canary[-.\d]*)/;
+    // Example output:
+    //
+    //     Microsoft.ReactNative.Cxx 0.0.0-canary.798-Fabric
+    //     Microsoft.ReactNative.Cxx 0.0.0-canary.797-Fabric
+    //     Microsoft.ReactNative.Cxx 0.0.0-canary.798
+    //     Microsoft.ReactNative.Cxx 0.0.0-canary.797
+    const pattern = /Microsoft\.ReactNative\.Cxx ([-.\d]*canary[.\d]*)/;
 
     let isResolved = false;
     const list = spawn(process.env["NUGET_EXE"] || "nuget.exe", [
