@@ -253,9 +253,11 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
                     typeof version === "string" &&
                     version.startsWith("0.0.0")
                   ) {
-                    const v = version.replace("-Fabric", "");
-                    resolve("react-native-windows@" + v);
-                    return;
+                    const m = version.match(/(0\.0\.0-[.a-z0-9]+)/);
+                    if (m) {
+                      resolve("react-native-windows@" + m[1]);
+                      return;
+                    }
                   }
                 }
               }
