@@ -167,6 +167,7 @@
     "@react-native/community-cli-plugin/@react-native-community/cli-server-api": "^12.3.0",
     "@react-native/community-cli-plugin/@react-native-community/cli-tools": "^12.3.0",
     "@semantic-release/npm/npm": "link:./example",
+    "@typescript-eslint/typescript-estree/minimatch": "~9.0.3",
     "appium/@types/semver": "^7.5.7",
     "appium/yaml": "^2.3.4",
     "body-parser": "~1.20.2",
