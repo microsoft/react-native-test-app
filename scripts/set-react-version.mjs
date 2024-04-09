@@ -129,7 +129,7 @@ export function fetchPackageInfo(pkg, version) {
     })
     .then((foundVersion) => {
       if (!foundVersion) {
-        console.warn(`Could not resolve '${pkg}@${version}'`);
+        console.warn(`No match found for '${pkg}@${version}'`);
         return undefined;
       }
       return fetch(registryURL + pkg + "/" + foundVersion);
