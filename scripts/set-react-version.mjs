@@ -127,8 +127,14 @@ export function fetchPackageInfo(pkg, version) {
         }
       }
     })
-    .then((version) => fetch(registryURL + pkg + "/" + version))
-    .then((res) => res.json())
+    .then((foundVersion) => {
+      if (!foundVersion) {
+        console.warn(`Could not resolve '${pkg}@${version}'`);
+        return undefined;
+      }
+      return fetch(registryURL + pkg + "/" + foundVersion);
+    })
+    .then((res) => res?.json() ?? /** @type {Manifest} */ ({}))
     .then(({ version, dependencies = {}, peerDependencies = {} }) => {
       return { version, dependencies, peerDependencies };
     });
