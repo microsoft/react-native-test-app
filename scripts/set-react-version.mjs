@@ -5,7 +5,6 @@
  * Reminder that this script is meant to be runnable without installing
  * dependencies. It can therefore not rely on any external libraries.
  */
-import { spawn } from "node:child_process";
 import { promises as fs } from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -22,15 +21,6 @@ import {
  */
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "nightly"];
-
-/**
- * Escapes given string for use in Command Prompt.
- * @param {string} str
- * @returns
- */
-function cmdEscape(str) {
-  return str.replace(/([\^])/g, "^^^$1");
-}
 
 /**
  * Returns whether specified string is a valid version number.
@@ -52,17 +42,6 @@ function keys(obj) {
 }
 
 /**
- * @param {string} args
- */
-function npm(args) {
-  return os.platform() === "win32"
-    ? spawn("cmd.exe", ["/d", "/s", "/c", cmdEscape(`"npm ${args}"`)], {
-        windowsVerbatimArguments: true,
-      })
-    : spawn("npm", args.split(" "));
-}
-
-/**
  * @param {string} filename
  * @param {string | RegExp} searchValue
  * @param {string} replaceValue
@@ -74,46 +53,6 @@ function searchReplaceInFile(filename, searchValue, replaceValue) {
   return updated === current
     ? Promise.resolve()
     : fs.writeFile(filename, updated);
-}
-
-async function checkEnvironment() {
-  // Make sure we use Node 18.14+ and npm 9.3+ as they contain breaking changes.
-  // See https://nodejs.org/en/blog/release/v18.14.0.
-
-  const [major, minor] = process.versions.node.split(".");
-  const nodeVersion = Number(major) * 100 + Number(minor);
-  if (nodeVersion < 1814) {
-    console.error("Node.js v18.14 or greater is required");
-    return false;
-  }
-
-  try {
-    await new Promise((resolve, reject) => {
-      const npmVersion = npm("--version");
-
-      /** @type {Buffer[]} */
-      const npmVersionBuffer = [];
-
-      npmVersion.stdout.on("data", (data) => {
-        npmVersionBuffer.push(data);
-      });
-      npmVersion.on("close", () => {
-        const version = Buffer.concat(npmVersionBuffer).toString().trim();
-        const [major, minor] = version.split(".");
-        const npmVersion = Number(major) * 100 + Number(minor);
-        if (npmVersion < 903) {
-          reject();
-        } else {
-          resolve(true);
-        }
-      });
-    });
-  } catch (e) {
-    console.error("npm v9.3.1 or greater is required");
-    return false;
-  }
-
-  return true;
 }
 
 /**
@@ -159,52 +98,40 @@ function inferReactNativeVersion({ name, version, dependencies = {} }) {
 }
 
 /**
- * Fetches the latest package information.
+ * Fetches package information.
  * @param {string} pkg
+ * @param {string} version
  * @return {Promise<Manifest>}
  */
-export function fetchPackageInfo(pkg) {
-  return new Promise((resolve, reject) => {
-    /** @type {Buffer[]} */
-    const buffers = [];
-
-    const npmView = npm(`view --json ${pkg}`);
-    npmView.stdout.on("data", (data) => {
-      buffers.push(data);
-    });
-    npmView.on("close", (exitCode) => {
-      if (buffers.length > 0) {
-        const json = Buffer.concat(buffers).toString().trim();
-        const result = JSON.parse(json);
-        if (result.error) {
-          if (result.error.code === "E404") {
-            console.warn(`Could not resolve '${pkg}'`);
-            resolve({
-              version: undefined,
-              dependencies: {},
-              peerDependencies: {},
-            });
-          } else {
-            reject(result.error);
-          }
-        } else if (Array.isArray(result)) {
-          // If there are multiple packages matching the version range, pick
-          // the last (latest) one.
-          resolve(result[result.length - 1]);
-        } else {
-          resolve(result);
+export function fetchPackageInfo(pkg, version) {
+  const registryURL = "https://registry.npmjs.org/";
+  const abbreviated = {
+    Accept:
+      "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*",
+  };
+  return fetch(registryURL + pkg, { headers: abbreviated })
+    .then((res) => res.json())
+    .then(({ ["dist-tags"]: distTags, versions }) => {
+      const tags = [version, version + "-stable", "v" + version + "-stable"];
+      for (const t of tags) {
+        if (distTags[t]) {
+          return distTags[t];
         }
-      } else if (exitCode !== 0) {
-        reject(new Error(`Failed to fetch registry info for '${pkg}'`));
-      } else {
-        resolve({
-          version: undefined,
-          dependencies: {},
-          peerDependencies: {},
-        });
       }
+
+      const allVersions = Object.keys(versions);
+      for (let i = allVersions.length - 1; i >= 0; --i) {
+        const v = allVersions[i];
+        if (v.startsWith(version)) {
+          return v;
+        }
+      }
+    })
+    .then((version) => fetch(registryURL + pkg + "/" + version))
+    .then((res) => res.json())
+    .then(({ version, dependencies = {}, peerDependencies = {} }) => {
+      return { version, dependencies, peerDependencies };
     });
-  });
 }
 
 /**
@@ -253,7 +180,7 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
 
       throw new Error("Failed to find canary builds");
     })
-    .then((version) => fetchPackageInfo("react-native-windows@" + version));
+    .then((version) => fetchPackageInfo("react-native-windows", version));
 }
 
 /**
@@ -264,7 +191,7 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
  */
 async function resolveCommonDependencies(
   v,
-  { version, dependencies, peerDependencies }
+  { dependencies = {}, peerDependencies = {} }
 ) {
   const [rnBabelPresetVersion, rnMetroConfigVersion, metroBabelPresetVersion] =
     await (async () => {
@@ -272,20 +199,18 @@ async function resolveCommonDependencies(
         return [v, v, undefined];
       }
 
-      const target = version?.includes("-") ? `^${v}.0-0` : `^${v}`;
       const [
         { version: rnBabelPresetVersion },
         { version: rnMetroConfigVersion },
         { version: metroBabelPresetVersion },
       ] = await Promise.all([
-        fetchPackageInfo(`@react-native/babel-preset@${target}`),
-        fetchPackageInfo(`@react-native/metro-config@${target}`),
+        fetchPackageInfo("@react-native/babel-preset", v),
+        fetchPackageInfo("@react-native/metro-config", v),
         (async () => {
           // Metro bumps and publishes all packages together, meaning we can use
           // `metro-react-native-babel-transformer` to determine the version of
           // `metro-react-native-babel-preset` that should be used.
-          const version =
-            dependencies?.["metro-react-native-babel-transformer"];
+          const version = dependencies["metro-react-native-babel-transformer"];
           if (version) {
             return { version };
           }
@@ -293,8 +218,15 @@ async function resolveCommonDependencies(
           // `metro-react-native-babel-transformer` is no longer a direct dependency
           // of `react-native`. As of 0.72, we should go through
           // `@react-native-community/cli-plugin-metro` instead.
-          const cliPluginMetro = "@react-native-community/cli-plugin-metro";
-          const metroPluginInfo = await fetchPackageInfo(cliPluginMetro);
+          const cliVersion = dependencies["@react-native-community/cli"]
+            .replace("^", "")
+            .split(".")
+            .slice(0, 2)
+            .join(".");
+          const metroPluginInfo = await fetchPackageInfo(
+            "@react-native-community/cli-plugin-metro",
+            cliVersion
+          );
           return { version: metroPluginInfo.dependencies?.["metro"] };
         })(),
       ]);
@@ -306,16 +238,15 @@ async function resolveCommonDependencies(
     })();
 
   return {
-    "@react-native-community/cli":
-      dependencies?.["@react-native-community/cli"],
+    "@react-native-community/cli": dependencies["@react-native-community/cli"],
     "@react-native-community/cli-platform-android":
-      dependencies?.["@react-native-community/cli-platform-android"],
+      dependencies["@react-native-community/cli-platform-android"],
     "@react-native-community/cli-platform-ios":
-      dependencies?.["@react-native-community/cli-platform-ios"],
+      dependencies["@react-native-community/cli-platform-ios"],
     "@react-native/babel-preset": rnBabelPresetVersion,
     "@react-native/metro-config": rnMetroConfigVersion,
     "metro-react-native-babel-preset": metroBabelPresetVersion,
-    react: peerDependencies?.["react"],
+    react: peerDependencies["react"],
   };
 }
 
@@ -328,7 +259,7 @@ async function resolveCommonDependencies(
 async function getProfile(v, coreOnly) {
   switch (v) {
     case "canary-macos": {
-      const info = await fetchPackageInfo("react-native-macos@canary");
+      const info = await fetchPackageInfo("react-native-macos", "canary");
       const coreVersion = inferReactNativeVersion(info);
       const commonDeps = await resolveCommonDependencies(coreVersion, info);
       return {
@@ -352,7 +283,7 @@ async function getProfile(v, coreOnly) {
     }
 
     case "nightly": {
-      const info = await fetchPackageInfo("react-native@nightly");
+      const info = await fetchPackageInfo("react-native", "nightly");
       const commonDeps = await resolveCommonDependencies(v, info);
       return {
         ...commonDeps,
@@ -370,16 +301,16 @@ async function getProfile(v, coreOnly) {
       }
 
       const versions = {
-        core: fetchPackageInfo(`react-native@^${v}.0-0`),
+        core: fetchPackageInfo("react-native", v),
         macos: coreOnly
           ? Promise.resolve({ version: undefined })
-          : fetchPackageInfo(`react-native-macos@^${v}.0-0`),
+          : fetchPackageInfo("react-native-macos", v),
         visionos: coreOnly
           ? Promise.resolve({ version: undefined })
-          : fetchPackageInfo(`${visionos}@^${v}.0-0`),
+          : fetchPackageInfo(visionos, v),
         windows: coreOnly
           ? Promise.resolve({ version: undefined })
-          : fetchPackageInfo(`react-native-windows@^${v}.0-0`),
+          : fetchPackageInfo("react-native-windows", v),
       };
       const reactNative = await versions.core;
       const commonDeps = await resolveCommonDependencies(v, reactNative);
@@ -454,9 +385,7 @@ export async function setReactVersion(version, coreOnly) {
 
 const { [1]: script, [2]: version } = process.argv;
 if (isMain(import.meta.url)) {
-  if (!(await checkEnvironment())) {
-    process.exitCode = 1;
-  } else if (!isValidVersion(version)) {
+  if (!isValidVersion(version)) {
     console.log(
       `Usage: ${path.basename(script)} [<version number> | ${VALID_TAGS.join(" | ")}]`
     );
