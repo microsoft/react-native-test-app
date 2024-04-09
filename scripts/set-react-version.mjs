@@ -6,7 +6,7 @@
  * dependencies. It can therefore not rely on any external libraries.
  */
 import { spawn } from "node:child_process";
-import * as fs from "node:fs";
+import { promises as fs } from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import {
@@ -62,6 +62,20 @@ function npm(args) {
     : spawn("npm", args.split(" "));
 }
 
+/**
+ * @param {string} filename
+ * @param {string | RegExp} searchValue
+ * @param {string} replaceValue
+ * @returns {Promise<void>}
+ */
+function searchReplaceInFile(filename, searchValue, replaceValue) {
+  const current = readTextFile(filename);
+  const updated = current.replace(searchValue, replaceValue);
+  return updated === current
+    ? Promise.resolve()
+    : fs.writeFile(filename, updated);
+}
+
 async function checkEnvironment() {
   // Make sure we use Node 18.14+ and npm 9.3+ as they contain breaking changes.
   // See https://nodejs.org/en/blog/release/v18.14.0.
@@ -110,13 +124,18 @@ async function checkEnvironment() {
  * slightly faster.
  */
 function disableJetifier() {
-  const gradleProperties = "example/android/gradle.properties";
-  fs.writeFileSync(
-    gradleProperties,
-    readTextFile(gradleProperties).replace(
-      "android.enableJetifier=true",
-      "android.enableJetifier=false"
-    )
+  return searchReplaceInFile(
+    "example/android/gradle.properties",
+    "android.enableJetifier=true",
+    "android.enableJetifier=false"
+  );
+}
+
+function disableWebStorage() {
+  return searchReplaceInFile(
+    "example/package.json",
+    /\s+"@react-native-webapis\/web-storage":.*/,
+    ""
   );
 }
 
@@ -384,49 +403,53 @@ async function getProfile(v, coreOnly) {
  * @param {boolean} coreOnly
  * @return {Promise<void>}
  */
-export function setReactVersion(version, coreOnly) {
-  return getProfile(version, coreOnly)
-    .then((profile) => {
-      console.dir(profile, { depth: null });
+export async function setReactVersion(version, coreOnly) {
+  /** @type {fs.FileHandle | undefined} */
+  let fd;
+  try {
+    const profile = await getProfile(version, coreOnly);
+    console.dir(profile, { depth: null });
 
-      const manifests = ["package.json", "example/package.json"];
-      for (const manifestPath of manifests) {
-        const manifest = /** @type {Manifest} */ (readJSONFile(manifestPath));
-        const { dependencies, devDependencies, resolutions = {} } = manifest;
-        if (!devDependencies) {
-          throw new Error("Expected 'devDependencies' to be declared");
-        }
-
-        for (const packageName of keys(profile)) {
-          const deps = dependencies?.[packageName]
-            ? dependencies
-            : devDependencies;
-          deps[packageName] = profile[packageName];
-
-          // Reset resolutions so we don't get old packages
-          resolutions[packageName] = undefined;
-        }
-
-        // Reset resolutions of the nested type e.g.,
-        // `@react-native/community-cli-plugin/@react-native-community/cli-server-api`
-        for (const pkg of Object.keys(resolutions)) {
-          if (pkg.startsWith("@react-native")) {
-            resolutions[pkg] = undefined;
-          }
-        }
-
-        const tmpFile = `${manifestPath}.tmp`;
-        fs.writeFileSync(
-          tmpFile,
-          JSON.stringify(manifest, undefined, 2) + os.EOL
-        );
-        fs.renameSync(tmpFile, manifestPath);
+    const manifests = ["package.json", "example/package.json"];
+    for (const manifestPath of manifests) {
+      const manifest = /** @type {Manifest} */ (readJSONFile(manifestPath));
+      const { dependencies, devDependencies, resolutions = {} } = manifest;
+      if (!devDependencies) {
+        throw new Error("Expected 'devDependencies' to be declared");
       }
-    })
-    .catch((e) => {
-      console.error(e);
-      process.exitCode = 1;
-    });
+
+      for (const packageName of keys(profile)) {
+        const deps = dependencies?.[packageName]
+          ? dependencies
+          : devDependencies;
+        deps[packageName] = profile[packageName];
+
+        // Reset resolutions so we don't get old packages
+        resolutions[packageName] = undefined;
+      }
+
+      // Reset resolutions of the nested type e.g.,
+      // `@react-native/community-cli-plugin/@react-native-community/cli-server-api`
+      for (const pkg of Object.keys(resolutions)) {
+        if (pkg.startsWith("@react-native")) {
+          resolutions[pkg] = undefined;
+        }
+      }
+
+      const tmpFile = manifestPath + ".tmp";
+      fd = await fs.open(tmpFile, "w", 0o644);
+      await fd.write(JSON.stringify(manifest, undefined, 2));
+      await fd.write(os.EOL);
+      await fd.close();
+      fd = undefined;
+      await fs.rename(tmpFile, manifestPath);
+    }
+  } catch (e) {
+    console.error(e);
+    process.exitCode = 1;
+  } finally {
+    fd?.close();
+  }
 }
 
 const { [1]: script, [2]: version } = process.argv;
@@ -440,24 +463,16 @@ if (isMain(import.meta.url)) {
     process.exitCode = 1;
   } else {
     setReactVersion(version, process.argv.includes("--core-only")).then(() => {
-      const numVersion =
-        version === "nightly"
-          ? Number.MAX_SAFE_INTEGER
-          : toVersionNumber(version);
+      const numVersion = VALID_TAGS.includes(version)
+        ? Number.MAX_SAFE_INTEGER
+        : toVersionNumber(version);
       if (numVersion >= v(0, 74, 0)) {
         disableJetifier();
       }
 
       // `@react-native-webapis/web-storage` is not compatible with codegen 0.71
       if (numVersion < v(0, 72, 0)) {
-        const exampleManifest = "example/package.json";
-        fs.writeFileSync(
-          exampleManifest,
-          readTextFile(exampleManifest).replace(
-            /\s+"@react-native-webapis\/web-storage":.*/,
-            ""
-          )
-        );
+        disableWebStorage();
       }
     });
   }
