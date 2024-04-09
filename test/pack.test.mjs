@@ -1,7 +1,29 @@
 // @ts-check
 import { deepEqual, equal } from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import * as os from "node:os";
 import { describe, it } from "node:test";
-import { npm } from "../scripts/helpers.js";
+
+/**
+ * Invokes `npm` on the command line.
+ * @param {...string} args
+ */
+function npm(...args) {
+  switch (os.platform()) {
+    case "win32": {
+      return spawnSync(
+        "cmd.exe",
+        ["/d", "/s", "/c", `"npm ${args.join(" ")}"`],
+        {
+          encoding: "utf-8",
+          windowsVerbatimArguments: true,
+        }
+      );
+    }
+    default:
+      return spawnSync("npm", args, { encoding: "utf-8" });
+  }
+}
 
 describe("npm pack", () => {
   // Ensure we include all files regardless of future changes in `npm-packlist`.

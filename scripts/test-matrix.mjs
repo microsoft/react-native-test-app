@@ -9,7 +9,7 @@ import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import { fileURLToPath } from "node:url";
-import { readTextFile } from "./helpers.js";
+import { memo, readTextFile } from "./helpers.js";
 import { setReactVersion } from "./set-react-version.mjs";
 import { $, test } from "./test-e2e.mjs";
 
@@ -23,36 +23,30 @@ const TAG = "┃";
 
 const rootDir = fileURLToPath(new URL("..", import.meta.url));
 
-const getIOSSimulatorName = (() => {
-  let deviceName = "";
-  return () => {
-    if (!deviceName) {
-      const wdioConfig = new URL(
-        "../example/test/specs/wdio.config.js",
-        import.meta.url
-      );
-      const { status, stdout } = spawnSync(
-        process.argv[0],
-        [
-          "--print",
-          `require("${wdioConfig.pathname}").config.capabilities["appium:deviceName"]`,
-        ],
-        {
-          stdio: ["ignore", "pipe", "inherit"],
-          env: { TEST_ARGS: "ios" },
-          encoding: "utf-8",
-        }
-      );
-      if (status !== 0) {
-        throw new Error(
-          "An error occurred while trying to evaluate 'wdio.config.js'"
-        );
-      }
-      deviceName = stdout.trim();
+const getIOSSimulatorName = memo(() => {
+  const wdioConfig = new URL(
+    "../example/test/specs/wdio.config.js",
+    import.meta.url
+  );
+  const { status, stdout } = spawnSync(
+    process.argv[0],
+    [
+      "--print",
+      `require("${wdioConfig.pathname}").config.capabilities["appium:deviceName"]`,
+    ],
+    {
+      stdio: ["ignore", "pipe", "inherit"],
+      env: { TEST_ARGS: "ios" },
+      encoding: "utf-8",
     }
-    return deviceName;
-  };
-})();
+  );
+  if (status !== 0) {
+    throw new Error(
+      "An error occurred while trying to evaluate 'wdio.config.js'"
+    );
+  }
+  return stdout.trim();
+});
 
 function log(message = "", tag = TAG) {
   console.log(tag, message);

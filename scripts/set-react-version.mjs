@@ -9,7 +9,9 @@ import { promises as fs } from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import {
+  fetchPackageMetadata,
   isMain,
+  npmRegistryBaseURL,
   readJSONFile,
   readTextFile,
   toVersionNumber,
@@ -103,14 +105,8 @@ function inferReactNativeVersion({ name, version, dependencies = {} }) {
  * @param {string} version
  * @return {Promise<Manifest>}
  */
-export function fetchPackageInfo(pkg, version) {
-  const registryURL = "https://registry.npmjs.org/";
-  const abbreviated = {
-    Accept:
-      "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*",
-  };
-  return fetch(registryURL + pkg, { headers: abbreviated })
-    .then((res) => res.json())
+function fetchPackageInfo(pkg, version) {
+  return fetchPackageMetadata(pkg)
     .then(({ ["dist-tags"]: distTags, versions }) => {
       const tags = [version, version + "-stable", "v" + version + "-stable"];
       for (const t of tags) {
@@ -132,7 +128,7 @@ export function fetchPackageInfo(pkg, version) {
         console.warn(`No match found for '${pkg}@${version}'`);
         return undefined;
       }
-      return fetch(registryURL + pkg + "/" + foundVersion);
+      return fetch(npmRegistryBaseURL + pkg + "/" + foundVersion);
     })
     .then((res) => res?.json() ?? /** @type {Manifest} */ ({}))
     .then(({ version, dependencies = {}, peerDependencies = {} }) => {
