@@ -11,6 +11,7 @@ import { cliPlatformIOSVersion } from "./configure-projects.js";
 import {
   getPackageVersion,
   isMain,
+  memo,
   readJSONFile,
   readTextFile,
   toVersionNumber,
@@ -50,16 +51,10 @@ function mergeObjects(lhs, rhs) {
     : sortByKeys(rhs);
 }
 
-const readManifest = (() => {
-  /** @type {Manifest} */
-  let manifest;
-  return () => {
-    if (!manifest) {
-      manifest = readJSONFile(new URL("../package.json", import.meta.url));
-    }
-    return manifest;
-  };
-})();
+/** @type {() => Manifest} */
+const readManifest = memo(() =>
+  readJSONFile(new URL("../package.json", import.meta.url))
+);
 
 /**
  * Prints an error message to the console.

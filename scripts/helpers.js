@@ -1,19 +1,28 @@
 // @ts-check
 "use strict";
 
-const { spawnSync } = require("node:child_process");
 const nodefs = require("node:fs");
 const path = require("node:path");
-const os = require("node:os");
 const { fileURLToPath } = require("node:url");
 
+const npmRegistryBaseURL = "https://registry.npmjs.org/";
+
 /**
- * Escapes given string for use in Command Prompt.
- * @param {string} str
- * @returns {string}
+ * Fetches package metadata from the npm registry.
+ * @param {string} pkg
+ * @param {string=} distTag
  */
-function cmdEscape(str) {
-  return str.replace(/([\^])/g, "^^^$1");
+function fetchPackageMetadata(pkg, distTag) {
+  const init = {
+    headers: {
+      Accept:
+        "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*",
+    },
+  };
+  const url = distTag
+    ? npmRegistryBaseURL + pkg + "/" + distTag
+    : npmRegistryBaseURL + pkg;
+  return fetch(url, init).then((res) => res.json());
 }
 
 /**
@@ -66,24 +75,19 @@ function isMain(url, script = process.argv[1]) {
 }
 
 /**
- * Invokes `npm` on the command line.
- * @param {...string} args
+ * @template T
+ * @param {() => T} fn
+ * @returns {() => T}
  */
-function npm(...args) {
-  switch (os.platform()) {
-    case "win32": {
-      return spawnSync(
-        "cmd.exe",
-        ["/d", "/s", "/c", `"npm ${args.map(cmdEscape).join(" ")}"`],
-        {
-          encoding: "utf-8",
-          windowsVerbatimArguments: true,
-        }
-      );
+function memo(fn) {
+  /** @type {T} */
+  let result;
+  return () => {
+    if (result === undefined) {
+      result = fn();
     }
-    default:
-      return spawnSync("npm", args, { encoding: "utf-8" });
-  }
+    return result;
+  };
 }
 
 /**
@@ -167,11 +171,13 @@ function getPackageVersion(module, startDir = process.cwd(), fs = nodefs) {
   return version;
 }
 
+exports.fetchPackageMetadata = fetchPackageMetadata;
 exports.findFile = findFile;
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
 exports.isMain = isMain;
-exports.npm = npm;
+exports.memo = memo;
+exports.npmRegistryBaseURL = npmRegistryBaseURL;
 exports.readJSONFile = readJSONFile;
 exports.readTextFile = readTextFile;
 exports.requireTransitive = requireTransitive;

@@ -10,39 +10,8 @@ import { fileURLToPath } from "node:url";
 import prompts from "prompts";
 import * as colors from "yoctocolors";
 import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
-import { npm as npmSync, readJSONFile } from "./helpers.js";
+import { fetchPackageMetadata, memo, readJSONFile } from "./helpers.js";
 import { parseArgs } from "./parseargs.mjs";
-
-/**
- * @template T
- * @param {() => T | null} fn
- * @returns {() => T | null}
- */
-function memo(fn) {
-  /** @type {T | null} */
-  let result;
-  return () => {
-    if (result === undefined) {
-      result = fn();
-    }
-    return result;
-  };
-}
-
-/**
- * Invokes `npm`.
- * @param {...string} args
- */
-function npm(...args) {
-  const { error, stderr, stdout } = npmSync(...args);
-  if (!stdout) {
-    if (stderr) {
-      console.error(stderr);
-    }
-    throw error;
-  }
-  return stdout.trim();
-}
 
 /**
  * Invokes `tar xf`.
@@ -69,6 +38,30 @@ function untar(archive) {
   }
 
   return result;
+}
+
+/**
+ * Fetches the tarball URL for the specified package and version.
+ * @param {string} pkg
+ * @param {string} version
+ * @returns {Promise<string>}
+ */
+async function fetchPackageTarballURL(pkg, version) {
+  const info = await fetchPackageMetadata(pkg);
+  const specific = info.versions[version];
+  if (specific) {
+    return specific.dist.tarball;
+  }
+
+  const versions = Object.keys(info.versions);
+  for (let i = versions.length - 1; i >= 0; --i) {
+    const v = versions[i];
+    if (v.startsWith(version)) {
+      return info.versions[v].dist.tarball;
+    }
+  }
+
+  throw new Error(`No match found for '${pkg}@${version}'`);
 }
 
 /**
@@ -111,12 +104,18 @@ const getInstalledVersion = memo(() => {
  *   - Latest version from npm
  *
  * @param {import("./types").Platform[]} platforms
- * @returns {string}
+ * @returns {Promise<string>}
  */
-function getVersion(platforms) {
+async function getVersion(platforms) {
   const index = process.argv.lastIndexOf("--version");
   if (index >= 0) {
-    return process.argv[index + 1];
+    const m = process.argv[index + 1].match(/(\d+\.\d+[-.0-9a-z]*)/);
+    if (!m) {
+      throw new Error(
+        "Expected version number of the form <major>.<minor>.<patch>-<prerelease> (where patch and prerelease are optional)"
+      );
+    }
+    return m[1];
   }
 
   /** @type {(version: string, reason: string) => void} */
@@ -136,21 +135,25 @@ function getVersion(platforms) {
 
   console.log("No version was specified; fetching available versions...");
 
-  const maxSupportedVersion = platforms.reduce((result, p) => {
+  let maxSupportedVersion = Number.MAX_VALUE;
+  for (const p of platforms) {
     const pkgName = getDefaultPlatformPackageName(p);
     if (!pkgName) {
-      return result;
+      continue;
     }
 
-    const [major, minor] = npm("view", pkgName, "version").split(".");
-    const v = Number(major) * 100 + Number(minor);
-    return v < result ? v : result;
-  }, Number.MAX_VALUE);
+    const info = await fetchPackageMetadata(pkgName, "latest");
+    const [major, minor] = info.version.split(".");
+    const v = Number(major) * 1000 + Number(minor);
+    if (v < maxSupportedVersion) {
+      maxSupportedVersion = v;
+    }
+  }
 
-  const major = Math.trunc(maxSupportedVersion / 100);
-  const minor = maxSupportedVersion % 100;
+  const major = Math.trunc(maxSupportedVersion / 1000);
+  const minor = maxSupportedVersion % 1000;
 
-  const target = `^${major}.${minor}`;
+  const target = major + "." + minor;
   logVersion(target, "it supports all specified platforms");
 
   return target;
@@ -161,28 +164,19 @@ function getVersion(platforms) {
  * @param {import("./types").Platform[]} platforms
  * @returns {Promise<[string] | [string, string]>}
  */
-function getTemplate(platforms) {
-  return new Promise((resolve, reject) => {
-    const version = getVersion(platforms);
-    if (getInstalledVersion() === version) {
-      const rnManifest = getInstalledReactNativeManifest();
-      if (rnManifest) {
-        resolve([version, path.join(path.dirname(rnManifest), "template")]);
-        return;
-      }
+async function fetchTemplate(platforms) {
+  const version = await getVersion(platforms);
+  if (getInstalledVersion() === version) {
+    const rnManifest = getInstalledReactNativeManifest();
+    if (rnManifest) {
+      return [version, path.join(path.dirname(rnManifest), "template")];
     }
+  }
 
-    // `npm view` may return an array if there are multiple versions matching
-    // `version`. If there is only one match, the return type is a string.
-    const tarballs = JSON.parse(
-      npm("view", "--json", `react-native@${version}`, "dist.tarball")
-    );
-    const url = Array.isArray(tarballs)
-      ? tarballs[tarballs.length - 1]
-      : tarballs;
+  const url = await fetchPackageTarballURL("react-native", version);
+  console.log(`Downloading ${path.basename(url)}...`);
 
-    console.log(`Downloading ${path.basename(url)}...`);
-
+  return new Promise((resolve, reject) => {
     https
       .get(url, (res) => {
         const tmpDir = path.join(os.tmpdir(), "react-native-test-app");
@@ -200,9 +194,7 @@ function getTemplate(platforms) {
           resolve([version, template]);
         });
       })
-      .on("error", (err) => {
-        reject(err);
-      });
+      .on("error", (err) => reject(err));
   });
 }
 
@@ -286,7 +278,7 @@ function main() {
           return;
         }
 
-        const [targetVersion, templatePath] = await getTemplate(platforms);
+        const [targetVersion, templatePath] = await fetchTemplate(platforms);
         const result = configure({
           name,
           packagePath,
