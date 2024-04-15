@@ -190,10 +190,11 @@ class TestAppReactNativeHost(
         val latch = CountDownLatch(1)
         var packagerIsRunning = false
 
-        val devSettings = reactInstanceManager.devSupportManager.devSettings
-        createDevServerHelper(context, devSettings).isPackagerRunning {
-            packagerIsRunning = it
-            latch.countDown()
+        reactInstanceManager.devSupportManager.devSettings?.let { devSettings ->
+            createDevServerHelper(context, devSettings).isPackagerRunning {
+                packagerIsRunning = it
+                latch.countDown()
+            }
         }
 
         latch.await()
