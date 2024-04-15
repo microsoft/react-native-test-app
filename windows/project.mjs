@@ -7,6 +7,7 @@ import * as colors from "yoctocolors";
 import {
   findNearest,
   getPackageVersion,
+  memo,
   readJSONFile,
   readTextFile,
   requireTransitive,
@@ -89,6 +90,19 @@ function generateCertificateItems(
   }
   return items.join("\n    ");
 }
+
+/**
+ * Equivalent to invoking `react-native config`.
+ * @param {string} rnWindowsPath
+ */
+export const loadReactNativeConfig = memo((rnWindowsPath) => {
+  /** @type {import("@react-native-community/cli")} */
+  const { loadConfig } = requireTransitive(
+    ["@react-native-community/cli"],
+    rnWindowsPath
+  );
+  return loadConfig();
+});
 
 /**
  * @param {string} message
@@ -196,12 +210,9 @@ function getNuGetDependencies(rnWindowsPath, fs = nodefs) {
     return [];
   }
 
-  /** @type {import("@react-native-community/cli")} */
-  const { loadConfig } = requireTransitive(
-    ["@react-native-community/cli"],
-    rnWindowsPath
+  const dependencies = Object.values(
+    loadReactNativeConfig(rnWindowsPath).dependencies
   );
-  const dependencies = Object.values(loadConfig().dependencies);
 
   const xml = new XMLParser({
     ignoreAttributes: false,

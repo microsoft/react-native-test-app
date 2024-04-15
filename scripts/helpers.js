@@ -76,15 +76,15 @@ function isMain(url, script = process.argv[1]) {
 
 /**
  * @template T
- * @param {() => T} fn
- * @returns {() => T}
+ * @param {(...args: any[]) => T} fn
+ * @returns {(...args: any[]) => T}
  */
 function memo(fn) {
   /** @type {T} */
   let result;
-  return () => {
+  return (...args) => {
     if (result === undefined) {
-      result = fn();
+      result = fn(...args);
     }
     return result;
   };

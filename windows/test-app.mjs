@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // @ts-check
-import { spawn } from "node:child_process";
 import * as nodefs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -16,7 +15,7 @@ import {
 } from "../scripts/helpers.js";
 import { parseArgs } from "../scripts/parseargs.mjs";
 import { validate } from "../scripts/validate-manifest.js";
-import { projectInfo } from "./project.mjs";
+import { loadReactNativeConfig, projectInfo } from "./project.mjs";
 import { configureForUWP } from "./uwp.mjs";
 import { configureForWin32 } from "./win32.mjs";
 
@@ -193,11 +192,12 @@ export function generateSolution(destPath, options, fs = nodefs) {
     ["@react-native-windows/cli", "mustache"],
     rnWindowsPath
   );
+  const slnPath = path.join(destPath, `${info.bundle.appName}.sln`);
   const vcxprojPath = path.join(projectFilesDestPath, projectFileName);
   const vcxprojLocalPath = path.relative(destPath, vcxprojPath);
   copyTasks.push(
     writeTextFile(
-      path.join(destPath, `${info.bundle.appName}.sln`),
+      slnPath,
       mustache
         .render(readTextFile(solutionTemplate, fs), {
           ...templateView,
@@ -324,17 +324,30 @@ export function generateSolution(destPath, options, fs = nodefs) {
   }
 
   if (options.autolink) {
-    Promise.all(copyTasks).then(() => {
-      spawn(
-        path.join(path.dirname(process.argv0), "npx.cmd"),
-        ["react-native", "autolink-windows", "--proj", vcxprojPath],
-        { stdio: "inherit" }
-      ).on("close", (code) => {
-        if (code !== 0) {
-          process.exitCode = code || 1;
-        }
+    const projectRoot = path.resolve(path.dirname(projectManifest));
+    Promise.all(copyTasks)
+      .then(() => {
+        // `react-native config` is cached by `@react-native-community/cli`. We
+        // need to manually regenerate the Windows project config and inject it.
+        const config = loadReactNativeConfig(rnWindowsPath);
+        config.project.windows = config.platforms.windows.projectConfig(
+          projectRoot,
+          {
+            sourceDir: path.relative(projectRoot, destPath),
+            solutionFile: path.relative(destPath, slnPath),
+            project: {
+              projectFile: vcxprojLocalPath,
+            },
+          }
+        );
+        return config;
+      })
+      .then((config) => {
+        const autolink = config.commands.find(
+          ({ name }) => name === "autolink-windows"
+        );
+        autolink?.func([], config, { proj: vcxprojPath });
       });
-    });
   }
 
   return undefined;
