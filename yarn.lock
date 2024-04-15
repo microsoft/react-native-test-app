@@ -1859,8 +1859,8 @@ __metadata:
   linkType: hard
 
 "@callstack/react-native-visionos@npm:^0.73.0":
-  version: 0.73.8
-  resolution: "@callstack/react-native-visionos@npm:0.73.8"
+  version: 0.73.10
+  resolution: "@callstack/react-native-visionos@npm:0.73.10"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.6.3"
     "@react-native-community/cli": "npm:13.5.1"
@@ -1905,7 +1905,7 @@ __metadata:
     react: 18.2.0
   bin:
     react-native-visionos: cli.js
-  checksum: 10c0/28dfaa2c3648a9c182f10d4bc7ad7b9921a5d03a4aae6dac77341c2ebab57e9d77162d27a79c84ecc3be78cf5af6ff65266e77574d4a3d05d7c257e58ba4b5b2
+  checksum: 10c0/15109a9c4af0f8e417569089c02635d082ee81e2921852e6ae79abbe07b48cda5232ce048c49a5847c8cb463f0147f02dfa6e6550be89fa2ca7cd23f186a4f8a
   languageName: node
   linkType: hard
 
@@ -12113,8 +12113,8 @@ __metadata:
   linkType: hard
 
 "react-native-macos@npm:^0.73.0":
-  version: 0.73.23
-  resolution: "react-native-macos@npm:0.73.23"
+  version: 0.73.24
+  resolution: "react-native-macos@npm:0.73.24"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.6.3"
     "@react-native-community/cli": "npm:12.3.6"
@@ -12158,7 +12158,7 @@ __metadata:
     react: 18.2.0
   bin:
     react-native-macos: cli.js
-  checksum: 10c0/6ad0e5ccc2de579fd20d7389781c0209a5f9c6bc2394729ecabd499f62d0a1d0d98409164df0a5cf6db658880c812d569d4b34fcb09d944cfdbc3c245039f137
+  checksum: 10c0/a02ca9298b9130733a38376c93f5c1058d683d953114dfa4a98ebfcbd7acafa7635dea30ac37d495c22c6f09e0236eef8274b0f3d5b54e4552d3c89a5d3d47e1
   languageName: node
   linkType: hard
 
