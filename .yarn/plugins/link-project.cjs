@@ -26,7 +26,6 @@ module.exports = {
         }
 
         const fs = require("node:fs");
-        const os = require("node:os");
         const path = require("node:path");
 
         /**
@@ -66,7 +65,7 @@ module.exports = {
                 } else {
                   fs.mkdirSync(nodeModulesDir, mkdirOptions);
                 }
-                if (os.platform() === "win32") {
+                if (process.platform === "win32") {
                   fs.symlink(projectRoot, linkPath, "junction", noop);
                 } else {
                   const target = path.relative(nodeModulesDir, projectRoot);
