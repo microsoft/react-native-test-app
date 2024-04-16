@@ -12208,7 +12208,7 @@ __metadata:
     react: 17.0.1 - 18.2
     react-native: 0.66 - 0.74 || >=0.75.0-0 <0.75.0
     react-native-macos: ^0.0.0-0 || 0.66 || 0.68 || 0.71 - 0.73
-    react-native-windows: ^0.0.0-0 || 0.66 - 0.73
+    react-native-windows: ^0.0.0-0 || 0.66 - 0.74
   peerDependenciesMeta:
     "@callstack/react-native-visionos":
       optional: true

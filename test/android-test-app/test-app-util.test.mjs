@@ -1,5 +1,6 @@
 // @ts-check
 import { equal, match } from "node:assert/strict";
+import * as os from "node:os";
 import { after, describe, it } from "node:test";
 import { toVersionNumber, v } from "../../scripts/helpers.js";
 import {
@@ -8,7 +9,9 @@ import {
   runGradleWithProject,
 } from "./gradle.mjs";
 
-describe("test-app-util.gradle", () => {
+// TODO: These tests are broken on GitHub Actions (Windows) as of 20240414.1.0
+// https://github.com/actions/runner-images/commit/16c64c111cb6372bf8949332d275b74c87d33075
+describe("test-app-util.gradle", { skip: os.platform() === "win32" }, () => {
   const buildGradle = [
     "buildscript {",
     '    def androidTestAppDir = "node_modules/react-native-test-app/android"',
