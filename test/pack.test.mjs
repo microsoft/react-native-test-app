@@ -1,7 +1,6 @@
 // @ts-check
 import { deepEqual, equal } from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import * as os from "node:os";
 import { describe, it } from "node:test";
 
 /**
@@ -9,20 +8,11 @@ import { describe, it } from "node:test";
  * @param {...string} args
  */
 function npm(...args) {
-  switch (os.platform()) {
-    case "win32": {
-      return spawnSync(
-        "cmd.exe",
-        ["/d", "/s", "/c", `"npm ${args.join(" ")}"`],
-        {
-          encoding: "utf-8",
-          windowsVerbatimArguments: true,
-        }
-      );
-    }
-    default:
-      return spawnSync("npm", args, { encoding: "utf-8" });
-  }
+  return spawnSync("npm", args, {
+    encoding: "utf-8",
+    shell: process.platform === "win32",
+    windowsVerbatimArguments: true,
+  });
 }
 
 describe("npm pack", () => {

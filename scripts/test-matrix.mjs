@@ -7,7 +7,6 @@
  */
 import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
-import * as os from "node:os";
 import { fileURLToPath } from "node:url";
 import { memo, readTextFile } from "./helpers.js";
 import { setReactVersion } from "./set-react-version.mjs";
@@ -242,7 +241,7 @@ const { [2]: version } = process.argv;
         buildAndRun("android");
         await test("android", ["hermes", newArch]);
 
-        if (os.platform() === "darwin") {
+        if (process.platform === "darwin") {
           showBanner(`Build iOS [jsc, ${newArch}]`);
 
           configure("ios", config);

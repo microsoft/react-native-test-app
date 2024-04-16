@@ -1,7 +1,6 @@
 // @ts-check
 import { deepEqual, equal, match, notEqual } from "node:assert/strict";
 import * as fs from "node:fs";
-import * as os from "node:os";
 import * as path from "node:path";
 import { after, before, test } from "node:test";
 import { fileURLToPath } from "node:url";
@@ -135,7 +134,7 @@ test("react-native config", async (t) => {
 
   await t.test(
     "contains iOS config (@react-native-community/cli <8.0.0)",
-    { skip: os.platform() === "win32" || cliMajorVersion >= 8 },
+    { skip: process.platform === "win32" || cliMajorVersion >= 8 },
     () => {
       const sourceDir = path.join(exampleRoot, "ios");
       const config = loadConfig();
@@ -164,7 +163,7 @@ test("react-native config", async (t) => {
 
   await t.test(
     "contains iOS config (@react-native-community/cli >=8.0.0)",
-    { skip: os.platform() === "win32" || cliMajorVersion < 8 },
+    { skip: process.platform === "win32" || cliMajorVersion < 8 },
     () => {
       const sourceDir = path.join(exampleRoot, "ios");
       const config = loadConfig();
@@ -189,7 +188,7 @@ test("react-native config", async (t) => {
 
   await t.test(
     "contains Windows config",
-    { skip: os.platform() !== "win32" },
+    { skip: process.platform !== "win32" },
     () => {
       const projectFile = path.join(
         "node_modules",
