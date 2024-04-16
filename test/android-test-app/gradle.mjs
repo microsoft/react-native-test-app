@@ -106,8 +106,11 @@ export function removeProject(name) {
  * @returns
  */
 function runGradle(cwd, ...args) {
-  const gradlew = os.platform() === "win32" ? "gradlew.bat" : "./gradlew";
-  return spawnSync(gradlew, args, { cwd, encoding: "utf-8" });
+  // As of Node 20.12.2, it is no longer allowed to spawn a process with `.bat`
+  // or `.cmd` without shell (see https://nodejs.org/en/blog/release/v20.12.2).
+  const isWindows = os.platform() === "win32";
+  const gradlew = isWindows ? "gradlew.bat" : "./gradlew";
+  return spawnSync(gradlew, args, { cwd, encoding: "utf-8", shell: isWindows });
 }
 
 /**
