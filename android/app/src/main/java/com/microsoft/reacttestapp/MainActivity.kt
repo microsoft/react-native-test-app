@@ -24,6 +24,7 @@ import com.microsoft.reacttestapp.component.ComponentBottomSheetDialogFragment
 import com.microsoft.reacttestapp.component.ComponentListAdapter
 import com.microsoft.reacttestapp.component.ComponentViewModel
 import com.microsoft.reacttestapp.manifest.Component
+import com.microsoft.reacttestapp.manifest.ManifestProvider
 import com.microsoft.reacttestapp.react.AppRegistry
 import com.microsoft.reacttestapp.react.BundleSource
 
@@ -69,7 +70,8 @@ class MainActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val (manifest, checksum) = testApp.manifestProvider.fromResources()
+        val checksum = ManifestProvider.checksum()
+        val manifest = testApp.manifest
         val components = manifest.components ?: listOf()
 
         @Suppress("SENSELESS_COMPARISON")

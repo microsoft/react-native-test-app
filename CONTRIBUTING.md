@@ -332,20 +332,6 @@ gate them behind a version check. For example, we only use
 `androidx.core:core-ktx:1.10.1` when on Kotlin 1.8 or higher. See
 [`dependencies.gradle`][] for other examples.
 
-Besides direct dependencies, we also need to keep the list of KSP versions up to
-date as they are tied to specific versions of Kotlin. The reason for this is
-because Kotlin has not yet reached API stability. Until it does, we will have to
-periodically run `node scripts/update-ksp-versions.mjs` and check in the
-additions.
-
-> [!TIP]
->
-> We should automate this so it runs at least once a week. Alternatively, we
-> should look into how we can generate code from `app.json`. This way we longer
-> need to parse JSON at runtime, eliminating the need for Moshi and KSP
-> altogether. See also
-> https://github.com/microsoft/react-native-test-app/issues/1722.
-
 <!-- References -->
 
 [Dependency Dashboard]:

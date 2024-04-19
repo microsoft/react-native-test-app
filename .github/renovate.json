@@ -32,11 +32,6 @@
       "allowedVersions": "^0.80.0"
     },
     {
-      "groupName": "Moshi",
-      "matchDatasources": ["maven"],
-      "matchPackagePrefixes": ["com.squareup.moshi"]
-    },
-    {
       "groupName": "TypeScript type definitions",
       "matchDatasources": ["npm"],
       "matchPackagePrefixes": ["@types/"]

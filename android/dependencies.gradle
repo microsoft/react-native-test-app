@@ -1,38 +1,3 @@
-/**
- * Find the latest version of KSP that supports the specified Kotlin version.
- */
-static String getKspVersion(String kotlinVersion) {
-    def availableVersions = [
-        // Run `scripts/update-ksp-versions.mjs` to update this list
-        // update-ksp-versions start
-        "1.9.23-1.0.20",
-        "1.9.22-1.0.18",
-        "1.9.21-1.0.16",
-        "1.9.20-1.0.14",
-        "1.9.10-1.0.13",
-        "1.9.0-1.0.13",
-        "1.8.22-1.0.11",
-        "1.8.21-1.0.11",
-        "1.8.20-1.0.11",
-        "1.8.10-1.0.9",
-        "1.8.0-1.0.9",
-        "1.7.22-1.0.8",
-        "1.7.21-1.0.8",
-        "1.7.20-1.0.8",
-        "1.7.10-1.0.6",
-        "1.7.0-1.0.6",
-        "1.6.21-1.0.6",
-        "1.6.20-1.0.5",
-        "1.6.10-1.0.4",
-        "1.6.0-1.0.2",
-        "1.5.31-1.0.1",
-        "1.5.30-1.0.0",
-        // update-ksp-versions end
-    ]
-    def version = availableVersions.find { it.startsWith(kotlinVersion) }
-    return version ?: availableVersions[0]
-}
-
 ext {
     apply(from: "${buildscript.sourceFile.getParent()}/test-app-util.gradle")
 
@@ -64,7 +29,6 @@ ext {
 
     androidPluginVersion = getDefaultGradlePluginVersion(reactNativeVersion)
     kotlinVersion = rootProject.findProperty("KOTLIN_VERSION") ?: getKotlinVersion(rootDir)
-    kspVersion = getKspVersion(kotlinVersion)
 
     // We need only set `ndkVersion` when building react-native from source.
     if (rootProject.hasProperty("ANDROID_NDK_VERSION")) {
@@ -108,8 +72,6 @@ ext {
         materialComponents          : "com.google.android.material:material:1.11.0",
         mlKitBarcodeScanning        : "com.google.mlkit:barcode-scanning:17.2.0",
         mockitoInline               : "org.mockito:mockito-inline:5.2.0",
-        moshiKotlin                 : "com.squareup.moshi:moshi-kotlin:1.15.1",
-        moshiKotlinCodegen          : "com.squareup.moshi:moshi-kotlin-codegen:1.15.1",
     ]
 
     // Separate block so bots can parse this file properly
@@ -117,8 +79,6 @@ ext {
         libraries.androidCamera = ["androidx.camera", "camera-camera2", "1.2.0-beta02"].join(":")
         libraries.androidCameraMlKitVision = ["androidx.camera", "camera-mlkit-vision", "1.2.0-beta02"].join(":")
         libraries.androidCoreKotlinExtensions = ["androidx.core", "core-ktx", "1.9.0"].join(":")
-        libraries.moshiKotlin = ["com.squareup.moshi", "moshi-kotlin", "1.14.0"].join(":")
-        libraries.moshiKotlinCodegen = ["com.squareup.moshi", "moshi-kotlin-codegen", "1.14.0"].join(":")
     }
 
     getReactNativeDependencies = {

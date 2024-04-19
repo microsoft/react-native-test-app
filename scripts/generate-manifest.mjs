@@ -86,7 +86,6 @@ function getLanguage(output) {
             "package com.microsoft.reacttestapp.manifest",
             "",
             "import android.os.Bundle",
-            "import com.squareup.moshi.JsonClass",
             "",
           ].join("\n"),
         },
@@ -99,8 +98,7 @@ function getLanguage(output) {
         stringProperty: (name, required) => {
           return `val ${name}: String${nullable(required)},`;
         },
-        structBegin: (name) =>
-          `@JsonClass(generateAdapter = true)\ndata class ${typename(name)}(`,
+        structBegin: (name) => `data class ${typename(name)}(`,
         structEnd: `)`,
       };
     }
