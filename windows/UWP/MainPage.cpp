@@ -12,9 +12,10 @@
 
 #include "JSValueWriterHelper.h"
 #include "MainPage.g.cpp"
+#include "Manifest.g.cpp"
 #include "Session.h"
 
-using ReactTestApp::Component;
+using ReactApp::Component;
 using ReactTestApp::JSBundleSource;
 using ReactTestApp::ReactInstance;
 using ReactTestApp::Session;
@@ -123,34 +124,26 @@ MainPage::MainPage()
     InitializeComponent();
     InitializeTitleBar();
 
-    auto result = ::ReactTestApp::GetManifest();
-    if (result.has_value()) {
-        auto &[manifest, checksum] = result.value();
+    auto manifest = ::ReactApp::GetManifest();
+    AppTitle().Text(to_hstring(manifest.displayName));
+    reactInstance_.BundleRoot(manifest.bundleRoot.has_value()
+                                  ? std::make_optional(to_hstring(manifest.bundleRoot.value()))
+                                  : std::nullopt);
 
-        manifestChecksum_ = std::move(checksum);
+    if constexpr (kSingleAppMode) {
+        assert(manifest.singleApp.has_value() ||
+               !"`ENABLE_SINGLE_APP_MODE` shouldn't have been true");
+        assert(manifest.components.has_value() || !"At least one component must be declared");
 
-        AppTitle().Text(to_hstring(manifest.displayName));
-        reactInstance_.BundleRoot(manifest.bundleRoot.has_value()
-                                      ? std::make_optional(to_hstring(manifest.bundleRoot.value()))
-                                      : std::nullopt);
-
-        if constexpr (kSingleAppMode) {
-            assert(manifest.singleApp.has_value() ||
-                   !"`ENABLE_SINGLE_APP_MODE` shouldn't have been true");
-            assert(manifest.components.has_value() || !"At least one component must be declared");
-
-            for (auto &component : *manifest.components) {
-                if (component.slug == *manifest.singleApp) {
-                    InitializeReactRootView(reactInstance_.ReactHost(), ReactRootView(), component);
-                    break;
-                }
+        for (auto &component : *manifest.components) {
+            if (component.slug == *manifest.singleApp) {
+                InitializeReactRootView(reactInstance_.ReactHost(), ReactRootView(), component);
+                break;
             }
         }
-
-        InitializeReactMenu(std::move(manifest));
-    } else {
-        InitializeReactMenu(std::nullopt);
     }
+
+    InitializeReactMenu(std::move(manifest));
 }
 
 IAsyncAction MainPage::LoadFromDevServer(IInspectable const &, RoutedEventArgs)
@@ -308,24 +301,15 @@ void MainPage::InitializeDebugMenu()
     }
 }
 
-void MainPage::InitializeReactMenu(std::optional<::ReactTestApp::Manifest> manifest)
+void MainPage::InitializeReactMenu(::ReactApp::Manifest manifest)
 {
     if constexpr (kDebug || !kSingleAppMode) {
         AppMenuBar().Visibility(Visibility::Visible);
 
         RememberLastComponentMenuItem().IsChecked(Session::ShouldRememberLastComponent());
 
-        auto menuItems = ReactMenuBarItem().Items();
-        if (!manifest.has_value()) {
-            MenuFlyoutItem newMenuItem;
-            newMenuItem.Text(L"Couldn't parse 'app.json'");
-            newMenuItem.IsEnabled(false);
-            menuItems.Append(newMenuItem);
-            return;
-        }
-
         if constexpr (!kSingleAppMode) {
-            auto &components = manifest->components;
+            auto &components = manifest.components;
             if (!components.has_value() || components->empty()) {
                 reactInstance_.SetComponentsRegisteredDelegate(
                     [this](std::vector<std::string> const &appKeys) {
@@ -388,8 +372,9 @@ void MainPage::OnComponentsRegistered(std::vector<Component> components)
     } else {
         // If only one component is present, load it right away. Otherwise,
         // check whether we can reopen a component from previous session.
-        auto index =
-            components.size() == 1 ? 0 : Session::GetLastOpenedComponent(manifestChecksum_);
+        auto index = components.size() == 1
+                         ? 0
+                         : Session::GetLastOpenedComponent(::ReactApp::GetManifestChecksum());
         if (index.has_value()) {
             Loaded([this, component = components[index.value()]](IInspectable const &,
                                                                  RoutedEventArgs const &) {
@@ -417,7 +402,7 @@ void MainPage::OnComponentsRegistered(std::vector<Component> components)
         newMenuItem.Click(
             [this, component = std::move(component), i](IInspectable const &, RoutedEventArgs) {
                 LoadReactComponent(component);
-                Session::StoreComponent(i, manifestChecksum_);
+                Session::StoreComponent(i, ::ReactApp::GetManifestChecksum());
             });
 
         // Add keyboard accelerator for first nine (1-9) components

@@ -39,7 +39,7 @@ namespace ReactTestApp
             return winrt::to_string(value);
         }
 
-        static void ManifestChecksum(std::string const &value)
+        static void ManifestChecksum(std::string_view value)
         {
             auto v = PropertyValue::CreateString(winrt::to_hstring(value));
             LocalSettings().Insert(kChecksum, v);
@@ -58,7 +58,7 @@ namespace ReactTestApp
             LocalSettings().Insert(kRememberLastComponentEnabled, value);
         }
 
-        static std::optional<int> GetLastOpenedComponent(std::string const &manifestChecksum)
+        static std::optional<int> GetLastOpenedComponent(std::string_view manifestChecksum)
         {
             if (!ShouldRememberLastComponent() || manifestChecksum != ManifestChecksum()) {
                 return std::nullopt;
@@ -67,7 +67,7 @@ namespace ReactTestApp
             return LastComponentIndex();
         }
 
-        static void StoreComponent(int index, std::string const &manifestChecksum)
+        static void StoreComponent(int index, std::string_view manifestChecksum)
         {
             LastComponentIndex(index);
             ManifestChecksum(manifestChecksum);

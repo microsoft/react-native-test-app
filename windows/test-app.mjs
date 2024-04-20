@@ -14,7 +14,6 @@ import {
   writeTextFile,
 } from "../scripts/helpers.js";
 import { parseArgs } from "../scripts/parseargs.mjs";
-import { validate } from "../scripts/validate-manifest.js";
 import { loadReactNativeConfig, projectInfo } from "./project.mjs";
 import { configureForUWP } from "./uwp.mjs";
 import { configureForWin32 } from "./win32.mjs";
@@ -142,10 +141,6 @@ export function generateSolution(destPath, options, fs = nodefs) {
   );
   if (!rnWindowsPath) {
     return "Could not find 'react-native-windows'";
-  }
-
-  if (validate("file", destPath) !== 0) {
-    return "App manifest validation failed!";
   }
 
   const info = projectInfo(options, rnWindowsPath, destPath, fs);

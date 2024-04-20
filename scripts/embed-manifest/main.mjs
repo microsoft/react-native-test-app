@@ -5,7 +5,7 @@ import { findFile } from "../helpers.js";
 import { validateManifest } from "../validate-manifest.js";
 
 /**
- * @param {(json: Record<string, unknown>, checksum: string) => string} generate
+ * @param {(json: Record<string, unknown>, checksum: string, fs?: typeof nodefs) => string} generate
  * @param {string} projectRoot
  * @returns {number}
  */
@@ -19,7 +19,11 @@ export function main(generate, projectRoot = process.cwd(), fs = nodefs) {
   const checksum = createHash("sha256")
     .update(JSON.stringify(manifest))
     .digest("hex");
-  const provider = generate(manifest, checksum);
+  const provider = generate(manifest, checksum, fs);
+  if (!provider) {
+    return 1;
+  }
+
   console.log(provider);
   return 0;
 }

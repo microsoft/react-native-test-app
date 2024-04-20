@@ -47,9 +47,6 @@
     <ClCompile Include="$(ReactAppWin32Dir)\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(ReactAppSharedDir)\Manifest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="$(ReactAppSharedDir)\ReactInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
