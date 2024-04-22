@@ -77,7 +77,6 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories);$(ReactAppProjectDir)\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies);Manifest.obj;pch.obj</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
