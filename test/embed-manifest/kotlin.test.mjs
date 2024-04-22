@@ -84,7 +84,7 @@ class ManifestProvider {
                 null,
                 null,
                 null,
-                arrayListOf()
+                arrayListOf<Any>()
             )
         }
     }
@@ -254,7 +254,7 @@ class ManifestProvider {
                                         1,
                                         null,
                                         "string",
-                                        arrayListOf(),
+                                        arrayListOf<Any>(),
                                         Bundle().apply {
                                             putBoolean("boolean", true)
                                             putDouble("double", 1.1)
@@ -272,7 +272,7 @@ class ManifestProvider {
                                     }
                                 )
                             )
-                            putMap(
+                            putBundle(
                                 "object",
                                 Bundle().apply {
                                     putBoolean("boolean", true)
@@ -294,7 +294,7 @@ class ManifestProvider {
                                                 1,
                                                 null,
                                                 "string",
-                                                arrayListOf(),
+                                                arrayListOf<Any>(),
                                                 Bundle().apply {
                                                     putBoolean("boolean", true)
                                                     putDouble("double", 1.1)
@@ -312,7 +312,7 @@ class ManifestProvider {
                                             }
                                         )
                                     )
-                                    putMap(
+                                    putBundle(
                                         "object",
                                         Bundle().apply {
                                             putBoolean("boolean", true)
@@ -334,7 +334,7 @@ class ManifestProvider {
                                                         1,
                                                         null,
                                                         "string",
-                                                        arrayListOf(),
+                                                        arrayListOf<Any>(),
                                                         Bundle().apply {
                                                             putBoolean("boolean", true)
                                                             putDouble("double", 1.1)

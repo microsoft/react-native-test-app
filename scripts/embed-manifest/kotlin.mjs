@@ -19,7 +19,7 @@ function str(s) {
  */
 function array(items, level) {
   if (items.length === 0) {
-    return "arrayListOf()";
+    return "arrayListOf<Any>()";
   }
 
   const innerIndent = INDENT.repeat(level + 1);
@@ -96,7 +96,7 @@ function bundle(props, level) {
           );
         } else if (value) {
           lines.push(
-            `${innerIndent}putMap(`,
+            `${innerIndent}putBundle(`,
             `${innerIndent}${INDENT}${str(key)},`,
             `${innerIndent}${INDENT}${bundle(value, level + 2)}`,
             `${innerIndent})`
@@ -121,7 +121,7 @@ function bundle(props, level) {
  */
 function components(components, level) {
   if (!Array.isArray(components) || components.length === 0) {
-    return "arrayListOf()";
+    return "arrayListOf<Any>()";
   }
 
   const outerIndent = INDENT.repeat(level + 1);
