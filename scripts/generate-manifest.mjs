@@ -1,10 +1,8 @@
-#!/usr/bin/env node
 // @ts-check
-
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { generateSchema } from "./schema.js";
+import { generateSchema } from "./schema.mjs";
 
 /**
  * @typedef {import("ajv").SchemaObject} SchemaObject

@@ -1,6 +1,4 @@
-#!/usr/bin/env node
 // @ts-check
-
 import yaml from "js-yaml";
 import { Minimatch } from "minimatch";
 import { spawnSync } from "node:child_process";

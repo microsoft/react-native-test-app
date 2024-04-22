@@ -2,7 +2,7 @@
 import Ajv from "ajv";
 import * as nodefs from "node:fs";
 import { readJSONFile } from "../helpers.js";
-import { generateSchema } from "../schema.js";
+import { generateSchema } from "../schema.mjs";
 
 const APP_JSON = "app.json";
 

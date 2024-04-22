@@ -1,6 +1,8 @@
-/**
- * @typedef {import("./types").Docs} Docs
- */
+// @ts-check
+import { URL, fileURLToPath } from "node:url";
+import { readJSONFile } from "./helpers.js";
+
+/** @typedef {import("./types").Docs} Docs */
 
 /**
  * @param {string} content
@@ -11,12 +13,17 @@ function extractBrief(content = "") {
   return endBrief > 0 ? content.substring(0, endBrief) : content;
 }
 
+function readManifest() {
+  const manifest = fileURLToPath(new URL("../package.json", import.meta.url));
+  return /** @type {import("../package.json")} */ (readJSONFile(manifest));
+}
+
 /**
  * @param {Partial<Docs>=} docs App manifest documentation
  * @returns {import("ajv").SchemaObject}
  */
-function generateSchema(docs = {}) {
-  const { defaultPlatformPackages } = require("../package.json");
+export function generateSchema(docs = {}) {
+  const { defaultPlatformPackages } = readManifest();
   return {
     $defs: {
       appIconSet: {
@@ -330,5 +337,3 @@ function generateSchema(docs = {}) {
     },
   };
 }
-
-exports.generateSchema = generateSchema;

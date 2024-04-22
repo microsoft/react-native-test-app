@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Joins all specified lines into a single string.
  * @param {...string} lines

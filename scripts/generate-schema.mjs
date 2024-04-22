@@ -1,20 +1,26 @@
-#!/usr/bin/env node
 // @ts-check
-
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
-import { generateSchema } from "./schema.js";
+import { URL, fileURLToPath } from "node:url";
+import { isMain } from "./helpers.js";
+import { generateSchema } from "./schema.mjs";
 
-const thisScript = fileURLToPath(import.meta.url);
-const docsDir = path.join(path.dirname(thisScript), "docs");
+/** @typedef {import("./types").Docs} Docs */
+
+/** @type {(str: string) => string} */
+const stripCarriageReturn =
+  os.EOL === "\r\n" ? (str) => str.replace(/\r/g, "") : (str) => str;
 
 /**
- * @returns {Promise<import("./schema.js").Docs>}
+ * @returns {Promise<Partial<Docs>>}
  */
 export async function readDocumentation() {
-  /** @type {(keyof import("./schema.js").Docs)[]} */
+  /** @type {Partial<Docs>} */
+  const docs = {};
+  const docsDir = fileURLToPath(new URL("docs", import.meta.url));
+
+  /** @type {(keyof Docs)[]} */
   const keys = [
     "introduction",
     "bundleRoot",
@@ -40,29 +46,23 @@ export async function readDocumentation() {
     "windows.certificateThumbprint",
   ];
 
-  const docs = /** @type {import("./schema.js").Docs} */ ({});
-
   for (const name of keys) {
     const filename = path.join(docsDir, name + ".md");
     const md = await fs.readFile(filename, { encoding: "utf-8" });
-    docs[name] = trimCarriageReturn(md).trim();
+    docs[name] = stripCarriageReturn(md).trim();
   }
 
   return docs;
 }
 
-/** @type {(s: string) => string} */
-const trimCarriageReturn =
-  os.EOL === "\r\n" ? (str) => str.replace(/\r/g, "") : (str) => str;
-
-if (process.argv[1] === thisScript) {
+if (isMain(import.meta.url)) {
   readDocumentation()
     .then((docs) => generateSchema(docs))
     .then((schema) => {
       for (const def of Object.values(schema.$defs)) {
         delete def["exclude-from-codegen"];
       }
-      return trimCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n";
+      return stripCarriageReturn(JSON.stringify(schema, undefined, 2)) + "\n";
     })
     .then((schema) => fs.writeFile("schema.json", schema))
     .catch(console.error);

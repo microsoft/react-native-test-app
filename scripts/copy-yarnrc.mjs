@@ -1,6 +1,4 @@
-#!/usr/bin/env node
 // @ts-check
-
 import yaml from "js-yaml";
 import * as fs from "node:fs";
 import * as path from "node:path";
