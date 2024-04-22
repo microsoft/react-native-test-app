@@ -138,6 +138,10 @@ ext.applyTestAppModule = { Project project ->
     def generatedResDir = file("${buildDir}/generated/rncli/src/main/res/")
     generatedResDir.mkdirs()
 
+    // https://github.com/react-native-community/cli/blob/be880b86cdb3f4ea104cf232b95d11f84613321b/packages/cli-platform-android/native_modules.gradle#L534
+    def generatedSrcDir = file("${buildDir}/generated/rncli/src/main/java/")
+    generatedSrcDir.mkdirs()
+
     // https://github.com/facebook/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L25
     def generatedFontsDir = file("${generatedAssetsDir}/fonts")
     generatedFontsDir.mkdirs()
@@ -185,6 +189,20 @@ ext.applyTestAppModule = { Project project ->
         if (androidResDir != null) {
             from(androidResDir)
             into(generatedResDir)
+        }
+    })
+
+    preBuild.dependsOn(tasks.register("embedAppManifest", Exec) {
+        workingDir(projectRoot)
+        commandLine("node", "${testAppDir}/scripts/embed-manifest/kotlin.mjs")
+        standardOutput = new ByteArrayOutputStream()
+
+        doLast {
+            def manifestProvider = file("${generatedSrcDir}/com/microsoft/reacttestapp/manifest/ManifestProvider.kt")
+            file(manifestProvider.parent).mkdirs()
+            manifestProvider.withWriter { w ->
+                w << standardOutput.toString()
+            }
         }
     })
 

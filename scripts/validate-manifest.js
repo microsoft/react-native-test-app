@@ -26,10 +26,9 @@ const BUILD_PROPS = [
 
 function makeValidator() {
   const { default: Ajv } = require("ajv");
-  const ajv = new Ajv({ allErrors: true });
-  ajv.addKeyword({ keyword: "exclude-from-codegen" });
-  ajv.addKeyword({ keyword: "markdownDescription" });
-  return ajv;
+  return new Ajv({ allErrors: true })
+    .addKeyword({ keyword: "exclude-from-codegen" })
+    .addKeyword({ keyword: "markdownDescription" });
 }
 
 /**

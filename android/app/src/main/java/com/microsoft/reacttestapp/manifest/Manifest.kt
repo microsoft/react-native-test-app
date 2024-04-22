@@ -6,9 +6,7 @@
 package com.microsoft.reacttestapp.manifest
 
 import android.os.Bundle
-import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
 data class Component(
     val appKey: String,
     val displayName: String?,
@@ -17,7 +15,6 @@ data class Component(
     val slug: String?,
 )
 
-@JsonClass(generateAdapter = true)
 data class Manifest(
     val name: String,
     val displayName: String,

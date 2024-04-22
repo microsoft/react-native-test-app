@@ -6,7 +6,6 @@ buildscript {
 
 plugins {
     id("com.android.application")
-    id("com.google.devtools.ksp").version("${kspVersion}")
     id("org.jetbrains.kotlin.android")
 }
 
@@ -111,10 +110,6 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode project.ext.getVersionCode()
         versionName project.ext.getVersionName()
-
-        def (appManifest, checksum) = validateManifest(rootDir)
-        buildConfigField "String", "ReactTestApp_appManifest", "\"${appManifest}\""
-        buildConfigField "String", "ReactTestApp_appManifestChecksum", "\"${checksum}\""
 
         def singleApp = getSingleAppMode()
         buildConfigField "String", "ReactTestApp_singleApp", singleApp ? "\"${singleApp}\"" : "null"
@@ -306,9 +301,6 @@ dependencies {
     implementation libraries.androidRecyclerView
     implementation libraries.androidSwipeRefreshLayout
     implementation libraries.materialComponents
-
-    implementation libraries.moshiKotlin
-    ksp libraries.moshiKotlinCodegen
 
     testImplementation libraries.junit
     testImplementation libraries.androidJUnitKotlinExtensions
