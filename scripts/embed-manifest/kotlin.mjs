@@ -1,8 +1,15 @@
 // @ts-check
 import { isMain } from "../helpers.js";
-import { main, warn } from "./main.mjs";
+import { main } from "./main.mjs";
 
 const INDENT = "    ";
+
+/**
+ * @param {string} message
+ */
+export function warn(message) {
+  console.warn("//", message);
+}
 
 /**
  * @param {unknown} s

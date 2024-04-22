@@ -15,7 +15,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return windows.first { $0.identifier?.rawValue == "MainWindow" }
     }()
 
-    private var manifestChecksum: String?
     private var contentDidAppearToken: NSObjectProtocol?
 
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
@@ -101,16 +100,7 @@ extension AppDelegate {
     }
 
     func initialize() {
-        guard let (manifest, checksum) = Manifest.fromFile() else {
-            let item = reactMenu.addItem(
-                withTitle: "Could not load 'app.json'",
-                action: nil,
-                keyEquivalent: ""
-            )
-            item.isEnabled = false
-            return
-        }
-
+        let manifest = Manifest.load()
         mainWindow?.title = manifest.displayName
 
         let components = manifest.components ?? []
@@ -147,7 +137,7 @@ extension AppDelegate {
                         return
                     }
 
-                    if let index = components.count == 1 ? 0 : Session.lastOpenedComponent(checksum) {
+                    if let index = components.count == 1 ? 0 : Session.lastOpenedComponent(Manifest.checksum()) {
                         strongSelf.present(components[index])
                     }
 
@@ -156,8 +146,6 @@ extension AppDelegate {
                 }
             }
         }
-
-        manifestChecksum = checksum
     }
 
     func applicationWillFinishLaunching(_: Notification) {
@@ -176,9 +164,7 @@ extension AppDelegate {
 
         present(component)
 
-        if let checksum = manifestChecksum {
-            Session.storeComponent(index: menuItem.tag, checksum: checksum)
-        }
+        Session.storeComponent(index: menuItem.tag, checksum: Manifest.checksum())
     }
 
     private func onComponentsRegistered(_ components: [Component], enable: Bool) {
