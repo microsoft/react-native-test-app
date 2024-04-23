@@ -175,6 +175,7 @@ describe("npm pack", () => {
       "react-native.config.js",
       "schema.json",
       "scripts/apply-config-plugins.mjs",
+      "scripts/colors.mjs",
       "scripts/config-plugins/ExpoConfigPlugins.mjs",
       "scripts/config-plugins/apply.mjs",
       "scripts/config-plugins/index.mjs",

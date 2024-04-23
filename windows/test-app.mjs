@@ -4,7 +4,7 @@ import * as nodefs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import * as colors from "yoctocolors";
+import * as colors from "../scripts/colors.mjs";
 import {
   findNearest,
   isMain,

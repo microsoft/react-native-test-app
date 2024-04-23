@@ -3,7 +3,7 @@ import { XMLParser } from "fast-xml-parser";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { v5 as uuidv5 } from "uuid";
-import * as colors from "yoctocolors";
+import * as colors from "../scripts/colors.mjs";
 import {
   findNearest,
   getPackageVersion,
