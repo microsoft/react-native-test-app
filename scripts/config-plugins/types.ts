@@ -4,7 +4,10 @@ import type {
   ForwardedBaseModOptions,
 } from "@expo/config-plugins/build/plugins/createBaseMod";
 
-export type CustomModProvider = <ModType, Props extends ForwardedBaseModOptions>(
+export type CustomModProvider = <
+  ModType,
+  Props extends ForwardedBaseModOptions,
+>(
   original: BaseModProviderMethods<ModType, Props>,
   file: string
 ) => BaseModProviderMethods<ModType, Props>;
