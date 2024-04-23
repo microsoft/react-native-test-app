@@ -183,7 +183,7 @@ describe("npm pack", () => {
       "scripts/config-plugins/plugins/withInternal.mjs",
       "scripts/config-plugins/plugins/withIosBaseMods.mjs",
       "scripts/config-plugins/provider.mjs",
-      "scripts/config-plugins/types.mjs",
+      "scripts/config-plugins/types.ts",
       "scripts/configure-projects.js",
       "scripts/configure.mjs",
       "scripts/embed-manifest/kotlin.mjs",

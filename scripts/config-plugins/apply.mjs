@@ -6,7 +6,7 @@ import { withInternal } from "./plugins/withInternal.mjs";
 
 /**
  * Applies config plugins.
- * @param {import("./types.mjs").ProjectInfo} projectInfo
+ * @param {import("./types").ProjectInfo} projectInfo
  * @returns {Promise<Awaited<ReturnType<typeof compileModsAsync>> | undefined>}
  */
 export async function applyConfigPlugins({ appJsonPath, ...info }) {

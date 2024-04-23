@@ -7,7 +7,7 @@ import { parseArgs } from "node:util";
 import { findFile } from "./helpers.js";
 
 /**
- * @typedef {import("./config-plugins/types.mjs").ProjectInfo["platforms"]} Platforms
+ * @typedef {import("./config-plugins/types").ProjectInfo["platforms"]} Platforms
  * @param {string} projectRoot
  * @param {string[]} platforms
  */
