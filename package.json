@@ -42,6 +42,7 @@
     "schema.json",
     "scripts/*.js",
     "scripts/apply-config-plugins.mjs",
+    "scripts/colors.mjs",
     "scripts/config-plugins",
     "scripts/configure.mjs",
     "scripts/embed-manifest",
@@ -92,8 +93,7 @@
     "fast-xml-parser": "^4.0.0",
     "prompts": "^2.4.0",
     "semver": "^7.3.5",
-    "uuid": "^9.0.0",
-    "yoctocolors": "^2.0.0"
+    "uuid": "^9.0.0"
   },
   "peerDependencies": {
     "@callstack/react-native-visionos": "0.73 - 0.74",

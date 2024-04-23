@@ -6,7 +6,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import semverCoerce from "semver/functions/coerce.js";
 import semverSatisfies from "semver/functions/satisfies.js";
-import * as colors from "yoctocolors";
+import * as colors from "./colors.mjs";
 import { cliPlatformIOSVersion } from "./configure-projects.js";
 import {
   getPackageVersion,

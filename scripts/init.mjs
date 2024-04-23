@@ -8,7 +8,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import prompts from "prompts";
-import * as colors from "yoctocolors";
+import * as colors from "./colors.mjs";
 import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
 import { fetchPackageMetadata, memo, readJSONFile } from "./helpers.js";
 import { parseArgs } from "./parseargs.mjs";
