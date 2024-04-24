@@ -208,6 +208,8 @@ export type Docs = {
   "ios.icons": string;
   "ios.icons.primaryIcon": string;
   "ios.icons.alternateIcons": string;
+  "macos.applicationCategoryType": string;
+  "macos.humanReadableCopyright": string;
   "windows.appxManifest": string;
   "windows.certificateKeyFile": string;
   "windows.certificatePassword": string;

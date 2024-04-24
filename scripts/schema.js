@@ -274,6 +274,16 @@ function generateSchema(docs = {}) {
         allOf: [{ $ref: "#/$defs/apple" }],
         type: "object",
         properties: {
+          applicationCategoryType: {
+            description: extractBrief(docs["macos.applicationCategoryType"]),
+            markdownDescription: docs["macos.applicationCategoryType"],
+            type: "string",
+          },
+          humanReadableCopyright: {
+            description: extractBrief(docs["macos.humanReadableCopyright"]),
+            markdownDescription: docs["macos.humanReadableCopyright"],
+            type: "string",
+          },
           reactNativePath: {
             description: `Sets a custom path to React Native for macOS. Useful for when \`require("${defaultPlatformPackages.macos}")\` does not return the desired path.`,
             type: "string",

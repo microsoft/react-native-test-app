@@ -32,6 +32,8 @@ export async function readDocumentation() {
     "ios.icons",
     "ios.icons.primaryIcon",
     "ios.icons.alternateIcons",
+    "macos.applicationCategoryType",
+    "macos.humanReadableCopyright",
     "windows.appxManifest",
     "windows.certificateKeyFile",
     "windows.certificatePassword",
