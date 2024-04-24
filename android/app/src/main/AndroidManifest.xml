@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.microsoft.reacttestapp"
 >
-    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" android:maxSdkVersion="${rntaEnableCamera}" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application

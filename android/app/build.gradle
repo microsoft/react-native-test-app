@@ -117,6 +117,10 @@ android {
         buildConfigField "boolean", "ReactTestApp_useFabric", enableNewArchitecture.toString()
         buildConfigField "boolean", "ReactTestApp_useBridgeless", enableBridgeless.toString()
 
+        manifestPlaceholders = [
+            rntaEnableCamera: project.ext.react.enableCamera ? "1000000" : "1"
+        ]
+
         resValue "string", "app_name", project.ext.react.appName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
