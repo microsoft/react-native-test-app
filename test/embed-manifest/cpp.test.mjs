@@ -159,7 +159,7 @@ Manifest ReactApp::GetManifest()
                                     {"int", INT64_C(1)},
                                     {"null", nullptr},
                                     {"string", "string"sv},
-                                }
+                                },
                             },
                             JSONObject{
                                 {"boolean", true},
@@ -167,7 +167,7 @@ Manifest ReactApp::GetManifest()
                                 {"int", INT64_C(1)},
                                 {"null", nullptr},
                                 {"string", "string"sv},
-                            }
+                            },
                         }
                     },
                     {
@@ -199,9 +199,9 @@ Manifest ReactApp::GetManifest()
                                             {"int", INT64_C(1)},
                                             {"null", nullptr},
                                             {"string", "string"sv},
-                                        }
+                                        },
                                     },
-                                    JSONObject{}
+                                    JSONObject{},
                                 }
                             },
                             {
@@ -233,7 +233,7 @@ Manifest ReactApp::GetManifest()
                                                     {"int", INT64_C(1)},
                                                     {"null", nullptr},
                                                     {"string", "string"sv},
-                                                }
+                                                },
                                             },
                                             JSONObject{
                                                 {"boolean", true},
@@ -241,7 +241,7 @@ Manifest ReactApp::GetManifest()
                                                 {"int", INT64_C(1)},
                                                 {"null", nullptr},
                                                 {"string", "string"sv},
-                                            }
+                                            },
                                         }
                                     },
                                 }

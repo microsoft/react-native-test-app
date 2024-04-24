@@ -68,13 +68,8 @@ function array(items, level) {
         break;
     }
   }
-  return (
-    "std::vector<std::any>{\n" +
-    lines.join(",\n") +
-    "\n" +
-    INDENT.repeat(level) +
-    "}"
-  );
+  lines.push(INDENT.repeat(level) + "}");
+  return "std::vector<std::any>{\n" + lines.join(",\n");
 }
 
 /**
