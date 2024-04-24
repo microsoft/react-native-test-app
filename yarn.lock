@@ -3014,12 +3014,12 @@ __metadata:
   linkType: hard
 
 "@react-native-webapis/web-storage@npm:^0.2.2":
-  version: 0.2.4
-  resolution: "@react-native-webapis/web-storage@npm:0.2.4"
+  version: 0.2.5
+  resolution: "@react-native-webapis/web-storage@npm:0.2.5"
   peerDependencies:
     react: ">=18.2.0"
     react-native: ">=0.72.0-0"
-  checksum: 10c0/9d308780c54335357950b80bc16d63233bf4d8a5050ae96b0f228eabd232a610694a1afb89048cb05030ace7c2dfb331eadd7b024603c06e7798fc3b9cd26e51
+  checksum: 10c0/4433dd6cbaecbac3f962b2d20436c3b71447256406bcef693177cd84afbebbbe8d4fe82543facd59095968fb42284f87efd6d9fa6213290d5d147a8e14e47847
   languageName: node
   linkType: hard
 
