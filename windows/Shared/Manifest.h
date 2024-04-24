@@ -6,29 +6,31 @@
 #include <any>
 #include <map>
 #include <optional>
-#include <string>
-#include <tuple>
+#include <string_view>
 #include <vector>
 
-namespace ReactTestApp
+namespace ReactApp
 {
+    using JSONObject = std::map<std::string_view, std::any>;
+
     struct Component {
-        std::string appKey;
-        std::optional<std::string> displayName;
-        std::optional<std::map<std::string, std::any>> initialProperties;
-        std::optional<std::string> presentationStyle;
-        std::optional<std::string> slug;
+        std::string_view appKey;
+        std::optional<std::string_view> displayName;
+        std::optional<JSONObject> initialProperties;
+        std::optional<std::string_view> presentationStyle;
+        std::optional<std::string_view> slug;
     };
 
     struct Manifest {
-        std::string name;
-        std::string displayName;
-        std::optional<std::string> version;
-        std::optional<std::string> bundleRoot;
-        std::optional<std::string> singleApp;
+        std::string_view name;
+        std::string_view displayName;
+        std::optional<std::string_view> version;
+        std::optional<std::string_view> bundleRoot;
+        std::optional<std::string_view> singleApp;
         std::optional<std::vector<Component>> components;
     };
 
-    std::optional<std::tuple<Manifest, std::string>> GetManifest(const char *const json = nullptr);
+    Manifest GetManifest();
+    std::string_view GetManifestChecksum();
 
-}  // namespace ReactTestApp
+}  // namespace ReactApp

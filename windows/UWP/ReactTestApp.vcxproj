@@ -167,7 +167,6 @@
     <ClCompile Include="$(ReactAppUniversalDir)\MainPage.cpp">
       <DependentUpon>$(ReactAppUniversalDir)\MainPage.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="$(ReactAppSharedDir)\Manifest.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)\module.g.cpp" />
     <ClCompile Include="$(ReactAppSharedDir)\ReactInstance.cpp" />
   </ItemGroup>
@@ -184,12 +183,9 @@
     <None Include="packages.config" Condition="$(ReactNativeWindowsVersionNumber)==0 OR $(ReactNativeWindowsVersionNumber)>=68000" />
     <None Include="PropertySheet.props" />
   </ItemGroup>
-  <ItemGroup Condition="$(ReactNativeWindowsVersionNumber)==0 OR $(ReactNativeWindowsVersionNumber)>=68000">
-    <PackageReference Include="nlohmann.json" Version="3.11.2" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ReactNativeWindowsTargets">
-    <Import Project="$(ReactAppSharedDir)\ValidateManifest.targets" />
+    <Import Project="$(ReactAppSharedDir)\EmbedManifest.targets" />
     <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets')" />
   </ImportGroup>
   <Target Name="EnsureReactNativeWindowsTargets" BeforeTargets="PrepareForBuild">
@@ -208,7 +204,6 @@
     <Import Project="$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\Microsoft.ReactNative.Cxx.$(ReactNativeWindowsVersion)\build\native\Microsoft.ReactNative.Cxx.targets')" />
     <Import Project="$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\ReactNative.Hermes.Windows.$(HermesVersion)\build\native\ReactNative.Hermes.Windows.targets') AND '$(UseHermes)'=='true'" />
     <Import Project="$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\$(WinUIPackageName).$(WinUIPackageVersion)\build\native\$(WinUIPackageName).targets')" />
-    <Import Project="$(SolutionDir)packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets" Condition="$(ReactNativeWindowsVersionNumber)&gt;0 AND $(ReactNativeWindowsVersionNumber)&lt;68000 AND Exists('$(SolutionDir)packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets')" />
     <!-- ReactTestApp additional targets -->
   </ImportGroup>
 </Project>

@@ -3,7 +3,7 @@
 #include "Main.h"
 
 #include "JSValueWriterHelper.h"
-#include "Manifest.h"
+#include "Manifest.g.cpp"
 #include "ReactInstance.h"
 
 namespace winrt
@@ -55,12 +55,12 @@ namespace
         rootView.Size(size);
     }
 
-    winrt::ReactViewOptions MakeReactViewOptions(ReactTestApp::Component const &component)
+    winrt::ReactViewOptions MakeReactViewOptions(ReactApp::Component const &component)
     {
         winrt::ReactViewOptions viewOptions;
         viewOptions.ComponentName(winrt::to_hstring(component.appKey));
 
-        auto initialProps = component.initialProperties.value_or(std::map<std::string, std::any>{});
+        auto initialProps = component.initialProperties.value_or<ReactApp::JSONObject>({});
         initialProps["concurrentRoot"] = true;
         viewOptions.InitialProps(
             [initialProps = std::move(initialProps)](winrt::IJSValueWriter const &writer) {
@@ -81,9 +81,7 @@ _Use_decl_annotations_ int CALLBACK WinMain(HINSTANCE /* instance */,
                                             PSTR /* commandLine */,
                                             int /* showCmd */)
 {
-    auto result = ::ReactTestApp::GetManifest();
-    assert(result.has_value() && "Failed to parse app manifest");
-    auto &[manifest, checksum] = *result;
+    auto manifest = ::ReactApp::GetManifest();
     assert(manifest.components.has_value() && (*manifest.components).size() > 0 &&
            "At least one component must be declared");
 

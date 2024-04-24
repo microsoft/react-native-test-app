@@ -15,27 +15,8 @@
         </Filter>
     </ItemGroup>
     <ItemGroup>
-        <ClCompile Include="ManifestTests.cpp">
+        <ClCompile Include="Tests.cpp">
             <Filter>Source Files</Filter>
         </ClCompile>
-        <ClCompile Include="pch.cpp">
-            <Filter>Source Files</Filter>
-        </ClCompile>
-    </ItemGroup>
-    <ItemGroup>
-        <ClInclude Include="pch.h">
-            <Filter>Header Files</Filter>
-        </ClInclude>
-    </ItemGroup>
-    <ItemGroup>
-        <Text Include="manifestTestFiles\simpleManifest.json">
-            <Filter>Resource Files</Filter>
-        </Text>
-        <Text Include="manifestTestFiles\withComplexInitialProperties.json">
-            <Filter>Resource Files</Filter>
-        </Text>
-        <Text Include="manifestTestFiles\withMultipleComponents.json">
-            <Filter>Resource Files</Filter>
-        </Text>
     </ItemGroup>
 </Project>

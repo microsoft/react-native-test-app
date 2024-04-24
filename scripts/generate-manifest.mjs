@@ -43,17 +43,22 @@ function getLanguage(output) {
             "#include <any>",
             "#include <map>",
             "#include <optional>",
-            "#include <string>",
-            "#include <tuple>",
+            "#include <string_view>",
             "#include <vector>",
             "",
-            "namespace ReactTestApp",
+            "namespace ReactApp",
             "{",
+            // Note that we can only use `std::string_view` here because we
+            // embed the app manifest directly in the binary and can make
+            // lifetime guarantees for strings.
+            "    using JSONObject = std::map<std::string_view, std::any>;",
+            "",
           ].join("\n"),
           footer: [
-            "    std::optional<std::tuple<Manifest, std::string>> GetManifest(const char *const json = nullptr);",
+            "    Manifest GetManifest();",
+            "    std::string_view GetManifestChecksum();",
             "",
-            "}  // namespace ReactTestApp",
+            "}  // namespace ReactApp",
             "",
           ].join("\n"),
         },
@@ -62,11 +67,14 @@ function getLanguage(output) {
           return `${nullable(propType, required)} ${name};`;
         },
         objectProperty: (name, required) => {
-          const propType = `std::map<std::string, std::any>`;
+          const propType = "JSONObject";
           return `${nullable(propType, required)} ${name};`;
         },
         stringProperty: (name, required) => {
-          return `${nullable("std::string", required)} ${name};`;
+          // Note that we can only use `std::string_view` here because we embed
+          // the app manifest directly in the binary and can make lifetime
+          // guarantees for strings.
+          return `${nullable("std::string_view", required)} ${name};`;
         },
         structBegin: (name) => `struct ${typename(name)} {`,
         structEnd: `};`,

@@ -116,7 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(ReactAppWin32Dir)\Main.cpp" />
-    <ClCompile Include="$(ReactAppSharedDir)\Manifest.cpp" />
     <ClCompile Include="$(ReactAppSharedDir)\ReactInstance.cpp" />
     <ClCompile Include="AutolinkedNativeModules.g.cpp" />
     <ClCompile Include="$(ReactAppWin32Dir)\pch.cpp">
@@ -138,13 +137,10 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ReactNativeWindowsTargets">
-    <Import Project="$(ReactAppSharedDir)\ValidateManifest.targets" />
+    <Import Project="$(ReactAppSharedDir)\EmbedManifest.targets" />
     <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Composition.CppApp.targets" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Composition.CppApp.targets')" />
     <!-- ReactTestApp additional targets -->
   </ImportGroup>
-  <ItemGroup>
-    <PackageReference Include="nlohmann.json" Version="3.11.2" />
-  </ItemGroup>
   <Target Name="EnsureReactNativeWindowsTargets" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references targets in your node_modules\react-native-windows folder. The missing file is {0}.</ErrorText>

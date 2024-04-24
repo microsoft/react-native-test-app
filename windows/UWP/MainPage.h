@@ -54,18 +54,17 @@ namespace winrt::ReactTestApp::implementation
         using Base = MainPageT;
 
         ::ReactTestApp::ReactInstance reactInstance_;
-        std::string manifestChecksum_;
 
         void InitializeDebugMenu();
-        void InitializeReactMenu(std::optional<::ReactTestApp::Manifest>);
+        void InitializeReactMenu(::ReactApp::Manifest);
         void InitializeTitleBar();
 
         bool IsPresenting();
 
         bool LoadJSBundleFrom(::ReactTestApp::JSBundleSource);
-        void LoadReactComponent(::ReactTestApp::Component const &);
+        void LoadReactComponent(::ReactApp::Component const &);
 
-        void OnComponentsRegistered(std::vector<::ReactTestApp::Component>);
+        void OnComponentsRegistered(std::vector<::ReactApp::Component>);
 
         void OnCoreTitleBarLayoutMetricsChanged(
             Windows::ApplicationModel::Core::CoreApplicationViewTitleBar const &,

@@ -4,7 +4,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{D2B221C0-0781-4D20-8BF1-D88684662A5D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ReactTestAppTests</RootNamespace>
+    <RootNamespace>ReactAppTests</RootNamespace>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
   <PropertyGroup Label="NuGet">
@@ -67,19 +67,16 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <UseFullPaths>true</UseFullPaths>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories);$(ReactAppProjectDir)\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies);Manifest.obj;pch.obj</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
@@ -99,24 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ManifestTests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="pch.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="manifestTestFiles\simpleManifest.json">
-      <DeploymentContent>true</DeploymentContent>
-    </Text>
-    <Text Include="manifestTestFiles\withComplexInitialProperties.json">
-      <DeploymentContent>true</DeploymentContent>
-    </Text>
-    <Text Include="manifestTestFiles\withMultipleComponents.json">
-      <DeploymentContent>true</DeploymentContent>
-    </Text>
+    <ClCompile Include="Tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

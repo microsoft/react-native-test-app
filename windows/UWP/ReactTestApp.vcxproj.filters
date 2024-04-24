@@ -16,7 +16,6 @@
     <ClCompile Include="$(ReactAppCommonDir)\AppRegistry.cpp" />
     <ClCompile Include="$(ProjectDir)\AutolinkedNativeModules.g.cpp" />
     <ClCompile Include="$(ReactAppUniversalDir)\MainPage.cpp" />
-    <ClCompile Include="$(ReactAppSharedDir)\Manifest.cpp" />
     <ClCompile Include="$(ReactAppSharedDir)\ReactInstance.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)\module.g.cpp" />
   </ItemGroup>

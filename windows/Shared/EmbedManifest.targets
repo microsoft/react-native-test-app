@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <EmbedManifestScript>$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\scripts\embed-manifest\cpp.mjs</EmbedManifestScript>
+    <ReactAppManifest>$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ReactAppManifest>
+    <ReactAppManifestSource>$(MSBuildProjectDirectory)\..\..\Manifest.g.cpp</ReactAppManifestSource>
+  </PropertyGroup>
+  <Target Name="EmbedManifest" Inputs="$(ReactAppManifest)" Outputs="$(ReactAppManifestSource)" BeforeTargets="PrepareForBuild">
+    <Exec Command="node $(EmbedManifestScript)" WorkingDirectory="$(SolutionDir)" />
+  </Target>
+</Project>
