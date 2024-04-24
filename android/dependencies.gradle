@@ -42,7 +42,7 @@ ext {
         // be using AGP 7.2.2 (see `androidPluginVersion` above).
         // Note that even though newer 23.x versions exist, we'll stick to AGP's
         // default. See also
-        // https://developer.android.com/studio/releases/gradle-plugin#compatibility-7-3-0
+        // https://developer.android.com/build/releases/past-releases/agp-7-3-0-release-notes
         ndkVersion = "23.1.7779620"
     }
 
