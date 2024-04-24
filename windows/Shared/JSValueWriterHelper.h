@@ -19,7 +19,7 @@ namespace ReactApp
             writer.WriteBoolean(std::any_cast<bool>(value));
         } else if (value.type() == typeid(std::int64_t)) {
             writer.WriteInt64(std::any_cast<std::int64_t>(value));
-        } else if (value.type() == typeid(float) || value.type() == typeid(double)) {
+        } else if (value.type() == typeid(double)) {
             writer.WriteDouble(std::any_cast<double>(value));
         } else if (value.type() == typeid(std::string_view)) {
             writer.WriteString(winrt::to_hstring(std::any_cast<std::string_view>(value)));
