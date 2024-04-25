@@ -18,7 +18,7 @@ concurrency:
 jobs:
   lint-commit:
     name: "lint commit message"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
@@ -37,8 +37,8 @@ jobs:
       pull-requests: write # create code reviews (suggestion-bot)
     strategy:
       matrix:
-        platform: [macos, windows]
-    runs-on: ${{ matrix.platform }}-latest
+        runner: [macos-14, windows-2022]
+    runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -68,7 +68,7 @@ jobs:
           git diff --exit-code
         shell: bash
       - name: ClangFormat
-        if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
+        if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -77,7 +77,7 @@ jobs:
           #       account.
           scripts/clang-format-diff.sh || true
       - name: CocoaPods
-        if: ${{ matrix.platform == 'macos' }}
+        if: ${{ runner.os == 'macOS' }}
         run: |
           echo "::add-matcher::.github/rubocop.json"
           yarn lint:rb
@@ -99,7 +99,7 @@ jobs:
           # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
           #       Ignore errors until we can create a GitHub PAT from a system
           #       account.
-          if [[ ${{ matrix.platform }} == macos ]]; then
+          if [[ ${{ runner.os }} == macOS ]]; then
             yarn format:js
             if [[ -n "$GITHUB_TOKEN" ]]; then
               git diff | yarn suggestion-bot
@@ -115,20 +115,20 @@ jobs:
           yarn test:js
         shell: bash
       - name: ktlint
-        if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
+        if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         run: |
           brew install ktlint
           echo "::add-matcher::.github/ktlint.json"
           yarn lint:kt
           echo "::remove-matcher owner=ktlint::"
       - name: SwiftFormat
-        if: ${{ github.event_name == 'pull_request' && matrix.platform == 'macos' }}
+        if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         run: |
           echo "::add-matcher::.github/swiftformat.json"
           yarn format:swift --lint
           echo "::remove-matcher owner=swiftformat::"
       - name: SwiftLint
-        if: ${{ matrix.platform == 'macos' }}
+        if: ${{ runner.os == 'macOS' }}
         run: |
           brew install swiftlint
           echo "::add-matcher::.github/swiftlint.json"
@@ -255,8 +255,8 @@ jobs:
     name: "Android"
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+        runner: [ubuntu-22.04, windows-2022]
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -303,8 +303,8 @@ jobs:
     strategy:
       matrix:
         template: [all, android]
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+        runner: [ubuntu-22.04, windows-2022]
+    runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -561,7 +561,7 @@ jobs:
     timeout-minutes: 60
   windows:
     name: "Windows"
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
       matrix:
         platform: [ARM64, x64]
@@ -617,7 +617,7 @@ jobs:
     timeout-minutes: 60
   windows-template:
     name: "Windows [template]"
-    runs-on: windows-latest
+    runs-on: windows-2022
     if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
@@ -666,7 +666,7 @@ jobs:
       - macos-template
       - windows
       - windows-template
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -693,7 +693,7 @@ jobs:
       contents: read
       pull-requests: write
     if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Label
         uses: actions/labeler@v5.0.0
