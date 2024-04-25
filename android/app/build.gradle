@@ -299,7 +299,6 @@ dependencies {
     }
     implementation libraries.androidCoreKotlinExtensions
     implementation libraries.androidRecyclerView
-    implementation libraries.androidSwipeRefreshLayout
     implementation libraries.materialComponents
 
     testImplementation libraries.junit
