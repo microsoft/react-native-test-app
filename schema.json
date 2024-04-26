@@ -296,6 +296,16 @@
       ],
       "type": "object",
       "properties": {
+        "applicationCategoryType": {
+          "description": "The category that best describes the app for the App Store.",
+          "markdownDescription": "The category that best describes the app for the App Store.\n\nThe equivalent key in `Info.plist` is\n[`LSApplicationCategoryType`](https://developer.apple.com/documentation/bundleresources/information_property_list/lsapplicationcategorytype).",
+          "type": "string"
+        },
+        "humanReadableCopyright": {
+          "description": "A human-readable copyright notice for the bundle.",
+          "markdownDescription": "A human-readable copyright notice for the bundle.\n\nThe equivalent key in `Info.plist` is\n[`NSHumanReadableCopyright`](https://developer.apple.com/documentation/bundleresources/information_property_list/nshumanreadablecopyright).",
+          "type": "string"
+        },
         "reactNativePath": {
           "description": "Sets a custom path to React Native for macOS. Useful for when `require(\"react-native-macos\")` does not return the desired path.",
           "type": "string"

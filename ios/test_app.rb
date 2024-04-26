@@ -153,6 +153,16 @@ def generate_info_plist!(project_root, target_platform, destination)
     info['UIAppFonts'] = fonts unless target_platform == :macos
   end
 
+  if target_platform == :macos
+    config = manifest[target_platform.to_s]
+    unless config.nil?
+      category = config['applicationCategoryType']
+      info['LSApplicationCategoryType'] = category unless category.nil?
+      copyright = config['humanReadableCopyright']
+      info['NSHumanReadableCopyright'] = copyright unless copyright.nil?
+    end
+  end
+
   plist.value = CFPropertyList.guess(info)
   plist.save(infoplist_dst, CFPropertyList::List::FORMAT_XML, { :formatted => true })
 end
