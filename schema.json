@@ -25,7 +25,7 @@
           "type": "string"
         },
         "buildNumber": {
-          "description": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store.",
+          "description": "Similar to [`version`](#version), but is not shown to users. This is a required key for App Store.",
           "markdownDescription": "Similar to [`version`](#version), but is not shown to users. This is a required\nkey for App Store.\n\nThe equivalent key in `Info.plist` is\n[`CFBundleVersion`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion).\n\nIntroduced in\n[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).",
           "type": "string"
         },
@@ -62,19 +62,24 @@
           ]
         },
         "codeSignEntitlements": {
-          "description": "Specifies the path to a custom\n[Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements)\nfile. The path should be relative to `app.json`.",
+          "description": "Specifies the path to a custom [Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements) file. The path should be relative to `app.json`.",
           "markdownDescription": "Specifies the path to a custom\n[Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements)\nfile. The path should be relative to `app.json`.\n\nThis is the same as setting `CODE_SIGN_ENTITLEMENTS` in Xcode.\n\nIntroduced in\n[0.9.7](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.7).",
           "type": "string"
         },
         "codeSignIdentity": {
-          "description": "Sets the\n<a href='https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html#//apple_ref/doc/uid/TP40005929-CH4-SW1'>code\nsigning identity</a> to use when signing code.",
+          "description": "Sets the <a href='https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html#//apple_ref/doc/uid/TP40005929-CH4-SW1'>code signing identity</a> to use when signing code.",
           "markdownDescription": "Sets the\n<a href='https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html#//apple_ref/doc/uid/TP40005929-CH4-SW1'>code\nsigning identity</a> to use when signing code.\n\nThis is the same as setting `CODE_SIGN_IDENTITY` in Xcode.\n\nIntroduced in\n[0.9.7](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.7).",
           "type": "string"
         },
         "developmentTeam": {
-          "description": "Sets the\n<a href='https://help.apple.com/xcode/mac/current/#/dev23aab79b4'>development\nteam</a> that the app should be assigned to.",
+          "description": "Sets the <a href='https://help.apple.com/xcode/mac/current/#/dev23aab79b4'>development team</a> that the app should be assigned to.",
           "markdownDescription": "Sets the\n<a href='https://help.apple.com/xcode/mac/current/#/dev23aab79b4'>development\nteam</a> that the app should be assigned to.\n\nThis is the same as setting `DEVELOPMENT_TEAM` in Xcode.\n\nIntroduced in\n[0.9.7](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.7).",
           "type": "string"
+        },
+        "privacyManifest": {
+          "description": "The privacy manifest is a property list that records the information regarding the types of data collected and the required reasons APIs your app or third-party SDK use.",
+          "markdownDescription": "The privacy manifest is a property list that records the information regarding\nthe types of data collected and the required reasons APIs your app or\nthird-party SDK use.\n\n- The types of data collected by your app or third-party SDK must be provided on\n  all platforms.\n- The required reasons APIs your app or third-party SDK uses must be provided on\n  iOS, iPadOS, tvOS, visionOS, and watchOS.\n\nBy default, a `PrivacyInfo.xcprivacy` is always generated with the following\nvalues:\n\n```json\n{\n  \"NSPrivacyTracking\": false,\n  \"NSPrivacyTrackingDomains\": [],\n  \"NSPrivacyCollectedDataTypes\": [],\n  \"NSPrivacyAccessedAPITypes\": [\n    {\n      \"NSPrivacyAccessedAPIType\": \"NSPrivacyAccessedAPICategoryFileTimestamp\",\n      \"NSPrivacyAccessedAPITypeReasons\": [\"C617.1\"]\n    },\n    {\n      \"NSPrivacyAccessedAPIType\": \"NSPrivacyAccessedAPICategorySystemBootTime\",\n      \"NSPrivacyAccessedAPITypeReasons\": [\"35F9.1\"]\n    },\n    {\n      \"NSPrivacyAccessedAPIType\": \"NSPrivacyAccessedAPICategoryUserDefaults\",\n      \"NSPrivacyAccessedAPITypeReasons\": [\"CA92.1\"]\n    }\n  ]\n}\n```\n\nFor more details, read Apple's documentation on\n[Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files).",
+          "type": "object"
         }
       }
     },
@@ -120,22 +125,22 @@
           "type": "string"
         },
         "version": {
-          "description": "The app version shown to users. The required format is three period-separated\nintegers, such as 1.3.11.",
+          "description": "The app version shown to users. The required format is three period-separated integers, such as 1.3.11.",
           "markdownDescription": "The app version shown to users. The required format is three period-separated\nintegers, such as 1.3.11.\n\n- **Android**: Equivalent to setting\n  [`versionName`](https://developer.android.com/studio/publish/versioning#appversioning).\n- **iOS**: This is the same as setting\n  [`CFBundleShortVersionString`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring)\n  in `Info.plist`.\n- **macOS**: This is the same as setting\n  [`CFBundleShortVersionString`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring)\n  in `Info.plist`.\n- **Windows**: Please see [`windows.appxmanifest`](#windows.appxmanifest) for\n  how to use a custom\n  [app package manifest](https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/appx-package-manifest)\n  instead.\n\nIntroduced in\n[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).",
           "type": "string"
         },
         "bundleRoot": {
-          "description": "Specifies the root of the bundle file name. E.g., if the bundle file is\n`index.[platform].bundle`, `index` is the bundle root.",
+          "description": "Specifies the root of the bundle file name. E.g., if the bundle file is `index.[platform].bundle`, `index` is the bundle root.",
           "markdownDescription": "Specifies the root of the bundle file name. E.g., if the bundle file is\n`index.[platform].bundle`, `index` is the bundle root.\n\nDefaults to `index` and `main`.\n\nWhen set, the test app will look for the following files on startup:\n\n- `myRoot.[platform].jsbundle`\n- `myRoot.[platform].bundle`\n- `myRoot.native.jsbundle`\n- `myRoot.native.bundle`\n- `myRoot.jsbundle`\n- `myRoot.bundle`\n\nIntroduced in\n[0.9.0](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.0).",
           "type": "string"
         },
         "singleApp": {
-          "description": "In single-app mode, the component with the specified slug gets launched\nautomatically, essentially behaving as a normal app.",
+          "description": "In single-app mode, the component with the specified slug gets launched automatically, essentially behaving as a normal app.",
           "markdownDescription": "In single-app mode, the component with the specified slug gets launched\nautomatically, essentially behaving as a normal app.\n\nDefaults to multi-app mode.\n\nFor more details, see [its dedicated page](Single-app-Mode).\n\nIntroduced in\n[1.3.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.3.0).",
           "type": "string"
         },
         "components": {
-          "description": "All components that should be accessible from the home screen should be declared\nunder this property. Each component must have `appKey` set, i.e. the name that\nyou passed to `AppRegistry.registerComponent`.",
+          "description": "All components that should be accessible from the home screen should be declared under this property. Each component must have `appKey` set, i.e. the name that you passed to `AppRegistry.registerComponent`.",
           "markdownDescription": "All components that should be accessible from the home screen should be declared\nunder this property. Each component must have `appKey` set, i.e. the name that\nyou passed to `AppRegistry.registerComponent`.\n\n```javascript\nAppRegistry.registerComponent(\"Example\", () => Example);\n```\n\nFor each entry, you can declare additional (optional) properties:\n\n```javascript\n{\n  \"components\": [\n    {\n      // The app key passed to `AppRegistry.registerComponent()`\n      \"appKey\": \"Example\",\n\n      // [Optional] Name to be displayed on home screen\n      \"displayName\": \"App\",\n\n      // [Optional] Properties that should be passed to your component\n      \"initialProperties\": {\n        \"concurrentRoot\": false\n      },\n\n      // [Optional] The style in which to present your component.\n      // Valid values are: \"modal\"\n      \"presentationStyle\": \"\",\n\n      // [Optional] URL slug that uniquely identifies this component.\n      // Used for deep linking.\n      \"slug\": \"\"\n    }\n  ]\n}\n```\n\n> [!NOTE]\n>\n> [Concurrent React](https://reactjs.org/blog/2022/03/29/react-v18.html#what-is-concurrent-react)\n> is enabled by default when you enable New Architecture starting with 0.71. If\n> this is undesirable, you can opt out by adding `\"concurrentRoot\": false` to\n> `initialProperties`. This is not recommended, and won't be possible from 0.74\n> on.\n\n<a name='android-adding-fragments' />\n\n#### [Android] Adding Fragments\n\nOn Android, you can add fragments to the home screen by using their fully\nqualified class names, e.g. `com.example.app.MyFragment`, as app key:\n\n```javascript\n\"components\": [\n  {\n    \"appKey\": \"com.example.app.MyFragment\",\n    \"displayName\": \"App\"\n  }\n]\n```\n\nIf you need to get the `ReactNativeHost` instance within `MyFragment`, you can\nrequest it as a service from the context:\n\n```java\n@Override\n@SuppressLint(\"WrongConstant\")\npublic void onAttach(@NonNull Context context) {\n    super.onAttach(context);\n\n    ReactNativeHost reactNativeHost = (ReactNativeHost)\n        context.getSystemService(\"service:reactNativeHostService\");\n    ReactInstanceManager reactInstanceManager =\n        reactNativeHost.getReactInstanceManager();\n}\n```\n\n<a name='ios-macos-adding-view-controllers' />\n\n#### [iOS, macOS] Adding View Controllers\n\nOn iOS/macOS, you can have native view controllers on the home screen by using\ntheir Objective-C names as app key (Swift classes can declare Objective-C names\nwith the\n[`@objc`](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/attributes/#objc)\nattribute):\n\n```javascript\n\"components\": [\n  {\n    \"appKey\": \"RTAMyViewController\",\n    \"displayName\": \"App\"\n  }\n]\n```\n\nThe view controller must implement an initializer that accepts a\n`ReactNativeHost` instance:\n\n```objc\n@interface MyViewController : UIViewController\n- (nonnull instancetype)initWithHost:(nonnull ReactNativeHost *)host;\n@end\n```\n\nOr in Swift:\n\n```swift\n@objc(MyViewController)\nclass MyViewController: UIViewController {\n    @objc init(host: ReactNativeHost) {\n        // Initialize\n    }\n}\n```",
           "type": "array",
           "items": {
@@ -181,7 +186,7 @@
   "type": "object",
   "properties": {
     "resources": {
-      "description": "Here you should declare all resources that should be bundled with the app. The\nproperty can be a list of paths to resources:",
+      "description": "Here you should declare all resources that should be bundled with the app. The property can be a list of paths to resources:",
       "markdownDescription": "Here you should declare all resources that should be bundled with the app. The\nproperty can be a list of paths to resources:\n\n```javascript\n\"resources\": [\n  \"dist/assets\",\n  \"dist/main.jsbundle\"\n]\n```\n\nOr you can declare platform specific resources using platform names as key:\n\n```javascript\n\"resources\": {\n  \"android\": [\n    \"dist/res\",\n    \"dist/main.android.jsbundle\"\n  ],\n  \"ios\": [\n    \"dist/assets\",\n    \"dist/main.ios.jsbundle\"\n  ],\n  \"macos\": [\n    \"dist/assets\",\n    \"dist/main.macos.jsbundle\"\n  ],\n  \"windows\": [\n    \"dist/assets\",\n    \"dist/main.windows.bundle\"\n  ]\n}\n```\n\nA path must be relative to the path of `app.json`, and can point to both a file\nor a directory.",
       "oneOf": [
         {
@@ -235,7 +240,7 @@
           "type": "string"
         },
         "versionCode": {
-          "description": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).",
+          "description": "A positive integer used as an internal version number. Google uses this number to determine whether one version is more recent than another. See [Version your app](https://developer.android.com/studio/publish/versioning#appversioning) for more on how it is used and how it differs from [`version`](#version).",
           "markdownDescription": "A positive integer used as an internal version number. Google uses this number\nto determine whether one version is more recent than another. See\n[Version your app](https://developer.android.com/studio/publish/versioning#appversioning)\nfor more on how it is used and how it differs from [`version`](#version).\n\nIntroduced in\n[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).",
           "type": "number",
           "minimum": 0
@@ -246,7 +251,7 @@
           "type": "string"
         },
         "signingConfigs": {
-          "description": "Use this to set the\n<a href='https://developer.android.com/studio/publish/app-signing'>signing\nconfigurations</a> for the app.",
+          "description": "Use this to set the <a href='https://developer.android.com/studio/publish/app-signing'>signing configurations</a> for the app.",
           "markdownDescription": "Use this to set the\n<a href='https://developer.android.com/studio/publish/app-signing'>signing\nconfigurations</a> for the app.\n\nThe JSON schema follows the Gradle DSL very closely. Below is what one would add\nfor the debug and release flavors:\n\n```javascript\n{\n  \"android\": {\n    \"signingConfigs\": {\n      \"debug\": {                          // optional\n        \"keyAlias\": \"androiddebugkey\",    // defaults to \"androiddebugkey\"\n        \"keyPassword\": \"android\",         // defaults to \"android\n        \"storeFile\": \"debug.keystore\",    // required\n        \"storePassword\": \"android\"        // defaults to \"android\n      },\n      \"release\": {                        // optional\n        \"keyAlias\": \"androiddebugkey\",    // defaults to \"androiddebugkey\"\n        \"keyPassword\": \"android\",         // defaults to \"android\n        \"storeFile\": \"release.keystore\",  // required\n        \"storePassword\": \"android\"        // defaults to \"android\n      }\n    }\n  }\n}\n```\n\nIntroduced in\n[0.11.0](https://github.com/microsoft/react-native-test-app/releases/tag/0.11.0).",
           "type": "object",
           "properties": {
@@ -332,22 +337,22 @@
       "type": "object",
       "properties": {
         "appxManifest": {
-          "description": "Sets the path to your\n<a href='https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/appx-package-manifest'>app\npackage manifest</a>. If none is set, a default manifest will be provided.\nChanges to this property will not be automatically be picked up; you need to\nre-run `npx install-windows-test-app` to update the solution.",
+          "description": "Sets the path to your <a href='https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/appx-package-manifest'>app package manifest</a>. If none is set, a default manifest will be provided. Changes to this property will not be automatically be picked up; you need to re-run `npx install-windows-test-app` to update the solution.",
           "markdownDescription": "Sets the path to your\n<a href='https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/appx-package-manifest'>app\npackage manifest</a>. If none is set, a default manifest will be provided.\nChanges to this property will not be automatically be picked up; you need to\nre-run `npx install-windows-test-app` to update the solution.\n\nIntroduced in\n[0.5.5](https://github.com/microsoft/react-native-test-app/releases/tag/0.5.5).",
           "type": "string"
         },
         "certificateKeyFile": {
-          "description": "The path to the certificate to use. If specified, it will also enable package\nsigning. Changes to this property will not be automatically be picked up; you\nneed to re-run `npx install-windows-test-app` to update the solution.",
+          "description": "The path to the certificate to use. If specified, it will also enable package signing. Changes to this property will not be automatically be picked up; you need to re-run `npx install-windows-test-app` to update the solution.",
           "markdownDescription": "The path to the certificate to use. If specified, it will also enable package\nsigning. Changes to this property will not be automatically be picked up; you\nneed to re-run `npx install-windows-test-app` to update the solution.\n\nIntroduced in\n[1.1.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.1.0).",
           "type": "string"
         },
         "certificatePassword": {
-          "description": "The password for the private key in the certificate. Leave unset if no password.\nChanges to this property will not be automatically be picked up; you need to\nre-run `npx install-windows-test-app` to update the solution.",
+          "description": "The password for the private key in the certificate. Leave unset if no password. Changes to this property will not be automatically be picked up; you need to re-run `npx install-windows-test-app` to update the solution.",
           "markdownDescription": "The password for the private key in the certificate. Leave unset if no password.\nChanges to this property will not be automatically be picked up; you need to\nre-run `npx install-windows-test-app` to update the solution.\n\nIntroduced in\n[1.1.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.1.0).",
           "type": "string"
         },
         "certificateThumbprint": {
-          "description": "This value must match the thumbprint in the signing certificate, or be unset.\nChanges to this property will not be automatically be picked up; you need to\nre-run `npx install-windows-test-app` to update the solution.",
+          "description": "This value must match the thumbprint in the signing certificate, or be unset. Changes to this property will not be automatically be picked up; you need to re-run `npx install-windows-test-app` to update the solution.",
           "markdownDescription": "This value must match the thumbprint in the signing certificate, or be unset.\nChanges to this property will not be automatically be picked up; you need to\nre-run `npx install-windows-test-app` to update the solution.\n\nIntroduced in\n[1.1.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.1.0).",
           "type": "string"
         }

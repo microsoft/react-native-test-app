@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		191A67882BDFD9E90094F246 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 191A67872BDFD9E90094F246 /* PrivacyInfo.xcprivacy */; };
 		193EF063247A736200BE8C79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF062247A736200BE8C79 /* AppDelegate.swift */; };
 		193EF065247A736200BE8C79 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF064247A736200BE8C79 /* ViewController.swift */; };
 		193EF067247A736300BE8C79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 193EF066247A736300BE8C79 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		191A67872BDFD9E90094F246 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
 		193EF05F247A736200BE8C79 /* ReactTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		193EF062247A736200BE8C79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		193EF064247A736200BE8C79 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -61,7 +63,7 @@
 		19B368BC24B12C24002CCEFF /* ReactTestApp.common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.common.xcconfig; sourceTree = "<group>"; };
 		19B368BD24B12C24002CCEFF /* ReactTestApp.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.debug.xcconfig; sourceTree = "<group>"; };
 		19B368BE24B12C24002CCEFF /* ReactTestApp.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.release.xcconfig; sourceTree = "<group>"; };
-		19C4C89227710D8500157870 /* Manifest+Embedded.g.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Manifest+Embedded.g.swift"; path = "Manifest+Embedded.g.swift"; sourceTree = SOURCE_ROOT; };
+		19C4C89227710D8500157870 /* Manifest+Embedded.g.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Manifest+Embedded.g.swift"; sourceTree = SOURCE_ROOT; };
 		19E0B90C27E9F8FD006FD558 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../Localizations/en.lproj/Main.strings; sourceTree = "<group>"; };
 		19E791BF24B08E1400FA6468 /* ReactTestAppTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTestAppTests.swift; sourceTree = "<group>"; };
 		19E791C224B08E4D00FA6468 /* ReactTestAppUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTestAppUITests.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				193EF066247A736300BE8C79 /* Assets.xcassets */,
 				193EF068247A736300BE8C79 /* Main.storyboard */,
 				193EF06B247A736300BE8C79 /* Info.plist */,
+				191A67872BDFD9E90094F246 /* PrivacyInfo.xcprivacy */,
 				193EF06C247A736300BE8C79 /* ReactTestApp.entitlements */,
 				19B368BC24B12C24002CCEFF /* ReactTestApp.common.xcconfig */,
 				19B368BD24B12C24002CCEFF /* ReactTestApp.debug.xcconfig */,
@@ -264,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				191A67882BDFD9E90094F246 /* PrivacyInfo.xcprivacy in Resources */,
 				193EF067247A736300BE8C79 /* Assets.xcassets in Resources */,
 				193EF06A247A736300BE8C79 /* Main.storyboard in Resources */,
 			);

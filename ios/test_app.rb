@@ -168,6 +168,51 @@ def generate_info_plist!(project_root, target_platform, destination)
   plist.save(infoplist_dst, CFPropertyList::List::FORMAT_XML, { :formatted => true })
 end
 
+def generate_privacy_manifest!(project_root, target_platform, destination)
+  privacy = {
+    'NSPrivacyTracking' => false,
+    'NSPrivacyTrackingDomains' => [],
+    'NSPrivacyCollectedDataTypes' => [],
+    'NSPrivacyAccessedAPITypes' => [
+      {
+        'NSPrivacyAccessedAPIType' => 'NSPrivacyAccessedAPICategoryFileTimestamp',
+        'NSPrivacyAccessedAPITypeReasons' => ['C617.1'],
+      },
+      {
+        'NSPrivacyAccessedAPIType' => 'NSPrivacyAccessedAPICategorySystemBootTime',
+        'NSPrivacyAccessedAPITypeReasons' => ['35F9.1'],
+      },
+      {
+        'NSPrivacyAccessedAPIType' => 'NSPrivacyAccessedAPICategoryUserDefaults',
+        'NSPrivacyAccessedAPITypeReasons' => ['CA92.1'],
+      },
+    ],
+  }
+
+  manifest = app_manifest(project_root)
+  config = manifest[target_platform.to_s] unless manifest.nil?
+  user_privacy_manifest = config && config['privacyManifest']
+  unless user_privacy_manifest.nil?
+    privacy_tracking = user_privacy_manifest['NSPrivacyTracking']
+    privacy['NSPrivacyTracking'] = privacy_tracking unless privacy_tracking.nil?
+
+    %w[
+      NSPrivacyTrackingDomains
+      NSPrivacyCollectedDataTypes
+      NSPrivacyAccessedAPITypes
+    ].each do |field|
+      value = user_privacy_manifest[field]
+      privacy[field] += value if value.is_a? Enumerable
+    end
+  end
+
+  plist = CFPropertyList::List.new
+  plist.value = CFPropertyList.guess(privacy)
+  plist.save(File.join(destination, 'PrivacyInfo.xcprivacy'),
+             CFPropertyList::List::FORMAT_XML,
+             { :formatted => true })
+end
+
 def react_native_pods(version)
   if version.zero? || version >= v(0, 71, 0)
     'use_react_native-0.71'
@@ -297,6 +342,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
   generate_assets_catalog!(project_root, target_platform, destination)
   generate_info_plist!(project_root, target_platform, destination)
+  generate_privacy_manifest!(project_root, target_platform, destination)
 
   # Copy localization files and replace instances of `ReactTestApp` with app display name
   product_name = display_name || name

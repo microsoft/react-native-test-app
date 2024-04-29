@@ -1018,7 +1018,7 @@ PODS:
     - React-jsi (= 0.73.24)
     - React-logger (= 0.73.24)
     - React-perflogger (= 0.73.24)
-  - ReactNativeHost (0.4.6):
+  - ReactNativeHost (0.4.7):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1028,7 +1028,7 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
-  - RNWWebStorage (0.2.4):
+  - RNWWebStorage (0.2.5):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1252,10 +1252,10 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 265991752129c54256f223defa0272509fe81ad7
   React-utils: fad5a988b6e23d8b98a4450408bfcc56d63ac85c
   ReactCommon: 67c1d3a5dafe396de7d497fe224c12217f8b6f49
-  ReactNativeHost: 339df34d3c2050f37e8909ade6693465e8a947f7
+  ReactNativeHost: 69c76dddefb1a795780b5292dad8817e2097f9cd
   ReactTestApp-DevSupport: c4abadbb90a8a9903400407e9857c2a2ef0343fb
   ReactTestApp-Resources: 9d83e280b173ba2ee053b8135730dff60f9ab674
-  RNWWebStorage: 0663af06cd0cf0e465b87e6144f85e0720ded82e
+  RNWWebStorage: ce8c1b8f1ced2ffd85024a0fac266a62087488a8
   SocketRocket: f6c6249082c011e6de2de60ed641ef8bbe0cfac9
   Yoga: 24ddb4963e2a3330df762423f0a9de2096325401
 
