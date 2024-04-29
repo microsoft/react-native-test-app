@@ -1,4 +1,4 @@
-# React Native Test App 
+# React Native Test App
 
 ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen)
 [![Open in Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&color=007acc&labelColor=444444&logoColor=007acc)](https://vscode.dev/github/microsoft/react-native-test-app)
