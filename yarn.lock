@@ -4686,9 +4686,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-remote-debugger@npm:^11.0.0":
-  version: 11.0.3
-  resolution: "appium-remote-debugger@npm:11.0.3"
+"appium-remote-debugger@npm:^11.1.0":
+  version: 11.1.1
+  resolution: "appium-remote-debugger@npm:11.1.1"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/support": "npm:^4.0.0"
@@ -4701,7 +4701,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/047db2a9b11f7970c0803c802c65b71894fe3ad1d15b6daa5532101e7ce4f042edf2862427d267289aa5eb41f8d6af32f932e5d66bfc22f9030ee1d3d7ec8bf9
+  checksum: 10c0/4329348aba4db743850635a19ab2e015f51c48570c6392154777d236cc4ce88abba714ba83d3fdfa51f12775ec8f655a6871ac0001ede98b1724a243d6f1b0b1
   languageName: node
   linkType: hard
 
@@ -4774,14 +4774,14 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^7.0.0":
-  version: 7.11.4
-  resolution: "appium-xcuitest-driver@npm:7.11.4"
+  version: 7.15.1
+  resolution: "appium-xcuitest-driver@npm:7.15.1"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
     appium-ios-device: "npm:^2.5.4"
     appium-ios-simulator: "npm:^6.1.2"
-    appium-remote-debugger: "npm:^11.0.0"
+    appium-remote-debugger: "npm:^11.1.0"
     appium-webdriveragent: "npm:^8.5.0"
     appium-xcode: "npm:^5.1.4"
     async-lock: "npm:^1.4.0"
@@ -4801,8 +4801,8 @@ __metadata:
     teen_process: "npm:^2.0.60"
     ws: "npm:^8.13.0"
   peerDependencies:
-    appium: ^2.4.1
-  checksum: 10c0/62b5e28df580a26da2f37750bbe3a426385acb95fa2c0860373e0aef045624ab3b9db4830b5e5a0c4cb2600abefc89092dc0031dda1a1ac43a60e8e8efa650fe
+    appium: ^2.5.4
+  checksum: 10c0/1b70d22cf41b04392dae87bd7fb2d6c351af97e7270a018519495213855f6eb1c46f9778a4ebdb890286e7ed3a6ffaaa7d749fecafa229b21f13ca89fbf64839
   languageName: node
   linkType: hard
 
