@@ -11,7 +11,7 @@
 		196C22622490CB7600449D3C /* React+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 196C22602490CB7600449D3C /* React+Compatibility.m */; };
 		196C7215232F1788006556ED /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C7214232F1788006556ED /* ReactInstance.swift */; };
 		196C724123319A85006556ED /* QRCodeScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C724023319A85006556ED /* QRCodeScannerViewController.swift */; };
-		197827FA27710D3400AEC655 /* Manifest+Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197827F927710D3400AEC655 /* Manifest+Decoder.swift */; };
+		197827FA27710D3400AEC655 /* Manifest+Embedded.g.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */; };
 		1988284524105BEC005057FF /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */; };
 		19A624A4258C95F000032776 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A624A3258C95F000032776 /* Session.swift */; };
 		19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D5232ED425003D8557 /* AppDelegate.swift */; };
@@ -50,7 +50,7 @@
 		196C7214232F1788006556ED /* ReactInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactInstance.swift; sourceTree = "<group>"; };
 		196C7216232F6CD9006556ED /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
 		196C724023319A85006556ED /* QRCodeScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerViewController.swift; sourceTree = "<group>"; };
-		197827F927710D3400AEC655 /* Manifest+Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Manifest+Decoder.swift"; sourceTree = "<group>"; };
+		197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Manifest+Embedded.g.swift"; sourceTree = SOURCE_ROOT; };
 		1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
 		1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
 		19A624A3258C95F000032776 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 				19ECD0D7232ED425003D8557 /* SceneDelegate.swift */,
 				19ECD0D9232ED425003D8557 /* ContentView.swift */,
 				192DD200240FCAF5004E9CEB /* Manifest.swift */,
-				197827F927710D3400AEC655 /* Manifest+Decoder.swift */,
+				197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */,
 				196C724023319A85006556ED /* QRCodeScannerViewController.swift */,
 				196C7214232F1788006556ED /* ReactInstance.swift */,
 				19A624A3258C95F000032776 /* Session.swift */,
@@ -164,7 +164,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 19ECD0FC232ED428003D8557 /* Build configuration list for PBXNativeTarget "ReactTestApp" */;
 			buildPhases = (
-				1936CB1C2768EC280085FD98 /* Validate Manifest */,
+				1936CB1C2768EC280085FD98 /* Embed Manifest */,
 				19ECD0CE232ED425003D8557 /* Sources */,
 				19ECD0CF232ED425003D8557 /* Frameworks */,
 				19ECD0D0232ED425003D8557 /* Resources */,
@@ -305,7 +305,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# https://github.com/facebook/react-native/blob/0.74-stable/packages/react-native/scripts/react-native-xcode.sh#L13-L28\nif [[ ! \"$SKIP_BUNDLING_METRO_IP\" && \"$CONFIGURATION\" = *Debug* && ! \"$PLATFORM_NAME\" == *simulator ]]; then\n  for num in 0 1 2 3 4 5 6 7 8; do\n    IP=$(ipconfig getifaddr en${num} || echo \"\")\n    if [ ! -z \"$IP\" ]; then\n      break\n    fi\n  done\n  if [ -z \"$IP\" ]; then\n    IP=$(ifconfig | grep 'inet ' | grep -v ' 127.' | grep -v ' 169.254.' |cut -d\\   -f2  | awk 'NR==1{print $1}')\n  fi\n  echo \"$IP\" > \"$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/ip.txt\"\nfi\n";
 		};
-		1936CB1C2768EC280085FD98 /* Validate Manifest */ = {
+		1936CB1C2768EC280085FD98 /* Embed Manifest */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -315,14 +315,15 @@
 			);
 			inputPaths = (
 			);
-			name = "Validate Manifest";
+			name = "Embed Manifest";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(SRCROOT)/Manifest+Embedded.g.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source .env\nnode -e \"require('react-native-test-app/scripts/validate-manifest').validate('file', '$PODS_ROOT')\"\n";
+			shellScript = "source .env\nnode -e \"import('react-native-test-app/scripts/embed-manifest/swift.mjs')\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -334,7 +335,7 @@
 				19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */,
 				19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */,
 				192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */,
-				197827FA27710D3400AEC655 /* Manifest+Decoder.swift in Sources */,
+				197827FA27710D3400AEC655 /* Manifest+Embedded.g.swift in Sources */,
 				196C724123319A85006556ED /* QRCodeScannerViewController.swift in Sources */,
 				196C22622490CB7600449D3C /* React+Compatibility.m in Sources */,
 				196C7215232F1788006556ED /* ReactInstance.swift in Sources */,

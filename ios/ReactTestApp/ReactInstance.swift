@@ -218,10 +218,9 @@ typealias RTAView = NSView
 #endif
 
 func createReactRootView(_ reactInstance: ReactInstance) -> (RTAView, String)? {
-    guard let (manifest, _) = Manifest.fromFile(),
-          let slug = manifest.singleApp
-    else {
-        assertionFailure("Failed to load manifest")
+    let manifest = Manifest.load()
+    guard let slug = manifest.singleApp else {
+        assertionFailure("Missing slug for app component")
         return nil
     }
 

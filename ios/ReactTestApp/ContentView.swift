@@ -76,9 +76,7 @@ final class ContentViewController: UITableViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let (manifest, checksum) = Manifest.fromFile() else {
-            return
-        }
+        let manifest = Manifest.load()
 
         title = manifest.displayName
 
@@ -105,12 +103,12 @@ final class ContentViewController: UITableViewController {
                     }
 
                     let components = appKeys.map { Component(appKey: $0) }
-                    strongSelf.onComponentsRegistered(components, checksum: checksum)
+                    strongSelf.onComponentsRegistered(components, checksum: Manifest.checksum())
                 }
             )
         }
 
-        onComponentsRegistered(components, checksum: checksum)
+        onComponentsRegistered(components, checksum: Manifest.checksum())
 
         let bundleRoot = manifest.bundleRoot
         // As of 0.74, we can no longer instantiate on a background thread:
@@ -118,7 +116,7 @@ final class ContentViewController: UITableViewController {
         DispatchQueue.main.async { [weak self] in
             self?.reactInstance.initReact(bundleRoot: bundleRoot) {
                 if !components.isEmpty,
-                   let index = components.count == 1 ? 0 : Session.lastOpenedComponent(checksum)
+                   let index = components.count == 1 ? 0 : Session.lastOpenedComponent(Manifest.checksum())
                 {
                     DispatchQueue.main.async {
                         self?.navigate(to: components[index])

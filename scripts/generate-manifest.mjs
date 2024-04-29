@@ -118,17 +118,31 @@ function getLanguage(output) {
         options: {
           indent: "    ",
           level: 0,
+          footer: [
+            "extension Component {",
+            "    init(appKey: String) {",
+            "        self.init(",
+            "            appKey: appKey,",
+            "            displayName: nil,",
+            "            initialProperties: nil,",
+            "            presentationStyle: nil,",
+            "            slug: nil",
+            "        )",
+            "    }",
+            "}",
+            "",
+          ].join("\n"),
         },
         arrayProperty: (name, type, required) => {
           return `let ${name}: [${typename(type)}]${nullable(required)}`;
         },
         objectProperty: (name, required) => {
-          return `let ${name}: [AnyHashable: Any]${nullable(required)}`;
+          return `let ${name}: [String: Any]${nullable(required)}`;
         },
         stringProperty: (name, required) => {
           return `let ${name}: String${nullable(required)}`;
         },
-        structBegin: (name) => `struct ${typename(name)}: Decodable {`,
+        structBegin: (name) => `struct ${typename(name)} {`,
         structEnd: `}`,
       };
     }

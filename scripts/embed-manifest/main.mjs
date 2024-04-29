@@ -2,7 +2,7 @@
 import { createHash } from "node:crypto";
 import * as nodefs from "node:fs";
 import { findFile } from "../helpers.js";
-import { validateManifest } from "../validate-manifest.js";
+import { validate } from "./validate.mjs";
 
 /**
  * @param {(json: Record<string, unknown>, checksum: string, fs?: typeof nodefs) => string} generate
@@ -11,7 +11,7 @@ import { validateManifest } from "../validate-manifest.js";
  */
 export function main(generate, projectRoot = process.cwd(), fs = nodefs) {
   const manifestPath = findFile("app.json", projectRoot, fs);
-  const manifest = validateManifest(manifestPath, fs);
+  const manifest = validate(manifestPath, fs);
   if (typeof manifest === "number") {
     return manifest;
   }
@@ -32,5 +32,5 @@ export function main(generate, projectRoot = process.cwd(), fs = nodefs) {
  * @param {string} message
  */
 export function warn(message) {
-  console.warn("//", message);
+  console.warn("app.json:", message);
 }

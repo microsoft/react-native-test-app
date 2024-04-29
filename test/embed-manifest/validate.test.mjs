@@ -1,18 +1,18 @@
 // @ts-check
 import { deepEqual, equal, match, notEqual } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
-import { findFile as findFileActual } from "../scripts/helpers.js";
-import { validateManifest as validateManifestActual } from "../scripts/validate-manifest.js";
-import { fs, setMockFiles } from "./fs.mock.mjs";
-import { spy } from "./spy.mjs";
+import { validate as validateActual } from "../../scripts/embed-manifest/validate.mjs";
+import { findFile as findFileActual } from "../../scripts/helpers.js";
+import { fs, setMockFiles } from "../fs.mock.mjs";
+import { spy } from "../spy.mjs";
 
-describe("validate-manifest", () => {
+describe("validate()", () => {
   /** @type {typeof findFileActual} */
   const findFile = (file, startDir = undefined) =>
     findFileActual(file, startDir, fs);
 
-  /** @type {typeof validateManifestActual} */
-  const validateManifest = (p) => validateManifestActual(p, fs);
+  /** @type {typeof validateActual} */
+  const validate = (p) => validateActual(p, fs);
 
   afterEach(() => {
     setMockFiles();
@@ -35,7 +35,7 @@ describe("validate-manifest", () => {
   it("handles missing app manifest", (t) => {
     t.mock.method(console, "error", () => null);
 
-    equal(validateManifest(undefined), 1);
+    equal(validate(undefined), 1);
     equal(spy(console.error).calls.length, 1);
     deepEqual(spy(console.error).calls[0].arguments, [
       `Failed to find 'app.json'. Please make sure you're in the right directory.`,
@@ -48,7 +48,7 @@ describe("validate-manifest", () => {
       "app.json": `{ "name": "Example" }`,
     });
 
-    equal(validateManifest(findFile("app.json")), 1001);
+    equal(validate(findFile("app.json")), 1001);
     equal(spy(console.error).calls.length, 2);
     match(
       spy(console.error).calls[0].arguments[0],
@@ -79,7 +79,7 @@ describe("validate-manifest", () => {
       }`,
     });
 
-    equal(validateManifest(findFile("app.json")), 1001);
+    equal(validate(findFile("app.json")), 1001);
     equal(spy(console.error).calls.length, 2);
     match(
       spy(console.error).calls[0].arguments[0],
@@ -106,7 +106,7 @@ describe("validate-manifest", () => {
       }`,
     });
 
-    equal(validateManifest(findFile("app.json")), 1001);
+    equal(validate(findFile("app.json")), 1001);
     equal(spy(console.error).calls.length, 2);
     match(
       spy(console.error).calls[0].arguments[0],
@@ -128,7 +128,7 @@ describe("validate-manifest", () => {
       }`,
     });
 
-    equal(validateManifest(findFile("app.json")), 1003);
+    equal(validate(findFile("app.json")), 1003);
     match(
       spy(console.error).calls[0].arguments[0],
       /app.json: error: app.json is not a valid app manifest$/
@@ -156,7 +156,7 @@ describe("validate-manifest", () => {
       }`,
     });
 
-    equal(validateManifest(findFile("app.json")), 1003);
+    equal(validate(findFile("app.json")), 1003);
     match(
       spy(console.error).calls[0].arguments[0],
       /app.json: error: app.json is not a valid app manifest$/
@@ -183,7 +183,7 @@ describe("validate-manifest", () => {
         }`,
       });
 
-      equal(validateManifest(findFile("app.json")), 1003);
+      equal(validate(findFile("app.json")), 1003);
       match(
         spy(console.error).calls[0].arguments[0],
         /app.json: error: app.json is not a valid app manifest$/
@@ -238,7 +238,7 @@ describe("validate-manifest", () => {
         }
       }`,
     });
-    deepEqual(validateManifest(findFile("app.json")), {
+    deepEqual(validate(findFile("app.json")), {
       components: [
         {
           appKey: "Example",

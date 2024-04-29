@@ -10,7 +10,7 @@
 		192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192DD200240FCAF5004E9CEB /* Manifest.swift */; };
 		196C22622490CB7600449D3C /* React+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 196C22602490CB7600449D3C /* React+Compatibility.m */; };
 		196C7215232F1788006556ED /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C7214232F1788006556ED /* ReactInstance.swift */; };
-		197827FA27710D3400AEC655 /* Manifest+Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197827F927710D3400AEC655 /* Manifest+Decoder.swift */; };
+		197827FA27710D3400AEC655 /* Manifest+Embedded.g.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */; };
 		1988284524105BEC005057FF /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */; };
 		19A624A4258C95F000032776 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A624A3258C95F000032776 /* Session.swift */; };
 		19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D5232ED425003D8557 /* AppDelegate.swift */; };
@@ -48,7 +48,7 @@
 		196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ReactTestApp-Bridging-Header.h"; path = "../Shared/ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		196C7214232F1788006556ED /* ReactInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReactInstance.swift; path = ../Shared/ReactInstance.swift; sourceTree = "<group>"; };
 		196C7216232F6CD9006556ED /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
-		197827F927710D3400AEC655 /* Manifest+Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Manifest+Decoder.swift"; path = "../Shared/Manifest+Decoder.swift"; sourceTree = "<group>"; };
+		197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Manifest+Embedded.g.swift"; path = "Manifest+Embedded.g.swift"; sourceTree = SOURCE_ROOT; };
 		1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ReactTestApp.h"; path = "../Shared/UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
 		1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ReactTestApp.m"; path = "../Shared/UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
 		19A624A3258C95F000032776 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = ../Shared/Session.swift; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 				19ECD0D7232ED425003D8557 /* SceneDelegate.swift */,
 				19ECD0D9232ED425003D8557 /* ContentView.swift */,
 				192DD200240FCAF5004E9CEB /* Manifest.swift */,
-				197827F927710D3400AEC655 /* Manifest+Decoder.swift */,
+				197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */,
 				196C7214232F1788006556ED /* ReactInstance.swift */,
 				19A624A3258C95F000032776 /* Session.swift */,
 				196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */,
@@ -161,7 +161,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 19ECD0FC232ED428003D8557 /* Build configuration list for PBXNativeTarget "ReactTestApp" */;
 			buildPhases = (
-				1936CB1C2768EC280085FD98 /* Validate Manifest */,
+				1936CB1C2768EC280085FD98 /* Embed Manifest */,
 				19ECD0CE232ED425003D8557 /* Sources */,
 				19ECD0CF232ED425003D8557 /* Frameworks */,
 				19ECD0D0232ED425003D8557 /* Resources */,
@@ -282,7 +282,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1936CB1C2768EC280085FD98 /* Validate Manifest */ = {
+		1936CB1C2768EC280085FD98 /* Embed Manifest */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -292,14 +292,15 @@
 			);
 			inputPaths = (
 			);
-			name = "Validate Manifest";
+			name = "Embed Manifest";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(SRCROOT)/Manifest+Embedded.g.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source .env\nnode -e \"require('react-native-test-app/scripts/validate-manifest').validate('file', '$PODS_ROOT')\"\n";
+			shellScript = "source .env\nnode -e \"import('react-native-test-app/scripts/embed-manifest/swift.mjs')\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -311,7 +312,7 @@
 				19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */,
 				19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */,
 				192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */,
-				197827FA27710D3400AEC655 /* Manifest+Decoder.swift in Sources */,
+				197827FA27710D3400AEC655 /* Manifest+Embedded.g.swift in Sources */,
 				196C22622490CB7600449D3C /* React+Compatibility.m in Sources */,
 				196C7215232F1788006556ED /* ReactInstance.swift in Sources */,
 				19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */,
