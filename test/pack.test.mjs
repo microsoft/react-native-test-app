@@ -194,7 +194,7 @@ describe("npm pack", () => {
       "scripts/helpers.js",
       "scripts/init.mjs",
       "scripts/parseargs.mjs",
-      "scripts/schema.js",
+      "scripts/schema.mjs",
       "scripts/template.mjs",
       "test-app.gradle",
       "test_app.rb",

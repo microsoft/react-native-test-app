@@ -48,6 +48,7 @@
     "scripts/embed-manifest",
     "scripts/init.mjs",
     "scripts/parseargs.mjs",
+    "scripts/schema.mjs",
     "scripts/template.mjs",
     "test-app.gradle",
     "test_app.rb",

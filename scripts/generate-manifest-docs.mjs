@@ -1,9 +1,7 @@
-#!/usr/bin/env node
 // @ts-check
-
 import * as path from "node:path";
 import { readDocumentation } from "./generate-schema.mjs";
-import { generateSchema } from "./schema.js";
+import { generateSchema } from "./schema.mjs";
 
 async function generateManifestDocs() {
   const docs = await readDocumentation();
