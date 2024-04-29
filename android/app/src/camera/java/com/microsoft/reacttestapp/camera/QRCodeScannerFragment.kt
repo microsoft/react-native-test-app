@@ -59,11 +59,14 @@ class QRCodeScannerFragment(
                     for (barcode in barcodes) {
                         when (barcode.valueType) {
                             Barcode.TYPE_URL -> {
-                                // Close the scanner otherwise it will keep posting results
-                                scanner.close()
-                                mainThreadHandler.post {
-                                    dismiss()
-                                    consumer.accept(barcode.url?.url)
+                                barcode.url?.url?.let {
+                                    // Close the scanner otherwise it will keep
+                                    // posting results
+                                    scanner.close()
+                                    mainThreadHandler.post {
+                                        dismiss()
+                                        consumer.accept(it)
+                                    }
                                 }
                             }
                         }
