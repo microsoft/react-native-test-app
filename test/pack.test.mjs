@@ -301,6 +301,7 @@ describe("npm pack", () => {
       "windows/Win32/Images/Square44x44Logo.targetsize-32.png",
       "windows/Win32/Images/Square44x44Logo.targetsize-48.png",
       "windows/Win32/Images/StoreLogo.png",
+      "windows/Win32/Images/Wide310x150Logo.scale-200.png",
       "windows/Win32/Main.cpp",
       "windows/Win32/Main.h",
       "windows/Win32/Main.ico",
