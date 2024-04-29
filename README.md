@@ -1,4 +1,3 @@
-
 # React Native Test App 
 
 ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen)
