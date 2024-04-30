@@ -3,6 +3,7 @@ require('json')
 require('pathname')
 
 require_relative('pod_helpers')
+require_relative('xcode')
 
 def app_manifest(project_root)
   @app_manifest ||= {}
@@ -342,31 +343,31 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   if code_sign_entitlements.is_a? String
     package_root = File.dirname(find_file('app.json', project_root))
     entitlements = Pathname.new(File.join(package_root, code_sign_entitlements))
-    build_settings['CODE_SIGN_ENTITLEMENTS'] = entitlements.relative_path_from(destination).to_s
+    build_settings[CODE_SIGN_ENTITLEMENTS] = entitlements.relative_path_from(destination).to_s
   end
 
   code_sign_identity = platform_config('codeSignIdentity', project_root, target_platform)
-  build_settings['CODE_SIGN_IDENTITY'] = code_sign_identity if code_sign_identity.is_a? String
+  build_settings[CODE_SIGN_IDENTITY] = code_sign_identity if code_sign_identity.is_a? String
 
   development_team = platform_config('developmentTeam', project_root, target_platform)
   if development_team.is_a? String
-    build_settings['DEVELOPMENT_TEAM'] = development_team
-    tests_build_settings['DEVELOPMENT_TEAM'] = development_team
-    uitests_build_settings['DEVELOPMENT_TEAM'] = development_team
+    build_settings[DEVELOPMENT_TEAM] = development_team
+    tests_build_settings[DEVELOPMENT_TEAM] = development_team
+    uitests_build_settings[DEVELOPMENT_TEAM] = development_team
   end
 
   product_bundle_identifier = platform_config('bundleIdentifier', project_root, target_platform)
   if product_bundle_identifier.is_a? String
-    build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = product_bundle_identifier
-    tests_build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = "#{product_bundle_identifier}Tests"
-    uitests_build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = "#{product_bundle_identifier}UITests"
+    build_settings[PRODUCT_BUNDLE_IDENTIFIER] = product_bundle_identifier
+    tests_build_settings[PRODUCT_BUNDLE_IDENTIFIER] = "#{product_bundle_identifier}Tests"
+    uitests_build_settings[PRODUCT_BUNDLE_IDENTIFIER] = "#{product_bundle_identifier}UITests"
   end
 
-  build_settings['PRODUCT_DISPLAY_NAME'] = display_name
-  build_settings['PRODUCT_VERSION'] = version || '1.0'
+  build_settings[PRODUCT_DISPLAY_NAME] = display_name
+  build_settings[PRODUCT_VERSION] = version || '1.0'
 
   build_number = platform_config('buildNumber', project_root, target_platform)
-  build_settings['PRODUCT_BUILD_NUMBER'] = build_number || '1'
+  build_settings[PRODUCT_BUILD_NUMBER] = build_number || '1'
 
   use_new_arch = new_architecture_enabled?(options, rn_version)
   use_bridgeless = bridgeless_enabled?(options, rn_version)
@@ -383,18 +384,18 @@ def make_project!(xcodeproj, project_root, target_platform, options)
         (rn_version >= v(0, 71, 0) && rn_version < v(0, 71, 4)) ||
         (rn_version.positive? && rn_version < v(0, 70, 14))
       target.build_configurations.each do |config|
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << version_macro
+        config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] ||= ['$(inherited)']
+        config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << version_macro
         if enable_cxx17_removed_unary_binary_function
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] <<
+          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] <<
             '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
         end
         if use_new_arch
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'RCT_NEW_ARCH_ENABLED=1'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_FABRIC=1'
+          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'FOLLY_NO_CONFIG=1'
+          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'RCT_NEW_ARCH_ENABLED=1'
+          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'USE_FABRIC=1'
           if use_bridgeless
-            config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'USE_BRIDGELESS=1'
+            config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'USE_BRIDGELESS=1'
           end
         end
 
@@ -402,15 +403,15 @@ def make_project!(xcodeproj, project_root, target_platform, options)
           config.build_settings[setting] = value
         end
 
-        config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
-        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_FABRIC' if use_new_arch
-        config.build_settings['OTHER_SWIFT_FLAGS'] << '-DUSE_BRIDGELESS' if use_bridgeless
+        config.build_settings[OTHER_SWIFT_FLAGS] ||= ['$(inherited)']
+        config.build_settings[OTHER_SWIFT_FLAGS] << '-DUSE_FABRIC' if use_new_arch
+        config.build_settings[OTHER_SWIFT_FLAGS] << '-DUSE_BRIDGELESS' if use_bridgeless
         if single_app.is_a? String
-          config.build_settings['OTHER_SWIFT_FLAGS'] << '-DENABLE_SINGLE_APP_MODE'
+          config.build_settings[OTHER_SWIFT_FLAGS] << '-DENABLE_SINGLE_APP_MODE'
         end
 
-        config.build_settings['USER_HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
-        config.build_settings['USER_HEADER_SEARCH_PATHS'] << File.dirname(destination)
+        config.build_settings[USER_HEADER_SEARCH_PATHS] ||= ['$(inherited)']
+        config.build_settings[USER_HEADER_SEARCH_PATHS] << File.dirname(destination)
       end
     when 'ReactTestAppTests'
       target.build_configurations.each do |config|
@@ -432,9 +433,9 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   {
     :xcodeproj_path => xcodeproj_dst,
     :platforms => {
-      :ios => config.resolve_build_setting('IPHONEOS_DEPLOYMENT_TARGET'),
-      :macos => config.resolve_build_setting('MACOSX_DEPLOYMENT_TARGET'),
-      :visionos => config.resolve_build_setting('XROS_DEPLOYMENT_TARGET'),
+      :ios => config.resolve_build_setting(IPHONEOS_DEPLOYMENT_TARGET),
+      :macos => config.resolve_build_setting(MACOSX_DEPLOYMENT_TARGET),
+      :visionos => config.resolve_build_setting(XROS_DEPLOYMENT_TARGET),
     },
     :react_native_version => rn_version,
     :use_new_arch => use_new_arch,
@@ -505,11 +506,11 @@ def use_test_app_internal!(target_platform, options)
         target.build_configurations.each do |config|
           # TODO: Drop `_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION` when
           #       we no longer support 0.72
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] <<
+          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] ||= ['$(inherited)']
+          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] <<
             '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
-          config.build_settings['WARNING_CFLAGS'] ||= []
-          config.build_settings['WARNING_CFLAGS'] << '-w'
+          config.build_settings[WARNING_CFLAGS] ||= []
+          config.build_settings[WARNING_CFLAGS] << '-w'
         end
       when 'RNReanimated'
         # Reanimated tries to automatically install itself by swizzling a method
@@ -518,17 +519,16 @@ def use_test_app_internal!(target_platform, options)
         # See https://github.com/microsoft/react-native-test-app/issues/1195 and
         # https://github.com/software-mansion/react-native-reanimated/commit/a8206f383e51251e144cb9fd5293e15d06896df0.
         target.build_configurations.each do |config|
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'DONT_AUTOINSTALL_REANIMATED'
+          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] ||= ['$(inherited)']
+          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'DONT_AUTOINSTALL_REANIMATED'
         end
       else
         # Ensure `ENABLE_TESTING_SEARCH_PATHS` is always set otherwise Xcode may
         # fail to properly import XCTest
         unless test_dependencies.assoc(target.name).nil?
-          key = 'ENABLE_TESTING_SEARCH_PATHS'
           target.build_configurations.each do |config|
-            setting = config.resolve_build_setting(key)
-            config.build_settings[key] = 'YES' if setting.nil?
+            setting = config.resolve_build_setting(ENABLE_TESTING_SEARCH_PATHS)
+            config.build_settings[ENABLE_TESTING_SEARCH_PATHS] = 'YES' if setting.nil?
           end
         end
       end
@@ -541,8 +541,8 @@ def use_test_app_internal!(target_platform, options)
       # just have to make sure it's consistent with what's set in `app.json`.
       # See also https://github.com/CocoaPods/CocoaPods/issues/11402.
       target.build_configurations.each do |config|
-        config.build_settings['CODE_SIGN_IDENTITY'] ||= project_target[:code_sign_identity]
-        config.build_settings['DEVELOPMENT_TEAM'] ||= project_target[:development_team]
+        config.build_settings[CODE_SIGN_IDENTITY] ||= project_target[:code_sign_identity]
+        config.build_settings[DEVELOPMENT_TEAM] ||= project_target[:development_team]
       end
     end
 

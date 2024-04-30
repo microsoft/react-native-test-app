@@ -150,6 +150,7 @@ describe("npm pack", () => {
       "ios/use_react_native-0.68.rb",
       "ios/use_react_native-0.70.rb",
       "ios/use_react_native-0.71.rb",
+      "ios/xcode.rb",
       "macos/Localizations/en.lproj/Main.strings",
       "macos/ReactTestApp.xcodeproj/project.pbxproj",
       "macos/ReactTestApp.xcodeproj/xcshareddata/xcschemes/ReactTestApp.xcscheme",
