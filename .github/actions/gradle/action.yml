@@ -22,4 +22,5 @@ runs:
       working-directory: ${{ inputs.project-root }}
     - name: Build
       run: ./gradlew ${{ inputs.arguments }}
+      shell: bash
       working-directory: ${{ steps.build-root-directory-finder.outputs.build-root-directory }}
