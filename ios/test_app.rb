@@ -6,16 +6,6 @@ require_relative('pod_helpers')
 require_relative('privacy_manifest')
 require_relative('xcode')
 
-def app_manifest(project_root)
-  @app_manifest ||= {}
-  return @app_manifest[project_root] if @app_manifest.key?(project_root)
-
-  manifest_path = find_file('app.json', project_root)
-  return if manifest_path.nil?
-
-  @app_manifest[project_root] = JSON.parse(File.read(manifest_path))
-end
-
 def app_config(project_root)
   manifest = app_manifest(project_root)
   return [nil, nil, nil] if manifest.nil?
@@ -40,14 +30,6 @@ def autolink_script_path(project_root, target_platform)
   react_native = react_native_path(project_root, target_platform)
   package_path = resolve_module('@react-native-community/cli-platform-ios', react_native)
   File.join(package_path, 'native_modules')
-end
-
-def platform_config(key, project_root, target_platform)
-  manifest = app_manifest(project_root)
-  return if manifest.nil?
-
-  config = manifest[target_platform.to_s]
-  config[key] if !config.nil? && !config.empty?
 end
 
 def nearest_node_modules(project_root)
@@ -167,49 +149,6 @@ def generate_info_plist!(project_root, target_platform, destination)
 
   plist.value = CFPropertyList.guess(info)
   plist.save(infoplist_dst, CFPropertyList::List::FORMAT_XML, { :formatted => true })
-end
-
-def generate_privacy_manifest!(project_root, target_platform, destination)
-  privacy = {
-    PRIVACY_TRACKING => false,
-    PRIVACY_TRACKING_DOMAINS => [],
-    PRIVACY_COLLECTED_DATA_TYPES => [],
-    PRIVACY_ACCESSED_API_TYPES => [
-      {
-        PRIVACY_ACCESSED_API_TYPE => PRIVACY_ACCESSED_API_CATEGORY_FILE_TIMESTAMP,
-        PRIVACY_ACCESSED_API_TYPE_REASONS => ['C617.1'],
-      },
-      {
-        PRIVACY_ACCESSED_API_TYPE => PRIVACY_ACCESSED_API_CATEGORY_SYSTEM_BOOT_TIME,
-        PRIVACY_ACCESSED_API_TYPE_REASONS => ['35F9.1'],
-      },
-      {
-        PRIVACY_ACCESSED_API_TYPE => PRIVACY_ACCESSED_API_CATEGORY_USER_DEFAULTS,
-        PRIVACY_ACCESSED_API_TYPE_REASONS => ['CA92.1'],
-      },
-    ],
-  }
-
-  user_privacy_manifest = platform_config('privacyManifest', project_root, target_platform)
-  unless user_privacy_manifest.nil?
-    tracking = user_privacy_manifest[PRIVACY_TRACKING]
-    privacy[PRIVACY_TRACKING] = tracking unless tracking.nil?
-
-    [
-      PRIVACY_TRACKING_DOMAINS,
-      PRIVACY_COLLECTED_DATA_TYPES,
-      PRIVACY_ACCESSED_API_TYPES,
-    ].each do |field|
-      value = user_privacy_manifest[field]
-      privacy[field] += value if value.is_a? Enumerable
-    end
-  end
-
-  plist = CFPropertyList::List.new
-  plist.value = CFPropertyList.guess(privacy)
-  plist.save(File.join(destination, 'PrivacyInfo.xcprivacy'),
-             CFPropertyList::List::FORMAT_XML,
-             { :formatted => true })
 end
 
 def react_native_pods(version)
