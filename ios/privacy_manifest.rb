@@ -1,0 +1,12 @@
+# https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
+PRIVACY_ACCESSED_API_TYPES = 'NSPrivacyAccessedAPITypes'.freeze
+PRIVACY_COLLECTED_DATA_TYPES = 'NSPrivacyCollectedDataTypes'.freeze
+PRIVACY_TRACKING = 'NSPrivacyTracking'.freeze
+PRIVACY_TRACKING_DOMAINS = 'NSPrivacyTrackingDomains'.freeze
+
+# https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api
+PRIVACY_ACCESSED_API_TYPE = 'NSPrivacyAccessedAPIType'.freeze
+PRIVACY_ACCESSED_API_TYPE_REASONS = 'NSPrivacyAccessedAPITypeReasons'.freeze
+PRIVACY_ACCESSED_API_CATEGORY_FILE_TIMESTAMP = 'NSPrivacyAccessedAPICategoryFileTimestamp'.freeze
+PRIVACY_ACCESSED_API_CATEGORY_SYSTEM_BOOT_TIME = 'NSPrivacyAccessedAPICategorySystemBootTime'.freeze
+PRIVACY_ACCESSED_API_CATEGORY_USER_DEFAULTS = 'NSPrivacyAccessedAPICategoryUserDefaults'.freeze

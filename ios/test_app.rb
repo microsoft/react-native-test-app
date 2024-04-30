@@ -3,6 +3,7 @@ require('json')
 require('pathname')
 
 require_relative('pod_helpers')
+require_relative('privacy_manifest')
 require_relative('xcode')
 
 def app_manifest(project_root)
@@ -170,21 +171,21 @@ end
 
 def generate_privacy_manifest!(project_root, target_platform, destination)
   privacy = {
-    'NSPrivacyTracking' => false,
-    'NSPrivacyTrackingDomains' => [],
-    'NSPrivacyCollectedDataTypes' => [],
-    'NSPrivacyAccessedAPITypes' => [
+    PRIVACY_TRACKING => false,
+    PRIVACY_TRACKING_DOMAINS => [],
+    PRIVACY_COLLECTED_DATA_TYPES => [],
+    PRIVACY_ACCESSED_API_TYPES => [
       {
-        'NSPrivacyAccessedAPIType' => 'NSPrivacyAccessedAPICategoryFileTimestamp',
-        'NSPrivacyAccessedAPITypeReasons' => ['C617.1'],
+        PRIVACY_ACCESSED_API_TYPE => PRIVACY_ACCESSED_API_CATEGORY_FILE_TIMESTAMP,
+        PRIVACY_ACCESSED_API_TYPE_REASONS => ['C617.1'],
       },
       {
-        'NSPrivacyAccessedAPIType' => 'NSPrivacyAccessedAPICategorySystemBootTime',
-        'NSPrivacyAccessedAPITypeReasons' => ['35F9.1'],
+        PRIVACY_ACCESSED_API_TYPE => PRIVACY_ACCESSED_API_CATEGORY_SYSTEM_BOOT_TIME,
+        PRIVACY_ACCESSED_API_TYPE_REASONS => ['35F9.1'],
       },
       {
-        'NSPrivacyAccessedAPIType' => 'NSPrivacyAccessedAPICategoryUserDefaults',
-        'NSPrivacyAccessedAPITypeReasons' => ['CA92.1'],
+        PRIVACY_ACCESSED_API_TYPE => PRIVACY_ACCESSED_API_CATEGORY_USER_DEFAULTS,
+        PRIVACY_ACCESSED_API_TYPE_REASONS => ['CA92.1'],
       },
     ],
   }
@@ -193,13 +194,13 @@ def generate_privacy_manifest!(project_root, target_platform, destination)
   config = manifest[target_platform.to_s] unless manifest.nil?
   user_privacy_manifest = config && config['privacyManifest']
   unless user_privacy_manifest.nil?
-    privacy_tracking = user_privacy_manifest['NSPrivacyTracking']
-    privacy['NSPrivacyTracking'] = privacy_tracking unless privacy_tracking.nil?
+    tracking = user_privacy_manifest[PRIVACY_TRACKING]
+    privacy[PRIVACY_TRACKING] = tracking unless tracking.nil?
 
-    %w[
-      NSPrivacyTrackingDomains
-      NSPrivacyCollectedDataTypes
-      NSPrivacyAccessedAPITypes
+    [
+      PRIVACY_TRACKING_DOMAINS,
+      PRIVACY_COLLECTED_DATA_TYPES,
+      PRIVACY_ACCESSED_API_TYPES,
     ].each do |field|
       value = user_privacy_manifest[field]
       privacy[field] += value if value.is_a? Enumerable
