@@ -21,12 +21,6 @@ runs:
       shell: bash
       working-directory: ${{ inputs.project-root }}
     - name: Build
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-version: wrapper
-        gradle-home-cache-excludes: |
-          caches
-          jdks
-        gradle-home-cache-cleanup: true
-        arguments: ${{ inputs.arguments }}
-        build-root-directory: ${{ steps.build-root-directory-finder.outputs.build-root-directory }}
+      run: ./gradlew ${{ inputs.arguments }}
+      shell: bash
+      working-directory: ${{ steps.build-root-directory-finder.outputs.build-root-directory }}
