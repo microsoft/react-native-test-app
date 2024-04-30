@@ -190,9 +190,7 @@ def generate_privacy_manifest!(project_root, target_platform, destination)
     ],
   }
 
-  manifest = app_manifest(project_root)
-  config = manifest[target_platform.to_s] unless manifest.nil?
-  user_privacy_manifest = config && config['privacyManifest']
+  user_privacy_manifest = platform_config('privacyManifest', project_root, target_platform)
   unless user_privacy_manifest.nil?
     tracking = user_privacy_manifest[PRIVACY_TRACKING]
     privacy[PRIVACY_TRACKING] = tracking unless tracking.nil?
