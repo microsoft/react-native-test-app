@@ -327,7 +327,7 @@ export function nugetPackage(id, version) {
  */
 export function parseResources(resources, projectPath, fs = nodefs) {
   if (!Array.isArray(resources)) {
-    if (resources && resources.windows) {
+    if (resources?.windows) {
       return parseResources(resources.windows, projectPath, fs);
     }
     return { assetItems: "", assetItemFilters: "", assetFilters: "" };
@@ -373,7 +373,7 @@ export function getBundleResources(manifestFilePath, fs = nodefs) {
         singleApp,
         appxManifest: projectRelativePath(
           projectPath,
-          (windows && windows.appxManifest) || defaultAppxManifest
+          windows?.appxManifest || defaultAppxManifest
         ),
         packageCertificate: generateCertificateItems(
           windows || {},
