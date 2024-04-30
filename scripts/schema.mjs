@@ -10,7 +10,8 @@ import { readJSONFile } from "./helpers.js";
  */
 function extractBrief(content = "") {
   const endBrief = content.indexOf("\n\n");
-  return endBrief > 0 ? content.substring(0, endBrief) : content;
+  const brief = endBrief > 0 ? content.substring(0, endBrief) : content;
+  return brief.replace(/\r?\n/g, " ");
 }
 
 function readManifest() {
@@ -91,6 +92,11 @@ export function generateSchema(docs = {}) {
             description: extractBrief(docs["ios.developmentTeam"]),
             markdownDescription: docs["ios.developmentTeam"],
             type: "string",
+          },
+          privacyManifest: {
+            description: extractBrief(docs["ios.privacyManifest"]),
+            markdownDescription: docs["ios.privacyManifest"],
+            type: "object",
           },
         },
         "exclude-from-codegen": true,

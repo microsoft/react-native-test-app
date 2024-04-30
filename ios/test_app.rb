@@ -3,17 +3,8 @@ require('json')
 require('pathname')
 
 require_relative('pod_helpers')
+require_relative('privacy_manifest')
 require_relative('xcode')
-
-def app_manifest(project_root)
-  @app_manifest ||= {}
-  return @app_manifest[project_root] if @app_manifest.key?(project_root)
-
-  manifest_path = find_file('app.json', project_root)
-  return if manifest_path.nil?
-
-  @app_manifest[project_root] = JSON.parse(File.read(manifest_path))
-end
 
 def app_config(project_root)
   manifest = app_manifest(project_root)
@@ -39,14 +30,6 @@ def autolink_script_path(project_root, target_platform)
   react_native = react_native_path(project_root, target_platform)
   package_path = resolve_module('@react-native-community/cli-platform-ios', react_native)
   File.join(package_path, 'native_modules')
-end
-
-def platform_config(key, project_root, target_platform)
-  manifest = app_manifest(project_root)
-  return if manifest.nil?
-
-  config = manifest[target_platform.to_s]
-  config[key] if !config.nil? && !config.empty?
 end
 
 def nearest_node_modules(project_root)
@@ -297,6 +280,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
   generate_assets_catalog!(project_root, target_platform, destination)
   generate_info_plist!(project_root, target_platform, destination)
+  generate_privacy_manifest!(project_root, target_platform, destination)
 
   # Copy localization files and replace instances of `ReactTestApp` with app display name
   product_name = display_name || name

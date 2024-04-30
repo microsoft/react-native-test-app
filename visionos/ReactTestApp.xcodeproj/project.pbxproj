@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		191A67862BDFCD830094F246 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 191A67852BDFCD830094F246 /* PrivacyInfo.xcprivacy */; };
 		192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192DD200240FCAF5004E9CEB /* Manifest.swift */; };
 		196C22622490CB7600449D3C /* React+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 196C22602490CB7600449D3C /* React+Compatibility.m */; };
 		196C7215232F1788006556ED /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196C7214232F1788006556ED /* ReactInstance.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		191A67852BDFCD830094F246 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
 		192DD200240FCAF5004E9CEB /* Manifest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manifest.swift; path = ../Shared/Manifest.swift; sourceTree = "<group>"; };
 		192F052624AD3CC500A48456 /* ReactTestApp.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.release.xcconfig; sourceTree = "<group>"; };
 		192F052724AD3CC500A48456 /* ReactTestApp.common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.common.xcconfig; sourceTree = "<group>"; };
@@ -48,7 +50,7 @@
 		196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ReactTestApp-Bridging-Header.h"; path = "../Shared/ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		196C7214232F1788006556ED /* ReactInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReactInstance.swift; path = ../Shared/ReactInstance.swift; sourceTree = "<group>"; };
 		196C7216232F6CD9006556ED /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
-		197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Manifest+Embedded.g.swift"; path = "Manifest+Embedded.g.swift"; sourceTree = SOURCE_ROOT; };
+		197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Manifest+Embedded.g.swift"; sourceTree = SOURCE_ROOT; };
 		1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ReactTestApp.h"; path = "../Shared/UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
 		1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ReactTestApp.m"; path = "../Shared/UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
 		19A624A3258C95F000032776 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = ../Shared/Session.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */,
 				19ECD0DB232ED427003D8557 /* Assets.xcassets */,
 				19ECD0E3232ED427003D8557 /* Info.plist */,
+				191A67852BDFCD830094F246 /* PrivacyInfo.xcprivacy */,
 				196C7216232F6CD9006556ED /* ReactTestApp.entitlements */,
 				192F052724AD3CC500A48456 /* ReactTestApp.common.xcconfig */,
 				192F052824AD3CC500A48456 /* ReactTestApp.debug.xcconfig */,
@@ -261,6 +264,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				191A67862BDFCD830094F246 /* PrivacyInfo.xcprivacy in Resources */,
 				19ECD0DC232ED427003D8557 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

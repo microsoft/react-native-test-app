@@ -38,6 +38,7 @@ export async function readDocumentation() {
     "ios.icons",
     "ios.icons.primaryIcon",
     "ios.icons.alternateIcons",
+    "ios.privacyManifest",
     "macos.applicationCategoryType",
     "macos.humanReadableCopyright",
     "windows.appxManifest",
@@ -46,11 +47,13 @@ export async function readDocumentation() {
     "windows.certificateThumbprint",
   ];
 
-  for (const name of keys) {
-    const filename = path.join(docsDir, name + ".md");
-    const md = await fs.readFile(filename, { encoding: "utf-8" });
-    docs[name] = stripCarriageReturn(md).trim();
-  }
+  await Promise.all(
+    keys.map(async (name) => {
+      const filename = path.join(docsDir, name + ".md");
+      const md = await fs.readFile(filename, { encoding: "utf-8" });
+      docs[name] = stripCarriageReturn(md).trim();
+    })
+  );
 
   return docs;
 }
