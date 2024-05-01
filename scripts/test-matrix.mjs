@@ -28,10 +28,7 @@ const getIOSSimulatorName = memo(() => {
   );
   const { status, stdout } = spawnSync(
     process.argv[0],
-    [
-      "--print",
-      `require("${wdioConfig.pathname}").config.capabilities["appium:deviceName"]`,
-    ],
+    ["--print", `require("${wdioConfig.pathname}").iosSimulatorName()`],
     {
       stdio: ["ignore", "pipe", "inherit"],
       env: { TEST_ARGS: "ios" },
