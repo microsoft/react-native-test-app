@@ -1,5 +1,5 @@
 diff --git a/build/lib/extension/manifest.js b/build/lib/extension/manifest.js
-index 5b650a6ff4dbe737ffdf8821e255e9e4e3d89da3..6179965231285c3ae1d3cddee0c45c57ab3fba03 100644
+index 5b650a6ff4dbe737ffdf8821e255e9e4e3d89da3..932623ce0d350b712bc5c3b81aa012efffed63fb 100644
 --- a/build/lib/extension/manifest.js
 +++ b/build/lib/extension/manifest.js
 @@ -195,12 +195,14 @@ class Manifest {
