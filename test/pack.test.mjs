@@ -144,6 +144,7 @@ describe("npm pack", () => {
       "ios/ReactTestAppUITests/Info.plist",
       "ios/ReactTestAppUITests/ReactTestAppUITests.swift",
       "ios/assets_catalog.rb",
+      "ios/entitlements.rb",
       "ios/info_plist.rb",
       "ios/pod_helpers.rb",
       "ios/privacy_manifest.rb",

@@ -64,7 +64,14 @@
         "codeSignEntitlements": {
           "description": "Declare entitlements for capabilities used by the app.",
           "markdownDescription": "Declare entitlements for capabilities used by the app.\n\nExample:\n\n```json\n{\n  \"ios\": {\n    \"codeSignEntitlements\": {\n      \"com.apple.developer.game-center\": true\n    }\n  }\n}\n```\n\nFor more details, read Apple's documentation on\n[Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements).\n\nAlternatively, specify a path to a custom `.entitlements` file. The path should\nbe relative to `app.json`. This is equivalent to setting\n`CODE_SIGN_ENTITLEMENTS` in Xcode.",
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ]
         },
         "codeSignIdentity": {
           "description": "Sets the <a href='https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html#//apple_ref/doc/uid/TP40005929-CH4-SW1'>code signing identity</a> to use when signing code.",
