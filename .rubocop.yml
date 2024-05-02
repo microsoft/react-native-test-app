@@ -25,14 +25,12 @@ Metrics/MethodLength:
 
 Metrics/CyclomaticComplexity:
   AllowedMethods:
-    - generate_info_plist!
     - make_project!
     - react_native_pods
     - use_test_app_internal!
 
 Metrics/PerceivedComplexity:
   AllowedMethods:
-    - generate_info_plist!
     - make_project!
     - react_native_pods
     - use_test_app_internal!
