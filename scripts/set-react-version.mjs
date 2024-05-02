@@ -258,6 +258,12 @@ async function resolveCommonDependencies(
  * @return {Promise<Record<string, string | undefined>>}
  */
 async function getProfile(v, coreOnly) {
+  const manifest = /** @type {Manifest} */ (readJSONFile("package.json"));
+  const visionos = manifest.defaultPlatformPackages?.["visionos"];
+  if (!visionos) {
+    throw new Error("Missing platform package for visionOS");
+  }
+
   switch (v) {
     case "canary-macos": {
       const info = await fetchPackageInfo("react-native-macos", "canary");
@@ -268,6 +274,7 @@ async function getProfile(v, coreOnly) {
         "react-native": coreVersion,
         "react-native-macos": "canary",
         "react-native-windows": undefined,
+        [visionos]: undefined,
       };
     }
 
@@ -280,6 +287,7 @@ async function getProfile(v, coreOnly) {
         "react-native": coreVersion,
         "react-native-macos": undefined,
         "react-native-windows": info.version,
+        [visionos]: undefined,
       };
     }
 
@@ -291,16 +299,11 @@ async function getProfile(v, coreOnly) {
         "react-native": "nightly",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
+        [visionos]: undefined,
       };
     }
 
     default: {
-      const manifest = /** @type {Manifest} */ (readJSONFile("package.json"));
-      const visionos = manifest.defaultPlatformPackages?.["visionos"];
-      if (!visionos) {
-        throw new Error("Missing platform package for visionOS");
-      }
-
       const versions = {
         core: fetchPackageInfo("react-native", v),
         macos: coreOnly
