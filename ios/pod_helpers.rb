@@ -58,6 +58,10 @@ def platform_config(key, project_root, target_platform)
   config[key] if !config.nil? && !config.empty?
 end
 
+def project_path(file, target_platform)
+  File.expand_path(file, File.join(__dir__, '..', target_platform.to_s))
+end
+
 def resolve_module(request, start_dir = Pod::Config.instance.installation_root)
   @module_cache ||= {}
   return @module_cache[request] if @module_cache.key?(request)
@@ -76,6 +80,13 @@ def resolve_module_uncached(request, start_dir)
   raise "Cannot find module '#{request}'" if package_json.nil?
 
   package_json.dirname
+end
+
+def resolve_resources(manifest, target_platform)
+  resources = manifest['resources']
+  return if !resources || resources.empty?
+
+  resources.instance_of?(Array) ? resources : resources[target_platform.to_s]
 end
 
 def supports_new_architecture?(react_native_version)
