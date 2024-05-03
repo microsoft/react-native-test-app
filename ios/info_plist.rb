@@ -1,4 +1,4 @@
-require('cfpropertylist')
+require('xcodeproj')
 
 require_relative('pod_helpers')
 
@@ -9,15 +9,13 @@ def generate_info_plist!(project_root, target_platform, destination)
   infoplist_src = project_path('ReactTestApp/Info.plist', target_platform)
   infoplist_dst = File.join(destination, File.basename(infoplist_src))
 
-  plist = CFPropertyList::List.new(file: infoplist_src)
-  info = CFPropertyList.native_types(plist.value)
+  info = Xcodeproj::Plist.read_from_path(infoplist_src)
 
   resources = resolve_resources(manifest, target_platform)
   register_fonts!(resources, target_platform, info)
   set_macos_properties!(manifest, target_platform, info)
 
-  plist.value = CFPropertyList.guess(info)
-  plist.save(infoplist_dst, CFPropertyList::List::FORMAT_XML, { :formatted => true })
+  Xcodeproj::Plist.write_to_path(info, infoplist_dst)
 end
 
 private

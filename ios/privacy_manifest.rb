@@ -1,4 +1,4 @@
-require('cfpropertylist')
+require('xcodeproj')
 
 require_relative('pod_helpers')
 
@@ -51,9 +51,5 @@ def generate_privacy_manifest!(project_root, target_platform, destination)
     end
   end
 
-  plist = CFPropertyList::List.new
-  plist.value = CFPropertyList.guess(privacy)
-  plist.save(File.join(destination, 'PrivacyInfo.xcprivacy'),
-             CFPropertyList::List::FORMAT_XML,
-             { :formatted => true })
+  Xcodeproj::Plist.write_to_path(privacy, File.join(destination, 'PrivacyInfo.xcprivacy'))
 end

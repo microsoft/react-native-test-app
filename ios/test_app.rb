@@ -1,4 +1,3 @@
-require('cfpropertylist')
 require('json')
 require('pathname')
 

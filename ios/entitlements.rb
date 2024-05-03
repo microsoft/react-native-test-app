@@ -1,4 +1,4 @@
-require('cfpropertylist')
+require('xcodeproj')
 
 require_relative('pod_helpers')
 
@@ -21,9 +21,6 @@ def generate_entitlements!(project_root, target_platform, destination)
 
   entitlements = target_platform == :macos ? DEFAULT_MACOS_ENTITLEMENTS : DEFAULT_IOS_ENTITLEMENTS
 
-  plist = CFPropertyList::List.new
-  plist.value = CFPropertyList.guess(entitlements.merge(user_entitlements || {}))
-  plist.save(File.join(destination, 'App.entitlements'),
-             CFPropertyList::List::FORMAT_XML,
-             { :formatted => true })
+  Xcodeproj::Plist.write_to_path(entitlements.merge(user_entitlements || {}),
+                                 File.join(destination, 'App.entitlements'))
 end
