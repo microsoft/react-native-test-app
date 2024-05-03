@@ -81,7 +81,7 @@ export function generateSchema(docs = {}) {
           codeSignEntitlements: {
             description: extractBrief(docs["ios.codeSignEntitlements"]),
             markdownDescription: docs["ios.codeSignEntitlements"],
-            type: "string",
+            oneOf: [{ type: "string" }, { type: "object" }],
           },
           codeSignIdentity: {
             description: extractBrief(docs["ios.codeSignIdentity"]),

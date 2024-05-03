@@ -10,6 +10,7 @@ third-party SDK use.
 By default, a `PrivacyInfo.xcprivacy` is always generated with the following
 values:
 
+<!-- prettier-ignore-start -->
 ```json
 {
   "NSPrivacyTracking": false,
@@ -17,20 +18,24 @@ values:
   "NSPrivacyCollectedDataTypes": [],
   "NSPrivacyAccessedAPITypes": [
     {
-      "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+      "NSPrivacyAccessedAPIType":
+        "NSPrivacyAccessedAPICategoryFileTimestamp",
       "NSPrivacyAccessedAPITypeReasons": ["C617.1"]
     },
     {
-      "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+      "NSPrivacyAccessedAPIType":
+        "NSPrivacyAccessedAPICategorySystemBootTime",
       "NSPrivacyAccessedAPITypeReasons": ["35F9.1"]
     },
     {
-      "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+      "NSPrivacyAccessedAPIType":
+        "NSPrivacyAccessedAPICategoryUserDefaults",
       "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
     }
   ]
 }
 ```
+<!-- prettier-ignore-end -->
 
 For more details, read Apple's documentation on
 [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files).

@@ -49,7 +49,7 @@
 		196C22612490CB7600449D3C /* React+Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "React+Compatibility.h"; path = "../Shared/React+Compatibility.h"; sourceTree = "<group>"; };
 		196C7207232EF5DC006556ED /* ReactTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ReactTestApp-Bridging-Header.h"; path = "../Shared/ReactTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		196C7214232F1788006556ED /* ReactInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReactInstance.swift; path = ../Shared/ReactInstance.swift; sourceTree = "<group>"; };
-		196C7216232F6CD9006556ED /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
+		196C7216232F6CD9006556ED /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = SOURCE_ROOT; };
 		197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Manifest+Embedded.g.swift"; sourceTree = SOURCE_ROOT; };
 		1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ReactTestApp.h"; path = "../Shared/UIViewController+ReactTestApp.h"; sourceTree = "<group>"; };
 		1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ReactTestApp.m"; path = "../Shared/UIViewController+ReactTestApp.m"; sourceTree = "<group>"; };
@@ -128,10 +128,10 @@
 				196C22602490CB7600449D3C /* React+Compatibility.m */,
 				1988282224105BCC005057FF /* UIViewController+ReactTestApp.h */,
 				1988284424105BEC005057FF /* UIViewController+ReactTestApp.m */,
+				196C7216232F6CD9006556ED /* App.entitlements */,
 				19ECD0DB232ED427003D8557 /* Assets.xcassets */,
 				19ECD0E3232ED427003D8557 /* Info.plist */,
 				191A67852BDFCD830094F246 /* PrivacyInfo.xcprivacy */,
-				196C7216232F6CD9006556ED /* ReactTestApp.entitlements */,
 				192F052724AD3CC500A48456 /* ReactTestApp.common.xcconfig */,
 				192F052824AD3CC500A48456 /* ReactTestApp.debug.xcconfig */,
 				192F052624AD3CC500A48456 /* ReactTestApp.release.xcconfig */,
@@ -376,7 +376,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = ReactTestApp/ReactTestApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = UBF8T346G9;
@@ -404,7 +404,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = ReactTestApp/ReactTestApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = UBF8T346G9;

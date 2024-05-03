@@ -47,7 +47,7 @@
 		193EF066247A736300BE8C79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		193EF069247A736300BE8C79 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		193EF06B247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
-		193EF06C247A736300BE8C79 /* ReactTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactTestApp.entitlements; sourceTree = "<group>"; };
+		193EF06C247A736300BE8C79 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = SOURCE_ROOT; };
 		193EF071247A736300BE8C79 /* ReactTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		193EF077247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		193EF07C247A736300BE8C79 /* ReactTestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,11 +128,11 @@
 				196C22632490CBAB00449D3C /* React+Compatibility.m */,
 				193EF092247A830200BE8C79 /* UIViewController+ReactTestApp.h */,
 				193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */,
+				193EF06C247A736300BE8C79 /* App.entitlements */,
 				193EF066247A736300BE8C79 /* Assets.xcassets */,
 				193EF068247A736300BE8C79 /* Main.storyboard */,
 				193EF06B247A736300BE8C79 /* Info.plist */,
 				191A67872BDFD9E90094F246 /* PrivacyInfo.xcprivacy */,
-				193EF06C247A736300BE8C79 /* ReactTestApp.entitlements */,
 				19B368BC24B12C24002CCEFF /* ReactTestApp.common.xcconfig */,
 				19B368BD24B12C24002CCEFF /* ReactTestApp.debug.xcconfig */,
 				19B368BE24B12C24002CCEFF /* ReactTestApp.release.xcconfig */,
@@ -391,7 +391,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = ReactTestApp/ReactTestApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -412,7 +412,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = ReactTestApp/ReactTestApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;

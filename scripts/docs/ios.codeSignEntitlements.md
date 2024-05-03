@@ -1,8 +1,20 @@
-Specifies the path to a custom
-[Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements)
-file. The path should be relative to `app.json`.
+Declare entitlements for capabilities used by the app.
 
-This is the same as setting `CODE_SIGN_ENTITLEMENTS` in Xcode.
+Example:
 
-Introduced in
-[0.9.7](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.7).
+```json
+{
+  "ios": {
+    "codeSignEntitlements": {
+      "com.apple.developer.game-center": true
+    }
+  }
+}
+```
+
+For more details, read Apple's documentation on
+[Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements).
+
+Alternatively, specify a path to a custom `.entitlements` file. The path should
+be relative to `app.json`. This is equivalent to setting
+`CODE_SIGN_ENTITLEMENTS` in Xcode.

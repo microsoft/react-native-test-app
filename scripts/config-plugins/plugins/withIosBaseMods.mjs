@@ -30,10 +30,7 @@ const defaultProviders = {
     "ReactTestApp.xcodeproj/project.pbxproj"
   ),
   infoPlist: modifyFilePath(expoProviders.infoPlist, "Info.plist"),
-  entitlements: modifyFilePath(
-    expoProviders.entitlements,
-    "ReactTestApp/ReactTestApp.entitlements"
-  ),
+  entitlements: nullProvider,
   podfileProperties: nullProvider,
 };
 

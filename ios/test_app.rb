@@ -3,6 +3,7 @@ require('json')
 require('pathname')
 
 require_relative('assets_catalog')
+require_relative('entitlements')
 require_relative('info_plist')
 require_relative('pod_helpers')
 require_relative('privacy_manifest')
@@ -190,6 +191,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   end
 
   generate_assets_catalog!(project_root, target_platform, destination)
+  generate_entitlements!(project_root, target_platform, destination)
   generate_info_plist!(project_root, target_platform, destination)
   generate_privacy_manifest!(project_root, target_platform, destination)
 
