@@ -245,6 +245,7 @@
       "properties": {
         "package": {
           "description": "Use this property to set the <a href='https://developer.android.com/studio/build/application-id'>application ID</a> of the APK. The value is set to `applicationId` in `build.gradle`.",
+          "markdownDescription": "Use this property to set the\n<a href='https://developer.android.com/studio/build/application-id'>application\nID</a> of the APK. The value is set to `applicationId` in `build.gradle`.\n\n<details>\n<summary>History</summary>\n\n- [[0.1.25](https://github.com/microsoft/react-native-test-app/releases/tag/0.1.25)]\n  Added\n\n</details>",
           "type": "string"
         },
         "versionCode": {

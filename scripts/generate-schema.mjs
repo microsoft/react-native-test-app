@@ -29,6 +29,7 @@ export async function readDocumentation() {
     "singleApp",
     "version",
     "android.icons",
+    "android.package",
     "android.signingConfigs",
     "android.versionCode",
     "ios.buildNumber",

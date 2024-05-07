@@ -235,8 +235,8 @@ export function generateSchema(docs = {}) {
         type: "object",
         properties: {
           package: {
-            description:
-              "Use this property to set the <a href='https://developer.android.com/studio/build/application-id'>application ID</a> of the APK. The value is set to `applicationId` in `build.gradle`.",
+            description: extractBrief(docs["android.package"]),
+            markdownDescription: docs["android.package"],
             type: "string",
           },
           versionCode: {
