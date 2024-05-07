@@ -42,7 +42,7 @@ function repositoryUrl() {
  */
 function main(start, end) {
   if (!start || !end) {
-    const thisScript = path.basename(process.argv[1]);
+    const thisScript = path.basename(fileURLToPath(import.meta.url));
     console.log(`Usage: ${thisScript} <start tag> <end tag>`);
     process.exitCode = 1;
     return;
