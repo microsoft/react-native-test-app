@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
+import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.manifest.Manifest
 import com.microsoft.reacttestapp.manifest.ManifestProvider
 import com.microsoft.reacttestapp.react.ReactBundleNameProvider
@@ -28,6 +29,8 @@ class TestApp : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
+
+        SoLoader.init(this, false)
 
         reactNativeBundleNameProvider = ReactBundleNameProvider(this, manifest.bundleRoot)
         reactNativeHostInternal =
