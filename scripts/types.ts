@@ -199,9 +199,11 @@ export type Docs = {
   singleApp: string;
   version: string;
   "android.icons": string;
+  "android.package": string;
   "android.signingConfigs": string;
   "android.versionCode": string;
   "ios.buildNumber": string;
+  "ios.bundleIdentifier": string;
   "ios.codeSignEntitlements": string;
   "ios.codeSignIdentity": string;
   "ios.developmentTeam": string;

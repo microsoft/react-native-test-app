@@ -9,5 +9,10 @@ You can read more about app icons in the
 The equivalent key in `Info.plist` is
 [`CFBundleIcons`](https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleicons).
 
-Introduced in
-[1.6.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.6.0).
+<details>
+<summary>History</summary>
+
+- [[1.6.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.6.0)]
+  Added
+
+</details>

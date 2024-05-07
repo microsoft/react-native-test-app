@@ -26,5 +26,10 @@ for the debug and release flavors:
 }
 ```
 
-Introduced in
-[0.11.0](https://github.com/microsoft/react-native-test-app/releases/tag/0.11.0).
+<details>
+<summary>History</summary>
+
+- [[0.11.0](https://github.com/microsoft/react-native-test-app/releases/tag/0.11.0)]
+  Added
+
+</details>

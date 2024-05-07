@@ -14,5 +14,10 @@ integers, such as 1.3.11.
   [app package manifest](https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/appx-package-manifest)
   instead.
 
-Introduced in
-[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0).
+<details>
+<summary>History</summary>
+
+- [[1.4.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.4.0)]
+  Added
+
+</details>
