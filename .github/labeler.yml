@@ -9,7 +9,13 @@
           - common/**/*
           - example/android/**/*
           - scripts/*.js
-          - test/android-test-app/**/*
+          - scripts/configure.mjs
+          - scripts/embed-manifest/kotlin.mjs
+          - scripts/embed-manifest/main.mjs
+          - scripts/embed-manifest/validate.mjs
+          - scripts/generate-*.mjs
+          - scripts/init.mjs
+          - scripts/template.mjs
           - test-app.gradle
 "platform: iOS":
   - changed-files:
@@ -24,8 +30,14 @@
           - example/ios/**/*
           - ios/**/*
           - scripts/*.js
+          - scripts/configure.mjs
+          - scripts/embed-manifest/main.mjs
+          - scripts/embed-manifest/swift.mjs
+          - scripts/embed-manifest/validate.mjs
+          - scripts/generate-*.mjs
+          - scripts/init.mjs
+          - scripts/template.mjs
           - scripts/xcodebuild.sh
-          - test/*.rb
           - test_app.rb
 "platform: macOS":
   - changed-files:
@@ -47,8 +59,14 @@
           - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
           - macos/**/*
           - scripts/*.js
+          - scripts/configure.mjs
+          - scripts/embed-manifest/main.mjs
+          - scripts/embed-manifest/swift.mjs
+          - scripts/embed-manifest/validate.mjs
+          - scripts/generate-*.mjs
+          - scripts/init.mjs
+          - scripts/template.mjs
           - scripts/xcodebuild.sh
-          - test/*.rb
 "platform: visionOS":
   - changed-files:
       - any-glob-to-any-file:
@@ -63,8 +81,14 @@
           - ios/*.rb
           - ios/ReactTestApp/*.{h,m,mm,swift}
           - scripts/*.js
+          - scripts/configure.mjs
+          - scripts/embed-manifest/main.mjs
+          - scripts/embed-manifest/swift.mjs
+          - scripts/embed-manifest/validate.mjs
+          - scripts/generate-*.mjs
+          - scripts/init.mjs
+          - scripts/template.mjs
           - scripts/xcodebuild.sh
-          - test/*.rb
           - visionos/**/*
 "platform: Windows":
   - changed-files:
@@ -76,5 +100,11 @@
           - example/windows/**/*
           - scripts/*.ps1
           - scripts/*.js
-          - test/windows-test-app/**/*
+          - scripts/configure.mjs
+          - scripts/embed-manifest/cpp.mjs
+          - scripts/embed-manifest/main.mjs
+          - scripts/embed-manifest/validate.mjs
+          - scripts/generate-*.mjs
+          - scripts/init.mjs
+          - scripts/template.mjs
           - windows/**/*
