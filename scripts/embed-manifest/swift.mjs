@@ -1,10 +1,12 @@
 // @ts-check
 import * as nodefs from "node:fs";
 import * as path from "node:path";
-import { findFile, isMain } from "../helpers.js";
+import { isMain } from "../helpers.js";
 import { main, warn } from "./main.mjs";
 
 const INDENT = "    ";
+const SRCROOT = process.env["SRCROOT"] || process.cwd();
+const PODS_ROOT = process.env["PODS_ROOT"] || SRCROOT;
 
 /**
  * @param {unknown} s
@@ -134,15 +136,6 @@ function components(components, level) {
  * @returns {string}
  */
 export function generate(json, checksum, fs = nodefs) {
-  const srcRoot = process.env["SRCROOT"] || process.cwd();
-  const nodeModulesPath = findFile("node_modules", srcRoot, fs);
-  if (!nodeModulesPath) {
-    console.error(
-      "Failed to find 'node_modules' — make sure you've installed npm dependencies"
-    );
-    return "";
-  }
-
   const code = [
     "import Foundation",
     "",
@@ -165,18 +158,13 @@ export function generate(json, checksum, fs = nodefs) {
     "",
   ].join("\n");
 
-  const dest = path.join(
-    nodeModulesPath,
-    ".generated",
-    path.basename(srcRoot),
-    "Manifest+Embedded.g.swift"
-  );
+  const dest = path.join(SRCROOT, "Manifest+Embedded.g.swift");
   fs.promises
-    .mkdir(path.dirname(dest), { recursive: true, mode: 0o755 })
+    .mkdir(SRCROOT, { recursive: true, mode: 0o755 })
     .then(() => fs.promises.writeFile(dest, code));
   return "app.json -> " + dest;
 }
 
 if (!process.argv[1] || isMain(import.meta.url)) {
-  process.exitCode = main(generate);
+  process.exitCode = main(generate, PODS_ROOT);
 }
