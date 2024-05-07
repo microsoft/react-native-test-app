@@ -5,6 +5,8 @@ import { findFile, isMain } from "../helpers.js";
 import { main, warn } from "./main.mjs";
 
 const INDENT = "    ";
+const SRCROOT =
+  process.env["PODS_ROOT"] || process.env["SRCROOT"] || process.cwd();
 
 /**
  * @param {unknown} s
@@ -134,8 +136,7 @@ function components(components, level) {
  * @returns {string}
  */
 export function generate(json, checksum, fs = nodefs) {
-  const srcRoot = process.env["SRCROOT"] || process.cwd();
-  const nodeModulesPath = findFile("node_modules", srcRoot, fs);
+  const nodeModulesPath = findFile("node_modules", SRCROOT, fs);
   if (!nodeModulesPath) {
     console.error(
       "Failed to find 'node_modules' — make sure you've installed npm dependencies"
@@ -168,7 +169,7 @@ export function generate(json, checksum, fs = nodefs) {
   const dest = path.join(
     nodeModulesPath,
     ".generated",
-    path.basename(srcRoot),
+    process.env["PLATFORM_FAMILY_NAME"]?.toLowerCase() ?? "ios",
     "Manifest+Embedded.g.swift"
   );
   fs.promises
@@ -178,5 +179,5 @@ export function generate(json, checksum, fs = nodefs) {
 }
 
 if (!process.argv[1] || isMain(import.meta.url)) {
-  process.exitCode = main(generate);
+  process.exitCode = main(generate, SRCROOT);
 }
