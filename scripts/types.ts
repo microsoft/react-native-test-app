@@ -202,6 +202,7 @@ export type Docs = {
   "android.signingConfigs": string;
   "android.versionCode": string;
   "ios.buildNumber": string;
+  "ios.bundleIdentifier": string;
   "ios.codeSignEntitlements": string;
   "ios.codeSignIdentity": string;
   "ios.developmentTeam": string;

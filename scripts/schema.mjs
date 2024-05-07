@@ -47,8 +47,8 @@ export function generateSchema(docs = {}) {
         type: "object",
         properties: {
           bundleIdentifier: {
-            description:
-              "Use this property to set the bundle identifier of the final app bundle. This is the same as setting `PRODUCT_BUNDLE_IDENTIFIER` in Xcode.",
+            description: extractBrief(docs["ios.bundleIdentifier"]),
+            markdownDescription: docs["ios.bundleIdentifier"],
             type: "string",
           },
           buildNumber: {

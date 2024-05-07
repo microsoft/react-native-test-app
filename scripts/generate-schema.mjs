@@ -32,6 +32,7 @@ export async function readDocumentation() {
     "android.signingConfigs",
     "android.versionCode",
     "ios.buildNumber",
+    "ios.bundleIdentifier",
     "ios.codeSignEntitlements",
     "ios.codeSignIdentity",
     "ios.developmentTeam",

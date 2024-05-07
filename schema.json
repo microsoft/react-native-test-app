@@ -22,6 +22,7 @@
       "properties": {
         "bundleIdentifier": {
           "description": "Use this property to set the bundle identifier of the final app bundle. This is the same as setting `PRODUCT_BUNDLE_IDENTIFIER` in Xcode.",
+          "markdownDescription": "Use this property to set the bundle identifier of the final app bundle. This is\nthe same as setting `PRODUCT_BUNDLE_IDENTIFIER` in Xcode.\n\n<details>\n<summary>History</summary>\n\n- [[0.9.7](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.7)]\n  Added\n\n</details>",
           "type": "string"
         },
         "buildNumber": {
