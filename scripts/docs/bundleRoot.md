@@ -12,5 +12,10 @@ When set, the test app will look for the following files on startup:
 - `myRoot.jsbundle`
 - `myRoot.bundle`
 
-Introduced in
-[0.9.0](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.0).
+<details>
+<summary>History</summary>
+
+- [[0.9.0](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.0)]
+  Added
+
+</details>

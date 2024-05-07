@@ -5,5 +5,10 @@ Defaults to multi-app mode.
 
 For more details, see [its dedicated page](Single-app-Mode).
 
-Introduced in
-[1.3.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.3.0).
+<details>
+<summary>History</summary>
+
+- [[1.3.0](https://github.com/microsoft/react-native-test-app/releases/tag/1.3.0)]
+  Added
+
+</details>

@@ -39,3 +39,11 @@ values:
 
 For more details, read Apple's documentation on
 [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files).
+
+<details>
+<summary>History</summary>
+
+- [[3.6.0](https://github.com/microsoft/react-native-test-app/releases/tag/3.6.0)]
+  Added
+
+</details>

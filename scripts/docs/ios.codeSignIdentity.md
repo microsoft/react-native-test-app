@@ -4,5 +4,10 @@ signing identity</a> to use when signing code.
 
 This is the same as setting `CODE_SIGN_IDENTITY` in Xcode.
 
-Introduced in
-[0.9.7](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.7).
+<details>
+<summary>History</summary>
+
+- [[0.9.7](https://github.com/microsoft/react-native-test-app/releases/tag/0.9.7)]
+  Added
+
+</details>
