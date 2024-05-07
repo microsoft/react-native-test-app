@@ -166,14 +166,12 @@ export function generate(json, checksum, fs = nodefs) {
     "",
   ].join("\n");
 
-  const dest = path.join(
-    nodeModulesPath,
-    ".generated",
-    process.env["PLATFORM_FAMILY_NAME"]?.toLowerCase() ?? "ios",
-    "Manifest+Embedded.g.swift"
-  );
+  const projectDir =
+    process.env["PROJECT_DIR"] ??
+    path.join(nodeModulesPath, ".generated", "ios");
+  const dest = path.join(projectDir, "Manifest+Embedded.g.swift");
   fs.promises
-    .mkdir(path.dirname(dest), { recursive: true, mode: 0o755 })
+    .mkdir(projectDir, { recursive: true, mode: 0o755 })
     .then(() => fs.promises.writeFile(dest, code));
   return "app.json -> " + dest;
 }
