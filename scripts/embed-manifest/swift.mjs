@@ -1,7 +1,7 @@
 // @ts-check
 import * as nodefs from "node:fs";
 import * as path from "node:path";
-import { findFile, isMain } from "../helpers.js";
+import { isMain } from "../helpers.js";
 import { main, warn } from "./main.mjs";
 
 const INDENT = "    ";
@@ -136,14 +136,6 @@ function components(components, level) {
  * @returns {string}
  */
 export function generate(json, checksum, fs = nodefs) {
-  const nodeModulesPath = findFile("node_modules", PODS_ROOT, fs);
-  if (!nodeModulesPath) {
-    console.error(
-      "Failed to find 'node_modules' — make sure you've installed npm dependencies"
-    );
-    return "";
-  }
-
   const code = [
     "import Foundation",
     "",
