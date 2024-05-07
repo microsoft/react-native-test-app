@@ -5,8 +5,8 @@ import { findFile, isMain } from "../helpers.js";
 import { main, warn } from "./main.mjs";
 
 const INDENT = "    ";
-const SRCROOT =
-  process.env["PODS_ROOT"] || process.env["SRCROOT"] || process.cwd();
+const SRCROOT = process.env["SRCROOT"] || process.cwd();
+const PODS_ROOT = process.env["PODS_ROOT"] || SRCROOT;
 
 /**
  * @param {unknown} s
@@ -136,7 +136,7 @@ function components(components, level) {
  * @returns {string}
  */
 export function generate(json, checksum, fs = nodefs) {
-  const nodeModulesPath = findFile("node_modules", SRCROOT, fs);
+  const nodeModulesPath = findFile("node_modules", PODS_ROOT, fs);
   if (!nodeModulesPath) {
     console.error(
       "Failed to find 'node_modules' — make sure you've installed npm dependencies"
@@ -166,16 +166,13 @@ export function generate(json, checksum, fs = nodefs) {
     "",
   ].join("\n");
 
-  const projectDir =
-    process.env["PROJECT_DIR"] ??
-    path.join(nodeModulesPath, ".generated", "ios");
-  const dest = path.join(projectDir, "Manifest+Embedded.g.swift");
+  const dest = path.join(SRCROOT, "Manifest+Embedded.g.swift");
   fs.promises
-    .mkdir(projectDir, { recursive: true, mode: 0o755 })
+    .mkdir(SRCROOT, { recursive: true, mode: 0o755 })
     .then(() => fs.promises.writeFile(dest, code));
   return "app.json -> " + dest;
 }
 
 if (!process.argv[1] || isMain(import.meta.url)) {
-  process.exitCode = main(generate, SRCROOT);
+  process.exitCode = main(generate, PODS_ROOT);
 }
