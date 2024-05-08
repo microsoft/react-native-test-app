@@ -3,8 +3,8 @@
 
 /**
  * Returns mock parameters.
- * @param {Partial<import("../../scripts/types").ConfigureParams>} [overrides]
- * @returns {import("../../scripts/types").ConfigureParams}
+ * @param {Partial<import("../../scripts/types.js").ConfigureParams>} [overrides]
+ * @returns {import("../../scripts/types.js").ConfigureParams}
  */
 export function mockParams(overrides) {
   return {

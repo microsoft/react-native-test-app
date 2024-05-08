@@ -18,7 +18,7 @@ import {
 } from "./helpers.js";
 
 /**
- * @typedef {import("./types").Manifest} Manifest
+ * @typedef {import("./types.js").Manifest} Manifest
  */
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "nightly"];

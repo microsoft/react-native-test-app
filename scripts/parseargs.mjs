@@ -4,11 +4,11 @@ import * as path from "node:path";
 import * as util from "node:util";
 
 /**
- * @typedef {import("./types").Options} Options;
+ * @typedef {import("./types.js").Options} Options;
  */
 /**
  * @template {Options} O
- * @typedef {import("./types").Args<O>} Args;
+ * @typedef {import("./types.js").Args<O>} Args;
  */
 
 /**

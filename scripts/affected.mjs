@@ -5,7 +5,7 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 
 /**
- * @typedef {import("./types").Match} Match
+ * @typedef {import("./types.js").Match} Match
  */
 
 /**

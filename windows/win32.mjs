@@ -2,7 +2,7 @@
 import * as path from "node:path";
 import { importTargets } from "./project.mjs";
 
-/** @type {import("../scripts/types").MSBuildProjectConfigurator} */
+/** @type {import("../scripts/types.js").MSBuildProjectConfigurator} */
 export function configureForWin32(
   { bundle, nugetDependencies, versionNumber },
   _options

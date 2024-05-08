@@ -30,13 +30,13 @@ import {
 } from "./template.mjs";
 
 /**
- * @typedef {import("./types").Configuration} Configuration
- * @typedef {import("./types").ConfigureParams} ConfigureParams
- * @typedef {import("./types").FileCopy} FileCopy
- * @typedef {Required<import("./types").Manifest>} Manifest
- * @typedef {import("./types").PlatformConfiguration} PlatformConfiguration
- * @typedef {import("./types").PlatformPackage} PlatformPackage
- * @typedef {import("./types").Platform} Platform
+ * @typedef {import("./types.js").Configuration} Configuration
+ * @typedef {import("./types.js").ConfigureParams} ConfigureParams
+ * @typedef {import("./types.js").FileCopy} FileCopy
+ * @typedef {Required<import("./types.js").Manifest>} Manifest
+ * @typedef {import("./types.js").PlatformConfiguration} PlatformConfiguration
+ * @typedef {import("./types.js").PlatformPackage} PlatformPackage
+ * @typedef {import("./types.js").Platform} Platform
  */
 
 /**

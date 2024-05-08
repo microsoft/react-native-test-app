@@ -6,7 +6,7 @@ import { generateSchema } from "./schema.mjs";
 
 /**
  * @typedef {import("ajv").SchemaObject} SchemaObject
- * @typedef {import("./types").Language} Language
+ * @typedef {import("./types.js").Language} Language
  */
 const thisScript = fileURLToPath(import.meta.url);
 
