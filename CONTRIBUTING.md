@@ -346,6 +346,27 @@ files under [`scripts/docs/`][].
 When making changes to docs, also ensure that `schema.json` gets updated by
 running `npm run generate:schema`.
 
+## Release Announcements
+
+We tend to announce minor releases, and releases that add support for new React
+Native versions, on Discord and on whatever social media of the day is. This is
+the template we currently use:
+
+> 📣 react-native-test-app x.y.z
+>
+> The announcement, any information about what users might have to do (or undo),
+> and where they can learn more about them.
+>
+> Other fixes since a.b.c:
+>
+> - Fix #1
+> - Fix #2
+
+Make sure you're on latest `trunk`, then run
+`node scripts/release-notes.mjs <last version> <this version>` to get a list of
+user-facing changes. You will likely need to prune and rewrite some of these
+entries.
+
 <!-- References -->
 
 [Dependency Dashboard]:
