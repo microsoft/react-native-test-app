@@ -2,7 +2,7 @@
 import { URL, fileURLToPath } from "node:url";
 import { readJSONFile } from "./helpers.js";
 
-/** @typedef {import("./types").Docs} Docs */
+/** @typedef {import("./types.js").Docs} Docs */
 
 /**
  * @param {string} content

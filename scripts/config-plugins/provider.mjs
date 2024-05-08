@@ -14,7 +14,7 @@ export function makeNullProvider(defaultRead = {}) {
 /**
  * Creates a mod modifier that just changes `getFilePath()`.
  * @param {string} actualProjectDir
- * @returns {import("./types").CustomModProvider}
+ * @returns {import("./types.js").CustomModProvider}
  */
 export function makeFilePathModifier(actualProjectDir) {
   return function (original, file) {

@@ -19,7 +19,7 @@ import { configureForUWP } from "./uwp.mjs";
 import { configureForWin32 } from "./win32.mjs";
 
 /**
- * @typedef {import("../scripts/types").MSBuildProjectOptions} MSBuildProjectOptions;
+ * @typedef {import("../scripts/types.js").MSBuildProjectOptions} MSBuildProjectOptions;
  */
 
 const templateView = {
@@ -182,7 +182,7 @@ export function generateSolution(destPath, options, fs = nodefs) {
     .map((project) => toProjectEntry(project, destPath))
     .join(os.EOL);
 
-  /** @type {import("mustache")} */
+  /** @type {typeof import("mustache")} */
   const mustache = requireTransitive(
     ["@react-native-windows/cli", "mustache"],
     rnWindowsPath

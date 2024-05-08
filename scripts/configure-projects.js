@@ -17,8 +17,8 @@ const {
 } = require("./helpers");
 
 /**
- * @typedef {import("./types").ProjectConfig} ProjectConfig
- * @typedef {import("./types").ProjectParams} ProjectParams
+ * @typedef {import("./types.js").ProjectConfig} ProjectConfig
+ * @typedef {import("./types.js").ProjectParams} ProjectParams
  */
 
 /**

@@ -103,7 +103,7 @@ const getInstalledVersion = memo(() => {
  *   - Currently installed `react-native` version
  *   - Latest version from npm
  *
- * @param {import("./types").Platform[]} platforms
+ * @param {import("./types.js").Platform[]} platforms
  * @returns {Promise<string>}
  */
 async function getVersion(platforms) {
@@ -161,7 +161,7 @@ async function getVersion(platforms) {
 
 /**
  * Returns the React Native version and path to the template.
- * @param {import("./types").Platform[]} platforms
+ * @param {import("./types.js").Platform[]} platforms
  * @returns {Promise<[string] | [string, string]>}
  */
 async function fetchTemplate(platforms) {
@@ -236,7 +236,7 @@ function main() {
          * @type {{
          *   name?: string;
          *   packagePath?: string;
-         *   platforms?: import("./types").Platform[];
+         *   platforms?: import("./types.js").Platform[];
          * }}
          */
         const { name, packagePath, platforms } = await prompts([

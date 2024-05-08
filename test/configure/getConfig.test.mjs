@@ -15,8 +15,8 @@ describe("getConfig()", () => {
 
   /**
    * Gets the list of dependencies from specified config.
-   * @param {import("../../scripts/types").Platform} platform
-   * @param {import("../../scripts/types").ConfigureParams} params
+   * @param {import("../../scripts/types.js").Platform} platform
+   * @param {import("../../scripts/types.js").ConfigureParams} params
    * @returns {string[] | undefined}
    */
   function getDependencies(platform, { targetVersion }) {

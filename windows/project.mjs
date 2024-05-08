@@ -17,12 +17,12 @@ import {
 import { fileURLToPath } from "node:url";
 
 /**
- * @typedef {import("../scripts/types").AppManifest} AppManifest
- * @typedef {import("../scripts/types").AppxBundle} AppxBundle
- * @typedef {import("../scripts/types").AssetItems} AssetItems;
- * @typedef {import("../scripts/types").Assets} Assets;
- * @typedef {import("../scripts/types").MSBuildProjectOptions} MSBuildProjectOptions;
- * @typedef {import("../scripts/types").ProjectInfo} ProjectInfo;
+ * @typedef {import("../scripts/types.js").AppManifest} AppManifest
+ * @typedef {import("../scripts/types.js").AppxBundle} AppxBundle
+ * @typedef {import("../scripts/types.js").AssetItems} AssetItems;
+ * @typedef {import("../scripts/types.js").Assets} Assets;
+ * @typedef {import("../scripts/types.js").MSBuildProjectOptions} MSBuildProjectOptions;
+ * @typedef {import("../scripts/types.js").ProjectInfo} ProjectInfo;
  */
 
 const uniqueFilterIdentifier = "e48dc53e-40b1-40cb-970a-f89935452892";

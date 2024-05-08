@@ -1,6 +1,6 @@
 // @ts-check
 /**
- * @typedef {import("../types").ProjectInfo} ProjectInfo
+ * @typedef {import("../types.js").ProjectInfo} ProjectInfo
  * @typedef {Omit<ProjectInfo, "appJsonPath">} Internals
  */
 /**

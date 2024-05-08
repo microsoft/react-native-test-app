@@ -6,7 +6,7 @@ import { URL, fileURLToPath } from "node:url";
 import { isMain } from "./helpers.js";
 import { generateSchema } from "./schema.mjs";
 
-/** @typedef {import("./types").Docs} Docs */
+/** @typedef {import("./types.js").Docs} Docs */
 
 /** @type {(str: string) => string} */
 const stripCarriageReturn =
