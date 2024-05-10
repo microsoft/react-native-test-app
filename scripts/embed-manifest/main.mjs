@@ -32,5 +32,5 @@ export function main(generate, projectRoot = process.cwd(), fs = nodefs) {
  * @param {string} message
  */
 export function warn(message) {
-  console.warn("app.json:", message);
+  console.warn("//", message);
 }

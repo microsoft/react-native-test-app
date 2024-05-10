@@ -1,12 +1,8 @@
 // @ts-check
-import * as nodefs from "node:fs";
-import * as path from "node:path";
 import { isMain } from "../helpers.js";
 import { main, warn } from "./main.mjs";
 
 const INDENT = "    ";
-const SRCROOT = process.env["SRCROOT"] || process.cwd();
-const PODS_ROOT = process.env["PODS_ROOT"] || SRCROOT;
 
 /**
  * @param {unknown} s
@@ -135,8 +131,8 @@ function components(components, level) {
  * @param {string} checksum
  * @returns {string}
  */
-export function generate(json, checksum, fs = nodefs) {
-  const code = [
+export function generate(json, checksum) {
+  return [
     "import Foundation",
     "",
     "extension Manifest {",
@@ -155,16 +151,10 @@ export function generate(json, checksum, fs = nodefs) {
     "        )",
     "    }",
     "}",
-    "",
   ].join("\n");
-
-  const dest = path.join(SRCROOT, "Manifest+Embedded.g.swift");
-  fs.promises
-    .mkdir(SRCROOT, { recursive: true, mode: 0o755 })
-    .then(() => fs.promises.writeFile(dest, code));
-  return "app.json -> " + dest;
 }
 
 if (!process.argv[1] || isMain(import.meta.url)) {
-  process.exitCode = main(generate, PODS_ROOT);
+  const podsRoot = process.env["PODS_ROOT"] || process.cwd();
+  process.exitCode = main(generate, podsRoot);
 }

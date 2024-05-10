@@ -304,7 +304,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source .env\nnode -e \"import('react-native-test-app/scripts/embed-manifest/swift.mjs')\"\n";
+			shellScript = "source .env\nnode -e \"import('react-native-test-app/scripts/embed-manifest/swift.mjs')\" > \"$SRCROOT/Manifest+Embedded.g.swift\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

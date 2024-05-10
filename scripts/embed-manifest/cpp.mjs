@@ -2,7 +2,7 @@
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { findFile, isMain } from "../helpers.js";
-import { main, warn } from "./main.mjs";
+import { main } from "./main.mjs";
 
 const INDENT = "    ";
 
@@ -21,6 +21,13 @@ function num(i) {
  */
 function str(s, literal = "") {
   return typeof s === "string" ? '"' + s + `"${literal}` : "std::nullopt";
+}
+
+/**
+ * @param {string} message
+ */
+export function warn(message) {
+  console.warn("app.json:", message);
 }
 
 /**
