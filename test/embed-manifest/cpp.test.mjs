@@ -1,27 +1,33 @@
 // @ts-check
-import { equal } from "node:assert/strict";
+import { equal, ok } from "node:assert/strict";
 import * as fs from "node:fs";
+import * as path from "node:path";
 import { describe, it } from "node:test";
 import { generate as generateActual } from "../../scripts/embed-manifest/cpp.mjs";
 import * as fixtures from "./fixtures.mjs";
 
 describe("embed manifest (C++)", () => {
-  /** @type {(json: Record<string, unknown>) => Promise<string>} */
-  const generate = (json) =>
-    new Promise((resolve) => {
+  /** @type {(resolve: (result: any) => void) => Partial<typeof fs.promises>} */
+  const fsMock = (resolve) => ({
+    mkdir: () => Promise.resolve(undefined),
+    writeFile: (_, data) => {
+      resolve(data.toString());
+      return Promise.resolve();
+    },
+  });
+
+  /** @type {(json: Record<string, unknown>, mockFs?: typeof fsMock) => Promise<string>} */
+  const generate = (json, mockFs = fsMock) => {
+    return new Promise((resolve) => {
       generateActual(json, "0", {
         ...fs,
-        existsSync: () => true,
         promises: {
           ...fs.promises,
-          mkdir: () => Promise.resolve(undefined),
-          writeFile: (_, data) => {
-            resolve(data.toString());
-            return Promise.resolve();
-          },
+          ...mockFs(resolve),
         },
       });
     });
+  };
 
   it("generates all properties", async () => {
     equal(
@@ -262,5 +268,17 @@ std::string_view ReactApp::GetManifestChecksum()
 }
 `
     );
+  });
+
+  it("writes the output under `/~/.node_modules/.generated`", async () => {
+    const expected = path.join("node_modules", ".generated", "Manifest.g.cpp");
+    const destination = await generate(fixtures.simple, (resolve) => ({
+      mkdir: () => Promise.resolve(undefined),
+      writeFile: (p) => {
+        resolve(p);
+        return Promise.resolve();
+      },
+    }));
+    ok(destination.endsWith(expected));
   });
 });

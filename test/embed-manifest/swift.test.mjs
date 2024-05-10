@@ -1,31 +1,16 @@
 // @ts-check
 import { equal } from "node:assert/strict";
-import * as fs from "node:fs";
 import { describe, it } from "node:test";
 import { generate as generateActual } from "../../scripts/embed-manifest/swift.mjs";
 import * as fixtures from "./fixtures.mjs";
 
 describe("embed manifest (Swift)", () => {
-  /** @type {(json: Record<string, unknown>) => Promise<string>} */
-  const generate = (json) =>
-    new Promise((resolve) => {
-      generateActual(json, "0", {
-        ...fs,
-        existsSync: () => true,
-        promises: {
-          ...fs.promises,
-          mkdir: () => Promise.resolve(undefined),
-          writeFile: (_, data) => {
-            resolve(data.toString());
-            return Promise.resolve();
-          },
-        },
-      });
-    });
+  /** @type {(json: Record<string, unknown>) => string} */
+  const generate = (json) => generateActual(json, "0");
 
-  it("generates all properties", async () => {
+  it("generates all properties", () => {
     equal(
-      await generate(fixtures.simple),
+      generate(fixtures.simple),
       `import Foundation
 
 extension Manifest {
@@ -58,14 +43,13 @@ extension Manifest {
             ]
         )
     }
-}
-`
+}`
     );
   });
 
-  it("handles missing properties", async () => {
+  it("handles missing properties", () => {
     equal(
-      await generate(fixtures.minimum),
+      generate(fixtures.minimum),
       `import Foundation
 
 extension Manifest {
@@ -83,14 +67,13 @@ extension Manifest {
             components: []
         )
     }
-}
-`
+}`
     );
   });
 
-  it("handles valid JSON data types", async () => {
+  it("handles valid JSON data types", () => {
     equal(
-      await generate(fixtures.extended),
+      generate(fixtures.extended),
       `import Foundation
 
 extension Manifest {
@@ -217,8 +200,7 @@ extension Manifest {
             ]
         )
     }
-}
-`
+}`
     );
   });
 });
