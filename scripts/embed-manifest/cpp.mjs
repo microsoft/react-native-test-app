@@ -1,8 +1,6 @@
 // @ts-check
-import * as nodefs from "node:fs";
-import * as path from "node:path";
-import { findFile, isMain } from "../helpers.js";
-import { main } from "./main.mjs";
+import { isMain } from "../helpers.js";
+import { main, warn } from "./main.mjs";
 
 const INDENT = "    ";
 
@@ -21,13 +19,6 @@ function num(i) {
  */
 function str(s, literal = "") {
   return typeof s === "string" ? '"' + s + `"${literal}` : "std::nullopt";
-}
-
-/**
- * @param {string} message
- */
-export function warn(message) {
-  console.warn("app.json:", message);
 }
 
 /**
@@ -161,16 +152,8 @@ function components(components, level) {
  * @param {string} checksum
  * @returns {string}
  */
-export function generate(json, checksum, fs = nodefs) {
-  const nodeModulesPath = findFile("node_modules", process.cwd(), fs);
-  if (!nodeModulesPath) {
-    console.error(
-      "Failed to find 'node_modules' — make sure you've installed npm dependencies"
-    );
-    return "";
-  }
-
-  const code = [
+export function generate(json, checksum) {
+  return [
     "// clang-format off",
     '#include "Manifest.h"',
     "",
@@ -200,12 +183,6 @@ export function generate(json, checksum, fs = nodefs) {
     "}",
     "",
   ].join("\n");
-
-  const dest = path.join(nodeModulesPath, ".generated", "Manifest.g.cpp");
-  fs.promises
-    .mkdir(path.dirname(dest), { recursive: true, mode: 0o755 })
-    .then(() => fs.promises.writeFile(dest, code));
-  return "app.json -> " + dest;
 }
 
 if (isMain(import.meta.url)) {

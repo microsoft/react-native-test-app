@@ -1,37 +1,16 @@
 // @ts-check
-import { equal, ok } from "node:assert/strict";
-import * as fs from "node:fs";
-import * as path from "node:path";
+import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { generate as generateActual } from "../../scripts/embed-manifest/cpp.mjs";
 import * as fixtures from "./fixtures.mjs";
 
 describe("embed manifest (C++)", () => {
-  /** @type {(resolve: (result: any) => void) => Partial<typeof fs.promises>} */
-  const fsMock = (resolve) => ({
-    mkdir: () => Promise.resolve(undefined),
-    writeFile: (_, data) => {
-      resolve(data.toString());
-      return Promise.resolve();
-    },
-  });
+  /** @type {(json: Record<string, unknown>) => string} */
+  const generate = (json) => generateActual(json, "0");
 
-  /** @type {(json: Record<string, unknown>, mockFs?: typeof fsMock) => Promise<string>} */
-  const generate = (json, mockFs = fsMock) => {
-    return new Promise((resolve) => {
-      generateActual(json, "0", {
-        ...fs,
-        promises: {
-          ...fs.promises,
-          ...mockFs(resolve),
-        },
-      });
-    });
-  };
-
-  it("generates all properties", async () => {
+  it("generates all properties", () => {
     equal(
-      await generate(fixtures.simple),
+      generate(fixtures.simple),
       `// clang-format off
 #include "Manifest.h"
 
@@ -78,9 +57,9 @@ std::string_view ReactApp::GetManifestChecksum()
     );
   });
 
-  it("handles missing properties", async () => {
+  it("handles missing properties", () => {
     equal(
-      await generate(fixtures.minimum),
+      generate(fixtures.minimum),
       `// clang-format off
 #include "Manifest.h"
 
@@ -112,9 +91,9 @@ std::string_view ReactApp::GetManifestChecksum()
     );
   });
 
-  it("handles valid JSON data types", async () => {
+  it("handles valid JSON data types", () => {
     equal(
-      await generate(fixtures.extended),
+      generate(fixtures.extended),
       `// clang-format off
 #include "Manifest.h"
 
@@ -268,17 +247,5 @@ std::string_view ReactApp::GetManifestChecksum()
 }
 `
     );
-  });
-
-  it("writes the output under `/~/.node_modules/.generated`", async () => {
-    const expected = path.join("node_modules", ".generated", "Manifest.g.cpp");
-    const destination = await generate(fixtures.simple, (resolve) => ({
-      mkdir: () => Promise.resolve(undefined),
-      writeFile: (p) => {
-        resolve(p);
-        return Promise.resolve();
-      },
-    }));
-    ok(destination.endsWith(expected));
   });
 });
