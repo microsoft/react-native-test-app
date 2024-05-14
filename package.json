@@ -74,7 +74,7 @@
     "generate:code": "node scripts/generate-manifest.mjs",
     "generate:docs": "node scripts/generate-manifest-docs.mjs",
     "generate:schema": "node scripts/generate-schema.mjs",
-    "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@1.0.0",
+    "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@1.0.1",
     "lint:js": "eslint $(git ls-files '*.[cm]js' '*.[jt]s' '*.tsx' ':!:*.config.js' ':!:.yarn/releases') && tsc && tsc --project tsconfig.esm.json",
     "lint:kt": "ktlint --relative 'android/app/src/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
