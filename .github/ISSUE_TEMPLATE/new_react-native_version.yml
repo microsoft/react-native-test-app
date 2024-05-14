@@ -1,5 +1,5 @@
 name: "New `react-native` version \U0000269B"
-description: Add support for the latest version of `react-native`
+description: Add support for the latest version of `react-native` (for maintainers only)
 title: "Add support for `react-native` <version>"
 labels: [enhancement]
 body:
