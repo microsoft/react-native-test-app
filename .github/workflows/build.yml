@@ -656,6 +656,7 @@ jobs:
   release:
     permissions:
       contents: write # create releases (semantic-release)
+      id-token: write # enable use of OIDC for npm provenance (semantic-release)
     needs:
       - review
       - ios
