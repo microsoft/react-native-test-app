@@ -1,9 +1,11 @@
 // @ts-check
+const { spawnSync } = require("node:child_process");
+const fs = require("node:fs");
+
 /** @typedef {import("webdriverio").RemoteOptions["logLevel"]} LogLevel */
 /** @typedef {import("webdriverio").RemoteOptions["runner"]} Runner */
 
 function getAvailableSimulators(search = "iPhone") {
-  const { spawnSync } = require("node:child_process");
   const { error, status, stderr, stdout } = spawnSync(
     "xcrun",
     ["simctl", "list", "--json", "devices", search, "available"],
@@ -31,31 +33,8 @@ const findLatestAndroidEmulatorVersion = (() => {
   let result;
   return () => {
     if (!result) {
-      const { spawnSync } = require("node:child_process");
-      const { error, status, stderr, stdout } = spawnSync(
-        `${process.env["ANDROID_HOME"]}/cmdline-tools/latest/bin/avdmanager`,
-        ["list", "avd"],
-        { encoding: "utf-8" }
-      );
-      if (status !== 0) {
-        console.error(stderr);
-        throw error ?? new Error("Failed to get available Android emulators");
-      }
-
-      const m = stdout.match(/Path: (.*?)\.avd/);
-      if (!m) {
-        throw new Error("Failed to find an eligible Android emulator");
-      }
-
-      const avdPath = m[1];
-      const ini = fs.readFileSync(avdPath + ".ini", { encoding: "utf-8" });
-      const n = ini.match(/target=android-(\d+)/);
-      if (!n) {
-        throw new Error("Failed to determine Android API Level");
-      }
-
-      const target = Number.parseInt(n[1]);
-      result = {
+      /** @type {Record<string, string>} */
+      const targetVersionMap = {
         34: "14.0",
         33: "13.0",
         32: "12L",
@@ -68,7 +47,44 @@ const findLatestAndroidEmulatorVersion = (() => {
         25: "7.1.1",
         24: "7.0",
         23: "6.0",
-      }[target];
+      };
+      const fallbackVersion = targetVersionMap[34];
+
+      const { error, status, stderr, stdout } = spawnSync(
+        `${process.env["ANDROID_HOME"]}/cmdline-tools/latest/bin/avdmanager`,
+        ["list", "avd"],
+        { encoding: "utf-8" }
+      );
+      if (status !== 0) {
+        console.error(stderr);
+        const message =
+          error?.toString() ?? "Failed to get available Android emulators";
+        console.error(`${message}; falling back to '${fallbackVersion}'`);
+        result = fallbackVersion;
+        return result;
+      }
+
+      const m = stdout.match(/Path: (.*?)\.avd/);
+      if (!m) {
+        console.error(
+          `Failed to find an eligible Android emulator; falling back to '${fallbackVersion}'`
+        );
+        result = fallbackVersion;
+        return result;
+      }
+
+      const avdPath = m[1];
+      const ini = fs.readFileSync(avdPath + ".ini", { encoding: "utf-8" });
+      const n = ini.match(/target=android-(\d+)/);
+      if (!n) {
+        console.error(
+          `Failed to determine Android API level; falling back to '${fallbackVersion}'`
+        );
+        result = fallbackVersion;
+        return result;
+      }
+
+      result = targetVersionMap[n[1]] ?? fallbackVersion;
     }
     return result;
   };
