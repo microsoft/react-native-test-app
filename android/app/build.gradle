@@ -210,7 +210,7 @@ android {
 
             !enableNewArchitecture
                 ? "src/old-arch/java"
-                : enableBridgeless
+                : reactNativeVersion >= v(0, 73, 0)
                     ? "src/new-arch-0.73/java"
                     : "src/new-arch/java",
 
