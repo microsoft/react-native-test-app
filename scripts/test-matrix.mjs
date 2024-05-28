@@ -23,12 +23,15 @@ const rootDir = fileURLToPath(new URL("..", import.meta.url));
 
 const getIOSSimulatorName = memo(() => {
   const wdioConfig = new URL(
-    "../example/test/specs/wdio.config.js",
+    "../example/test/specs/wdio.config.mjs",
     import.meta.url
   );
   const { status, stdout } = spawnSync(
     process.argv[0],
-    ["--print", `require("${wdioConfig.pathname}").iosSimulatorName()`],
+    [
+      "--eval",
+      `import("${fileURLToPath(wdioConfig)}").then((config) => console.log(config.iosSimulatorName()))`,
+    ],
     {
       stdio: ["ignore", "pipe", "inherit"],
       env: { TEST_ARGS: "ios" },
@@ -37,7 +40,7 @@ const getIOSSimulatorName = memo(() => {
   );
   if (status !== 0) {
     throw new Error(
-      "An error occurred while trying to evaluate 'wdio.config.js'"
+      "An error occurred while trying to evaluate 'wdio.config.mjs'"
     );
   }
   return stdout.trim();

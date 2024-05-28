@@ -1,6 +1,6 @@
 // @ts-check
-const { spawnSync } = require("node:child_process");
-const fs = require("node:fs");
+import { spawnSync } from "node:child_process";
+import * as fs from "node:fs";
 
 /** @typedef {import("webdriverio").RemoteOptions["logLevel"]} LogLevel */
 /** @typedef {import("webdriverio").RemoteOptions["runner"]} Runner */
@@ -111,7 +111,7 @@ const findLatestIPhoneSimulator = (() => {
   };
 })();
 
-exports.config = {
+export const config = {
   runner: /** @type {Runner} */ ("local"),
   port: 4723,
   specs: ["**/*.spec.js"],
@@ -155,7 +155,7 @@ exports.config = {
   specFileRetries: 3,
 };
 
-exports.iosSimulatorName = () => {
+export function iosSimulatorName() {
   const [deviceName, platformVersion] = findLatestIPhoneSimulator();
   return `${deviceName} (${platformVersion})`;
-};
+}
