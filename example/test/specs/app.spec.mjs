@@ -3,7 +3,7 @@ import { equal } from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import { remote } from "webdriverio";
 import { findNearest, readTextFile } from "../../../scripts/helpers.js";
-import { config } from "./wdio.config.js";
+import { config } from "./wdio.config.mjs";
 
 /**
  * @typedef {Awaited<ReturnType<typeof import("webdriverio").remote>>} Browser
