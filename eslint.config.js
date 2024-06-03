@@ -1,6 +1,7 @@
 const { FlatCompat } = require("@eslint/eslintrc");
 const js = require("@eslint/js");
 const rnx = require("@rnx-kit/eslint-plugin");
+const wdio = require("eslint-plugin-wdio");
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -8,15 +9,8 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
-  {
-    plugins: {
-      wdio: require("eslint-plugin-wdio"),
-    },
-  },
-  ...compat.extends(
-    "plugin:@microsoft/sdl/required",
-    "plugin:wdio/recommended"
-  ),
+  ...compat.extends("plugin:@microsoft/sdl/required"),
+  wdio.configs["flat/recommended"],
   ...rnx.configs.strict,
   {
     ignores: ["!.yarn"],
