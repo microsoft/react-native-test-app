@@ -8,6 +8,7 @@
 const nodefs = require("node:fs");
 const path = require("node:path");
 const tty = require("node:tty");
+const { generateAndroidManifest } = require("../android/android-manifest");
 const {
   findFile,
   findNearest,
@@ -122,11 +123,10 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
 }
 
 /**
- * @param {string} sourceDir
+ * @param {string | undefined} manifestPath
  * @returns {string | undefined}
  */
-function getAndroidPackageName(sourceDir, fs = nodefs) {
-  const manifestPath = findFile("app.json", sourceDir, fs);
+function getAndroidPackageName(manifestPath, fs = nodefs) {
   if (!manifestPath) {
     return undefined;
   }
@@ -147,24 +147,6 @@ function getAndroidPackageName(sourceDir, fs = nodefs) {
   /** @type {{ android?: { package?: string }}} */
   const manifest = readJSONFile(manifestPath, fs);
   return manifest.android?.package;
-}
-
-/**
- * @param {string} sourceDir
- * @returns {string}
- */
-function androidManifestPath(sourceDir) {
-  return path.relative(
-    sourceDir,
-    path.join(
-      path.dirname(__dirname),
-      "android",
-      "app",
-      "src",
-      "main",
-      "AndroidManifest.xml"
-    )
-  );
 }
 
 /**
@@ -210,15 +192,34 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
 
   /** @type {Partial<ProjectParams>} */
   const config = {};
-  const projectRoot = path.dirname(reactNativeConfig);
 
   if (android) {
     const { packageName, sourceDir } = android;
+    const manifestPath = path.join(
+      "app",
+      "build",
+      "generated",
+      "rnta",
+      "src",
+      "main",
+      "AndroidManifest.xml"
+    );
+    const projectRoot = path.dirname(reactNativeConfig);
+    const appManifestPath = findFile("app.json", projectRoot, fs);
+    if (appManifestPath) {
+      generateAndroidManifest(
+        appManifestPath,
+        path.resolve(projectRoot, sourceDir, manifestPath),
+        fs
+      );
+    }
+
     config.android = {
       sourceDir,
-      manifestPath: androidManifestPath(path.resolve(projectRoot, sourceDir)),
-      packageName: packageName || getAndroidPackageName(sourceDir, fs),
+      manifestPath,
+      packageName: packageName || getAndroidPackageName(appManifestPath, fs),
     };
+
     configureGradleWrapper(sourceDir, fs);
   }
 

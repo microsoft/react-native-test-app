@@ -24,6 +24,7 @@
     "*.md",
     "ReactTestApp-DevSupport.podspec",
     "android/**/*.gradle",
+    "android/android-manifest.js",
     "android/app/lint.xml",
     "android/app/src",
     "!android/app/src/test",

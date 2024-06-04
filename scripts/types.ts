@@ -1,3 +1,27 @@
+/********************************
+ * android/android-manifest.mjs *
+ ********************************/
+
+export type AndroidConfig = {
+  android?: {
+    packages?: string;
+    features?: {
+      "android:name": string;
+      "android:required"?: "true" | "false";
+      "android:glEsVersion"?: string;
+    }[];
+    permissions?: {
+      "android:name": string;
+      "android:maxSdkVersion"?: string;
+    }[];
+  };
+};
+
+export type AndroidManifest = {
+  "uses-feature": Record<string, string>[];
+  "uses-permission": Record<string, string>[];
+};
+
 /************************
  * android/autolink.mjs *
  ************************/
