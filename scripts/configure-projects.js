@@ -9,8 +9,10 @@ const nodefs = require("node:fs");
 const path = require("node:path");
 const tty = require("node:tty");
 const {
+  findFile,
   findNearest,
   getPackageVersion,
+  readJSONFile,
   readTextFile,
   toVersionNumber,
   v,
@@ -115,6 +117,21 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
 
 /**
  * @param {string} sourceDir
+ * @returns {string | undefined}
+ */
+function getAndroidPackageName(sourceDir, fs = nodefs) {
+  const manifestPath = findFile("app.json", sourceDir, fs);
+  if (!manifestPath) {
+    return undefined;
+  }
+
+  /** @type {{ android?: { package?: string }}} */
+  const manifest = readJSONFile(manifestPath, fs);
+  return manifest.android?.package;
+}
+
+/**
+ * @param {string} sourceDir
  * @returns {string}
  */
 function androidManifestPath(sourceDir) {
@@ -174,13 +191,13 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
   const projectRoot = path.dirname(reactNativeConfig);
 
   if (android) {
+    const { packageName, sourceDir } = android;
     config.android = {
-      sourceDir: android.sourceDir,
-      manifestPath: androidManifestPath(
-        path.resolve(projectRoot, android.sourceDir)
-      ),
+      sourceDir,
+      manifestPath: androidManifestPath(path.resolve(projectRoot, sourceDir)),
+      packageName: packageName || getAndroidPackageName(sourceDir, fs),
     };
-    configureGradleWrapper(android.sourceDir, fs);
+    configureGradleWrapper(sourceDir, fs);
   }
 
   if (ios) {

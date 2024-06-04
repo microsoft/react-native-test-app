@@ -41,7 +41,7 @@ export type ConfigureParams = {
 };
 
 export type ProjectConfig = {
-  android?: { sourceDir: string };
+  android?: { sourceDir: string; packageName?: string };
   ios?: { sourceDir: string };
   windows?: { sourceDir: string; solutionFile: string };
 };
@@ -50,6 +50,7 @@ export type ProjectParams = {
   android: {
     sourceDir: string;
     manifestPath: string;
+    packageName?: string;
   };
   ios: {
     sourceDir?: string;
