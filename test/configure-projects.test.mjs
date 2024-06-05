@@ -8,6 +8,8 @@ import {
 } from "../scripts/configure-projects.js";
 
 describe("configureProjects()", () => {
+  const manifestPath = path.join("app", "src", "main", "AndroidManifest.xml");
+
   it("returns empty config", () => {
     deepEqual(configureProjects({}), {});
   });
@@ -18,7 +20,7 @@ describe("configureProjects()", () => {
     deepEqual(configureProjects({ android: { sourceDir } }), {
       android: {
         sourceDir,
-        manifestPath: "app/src/main/AndroidManifest.xml",
+        manifestPath,
         packageName: undefined,
       },
     });
@@ -29,13 +31,7 @@ describe("configureProjects()", () => {
     const packageName = "com.testapp";
     const project = configureProjects({ android: { sourceDir, packageName } });
 
-    deepEqual(project, {
-      android: {
-        sourceDir,
-        manifestPath: "app/src/main/AndroidManifest.xml",
-        packageName,
-      },
-    });
+    deepEqual(project, { android: { sourceDir, manifestPath, packageName } });
   });
 
   it("returns iOS config", () => {
