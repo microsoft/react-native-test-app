@@ -649,6 +649,12 @@ export function configure(params, fs = nodefs) {
 
   writeAllFiles(files, packagePath).then(() => {
     const packageManifest = path.join(packagePath, "package.json");
+    if (!fs.existsSync(packageManifest)) {
+      // We cannot assume that the app itself is an npm package. Some libraries
+      // have an 'example' folder inside the package.
+      return;
+    }
+
     const newPackageManifest = updatePackageManifest(packageManifest, config);
     fs.writeFile(
       packageManifest,
