@@ -228,9 +228,8 @@ export const getConfig = (() => {
       }
 
       const require = createRequire(import.meta.url);
-      const rnDir = path.dirname(require.resolve("react-native/package.json"));
       const projectPathFlag =
-        flatten && cliPlatformIOSVersion(rnDir) < v(8, 0, 0)
+        flatten && cliPlatformIOSVersion() < v(8, 0, 0)
           ? " --project-path ."
           : "";
       const templateDir =
