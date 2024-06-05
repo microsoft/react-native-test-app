@@ -318,7 +318,7 @@ export const getConfig = (() => {
               if (toVersionNumber(targetVersion) < v(0, 73, 0)) {
                 return props.replace(
                   /gradle-[.0-9]*-bin\.zip/,
-                  "gradle-7.6.3-bin.zip"
+                  "gradle-7.6.4-bin.zip"
                 );
               }
               return props;
