@@ -18,7 +18,7 @@ concurrency:
 jobs:
   lint-commit:
     name: "lint commit message"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
@@ -255,7 +255,7 @@ jobs:
     name: "Android"
     strategy:
       matrix:
-        runner: [ubuntu-22.04, windows-2022]
+        runner: [ubuntu-24.04, windows-2022]
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
@@ -303,7 +303,7 @@ jobs:
     strategy:
       matrix:
         template: [all, android]
-        runner: [ubuntu-22.04, windows-2022]
+        runner: [ubuntu-24.04, windows-2022]
     runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -667,7 +667,7 @@ jobs:
       - macos-template
       - windows
       - windows-template
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -694,7 +694,7 @@ jobs:
       contents: read
       pull-requests: write
     if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Label
         uses: actions/labeler@v5.0.0
