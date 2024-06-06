@@ -40,6 +40,7 @@ describe("npm pack", () => {
       "android/app/src/camera/java/com/microsoft/reacttestapp/camera/QRCodeScannerFragment.kt",
       "android/app/src/devserverhelper-0.73/java/com/microsoft/reacttestapp/react/DevServerHelperCompat.kt",
       "android/app/src/devserverhelper-0.74/java/com/microsoft/reacttestapp/react/DevServerHelperCompat.kt",
+      "android/app/src/devserverhelper-0.75/java/com/microsoft/reacttestapp/react/DevServerHelperCompat.kt",
       "android/app/src/devserverhelper-pre-0.73/java/com/microsoft/reacttestapp/react/DevServerHelperCompat.kt",
       "android/app/src/main/AndroidManifest.xml",
       "android/app/src/main/java/com/microsoft/reacttestapp/MainActivity.kt",
