@@ -40,16 +40,11 @@ export type ConfigureParams = {
   init: boolean;
 };
 
-export type ProjectConfig = {
-  android?: { sourceDir: string };
-  ios?: { sourceDir: string };
-  windows?: { sourceDir: string; solutionFile: string };
-};
-
 export type ProjectParams = {
   android: {
     sourceDir: string;
     manifestPath: string;
+    packageName?: string;
   };
   ios: {
     sourceDir?: string;
@@ -60,6 +55,12 @@ export type ProjectParams = {
     solutionFile: string;
     project: { projectFile: string };
   };
+};
+
+export type ProjectConfig = {
+  android?: Pick<ProjectParams["android"], "sourceDir" | "packageName">;
+  ios?: Pick<ProjectParams["ios"], "sourceDir">;
+  windows?: Pick<ProjectParams["windows"], "sourceDir" | "solutionFile">;
 };
 
 /*****************

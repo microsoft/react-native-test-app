@@ -228,9 +228,8 @@ export const getConfig = (() => {
       }
 
       const require = createRequire(import.meta.url);
-      const rnDir = path.dirname(require.resolve("react-native/package.json"));
       const projectPathFlag =
-        flatten && cliPlatformIOSVersion(rnDir) < v(8, 0, 0)
+        flatten && cliPlatformIOSVersion() < v(8, 0, 0)
           ? " --project-path ."
           : "";
       const templateDir =
@@ -318,7 +317,7 @@ export const getConfig = (() => {
               if (toVersionNumber(targetVersion) < v(0, 73, 0)) {
                 return props.replace(
                   /gradle-[.0-9]*-bin\.zip/,
-                  "gradle-7.6.3-bin.zip"
+                  "gradle-7.6.4-bin.zip"
                 );
               }
               return props;

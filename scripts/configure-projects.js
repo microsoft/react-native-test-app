@@ -9,8 +9,10 @@ const nodefs = require("node:fs");
 const path = require("node:path");
 const tty = require("node:tty");
 const {
+  findFile,
   findNearest,
   getPackageVersion,
+  readJSONFile,
   readTextFile,
   toVersionNumber,
   v,
@@ -22,26 +24,32 @@ const {
  */
 
 /**
- * Returns the version number of `@react-native-community/cli-platform-ios`.
- * @param {string} reactNativeDir
+ * Returns the version number of a React Native dependency.
+ * @param {string} packageName
  * @returns {number}
  */
-const cliPlatformIOSVersion = (() => {
-  /** @type {number} */
-  let version;
-  /** @type {(reactNativeDir: string) => number} */
-  return (reactNativeDir) => {
-    if (!version) {
-      version = toVersionNumber(
-        getPackageVersion(
-          "@react-native-community/cli-platform-ios",
-          reactNativeDir
-        )
-      );
+const getRNPackageVersion = (() => {
+  const isTesting = "NODE_TEST_CONTEXT" in process.env;
+  /** @type {Record<string, number>} */
+  let versions = {};
+  /** @type {(packageName: string) => number} */
+  return (packageName, fs = nodefs) => {
+    if (isTesting || !versions[packageName]) {
+      const rnDir = path.dirname(require.resolve("react-native/package.json"));
+      const versionString = getPackageVersion(packageName, rnDir, fs);
+      versions[packageName] = toVersionNumber(versionString);
     }
-    return version;
+    return versions[packageName];
   };
 })();
+
+/**
+ * Returns the version number of `@react-native-community/cli-platform-ios`.
+ * @returns {number}
+ */
+function cliPlatformIOSVersion() {
+  return getRNPackageVersion("@react-native-community/cli-platform-ios");
+}
 
 /**
  * Configures Gradle wrapper as necessary before the Android app is built.
@@ -115,6 +123,34 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
 
 /**
  * @param {string} sourceDir
+ * @returns {string | undefined}
+ */
+function getAndroidPackageName(sourceDir, fs = nodefs) {
+  const manifestPath = findFile("app.json", sourceDir, fs);
+  if (!manifestPath) {
+    return undefined;
+  }
+
+  const rncliAndroidVersion = getRNPackageVersion(
+    "@react-native-community/cli-platform-android",
+    fs
+  );
+  if (rncliAndroidVersion < v(12, 3, 7)) {
+    // TODO: This block can be removed when we drop support for 0.72
+    return undefined;
+  }
+  if (rncliAndroidVersion >= v(13, 0, 0) && rncliAndroidVersion < v(13, 6, 9)) {
+    // TODO: This block can be removed when we drop support for 0.73
+    return undefined;
+  }
+
+  /** @type {{ android?: { package?: string }}} */
+  const manifest = readJSONFile(manifestPath, fs);
+  return manifest.android?.package;
+}
+
+/**
+ * @param {string} sourceDir
  * @returns {string}
  */
 function androidManifestPath(sourceDir) {
@@ -135,8 +171,7 @@ function androidManifestPath(sourceDir) {
  * @returns {string | undefined}
  */
 function iosProjectPath() {
-  const rnDir = path.dirname(require.resolve("react-native/package.json"));
-  const needsProjectPath = cliPlatformIOSVersion(rnDir) < v(8, 0, 0);
+  const needsProjectPath = cliPlatformIOSVersion() < v(8, 0, 0);
   if (needsProjectPath) {
     // `sourceDir` and `podfile` detection was fixed in
     // @react-native-community/cli-platform-ios v5.0.2 (see
@@ -164,7 +199,11 @@ function windowsProjectPath(solutionFile, fs = nodefs) {
  * @returns {Partial<ProjectParams>}
  */
 function configureProjects({ android, ios, windows }, fs = nodefs) {
-  const reactNativeConfig = findNearest("react-native.config.js");
+  const reactNativeConfig = findNearest(
+    "react-native.config.js",
+    undefined,
+    fs
+  );
   if (!reactNativeConfig) {
     throw new Error("Failed to find `react-native.config.js`");
   }
@@ -174,20 +213,19 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
   const projectRoot = path.dirname(reactNativeConfig);
 
   if (android) {
+    const { packageName, sourceDir } = android;
     config.android = {
-      sourceDir: android.sourceDir,
-      manifestPath: androidManifestPath(
-        path.resolve(projectRoot, android.sourceDir)
-      ),
+      sourceDir,
+      manifestPath: androidManifestPath(path.resolve(projectRoot, sourceDir)),
+      packageName: packageName || getAndroidPackageName(sourceDir, fs),
     };
-    configureGradleWrapper(android.sourceDir, fs);
+    configureGradleWrapper(sourceDir, fs);
   }
 
   if (ios) {
     // `ios.sourceDir` was added in 8.0.0
     // https://github.com/react-native-community/cli/commit/25eec7c695f09aea0ace7c0b591844fe8828ccc5
-    const rnDir = path.dirname(require.resolve("react-native/package.json"));
-    if (cliPlatformIOSVersion(rnDir) >= v(8, 0, 0)) {
+    if (cliPlatformIOSVersion() >= v(8, 0, 0)) {
       config.ios = ios;
     }
     const project = iosProjectPath();
@@ -211,3 +249,4 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
 
 exports.cliPlatformIOSVersion = cliPlatformIOSVersion;
 exports.configureProjects = configureProjects;
+exports.internalForTestingPurposesOnly = { getAndroidPackageName };
