@@ -651,6 +651,9 @@ export function configure(params, fs = nodefs) {
     if (!fs.existsSync(packageManifest)) {
       // We cannot assume that the app itself is an npm package. Some libraries
       // have an 'example' folder inside the package.
+      warn(
+        `skipped modifying 'package.json' because it was not found in path '${packagePath}'`
+      );
       return;
     }
 
