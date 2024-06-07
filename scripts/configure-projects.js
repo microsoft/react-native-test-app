@@ -79,7 +79,7 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
     : "warn";
 
   try {
-    const props = readTextFile(gradleWrapperProperties);
+    const props = readTextFile(gradleWrapperProperties, fs);
     const re = /gradle-([.0-9]*?)-.*?\.zip/;
     const m = props.match(re);
     if (!m) {
@@ -249,4 +249,7 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
 
 exports.cliPlatformIOSVersion = cliPlatformIOSVersion;
 exports.configureProjects = configureProjects;
-exports.internalForTestingPurposesOnly = { getAndroidPackageName };
+exports.internalForTestingPurposesOnly = {
+  configureGradleWrapper,
+  getAndroidPackageName,
+};
