@@ -45,9 +45,9 @@ def find_file(file_name, current_dir)
 end
 
 def new_architecture_enabled?(options, react_native_version)
-  supports_new_architecture = supports_new_architecture?(react_native_version)
-  supports_new_architecture && ENV.fetch('RCT_NEW_ARCH_ENABLED',
-                                         options[:fabric_enabled] || options[:turbomodule_enabled])
+  return false unless supports_new_architecture?(react_native_version)
+  dependent_options_enabled = options[:fabric_enabled] || options[:turbomodule_enabled]
+  ENV.fetch('RCT_NEW_ARCH_ENABLED', dependent_options_enabled ? '1' : '0') != '0'
 end
 
 def platform_config(key, project_root, target_platform)
