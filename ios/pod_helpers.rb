@@ -46,6 +46,7 @@ end
 
 def new_architecture_enabled?(options, react_native_version)
   return false unless supports_new_architecture?(react_native_version)
+
   dependent_options_enabled = options[:fabric_enabled] || options[:turbomodule_enabled]
   ENV.fetch('RCT_NEW_ARCH_ENABLED', dependent_options_enabled ? '1' : '0') != '0'
 end
