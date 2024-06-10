@@ -71,6 +71,14 @@ class TestPodHelpers < Minitest::Test
     refute(new_architecture_enabled?({}, v(0, 70, 999)))
     assert(new_architecture_enabled?({}, available_version))
 
+    # `RCT_NEW_ARCH_ENABLED` disables everything
+    ENV['RCT_NEW_ARCH_ENABLED'] = '0'
+
+    refute(new_architecture_enabled?({}, v(0, 70, 999)))
+    refute(new_architecture_enabled?({}, available_version))
+    refute(new_architecture_enabled?({ fabric_enabled: true }, available_version))
+    refute(new_architecture_enabled?({ turbomodule_enabled: true }, available_version))
+
     ENV.delete('RCT_NEW_ARCH_ENABLED')
   end
 
