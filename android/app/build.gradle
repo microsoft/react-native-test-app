@@ -9,6 +9,11 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+// `react-native run-android` is hard-coded to look for the output APK at a very
+// specific location. See
+// https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
+buildDir = "${rootDir}/${name}/build"
+
 def reactNativePath = file(findNodeModulesPath("react-native", rootDir))
 
 if (autodetectReactNativeVersion || enableNewArchitecture) {
@@ -32,11 +37,6 @@ if (autodetectReactNativeVersion || enableNewArchitecture) {
         }
     }
 }
-
-// `react-native run-android` is hard-coded to look for the output APK at a very
-// specific location. See
-// https://github.com/react-native-community/cli/blob/6cf12b00c02aca6d4bc843446394331d71a9749e/packages/platform-android/src/commands/runAndroid/index.ts#L180
-buildDir = "${rootDir}/${name}/build"
 
 repositories {
     maven {
@@ -319,6 +319,16 @@ dependencies {
         implementation libraries.androidCamera
         implementation libraries.androidCameraMlKitVision
         implementation libraries.mlKitBarcodeScanning
+    }
+
+    if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 75, 0)) {
+        // https://github.com/facebook/react-native/blob/b0c0bb45911434ea654ba7e2feff4686061eba7a/packages/react-native-gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/ReactExtension.kt#L162
+        def dependencies = autolinkingInfo(buildDir)
+        dependencies.each { path, info ->
+            info.configurations.each { configuration ->
+                add(configuration, project(path))
+            }
+        }
     }
 }
 

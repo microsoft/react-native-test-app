@@ -1,9 +1,13 @@
 import groovy.json.JsonSlurper
-
 import java.nio.file.Paths
 
 ext._dependencies = [:]
 ext._manifest = null
+
+ext.autolinkingInfo = { buildDir ->
+    def autolinking = file("${buildDir}/generated/rnta/autolinking.json")
+    return new JsonSlurper().parseText(autolinking.text)
+}
 
 ext.checkEnvironment = { rootDir ->
     def warnGradle = { gradleVersion, gradleVersionRange, reactNativeVersion ->

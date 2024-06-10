@@ -1,8 +1,7 @@
 import groovy.json.JsonSlurper
+import java.nio.file.Paths
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.initialization.DefaultSettings
-
-import java.nio.file.Paths
 
 private static void applyConfigPlugins(String testAppDir, File rootDir) {
     String[] patch = ["node", "${testAppDir}/scripts/apply-config-plugins.mjs", "--android"]
@@ -12,6 +11,18 @@ private static void applyConfigPlugins(String testAppDir, File rootDir) {
     if (proc.exitValue() != 0) {
         throw new RuntimeException("Failed to apply config plugins:\n${stderr}")
     }
+}
+
+private static Object autolinkModules(File projectRoot, File output, String testAppDir) {
+    String[] autolink = ["node", "${testAppDir}/android/autolink.mjs", projectRoot.toString(), output.toString()]
+    def stdout = new StringBuffer()
+    def proc = Runtime.runtime.exec(autolink, null, projectRoot)
+    proc.waitForProcessOutput(null, stdout)
+    if (proc.exitValue() != 0) {
+        throw new RuntimeException("Failed to autolink:\n${stdout}")
+    }
+
+    return new JsonSlurper().parseText(output.text)
 }
 
 private static boolean isFontFile(File file) {
@@ -77,7 +88,18 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
         settings.includeBuild(reactNativeGradlePlugin)
     }
 
-    applyNativeModulesSettingsGradle(settings)
+    if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 75, 0)) {
+        // https://github.com/facebook/react-native/blob/b0c0bb45911434ea654ba7e2feff4686061eba7a/packages/react-native-gradle-plugin/settings-plugin/src/main/kotlin/com/facebook/react/ReactSettingsExtension.kt#L39
+        def output = file("${rootDir}/app/build/generated/rnta/autolinking.json")
+        def projectRoot = file(findFile("package.json").getParent())
+        def dependencies = autolinkModules(projectRoot, output, testAppDir)
+        dependencies.each { path, info ->
+            settings.include(path)
+            settings.project(path).projectDir = file(info.projectDir)
+        }
+    } else {
+        applyNativeModulesSettingsGradle(settings)
+    }
 
     if (settings.hasProperty("react.buildFromSource") && settings["react.buildFromSource"] == "true") {
         // https://reactnative.dev/contributing/how-to-build-from-source
@@ -93,7 +115,10 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
 }
 
 ext.applyTestAppModule = { Project project ->
-    applyNativeModulesAppBuildGradle(project)
+    def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+    if (reactNativeVersion >= 0 && reactNativeVersion < v(0, 75, 0)) {
+        applyNativeModulesAppBuildGradle(project)
+    }
 
     def isRntaProject =
         project.projectDir.getParent() != null &&
