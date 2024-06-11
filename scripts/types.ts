@@ -1,6 +1,6 @@
-/***************************
- * android/autolinking.mjs *
- ***************************/
+/************************
+ * android/autolink.mjs *
+ ************************/
 
 export type AndroidDependency = {
   projectDir: string;
