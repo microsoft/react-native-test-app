@@ -130,8 +130,8 @@ ext.applyTestAppModule = { Project project ->
         return
     }
 
-    def manifest = new JsonSlurper().parseText(manifestFile.text)
-    def resources = manifest["resources"]
+    def appManifest = new JsonSlurper().parseText(manifestFile.text)
+    def resources = appManifest["resources"]
 
     def androidResources = null
     if (resources instanceof List) {
@@ -157,14 +157,17 @@ ext.applyTestAppModule = { Project project ->
         androidResourceFiles.remove(androidResDir)
     }
 
-    def generatedAssetsDir = file("${buildDir}/generated/rnta/src/main/assets/")
+    def generatedMainDir = file("${buildDir}/generated/rnta/src/main")
+    def generatedManifestFile = "${generatedMainDir}/AndroidManifest.xml"
+
+    def generatedAssetsDir = file("${generatedMainDir}/assets")
     generatedAssetsDir.mkdirs()
 
-    def generatedResDir = file("${buildDir}/generated/rnta/src/main/res/")
+    def generatedResDir = file("${generatedMainDir}/res")
     generatedResDir.mkdirs()
 
     // https://github.com/react-native-community/cli/blob/be880b86cdb3f4ea104cf232b95d11f84613321b/packages/cli-platform-android/native_modules.gradle#L534
-    def generatedSrcDir = file("${buildDir}/generated/rnta/src/main/java/")
+    def generatedSrcDir = file("${generatedMainDir}/java")
     generatedSrcDir.mkdirs()
 
     // https://github.com/facebook/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L25
@@ -231,17 +234,27 @@ ext.applyTestAppModule = { Project project ->
         }
     })
 
+    preBuild.dependsOn(tasks.register("generateAndroidManifest", Exec) {
+        workingDir(projectRoot)
+        commandLine(
+            "node",
+            "${testAppDir}/android/android-manifest.js",
+            manifestFile,
+            generatedManifestFile)
+    })
+
     android {
         sourceSets {
             main {
                 java.srcDirs += generatedSrcDir
                 assets.srcDirs += generatedAssetsDir
                 res.srcDirs += generatedResDir
-                if (manifest.containsKey("android") && manifest["android"].containsKey("icons")) {
-                    res.srcDirs += "${projectRoot}/${manifest["android"]["icons"]}"
+                if (appManifest.containsKey("android") && appManifest["android"].containsKey("icons")) {
+                    res.srcDirs += "${projectRoot}/${appManifest["android"]["icons"]}"
                 } else {
                     res.srcDirs += "${testAppDir}/android/app/src/main/res-launcher"
                 }
+                manifest.srcFile generatedManifestFile
             }
         }
     }

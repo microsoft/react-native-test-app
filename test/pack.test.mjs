@@ -34,6 +34,7 @@ describe("npm pack", () => {
       "README.md",
       "ReactTestApp-DevSupport.podspec",
       "SECURITY.md",
+      "android/android-manifest.js",
       "android/app/build.gradle",
       "android/app/lint.xml",
       "android/app/src/camera/java/com/microsoft/reacttestapp/camera/MainActivityExtensions.kt",

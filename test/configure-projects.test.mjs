@@ -1,4 +1,11 @@
-import { deepEqual, doesNotThrow, equal, throws } from "node:assert/strict";
+// @ts-check
+import {
+  deepEqual,
+  doesNotThrow,
+  equal,
+  fail,
+  throws,
+} from "node:assert/strict";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
@@ -8,7 +15,15 @@ import {
 } from "../scripts/configure-projects.js";
 
 describe("configureProjects()", () => {
-  const manifestPath = path.join("app", "src", "main", "AndroidManifest.xml");
+  const manifestPath = path.join(
+    "app",
+    "build",
+    "generated",
+    "rnta",
+    "src",
+    "main",
+    "AndroidManifest.xml"
+  );
 
   it("returns empty config", () => {
     deepEqual(configureProjects({}), {});
@@ -88,13 +103,13 @@ describe("configureGradleWrapper()", () => {
     const returnEarly = {
       ...nodefs,
       existsSync: () => {
-        throw new Error("Expected to return early");
+        fail("Expected to return early");
       },
       readFileSync: () => {
-        throw new Error("Expected to return early");
+        fail("Expected to return early");
       },
       writeFileSync: () => {
-        throw new Error("Expected to return early");
+        fail("Expected to return early");
       },
     };
 
@@ -119,10 +134,10 @@ describe("configureGradleWrapper()", () => {
       ...nodefs,
       existsSync: () => false,
       readFileSync: () => {
-        throw new Error("Expected to return early");
+        fail("Expected to return early");
       },
       writeFileSync: () => {
-        throw new Error("Expected to return early");
+        fail("Expected to return early");
       },
     };
 
@@ -137,7 +152,7 @@ describe("configureGradleWrapper()", () => {
       ...nodefs,
       existsSync: () => true,
       readFileSync: () => {
-        throw new Error("Expected to return early");
+        fail("Expected to return early");
       },
       writeFileSync: () => {
         /* noop */
@@ -160,7 +175,8 @@ describe("configureGradleWrapper()", () => {
         if (p.toString().endsWith("gradle-wrapper.properties")) {
           return "";
         }
-        throw new Error(`Tried to read '${p}'`);
+
+        fail(`Unexpected file read: ${p}`);
       },
       writeFileSync: (_, data) => {
         // @ts-expect-error Type 'Uint8Array' is not assignable to type 'string'
@@ -187,7 +203,8 @@ describe("configureGradleWrapper()", () => {
         } else if (p.toString().endsWith("package.json")) {
           return JSON.stringify({ name: "react-native", version: rnVersion });
         }
-        throw new Error(`Tried to read '${p}'`);
+
+        fail(`Unexpected file read: ${p}`);
       },
       writeFileSync: (_, data) => {
         // @ts-expect-error Type 'Uint8Array' is not assignable to type 'string'
@@ -225,7 +242,8 @@ describe("configureGradleWrapper()", () => {
         } else if (p.toString().endsWith("package.json")) {
           return JSON.stringify({ name: "react-native", version: rnVersion });
         }
-        throw new Error(`Tried to read '${p}'`);
+
+        fail(`Unexpected file read: ${p}`);
       },
       writeFileSync: (_, data) => {
         // @ts-expect-error Type 'Uint8Array' is not assignable to type 'string'
@@ -256,6 +274,7 @@ describe("configureGradleWrapper()", () => {
 describe("getAndroidPackageName()", () => {
   const { getAndroidPackageName } = internalForTestingPurposesOnly;
 
+  const appManifest = "app.json";
   const packageId = "com.testapp";
 
   /**
@@ -263,7 +282,6 @@ describe("getAndroidPackageName()", () => {
    * @returns {typeof nodefs}
    */
   function mockfs(cliPlatformAndroidVersion) {
-    const appManifest = "app.json";
     const cliPlatformAndroidPackageManifest =
       /@react-native-community[/\\]cli-platform-android[/\\]package.json$/;
     return {
@@ -282,28 +300,34 @@ describe("getAndroidPackageName()", () => {
             version: cliPlatformAndroidVersion,
           });
         }
-        throw new Error(`Tried to read '${p}'`);
+
+        fail(`Unexpected file read: ${p}`);
       },
     };
   }
 
-  it("returns early if app manifest cannot be found", () => {
-    equal(getAndroidPackageName("android"), undefined);
+  it("returns early if specified path is falsy", () => {
+    equal(getAndroidPackageName(""), undefined);
+    equal(getAndroidPackageName(undefined), undefined);
   });
 
   it("returns early if `@react-native-community/cli-platform-android` <12.3.7", () => {
-    equal(getAndroidPackageName("android", mockfs("12.3.6")), undefined);
+    equal(getAndroidPackageName(appManifest, mockfs("11.4.1")), undefined);
+    equal(getAndroidPackageName(appManifest, mockfs("12.3.6")), undefined);
   });
 
   it("returns package name if `@react-native-community/cli-platform-android` >=12.3.7 <13.0.0", () => {
-    equal(getAndroidPackageName("android", mockfs("12.3.7")), packageId);
+    equal(getAndroidPackageName(appManifest, mockfs("12.3.7")), packageId);
+    equal(getAndroidPackageName(appManifest, mockfs("12.999.999")), packageId);
   });
 
   it("returns early if `@react-native-community/cli-platform-android` <13.6.9", () => {
-    equal(getAndroidPackageName("android", mockfs("13.6.8")), undefined);
+    equal(getAndroidPackageName(appManifest, mockfs("13.0.0")), undefined);
+    equal(getAndroidPackageName(appManifest, mockfs("13.6.8")), undefined);
   });
 
   it("returns package name `@react-native-community/cli-platform-android` >=13.6.9", () => {
-    equal(getAndroidPackageName("android", mockfs("13.6.9")), packageId);
+    equal(getAndroidPackageName(appManifest, mockfs("13.6.9")), packageId);
+    equal(getAndroidPackageName(appManifest, mockfs("14.0.0")), packageId);
   });
 });
