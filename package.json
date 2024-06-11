@@ -27,6 +27,7 @@
     "android/app/lint.xml",
     "android/app/src",
     "!android/app/src/test",
+    "android/autolink.mjs",
     "android/support/src",
     "common",
     "example/_gitignore",
