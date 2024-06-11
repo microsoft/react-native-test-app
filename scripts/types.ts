@@ -1,3 +1,12 @@
+/************************
+ * android/autolink.mjs *
+ ************************/
+
+export type AndroidDependency = {
+  projectDir: string;
+  configurations: string[];
+};
+
 /*****************
  * configure.mjs *
  *****************/
