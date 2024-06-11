@@ -18,7 +18,7 @@ const stripCarriageReturn =
 export async function readDocumentation() {
   /** @type {Partial<Docs>} */
   const docs = {};
-  const docsDir = fileURLToPath(new URL("docs", import.meta.url));
+  const docsDir = fileURLToPath(new URL("../docs", import.meta.url));
 
   /** @type {(keyof Docs)[]} */
   const keys = [
@@ -28,8 +28,10 @@ export async function readDocumentation() {
     "resources",
     "singleApp",
     "version",
+    "android.features",
     "android.icons",
     "android.package",
+    "android.permissions",
     "android.signingConfigs",
     "android.versionCode",
     "ios.buildNumber",
