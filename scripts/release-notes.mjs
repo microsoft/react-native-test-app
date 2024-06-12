@@ -4,10 +4,12 @@
 // @ts-check
 // @ts-expect-error Could not find a declaration file for module
 import { generateNotes } from "@semantic-release/release-notes-generator";
-import { spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import { readJSONFile } from "./helpers.js";
+
+/** @typedef {import("./types.js").Manifest} Manifest */
 
 /**
  * @param {string} output
@@ -38,48 +40,44 @@ function reformat(output, lastRelease, nextRelease) {
 
 function repositoryUrl() {
   const p = fileURLToPath(new URL("../package.json", import.meta.url));
-  const manifest = /** @type {import("./types.js").Manifest} */ (
-    readJSONFile(p)
-  );
+  const manifest = /** @type {Manifest} */ (readJSONFile(p));
   return manifest.repository?.url;
 }
 
 /**
- * @param {string | undefined} lastRelease
- * @param {string | undefined} nextRelease
+ * @param {string} lastRelease
+ * @param {string} nextRelease
  */
 function main(lastRelease, nextRelease) {
-  if (!lastRelease || !nextRelease) {
-    const thisScript = path.basename(fileURLToPath(import.meta.url));
-    console.log(`Usage: ${thisScript} <start tag> <end tag>`);
-    process.exitCode = 1;
-    return;
-  }
+  const args = [
+    "log",
+    `--pretty=format:{ "hash": "%H", "message": "%s" }`,
+    `${lastRelease}...${nextRelease}`,
+  ];
+  const git = spawn("git", args, { stdio: ["ignore", "pipe", "inherit"] });
 
-  const { status, stderr, stdout } = spawnSync(
-    "git",
-    [
-      "log",
-      `--pretty=format:{ "hash": "%H", "message": "%s" }`,
-      `${lastRelease}...${nextRelease}`,
-    ],
-    { encoding: "utf-8" }
-  );
-  if (status !== 0) {
-    console.error(stderr);
-    process.exitCode = status ?? 1;
-    return;
-  }
+  const buffers = [Buffer.from("[")];
+  git.stdout.on("data", (chunk) => buffers.push(chunk));
 
-  const output = stdout.trim().split("\n").join(",");
-  const commits = JSON.parse("[" + output + "]");
-  if (commits.length === 0) {
-    return;
-  }
+  git.on("close", (exitCode) => {
+    if (exitCode !== 0) {
+      process.exitCode = exitCode ?? 1;
+      return;
+    }
 
-  generateNotes(
-    {},
-    {
+    buffers.push(Buffer.from("]"));
+
+    const output = Buffer.concat(buffers)
+      .toString()
+      .trim()
+      .split("\n")
+      .join(",");
+    const commits = JSON.parse(output);
+    if (commits.length === 0) {
+      return;
+    }
+
+    const context = {
       commits,
       lastRelease: { gitTag: lastRelease },
       nextRelease: { gitTag: nextRelease },
@@ -87,11 +85,20 @@ function main(lastRelease, nextRelease) {
         repositoryUrl: repositoryUrl(),
       },
       cwd: process.cwd(),
-    }
-  ).then((/** @type {string} */ output) => {
-    console.log(reformat(output, lastRelease, nextRelease));
+    };
+    /** @type {Promise<string>} */
+    const releaseNotes = generateNotes({}, context);
+    releaseNotes
+      .then((output) => reformat(output, lastRelease, nextRelease))
+      .then((output) => console.log(output));
   });
 }
 
-const [, , start, end] = process.argv;
-main(start, end);
+const [, , lastRelease, nextRelease] = process.argv;
+if (!lastRelease || !nextRelease) {
+  const thisScript = path.basename(fileURLToPath(import.meta.url));
+  console.log(`Usage: ${thisScript} <start tag> <end tag>`);
+  process.exitCode = 1;
+} else {
+  main(lastRelease, nextRelease);
+}
