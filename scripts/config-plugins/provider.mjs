@@ -3,6 +3,11 @@ import * as path from "node:path";
 import { findFile } from "../helpers.js";
 import { BaseMods } from "./ExpoConfigPlugins.mjs";
 
+/**
+ * @template {import("@expo/json-file").JSONObject} T
+ * @param {T} [defaultRead={}]
+ */
+// @ts-expect-error Type '{}' is not assignable to type 'T'
 export function makeNullProvider(defaultRead = {}) {
   return BaseMods.provider({
     getFilePath: () => "",
