@@ -67,11 +67,7 @@ function main(lastRelease, nextRelease) {
 
     buffers.push(Buffer.from("]"));
 
-    const output = Buffer.concat(buffers)
-      .toString()
-      .trim()
-      .split("\n")
-      .join(",");
+    const output = Buffer.concat(buffers).toString().trim().replace(/\n/g, ",");
     const commits = JSON.parse(output);
     if (commits.length === 0) {
       return;
@@ -86,6 +82,7 @@ function main(lastRelease, nextRelease) {
       },
       cwd: process.cwd(),
     };
+
     /** @type {Promise<string>} */
     const releaseNotes = generateNotes({}, context);
     releaseNotes
