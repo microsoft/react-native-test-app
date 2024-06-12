@@ -4254,18 +4254,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wdio/config@npm:8.38.0":
-  version: 8.38.0
-  resolution: "@wdio/config@npm:8.38.0"
+"@wdio/config@npm:8.38.2":
+  version: 8.38.2
+  resolution: "@wdio/config@npm:8.38.2"
   dependencies:
     "@wdio/logger": "npm:8.38.0"
-    "@wdio/types": "npm:8.37.0"
-    "@wdio/utils": "npm:8.38.0"
+    "@wdio/types": "npm:8.38.2"
+    "@wdio/utils": "npm:8.38.2"
     decamelize: "npm:^6.0.0"
     deepmerge-ts: "npm:^5.0.0"
     glob: "npm:^10.2.2"
     import-meta-resolve: "npm:^4.0.0"
-  checksum: 10c0/77e534178ac817734b52a7fb0080555b4291fe7121da19ddcb408173b9835625d483b2d88f013a5ee60b4dfdbc5c32ed681ac39b52c5e165507e34489c3e0952
+  checksum: 10c0/2cc3e78bfe6c01ebe8aedfcc9c2eb89c1f00789dfa2f3b0e35138ab3824b8367cd941ba5927a6e073f2677548865d95179de9f251338a9e560456cef7e548cfe
   languageName: node
   linkType: hard
 
@@ -4297,22 +4297,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wdio/types@npm:8.37.0":
-  version: 8.37.0
-  resolution: "@wdio/types@npm:8.37.0"
+"@wdio/types@npm:8.38.2":
+  version: 8.38.2
+  resolution: "@wdio/types@npm:8.38.2"
   dependencies:
     "@types/node": "npm:^20.1.0"
-  checksum: 10c0/909d56a18eb657a640b55b6fcf6d4deca682bc7c01db2f0b2dfff6f58775653bc1336eb7a4291ec8dcb965390b4a5cab58fcc5235b1283d25c59a653e2fff507
+  checksum: 10c0/c3e933ba7d89486f00c6797cdb91639e8e5378cb751e540d22aa01acd905a040f902555dabeafc27435986adb65021497d20c6e960858a100ba495d7626a178f
   languageName: node
   linkType: hard
 
-"@wdio/utils@npm:8.38.0":
-  version: 8.38.0
-  resolution: "@wdio/utils@npm:8.38.0"
+"@wdio/utils@npm:8.38.2":
+  version: 8.38.2
+  resolution: "@wdio/utils@npm:8.38.2"
   dependencies:
     "@puppeteer/browsers": "npm:^1.6.0"
     "@wdio/logger": "npm:8.38.0"
-    "@wdio/types": "npm:8.37.0"
+    "@wdio/types": "npm:8.38.2"
     decamelize: "npm:^6.0.0"
     deepmerge-ts: "npm:^5.1.0"
     edgedriver: "npm:^5.5.0"
@@ -4323,7 +4323,7 @@ __metadata:
     safaridriver: "npm:^0.1.0"
     split2: "npm:^4.2.0"
     wait-port: "npm:^1.0.4"
-  checksum: 10c0/de7bd2e70c15512c98b99a6467254bd0fd0f87a63000e9dacf26145b48beb035bbcd220143a7ba7fcd84b722d616ea64d6ae6b2882ff3f80e9bb91166bec3352
+  checksum: 10c0/7795614064d3dec470f2a887d487ec1fc550f9be5281322db6b4f2b10a8b72542141dc1124c55da012176ec51a8d97c325420d3bf5b537e3b41affd8eb0779cc
   languageName: node
   linkType: hard
 
@@ -4697,9 +4697,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-ios-simulator@npm:^6.0.0, appium-ios-simulator@npm:^6.1.2":
-  version: 6.1.2
-  resolution: "appium-ios-simulator@npm:6.1.2"
+"appium-ios-simulator@npm:^6.0.0, appium-ios-simulator@npm:^6.1.7":
+  version: 6.1.7
+  resolution: "appium-ios-simulator@npm:6.1.7"
   dependencies:
     "@appium/support": "npm:^4.0.0"
     "@xmldom/xmldom": "npm:^0.x"
@@ -4712,7 +4712,7 @@ __metadata:
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/8d45a26d00d37d869508d8c552112abce093bddbb3c186c7628677071fe282d50d795e07cc4bff72f23bb0f18f67166c2b6cbc077ae441e04ebafb0538e2b1c2
+  checksum: 10c0/cee0b10aba1b55a966b38e85cdd3dacaaa459b2cb99220cb14a1bb990288f4d7854b4fcd79326f7f41188990fae3bf5ae1e706b1988a536a2eba9133f3ce1019
   languageName: node
   linkType: hard
 
@@ -4766,9 +4766,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-webdriveragent@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "appium-webdriveragent@npm:8.6.0"
+"appium-webdriveragent@npm:^8.7.0":
+  version: 8.7.2
+  resolution: "appium-webdriveragent@npm:8.7.2"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/strongbox": "npm:^0.x"
@@ -4782,7 +4782,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/a9820f9ac89957c19492597b5f1ff9006ea7e3192531b9cff9471918558045407ee6998640b827a106e7ebcedb3d159df40d730116f4fa3311be0d02591f7c75
+  checksum: 10c0/ba1db346182b21c993cf27857dc4d482ac1968bc2c5bb71ab533554dc79be46b8a437cd002c0b6efecc36b403976503b2aafdf30330ce0922017f374988aa92c
   languageName: node
   linkType: hard
 
@@ -4804,15 +4804,15 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^7.0.0":
-  version: 7.16.2
-  resolution: "appium-xcuitest-driver@npm:7.16.2"
+  version: 7.17.4
+  resolution: "appium-xcuitest-driver@npm:7.17.4"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
     appium-ios-device: "npm:^2.5.4"
-    appium-ios-simulator: "npm:^6.1.2"
+    appium-ios-simulator: "npm:^6.1.7"
     appium-remote-debugger: "npm:^11.1.0"
-    appium-webdriveragent: "npm:^8.6.0"
+    appium-webdriveragent: "npm:^8.7.0"
     appium-xcode: "npm:^5.1.4"
     async-lock: "npm:^1.4.0"
     asyncbox: "npm:^3.0.0"
@@ -4832,7 +4832,7 @@ __metadata:
     ws: "npm:^8.13.0"
   peerDependencies:
     appium: ^2.5.4
-  checksum: 10c0/173e7b2f2732c62b695de3f682db70cae16059deeb6580fa1999cafaa8179db01de8f64004cbaca8ee7c74b8933bad4510484cd851f93fa7e193119e89bc626b
+  checksum: 10c0/cd7533e6498dc5709da1008e2f99360e254feda52b3deca61db2f032678cb69948f31acffc85ee0ee643fb9e2ff60dcdea50fe908b7191b384efc761c2d57a7f
   languageName: node
   linkType: hard
 
@@ -14762,36 +14762,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webdriver@npm:8.38.0":
-  version: 8.38.0
-  resolution: "webdriver@npm:8.38.0"
+"webdriver@npm:8.38.2":
+  version: 8.38.2
+  resolution: "webdriver@npm:8.38.2"
   dependencies:
     "@types/node": "npm:^20.1.0"
     "@types/ws": "npm:^8.5.3"
-    "@wdio/config": "npm:8.38.0"
+    "@wdio/config": "npm:8.38.2"
     "@wdio/logger": "npm:8.38.0"
     "@wdio/protocols": "npm:8.38.0"
-    "@wdio/types": "npm:8.37.0"
-    "@wdio/utils": "npm:8.38.0"
+    "@wdio/types": "npm:8.38.2"
+    "@wdio/utils": "npm:8.38.2"
     deepmerge-ts: "npm:^5.1.0"
     got: "npm:^12.6.1"
     ky: "npm:^0.33.0"
     ws: "npm:^8.8.0"
-  checksum: 10c0/5e44a3d1e76245b87676d7a419dc69f82658d701ebd85dfae99873cb940152dd837b6737681473c2132b40002eeb4df8ebef9b3f4fe13444f2b1900ae00cbdcd
+  checksum: 10c0/304bf156a95ba97fc56b5efa9ed346cf16cebcfa416475a1be214aefb7e2ccfa244ed49c5bfa95f60ec2ee9fb6199a9b19ed4e5295ec9d61f0f634f2521d9a2c
   languageName: node
   linkType: hard
 
 "webdriverio@npm:^8.11.2":
-  version: 8.38.0
-  resolution: "webdriverio@npm:8.38.0"
+  version: 8.38.2
+  resolution: "webdriverio@npm:8.38.2"
   dependencies:
     "@types/node": "npm:^20.1.0"
-    "@wdio/config": "npm:8.38.0"
+    "@wdio/config": "npm:8.38.2"
     "@wdio/logger": "npm:8.38.0"
     "@wdio/protocols": "npm:8.38.0"
     "@wdio/repl": "npm:8.24.12"
-    "@wdio/types": "npm:8.37.0"
-    "@wdio/utils": "npm:8.38.0"
+    "@wdio/types": "npm:8.38.2"
+    "@wdio/utils": "npm:8.38.2"
     archiver: "npm:^7.0.0"
     aria-query: "npm:^5.0.0"
     css-shorthand-properties: "npm:^1.1.1"
@@ -14809,13 +14809,13 @@ __metadata:
     resq: "npm:^1.9.1"
     rgb2hex: "npm:0.2.5"
     serialize-error: "npm:^11.0.1"
-    webdriver: "npm:8.38.0"
+    webdriver: "npm:8.38.2"
   peerDependencies:
     devtools: ^8.14.0
   peerDependenciesMeta:
     devtools:
       optional: true
-  checksum: 10c0/d4d29985f62bdea5b61b19b2a25666108765b754f3c9e7d965269f088fd22d8682a69c247c4bc1773c047544a8c9cf2d3ef1193cdc1ad9e671dd37e94f55d698
+  checksum: 10c0/7832cd4843dbc349d4c89280dac96d58aec41e987edb2079e1014b48457685ea6230932797f5a8e940fa6301608e3baa2412df6f1c2ffc20d8229d0f7a640453
   languageName: node
   linkType: hard
 
