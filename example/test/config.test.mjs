@@ -41,7 +41,7 @@ async function getLoadConfig() {
  * @returns {RegExp}
  */
 function regexp(p) {
-  return new RegExp(p.replace(/\\/g, "\\\\"));
+  return new RegExp(p.replaceAll("\\", "\\\\"));
 }
 
 test("react-native config", async (t) => {

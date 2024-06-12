@@ -107,7 +107,7 @@ function generateAndroidManifest(appManifestPath, manifestOutput, fs = nodefs) {
 
 exports.generateAndroidManifest = generateAndroidManifest;
 
-if (isMain(pathToFileURL(__filename).toString())) {
+if (isMain(pathToFileURL(__filename))) {
   const [, , appManifestPath, manifestOutput] = process.argv;
   process.exitCode = generateAndroidManifest(appManifestPath, manifestOutput);
 }
