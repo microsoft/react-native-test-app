@@ -5,16 +5,21 @@
 // @ts-expect-error Could not find a declaration file for module
 import { generateNotes } from "@semantic-release/release-notes-generator";
 import { spawnSync } from "node:child_process";
-import * as fs from "node:fs";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
+import { readJSONFile } from "./helpers.js";
 
 /**
  * @param {string} output
+ * @param {string} lastRelease
+ * @param {string} nextRelease
+ * @returns {string}
  */
-function prettyPrint(output) {
+function reformat(output, lastRelease, nextRelease) {
   /** @type {[RegExp, string][]} */
   const replacements = [
+    [/^# .*/m, `📣 react-native-test-app ${nextRelease}`],
+    [/^### .*/m, `Other fixes since ${lastRelease}:`],
     [/^\* \*\*android:\*\*/gm, "* **Android:**"],
     [/^\* \*\*apple:\*\*/gm, "* **Apple:**"],
     [/^\* \*\*ios:\*\*/gm, "* **iOS:**"],
@@ -23,25 +28,28 @@ function prettyPrint(output) {
     [/^\* \*\*windows:\*\*/gm, "* **Windows:**"],
     [/\s*\(\[#\d+\]\(https:\/\/github.com.*/gm, ""],
   ];
-  const prettified = replacements.reduce(
-    (output, [search, replace]) => output.replace(search, replace),
-    output
-  );
-  console.log(prettified);
+  return replacements
+    .reduce(
+      (output, [search, replace]) => output.replace(search, replace),
+      output
+    )
+    .trim();
 }
 
 function repositoryUrl() {
   const p = fileURLToPath(new URL("../package.json", import.meta.url));
-  const manifest = JSON.parse(fs.readFileSync(p, { encoding: "utf-8" }));
-  return manifest.repository.url;
+  const manifest = /** @type {import("./types.js").Manifest} */ (
+    readJSONFile(p)
+  );
+  return manifest.repository?.url;
 }
 
 /**
- * @param {string | undefined} start
- * @param {string | undefined} end
+ * @param {string | undefined} lastRelease
+ * @param {string | undefined} nextRelease
  */
-function main(start, end) {
-  if (!start || !end) {
+function main(lastRelease, nextRelease) {
+  if (!lastRelease || !nextRelease) {
     const thisScript = path.basename(fileURLToPath(import.meta.url));
     console.log(`Usage: ${thisScript} <start tag> <end tag>`);
     process.exitCode = 1;
@@ -53,7 +61,7 @@ function main(start, end) {
     [
       "log",
       `--pretty=format:{ "hash": "%H", "message": "%s" }`,
-      `${start}...${end}`,
+      `${lastRelease}...${nextRelease}`,
     ],
     { encoding: "utf-8" }
   );
@@ -73,14 +81,16 @@ function main(start, end) {
     {},
     {
       commits,
-      lastRelease: { gitTag: start },
-      nextRelease: { gitTag: end },
+      lastRelease: { gitTag: lastRelease },
+      nextRelease: { gitTag: nextRelease },
       options: {
         repositoryUrl: repositoryUrl(),
       },
       cwd: process.cwd(),
     }
-  ).then(prettyPrint);
+  ).then((/** @type {string} */ output) => {
+    console.log(reformat(output, lastRelease, nextRelease));
+  });
 }
 
 const [, , start, end] = process.argv;

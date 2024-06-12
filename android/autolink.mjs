@@ -13,8 +13,7 @@ import {
 
 /**
  * @typedef {import("@react-native-community/cli-types").Config} Config
- * @typedef {import("../scripts/types.js").AndroidDependency} AndroidDependency
- * @typedef {Record<string, AndroidDependency>} AndroidDependencies
+ * @typedef {import("../scripts/types.js").AndroidDependencies} AndroidDependencies
  */
 
 /**
