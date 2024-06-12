@@ -31,7 +31,12 @@ const defaultProviders = {
   ),
   infoPlist: modifyFilePath(expoProviders.infoPlist, "Info.plist"),
   entitlements: nullProvider,
-  podfileProperties: nullProvider,
+  podfile: makeNullProvider({
+    path: "",
+    language: /** @type {const} */ ("rb"),
+    contents: "",
+  }),
+  podfileProperties: makeNullProvider(),
 };
 
 // `react-native-test-app` files
