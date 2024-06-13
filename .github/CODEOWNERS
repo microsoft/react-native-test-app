@@ -1,24 +1,24 @@
-*                    @kelset @tido64
+*                    @JasonVMo @tido64
 
 # Android
-*.gradle             @kelset @tido64
-android/             @kelset @tido64
+*.gradle             @JasonVMo @tido64
+android/             @JasonVMo @tido64
 
 # iOS
-*.podspec            @Saadnajmi @kelset @tido64
-*.rb                 @Saadnajmi @kelset @tido64
-ios/                 @Saadnajmi @kelset @tido64
+*.podspec            @JasonVMo @Saadnajmi @tido64
+*.rb                 @JasonVMo @Saadnajmi @tido64
+ios/                 @JasonVMo @Saadnajmi @tido64
 
 # macOS
-macos/               @Saadnajmi @kelset @tido64
+macos/               @JasonVMo @Saadnajmi @tido64
 
 # visionOS
-visionOS/            @Saadnajmi @kelset @tido64
+visionOS/            @JasonVMo @Saadnajmi @tido64
 
 # Windows
-windows/             @acoates-ms @kelset @tido64
+windows/             @acoates-ms @JasonVMo @tido64
 
 # Miscellaneous
-/CODE_OF_CONDUCT.md  @microsoftopensource
-/LICENSE             @microsoftopensource
-/SECURITY.md         @microsoftopensource
+/CODE_OF_CONDUCT.md  @microsoft/react-native-sdk-admins
+/LICENSE             @microsoft/react-native-sdk-admins
+/SECURITY.md         @microsoft/react-native-sdk-admins
