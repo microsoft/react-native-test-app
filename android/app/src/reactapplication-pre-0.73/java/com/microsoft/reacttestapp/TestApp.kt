@@ -12,7 +12,10 @@ import com.microsoft.reacttestapp.react.ReactBundleNameProvider
 import com.microsoft.reacttestapp.react.TestAppReactNativeHost
 import com.microsoft.reacttestapp.support.ReactTestAppLifecycleEvents
 
-class TestApp : Application(), ReactApplication {
+class TestApp :
+    Application(),
+    ReactApplication {
+
     val bundleNameProvider: ReactBundleNameProvider
         get() = reactNativeBundleNameProvider
 

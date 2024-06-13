@@ -33,11 +33,9 @@ sealed class BundleSource {
     }
 
     object Server : BundleSource() {
-        override fun moveTo(to: BundleSource): Action {
-            return when (to) {
-                Disk -> Action.RESTART
-                Server -> Action.RELOAD
-            }
+        override fun moveTo(to: BundleSource): Action = when (to) {
+            Disk -> Action.RESTART
+            Server -> Action.RELOAD
         }
     }
 }

@@ -32,8 +32,6 @@ class TurboModuleManagerDelegate protected constructor(
         override fun build(
             context: ReactApplicationContext?,
             packages: PackagesList?
-        ): TurboModuleManagerDelegate {
-            return TurboModuleManagerDelegate(context, packages)
-        }
+        ): TurboModuleManagerDelegate = TurboModuleManagerDelegate(context, packages)
     }
 }
