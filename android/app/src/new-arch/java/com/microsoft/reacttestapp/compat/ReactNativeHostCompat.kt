@@ -6,9 +6,9 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 
-abstract class ReactNativeHostCompat(application: Application) : DefaultReactNativeHost(
-    application
-) {
+abstract class ReactNativeHostCompat(application: Application) :
+    DefaultReactNativeHost(application) {
+
     companion object {
         init {
             try {

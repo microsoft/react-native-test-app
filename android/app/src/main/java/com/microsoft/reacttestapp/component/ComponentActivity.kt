@@ -16,8 +16,8 @@ class ComponentActivity : ReactActivity() {
         private const val COMPONENT_DISPLAY_NAME = "extra:componentDisplayName"
         const val COMPONENT_INITIAL_PROPERTIES = "extra:componentInitialProperties"
 
-        fun newIntent(activity: Activity, component: ComponentViewModel): Intent {
-            return Intent(activity, ComponentActivity::class.java).apply {
+        fun newIntent(activity: Activity, component: ComponentViewModel): Intent =
+            Intent(activity, ComponentActivity::class.java).apply {
                 putExtra(COMPONENT_NAME, component.name)
                 putExtra(COMPONENT_DISPLAY_NAME, component.displayName)
 
@@ -25,14 +25,12 @@ class ComponentActivity : ReactActivity() {
                     putExtra(COMPONENT_INITIAL_PROPERTIES, component.initialProperties)
                 }
             }
-        }
     }
 
     // ReactActivity overrides
 
-    override fun createReactActivityDelegate(): ReactActivityDelegate {
-        return ComponentActivityDelegate(this, mainComponentName)
-    }
+    override fun createReactActivityDelegate(): ReactActivityDelegate =
+        ComponentActivityDelegate(this, mainComponentName)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,11 +80,9 @@ class ComponentActivity : ReactActivity() {
 
     // Private
 
-    private fun findClass(name: String): Class<*>? {
-        return try {
-            Class.forName(name)
-        } catch (e: ClassNotFoundException) {
-            null
-        }
+    private fun findClass(name: String): Class<*>? = try {
+        Class.forName(name)
+    } catch (e: ClassNotFoundException) {
+        null
     }
 }

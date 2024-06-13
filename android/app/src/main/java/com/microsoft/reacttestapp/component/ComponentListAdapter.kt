@@ -30,15 +30,14 @@ class ComponentListAdapter(
 
     override fun getItemCount() = components.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
-        return ComponentViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder =
+        ComponentViewHolder(
             layoutInflater.inflate(
                 R.layout.recyclerview_item_component,
                 parent,
                 false
             ) as TextView
         )
-    }
 
     override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) {
         holder.bindTo(components[position])

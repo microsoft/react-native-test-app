@@ -9,14 +9,12 @@ import com.facebook.soloader.SoLoader
  * The corresponding C++ implementation is in `android/app/src/main/jni/ComponentsRegistry.cpp`
  */
 @DoNotStrip
-class ComponentsRegistry @DoNotStrip private constructor(
-    componentFactory: ComponentFactory
-) {
+class ComponentsRegistry @DoNotStrip private constructor(componentFactory: ComponentFactory) {
+
     companion object {
         @DoNotStrip
-        fun register(componentFactory: ComponentFactory): ComponentsRegistry {
-            return ComponentsRegistry(componentFactory)
-        }
+        fun register(componentFactory: ComponentFactory): ComponentsRegistry =
+            ComponentsRegistry(componentFactory)
 
         init {
             SoLoader.loadLibrary("fabricjni")

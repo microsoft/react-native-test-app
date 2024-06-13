@@ -10,12 +10,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.microsoft.reacttestapp.MainActivity
 import com.microsoft.reacttestapp.R
 
-fun MainActivity.canUseCamera(): Boolean {
-    return ContextCompat.checkSelfPermission(
-        this,
-        Manifest.permission.CAMERA
-    ) == PackageManager.PERMISSION_GRANTED
-}
+fun MainActivity.canUseCamera(): Boolean = ContextCompat.checkSelfPermission(
+    this,
+    Manifest.permission.CAMERA
+) == PackageManager.PERMISSION_GRANTED
 
 fun MainActivity.scanForQrCode() {
     when {
