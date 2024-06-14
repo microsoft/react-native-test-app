@@ -31,6 +31,8 @@ export type AndroidDependency = {
   configurations: string[];
 };
 
+export type AndroidDependencies = Record<string, AndroidDependency>;
+
 /*****************
  * configure.mjs *
  *****************/
@@ -260,6 +262,10 @@ export type Docs = {
 export type Manifest = Partial<{
   name: string;
   version: string;
+  repository: {
+    type: "git";
+    url: string;
+  };
   dependencies: Record<string, string>;
   peerDependencies: Record<string, string>;
   devDependencies: Record<string, string | undefined>;

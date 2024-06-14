@@ -4,17 +4,24 @@
 // @ts-check
 // @ts-expect-error Could not find a declaration file for module
 import { generateNotes } from "@semantic-release/release-notes-generator";
-import { spawnSync } from "node:child_process";
-import * as fs from "node:fs";
+import { spawn } from "node:child_process";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
+import { readJSONFile } from "./helpers.js";
+
+/** @typedef {import("./types.js").Manifest} Manifest */
 
 /**
  * @param {string} output
+ * @param {string} lastRelease
+ * @param {string} nextRelease
+ * @returns {string}
  */
-function prettyPrint(output) {
+function reformat(output, lastRelease, nextRelease) {
   /** @type {[RegExp, string][]} */
   const replacements = [
+    [/^# .*/m, `📣 react-native-test-app ${nextRelease}`],
+    [/^### .*/m, `Other fixes since ${lastRelease}:`],
     [/^\* \*\*android:\*\*/gm, "* **Android:**"],
     [/^\* \*\*apple:\*\*/gm, "* **Apple:**"],
     [/^\* \*\*ios:\*\*/gm, "* **iOS:**"],
@@ -23,65 +30,72 @@ function prettyPrint(output) {
     [/^\* \*\*windows:\*\*/gm, "* **Windows:**"],
     [/\s*\(\[#\d+\]\(https:\/\/github.com.*/gm, ""],
   ];
-  const prettified = replacements.reduce(
-    (output, [search, replace]) => output.replace(search, replace),
-    output
-  );
-  console.log(prettified);
+  return replacements
+    .reduce(
+      (output, [search, replace]) => output.replace(search, replace),
+      output
+    )
+    .trim();
 }
 
 function repositoryUrl() {
   const p = fileURLToPath(new URL("../package.json", import.meta.url));
-  const manifest = JSON.parse(fs.readFileSync(p, { encoding: "utf-8" }));
-  return manifest.repository.url;
+  const manifest = /** @type {Manifest} */ (readJSONFile(p));
+  return manifest.repository?.url;
 }
 
 /**
- * @param {string | undefined} start
- * @param {string | undefined} end
+ * @param {string} lastRelease
+ * @param {string} nextRelease
  */
-function main(start, end) {
-  if (!start || !end) {
-    const thisScript = path.basename(fileURLToPath(import.meta.url));
-    console.log(`Usage: ${thisScript} <start tag> <end tag>`);
-    process.exitCode = 1;
-    return;
-  }
+function main(lastRelease, nextRelease) {
+  const args = [
+    "log",
+    `--pretty=format:{ "hash": "%H", "message": "%s" }`,
+    `${lastRelease}...${nextRelease}`,
+  ];
+  const git = spawn("git", args, { stdio: ["ignore", "pipe", "inherit"] });
 
-  const { status, stderr, stdout } = spawnSync(
-    "git",
-    [
-      "log",
-      `--pretty=format:{ "hash": "%H", "message": "%s" }`,
-      `${start}...${end}`,
-    ],
-    { encoding: "utf-8" }
-  );
-  if (status !== 0) {
-    console.error(stderr);
-    process.exitCode = status ?? 1;
-    return;
-  }
+  const buffers = [Buffer.from("[")];
+  git.stdout.on("data", (chunk) => buffers.push(chunk));
 
-  const output = stdout.trim().split("\n").join(",");
-  const commits = JSON.parse("[" + output + "]");
-  if (commits.length === 0) {
-    return;
-  }
+  git.on("close", (exitCode) => {
+    if (exitCode !== 0) {
+      process.exitCode = exitCode ?? 1;
+      return;
+    }
 
-  generateNotes(
-    {},
-    {
+    buffers.push(Buffer.from("]"));
+
+    const output = Buffer.concat(buffers).toString().trim().replace(/\n/g, ",");
+    const commits = JSON.parse(output);
+    if (commits.length === 0) {
+      return;
+    }
+
+    const context = {
       commits,
-      lastRelease: { gitTag: start },
-      nextRelease: { gitTag: end },
+      lastRelease: { gitTag: lastRelease },
+      nextRelease: { gitTag: nextRelease },
       options: {
         repositoryUrl: repositoryUrl(),
       },
       cwd: process.cwd(),
-    }
-  ).then(prettyPrint);
+    };
+
+    /** @type {Promise<string>} */
+    const releaseNotes = generateNotes({}, context);
+    releaseNotes
+      .then((output) => reformat(output, lastRelease, nextRelease))
+      .then((output) => console.log(output));
+  });
 }
 
-const [, , start, end] = process.argv;
-main(start, end);
+const [, , lastRelease, nextRelease] = process.argv;
+if (!lastRelease || !nextRelease) {
+  const thisScript = path.basename(fileURLToPath(import.meta.url));
+  console.log(`Usage: ${thisScript} <start tag> <end tag>`);
+  process.exitCode = 1;
+} else {
+  main(lastRelease, nextRelease);
+}
