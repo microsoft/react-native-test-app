@@ -6,6 +6,6 @@
   },
   "include": [
     "App.tsx",
-    "index.js"
+    "index.ts"
   ]
 }
