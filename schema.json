@@ -283,6 +283,44 @@
               "type": "object"
             }
           }
+        },
+        "features": {
+          "description": "Declares hardware or software features that is used by the application.",
+          "markdownDescription": "Declares hardware or software features that is used by the application.\n\nEquivalent to\n[`<uses-feature>`](https://developer.android.com/guide/topics/manifest/uses-feature-element).\n\nExample:\n\n```xml\n<uses-feature android:name=\"android.hardware.camera.any\" />\n<uses-feature android:glEsVersion=\"0x00030002\"\n              android:required=\"true\" />\n```\n\nbecomes\n\n```json\n{\n  \"android\": {\n    \"features\": [\n      {\n        \"android:name\": \"android.hardware.camera.any\"\n      },\n      {\n        \"android:glEsVersion\": \"0x00030002\",\n        \"android:required\": \"true\"\n      }\n    ]\n  }\n}\n```\n\n<details>\n<summary>History</summary>\n\n- [[3.8.0](https://github.com/microsoft/react-native-test-app/releases/tag/3.8.0)]\n  Added\n\n</details>",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "android:name": {
+                "type": "string"
+              },
+              "android:glEsVersion": {
+                "type": "string"
+              },
+              "android:required": {
+                "enum": [
+                  "true",
+                  "false"
+                ]
+              }
+            }
+          }
+        },
+        "permissions": {
+          "description": "Specifies system permissions that the user must grant for the app to operate correctly.",
+          "markdownDescription": "Specifies system permissions that the user must grant for the app to operate\ncorrectly.\n\nEquivalent to\n[`<uses-permission>`](https://developer.android.com/guide/topics/manifest/uses-permission-element).\n\nExample:\n\n```xml\n<uses-permission\n    android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"\n    android:maxSdkVersion=\"18\" />\n```\n\nbecomes\n\n```json\n{\n  \"android\": {\n    \"permissions\": [\n      {\n        \"android:name\": \"android.permission.WRITE_EXTERNAL_STORAGE\",\n        \"android:maxSdkVersion\": \"18\"\n      }\n    ]\n  }\n}\n```\n\n<details>\n<summary>History</summary>\n\n- [[3.8.0](https://github.com/microsoft/react-native-test-app/releases/tag/3.8.0)]\n  Added\n\n</details>",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "android:name": {
+                "type": "string"
+              },
+              "android:maxSdkVersion": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },

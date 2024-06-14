@@ -234,8 +234,10 @@ export type Docs = {
   resources: string;
   singleApp: string;
   version: string;
+  "android.features": string;
   "android.icons": string;
   "android.package": string;
+  "android.permissions": string;
   "android.signingConfigs": string;
   "android.versionCode": string;
   "ios.buildNumber": string;

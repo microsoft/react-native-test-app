@@ -269,6 +269,31 @@ export function generateSchema(docs = {}) {
               },
             },
           },
+          features: {
+            description: extractBrief(docs["android.features"]),
+            markdownDescription: docs["android.features"],
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                "android:name": { type: "string" },
+                "android:glEsVersion": { type: "string" },
+                "android:required": { enum: ["true", "false"] },
+              },
+            },
+          },
+          permissions: {
+            description: extractBrief(docs["android.permissions"]),
+            markdownDescription: docs["android.permissions"],
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                "android:name": { type: "string" },
+                "android:maxSdkVersion": { type: "string" },
+              },
+            },
+          },
         },
       },
       ios: {
