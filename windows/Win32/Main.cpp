@@ -8,9 +8,10 @@
 
 namespace winrt
 {
-    using winrt::Microsoft::ReactNative::CompositionRootView;
     using winrt::Microsoft::ReactNative::IJSValueWriter;
+    using winrt::Microsoft::ReactNative::LayoutDirection;
     using winrt::Microsoft::ReactNative::ReactCoreInjection;
+    using winrt::Microsoft::ReactNative::ReactNativeIsland;
     using winrt::Microsoft::ReactNative::ReactViewOptions;
     using winrt::Microsoft::UI::Composition::Compositor;
     using winrt::Microsoft::UI::Content::ContentSizePolicy;
@@ -38,12 +39,12 @@ namespace
         return GetDpiForWindow(hwnd) / static_cast<float>(USER_DEFAULT_SCREEN_DPI);
     }
 
-    void UpdateRootViewSizeToAppWindow(winrt::CompositionRootView const &rootView,
+    void UpdateRootViewSizeToAppWindow(winrt::ReactNativeIsland const &rootView,
                                        winrt::AppWindow const &window)
     {
         // Do not relayout when minimized
-        if (window.Presenter().as<winrt::OverlappedPresenter>().State() ==
-            winrt::OverlappedPresenterState::Minimized) {
+        auto windowState = window.Presenter().as<winrt::OverlappedPresenter>().State();
+        if (windowState == winrt::OverlappedPresenterState::Minimized) {
             return;
         }
 
@@ -51,8 +52,7 @@ namespace
         auto scaleFactor = ScaleFactor(hwnd);
         winrt::Size size{window.ClientSize().Width / scaleFactor,
                          window.ClientSize().Height / scaleFactor};
-        rootView.Arrange(size);
-        rootView.Size(size);
+        rootView.Arrange({size, size, winrt::LayoutDirection::Undefined}, {0, 0});
     }
 
     winrt::ReactViewOptions MakeReactViewOptions(ReactApp::Component const &component)
@@ -138,7 +138,7 @@ _Use_decl_annotations_ int CALLBACK WinMain(HINSTANCE /* instance */,
         viewOptions = MakeReactViewOptions(component);
     }
 
-    auto rootView = winrt::CompositionRootView{compositor};
+    auto rootView = winrt::ReactNativeIsland{compositor};
     rootView.ReactViewHost(
         winrt::ReactCoreInjection::MakeViewHost(instance.ReactHost(), viewOptions));
 

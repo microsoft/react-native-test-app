@@ -140,10 +140,8 @@ ReactInstance::ReactInstance(HWND hwnd,
 
     // By using the MicrosoftCompositionContextHelper here, React Native Windows
     // will use Lifted Visuals for its tree.
-    winrt::Microsoft::ReactNative::Composition::CompositionUIService::SetCompositionContext(
-        reactNativeHost_.InstanceSettings().Properties(),
-        winrt::Microsoft::ReactNative::Composition::MicrosoftCompositionContextHelper::
-            CreateContext(compositor));
+    winrt::Microsoft::ReactNative::Composition::CompositionUIService::SetCompositor(
+        reactNativeHost_.InstanceSettings(), compositor);
 }
 #endif  // __has_include(<winrt/Microsoft.UI.Composition.h>)
 
