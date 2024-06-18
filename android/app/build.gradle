@@ -193,20 +193,19 @@ android {
         pickFirst "lib/x86/libc++_shared.so"
     }
 
-    if (project.ext.signingConfigs.isEmpty()) {
-        logger.warn("Signing config for 'release' build type not found; reusing debug config")
-        buildTypes.release.signingConfig = signingConfigs.debug
-    } else {
-        project.ext.signingConfigs.each { name, config ->
-            def signingConfig = signingConfigs.findByName(name) ?: signingConfigs.create(name)
-            signingConfig.keyAlias = config["keyAlias"]
-            signingConfig.keyPassword = config["keyPassword"]
-            signingConfig.storeFile = config["storeFile"]
-            signingConfig.storePassword = config["storePassword"]
+    project.ext.signingConfigs.each { name, config ->
+        def signingConfig = signingConfigs.findByName(name) ?: signingConfigs.create(name)
+        signingConfig.keyAlias = config["keyAlias"]
+        signingConfig.keyPassword = config["keyPassword"]
+        signingConfig.storeFile = config["storeFile"]
+        signingConfig.storePassword = config["storePassword"]
 
-            def buildType = buildTypes.findByName(name) ?: buildTypes.create(name)
-            buildType.signingConfig = signingConfigs[name]
-        }
+        def buildType = buildTypes.findByName(name) ?: buildTypes.create(name)
+        buildType.signingConfig = signingConfigs[name]
+    }
+    if (buildTypes.release.signingConfig == null) {
+        logger.warn("Signing config for 'release' build type not found; using default config")
+        buildTypes.release.signingConfig = signingConfigs.debug
     }
 
     sourceSets {
