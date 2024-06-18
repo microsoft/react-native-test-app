@@ -64,7 +64,7 @@ function findNearest(
 
 /**
  * Returns whether the current module is main.
- * @param {string} url
+ * @param {string | URL} url
  * @param {string} script
  * @returns {boolean}
  */

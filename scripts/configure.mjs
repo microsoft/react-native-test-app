@@ -187,7 +187,7 @@ export function reactNativeConfig(
   }
 
   const config = path.join(testAppPath, "example", "react-native.config.js");
-  return readTextFile(config, fs).replace(/Example/g, name);
+  return readTextFile(config, fs).replaceAll("Example", name);
 }
 
 /**
@@ -279,7 +279,7 @@ export const getConfig = (() => {
                   "package.json": readTextFile(
                     path.join(templateDir, "package.json"),
                     fs
-                  ).replace(/HelloWorld/g, name),
+                  ).replaceAll("HelloWorld", name),
                 }),
           },
           oldFiles: [],

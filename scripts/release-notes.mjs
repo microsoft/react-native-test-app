@@ -67,7 +67,10 @@ function main(lastRelease, nextRelease) {
 
     buffers.push(Buffer.from("]"));
 
-    const output = Buffer.concat(buffers).toString().trim().replace(/\n/g, ",");
+    const output = Buffer.concat(buffers)
+      .toString()
+      .trim()
+      .replaceAll("\n", ",");
     const commits = JSON.parse(output);
     if (commits.length === 0) {
       return;

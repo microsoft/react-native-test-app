@@ -10,7 +10,7 @@ import { generateSchema } from "./schema.mjs";
 
 /** @type {(str: string) => string} */
 const stripCarriageReturn =
-  os.EOL === "\r\n" ? (str) => str.replace(/\r/g, "") : (str) => str;
+  os.EOL === "\r\n" ? (str) => str.replaceAll("\r", "") : (str) => str;
 
 /**
  * @returns {Promise<Partial<Docs>>}

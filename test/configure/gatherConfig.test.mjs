@@ -19,14 +19,14 @@ describe("gatherConfig()", () => {
    */
   function gatherConfig(params) {
     /** @type {(p: string) => string} */
-    const normalize = (p) => p.replace(/\\/g, "/");
+    const normalize = (p) => p.replaceAll("\\", "/");
 
     const config = gatherConfigActual(params, true);
     config.files = Object.fromEntries(
       Object.entries(config.files).map(([key, value]) => [
         normalize(key),
         typeof value === "string"
-          ? value.replace(/\r/g, "")
+          ? value.replaceAll("\r", "")
           : { source: normalize(value.source) },
       ])
     );
@@ -36,7 +36,7 @@ describe("gatherConfig()", () => {
 
   const gradleWrapper = readTextFile(
     "example/android/gradle/wrapper/gradle-wrapper.properties"
-  ).replace(/\r/g, "");
+  ).replaceAll("\r", "");
 
   it("returns configuration for all platforms", () => {
     deepEqual(gatherConfig(mockParams()), {

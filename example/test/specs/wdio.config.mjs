@@ -104,7 +104,7 @@ const findLatestIPhoneSimulator = (() => {
         simulator?.name ?? "iPhone 15 Pro",
         latestRuntime
           .substring("com.apple.CoreSimulator.SimRuntime.iOS-".length)
-          .replace(/-/g, "."),
+          .replaceAll("-", "."),
       ];
     }
     return result;
