@@ -204,7 +204,7 @@ android {
         buildType.signingConfig = signingConfigs[name]
     }
     if (buildTypes.release.signingConfig == null) {
-        logger.warn("Signing config for 'release' build type not found; using default config")
+        logger.warn("Signing config for 'release' build type not found; reusing debug config")
         buildTypes.release.signingConfig = signingConfigs.debug
     }
 
