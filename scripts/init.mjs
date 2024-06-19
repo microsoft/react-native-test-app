@@ -10,7 +10,13 @@ import { fileURLToPath } from "node:url";
 import prompts from "prompts";
 import * as colors from "./colors.mjs";
 import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
-import { fetchPackageMetadata, memo, readJSONFile } from "./helpers.js";
+import {
+  fetchPackageMetadata,
+  memo,
+  readJSONFile,
+  toVersionNumber,
+  v,
+} from "./helpers.js";
 import { parseArgs } from "./parseargs.mjs";
 
 /**
@@ -160,20 +166,13 @@ async function getVersion(platforms) {
 }
 
 /**
- * Returns the React Native version and path to the template.
- * @param {import("./types.js").Platform[]} platforms
- * @returns {Promise<[string] | [string, string]>}
+ * Downloads the specified npm package.
+ * @param {string} pkg
+ * @param {string} version
+ * @returns {Promise<string>}
  */
-async function fetchTemplate(platforms) {
-  const version = await getVersion(platforms);
-  if (getInstalledVersion() === version) {
-    const rnManifest = getInstalledReactNativeManifest();
-    if (rnManifest) {
-      return [version, path.join(path.dirname(rnManifest), "template")];
-    }
-  }
-
-  const url = await fetchPackageTarballURL("react-native", version);
+async function downloadPackage(pkg, version) {
+  const url = await fetchPackageTarballURL(pkg, version);
   console.log(`Downloading ${path.basename(url)}...`);
 
   return new Promise((resolve, reject) => {
@@ -183,19 +182,38 @@ async function fetchTemplate(platforms) {
         fs.mkdirSync(tmpDir, { recursive: true });
 
         const dest = path.join(tmpDir, path.basename(url));
-        const file = fs.createWriteStream(dest);
-        res.pipe(file);
-        file.on("finish", () => {
-          file.close();
-
+        const fh = fs.createWriteStream(dest);
+        res.pipe(fh);
+        fh.on("finish", () => {
+          fh.close();
           untar(dest);
-
-          const template = path.join(tmpDir, "package", "template");
-          resolve([version, template]);
+          resolve(path.join(tmpDir, "package"));
         });
       })
       .on("error", (err) => reject(err));
   });
+}
+
+/**
+ * Returns the React Native version and path to the template.
+ * @param {import("./types.js").Platform[]} platforms
+ * @returns {Promise<[string, string]>}
+ */
+async function fetchTemplate(platforms) {
+  const version = await getVersion(platforms);
+  const useTemplatePackage = toVersionNumber(version) >= v(0, 75, 0);
+  if (!useTemplatePackage && getInstalledVersion() === version) {
+    const rnManifest = getInstalledReactNativeManifest();
+    if (rnManifest) {
+      return [version, path.join(path.dirname(rnManifest), "template")];
+    }
+  }
+
+  const template = useTemplatePackage
+    ? "@react-native-community/template"
+    : "react-native";
+  const output = await downloadPackage(template, version);
+  return [version, path.join(output, "template")];
 }
 
 function main() {
