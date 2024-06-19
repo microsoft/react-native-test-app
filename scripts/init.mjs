@@ -216,6 +216,47 @@ async function fetchTemplate(platforms) {
   return [version, path.join(output, "template")];
 }
 
+/**
+ * @param {import("./types.js").Platform} platform
+ * @returns {string}
+ */
+function instructionsFor(platform) {
+  switch (platform) {
+    case "android":
+      return [
+        `  • Build and run the ${colors.bold("Android")} app`,
+        "",
+        "\tnpm run android",
+        "",
+        "",
+      ].join("\n");
+
+    case "ios":
+    case "macos":
+    case "visionos":
+      return [
+        `  • Build and run the ${colors.bold(platform.slice(0, -2) + "OS")} app`,
+        "",
+        `\tpod install --project-directory=${platform}`,
+        `\tnpm run ${platform}`,
+        "",
+        "",
+      ].join("\n");
+
+    case "windows":
+      return [
+        `  • Build and run the ${colors.bold("Windows")} app`,
+        "",
+        "\tnpx install-windows-test-app",
+        "\tnpm run windows",
+        "",
+        "",
+      ].join("\n");
+  }
+
+  throw new Error(`Unknown platform: ${platform}`);
+}
+
 function main() {
   return new Promise((resolve) => {
     parseArgs(
@@ -308,6 +349,31 @@ function main() {
           force: true,
           init: true,
         });
+
+        console.log(
+          [
+            "",
+            "Your React Native project is now ready.",
+            "",
+            "Quick start instructions:",
+            "",
+            "  • Install npm dependencies using your preferred package manager (the following instructions are for npm):",
+            "",
+            `\tcd ${packagePath}`,
+            "\tnpm install",
+            "",
+            "",
+            ...platforms.sort().map((platform) => instructionsFor(platform)),
+            "  • Start the dev server",
+            "",
+            "\tnpm run start",
+            "",
+            "",
+            "Check out the wiki for more information:",
+            "\thttps://github.com/microsoft/react-native-test-app/wiki/Quick-Start",
+            "",
+          ].join("\n")
+        );
 
         resolve(result);
       }
