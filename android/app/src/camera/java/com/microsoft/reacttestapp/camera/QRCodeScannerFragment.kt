@@ -5,9 +5,9 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.camera.core.ImageAnalysis.COORDINATE_SYSTEM_ORIGINAL
 import androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
 import androidx.camera.mlkit.vision.MlKitAnalyzer
-import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.core.util.Consumer
@@ -52,7 +52,7 @@ class QRCodeScannerFragment(
             cameraExecutor,
             MlKitAnalyzer(
                 listOf(scanner),
-                COORDINATE_SYSTEM_VIEW_REFERENCED,
+                COORDINATE_SYSTEM_ORIGINAL,
                 cameraExecutor
             ) {
                 it.getValue(scanner)?.let { barcodes ->
