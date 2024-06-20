@@ -31,9 +31,18 @@ body:
         - label: visionOS
         - label: Windows
   - type: checkboxes
+    id: tasks
+    attributes:
+      label: Tasks
+      description: Leave these unchecked. Tasks that should be done with every release.
+      options:
+        - label: Verify that the Gradle version used is the same or higher ([see context](https://github.com/microsoft/react-native-test-app/pull/1935))
+        - label: Ensure React Native Gradle Plugin autolinking code are in sync ([see context](https://github.com/microsoft/react-native-test-app/pull/2075))
+        - label: Ensure feature flags are in sync ([see context](https://github.com/microsoft/rnx-kit/pull/3196/files))
+  - type: checkboxes
     id: checklist
     attributes:
-      label: Checklist
+      label: End-to-end tests
       description: Leave these unchecked. Combinations of configurations that have been tested.
       options:
         - label: "Android - Fabric: disabled"
