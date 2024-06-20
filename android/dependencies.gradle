@@ -60,8 +60,8 @@ ext {
      */
     libraries = [
         androidAppCompat            : "androidx.appcompat:appcompat:1.7.0",
-        androidCamera               : "androidx.camera:camera-camera2:1.3.0-beta02",
-        androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.3.0-beta02",
+        androidCamera               : "androidx.camera:camera-camera2:1.4.0-beta02",
+        androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.4.0-beta02",
         androidCoreKotlinExtensions : "androidx.core:core-ktx:1.13.1",
         androidEspressoCore         : "androidx.test.espresso:espresso-core:3.5.1",
         androidJUnit                : "androidx.test.ext:junit:1.1.5",
@@ -75,6 +75,7 @@ ext {
 
     // Separate block so bots can parse this file properly
     if (kotlinVersionNumber < v(1, 8, 0)) {
+        libraries.androidAppCompat = ["androidx.appcompat", "appcompat", "1.6.1"].join(":")
         libraries.androidCamera = ["androidx.camera", "camera-camera2", "1.2.0-beta02"].join(":")
         libraries.androidCameraMlKitVision = ["androidx.camera", "camera-mlkit-vision", "1.2.0-beta02"].join(":")
         libraries.androidCoreKotlinExtensions = ["androidx.core", "core-ktx", "1.9.0"].join(":")
