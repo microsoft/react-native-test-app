@@ -187,7 +187,7 @@
     "bplist-creator": "~0.1.1",
     "bplist-parser": "~0.3.2",
     "compression/bytes": "^3.0.0",
-    "puppeteer-core/@puppeteer/browsers": "^1.4.6",
+    "puppeteer-core/@puppeteer/browsers": "^2.0.0",
     "puppeteer-core/ws": "^8.13.0",
     "safe-buffer": "~5.2.1",
     "unzipper/bluebird": "^3.4.1"
