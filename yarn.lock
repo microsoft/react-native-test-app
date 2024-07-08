@@ -2006,8 +2006,8 @@ __metadata:
   linkType: hard
 
 "@expo/config-plugins@npm:^8.0.0":
-  version: 8.0.5
-  resolution: "@expo/config-plugins@npm:8.0.5"
+  version: 8.0.7
+  resolution: "@expo/config-plugins@npm:8.0.7"
   dependencies:
     "@expo/config-types": "npm:^51.0.0-unreleased"
     "@expo/json-file": "npm:~8.3.0"
@@ -2024,7 +2024,7 @@ __metadata:
     slugify: "npm:^1.6.6"
     xcode: "npm:^3.0.1"
     xml2js: "npm:0.6.0"
-  checksum: 10c0/9025bb8932368c71dc6a33a376c07c59f821b44cd1e188e48ac647b28a48c54b42e7f1ad186ac5b76faa4879c019c6888ae122aa49401d5f7214f90b5eeb631a
+  checksum: 10c0/9e92039cc61d1a5835125cc3d41f0a95c2f3dc284c5342b8137a58ecf2d9115ed428760b4f218e0005ddd355923ffa8d1a2f77ba6c55d4faa14bfeffb663f1c4
   languageName: node
   linkType: hard
 
