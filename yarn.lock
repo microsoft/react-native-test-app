@@ -4702,8 +4702,8 @@ __metadata:
   linkType: hard
 
 "appium-adb@npm:^12.0.0, appium-adb@npm:^12.4.7, appium-adb@npm:^12.5.0":
-  version: 12.5.0
-  resolution: "appium-adb@npm:12.5.0"
+  version: 12.5.1
+  resolution: "appium-adb@npm:12.5.1"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     async-lock: "npm:^1.0.0"
@@ -4715,13 +4715,13 @@ __metadata:
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
-  checksum: 10c0/58dd0c1d642ebb80b62bcc1ac5d0b601df9e3298787acd20b442a1780795fd20b60f136027c841c592afb2e50dc56874d96b2d93664bd970009a1c042c0b58fb
+  checksum: 10c0/a01a0f89275f79a1af65d4a81bee5eb928da21d08e2f8d738a3235e6f4029db6cf525e54da63da1de255181490a4c0e04d129365d585e8fe1db2cf1be90fbb07
   languageName: node
   linkType: hard
 
 "appium-android-driver@npm:^9.8.0":
-  version: 9.8.0
-  resolution: "appium-android-driver@npm:9.8.0"
+  version: 9.8.1
+  resolution: "appium-android-driver@npm:9.8.1"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     "@colors/colors": "npm:^1.6.0"
@@ -4743,13 +4743,13 @@ __metadata:
     ws: "npm:^8.0.0"
   peerDependencies:
     appium: ^2.0.0
-  checksum: 10c0/a87223582be1e66ce7746a1ace2e46044a31b67fba88419da669544c912b099af8a9c98e576084c00f3bf3ad9594ce059bb15836453e618e68cb660bb145f43b
+  checksum: 10c0/e5f13bd406f5ff87a8c3beb0cd529a88486d12a3c6b9219b23fd0e980ef68718dac0f4f642aa64f067b93883c48062053707425a386fe38160ffa91111d2623e
   languageName: node
   linkType: hard
 
 "appium-chromedriver@npm:^5.5.1, appium-chromedriver@npm:^5.6.28":
-  version: 5.6.65
-  resolution: "appium-chromedriver@npm:5.6.65"
+  version: 5.6.67
+  resolution: "appium-chromedriver@npm:5.6.67"
   dependencies:
     "@appium/base-driver": "npm:^9.1.0"
     "@appium/support": "npm:^5.1.1"
@@ -4765,13 +4765,13 @@ __metadata:
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
     xpath: "npm:^0.x"
-  checksum: 10c0/2ef6940141e20cbbff5e54cb729a229efe1207a47bcd5beea9ad730d5c3eb3dc6dd2051cddcca78d079231aeeb702c3d2250aff006c1d0ea7f80cc32962fd496
+  checksum: 10c0/f1c86d73d9e35337c931c16c5f480139bb5a7fa630bc7e209e2c7fa6c0af3c727174aac585220ba86426c0f7a3c75defd4ed3684c56b6c84ea265f743b876e2b
   languageName: node
   linkType: hard
 
 "appium-idb@npm:^1.6.13":
-  version: 1.8.18
-  resolution: "appium-idb@npm:1.8.18"
+  version: 1.8.19
+  resolution: "appium-idb@npm:1.8.19"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     asyncbox: "npm:^3.0.0"
@@ -4779,13 +4779,13 @@ __metadata:
     lodash: "npm:^4.0.0"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.1"
-  checksum: 10c0/741219ab63d2afdfd248cc6e074a16e50782773f8518c57efccaec0ce0f99baa6d04807e2d1982f9f35f6549703e071119a39aa3f9a4e31d13703d7cd290672b
+  checksum: 10c0/6d703622cb8ff3ced54a326f461b353b796f6a4fe075a4e1400a2b95f04348720acb7994b7aff757e254b884b363a2701bd91975512f12568c77d92ebd9980a0
   languageName: node
   linkType: hard
 
 "appium-ios-device@npm:^2.0.0, appium-ios-device@npm:^2.5.0, appium-ios-device@npm:^2.5.4":
-  version: 2.7.21
-  resolution: "appium-ios-device@npm:2.7.21"
+  version: 2.7.22
+  resolution: "appium-ios-device@npm:2.7.22"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     asyncbox: "npm:^3.0.0"
@@ -4797,13 +4797,13 @@ __metadata:
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
     uuid: "npm:^10.0.0"
-  checksum: 10c0/e4a9946c7109b4cdfd7aba3843dc9a3c1a1c4c57b942b16c65d2214e6646d5527dd838e27818e406b86f746e03d483b49cd6f6154d3ae55e815597cad144e1eb
+  checksum: 10c0/ae238ac5a8b957dab3287fdf2730670f59f81671e853fe02c30d50fd707a93a1a484e5703221a6fa0c075c066b78fe9bcfdcc068f5458c52188bc7878cdf738d
   languageName: node
   linkType: hard
 
 "appium-ios-simulator@npm:^6.0.0, appium-ios-simulator@npm:^6.1.7":
-  version: 6.1.10
-  resolution: "appium-ios-simulator@npm:6.1.10"
+  version: 6.1.11
+  resolution: "appium-ios-simulator@npm:6.1.11"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     "@xmldom/xmldom": "npm:^0.x"
@@ -4816,13 +4816,13 @@ __metadata:
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/a28bab0bc90c42211ce8946a58457c9c105a3de1bd8032b1e10facfe7c6e1824905244a08f785932a111c4f3a6b060c872c5a16f24170ce3df11c17fc344a2eb
+  checksum: 10c0/fb22c61579a24111eea01a9e986f4674cd9e11462410e462ef34cb3a4dcd09221672e1aa0128fa2499130329cc7f828fe33bcb6d984903334f92ba280a314825
   languageName: node
   linkType: hard
 
-"appium-remote-debugger@npm:^11.3.0":
-  version: 11.3.2
-  resolution: "appium-remote-debugger@npm:11.3.2"
+"appium-remote-debugger@npm:^11.5.3":
+  version: 11.5.4
+  resolution: "appium-remote-debugger@npm:11.5.4"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/support": "npm:^5.0.3"
@@ -4835,7 +4835,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/a7aa91d0b10b55583c9fd1f36e69cba35082c22cca3982f0e4f35315ca6ba12277e5c0e97b978affeca377ccd98fb0a7270cfb97a0a05d4471f61b82b0f76c09
+  checksum: 10c0/7b44ab767ad5466741f6a1b13838da76eb26988152e772595f23061cdcf40f190f51584f070915bb40952ffd11f7f36cd96ab82676070c75a1afc08f1e42c66a
   languageName: node
   linkType: hard
 
@@ -4871,8 +4871,8 @@ __metadata:
   linkType: hard
 
 "appium-webdriveragent@npm:^8.7.8":
-  version: 8.7.9
-  resolution: "appium-webdriveragent@npm:8.7.9"
+  version: 8.7.11
+  resolution: "appium-webdriveragent@npm:8.7.11"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/strongbox": "npm:^0.x"
@@ -4886,7 +4886,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
-  checksum: 10c0/5c15cc47fb127b76077e5da40c9430ccc994d68583d4da674a30d611e5105d8995359bb6e9a858fdb38c086836197c33de13c3449debd58ab346565ddc0e2de8
+  checksum: 10c0/5d47e78cec61c533bbf7cd82a05cd47686ab1c5617393d4bdaffb5e9e9085efacd7060b912aee4bf3db8abdc416e36223f96be7a1e0f774264d1efdc23d4667f
   languageName: node
   linkType: hard
 
@@ -4909,14 +4909,14 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^7.0.0":
-  version: 7.24.1
-  resolution: "appium-xcuitest-driver@npm:7.24.1"
+  version: 7.24.3
+  resolution: "appium-xcuitest-driver@npm:7.24.3"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
     appium-ios-device: "npm:^2.5.4"
     appium-ios-simulator: "npm:^6.1.7"
-    appium-remote-debugger: "npm:^11.3.0"
+    appium-remote-debugger: "npm:^11.5.3"
     appium-webdriveragent: "npm:^8.7.8"
     appium-xcode: "npm:^5.1.4"
     async-lock: "npm:^1.4.0"
@@ -4937,7 +4937,7 @@ __metadata:
     ws: "npm:^8.13.0"
   peerDependencies:
     appium: ^2.5.4
-  checksum: 10c0/74a3ceaec926db0179f04c3912f34eece3addcdbb6c0cb1a99d8bb9a936185e978190551f0bbff7c5d65ab97ead018f071d7012e9f0ed1b5088cfc77dcda9ccb
+  checksum: 10c0/55b066f19e6d4c2fa49e79ccee242912faf0307ba9574d5f1ee440b5545f5fed67656154c3a7d53db809d879b1e8b512568a29aa6f5616b2095acb785c34d3a4
   languageName: node
   linkType: hard
 
@@ -12465,10 +12465,10 @@ __metadata:
   peerDependencies:
     "@callstack/react-native-visionos": 0.73 - 0.74
     "@expo/config-plugins": ">=5.0"
-    react: 17.0.1 - 18.3
-    react-native: 0.66 - 0.74 || >=0.75.0-0 <0.75.0
+    react: 17.0.1 - 19.0
+    react-native: 0.66 - 0.75 || >=0.76.0-0 <0.76.0
     react-native-macos: ^0.0.0-0 || 0.66 || 0.68 || 0.71 - 0.73
-    react-native-windows: ^0.0.0-0 || 0.66 - 0.74
+    react-native-windows: ^0.0.0-0 || 0.66 - 0.75
   peerDependenciesMeta:
     "@callstack/react-native-visionos":
       optional: true
