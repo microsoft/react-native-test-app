@@ -13949,19 +13949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"teen_process@npm:2.1.4":
-  version: 2.1.4
-  resolution: "teen_process@npm:2.1.4"
-  dependencies:
-    bluebird: "npm:^3.7.2"
-    lodash: "npm:^4.17.21"
-    shell-quote: "npm:^1.8.1"
-    source-map-support: "npm:^0.x"
-  checksum: 10c0/78bf38247a0c927451e4c6aa7ddb0f8c7606521c1803f3a79715017d3d9c014642fb05d2a63d4853a462fd8e8032d66de3d8ffeb2691ac6647b11034e6bacd9b
-  languageName: node
-  linkType: hard
-
-"teen_process@npm:^2.0.0, teen_process@npm:^2.0.1, teen_process@npm:^2.2.0":
+"teen_process@npm:^2.0.0, teen_process@npm:^2.0.1, teen_process@npm:^2.1.4, teen_process@npm:^2.2.0":
   version: 2.2.0
   resolution: "teen_process@npm:2.2.0"
   dependencies:
