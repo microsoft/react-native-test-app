@@ -37,7 +37,7 @@ class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
     ): View {
         val reactApplication = requireActivity().application as ReactApplication
         return ReactRootView(context).apply {
-            setIsFabric(BuildConfig.ReactTestApp_useFabric)
+            setIsFabric(BuildConfig.REACTAPP_USE_FABRIC)
             startReactApplication(
                 reactApplication.reactNativeHost.reactInstanceManager,
                 requireArguments().getString(NAME),

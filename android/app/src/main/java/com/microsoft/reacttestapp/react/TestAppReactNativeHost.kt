@@ -64,6 +64,10 @@ class TestAppReactNativeHost(
             error("init() can only be called once on startup")
         }
 
+        // When we reference `reactInstanceManager` below, `ReactNativeHost` will start creating a
+        // `ReactInstanceManager` instance.
+        beforeReactNativeInit()
+
         val reactInstanceListener = object : ReactInstanceEventListener {
             override fun onReactContextInitialized(context: ReactContext) {
                 afterReactNativeInit()
@@ -75,8 +79,6 @@ class TestAppReactNativeHost(
         }
 
         reactInstanceManager.addReactInstanceEventListener(reactInstanceListener)
-
-        beforeReactNativeInit()
     }
 
     fun addReactInstanceEventListener(listener: ReactInstanceEventListener) {

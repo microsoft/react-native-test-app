@@ -12,5 +12,5 @@ class ComponentActivityDelegate(activity: ReactActivity, mainComponentName: Stri
         ComponentActivity.COMPONENT_INITIAL_PROPERTIES
     )
 
-    override fun isFabricEnabled(): Boolean = BuildConfig.ReactTestApp_useFabric
+    override fun isFabricEnabled(): Boolean = BuildConfig.REACTAPP_USE_FABRIC
 }

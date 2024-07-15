@@ -112,10 +112,10 @@ android {
         versionName project.ext.getVersionName()
 
         def singleApp = getSingleAppMode()
-        buildConfigField "String", "ReactTestApp_singleApp", singleApp ? "\"${singleApp}\"" : "null"
+        buildConfigField "String", "REACTAPP_SINGLE_APP", singleApp ? "\"${singleApp}\"" : "null"
 
-        buildConfigField "boolean", "ReactTestApp_useFabric", enableNewArchitecture.toString()
-        buildConfigField "boolean", "ReactTestApp_useBridgeless", enableBridgeless.toString()
+        buildConfigField "boolean", "REACTAPP_USE_FABRIC", enableNewArchitecture.toString()
+        buildConfigField "boolean", "REACTAPP_USE_BRIDGELESS", enableBridgeless.toString()
 
         manifestPlaceholders = [
             rntaEnableCamera: project.ext.react.enableCamera ? "1000000" : "1"

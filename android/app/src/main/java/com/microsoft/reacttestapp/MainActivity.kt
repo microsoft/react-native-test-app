@@ -76,48 +76,32 @@ class MainActivity : ReactActivity() {
 
         @Suppress("SENSELESS_COMPARISON")
         when {
-            BuildConfig.ReactTestApp_singleApp === null -> {
+            BuildConfig.REACTAPP_SINGLE_APP === null -> {
                 setContentView(R.layout.activity_main)
 
                 useAppRegistry = components.isEmpty()
                 if (useAppRegistry) {
-                    testApp.reactNativeHost.addReactInstanceEventListener(
-                        object : ReactInstanceEventListener {
-                            override fun onReactContextInitialized(context: ReactContext) {
-                                val ctx = context as ReactApplicationContext
-                                ctx.runOnJSQueueThread {
-                                    val appKeys = AppRegistry.getAppKeys(ctx)
-                                    val viewModels = appKeys.map { appKey ->
-                                        ComponentViewModel(appKey, appKey, null, null)
-                                    }
-                                    mainThreadHandler.post {
-                                        componentListAdapter.setComponents(viewModels)
-                                        if (isTopResumedActivity && viewModels.count() == 1) {
-                                            startComponent(viewModels[0])
-                                        }
-                                    }
+                    testApp.reactNativeHost.addReactInstanceEventListener { context ->
+                        val ctx = context as ReactApplicationContext
+                        ctx.runOnJSQueueThread {
+                            val appKeys = AppRegistry.getAppKeys(ctx)
+                            val viewModels = appKeys.map { appKey ->
+                                ComponentViewModel(appKey, appKey, null, null)
+                            }
+                            mainThreadHandler.post {
+                                componentListAdapter.setComponents(viewModels)
+                                if (isTopResumedActivity && viewModels.count() == 1) {
+                                    startComponent(viewModels[0])
                                 }
                             }
                         }
-                    )
+                    }
                 } else {
-                    val index =
-                        if (components.count() == 1) 0 else session.lastOpenedComponent(checksum)
+                    val singleComponent = components.count() == 1
+                    val index = if (singleComponent) 0 else session.lastOpenedComponent(checksum)
                     index?.let {
-                        val component = newComponentViewModel(components[it])
-                        val startInitialComponent = object : ReactInstanceEventListener {
-                            override fun onReactContextInitialized(context: ReactContext) {
-                                if (isTopResumedActivity) {
-                                    startComponent(component)
-                                }
-                            }
-                        }
-                        testApp.reactNativeHost.apply {
-                            addReactInstanceEventListener(startInitialComponent)
-                            reactInstanceManager.currentReactContext?.let {
-                                startInitialComponent.onReactContextInitialized(it)
-                            }
-                        }
+                        val component = components[it]
+                        startComponent(newComponentViewModel(component))
                     }
                 }
 
@@ -126,7 +110,7 @@ class MainActivity : ReactActivity() {
             }
 
             components.isNotEmpty() -> {
-                val slug = BuildConfig.ReactTestApp_singleApp
+                val slug = BuildConfig.REACTAPP_SINGLE_APP
                 val component = components.find { it.slug == slug }
                     ?: throw IllegalArgumentException("No component with slug: $slug")
                 val intent = ComponentActivity.newIntent(this, newComponentViewModel(component))
@@ -193,7 +177,7 @@ class MainActivity : ReactActivity() {
                 ReactNativeVersion.VERSION["minor"] as Int,
                 ReactNativeVersion.VERSION["patch"] as Int,
                 testApp.reactNativeHost.jsExecutorName,
-                if (BuildConfig.ReactTestApp_useFabric) "+Fabric" else ""
+                if (BuildConfig.REACTAPP_USE_FABRIC) "+Fabric" else ""
             )
         }
     }

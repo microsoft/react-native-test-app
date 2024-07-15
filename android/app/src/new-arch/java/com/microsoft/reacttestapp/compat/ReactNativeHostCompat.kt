@@ -13,8 +13,8 @@ abstract class ReactNativeHostCompat(application: Application) :
         init {
             try {
                 DefaultNewArchitectureEntryPoint.load(
-                    turboModulesEnabled = BuildConfig.ReactTestApp_useFabric,
-                    fabricEnabled = BuildConfig.ReactTestApp_useFabric
+                    turboModulesEnabled = BuildConfig.REACTAPP_USE_FABRIC,
+                    fabricEnabled = BuildConfig.REACTAPP_USE_FABRIC
                 )
             } catch (e: UnsatisfiedLinkError) {
                 // Older versions of `DefaultNewArchitectureEntryPoint` is
@@ -24,6 +24,6 @@ abstract class ReactNativeHostCompat(application: Application) :
         }
     }
 
-    override val isNewArchEnabled: Boolean = BuildConfig.ReactTestApp_useFabric
+    override val isNewArchEnabled: Boolean = BuildConfig.REACTAPP_USE_FABRIC
     override val isHermesEnabled: Boolean? = true
 }

@@ -15,13 +15,13 @@ class ComponentActivityDelegate(activity: ReactActivity, mainComponentName: Stri
 
     override fun createRootView(): ReactRootView {
         val rootView = super.createRootView()
-        rootView.setIsFabric(BuildConfig.ReactTestApp_useFabric)
+        rootView.setIsFabric(BuildConfig.REACTAPP_USE_FABRIC)
         return rootView
     }
 
     override fun createRootView(bundle: Bundle?): ReactRootView {
         val rootView = super.createRootView(bundle)
-        rootView.setIsFabric(BuildConfig.ReactTestApp_useFabric)
+        rootView.setIsFabric(BuildConfig.REACTAPP_USE_FABRIC)
         return rootView
     }
 }
