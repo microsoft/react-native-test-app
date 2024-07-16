@@ -56,6 +56,7 @@ describe("npm pack", () => {
       "android/app/src/main/java/com/microsoft/reacttestapp/react/TestAppReactNativeHost.kt",
       "android/app/src/main/jni/AppRegistry.cpp",
       "android/app/src/main/jni/AppRegistry.h",
+      "android/app/src/main/jni/AutolinkingCompat.h",
       "android/app/src/main/jni/CMakeLists.txt",
       "android/app/src/main/jni/ComponentsRegistry.cpp",
       "android/app/src/main/jni/ComponentsRegistry.h",

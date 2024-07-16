@@ -1,7 +1,8 @@
 #include "TurboModuleManagerDelegate.h"
 
-#include <rncli.h>
 #include <rncore.h>
+
+#include "AutolinkingCompat.h"
 
 using facebook::react::CallInvoker;
 using facebook::react::JavaTurboModule;
@@ -26,9 +27,9 @@ std::shared_ptr<TurboModule> TurboModuleManagerDelegate::getTurboModule(
     StringRef name, const JavaTurboModule::InitParams &params)
 {
     // Try autolinked module providers first
-    auto rncli_module = rncli_ModuleProvider(name, params);
-    if (rncli_module != nullptr) {
-        return rncli_module;
+    auto module = autolinking_ModuleProvider(name, params);
+    if (module != nullptr) {
+        return module;
     }
 
     return rncore_ModuleProvider(name, params);
