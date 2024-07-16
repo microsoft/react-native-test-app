@@ -125,7 +125,13 @@ function loadConfig(json, projectRoot) {
     ["react-native", "@react-native-community/cli"],
     projectRoot
   );
-  const config = loadConfig(projectRoot);
+
+  // The signature of `loadConfig` changed in 14.0.0:
+  // https://github.com/react-native-community/cli/commit/b787c89edb781bb788576cd615d2974fc81402fc
+  const argc = loadConfig.length;
+  // @ts-expect-error TS2345: Argument of type X is not assignable to parameter of type Y
+  const config = loadConfig(argc === 1 ? { projectRoot } : projectRoot);
+
   const prunedConfig = pruneDependencies(config);
   ensureDirForFile(json);
   writeTextFile(json, JSON.stringify(prunedConfig, undefined, 2) + "\n");
