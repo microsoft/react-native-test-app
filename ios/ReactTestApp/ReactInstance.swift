@@ -11,7 +11,9 @@ final class ReactInstance: NSObject, RNXHostConfig {
     }
 
     var remoteBundleURL: URL? {
-        didSet {
+        get { remoteBundleURLInternal }
+        set {
+            remoteBundleURLInternal = newValue
             initReact(bundleRoot: bundleRoot, onDidInitialize: { /* noop */ })
         }
     }
@@ -19,11 +21,20 @@ final class ReactInstance: NSObject, RNXHostConfig {
     private(set) var host: ReactNativeHost?
     private var bundleRoot: String?
 
-    override init() {
+    // This needs to be lazy because `ReactInstance.jsBundleURL()` will call
+    // `InspectorFlags::getFuseboxEnabled()` ->
+    // `ReactNativeFeatureFlags::fuseboxEnabledRelease()` before any overrides
+    // are set. Setting overrides after this will trigger asserts and crash the
+    // app on startup.
+    private lazy var remoteBundleURLInternal: URL? = {
         #if DEBUG
-        remoteBundleURL = ReactInstance.jsBundleURL()
+        ReactInstance.jsBundleURL()
+        #else
+        nil
         #endif
+    }()
 
+    override init() {
         super.init()
 
         // Bridged
