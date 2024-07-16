@@ -101,7 +101,10 @@ export const loadReactNativeConfig = memo((rnWindowsPath) => {
     ["@react-native-community/cli"],
     rnWindowsPath
   );
-  return loadConfig();
+  // The signature of `loadConfig` changed in 14.0.0:
+  // https://github.com/react-native-community/cli/commit/b787c89edb781bb788576cd615d2974fc81402fc
+  // @ts-expect-error TS2345: Argument of type X is not assignable to parameter of type Y
+  return loadConfig.length === 1 ? loadConfig({}) : loadConfig();
 });
 
 /**
