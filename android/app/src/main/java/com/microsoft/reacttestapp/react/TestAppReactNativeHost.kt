@@ -77,7 +77,6 @@ class TestAppReactNativeHost(
         reactInstanceManager.addReactInstanceEventListener(reactInstanceListener)
 
         beforeReactNativeInit()
-        reactInstanceManager.createReactContextInBackground()
     }
 
     fun addReactInstanceEventListener(listener: ReactInstanceEventListener) {
@@ -160,16 +159,10 @@ class TestAppReactNativeHost(
             }
         )
         devSupportManager.addCustomDevOption(bundleOption) {
-            when (source) {
-                BundleSource.Disk -> {
-                    reactInstanceManager.currentReactContext?.currentActivity?.let {
-                        reload(it, BundleSource.Server)
-                    }
-                }
-                BundleSource.Server -> {
-                    reactInstanceManager.currentReactContext?.currentActivity?.let {
-                        reload(it, BundleSource.Disk)
-                    }
+            reactInstanceManager.currentReactContext?.currentActivity?.let {
+                when (source) {
+                    BundleSource.Disk -> reload(it, BundleSource.Server)
+                    BundleSource.Server -> reload(it, BundleSource.Disk)
                 }
             }
         }
