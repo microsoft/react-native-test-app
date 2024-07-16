@@ -1,5 +1,7 @@
 #include "TurboModuleManagerDelegate.h"
 
+#if !__has_include(<DefaultTurboModuleManagerDelegate.h>)
+
 #include <rncore.h>
 
 #include "AutolinkingCompat.h"
@@ -47,3 +49,5 @@ bool TurboModuleManagerDelegate::canCreateTurboModule(StringRef name)
     return getTurboModule(name, nullptr) != nullptr ||
            getTurboModule(name, {.moduleName = name}) != nullptr;
 }
+
+#endif  // !__has_include(<DefaultTurboModuleManagerDelegate.h>)
