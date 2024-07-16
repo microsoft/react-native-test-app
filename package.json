@@ -29,6 +29,7 @@
     "android/app/src",
     "!android/app/src/test",
     "android/autolink.mjs",
+    "android/gradle-wrapper.js",
     "android/support/src",
     "common",
     "example/_gitignore",

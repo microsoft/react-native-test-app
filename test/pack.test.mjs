@@ -102,6 +102,7 @@ describe("npm pack", () => {
       "android/app/src/reactinstanceeventlistener-pre-0.68/java/com/microsoft/reacttestapp/compat/ReactInstanceEventListener.kt",
       "android/autolink.mjs",
       "android/dependencies.gradle",
+      "android/gradle-wrapper.js",
       "android/settings.gradle",
       "android/support/build.gradle",
       "android/support/src/main/AndroidManifest.xml",
