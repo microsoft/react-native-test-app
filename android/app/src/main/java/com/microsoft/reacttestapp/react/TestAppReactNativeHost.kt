@@ -2,8 +2,11 @@ package com.microsoft.reacttestapp.react
 
 import android.app.Activity
 import android.app.Application
+import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceManager
@@ -14,9 +17,11 @@ import com.facebook.react.devsupport.interfaces.DevSupportManager
 import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
+import com.microsoft.reacttestapp.MainActivity
 import com.microsoft.reacttestapp.R
 import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 import com.microsoft.reacttestapp.compat.ReactNativeHostCompat
+import java.lang.ref.WeakReference
 import java.util.Collections.synchronizedList
 import java.util.concurrent.CountDownLatch
 
@@ -56,6 +61,40 @@ class TestAppReactNativeHost(
 
     var onBundleSourceChanged: ((newSource: BundleSource) -> Unit)? = null
 
+    private var currentActivity: WeakReference<Activity> = WeakReference(null)
+
+    private val activityLifeCycleCallbacks = object : ActivityLifecycleCallbacks {
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+            // ignore
+        }
+
+        override fun onActivityStarted(activity: Activity) {
+            // ignore
+        }
+
+        override fun onActivityResumed(activity: Activity) {
+            currentActivity = WeakReference(activity)
+        }
+
+        override fun onActivityPaused(activity: Activity) {
+            // ignore
+        }
+
+        override fun onActivityStopped(activity: Activity) {
+            if (activity == currentActivity.get()) {
+                currentActivity.clear()
+            }
+        }
+
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+            // ignore
+        }
+
+        override fun onActivityDestroyed(activity: Activity) {
+            // ignore
+        }
+    }
+
     private val reactInstanceEventListeners =
         synchronizedList<ReactInstanceEventListener>(arrayListOf())
 
@@ -63,6 +102,8 @@ class TestAppReactNativeHost(
         if (BuildConfig.DEBUG && hasInstance()) {
             error("init() can only be called once on startup")
         }
+
+        application.registerActivityLifecycleCallbacks(activityLifeCycleCallbacks)
 
         // When we reference `reactInstanceManager` below, `ReactNativeHost` will start creating a
         // `ReactInstanceManager` instance.
@@ -87,10 +128,6 @@ class TestAppReactNativeHost(
     }
 
     fun reload(activity: Activity, newSource: BundleSource) {
-        if (BuildConfig.DEBUG && !hasInstance()) {
-            error("init() must be called the first time ReactInstanceManager is created")
-        }
-
         val action = source.moveTo(newSource)
         source = newSource
 
@@ -99,12 +136,10 @@ class TestAppReactNativeHost(
                 reactInstanceManager.devSupportManager.handleReloadJS()
             }
             BundleSource.Action.RESTART -> {
-                clear()
-
-                reactInstanceManager.run {
-                    createReactContextInBackground()
-                    onHostResume(activity)
+                if (activity !is MainActivity) {
+                    activity.navigateUpTo(Intent(application, MainActivity.Companion::class.java))
                 }
+                clear()
             }
         }
 
@@ -161,7 +196,7 @@ class TestAppReactNativeHost(
             }
         )
         devSupportManager.addCustomDevOption(bundleOption) {
-            reactInstanceManager.currentReactContext?.currentActivity?.let {
+            currentActivity.get()?.let {
                 when (source) {
                     BundleSource.Disk -> reload(it, BundleSource.Server)
                     BundleSource.Server -> reload(it, BundleSource.Disk)

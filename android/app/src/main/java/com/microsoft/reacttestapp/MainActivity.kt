@@ -54,17 +54,6 @@ class MainActivity : ReactActivity() {
 
     private var useAppRegistry: Boolean = false
 
-    private fun findActivityClass(name: String): Class<*>? {
-        return try {
-            val result = Class.forName(name)
-            val isActivity = Activity::class.java.isAssignableFrom(result)
-
-            return if (isActivity) result else null
-        } catch (e: ClassNotFoundException) {
-            null
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -143,6 +132,17 @@ class MainActivity : ReactActivity() {
     internal fun reloadJSFromServer(bundleURL: String) {
         componentListAdapter.clear()
         testApp.reloadJSFromServer(this, bundleURL)
+    }
+
+    private fun findActivityClass(name: String): Class<*>? {
+        return try {
+            val result = Class.forName(name)
+            val isActivity = Activity::class.java.isAssignableFrom(result)
+
+            return if (isActivity) result else null
+        } catch (e: ClassNotFoundException) {
+            null
+        }
     }
 
     private fun reload(bundleSource: BundleSource) {
