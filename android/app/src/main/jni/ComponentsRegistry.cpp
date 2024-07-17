@@ -1,5 +1,7 @@
 #include "ComponentsRegistry.h"
 
+#if !__has_include(<DefaultTurboModuleManagerDelegate.h>)
+
 #include "AutolinkingCompat.h"
 
 #if __has_include(<react/fabric/CoreComponentsRegistry.h>)  // >= 0.71
@@ -61,3 +63,5 @@ ComponentsRegistry::initHybrid(facebook::jni::alias_ref<jclass>, ComponentFactor
 
     return makeCxxInstance(delegate);
 }
+
+#endif  // !__has_include(<DefaultTurboModuleManagerDelegate.h>)
