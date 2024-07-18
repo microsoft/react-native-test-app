@@ -34,13 +34,32 @@ function ensureDirForFile(p) {
 }
 
 /**
+ * @param {crypto.Hash} hash
+ * @param {string[]} files
+ * @param {string} projectRoot
+ * @param {"all" | "first-only"} mode
+ */
+function updateHash(hash, files, projectRoot, mode) {
+  for (const file of files) {
+    const p = findFile(file, projectRoot);
+    if (p) {
+      hash.update(fs.readFileSync(p));
+      if (mode === "first-only") {
+        break;
+      }
+    }
+  }
+}
+
+/**
  * @param {string} projectRoot
  * @returns {string}
  */
 function getCurrentState(projectRoot) {
   const sha2 = crypto.createHash("sha256");
-  const manifestPath = findFile("package.json", projectRoot);
-  sha2.update(manifestPath ? fs.readFileSync(manifestPath) : "");
+
+  const configFiles = ["package.json", "react-native.config.js"];
+  updateHash(sha2, configFiles, projectRoot, "all");
 
   const lockfiles = [
     "yarn.lock",
@@ -48,14 +67,7 @@ function getCurrentState(projectRoot) {
     "pnpm-lock.yaml",
     "bun.lockb",
   ];
-  for (const file of lockfiles) {
-    const p = findFile(file, projectRoot);
-    if (p) {
-      const content = fs.readFileSync(p);
-      sha2.update(content);
-      break;
-    }
-  }
+  updateHash(sha2, lockfiles, projectRoot, "first-only");
 
   return sha2.digest("hex");
 }
