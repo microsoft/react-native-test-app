@@ -103,7 +103,7 @@ describe("configureGradleWrapper()", () => {
     equal(written, "");
   });
 
-  it("writes if Gradle version is too old", () => {
+  it("bumps Gradle if the version is too old/recent", () => {
     let written = "";
     /** @type {(gradleVersion: string, rnVersion: string) => typeof nodefs} */
     const mockfs = (gradleVersion, rnVersion) => ({
@@ -129,9 +129,13 @@ describe("configureGradleWrapper()", () => {
 
     const cases = [
       ["8.8", "0.76.0", "gradle-8.9-bin.zip"],
+      ["8.9", "0.75.0", "gradle-8.8-bin.zip"],
       ["8.7", "0.75.0", "gradle-8.8-bin.zip"],
+      ["8.9", "0.74.0", "gradle-8.8-bin.zip"],
       ["8.5", "0.74.0", "gradle-8.6-bin.zip"],
+      ["8.9", "0.73.0", "gradle-8.8-bin.zip"],
       ["8.2.1", "0.73.0", "gradle-8.3-bin.zip"],
+      ["8.3", "0.72.0", "gradle-8.2.1-bin.zip"],
       ["8.1", "0.72.0", "gradle-8.1.1-bin.zip"],
       ["8.0", "0.71.0", "gradle-7.6.4-bin.zip"],
       ["7.5", "0.71.0", "gradle-7.6.4-bin.zip"],
@@ -170,10 +174,10 @@ describe("configureGradleWrapper()", () => {
 
     const cases = [
       ["8.9", "0.76.0"],
-      ["8.9", "0.75.0"],
-      ["8.7", "0.74.0"],
-      ["8.7", "0.73.0"],
-      ["8.7", "0.72.0"],
+      ["8.8", "0.75.0"],
+      ["8.8", "0.74.0"],
+      ["8.8", "0.73.0"],
+      ["8.2", "0.72.0"],
       ["8.6", "0.74.0"],
       ["8.3", "0.73.0"],
       ["8.1.1", "0.72.0"],

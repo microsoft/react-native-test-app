@@ -62,18 +62,26 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
       } else if (version >= v(0, 75, 0)) {
         if (gradleVersion < v(8, 8, 0)) {
           return "8.8";
+        } else if (gradleVersion >= v(8, 9, 0)) {
+          return "8.8";
         }
       } else if (version >= v(0, 74, 0)) {
         if (gradleVersion < v(8, 6, 0)) {
           return "8.6";
+        } else if (gradleVersion >= v(8, 9, 0)) {
+          return "8.8";
         }
       } else if (version >= v(0, 73, 0)) {
         if (gradleVersion < v(8, 3, 0)) {
           return "8.3";
+        } else if (gradleVersion >= v(8, 9, 0)) {
+          return "8.8";
         }
       } else if (version >= v(0, 72, 0)) {
         if (gradleVersion < v(8, 1, 1)) {
           return "8.1.1";
+        } else if (gradleVersion >= v(8, 3, 0)) {
+          return "8.2.1";
         }
       } else if (gradleVersion < v(7, 5, 1) || gradleVersion >= v(8, 0, 0)) {
         return "7.6.4";
