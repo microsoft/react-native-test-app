@@ -52,6 +52,7 @@ GEM
       rexml (~> 3.2.4)
 
 PLATFORMS
+  arm64-darwin-23
   ruby
 
 DEPENDENCIES
@@ -61,4 +62,4 @@ DEPENDENCIES
   xcodeproj
 
 BUNDLED WITH
-   2.5.4
+   2.5.14
