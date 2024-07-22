@@ -15,6 +15,15 @@ const {
   v,
 } = require("../scripts/helpers");
 
+/** @type {[number, [number, string], [number, string]][]} */
+const GRADLE_VERSIONS = [
+  [v(0, 76, 0), [v(8, 9, 0), "8.9"], [Number.MAX_SAFE_INTEGER, ""]], // 0.76: [8.9, *)
+  [v(0, 75, 0), [v(8, 8, 0), "8.8"], [v(8, 9, 0), "8.8"]], // 0.75: [8.8, 8.9)
+  [v(0, 74, 0), [v(8, 6, 0), "8.6"], [v(8, 9, 0), "8.8"]], // 0.74: [8.6, 8.9)
+  [v(0, 73, 0), [v(8, 3, 0), "8.3"], [v(8, 9, 0), "8.8"]], // 0.73: [8.3, 8.9)
+  [v(0, 72, 0), [v(8, 1, 1), "8.1.1"], [v(8, 3, 0), "8.2.1"]], // 0.72: [8.1.1, 8.3)
+];
+
 /**
  * Configures Gradle wrapper as necessary before the Android app is built.
  * @param {string} sourceDir
@@ -52,30 +61,19 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
 
     const gradleVersion = (() => {
       const gradleVersion = toVersionNumber(m[1]);
-      const version = toVersionNumber(
-        getPackageVersion("react-native", sourceDir, fs)
-      );
-      if (version === 0 || version >= v(0, 76, 0)) {
-        if (gradleVersion < v(8, 9, 0)) {
-          return "8.9";
+      const versionStr = getPackageVersion("react-native", sourceDir, fs);
+      const version = toVersionNumber(versionStr);
+      for (const [rnVersion, lower, upper] of GRADLE_VERSIONS) {
+        if (version >= rnVersion) {
+          if (gradleVersion < lower[0]) {
+            return lower[1];
+          } else if (gradleVersion >= upper[0]) {
+            return upper[1];
+          }
+          return undefined;
         }
-      } else if (version >= v(0, 75, 0)) {
-        if (gradleVersion < v(8, 8, 0)) {
-          return "8.8";
-        }
-      } else if (version >= v(0, 74, 0)) {
-        if (gradleVersion < v(8, 6, 0)) {
-          return "8.6";
-        }
-      } else if (version >= v(0, 73, 0)) {
-        if (gradleVersion < v(8, 3, 0)) {
-          return "8.3";
-        }
-      } else if (version >= v(0, 72, 0)) {
-        if (gradleVersion < v(8, 1, 1)) {
-          return "8.1.1";
-        }
-      } else if (gradleVersion < v(7, 5, 1) || gradleVersion >= v(8, 0, 0)) {
+      }
+      if (gradleVersion < v(7, 5, 1) || gradleVersion >= v(8, 0, 0)) {
         return "7.6.4";
       }
       return undefined;
