@@ -13,11 +13,11 @@ class ComponentActivityDelegate(activity: ReactActivity, mainComponentName: Stri
         ComponentActivity.COMPONENT_INITIAL_PROPERTIES
     )
 
-    override fun isFabricEnabled(): Boolean = BuildConfig.ReactTestApp_useFabric
+    override fun isFabricEnabled(): Boolean = BuildConfig.REACTAPP_USE_FABRIC
 
     override fun createRootView(): ReactRootView =
-        ReactRootView(context).apply { setIsFabric(BuildConfig.ReactTestApp_useFabric) }
+        ReactRootView(context).apply { setIsFabric(BuildConfig.REACTAPP_USE_FABRIC) }
 
     override fun createRootView(bundle: Bundle?): ReactRootView =
-        ReactRootView(context).apply { setIsFabric(BuildConfig.ReactTestApp_useFabric) }
+        ReactRootView(context).apply { setIsFabric(BuildConfig.REACTAPP_USE_FABRIC) }
 }

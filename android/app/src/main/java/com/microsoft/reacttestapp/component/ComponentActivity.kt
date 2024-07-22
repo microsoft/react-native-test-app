@@ -36,7 +36,7 @@ class ComponentActivity : ReactActivity() {
         super.onCreate(savedInstanceState)
 
         @Suppress("SENSELESS_COMPARISON")
-        if (BuildConfig.ReactTestApp_singleApp === null) {
+        if (BuildConfig.REACTAPP_SINGLE_APP === null) {
             supportActionBar?.setHomeButtonEnabled(true)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
