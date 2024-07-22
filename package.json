@@ -87,7 +87,7 @@
     "set-react-version": "node scripts/set-react-version.mjs",
     "show-affected": "node scripts/affected.mjs",
     "test": "node scripts/test.mjs",
-    "test:js": "node --import tsx --test --experimental-test-coverage $(git ls-files '*.test.ts')",
+    "test:js": "node --import tsx --test $(git ls-files '*.test.ts')",
     "test:matrix": "node scripts/test-matrix.mjs",
     "test:rb": "bundle exec ruby -Ilib:test -e \"Dir.glob('./test/test_*.rb').each { |file| require(file) }\""
   },
