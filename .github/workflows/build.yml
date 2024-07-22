@@ -681,7 +681,7 @@ jobs:
         uses: ./.github/actions/yarn
       - name: Verify tarball content
         run: |
-          node --test test/pack.test.mjs
+          yarn test test/pack.test.ts
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
