@@ -1,13 +1,15 @@
 #!/usr/bin/env node
-
+// @ts-check
 import { spawnSync } from "node:child_process";
 
 const DEVICE_ID = "T-800";
 
 /**
  * Runs the specified command.
+ * @param {string} successString The string to look for
+ * @param  {...any} args The command to run and its arguments
  */
-function run(successString: string, ...args: string[]) {
+function run(successString, ...args) {
   const { stderr } = spawnSync("yarn", args, { encoding: "utf-8" });
   if (!stderr.includes(successString)) {
     throw new Error(stderr);
