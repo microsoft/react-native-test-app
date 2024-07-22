@@ -248,7 +248,7 @@ jobs:
       - name: react-native run-ios
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../test/react-native.mjs run-ios
+          ../scripts/react-native.mjs run-ios
         working-directory: template-example
     timeout-minutes: 60
   android:
@@ -335,7 +335,7 @@ jobs:
       - name: react-native run-android
         if: ${{ steps.affected.outputs.android != '' }}
         run: |
-          ../test/react-native.mjs run-android
+          ../scripts/react-native.mjs run-android
         working-directory: template-example
     timeout-minutes: 60
   macos:
@@ -681,7 +681,7 @@ jobs:
         uses: ./.github/actions/yarn
       - name: Verify tarball content
         run: |
-          node --test test/pack.test.mjs
+          yarn test test/pack.test.ts
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
