@@ -16,6 +16,10 @@
 
     <string name="runtime_info">React Native v%1$d.%2$d.%3$d\n(%4$s%5$s)</string>
 
+    <string name="missing_js_bundle" tools:ignore="ExtraTranslation">Unable to find JavaScript bundle</string>
+    <string name="missing_js_bundle_description" tools:ignore="ExtraTranslation">Make sure that your bundle is packaged and included correctly.</string>
+    <string name="ok" tools:ignore="ExtraTranslation">OK</string>
+
     <string name="camera_usage_description" tools:ignore="ExtraTranslation">Camera access is required to scan QR codes for JS bundle URLs.</string>
     <string name="is_this_the_right_url" tools:ignore="ExtraTranslation">Is this the right URL?</string>
     <string name="no" tools:ignore="ExtraTranslation">No</string>

@@ -1,11 +1,13 @@
 package com.microsoft.reacttestapp
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.HandlerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +41,10 @@ class MainActivity : ReactActivity() {
     private lateinit var componentListAdapter: ComponentListAdapter
     private var isTopResumedActivity = false
 
+    private val isMissingJSBundle
+        get() = testApp.reactNativeHost.source == BundleSource.Disk &&
+            testApp.bundleNameProvider.bundleName == null
+
     private val newComponentViewModel = { component: Component ->
         ComponentViewModel(
             component.appKey,
@@ -53,17 +59,6 @@ class MainActivity : ReactActivity() {
     }
 
     private var useAppRegistry: Boolean = false
-
-    private fun findActivityClass(name: String): Class<*>? {
-        return try {
-            val result = Class.forName(name)
-            val isActivity = Activity::class.java.isAssignableFrom(result)
-
-            return if (isActivity) result else null
-        } catch (e: ClassNotFoundException) {
-            null
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,6 +140,17 @@ class MainActivity : ReactActivity() {
         testApp.reloadJSFromServer(this, bundleURL)
     }
 
+    private fun findActivityClass(name: String): Class<*>? {
+        return try {
+            val result = Class.forName(name)
+            val isActivity = Activity::class.java.isAssignableFrom(result)
+
+            return if (isActivity) result else null
+        } catch (e: ClassNotFoundException) {
+            null
+        }
+    }
+
     private fun reload(bundleSource: BundleSource) {
         if (useAppRegistry) {
             componentListAdapter.clear()
@@ -220,6 +226,18 @@ class MainActivity : ReactActivity() {
     }
 
     private fun startComponent(component: ComponentViewModel) {
+        if (isMissingJSBundle) {
+            AlertDialog
+                .Builder(this)
+                .setTitle(R.string.missing_js_bundle)
+                .setMessage(R.string.missing_js_bundle_description)
+                .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
+                    // Nothing to do
+                }
+                .show()
+            return
+        }
+
         when (component.presentationStyle) {
             "modal" -> {
                 ComponentBottomSheetDialogFragment
