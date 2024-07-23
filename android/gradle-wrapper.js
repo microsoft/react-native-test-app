@@ -15,13 +15,24 @@ const {
   v,
 } = require("../scripts/helpers");
 
-/** @type {[number, [number, string], [number, string]][]} */
+/**
+ * Keep this in sync with the Groovy version in `android/test-app-util.gradle`!
+ *
+ * We have two implementations because there are currently two ways to build the
+ * Android app. If built via `@react-native-community/cli`, this script will be
+ * run and we can change Gradle version before it is executed. If it's built
+ * with Gradle directly, it's already too late and the best we can do is to warn
+ * the user.
+ *
+ * @type {[number, [number, string], [number, string]][]}
+ */
 const GRADLE_VERSIONS = [
   [v(0, 76, 0), [v(8, 9, 0), "8.9"], [Number.MAX_SAFE_INTEGER, ""]], // 0.76: [8.9, *)
   [v(0, 75, 0), [v(8, 8, 0), "8.8"], [v(8, 9, 0), "8.8"]], // 0.75: [8.8, 8.9)
   [v(0, 74, 0), [v(8, 6, 0), "8.6"], [v(8, 9, 0), "8.8"]], // 0.74: [8.6, 8.9)
   [v(0, 73, 0), [v(8, 3, 0), "8.3"], [v(8, 9, 0), "8.8"]], // 0.73: [8.3, 8.9)
   [v(0, 72, 0), [v(8, 1, 1), "8.1.1"], [v(8, 3, 0), "8.2.1"]], // 0.72: [8.1.1, 8.3)
+  [0, [v(7, 5, 1), "7.6.4"], [v(8, 0, 0), "7.6.4"]], // <0.72: [7.5.1, 8.0.0)
 ];
 
 /**
@@ -73,10 +84,7 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
           return undefined;
         }
       }
-      if (gradleVersion < v(7, 5, 1) || gradleVersion >= v(8, 0, 0)) {
-        return "7.6.4";
-      }
-      return undefined;
+      throw new Error(`Unsupported React Native version: ${version}`);
     })();
 
     if (gradleVersion) {

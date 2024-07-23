@@ -10,39 +10,49 @@ ext.autolinkingInfo = { buildDir ->
 }
 
 ext.checkEnvironment = { rootDir ->
-    def warnGradle = { gradleVersion, gradleVersionRange, reactNativeVersion ->
+    // Keep this in sync with the JS version in `android/gradle-wrapper.js`
+    //
+    // We have two implementations because there are currently two ways to build
+    // the Android app. If built via `@react-native-community/cli`, the JS
+    // script will be run and we can change Gradle version before it is
+    // executed. If it's built with Gradle directly, it's already too late and
+    // the best we can do is to warn the user.
+    def gradleVersions = [
+      [v(0, 76, 0), [v(8, 9, 0), "8.9"], [Integer.MAX_VALUE, ""]],  //  0.76: [8.9, *)
+      [v(0, 75, 0), [v(8, 8, 0), "8.8"], [v(8, 9, 0), "8.8"]],      //  0.75: [8.8, 8.9)
+      [v(0, 74, 0), [v(8, 6, 0), "8.6"], [v(8, 9, 0), "8.8"]],      //  0.74: [8.6, 8.9)
+      [v(0, 73, 0), [v(8, 3, 0), "8.3"], [v(8, 9, 0), "8.8"]],      //  0.73: [8.3, 8.9)
+      [v(0, 72, 0), [v(8, 1, 1), "8.1.1"], [v(8, 3, 0), "8.2.1"]],  //  0.72: [8.1.1, 8.3)
+      [0, [v(7, 5, 1), "7.6.4"], [v(8, 0, 0), "7.6.4"]],            // <0.72: [7.5.1, 8.0.0)
+    ]
+
+    def warnGradle = { gradleVersion, reactNativeVersion ->
         def message = [
             "\n",
-            "Latest Gradle {} is recommended for React Native {}.\n",
+            "Gradle {} is recommended for React Native {}.\n",
             "> Run the following command in the 'android' folder to install a supported version:\n",
             "   > ./gradlew wrapper --gradle-version={}\n",
             "> If the command above fails, you can manually modify 'gradle/wrapper/gradle-wrapper.properties'.",
         ].join("")
-        logger.warn(message, gradleVersionRange, reactNativeVersion, gradleVersion)
+        logger.error(message, gradleVersion, reactNativeVersion, gradleVersion)
     }
 
     // Gradle version can be found in the template:
     // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/gradle/wrapper/gradle-wrapper.properties
     def gradleVersion = toVersionNumber(gradle.gradleVersion)
 
-    def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
-    if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 73, 0)) {
-        if (gradleVersion < v(8, 1, 0)) {
-            warnGradle("8.1.1", "8.1.x", "0.73 and newer")
-        }
-    } else if (reactNativeVersion >= v(0, 72, 0)) {
-        // Gradle 7.5+ seems to be working with 0.72 so we will only recommend a
-        // newer version if it's older.
-        if (gradleVersion < v(7, 5, 1)) {
-            warnGradle("8.0.2", "8.0.x", "0.72")
-            logger.warn([
-                "> If you still need to work with older versions of React Native, ",
-                "Gradle 7.5.1+ should still work.",
-            ].join(""))
-        }
-    } else {
-        if (gradleVersion < v(7, 5, 1) || gradleVersion >= v(8, 0, 0)) {
-            warnGradle("7.6.3", "7.x", "0.71 and older")
+    def reactNativeVersionString = getPackageVersion("react-native", rootDir)
+    def reactNativeVersion = toVersionNumber(reactNativeVersionString)
+
+    for (gradleVersionRange in gradleVersions) {
+        def (rnVersion, lower, upper) = gradleVersionRange
+        if (reactNativeVersion >= rnVersion) {
+            if (gradleVersion < lower[0]) {
+                warnGradle(lower[1], reactNativeVersionString)
+            } else if (gradleVersion >= upper[0]) {
+                warnGradle(upper[1], reactNativeVersionString)
+            }
+            return
         }
     }
 }
