@@ -32,7 +32,11 @@ async function getLoadConfig() {
     // `loadConfig` was made public in 7.0:
     // https://github.com/react-native-community/cli/pull/1464
     const { default: cli } = await import("@react-native-community/cli");
-    return cli.loadConfig;
+    return cli.loadConfig.length === 1
+      ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore The signature change of `loadConfig` was introduced in 14.0
+        () => cli.loadConfig({}) // >=14.0
+      : cli.loadConfig; // <14.0
   }
 }
 
