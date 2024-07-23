@@ -8,6 +8,8 @@ import { gatherConfig, writeAllFiles } from "../../scripts/configure.mjs";
 import { findNearest, readJSONFile } from "../../scripts/helpers.js";
 import type { ConfigureParams } from "../../scripts/types.js";
 
+const GRADLE_TEST_TASK = "nodeTest";
+
 /**
  * Joins the strings if an array is passed, otherwise returns the string.
  */
@@ -20,6 +22,31 @@ function joinStrings(strings: string | string[], separator = "") {
  */
 function projectPath(name: string): string {
   return `.android-test-${name}`;
+}
+
+export function buildGradle(script: string): string[] {
+  return [
+    "buildscript {",
+    '    def androidTestAppDir = "node_modules/react-native-test-app/android"',
+    '    apply(from: "${androidTestAppDir}/dependencies.gradle")',
+    '    apply(from: "${androidTestAppDir}/test-app-util.gradle")',
+    "",
+    "    repositories {",
+    "        mavenCentral()",
+    "        google()",
+    "    }",
+    "",
+    "    dependencies {",
+    "        getReactNativeDependencies().each { dependency ->",
+    "            classpath(dependency)",
+    "        }",
+    "    }",
+    "}",
+    "",
+    `task ${GRADLE_TEST_TASK} {`,
+    script,
+    "}",
+  ];
 }
 
 /**
@@ -114,7 +141,7 @@ export async function runGradleWithProject(
   setupFiles: Record<string, string | string[]> | undefined = {}
 ) {
   const projectPath = await makeProject(name, platforms, setupFiles);
-  const result = runGradle(projectPath);
+  const result = runGradle(projectPath, GRADLE_TEST_TASK);
   const stdout = joinStrings(result.stdout);
   const stderr = joinStrings(result.stderr);
   if (result.stderr) {
