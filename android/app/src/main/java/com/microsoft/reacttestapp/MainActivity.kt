@@ -14,11 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.ReactActivity
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.systeminfo.ReactNativeVersion
 import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.google.android.material.appbar.MaterialToolbar
 import com.microsoft.reacttestapp.camera.canUseCamera
 import com.microsoft.reacttestapp.camera.scanForQrCode
+import com.microsoft.reacttestapp.compat.ReactInstanceEventListener
 import com.microsoft.reacttestapp.component.ComponentActivity
 import com.microsoft.reacttestapp.component.ComponentBottomSheetDialogFragment
 import com.microsoft.reacttestapp.component.ComponentListAdapter
@@ -74,21 +76,24 @@ class MainActivity : ReactActivity() {
 
                 useAppRegistry = components.isEmpty()
                 if (useAppRegistry) {
-                    testApp.reactNativeHost.addReactInstanceEventListener { context ->
-                        val ctx = context as ReactApplicationContext
-                        ctx.runOnJSQueueThread {
-                            val appKeys = AppRegistry.getAppKeys(ctx)
-                            val viewModels = appKeys.map { appKey ->
-                                ComponentViewModel(appKey, appKey, null, null)
-                            }
-                            mainThreadHandler.post {
-                                componentListAdapter.setComponents(viewModels)
-                                if (isTopResumedActivity && viewModels.count() == 1) {
-                                    startComponent(viewModels[0])
+                    testApp.reactNativeHost.addReactInstanceEventListener(
+                        object : ReactInstanceEventListener {
+                            override fun onReactContextInitialized(context: ReactContext) {
+                                (context as? ReactApplicationContext)?.runOnJSQueueThread {
+                                    val appKeys = AppRegistry.getAppKeys(context)
+                                    val viewModels = appKeys.map { appKey ->
+                                        ComponentViewModel(appKey, appKey, null, null)
+                                    }
+                                    mainThreadHandler.post {
+                                        componentListAdapter.setComponents(viewModels)
+                                        if (isTopResumedActivity && viewModels.count() == 1) {
+                                            startComponent(viewModels[0])
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
+                    )
                 } else {
                     val singleComponent = components.count() == 1
                     val index = if (singleComponent) 0 else session.lastOpenedComponent(checksum)
