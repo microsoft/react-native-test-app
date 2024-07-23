@@ -123,8 +123,6 @@ android {
 
         resValue "string", "app_name", project.ext.react.appName
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         def cppStd = reactNativeVersion >= v(0, 74, 0) ? "-std=c++20" : "-std=c++17"
         if (enableNewArchitecture) {
             externalNativeBuild {
@@ -312,12 +310,6 @@ dependencies {
     implementation libraries.androidCoreKotlinExtensions
     implementation libraries.androidRecyclerView
     implementation libraries.materialComponents
-
-    testImplementation libraries.junit
-    testImplementation libraries.androidJUnitKotlinExtensions
-    testImplementation libraries.mockitoInline
-    androidTestImplementation libraries.androidJUnit
-    androidTestImplementation libraries.androidEspressoCore
 
     if (project.ext.react.enableCamera) {
         implementation libraries.androidCamera
