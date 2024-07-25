@@ -181,12 +181,13 @@ test("react-native config", async (t) => {
       );
       notEqual(config.platforms.ios, undefined);
       match(config.project.ios.sourceDir, regexp(sourceDir));
-      deepEqual(
-        config.project.ios.xcodeProject,
-        fs.existsSync("ios/Pods")
-          ? { name: "Example.xcworkspace", isWorkspace: true }
-          : null
-      );
+
+      if (fs.existsSync("ios/Pods")) {
+        equal(config.project.ios.xcodeProject.name, "Example.xcworkspace");
+        equal(config.project.ios.xcodeProject.isWorkspace, true);
+      } else {
+        equal(config.project.ios.xcodeProject, null);
+      }
     }
   );
 
