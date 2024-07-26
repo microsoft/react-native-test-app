@@ -2,7 +2,6 @@ import { equal } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { isDestructive as isDestructiveActual } from "../../scripts/configure.mjs";
 import { fs, setMockFiles } from "../fs.mock.js";
-import { spy } from "../spy.js";
 
 describe("isDestructive()", () => {
   /**
@@ -44,7 +43,7 @@ describe("isDestructive()", () => {
   });
 
   it("returns true when there are files to overwrite", (t) => {
-    t.mock.method(console, "warn", () => null);
+    const warnMock = t.mock.method(console, "warn", () => null);
 
     const config = {
       scripts: {},
@@ -56,16 +55,16 @@ describe("isDestructive()", () => {
     };
 
     equal(isDestructive(".", config), false);
-    equal(spy(console.warn).calls.length, 0);
+    equal(warnMock.mock.calls.length, 0);
 
     setMockFiles({ "metro.config.js": "" });
 
     equal(isDestructive(".", config), true);
-    equal(spy(console.warn).calls.length, 2);
+    equal(warnMock.mock.calls.length, 2);
   });
 
   it("returns true when there are files to remove", (t) => {
-    t.mock.method(console, "warn", () => null);
+    const warnMock = t.mock.method(console, "warn", () => null);
 
     const config = {
       scripts: {},
@@ -77,16 +76,16 @@ describe("isDestructive()", () => {
     };
 
     equal(isDestructive(".", config), false);
-    equal(spy(console.warn).calls.length, 0);
+    equal(warnMock.mock.calls.length, 0);
 
     setMockFiles({ "Podfile.lock": "" });
 
     equal(isDestructive(".", config), true);
-    equal(spy(console.warn).calls.length, 2);
+    equal(warnMock.mock.calls.length, 2);
   });
 
   it("enumerates all files that need to be modified", (t) => {
-    t.mock.method(console, "warn", () => null);
+    const warnMock = t.mock.method(console, "warn", () => null);
 
     const config = {
       scripts: {},
@@ -100,7 +99,7 @@ describe("isDestructive()", () => {
     };
 
     equal(isDestructive(".", config), false);
-    equal(spy(console.warn).calls.length, 0);
+    equal(warnMock.mock.calls.length, 0);
 
     setMockFiles({
       "Podfile.lock": "",
@@ -109,7 +108,7 @@ describe("isDestructive()", () => {
     });
 
     equal(isDestructive(".", config), true);
-    equal(spy(console.warn).calls.length, 5);
+    equal(warnMock.mock.calls.length, 5);
     // 2 x "The following files..." + number of files
   });
 });

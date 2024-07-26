@@ -2,7 +2,6 @@ import { deepEqual, equal, match } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { parseResources as parseResourcesActual } from "../../windows/project.mjs";
 import { fs, setMockFiles } from "../fs.mock.js";
-import { spy } from "../spy.js";
 
 describe("parseResources()", () => {
   const parseResources: typeof parseResourcesActual = (r, p) =>
@@ -61,16 +60,16 @@ describe("parseResources()", () => {
   });
 
   it("skips missing assets", (t) => {
-    t.mock.method(console, "warn", () => null);
+    const warnMock = t.mock.method(console, "warn", () => null);
 
     deepEqual(parseResources(["dist/assets", "dist/main.bundle"], "."), empty);
 
     equal(
-      spy(console.warn).calls[0].arguments[1],
+      warnMock.mock.calls[0].arguments[1],
       "Resource not found: dist/assets"
     );
     equal(
-      spy(console.warn).calls[1].arguments[1],
+      warnMock.mock.calls[1].arguments[1],
       "Resource not found: dist/main.bundle"
     );
   });

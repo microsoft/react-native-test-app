@@ -3,7 +3,6 @@ import { afterEach, describe, it } from "node:test";
 import { readTextFile as readTextFileActual } from "../../scripts/helpers.js";
 import { copyAndReplace as copyAndReplaceActual } from "../../windows/test-app.mjs";
 import { fs, setMockFiles } from "../fs.mock.js";
-import { spy } from "../spy.js";
 
 describe("copyAndReplace()", () => {
   const copyAndReplace: typeof copyAndReplaceActual = (src, dst, r) =>
@@ -16,7 +15,7 @@ describe("copyAndReplace()", () => {
 
   // TODO: Skip because `memfs` hasn't implemented `fs.cp` or `fs.promises.cp`
   it.skip("copies files if no modifications are needed", async (t) => {
-    t.mock.method(fs.promises, "cp");
+    const cpMock = t.mock.method(fs.promises, "cp");
     setMockFiles({
       "ReactTestApp.png": "binary",
       "test/.placeholder": "",
@@ -28,12 +27,12 @@ describe("copyAndReplace()", () => {
       undefined
     );
 
-    equal(spy(fs.promises.cp).calls.length, 1);
+    equal(cpMock.mock.calls.length, 1);
     equal(readTextFile("test/ReactTestApp.png"), "binary");
   });
 
   it("replaces file content", async (t) => {
-    t.mock.method(fs.promises, "cp");
+    const cpMock = t.mock.method(fs.promises, "cp");
     setMockFiles({
       "ReactTestApp.png": "binary",
       "test/.placeholder": "",
@@ -43,7 +42,7 @@ describe("copyAndReplace()", () => {
       binary: "text",
     });
 
-    equal(spy(fs.promises.cp).calls.length, 0);
+    equal(cpMock.mock.calls.length, 0);
     equal(readTextFile("test/ReactTestApp.png"), "text");
   });
 

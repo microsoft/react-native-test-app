@@ -3,7 +3,6 @@ import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
 import { getBundleResources as getBundleResourcesActual } from "../../windows/project.mjs";
 import { fs, setMockFiles } from "../fs.mock.js";
-import { spy } from "../spy.js";
 
 describe("getBundleResources()", () => {
   const getBundleResources: typeof getBundleResourcesActual = (p) =>
@@ -78,7 +77,7 @@ describe("getBundleResources()", () => {
   });
 
   it("handles missing manifest", (t) => {
-    t.mock.method(console, "warn", () => null);
+    const warnMock = t.mock.method(console, "warn", () => null);
 
     deepEqual(getBundleResources(""), {
       appName: "ReactTestApp",
@@ -90,13 +89,13 @@ describe("getBundleResources()", () => {
     });
 
     equal(
-      spy(console.warn).calls[0].arguments[1],
+      warnMock.mock.calls[0].arguments[1],
       "Could not find 'app.json' file."
     );
   });
 
   it("handles invalid manifest", (t) => {
-    t.mock.method(console, "warn", () => null);
+    const warnMock = t.mock.method(console, "warn", () => null);
     setMockFiles({ "app.json": "-" });
 
     deepEqual(getBundleResources("app.json"), {
@@ -109,7 +108,7 @@ describe("getBundleResources()", () => {
     });
 
     match(
-      spy(console.warn).calls[0].arguments[1],
+      warnMock.mock.calls[0].arguments[1],
       /^Could not parse 'app.json':\n/
     );
   });
