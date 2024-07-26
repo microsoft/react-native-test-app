@@ -3,7 +3,6 @@ import { afterEach, describe, it } from "node:test";
 import { validate as validateActual } from "../../scripts/embed-manifest/validate.mjs";
 import { findFile as findFileActual } from "../../scripts/helpers.js";
 import { fs, setMockFiles } from "../fs.mock.js";
-import { spy } from "../spy.js";
 
 describe("validate()", () => {
   const findFile: typeof findFileActual = (file, startDir = undefined) =>
@@ -30,35 +29,35 @@ describe("validate()", () => {
   });
 
   it("handles missing app manifest", (t) => {
-    t.mock.method(console, "error", () => null);
+    const errorMock = t.mock.method(console, "error", () => null);
 
     equal(validate(undefined), 1);
-    equal(spy(console.error).calls.length, 1);
-    deepEqual(spy(console.error).calls[0].arguments, [
+    equal(errorMock.mock.calls.length, 1);
+    deepEqual(errorMock.mock.calls[0].arguments, [
       `Failed to find 'app.json'. Please make sure you're in the right directory.`,
     ]);
   });
 
   it("catches missing root properties", (t) => {
-    t.mock.method(console, "error", () => null);
+    const errorMock = t.mock.method(console, "error", () => null);
     setMockFiles({
       "app.json": `{ "name": "Example" }`,
     });
 
     equal(validate(findFile("app.json")), 1001);
-    equal(spy(console.error).calls.length, 2);
+    equal(errorMock.mock.calls.length, 2);
     match(
-      spy(console.error).calls[0].arguments[0],
+      errorMock.mock.calls[0].arguments[0],
       /app.json: error: app.json is not a valid app manifest$/
     );
     match(
-      spy(console.error).calls[1].arguments[0],
+      errorMock.mock.calls[1].arguments[0],
       /app.json: error: <root> must have required property 'displayName'$/
     );
   });
 
   it("catches missing component properties", (t) => {
-    t.mock.method(console, "error", () => null);
+    const errorMock = t.mock.method(console, "error", () => null);
     setMockFiles({
       "app.json": `{
         "name": "Example",
@@ -77,19 +76,19 @@ describe("validate()", () => {
     });
 
     equal(validate(findFile("app.json")), 1001);
-    equal(spy(console.error).calls.length, 2);
+    equal(errorMock.mock.calls.length, 2);
     match(
-      spy(console.error).calls[0].arguments[0],
+      errorMock.mock.calls[0].arguments[0],
       /app.json: error: app.json is not a valid app manifest$/
     );
     match(
-      spy(console.error).calls[1].arguments[0],
+      errorMock.mock.calls[1].arguments[0],
       /app.json: error: \/components\/0 must have required property 'appKey'$/
     );
   });
 
   it("catches invalid values for `presentationStyle`", (t) => {
-    t.mock.method(console, "error", () => null);
+    const errorMock = t.mock.method(console, "error", () => null);
     setMockFiles({
       "app.json": `{
         "name": "Example",
@@ -104,19 +103,19 @@ describe("validate()", () => {
     });
 
     equal(validate(findFile("app.json")), 1001);
-    equal(spy(console.error).calls.length, 2);
+    equal(errorMock.mock.calls.length, 2);
     match(
-      spy(console.error).calls[0].arguments[0],
+      errorMock.mock.calls[0].arguments[0],
       /app.json: error: app.json is not a valid app manifest$/
     );
     match(
-      spy(console.error).calls[1].arguments[0],
+      errorMock.mock.calls[1].arguments[0],
       /app.json: error: \/components\/0\/presentationStyle must be equal to one of the allowed values$/
     );
   });
 
   it("catches invalid values for resources", (t) => {
-    t.mock.method(console, "error", () => null);
+    const errorMock = t.mock.method(console, "error", () => null);
     setMockFiles({
       "app.json": `{
         "name": "Example",
@@ -127,21 +126,21 @@ describe("validate()", () => {
 
     equal(validate(findFile("app.json")), 1003);
     match(
-      spy(console.error).calls[0].arguments[0],
+      errorMock.mock.calls[0].arguments[0],
       /app.json: error: app.json is not a valid app manifest$/
     );
     match(
-      spy(console.error).calls[1].arguments[0],
+      errorMock.mock.calls[1].arguments[0],
       /app.json: error: \/resources must be array$/
     );
     match(
-      spy(console.error).calls[2].arguments[0],
+      errorMock.mock.calls[2].arguments[0],
       /app.json: error: \/resources must be object$/
     );
   });
 
   it("catches duplicate resources", (t) => {
-    t.mock.method(console, "error", () => null);
+    const errorMock = t.mock.method(console, "error", () => null);
     setMockFiles({
       "app.json": `{
         "name": "Example",
@@ -155,18 +154,18 @@ describe("validate()", () => {
 
     equal(validate(findFile("app.json")), 1003);
     match(
-      spy(console.error).calls[0].arguments[0],
+      errorMock.mock.calls[0].arguments[0],
       /app.json: error: app.json is not a valid app manifest$/
     );
     match(
-      spy(console.error).calls[1].arguments[0],
+      errorMock.mock.calls[1].arguments[0],
       /app.json: error: \/resources must NOT have duplicate items/
     );
   });
 
   for (const platform of ["android", "ios", "macos", "windows"]) {
     it(`catches duplicate, ${platform} specific resources`, (t) => {
-      t.mock.method(console, "error", () => null);
+      const errorMock = t.mock.method(console, "error", () => null);
       setMockFiles({
         "app.json": `{
           "name": "Example",
@@ -182,15 +181,15 @@ describe("validate()", () => {
 
       equal(validate(findFile("app.json")), 1003);
       match(
-        spy(console.error).calls[0].arguments[0],
+        errorMock.mock.calls[0].arguments[0],
         /app.json: error: app.json is not a valid app manifest$/
       );
       match(
-        spy(console.error).calls[1].arguments[0],
+        errorMock.mock.calls[1].arguments[0],
         /app.json: error: \/resources must be array$/
       );
       match(
-        spy(console.error).calls[2].arguments[0],
+        errorMock.mock.calls[2].arguments[0],
         new RegExp(
           `app.json: error: /resources/${platform} must NOT have duplicate items`
         )
@@ -199,7 +198,7 @@ describe("validate()", () => {
   }
 
   it("is silent on valid manifests", (t) => {
-    t.mock.method(console, "error", () => null);
+    const errorMock = t.mock.method(console, "error", () => null);
     setMockFiles({
       "app.json": `{
         "name": "Example",
@@ -250,6 +249,6 @@ describe("validate()", () => {
       displayName: "Example",
       name: "Example",
     });
-    equal(spy(console.error).calls.length, 0);
+    equal(errorMock.mock.calls.length, 0);
   });
 });
