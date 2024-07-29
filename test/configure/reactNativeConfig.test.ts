@@ -1,4 +1,4 @@
-import { equal, fail, throws } from "node:assert/strict";
+import { equal, fail, ok, throws } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { reactNativeConfig as reactNativeConfigActual } from "../../scripts/configure.mjs";
 import type { ConfigureParams } from "../../scripts/types.js";
@@ -15,9 +15,9 @@ describe("reactNativeConfig()", () => {
 
   it("returns generic config for all platforms", () => {
     const genericConfig = reactNativeConfig(mockParams());
-    equal(genericConfig.includes("android: {"), true);
-    equal(genericConfig.includes("ios: {"), true);
-    equal(genericConfig.includes("windows: {"), true);
+    ok(genericConfig.includes("android: {"));
+    ok(genericConfig.includes("ios: {"));
+    ok(genericConfig.includes("windows: {"));
 
     const withFlattenOnly = mockParams({ flatten: true });
     equal(reactNativeConfig(withFlattenOnly), genericConfig);
@@ -31,30 +31,30 @@ describe("reactNativeConfig()", () => {
 
   it("returns Android specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["android"], flatten: true });
-    equal(reactNativeConfig(params).includes("android: {"), true);
-    equal(reactNativeConfig(params).includes("ios: {"), false);
-    equal(reactNativeConfig(params).includes("windows: {"), false);
+    ok(reactNativeConfig(params).includes("android: {"));
+    ok(!reactNativeConfig(params).includes("ios: {"));
+    ok(!reactNativeConfig(params).includes("windows: {"));
   });
 
   it("returns iOS specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["ios"], flatten: true });
-    equal(reactNativeConfig(params).includes("android: {"), false);
-    equal(reactNativeConfig(params).includes("ios: {"), true);
-    equal(reactNativeConfig(params).includes("windows: {"), false);
+    ok(!reactNativeConfig(params).includes("android: {"));
+    ok(reactNativeConfig(params).includes("ios: {"));
+    ok(!reactNativeConfig(params).includes("windows: {"));
   });
 
   it("returns macOS specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["macos"], flatten: true });
-    equal(reactNativeConfig(params).includes("android: {"), false);
-    equal(reactNativeConfig(params).includes("ios: {"), true);
-    equal(reactNativeConfig(params).includes("windows: {"), false);
+    ok(!reactNativeConfig(params).includes("android: {"));
+    ok(reactNativeConfig(params).includes("ios: {"));
+    ok(!reactNativeConfig(params).includes("windows: {"));
   });
 
   it("returns Windows specific config for a flatten structure", () => {
     const params = mockParams({ platforms: ["windows"], flatten: true });
-    equal(reactNativeConfig(params).includes("android: {"), false);
-    equal(reactNativeConfig(params).includes("ios: {"), false);
-    equal(reactNativeConfig(params).includes("windows: {"), true);
+    ok(!reactNativeConfig(params).includes("android: {"));
+    ok(!reactNativeConfig(params).includes("ios: {"));
+    ok(reactNativeConfig(params).includes("windows: {"));
   });
 
   it("throws when an unknown platform is specified", () => {

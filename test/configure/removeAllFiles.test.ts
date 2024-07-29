@@ -1,4 +1,4 @@
-import { equal } from "node:assert/strict";
+import { ok } from "node:assert/strict";
 import { after, beforeEach, describe, it } from "node:test";
 import { removeAllFiles as removeAllFilesActual } from "../../scripts/configure.mjs";
 import { fs, setMockFiles } from "../fs.mock.js";
@@ -17,22 +17,22 @@ describe("removeAllFiles()", () => {
   after(() => setMockFiles());
 
   it("removes all specified files", async () => {
-    equal(fs.existsSync("babel.config.js"), true);
-    equal(fs.existsSync("metro.config.js"), true);
+    ok(fs.existsSync("babel.config.js"));
+    ok(fs.existsSync("metro.config.js"));
 
     await removeAllFiles(["babel.config.js", "metro.config.js"], ".");
 
-    equal(fs.existsSync("babel.config.js"), false);
-    equal(fs.existsSync("metro.config.js"), false);
+    ok(!fs.existsSync("babel.config.js"));
+    ok(!fs.existsSync("metro.config.js"));
   });
 
   it("ignores non-existent files", async () => {
-    equal(fs.existsSync("babel.config.js"), true);
-    equal(fs.existsSync("metro.config.js"), true);
+    ok(fs.existsSync("babel.config.js"));
+    ok(fs.existsSync("metro.config.js"));
 
     await removeAllFiles(["babel.config.js", "react-native.config.js"], ".");
 
-    equal(fs.existsSync("babel.config.js"), false);
-    equal(fs.existsSync("metro.config.js"), true);
+    ok(!fs.existsSync("babel.config.js"));
+    ok(fs.existsSync("metro.config.js"));
   });
 });
