@@ -80,18 +80,18 @@ export function pickAndroidDependencies({ dependencies }) {
   /** @type {AndroidDependencies} */
   const result = {};
   for (const dependency of Object.values(dependencies)) {
-    const projectDir = dependency.platforms.android?.sourceDir;
+    const { android } = dependency.platforms;
+    const projectDir = android?.sourceDir;
     if (projectDir) {
       const name = ":" + cleanDependencyName(dependency.name);
 
       /** @type {AndroidDependencies[string]["configurations"]} */
       const configurations = [];
-      const dependencyConfiguration =
-        dependency.platforms?.android?.dependencyConfiguration;
+      const dependencyConfiguration = android.dependencyConfiguration;
       if (dependencyConfiguration) {
         configurations.push(dependencyConfiguration);
       } else {
-        const buildTypes = dependency.platforms?.android?.buildTypes ?? [];
+        const buildTypes = android.buildTypes ?? [];
         if (buildTypes.length === 0) {
           configurations.push("implementation");
         } else {
