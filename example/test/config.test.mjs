@@ -1,5 +1,5 @@
 // @ts-check
-import { deepEqual, equal, match, notEqual } from "node:assert/strict";
+import { deepEqual, equal, match, notEqual, ok } from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { after, before, test } from "node:test";
@@ -184,7 +184,7 @@ test("react-native config", async (t) => {
 
       if (fs.existsSync("ios/Pods")) {
         equal(config.project.ios.xcodeProject.name, "Example.xcworkspace");
-        equal(config.project.ios.xcodeProject.isWorkspace, true);
+        ok(config.project.ios.xcodeProject.isWorkspace);
       } else {
         equal(config.project.ios.xcodeProject, null);
       }

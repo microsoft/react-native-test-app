@@ -1,4 +1,4 @@
-import { equal } from "node:assert/strict";
+import { equal, ok } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { isDestructive as isDestructiveActual } from "../../scripts/configure.mjs";
 import { fs, setMockFiles } from "../fs.mock.js";
@@ -54,12 +54,12 @@ describe("isDestructive()", () => {
       oldFiles: [],
     };
 
-    equal(isDestructive(".", config), false);
+    ok(!isDestructive(".", config));
     equal(warnMock.mock.calls.length, 0);
 
     setMockFiles({ "metro.config.js": "" });
 
-    equal(isDestructive(".", config), true);
+    ok(isDestructive(".", config));
     equal(warnMock.mock.calls.length, 2);
   });
 
@@ -75,12 +75,12 @@ describe("isDestructive()", () => {
       oldFiles: ["Podfile.lock"],
     };
 
-    equal(isDestructive(".", config), false);
+    ok(!isDestructive(".", config));
     equal(warnMock.mock.calls.length, 0);
 
     setMockFiles({ "Podfile.lock": "" });
 
-    equal(isDestructive(".", config), true);
+    ok(isDestructive(".", config));
     equal(warnMock.mock.calls.length, 2);
   });
 
@@ -98,7 +98,7 @@ describe("isDestructive()", () => {
       oldFiles: ["Podfile.lock"],
     };
 
-    equal(isDestructive(".", config), false);
+    ok(!isDestructive(".", config));
     equal(warnMock.mock.calls.length, 0);
 
     setMockFiles({
@@ -107,7 +107,7 @@ describe("isDestructive()", () => {
       "metro.config.js": "",
     });
 
-    equal(isDestructive(".", config), true);
+    ok(isDestructive(".", config));
     equal(warnMock.mock.calls.length, 5);
     // 2 x "The following files..." + number of files
   });
