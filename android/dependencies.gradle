@@ -1,9 +1,9 @@
 ext {
     apply(from: "${buildscript.sourceFile.getParent()}/test-app-util.gradle")
 
-    compileSdkVersion = 34
-    minSdkVersion = 23
-    targetSdkVersion = 33
+    compileSdkVersion = rootProject.findProperty("react.compileSdkVersion") ?: 34
+    minSdkVersion = rootProject.findProperty("react.minSdkVersion") ?: 23
+    targetSdkVersion = rootProject.findProperty("react.targetSdkVersion") ?: 33
 
     /**
      * Returns the recommended Gradle plugin version for the specified React Native
