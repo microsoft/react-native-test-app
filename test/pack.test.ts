@@ -176,6 +176,7 @@ describe("npm pack", () => {
       "macos/test_app.rb",
       "package.json",
       "plugins/index.js",
+      "plugins/macos.js",
       "plugins/reanimated.js",
       "react-native.config.js",
       "schema.json",
