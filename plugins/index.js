@@ -4,7 +4,6 @@ const { withMod } = require("@expo/config-plugins");
 /**
  * @typedef {import("@expo/config-plugins").ExportedConfig} ExportedConfig
  * @typedef {import("@expo/config-plugins").Mod} Mod
- * @typedef {import("@expo/config-plugins").ModConfig} ModConfig
  */
 
 /**
