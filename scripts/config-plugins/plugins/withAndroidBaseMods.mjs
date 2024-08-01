@@ -6,7 +6,7 @@ const modifyFilePath = makeFilePathModifier(
   "node_modules/react-native-test-app/android"
 );
 
-// https://github.com/expo/expo/blob/93cd0503117d5a25f8b80ed7b30ec5bed3a67c24/packages/@expo/config-plugins/src/plugins/withAndroidBaseMods.ts
+// https://github.com/expo/expo/blob/sdk-51/packages/%40expo/config-plugins/src/plugins/withAndroidBaseMods.ts
 const expoProviders = BaseMods.getAndroidModFileProviders();
 
 /** @type {typeof expoProviders} */

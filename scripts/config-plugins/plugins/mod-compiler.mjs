@@ -2,6 +2,7 @@
 import { BaseMods, evalModsAsync } from "../ExpoConfigPlugins.mjs";
 import { getAndroidModFileProviders } from "./withAndroidBaseMods.mjs";
 import { getIosModFileProviders } from "./withIosBaseMods.mjs";
+import { getMacOsModFileProviders } from "./withMacOsBaseMods.mjs";
 
 /** @type {import("@expo/config-plugins").withDefaultBaseMods} */
 export const withDefaultBaseMods = (config, props) => {
@@ -12,6 +13,12 @@ export const withDefaultBaseMods = (config, props) => {
   config = BaseMods.withAndroidBaseMods(config, {
     ...props,
     providers: getAndroidModFileProviders(),
+  });
+  config = BaseMods.withGeneratedBaseMods(config, {
+    ...props,
+    // @ts-expect-error `macos` is not assignable to type `android | ios`
+    platform: "macos",
+    providers: getMacOsModFileProviders(),
   });
   return config;
 };

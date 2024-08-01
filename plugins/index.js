@@ -34,5 +34,6 @@ function withSceneDelegate(config, action) {
   });
 }
 
+exports.macos = require("./macos");
 exports.withReactNativeHost = withReactNativeHost;
 exports.withSceneDelegate = withSceneDelegate;
