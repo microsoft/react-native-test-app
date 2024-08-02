@@ -274,3 +274,23 @@ export type Manifest = Partial<{
   resolutions: Record<string, string | undefined>;
   defaultPlatformPackages: Record<string, PlatformPackage | undefined>;
 }>;
+
+/*************************
+ * test-matrix.mjs *
+ *************************/
+
+export type ApplePlatform = "ios" | "macos" | "visionos";
+export type TargetPlatform = ApplePlatform | "android" | "windows";
+
+export type BuildConfig = {
+  platform: TargetPlatform;
+  variant: "fabric" | "paper";
+  engine?: "hermes" | "jsc";
+};
+
+export type PlatformConfig = {
+  name: string;
+  engines: ReadonlyArray<"hermes" | "jsc">;
+  isAvailable: (config: Required<BuildConfig>) => boolean;
+  prebuild: (config: Required<BuildConfig>) => Promise<void>;
+};

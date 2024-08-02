@@ -12,5 +12,6 @@ const color = hasColors
 export const bold = color(1, 22);
 export const dim = color(2, 22);
 export const red = color(31, 39);
+export const green = color(32, 39);
 export const yellow = color(33, 39);
 export const cyan = color(36, 39);
