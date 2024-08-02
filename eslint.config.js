@@ -35,6 +35,7 @@ module.exports = [
   },
   {
     files: [
+      "scripts/e2e/*.mjs",
       "scripts/set-react-version.mjs",
       "scripts/test-e2e.mjs",
       "scripts/test-matrix.mjs",
@@ -45,7 +46,7 @@ module.exports = [
         {
           patterns: [
             {
-              group: ["[a-z]*", "!./*", "!node:*"],
+              group: ["[a-z]*", "!../**", "!./**", "!node:*"],
               message:
                 "External dependencies are not allowed in this file because it needs to be runnable before install.",
             },

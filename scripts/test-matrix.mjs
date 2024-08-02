@@ -9,10 +9,12 @@ import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import * as util from "node:util";
 import { green, red, yellow } from "./colors.mjs";
-import { readTextFile } from "./helpers.js";
+import { configureGradle } from "./e2e/android.mjs";
+import { getIOSSimulatorName, installPods } from "./e2e/apple.mjs";
+import { $, $$, log, showBanner, TAG } from "./e2e/shell.mjs";
+import { generateSolution } from "./e2e/windows.mjs";
 import { setReactVersion } from "./set-react-version.mjs";
-import { getIOSSimulatorName, installPods } from "./test-apple.mjs";
-import { $, $$, test } from "./test-e2e.mjs";
+import { test } from "./test-e2e.mjs";
 
 /**
  * @typedef {import("./types.js").BuildConfig} BuildConfig
@@ -29,17 +31,7 @@ const PLATFORM_CONFIG = {
     name: "Android",
     engines: ["hermes"],
     isAvailable: ({ engine }) => engine === "hermes",
-    prebuild: ({ variant }) => {
-      if (variant === "fabric") {
-        const properties = "android/gradle.properties";
-        const content = readTextFile(properties);
-        fs.writeFileSync(
-          properties,
-          content.replace("#newArchEnabled=true", "newArchEnabled=true")
-        );
-      }
-      return Promise.resolve();
-    },
+    prebuild: configureGradle,
   },
   ios: {
     name: "iOS",
@@ -62,19 +54,13 @@ const PLATFORM_CONFIG = {
   windows: {
     name: "Windows",
     engines: ["hermes"],
-    isAvailable: () => false,
-    prebuild: () => Promise.resolve(),
+    isAvailable: ({ variant }) =>
+      process.platform === "win32" && variant === "paper",
+    prebuild: generateSolution,
   },
 };
 
 const PACKAGE_MANAGER = "yarn";
-const TAG = "┃";
-
-const rootDir = fileURLToPath(new URL("..", import.meta.url));
-
-function log(message = "", tag = TAG) {
-  console.log(tag, message);
-}
 
 /**
  * Invokes `npm run` and redirects stdout/stderr to specified file.
@@ -87,15 +73,6 @@ function run(script, logPath) {
     stdio: ["ignore", fd, fd],
   });
   return proc;
-}
-
-/**
- * @param {string} message
- */
-function showBanner(message) {
-  log();
-  log(message, "┗━━▶");
-  log("", "");
 }
 
 /**
@@ -125,12 +102,12 @@ function validatePlatforms(platforms) {
     switch (platform) {
       case "android":
       case "ios":
+      case "windows":
         filtered.push(platform);
         break;
 
       case "macos":
       case "visionos":
-      case "windows":
         log(yellow(`⚠ Unsupported platform: ${platform}`));
         break;
 
@@ -155,6 +132,10 @@ function parseArgs(args) {
       },
       ios: {
         description: "Test iOS",
+        type: "boolean",
+      },
+      windows: {
+        description: "Test Windows",
         type: "boolean",
       },
     },
@@ -221,7 +202,7 @@ function buildAndRun(platform) {
 /**
  * @param {BuildConfig} config
  */
-async function buildRunTest({ platform, variant }) {
+async function buildRunTest({ projectRoot, platform, variant }) {
   const setup = PLATFORM_CONFIG[platform];
   if (!setup) {
     log(yellow(`⚠ Unknown platform: ${platform}`));
@@ -229,7 +210,7 @@ async function buildRunTest({ platform, variant }) {
   }
 
   for (const engine of setup.engines) {
-    const configWithEngine = { platform, variant, engine };
+    const configWithEngine = { projectRoot, platform, variant, engine };
     if (!setup.isAvailable(configWithEngine)) {
       continue;
     }
@@ -268,11 +249,12 @@ function reset(rootDir) {
 
 /**
  * Invokes callback within the context of specified React Native version.
+ * @param {string} projectRoot
  * @param {string} version
  * @param {() => Promise<void>} action
  */
-async function withReactNativeVersion(version, action) {
-  reset(rootDir);
+async function withReactNativeVersion(projectRoot, version, action) {
+  reset(projectRoot);
 
   if (version) {
     await setReactVersion(version, true);
@@ -301,11 +283,12 @@ if (platforms.length === 0) {
   process.exitCode = 1;
   showBanner(red("No valid platforms were specified"));
 } else {
+  const projectRoot = fileURLToPath(new URL("..", import.meta.url));
   TEST_VARIANTS.reduce((job, variant) => {
     return job.then(() =>
-      withReactNativeVersion(version, async () => {
+      withReactNativeVersion(projectRoot, version, async () => {
         for (const platform of platforms) {
-          await buildRunTest({ platform, variant });
+          await buildRunTest({ projectRoot, platform, variant });
         }
       })
     );

@@ -146,6 +146,13 @@ export const config = {
           ...features,
         };
       }
+      case "windows": {
+        return {
+          platformName: "Windows",
+          "appium:app": "40411fc5-8e92-4d46-b68d-b62df44b1366!App",
+          "appium:automationName": "Windows",
+        };
+      }
       default:
         throw new Error(`Unknown platform: ${targetPlatform}`);
     }

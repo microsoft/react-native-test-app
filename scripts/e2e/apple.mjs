@@ -7,12 +7,10 @@
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
-import { memo, readTextFile } from "./helpers.js";
-import { $ } from "./test-e2e.mjs";
+import { memo, readTextFile } from "../helpers.js";
+import { $ } from "./shell.mjs";
 
-/**
- * @typedef {import("./types.js").BuildConfig} BuildConfig
- */
+/** @typedef {import("../types.js").BuildConfig} BuildConfig */
 
 export const getIOSSimulatorName = memo(() => {
   const wdioConfig = new URL(
