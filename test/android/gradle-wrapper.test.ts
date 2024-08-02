@@ -57,7 +57,9 @@ describe("configureGradleWrapper()", () => {
     doesNotThrow(() => configureGradleWrapper("android", mockfs));
   });
 
-  it("returns early if Gradle wrapper cannot be read", () => {
+  it("returns early if Gradle wrapper cannot be read", (t) => {
+    const warnMock = t.mock.method(console, "warn", () => null);
+
     const mockfs: typeof nodefs = {
       ...nodefs,
       existsSync: () => true,
@@ -72,6 +74,11 @@ describe("configureGradleWrapper()", () => {
     process.argv.push("run-android");
 
     doesNotThrow(() => configureGradleWrapper("android", mockfs));
+    equal(warnMock.mock.callCount(), 1);
+    equal(
+      warnMock.mock.calls[0].arguments[1],
+      "Failed to determine Gradle version"
+    );
   });
 
   it("returns early if Gradle wrapper cannot be determined", () => {
@@ -99,7 +106,9 @@ describe("configureGradleWrapper()", () => {
     equal(written, "");
   });
 
-  it("bumps Gradle if the version is too old/recent", () => {
+  it("bumps Gradle if the version is too old/recent", (t) => {
+    const warnMock = t.mock.method(console, "warn", () => null);
+
     let written = "";
     const mockfs = (
       gradleVersion: string,
@@ -141,8 +150,16 @@ describe("configureGradleWrapper()", () => {
     for (const [gradleVersion, rnVersion, expected] of cases) {
       written = "";
       const fs = mockfs(gradleVersion, rnVersion);
+
       doesNotThrow(() => configureGradleWrapper("android", fs));
+      equal(warnMock.mock.callCount(), 1);
+      equal(
+        warnMock.mock.calls[0].arguments[1],
+        `Setting Gradle version ${expected.substring("gradle-".length, expected.length - "-bin.zip".length)}`
+      );
       equal(written, expected);
+
+      warnMock.mock.resetCalls();
     }
   });
 

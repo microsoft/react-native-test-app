@@ -9,6 +9,8 @@ import { findNearest, readJSONFile } from "../../scripts/helpers.js";
 import type { ConfigureParams } from "../../scripts/types.js";
 
 const GRADLE_TEST_TASK = "nodeTest";
+const MKDIR_OPTIONS = { recursive: true, mode: 0o755 };
+const RM_OPTIONS = { maxRetries: 3, recursive: true };
 
 /**
  * Joins the strings if an array is passed, otherwise returns the string.
@@ -27,7 +29,7 @@ function projectPath(name: string): string {
 export function buildGradle(script: string): string[] {
   return [
     "buildscript {",
-    '    def androidTestAppDir = "node_modules/react-native-test-app/android"',
+    '    def androidTestAppDir = "../node_modules/react-native-test-app/android"',
     '    apply(from: "${androidTestAppDir}/dependencies.gradle")',
     '    apply(from: "${androidTestAppDir}/test-app-util.gradle")',
     "",
@@ -64,7 +66,6 @@ async function makeProject(
     testAppPath: fileURLToPath(new URL("../..", import.meta.url)),
     targetVersion: reactNativeVersion(),
     platforms,
-    flatten: true,
     force: true,
     init: true,
   });
@@ -87,7 +88,7 @@ async function makeProject(
     Object.entries(setupFiles).map(([filename, content]) => {
       const p = path.join(packagePath, filename);
       return fsp
-        .mkdir(path.dirname(p), { recursive: true })
+        .mkdir(path.dirname(p), MKDIR_OPTIONS)
         .then(() => fsp.writeFile(p, joinStrings(content, "\n")));
     })
   );
@@ -113,12 +114,11 @@ export function reactNativeVersion() {
  * Removes specified project.
  */
 export function removeProject(name: string) {
-  const rethrow = (err?: Error | null) => {
-    if (err) {
-      throw err;
+  fs.rm(projectPath(name), RM_OPTIONS, (e) => {
+    if (e) {
+      throw e;
     }
-  };
-  fs.rm(projectPath(name), { maxRetries: 3, recursive: true }, rethrow);
+  });
 }
 
 /**
@@ -141,7 +141,10 @@ export async function runGradleWithProject(
   setupFiles: Record<string, string | string[]> | undefined = {}
 ) {
   const projectPath = await makeProject(name, platforms, setupFiles);
-  const result = runGradle(projectPath, GRADLE_TEST_TASK);
+  const result = runGradle(
+    path.resolve(projectPath, "android"),
+    GRADLE_TEST_TASK
+  );
   const stdout = joinStrings(result.stdout);
   const stderr = joinStrings(result.stderr);
   if (result.stderr) {

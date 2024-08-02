@@ -29,7 +29,7 @@ describe("test-app-util.gradle", () => {
         displayName: "AppDisplayName",
         resources: ["dist/res", "dist/main.android.jsbundle"],
       }),
-      "build.gradle": buildGradle(
+      "android/build.gradle": buildGradle(
         'println("getAppName() = " + project.ext.getAppName())'
       ),
     });
@@ -45,7 +45,7 @@ describe("test-app-util.gradle", () => {
         displayName: "AppDisplayName",
         resources: ["dist/res", "dist/main.android.jsbundle"],
       }),
-      "build.gradle": buildGradle(
+      "android/build.gradle": buildGradle(
         'println("getApplicationId() = " + project.ext.getApplicationId())'
       ),
     });
@@ -64,7 +64,7 @@ describe("test-app-util.gradle", () => {
         },
         resources: ["dist/res", "dist/main.android.jsbundle"],
       }),
-      "build.gradle": buildGradle(
+      "android/build.gradle": buildGradle(
         'println("getApplicationId() = " + project.ext.getApplicationId())'
       ),
     });
@@ -75,7 +75,7 @@ describe("test-app-util.gradle", () => {
 
   it("getPackageVersionNumber() returns `react-native` version as a number", async () => {
     const { status, stdout } = await runGradle({
-      "build.gradle": buildGradle(
+      "android/build.gradle": buildGradle(
         'println("getPackageVersionNumber() = " + project.ext.getPackageVersionNumber("react-native", rootDir))'
       ),
     });
@@ -89,19 +89,6 @@ describe("test-app-util.gradle", () => {
     );
   });
 
-  it("getPackageVersionNumber() handles pre-release identifiers", async () => {
-    const { status, stdout } = await runGradle({
-      "build.gradle": buildGradle(
-        'println("getPackageVersionNumber() = " + project.ext.getPackageVersionNumber("react-native", file("${rootDir}/pre-release-version")))'
-      ),
-      "pre-release-version/node_modules/react-native/package.json":
-        JSON.stringify({ name: "react-native", version: "1.2.3-053c2b4be" }),
-    });
-
-    equal(status, 0);
-    match(stdout, new RegExp(`getPackageVersionNumber\\(\\) = ${v(1, 2, 3)}`));
-  });
-
   it("getSigningConfigs() fails if `storeFile` is missing", async () => {
     const { status, stderr } = await runGradle({
       "app.json": JSON.stringify({
@@ -110,7 +97,7 @@ describe("test-app-util.gradle", () => {
         resources: ["dist/res", "dist/main.android.jsbundle"],
         android: { signingConfigs: { debug: {} } },
       }),
-      "build.gradle": buildGradle(
+      "android/build.gradle": buildGradle(
         'println("getSigningConfigs() = " + project.ext.getSigningConfigs())'
       ),
     });
@@ -127,7 +114,7 @@ describe("test-app-util.gradle", () => {
         resources: ["dist/res", "dist/main.android.jsbundle"],
         android: { signingConfigs: {} },
       }),
-      "build.gradle": buildGradle(
+      "android/build.gradle": buildGradle(
         'println("getSigningConfigs() = " + project.ext.getSigningConfigs())'
       ),
     });
@@ -150,7 +137,7 @@ describe("test-app-util.gradle", () => {
           },
         },
       }),
-      "build.gradle": buildGradle(
+      "android/build.gradle": buildGradle(
         'println("getSigningConfigs() = " + project.ext.getSigningConfigs())'
       ),
     });
@@ -176,7 +163,7 @@ describe("test-app-util.gradle", () => {
           },
         },
       }),
-      "build.gradle": buildGradle(
+      "android/build.gradle": buildGradle(
         'println("getSigningConfigs() = " + project.ext.getSigningConfigs())'
       ),
     });
@@ -186,5 +173,16 @@ describe("test-app-util.gradle", () => {
       stdout,
       /getSigningConfigs\(\) = \[release:\[keyAlias:androiddebugkey, keyPassword:android, storePassword:android, storeFile:.*\]\]/
     );
+  });
+
+  it("toVersionNumber() handles pre-release identifiers", async () => {
+    const { status, stdout } = await runGradle({
+      "android/build.gradle": buildGradle(
+        'println("toVersionNumber() = " + project.ext.toVersionNumber("1.2.3-053c2b4be"))'
+      ),
+    });
+
+    equal(status, 0);
+    match(stdout, new RegExp(`toVersionNumber\\(\\) = ${v(1, 2, 3)}`));
   });
 });
