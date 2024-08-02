@@ -29,7 +29,7 @@ export function $(command, ...args) {
  * @param {...string} args
  * @returns {string}
  */
-function $$(command, ...args) {
+export function $$(command, ...args) {
   const { status, stderr, stdout } = spawnSync(command, args, {
     stdio: ["ignore", "pipe", "pipe"],
     encoding: "utf-8",
@@ -50,7 +50,7 @@ function $$(command, ...args) {
 function ensureAppiumAvailable() {
   return new Promise((resolve, reject) => {
     const socket = new Socket();
-    socket.setTimeout(60);
+    socket.setTimeout(60 * 1000);
 
     /** @type {(e: Error) => void} */
     const onError = (e) => {
