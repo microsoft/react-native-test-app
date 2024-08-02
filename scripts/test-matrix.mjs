@@ -11,11 +11,7 @@ import * as util from "node:util";
 import { green, red, yellow } from "./colors.mjs";
 import { readTextFile } from "./helpers.js";
 import { setReactVersion } from "./set-react-version.mjs";
-import {
-  configurePodfile,
-  getIOSSimulatorName,
-  installPods,
-} from "./test-apple.mjs";
+import { getIOSSimulatorName, installPods } from "./test-apple.mjs";
 import { $, $$, test } from "./test-e2e.mjs";
 
 /**
@@ -32,7 +28,8 @@ const PLATFORM_CONFIG = {
   android: {
     name: "Android",
     engines: ["hermes"],
-    configure: ({ variant }) => {
+    isAvailable: ({ engine }) => engine === "hermes",
+    prebuild: ({ variant }) => {
       if (variant === "fabric") {
         const properties = "android/gradle.properties";
         const content = readTextFile(properties);
@@ -41,32 +38,32 @@ const PLATFORM_CONFIG = {
           content.replace("#newArchEnabled=true", "newArchEnabled=true")
         );
       }
-
-      return true;
+      return Promise.resolve();
     },
   },
   ios: {
     name: "iOS",
     engines: ["jsc", "hermes"],
-    configure: configurePodfile,
+    isAvailable: () => process.platform === "darwin",
     prebuild: installPods,
   },
   macos: {
     name: "macOS",
     engines: ["jsc", "hermes"],
-    configure: configurePodfile,
+    isAvailable: () => false,
     prebuild: installPods,
   },
   visionos: {
     name: "visionOS",
     engines: ["jsc", "hermes"],
-    configure: configurePodfile,
+    isAvailable: () => false,
     prebuild: installPods,
   },
   windows: {
     name: "Windows",
     engines: ["hermes"],
-    configure: () => false,
+    isAvailable: () => false,
+    prebuild: () => Promise.resolve(),
   },
 };
 
@@ -233,12 +230,12 @@ async function buildRunTest({ platform, variant }) {
 
   for (const engine of setup.engines) {
     const configWithEngine = { platform, variant, engine };
-    if (!setup.configure(configWithEngine)) {
+    if (!setup.isAvailable(configWithEngine)) {
       continue;
     }
 
     showBanner(`Build ${setup.name} [${variant}, ${engine}]`);
-    setup.prebuild?.(configWithEngine);
+    await setup.prebuild(configWithEngine);
     buildAndRun(platform);
     await test(platform, [variant, engine]);
   }

@@ -40,11 +40,11 @@ export const getIOSSimulatorName = memo(() => {
 });
 
 /**
- * Configures `Podfile`.
+ * Configures `Podfile` and invokes `pod install`.
  * @param {Required<BuildConfig>} config
- * @returns {boolean}
+ * @returns {Promise<void>}
  */
-export function configurePodfile({ platform, engine, variant }) {
+export function installPods({ platform, engine, variant }) {
   const podfile = `${platform}/Podfile`;
   let content = readTextFile(podfile);
 
@@ -62,14 +62,7 @@ export function configurePodfile({ platform, engine, variant }) {
   }
 
   fs.writeFileSync(podfile, content);
-  return true;
-}
 
-/**
- * Invokes `pod install` for specified platform.
- * @param {Required<BuildConfig>} config
- */
-export function installPods({ platform }) {
   const options = {
     force: true,
     maxRetries: 3,
@@ -80,4 +73,6 @@ export function installPods({ platform }) {
   fs.rmSync(`${platform}/Pods`, options);
   fs.rmSync(`${platform}/build`, options);
   $("pod", "install", `--project-directory=${platform}`);
+
+  return Promise.resolve();
 }

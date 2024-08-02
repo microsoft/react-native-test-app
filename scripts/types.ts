@@ -291,6 +291,6 @@ export type BuildConfig = {
 export type PlatformConfig = {
   name: string;
   engines: ReadonlyArray<"hermes" | "jsc">;
-  configure: (config: Required<BuildConfig>) => boolean;
-  prebuild?: (config: Required<BuildConfig>) => void;
+  isAvailable: (config: Required<BuildConfig>) => boolean;
+  prebuild: (config: Required<BuildConfig>) => Promise<void>;
 };
