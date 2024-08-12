@@ -4712,9 +4712,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-adb@npm:^12.0.0, appium-adb@npm:^12.4.7, appium-adb@npm:^12.5.0":
-  version: 12.5.1
-  resolution: "appium-adb@npm:12.5.1"
+"appium-adb@npm:^12.0.0, appium-adb@npm:^12.5.2":
+  version: 12.5.2
+  resolution: "appium-adb@npm:12.5.2"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     async-lock: "npm:^1.0.0"
@@ -4726,17 +4726,17 @@ __metadata:
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
-  checksum: 10c0/a01a0f89275f79a1af65d4a81bee5eb928da21d08e2f8d738a3235e6f4029db6cf525e54da63da1de255181490a4c0e04d129365d585e8fe1db2cf1be90fbb07
+  checksum: 10c0/6c0154fb3a1832ca41eee330afb4791a5527f4eb8dfa599e4c92768776cc1895ad1db13cbda41c619546ca18ed79bb0ec7c47605c4c09ed9e33b53c7c4da684c
   languageName: node
   linkType: hard
 
-"appium-android-driver@npm:^9.8.0":
-  version: 9.8.1
-  resolution: "appium-android-driver@npm:9.8.1"
+"appium-android-driver@npm:^9.8.3":
+  version: 9.8.3
+  resolution: "appium-android-driver@npm:9.8.3"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     "@colors/colors": "npm:^1.6.0"
-    appium-adb: "npm:^12.5.0"
+    appium-adb: "npm:^12.5.2"
     appium-chromedriver: "npm:^5.5.1"
     asyncbox: "npm:^3.0.0"
     axios: "npm:^1.x"
@@ -4754,7 +4754,7 @@ __metadata:
     ws: "npm:^8.0.0"
   peerDependencies:
     appium: ^2.0.0
-  checksum: 10c0/e5f13bd406f5ff87a8c3beb0cd529a88486d12a3c6b9219b23fd0e980ef68718dac0f4f642aa64f067b93883c48062053707425a386fe38160ffa91111d2623e
+  checksum: 10c0/316f6d4be3e48ff42810678832ef8ab94d6c529dcbed114e28d058616283e1d064c98494ef7f00a8fcd078aa9f12f3d74007154274d009838cbbb099071c9d25
   languageName: node
   linkType: hard
 
@@ -4831,31 +4831,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-remote-debugger@npm:^11.5.3":
-  version: 11.5.4
-  resolution: "appium-remote-debugger@npm:11.5.4"
+"appium-remote-debugger@npm:^12.0.3":
+  version: 12.1.1
+  resolution: "appium-remote-debugger@npm:12.1.1"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/support": "npm:^5.0.3"
     appium-ios-device: "npm:^2.0.0"
-    async-lock: "npm:^1.2.2"
     asyncbox: "npm:^3.0.0"
     bluebird: "npm:^3.4.7"
-    fancy-log: "npm:^2.0.0"
     glob: "npm:^10.3.3"
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/7b44ab767ad5466741f6a1b13838da76eb26988152e772595f23061cdcf40f190f51584f070915bb40952ffd11f7f36cd96ab82676070c75a1afc08f1e42c66a
+  checksum: 10c0/1adc294b9591e3dad1ace8f98a398a6390accf3259712bb65890c7d1acf8b1e4ca92fafa79c06ebbb9de6fbf553de77198ed3f80060f07a1158ee3dc62e44460
   languageName: node
   linkType: hard
 
 "appium-uiautomator2-driver@npm:^3.0.0":
-  version: 3.7.4
-  resolution: "appium-uiautomator2-driver@npm:3.7.4"
+  version: 3.7.6
+  resolution: "appium-uiautomator2-driver@npm:3.7.6"
   dependencies:
-    appium-adb: "npm:^12.4.7"
-    appium-android-driver: "npm:^9.8.0"
+    appium-adb: "npm:^12.5.2"
+    appium-android-driver: "npm:^9.8.3"
     appium-chromedriver: "npm:^5.6.28"
     appium-uiautomator2-server: "npm:^7.0.14"
     asyncbox: "npm:^3.0.0"
@@ -4870,7 +4868,7 @@ __metadata:
     type-fest: "npm:^4.4.0"
   peerDependencies:
     appium: ^2.4.1
-  checksum: 10c0/7c936458c93219783120f332acd60bbe7a223ef998bfcd9fc60ac27246c69a2b33d4f90a0df8775c48a1a18ff1cbcbacb1ac4a7c611a14192aff8059cdbe085a
+  checksum: 10c0/e75f010f1b9a40d16fa5b6deac263ae1733fbeb07ff9127e95cd1b4ec093fd8e925dee94aedac12bae1a154a83888188641e81ff6d000697aa0f2990253eafc2
   languageName: node
   linkType: hard
 
@@ -4881,9 +4879,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-webdriveragent@npm:^8.7.8":
-  version: 8.7.11
-  resolution: "appium-webdriveragent@npm:8.7.11"
+"appium-webdriveragent@npm:^8.9.1":
+  version: 8.9.1
+  resolution: "appium-webdriveragent@npm:8.9.1"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/strongbox": "npm:^0.x"
@@ -4897,7 +4895,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
-  checksum: 10c0/5d47e78cec61c533bbf7cd82a05cd47686ab1c5617393d4bdaffb5e9e9085efacd7060b912aee4bf3db8abdc416e36223f96be7a1e0f774264d1efdc23d4667f
+  checksum: 10c0/bcbc1a5c139056cb2d19a73811dafee2c9ab23d8eb65c253ba4abb21d6c7d8ada49b342258d67e8acc2799c312e22f7903c05923d9719bcbff9914944051cf05
   languageName: node
   linkType: hard
 
@@ -4920,21 +4918,20 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^7.0.0":
-  version: 7.24.3
-  resolution: "appium-xcuitest-driver@npm:7.24.3"
+  version: 7.24.15
+  resolution: "appium-xcuitest-driver@npm:7.24.15"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
     appium-ios-device: "npm:^2.5.4"
     appium-ios-simulator: "npm:^6.1.7"
-    appium-remote-debugger: "npm:^11.5.3"
-    appium-webdriveragent: "npm:^8.7.8"
+    appium-remote-debugger: "npm:^12.0.3"
+    appium-webdriveragent: "npm:^8.9.1"
     appium-xcode: "npm:^5.1.4"
     async-lock: "npm:^1.4.0"
     asyncbox: "npm:^3.0.0"
     bluebird: "npm:^3.7.2"
     css-selector-parser: "npm:^3.0.0"
-    fancy-log: "npm:^2.0.0"
     js2xmlparser2: "npm:^0.x"
     lodash: "npm:^4.17.21"
     lru-cache: "npm:^10.0.0"
@@ -4948,7 +4945,7 @@ __metadata:
     ws: "npm:^8.13.0"
   peerDependencies:
     appium: ^2.5.4
-  checksum: 10c0/55b066f19e6d4c2fa49e79ccee242912faf0307ba9574d5f1ee440b5545f5fed67656154c3a7d53db809d879b1e8b512568a29aa6f5616b2095acb785c34d3a4
+  checksum: 10c0/6524668447830f5d535f2d0ddd768500924b0bf461f8e0d39e36cc693bb87a54c56fb5eee6184b7229cd7383ec59618566b67818e7754a9376a0df3f60bbcfb6
   languageName: node
   linkType: hard
 
@@ -5333,7 +5330,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async-lock@npm:1.4.1, async-lock@npm:^1.0.0, async-lock@npm:^1.2.2, async-lock@npm:^1.4.0":
+"async-lock@npm:1.4.1, async-lock@npm:^1.0.0, async-lock@npm:^1.4.0":
   version: 1.4.1
   resolution: "async-lock@npm:1.4.1"
   checksum: 10c0/f696991c7d894af1dc91abc81cc4f14b3785190a35afb1646d8ab91138238d55cabd83bfdd56c42663a008d72b3dc39493ff83797e550effc577d1ccbde254af
