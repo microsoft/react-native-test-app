@@ -16,15 +16,15 @@ GEM
     nanaimo (0.3.0)
     nkf (0.2.0)
     parallel (1.25.1)
-    parser (3.3.4.0)
+    parser (3.3.4.2)
       ast (~> 2.4.1)
       racc
-    racc (1.8.0)
+    racc (1.8.1)
     rainbow (3.1.1)
     regexp_parser (2.9.2)
     rexml (3.2.9)
       strscan
-    rubocop (1.65.0)
+    rubocop (1.65.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
