@@ -216,8 +216,8 @@ async function resolveCommonDependencies(
             return { version };
           }
 
-          // `metro-react-native-babel-transformer` is no longer a direct dependency
-          // of `react-native`. As of 0.72, we should go through
+          // `metro-react-native-babel-transformer` is no longer a direct
+          // dependency of `react-native`. As of 0.72, we should go through
           // `@react-native-community/cli-plugin-metro` instead.
           const cliVersion = dependencies["@react-native-community/cli"]
             .replace("^", "")
@@ -238,12 +238,18 @@ async function resolveCommonDependencies(
       ];
     })();
 
+  // Starting with 0.76, `react-native` no longer depends on
+  // `@react-native-community/cli`
+  const rncli = dependencies["@react-native-community/cli"] ?? "latest";
+  const rncliAndroid =
+    dependencies["@react-native-community/cli-platform-android"] ?? rncli;
+  const rncliIOS =
+    dependencies["@react-native-community/cli-platform-ios"] ?? rncli;
+
   return {
-    "@react-native-community/cli": dependencies["@react-native-community/cli"],
-    "@react-native-community/cli-platform-android":
-      dependencies["@react-native-community/cli-platform-android"],
-    "@react-native-community/cli-platform-ios":
-      dependencies["@react-native-community/cli-platform-ios"],
+    "@react-native-community/cli": rncli,
+    "@react-native-community/cli-platform-android": rncliAndroid,
+    "@react-native-community/cli-platform-ios": rncliIOS,
     "@react-native/babel-preset": rnBabelPresetVersion,
     "@react-native/metro-config": rnMetroConfigVersion,
     "metro-react-native-babel-preset": metroBabelPresetVersion,
