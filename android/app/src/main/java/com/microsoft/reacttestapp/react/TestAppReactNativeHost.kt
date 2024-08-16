@@ -15,7 +15,6 @@ import com.facebook.react.bridge.JavaScriptExecutorFactory
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.devsupport.interfaces.DevSupportManager
 import com.facebook.react.packagerconnection.PackagerConnectionSettings
-import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.MainActivity
 import com.microsoft.reacttestapp.R
@@ -171,10 +170,7 @@ class TestAppReactNativeHost(
         return reactInstanceManager
     }
 
-    override fun getJavaScriptExecutorFactory(): JavaScriptExecutorFactory {
-        SoLoader.init(application, false)
-        return HermesExecutorFactory()
-    }
+    override fun getJavaScriptExecutorFactory(): JavaScriptExecutorFactory = HermesExecutorFactory()
 
     override fun getJSMainModuleName() = "index"
 

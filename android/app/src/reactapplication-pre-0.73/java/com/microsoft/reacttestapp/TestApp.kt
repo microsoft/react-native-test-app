@@ -33,6 +33,7 @@ class TestApp :
     override fun onCreate() {
         super.onCreate()
 
+        @Suppress("DEPRECATION")
         SoLoader.init(this, false)
 
         reactNativeBundleNameProvider = ReactBundleNameProvider(this, manifest.bundleRoot)
