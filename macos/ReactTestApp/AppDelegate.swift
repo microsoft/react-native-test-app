@@ -149,6 +149,8 @@ extension AppDelegate {
     }
 
     func applicationWillFinishLaunching(_: Notification) {
+        // applicationWillFinishLaunching(_:) [ENABLE_SINGLE_APP_MODE=0]
+
         if Session.shouldRememberLastComponent {
             rememberLastComponentMenuItem.state = .on
         }
@@ -293,6 +295,8 @@ extension AppDelegate {
         let frame = window.contentViewController?.view.frame
         rootView.frame = frame ?? NSRect(size: WindowSize.defaultSize)
         window.contentViewController?.view = rootView
+
+        // applicationWillFinishLaunching(_:) [ENABLE_SINGLE_APP_MODE=1]
 
         #if DEBUG
         showReactMenu()
