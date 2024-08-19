@@ -151,7 +151,7 @@ ext.getApplicationId = {
 
 ext.getArchitectures = { project ->
     def archs = project.findProperty("react.nativeArchitectures")
-        ?: project.findProperty("reactNativeArchitectures")
+                    ?: project.findProperty("reactNativeArchitectures")
     return archs != null
         ? archs.split(",")
         : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
@@ -284,7 +284,7 @@ ext.getVersionName = {
 ext.isBridgelessEnabled = { project, isNewArchEnabled ->
     if (isNewArchEnabled) {
         def bridgelessEnabled = project.findProperty("react.bridgelessEnabled")
-            ?: project.findProperty("bridgelessEnabled")
+                                    ?: project.findProperty("bridgelessEnabled")
         if (bridgelessEnabled != "false") {
             def version = getPackageVersionNumber("react-native", project.rootDir)
             def isSupported = version == 0 || version >= v(0, 73, 0)
@@ -314,7 +314,7 @@ ext.isFabricEnabled = { project ->
 
 ext.isNewArchitectureEnabled = { project ->
     def newArchEnabled = project.findProperty("react.newArchEnabled")
-        ?: project.findProperty("newArchEnabled")
+                             ?: project.findProperty("newArchEnabled")
     if (newArchEnabled == "true") {
         def version = getPackageVersionNumber("react-native", project.rootDir)
         def isSupported = version == 0 || version >= v(0, 71, 0)

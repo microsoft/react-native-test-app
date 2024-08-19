@@ -1,10 +1,6 @@
 ext {
     apply(from: "${buildscript.sourceFile.getParent()}/test-app-util.gradle")
 
-    compileSdkVersion = rootProject.findProperty("react.compileSdkVersion") ?: 34
-    minSdkVersion = rootProject.findProperty("react.minSdkVersion") ?: 23
-    targetSdkVersion = rootProject.findProperty("react.targetSdkVersion") ?: 33
-
     /**
      * Returns the recommended Gradle plugin version for the specified React Native
      * version.
@@ -21,7 +17,22 @@ ext {
         }
     }
 
+    // TODO: Bump `minSdkVersion` to 24 in 4.0
+    def getDefaultMinSdkVersion = { reactNativeVersion ->
+        if (reactNativeVersion >= v(0, 76, 0)) {
+            return 24
+        } else {
+            return 23
+        }
+    }
+
     reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
+
+    compileSdkVersion = rootProject.findProperty("react.compileSdkVersion") ?: 34
+    minSdkVersion = rootProject.findProperty("react.minSdkVersion")
+                        ?: getDefaultMinSdkVersion(reactNativeVersion)
+    targetSdkVersion = rootProject.findProperty("react.targetSdkVersion") ?: 33
+
     autodetectReactNativeVersion = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
     enableNewArchitecture = isNewArchitectureEnabled(project)
     enableBridgeless = isBridgelessEnabled(project, enableNewArchitecture)
