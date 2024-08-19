@@ -4,7 +4,6 @@ import * as nodefs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import * as colors from "../scripts/colors.mjs";
 import {
   findNearest,
   isMain,
@@ -13,7 +12,8 @@ import {
   v,
   writeTextFile,
 } from "../scripts/helpers.js";
-import { parseArgs } from "../scripts/parseargs.mjs";
+import * as colors from "../scripts/utils/colors.mjs";
+import { parseArgs } from "../scripts/utils/parseargs.mjs";
 import { loadReactNativeConfig, projectInfo } from "./project.mjs";
 import { configureForUWP } from "./uwp.mjs";
 import { configureForWin32 } from "./win32.mjs";

@@ -363,9 +363,8 @@ the template we currently use:
 > - Fix #2
 
 Make sure you're on latest `trunk`, then run
-`node scripts/release-notes.mjs <last version> <this version>` to get a list of
-user-facing changes. You will likely need to prune and rewrite some of these
-entries.
+`yarn release-notes <last version> <this version>` to get a list of user-facing
+changes. You will likely need to prune and rewrite some of these entries.
 
 <!-- References -->
 
@@ -380,7 +379,7 @@ entries.
 [`dependencies.gradle`]:
   https://github.com/microsoft/react-native-test-app/blob/trunk/android/dependencies.gradle
 [`generate-schema.mjs`]:
-  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/generate-schema.mjs
+  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/internal/generate-schema.mjs
 [`package.json`]:
   https://github.com/microsoft/react-native-test-app/blob/trunk/package.json
 [`react-native-releases`]:
@@ -388,7 +387,7 @@ entries.
 [`scripts/docs/`]:
   https://github.com/microsoft/react-native-test-app/tree/trunk/scripts/docs
 [`test:matrix`]:
-  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/test-matrix.mjs
+  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/testing/test-matrix.mjs
 [`uuid`]: https://github.com/uuidjs/uuid
 [commitlint-lite]:
   https://github.com/microsoft/rnx-kit/tree/main/incubator/commitlint-lite#readme

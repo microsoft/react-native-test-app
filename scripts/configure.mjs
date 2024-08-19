@@ -6,7 +6,6 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import semverCoerce from "semver/functions/coerce.js";
 import semverSatisfies from "semver/functions/satisfies.js";
-import * as colors from "./colors.mjs";
 import { cliPlatformIOSVersion } from "./configure-projects.js";
 import {
   getPackageVersion,
@@ -17,7 +16,6 @@ import {
   toVersionNumber,
   v,
 } from "./helpers.js";
-import { parseArgs } from "./parseargs.mjs";
 import {
   appManifest,
   buildGradle,
@@ -28,7 +26,9 @@ import {
   serialize,
   settingsGradle,
 } from "./template.mjs";
+import * as colors from "./utils/colors.mjs";
 import { downloadPackage } from "./utils/npm.mjs";
+import { parseArgs } from "./utils/parseargs.mjs";
 
 /**
  * @typedef {import("./types.js").Configuration} Configuration

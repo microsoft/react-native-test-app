@@ -35,7 +35,7 @@
           - scripts/embed-manifest/validate.mjs
           - scripts/init.mjs
           - scripts/template.mjs
-          - scripts/xcodebuild.sh
+          - scripts/build/xcodebuild.sh
           - test_app.rb
 "platform: macOS":
   - changed-files:
@@ -63,7 +63,7 @@
           - scripts/embed-manifest/validate.mjs
           - scripts/init.mjs
           - scripts/template.mjs
-          - scripts/xcodebuild.sh
+          - scripts/build/xcodebuild.sh
 "platform: visionOS":
   - changed-files:
       - any-glob-to-any-file:
@@ -84,7 +84,7 @@
           - scripts/embed-manifest/validate.mjs
           - scripts/init.mjs
           - scripts/template.mjs
-          - scripts/xcodebuild.sh
+          - scripts/build/xcodebuild.sh
           - visionos/**/*
 "platform: Windows":
   - changed-files:

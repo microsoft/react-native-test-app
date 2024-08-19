@@ -4,16 +4,13 @@
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
-import { readJSONFile } from "./helpers.js";
+import { URL, fileURLToPath } from "node:url";
+import { readJSONFile } from "../helpers.js";
 
 const APP_IDENTIFIER = "com.microsoft.ReactNativeViewfinder";
 const PACKAGE_MANAGER = "yarn";
 
-const PROJECT_ROOT = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  ".."
-);
+const PROJECT_ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const APP_ROOT = path.resolve(PROJECT_ROOT, "example");
 const APP_MANIFEST = path.resolve(APP_ROOT, "app.json");
 const PROJECT_MANIFEST = path.resolve(APP_ROOT, "package.json");
@@ -47,7 +44,7 @@ function configureAppManifest() {
  * @param {string[]} args
  * @param {Record<string, unknown>=} options
  */
-function run(command, args, options) {
+function $(command, args, options) {
   const { error, status } = spawnSync(command, args, {
     cwd: PROJECT_ROOT,
     stdio: "inherit",
@@ -59,5 +56,5 @@ function run(command, args, options) {
 }
 
 configureAppManifest();
-run("npx", ["@rnx-kit/align-deps", "--write", PROJECT_MANIFEST]);
-run(PACKAGE_MANAGER, ["install"]);
+$("npx", ["@rnx-kit/align-deps", "--write", PROJECT_MANIFEST]);
+$(PACKAGE_MANAGER, ["install"]);

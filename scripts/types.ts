@@ -197,14 +197,6 @@ export type AppManifest = {
   };
 };
 
-/****************
- * affected.mjs *
- ****************/
-
-type MatchChangedFiles = { "any-glob-to-any-file": string[] };
-
-export type Match = { "changed-files": MatchChangedFiles[] };
-
 /*************************
  * generate-manifest.mjs *
  *************************/

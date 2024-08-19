@@ -3,10 +3,10 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
-import { isMain } from "./helpers.js";
-import { generateSchema } from "./schema.mjs";
+import { isMain } from "../helpers.js";
+import { generateSchema } from "../schema.mjs";
 
-/** @typedef {import("./types.js").Docs} Docs */
+/** @typedef {import("../types.js").Docs} Docs */
 
 /** @type {(str: string) => string} */
 const stripCarriageReturn =
@@ -18,7 +18,7 @@ const stripCarriageReturn =
 export async function readDocumentation() {
   /** @type {Partial<Docs>} */
   const docs = {};
-  const docsDir = fileURLToPath(new URL("../docs", import.meta.url));
+  const docsDir = fileURLToPath(new URL("../../docs", import.meta.url));
 
   /** @type {(keyof Docs)[]} */
   const keys = [

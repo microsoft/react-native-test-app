@@ -7,9 +7,9 @@ import { generateNotes } from "@semantic-release/release-notes-generator";
 import { spawn } from "node:child_process";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
-import { readJSONFile } from "./helpers.js";
+import { readJSONFile } from "../helpers.js";
 
-/** @typedef {import("./types.js").Manifest} Manifest */
+/** @typedef {import("../types.js").Manifest} Manifest */
 
 /**
  * @param {string} output
@@ -39,7 +39,7 @@ function reformat(output, lastRelease, nextRelease) {
 }
 
 function repositoryUrl() {
-  const p = fileURLToPath(new URL("../package.json", import.meta.url));
+  const p = fileURLToPath(new URL("../../package.json", import.meta.url));
   const manifest = /** @type {Manifest} */ (readJSONFile(p));
   return manifest.repository?.url;
 }

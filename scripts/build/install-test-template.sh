@@ -54,7 +54,7 @@ else
 fi
 
 pushd template-example 1> /dev/null
-node ../scripts/copy-yarnrc.mjs ../.yarnrc.yml
+node "$(dirname ${BASH_SOURCE[0]})/copy-yarnrc.mjs" ../.yarnrc.yml
 
 # Workaround for NuGet publishing failures
 if [[ "$platform" == "all" ]] || [[ "$platform" == "windows" ]]; then
