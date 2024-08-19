@@ -326,6 +326,23 @@ if (platforms.length === 0) {
       );
     })
     .then(() => {
+      showBanner(`Reconfigure existing app`);
+      $(
+        PACKAGE_MANAGER,
+        "configure-test-app",
+        "-p",
+        "android",
+        "-p",
+        "ios",
+        "-p",
+        "macos",
+        "-p",
+        "visionos",
+        "-p",
+        "windows"
+      );
+    })
+    .then(() => {
       showBanner(green("✔ Pass"));
     });
 }

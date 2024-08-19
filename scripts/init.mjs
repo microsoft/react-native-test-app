@@ -1,74 +1,14 @@
 #!/usr/bin/env node
 // @ts-check
-import { spawnSync } from "node:child_process";
-import * as fs from "node:fs";
-import * as https from "node:https";
 import { createRequire } from "node:module";
-import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import prompts from "prompts";
 import * as colors from "./colors.mjs";
 import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
-import {
-  fetchPackageMetadata,
-  memo,
-  readJSONFile,
-  toVersionNumber,
-  v,
-} from "./helpers.js";
+import { memo, readJSONFile, toVersionNumber, v } from "./helpers.js";
 import { parseArgs } from "./parseargs.mjs";
-
-/**
- * Invokes `tar xf`.
- * @param {string} archive
- */
-function untar(archive) {
-  const args = ["xf", archive];
-  const options = { cwd: path.dirname(archive) };
-  const result = spawnSync("tar", args, options);
-
-  // If we run `tar` from Git Bash with a Windows path, it will fail with:
-  //
-  //     tar: Cannot connect to C: resolve failed
-  //
-  // GNU Tar assumes archives with a colon in the file name are on another
-  // machine. See also
-  // https://www.gnu.org/software/tar/manual/html_section/file.html.
-  if (
-    process.platform === "win32" &&
-    result.stderr.toString().includes("tar: Cannot connect to")
-  ) {
-    args.push("--force-local");
-    return spawnSync("tar", args, options);
-  }
-
-  return result;
-}
-
-/**
- * Fetches the tarball URL for the specified package and version.
- * @param {string} pkg
- * @param {string} version
- * @returns {Promise<string>}
- */
-async function fetchPackageTarballURL(pkg, version) {
-  const info = await fetchPackageMetadata(pkg);
-  const specific = info.versions[version];
-  if (specific) {
-    return specific.dist.tarball;
-  }
-
-  const versions = Object.keys(info.versions);
-  for (let i = versions.length - 1; i >= 0; --i) {
-    const v = versions[i];
-    if (v.startsWith(version)) {
-      return info.versions[v].dist.tarball;
-    }
-  }
-
-  throw new Error(`No match found for '${pkg}@${version}'`);
-}
+import { downloadPackage, fetchPackageMetadata } from "./utils/npm.mjs";
 
 /**
  * Returns the installed `react-native` manifest, if present.
@@ -163,35 +103,6 @@ async function getVersion(platforms) {
   logVersion(target, "it supports all specified platforms");
 
   return target;
-}
-
-/**
- * Downloads the specified npm package.
- * @param {string} pkg
- * @param {string} version
- * @returns {Promise<string>}
- */
-async function downloadPackage(pkg, version) {
-  const url = await fetchPackageTarballURL(pkg, version);
-  console.log(`Downloading ${path.basename(url)}...`);
-
-  return new Promise((resolve, reject) => {
-    https
-      .get(url, (res) => {
-        const tmpDir = path.join(os.tmpdir(), "react-native-test-app");
-        fs.mkdirSync(tmpDir, { recursive: true });
-
-        const dest = path.join(tmpDir, path.basename(url));
-        const fh = fs.createWriteStream(dest);
-        res.pipe(fh);
-        fh.on("finish", () => {
-          fh.close();
-          untar(dest);
-          resolve(path.join(tmpDir, "package"));
-        });
-      })
-      .on("error", (err) => reject(err));
-  });
 }
 
 /**

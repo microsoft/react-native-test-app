@@ -205,6 +205,7 @@ describe("npm pack", () => {
       "scripts/parseargs.mjs",
       "scripts/schema.mjs",
       "scripts/template.mjs",
+      "scripts/utils/npm.mjs",
       "test-app.gradle",
       "test_app.rb",
       "visionos/ReactTestApp.xcodeproj/project.pbxproj",

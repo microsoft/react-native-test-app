@@ -28,6 +28,7 @@ import {
   serialize,
   settingsGradle,
 } from "./template.mjs";
+import { downloadPackage } from "./utils/npm.mjs";
 
 /**
  * @typedef {import("./types.js").Configuration} Configuration
@@ -62,6 +63,25 @@ const readManifest = memo(() =>
  */
 export function error(message) {
   console.error(colors.red(`[!] ${message}`));
+}
+
+/**
+ * @param {string} targetVersion
+ * @returns {Promise<string | undefined>}
+ */
+async function findTemplateDir(targetVersion) {
+  if (toVersionNumber(targetVersion) < v(0, 75, 0)) {
+    // Let `getConfig` try to find the template inside `react-native`
+    return undefined;
+  }
+
+  const [major, minor = 0] = targetVersion.split(".");
+  const output = await downloadPackage(
+    "@react-native-community/template",
+    `${major}.${minor}`,
+    true
+  );
+  return path.join(output, "template");
 }
 
 /**
@@ -731,7 +751,7 @@ if (isMain(import.meta.url)) {
         default: platformChoices,
       },
     },
-    ({
+    async ({
       _: { [0]: name },
       flatten,
       force,
@@ -739,11 +759,13 @@ if (isMain(import.meta.url)) {
       package: packagePath,
       platforms,
     }) => {
+      const targetVersion = getPackageVersion("react-native");
       process.exitCode = configure({
         name: typeof name === "string" && name ? name : getAppName(packagePath),
         packagePath,
+        templatePath: await findTemplateDir(targetVersion),
         testAppPath: fileURLToPath(new URL("..", import.meta.url)),
-        targetVersion: getPackageVersion("react-native"),
+        targetVersion,
         platforms: validatePlatforms(platforms),
         flatten,
         force,

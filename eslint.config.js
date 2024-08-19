@@ -45,7 +45,7 @@ module.exports = [
         {
           patterns: [
             {
-              group: ["[a-z]*", "!./*", "!node:*"],
+              group: ["[a-z]*", "!./*", "!./utils/*", "!node:*"],
               message:
                 "External dependencies are not allowed in this file because it needs to be runnable before install.",
             },
