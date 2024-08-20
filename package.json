@@ -142,7 +142,7 @@
     "eslint-plugin-wdio": "^8.20.0",
     "js-yaml": "^4.1.0",
     "memfs": "^4.0.0",
-    "minimatch": "^9.0.0",
+    "minimatch": "^10.0.0",
     "prettier": "^3.0.0",
     "react": "18.2.0",
     "react-native": "^0.74.0",
