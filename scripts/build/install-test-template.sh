@@ -6,6 +6,8 @@ platforms=(all android ios macos visionos windows)
 version=$(node --print 'require("./package.json").version')
 tarball=react-native-test-app-$version.$(git rev-parse --short HEAD).tgz
 
+script_dir="$(cd -P "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" >/dev/null 2>&1 && pwd)"
+
 function print_usage {
   echo "usage: $(basename "$0") [-u] <$(IFS=\|; echo "${platforms[*]}")>"
 }
@@ -54,7 +56,7 @@ else
 fi
 
 pushd template-example 1> /dev/null
-node "$(dirname ${BASH_SOURCE[0]})/copy-yarnrc.mjs" ../.yarnrc.yml
+node "$script_dir/copy-yarnrc.mjs" ../.yarnrc.yml
 
 # Workaround for NuGet publishing failures
 if [[ "$platform" == "all" ]] || [[ "$platform" == "windows" ]]; then
