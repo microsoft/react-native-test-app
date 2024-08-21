@@ -9,7 +9,7 @@ runs:
   steps:
     - name: Install
       run: |
-        scripts/install-test-template.sh ${{ inputs.platform }}
+        scripts/build/install-test-template.sh ${{ inputs.platform }}
       shell: bash
     - name: Initialize a new app
       run: |

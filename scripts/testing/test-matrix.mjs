@@ -8,16 +8,16 @@ import { spawn } from "node:child_process";
 import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import * as util from "node:util";
-import { green, red, yellow } from "./colors.mjs";
-import { readTextFile } from "./helpers.js";
-import { setReactVersion } from "./set-react-version.mjs";
+import { readTextFile } from "../helpers.js";
+import { setReactVersion } from "../internal/set-react-version.mjs";
+import { green, red, yellow } from "../utils/colors.mjs";
 import { getIOSSimulatorName, installPods } from "./test-apple.mjs";
 import { $, $$, test } from "./test-e2e.mjs";
 
 /**
- * @typedef {import("./types.js").BuildConfig} BuildConfig
- * @typedef {import("./types.js").PlatformConfig} PlatformConfig
- * @typedef {import("./types.js").TargetPlatform} TargetPlatform
+ * @typedef {import("../types.js").BuildConfig} BuildConfig
+ * @typedef {import("../types.js").PlatformConfig} PlatformConfig
+ * @typedef {import("../types.js").TargetPlatform} TargetPlatform
  */
 
 const DEFAULT_PLATFORMS = ["android", "ios"];
@@ -70,7 +70,7 @@ const PLATFORM_CONFIG = {
 const PACKAGE_MANAGER = "yarn";
 const TAG = "┃";
 
-const rootDir = fileURLToPath(new URL("..", import.meta.url));
+const rootDir = fileURLToPath(new URL("../..", import.meta.url));
 
 function log(message = "", tag = TAG) {
   console.log(tag, message);

@@ -13,11 +13,11 @@ import {
   readTextFile,
   toVersionNumber,
   v,
-} from "./helpers.js";
-import { fetchPackageMetadata, npmRegistryBaseURL } from "./utils/npm.mjs";
+} from "../helpers.js";
+import { fetchPackageMetadata, npmRegistryBaseURL } from "../utils/npm.mjs";
 
 /**
- * @typedef {import("./types.js").Manifest} Manifest
+ * @typedef {import("../types.js").Manifest} Manifest
  */
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "nightly"];

@@ -35,9 +35,17 @@ module.exports = [
   },
   {
     files: [
-      "scripts/set-react-version.mjs",
-      "scripts/test-e2e.mjs",
-      "scripts/test-matrix.mjs",
+      "scripts/internal/generate-manifest-docs.mjs",
+      "scripts/internal/generate-manifest.mjs",
+      "scripts/internal/generate-schema.mjs",
+      "scripts/internal/pack.mjs",
+      "scripts/internal/set-react-version.mjs",
+      "scripts/internal/test.mjs",
+      "scripts/schema.mjs",
+      "scripts/testing/test-apple.mjs",
+      "scripts/testing/test-e2e.mjs",
+      "scripts/testing/test-matrix.mjs",
+      "scripts/utils/colors.mjs",
     ],
     rules: {
       "no-restricted-imports": [
@@ -45,7 +53,7 @@ module.exports = [
         {
           patterns: [
             {
-              group: ["[a-z]*", "!./*", "!./utils/*", "!node:*"],
+              group: ["[a-z]*", "!../**", "!./**", "!node:*", "!node:*/**"],
               message:
                 "External dependencies are not allowed in this file because it needs to be runnable before install.",
             },

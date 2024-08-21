@@ -1,27 +1,22 @@
-// @ts-check
 import yaml from "js-yaml";
 import { Minimatch } from "minimatch";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 
-/**
- * @typedef {import("./types.js").Match} Match
- */
+type MatchChangedFiles = { "any-glob-to-any-file": string[] };
+type Match = { "changed-files": MatchChangedFiles[] };
 
 /**
  * Cleans up the given array.
- * @param {string[]} platforms
  */
-function clean(platforms) {
+function clean(platforms: string[]): string[] {
   return platforms.map((p) => p.toLowerCase()).sort();
 }
 
 /**
  * Executes a Git command.
- * @param {...string} args
- * @returns {string}
  */
-function git(...args) {
+function git(...args: string[]): string {
   const { stderr, stdout } = spawnSync("git", args);
   const message = stderr.toString().trim();
   if (message) {
@@ -32,9 +27,8 @@ function git(...args) {
 
 /**
  * Returns the default Git branch.
- * @returns {string}
  */
-function getDefaultBranch() {
+function getDefaultBranch(): string {
   if (process.env["CI"]) {
     // CIs don't clone the repo, but use a different way to checkout a branch.
     // This means that `origin/HEAD` is never created, which in turn means that
@@ -52,10 +46,8 @@ function getDefaultBranch() {
 
 /**
  * Returns the commit from which this branch was forked.
- * @param {string | undefined} targetBranch
- * @returns {string}
  */
-function getBaseCommit(targetBranch) {
+function getBaseCommit(targetBranch: string | undefined): string {
   targetBranch =
     !targetBranch || targetBranch.endsWith("/")
       ? getDefaultBranch()
@@ -69,10 +61,8 @@ function getBaseCommit(targetBranch) {
 
 /**
  * Returns changed files since fork point.
- * @param {string} since
- * @returns {string[]}
  */
-function getChangedFiles(since) {
+function getChangedFiles(since: string): string[] {
   const changedFiles = git("diff", "--name-only", since);
   if (!changedFiles) {
     return [];
@@ -82,21 +72,17 @@ function getChangedFiles(since) {
 
 /**
  * Loads labels from Pull Request Labeler action configuration.
- * @see {@link https://github.com/actions/labeler}
- * @returns {Record<string, Match[] | undefined>}
  */
-function loadLabels() {
+function loadLabels(): Record<string, Match[] | undefined> {
   const yml = fs.readFileSync(".github/labeler.yml", { encoding: "utf-8" });
-  return /** @type {Record<string, Match[] | undefined>} */ (yaml.load(yml));
+  return yaml.load(yml) as Record<string, Match[] | undefined>;
 }
 
 /**
  * Makes platform specific file path matchers.
- * @returns {Record<string, Minimatch[]>}
  */
-function makeMatchers() {
-  /** @type {Record<string, Minimatch[]>} */
-  const matchers = {};
+function makeMatchers(): Record<string, Minimatch[]> {
+  const matchers: Record<string, Minimatch[]> = {};
   const options = { dot: true };
   const labels = loadLabels();
 
@@ -115,10 +101,8 @@ function makeMatchers() {
 
 /**
  * Returns platforms affected by changed files.
- * @param {string | undefined} targetBranch
- * @returns {string[]}
  */
-function getAffectedPlatforms(targetBranch) {
+function getAffectedPlatforms(targetBranch: string | undefined): string[] {
   const platformMatchers = makeMatchers();
 
   const baseCommit = getBaseCommit(targetBranch);
@@ -142,8 +126,7 @@ function getAffectedPlatforms(targetBranch) {
     }
   }
 
-  /** @type {Set<string>} */
-  const affectedPlatforms = new Set();
+  const affectedPlatforms = new Set<string>();
   for (const [platform, matchers] of Object.entries(platformMatchers)) {
     if (matchers.some((m) => changedFiles.some((f) => m.match(f)))) {
       affectedPlatforms.add(platform);

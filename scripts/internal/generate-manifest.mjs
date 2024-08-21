@@ -2,11 +2,11 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { generateSchema } from "./schema.mjs";
+import { generateSchema } from "../schema.mjs";
 
 /**
  * @typedef {import("ajv").SchemaObject} SchemaObject
- * @typedef {import("./types.js").Language} Language
+ * @typedef {import("../types.js").Language} Language
  */
 const thisScript = fileURLToPath(import.meta.url);
 
@@ -231,12 +231,11 @@ async function generate(schema, output) {
 
 function main() {
   const schema = generateSchema();
-  const scriptsDir = path.dirname(thisScript);
+  const projectDir = fileURLToPath(new URL("../..", import.meta.url));
 
   [
     path.join(
-      scriptsDir,
-      "..",
+      projectDir,
       "android",
       "app",
       "src",
@@ -248,8 +247,8 @@ function main() {
       "manifest",
       "Manifest.kt"
     ),
-    path.join(scriptsDir, "..", "ios", "ReactTestApp", "Manifest.swift"),
-    path.join(scriptsDir, "..", "windows", "Shared", "Manifest.h"),
+    path.join(projectDir, "ios", "ReactTestApp", "Manifest.swift"),
+    path.join(projectDir, "windows", "Shared", "Manifest.h"),
   ].forEach((output) => generate(schema, output).catch(console.error));
 }
 

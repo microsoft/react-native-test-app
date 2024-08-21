@@ -4,11 +4,11 @@ import { createRequire } from "node:module";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import prompts from "prompts";
-import * as colors from "./colors.mjs";
 import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
 import { memo, readJSONFile, toVersionNumber, v } from "./helpers.js";
-import { parseArgs } from "./parseargs.mjs";
+import * as colors from "./utils/colors.mjs";
 import { downloadPackage, fetchPackageMetadata } from "./utils/npm.mjs";
+import { parseArgs } from "./utils/parseargs.mjs";
 
 /**
  * Returns the installed `react-native` manifest, if present.

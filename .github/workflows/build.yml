@@ -75,7 +75,7 @@ jobs:
           # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
           #       Ignore errors until we can create a GitHub PAT from a system
           #       account.
-          scripts/clang-format-diff.sh || true
+          scripts/build/clang-format-diff.sh || true
       - name: CocoaPods
         if: ${{ runner.os == 'macOS' }}
         run: |
@@ -183,7 +183,7 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
+          ../scripts/build/xcodebuild.sh ios/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test `react-native config`
         if: ${{ steps.affected.outputs.ios != '' }}
@@ -193,7 +193,7 @@ jobs:
       - name: Test
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/xcodebuild.sh ios/Example.xcworkspace test-without-building
+          ../scripts/build/xcodebuild.sh ios/Example.xcworkspace test-without-building
         working-directory: example
     timeout-minutes: 60
   ios-template:
@@ -243,12 +243,12 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
+          ../scripts/build/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
       - name: react-native run-ios
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/react-native.mjs run-ios
+          ../scripts/testing/react-native.mjs run-ios
         working-directory: template-example
     timeout-minutes: 60
   android:
@@ -335,7 +335,7 @@ jobs:
       - name: react-native run-android
         if: ${{ steps.affected.outputs.android != '' }}
         run: |
-          ../scripts/react-native.mjs run-android
+          ../scripts/testing/react-native.mjs run-android
         working-directory: template-example
     timeout-minutes: 60
   macos:
@@ -379,7 +379,7 @@ jobs:
       - name: Build x86
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
-          ../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
+          ../scripts/build/xcodebuild.sh macos/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test `react-native config`
         if: ${{ steps.affected.outputs.macos != '' }}
@@ -390,7 +390,7 @@ jobs:
         # Temporarily disabled due to random failures
         if: false # ${{ steps.affected.outputs.macos != '' && github.event_name != 'schedule' }}
         run: |
-          ../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
+          ../scripts/build/xcodebuild.sh macos/Example.xcworkspace test-without-building
         working-directory: example
       - name: Prepare for arm64 build
         if: ${{ steps.affected.outputs.macos != '' }}
@@ -406,7 +406,7 @@ jobs:
       - name: Build arm64
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
-          ../scripts/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
+          ../scripts/build/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
         working-directory: example
     timeout-minutes: 60
   macos-template:
@@ -456,7 +456,7 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
-          ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
+          ../scripts/build/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
     timeout-minutes: 60
   visionos:
@@ -501,7 +501,7 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
-          ../scripts/xcodebuild.sh visionos/Example.xcworkspace build-for-testing
+          ../scripts/build/xcodebuild.sh visionos/Example.xcworkspace build-for-testing
         working-directory: example
       - name: Test `react-native config`
         if: ${{ steps.affected.outputs.visionos != '' }}
@@ -557,7 +557,7 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
-          ../scripts/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
+          ../scripts/build/xcodebuild.sh ${{ steps.configure.outputs.project-directory }}/TemplateExample.xcworkspace build
         working-directory: template-example
     timeout-minutes: 60
   windows:
@@ -612,8 +612,8 @@ jobs:
       - name: Test
         if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' }}
         run: |
-          ../../../scripts/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactAppTests.vcxproj
-          ../../../scripts/VSTest.ps1 ${{ matrix.platform }}\${{ matrix.configuration }}\ReactAppTests.dll
+          ../../../scripts/build/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactAppTests.vcxproj
+          ../../../scripts/build/VSTest.ps1 ${{ matrix.platform }}\${{ matrix.configuration }}\ReactAppTests.dll
         working-directory: example/windows/ReactAppTests
     timeout-minutes: 60
   windows-template:

@@ -1,14 +1,16 @@
 // @ts-check
 import cliui from "cliui";
+import * as fs from "node:fs";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 import * as util from "node:util";
 
 /**
- * @typedef {import("./types.js").Options} Options;
+ * @typedef {import("../types.js").Options} Options;
  */
 /**
  * @template {Options} O
- * @typedef {import("./types.js").Args<O>} Args;
+ * @typedef {import("../types.js").Args<O>} Args;
  */
 
 /**
@@ -98,7 +100,9 @@ export function parseArgs(description, options, callback) {
   if (values.help) {
     console.log(formatHelp(description, mergedOptions));
   } else if (typeof values.version === "boolean" && values.version) {
-    const { name, version } = require("../package.json");
+    const file = fileURLToPath(new URL("../../package.json", import.meta.url));
+    const manifest = fs.readFileSync(file, { encoding: "utf-8" });
+    const { name, version } = JSON.parse(manifest);
     console.log(`${name} ${version}`);
   } else {
     values._ = positionals;
