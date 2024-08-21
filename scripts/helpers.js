@@ -5,26 +5,6 @@ const nodefs = require("node:fs");
 const path = require("node:path");
 const { fileURLToPath } = require("node:url");
 
-const npmRegistryBaseURL = "https://registry.npmjs.org/";
-
-/**
- * Fetches package metadata from the npm registry.
- * @param {string} pkg
- * @param {string=} distTag
- */
-function fetchPackageMetadata(pkg, distTag) {
-  const init = {
-    headers: {
-      Accept:
-        "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*",
-    },
-  };
-  const url = distTag
-    ? npmRegistryBaseURL + pkg + "/" + distTag
-    : npmRegistryBaseURL + pkg;
-  return fetch(url, init).then((res) => res.json());
-}
-
 /**
  * Finds the specified file using Node module resolution.
  * @param {string} file
@@ -171,13 +151,11 @@ function getPackageVersion(module, startDir = process.cwd(), fs = nodefs) {
   return version;
 }
 
-exports.fetchPackageMetadata = fetchPackageMetadata;
 exports.findFile = findFile;
 exports.findNearest = findNearest;
 exports.getPackageVersion = getPackageVersion;
 exports.isMain = isMain;
 exports.memo = memo;
-exports.npmRegistryBaseURL = npmRegistryBaseURL;
 exports.readJSONFile = readJSONFile;
 exports.readTextFile = readTextFile;
 exports.requireTransitive = requireTransitive;
