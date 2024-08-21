@@ -21,15 +21,6 @@ def getDefaultGradlePluginVersion = { int reactNativeVersion ->
     }
 }
 
-// TODO: Bump `minSdkVersion` to 24 in 4.0
-def getDefaultMinSdkVersion = { int reactNativeVersion ->
-    if (reactNativeVersion >= v(0, 76, 0)) {
-        return 24
-    } else {
-        return 23
-    }
-}
-
 def getKotlinVersion = { File baseDir ->
     def fallbackVersion = "1.7.21"
 
@@ -49,8 +40,7 @@ ext {
     reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 
     compileSdkVersion = rootProject.findProperty("react.compileSdkVersion") ?: 34
-    minSdkVersion = rootProject.findProperty("react.minSdkVersion")
-                        ?: getDefaultMinSdkVersion(reactNativeVersion)
+    minSdkVersion = rootProject.findProperty("react.minSdkVersion") ?: 24
     targetSdkVersion = rootProject.findProperty("react.targetSdkVersion") ?: 33
 
     autodetectReactNativeVersion = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
