@@ -326,10 +326,19 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   app_project.save
 
   config = app_project.build_configurations[0]
+
+  # TODO: Deployment target is bumped in 4.0. We should remove this block then.
+  ios_deployment_target =
+    if rn_version >= v(0, 76, 0)
+      '15.1'
+    else
+      config.resolve_build_setting(IPHONEOS_DEPLOYMENT_TARGET)
+    end
+
   {
     :xcodeproj_path => xcodeproj_dst,
     :platforms => {
-      :ios => config.resolve_build_setting(IPHONEOS_DEPLOYMENT_TARGET),
+      :ios => ios_deployment_target,
       :macos => config.resolve_build_setting(MACOSX_DEPLOYMENT_TARGET),
       :visionos => config.resolve_build_setting(XROS_DEPLOYMENT_TARGET),
     },
