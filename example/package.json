@@ -36,11 +36,11 @@
     "@rnx-kit/polyfills": "^0.1.1",
     "@rnx-kit/tsconfig": "^1.0.0",
     "@types/react": "~18.3.0",
-    "appium": "patch:appium@npm%3A2.11.2#~/.yarn/patches/appium-npm-2.11.2-f39bb587af.patch",
+    "appium": "patch:appium@npm%3A2.11.3#~/.yarn/patches/appium-npm-2.11.2-f39bb587af.patch",
     "appium-uiautomator2-driver": "^3.0.0",
     "appium-xcuitest-driver": "^7.0.0",
     "react-native-test-app": "workspace:*",
-    "webdriverio": "^8.40.0"
+    "webdriverio": "^9.0.0"
   },
   "eslintConfig": {
     "extends": "../.github/eslint.config.js"
