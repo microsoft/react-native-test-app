@@ -135,7 +135,7 @@
     "@types/semver": "^7.3.6",
     "@types/uuid": "^10.0.0",
     "eslint": "^8.56.0",
-    "eslint-plugin-wdio": "^8.20.0",
+    "eslint-plugin-wdio": "^9.0.0",
     "js-yaml": "^4.1.0",
     "memfs": "^4.0.0",
     "minimatch": "^9.0.0",

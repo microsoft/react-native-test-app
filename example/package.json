@@ -40,7 +40,7 @@
     "appium-uiautomator2-driver": "^3.0.0",
     "appium-xcuitest-driver": "^7.0.0",
     "react-native-test-app": "workspace:*",
-    "webdriverio": "^8.40.0"
+    "webdriverio": "^9.0.0"
   },
   "eslintConfig": {
     "extends": "../.github/eslint.config.js"
