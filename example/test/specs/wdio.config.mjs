@@ -2,8 +2,8 @@
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 
-/** @typedef {import("webdriverio").RemoteOptions["logLevel"]} LogLevel */
-/** @typedef {import("webdriverio").RemoteOptions["runner"]} Runner */
+/** @typedef {import("@wdio/types").Capabilities.WebdriverIOConfig["logLevel"]} LogLevel */
+/** @typedef {import("@wdio/types").Options.Testrunner["runner"]} Runner */
 
 function getAvailableSimulators(search = "iPhone") {
   const { error, status, stderr, stdout } = spawnSync(
