@@ -19,7 +19,7 @@ function runAndroid() {
   // a device, we can assume that it has successfully created a config and
   // determined that there is an Android project that can be built and launched.
   const success = /No Android device or emulator connected/;
-  run(success, "android", "--deviceId", DEVICE_ID, "--no-packager");
+  run(success, "android", "--deviceId", DEVICE_ID);
 }
 
 function runIOS() {
@@ -27,7 +27,7 @@ function runIOS() {
   // a device, we can assume that it has successfully created a config and
   // determined that there is an iOS project that can be built and launched.
   const success = new RegExp(`Could not find .*: "${DEVICE_ID}"`);
-  run(success, "ios", "--device", DEVICE_ID, "--no-packager");
+  run(success, "ios", "--device", DEVICE_ID);
 }
 
 function runMacOS() {

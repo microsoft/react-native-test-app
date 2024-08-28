@@ -193,11 +193,11 @@ function buildAndRun(platform: TargetPlatform) {
   switch (platform) {
     case "ios": {
       const simulator = getIOSSimulatorName();
-      $(PACKAGE_MANAGER, platform, "--simulator", simulator, "--no-packager");
+      $(PACKAGE_MANAGER, platform, "--device", simulator);
       break;
     }
     default: {
-      $(PACKAGE_MANAGER, platform, "--no-packager");
+      $(PACKAGE_MANAGER, platform);
       break;
     }
   }

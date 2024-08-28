@@ -156,6 +156,6 @@ export const config = {
 };
 
 export function iosSimulatorName() {
-  const [deviceName, platformVersion] = findLatestIPhoneSimulator();
-  return `${deviceName} (${platformVersion})`;
+  const [deviceName] = findLatestIPhoneSimulator();
+  return deviceName;
 }
