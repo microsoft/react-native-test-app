@@ -4,9 +4,14 @@ import { gatherConfig as gatherConfigActual } from "../../scripts/configure.mjs"
 import { readTextFile } from "../../scripts/helpers.js";
 import { join } from "../../scripts/template.mjs";
 import type { Configuration, ConfigureParams } from "../../scripts/types.js";
+import { templatePath } from "../template.js";
 import { mockParams } from "./mockParams.js";
 
 describe("gatherConfig()", () => {
+  const templateDir = templatePath.substring(
+    templatePath.lastIndexOf("node_modules")
+  );
+
   /**
    * Like `gatherConfig()`, but with normalized newlines and paths.
    *
@@ -17,7 +22,7 @@ describe("gatherConfig()", () => {
   function gatherConfig(params: ConfigureParams): Configuration {
     const normalize = (p: string) => p.replaceAll("\\", "/");
 
-    const config = gatherConfigActual(params, true);
+    const config = gatherConfigActual({ ...params, templatePath }, true);
     config.files = Object.fromEntries(
       Object.entries(config.files).map(([key, value]) => [
         normalize(key),
@@ -45,7 +50,7 @@ describe("gatherConfig()", () => {
           source: "example/.gitignore",
         },
         ".watchmanconfig": {
-          source: "node_modules/react-native/template/_watchmanconfig",
+          source: `${templateDir}/_watchmanconfig`,
         },
         "android/build.gradle": join(
           "buildscript {",
@@ -131,7 +136,7 @@ describe("gatherConfig()", () => {
           ""
         ),
         "babel.config.js": {
-          source: "node_modules/react-native/template/babel.config.js",
+          source: `${templateDir}/babel.config.js`,
         },
         "ios/Podfile": join(
           "ws_dir = Pathname.new(__dir__)",
@@ -231,19 +236,19 @@ describe("gatherConfig()", () => {
           source: "example/.gitignore",
         },
         ".watchmanconfig": {
-          source: "node_modules/react-native/template/_watchmanconfig",
+          source: `${templateDir}/_watchmanconfig`,
         },
         "babel.config.js": {
-          source: "node_modules/react-native/template/babel.config.js",
+          source: `${templateDir}/babel.config.js`,
         },
         "common/.gitignore": {
           source: "example/.gitignore",
         },
         "common/.watchmanconfig": {
-          source: "node_modules/react-native/template/_watchmanconfig",
+          source: `${templateDir}/_watchmanconfig`,
         },
         "common/babel.config.js": {
-          source: "node_modules/react-native/template/babel.config.js",
+          source: `${templateDir}/babel.config.js`,
         },
         "common/metro.config.js": {
           source: "example/metro.config.js",
@@ -321,10 +326,10 @@ describe("gatherConfig()", () => {
           source: "example/.gitignore",
         },
         ".watchmanconfig": {
-          source: "node_modules/react-native/template/_watchmanconfig",
+          source: `${templateDir}/_watchmanconfig`,
         },
         "babel.config.js": {
-          source: "node_modules/react-native/template/babel.config.js",
+          source: `${templateDir}/babel.config.js`,
         },
         "ios/Podfile": join(
           "ws_dir = Pathname.new(__dir__)",
@@ -393,7 +398,7 @@ describe("gatherConfig()", () => {
           source: "example/.gitignore",
         },
         ".watchmanconfig": {
-          source: "node_modules/react-native/template/_watchmanconfig",
+          source: `${templateDir}/_watchmanconfig`,
         },
         "android/build.gradle": join(
           "buildscript {",
@@ -479,7 +484,7 @@ describe("gatherConfig()", () => {
           ""
         ),
         "babel.config.js": {
-          source: "node_modules/react-native/template/babel.config.js",
+          source: `${templateDir}/babel.config.js`,
         },
         "ios/Podfile": join(
           "ws_dir = Pathname.new(__dir__)",
@@ -551,7 +556,7 @@ describe("gatherConfig()", () => {
           source: "example/.gitignore",
         },
         ".watchmanconfig": {
-          source: "node_modules/react-native/template/_watchmanconfig",
+          source: `${templateDir}/_watchmanconfig`,
         },
         Podfile: join(
           "ws_dir = Pathname.new(__dir__)",
@@ -566,7 +571,7 @@ describe("gatherConfig()", () => {
           ""
         ),
         "babel.config.js": {
-          source: "node_modules/react-native/template/babel.config.js",
+          source: `${templateDir}/babel.config.js`,
         },
         "metro.config.js": {
           source: "example/metro.config.js",
@@ -609,7 +614,7 @@ describe("gatherConfig()", () => {
           source: "example/.gitignore",
         },
         ".watchmanconfig": {
-          source: "node_modules/react-native/template/_watchmanconfig",
+          source: `${templateDir}/_watchmanconfig`,
         },
         "android/build.gradle": join(
           "buildscript {",
@@ -695,7 +700,7 @@ describe("gatherConfig()", () => {
           ""
         ),
         "babel.config.js": {
-          source: "node_modules/react-native/template/babel.config.js",
+          source: `${templateDir}/babel.config.js`,
         },
         "ios/Podfile": join(
           "ws_dir = Pathname.new(__dir__)",
