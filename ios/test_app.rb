@@ -259,6 +259,8 @@ def make_project!(xcodeproj, project_root, target_platform, options)
     uitests_build_settings[PRODUCT_BUNDLE_IDENTIFIER] = "#{product_bundle_identifier}UITests"
   end
 
+  append_additional_build_settings!(build_settings, options[:additional_build_settings])
+
   build_settings[PRODUCT_DISPLAY_NAME] = display_name
   build_settings[PRODUCT_VERSION] = version || '1.0'
 

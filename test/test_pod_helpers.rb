@@ -112,4 +112,27 @@ class TestPodHelpers < Minitest::Test
     assert_equal(1_001_000, v(1, 1, 0))
     assert_equal(1_001_001, v(1, 1, 1))
   end
+
+  def test_append_additional_build_settings
+    build_settings = { 'OTHER_LDFLAGS' => '-l"Pods-TestApp"' }
+
+    append_additional_build_settings!(build_settings, {})
+
+    assert_equal('-l"Pods-TestApp"', build_settings['OTHER_LDFLAGS'])
+
+    append_additional_build_settings!(build_settings, { 'OTHER_LDFLAGS' => ' -ObjC' })
+
+    assert_equal('-l"Pods-TestApp" -ObjC', build_settings['OTHER_LDFLAGS'])
+
+    # Test passing a table
+    build_settings_arr = { 'OTHER_LDFLAGS' => ['$(inherited)', '-l"Pods-TestApp"'] }
+    append_additional_build_settings!(build_settings_arr, { 'OTHER_LDFLAGS' => [' -ObjC'] })
+
+    assert_equal(['$(inherited)', '-l"Pods-TestApp"', ' -ObjC'], build_settings_arr['OTHER_LDFLAGS'])
+
+    # Test setting a new key
+    append_additional_build_settings!(build_settings, { 'OTHER_CFLAGS' => '-DDEBUG' })
+
+    assert_equal('-DDEBUG', build_settings['OTHER_CFLAGS'])
+  end
 end
