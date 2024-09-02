@@ -101,7 +101,7 @@
     "@expo/config-plugins": ">=5.0",
     "react": "17.0.1 - 19.0",
     "react-native": "0.66 - 0.75 || >=0.76.0-0 <0.76.0",
-    "react-native-macos": "^0.0.0-0 || 0.66 || 0.68 || 0.71 - 0.74",
+    "react-native-macos": "^0.0.0-0 || 0.66 || 0.68 || 0.71 - 0.75",
     "react-native-windows": "^0.0.0-0 || 0.66 - 0.75"
   },
   "peerDependenciesMeta": {

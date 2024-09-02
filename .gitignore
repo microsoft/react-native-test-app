@@ -19,6 +19,7 @@ Pods/
 android/**/build/
 clang-format-diff.py
 coverage/
+example/*/DerivedData/
 example/*/build/
 example/Screenshot-*.png
 local.properties
