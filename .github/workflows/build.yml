@@ -9,6 +9,7 @@ on:
     # Nightly builds against react-native@nightly at 4:00, Monday through Friday
     - cron: 0 4 * * 1-5
 env:
+  GRADLE_HANGS_ON_WINDOWS: 1 # https://github.com/microsoft/react-native-test-app/issues/2206
   HOMEBREW_NO_INSTALL_CLEANUP: 1
   VisualStudioVersion: "17.0"
 concurrency:
@@ -88,6 +89,7 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
       - name: Populate Gradle cache
+        if: ${{ runner.os != 'Windows' || env.GRADLE_HANGS_ON_WINDOWS != '1' }}
         uses: ./.github/actions/gradle
         with:
           arguments: clean
@@ -255,7 +257,7 @@ jobs:
     name: "Android"
     strategy:
       matrix:
-        runner: [ubuntu-24.04, windows-2022]
+        runner: [ubuntu-24.04] # TODO: Re-add Windows: https://github.com/microsoft/react-native-test-app/issues/2206
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
@@ -303,7 +305,7 @@ jobs:
     strategy:
       matrix:
         template: [all, android]
-        runner: [ubuntu-24.04, windows-2022]
+        runner: [ubuntu-24.04] # TODO: Re-add Windows: https://github.com/microsoft/react-native-test-app/issues/2206
     runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
     steps:

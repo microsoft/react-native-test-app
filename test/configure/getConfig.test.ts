@@ -6,11 +6,12 @@ import {
   getPlatformPackage,
 } from "../../scripts/configure.mjs";
 import type { ConfigureParams, Platform } from "../../scripts/types.js";
+import { templatePath } from "../template.js";
 import { mockParams } from "./mockParams.js";
 
 describe("getConfig()", () => {
   const getConfig: typeof getConfigActual = (params, platform) =>
-    getConfigActual(params, platform, true);
+    getConfigActual({ ...params, templatePath }, platform, true);
 
   /**
    * Gets the list of dependencies from specified config.

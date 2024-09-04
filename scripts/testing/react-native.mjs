@@ -6,12 +6,12 @@ const DEVICE_ID = "T-800";
 
 /**
  * Runs the specified command.
- * @param {string} successString The string to look for
+ * @param {RegExp} successPattern The string to look for
  * @param  {...any} args The command to run and its arguments
  */
-function run(successString, ...args) {
+function run(successPattern, ...args) {
   const { stderr } = spawnSync("yarn", args, { encoding: "utf-8" });
-  if (!stderr.includes(successString)) {
+  if (!successPattern.test(stderr)) {
     throw new Error(stderr);
   }
 }
@@ -20,7 +20,7 @@ function runAndroid() {
   // If `@react-native-community/cli` reaches the point where it is looking for
   // a device, we can assume that it has successfully created a config and
   // determined that there is an Android project that can be built and launched.
-  const success = "No Android device or emulator connected.";
+  const success = /No Android device or emulator connected/;
   run(success, "android", "--deviceId", DEVICE_ID, "--no-packager");
 }
 
@@ -28,7 +28,7 @@ function runIOS() {
   // If `@react-native-community/cli` reaches the point where it is looking for
   // a device, we can assume that it has successfully created a config and
   // determined that there is an iOS project that can be built and launched.
-  const success = `Could not find a device named: "${DEVICE_ID}"`;
+  const success = new RegExp(`Could not find .*: "${DEVICE_ID}"`);
   run(success, "ios", "--device", DEVICE_ID, "--no-packager");
 }
 

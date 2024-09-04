@@ -5,7 +5,7 @@
     {
       "groupName": "@react-native-community/cli",
       "matchPackagePrefixes": ["@react-native-community/cli"],
-      "allowedVersions": "^13.6.0"
+      "allowedVersions": "^14.0.0"
     },
     {
       "groupName": "Android CameraX",
@@ -39,13 +39,15 @@
       ]
     },
     {
-      "matchPackageNames": ["com.facebook.react:hermes-engine", "react"],
-      "enabled": false
+      "groupName": "react",
+      "matchPackageNames": ["@types/react", "react"],
+      "allowedVersions": "^18.2.0"
     },
     {
       "groupName": "react-native",
       "matchPackageNames": [
         "@callstack/react-native-visionos",
+        "@react-native-community/template",
         "@react-native/assets-registry",
         "@react-native/babel-plugin-codegen",
         "@react-native/babel-preset",
@@ -63,7 +65,7 @@
         "react-native-macos",
         "react-native-windows"
       ],
-      "allowedVersions": "^0.74.0"
+      "allowedVersions": "^0.75.0"
     }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
