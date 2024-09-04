@@ -128,7 +128,8 @@ class TestPodHelpers < Minitest::Test
     build_settings_arr = { 'OTHER_LDFLAGS' => ['$(inherited)', '-l"Pods-TestApp"'] }
     append_additional_build_settings!(build_settings_arr, { 'OTHER_LDFLAGS' => [' -ObjC'] })
 
-    assert_equal(['$(inherited)', '-l"Pods-TestApp"', ' -ObjC'], build_settings_arr['OTHER_LDFLAGS'])
+    assert_equal(['$(inherited)', '-l"Pods-TestApp"', ' -ObjC'],
+                 build_settings_arr['OTHER_LDFLAGS'])
 
     # Test setting a new key
     append_additional_build_settings!(build_settings, { 'OTHER_CFLAGS' => '-DDEBUG' })

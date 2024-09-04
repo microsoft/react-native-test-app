@@ -101,7 +101,9 @@ end
 def append_additional_build_settings!(build_settings, settings_to_append)
   settings_to_append&.each do |setting, value|
     if build_settings.key?(setting)
-      build_settings[setting] += value
+      current = build_settings[setting]
+      build_settings[setting] += " #{value}" if current.is_a? String
+      build_settings[setting] += value if current.is_a? Array
     else
       build_settings[setting] = value
     end
