@@ -9,4 +9,6 @@ if (!templateDir) {
   throw new Error("Cannot find module '@react-native-community/template'");
 }
 
-export const templatePath = path.join(templateDir, "template");
+export const templatePath = path
+  .join(templateDir, "template")
+  .replaceAll("\\", "/");
