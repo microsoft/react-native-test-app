@@ -134,8 +134,6 @@ class TestPodHelpers < Minitest::Test
     override_build_settings!(build_settings, { 'OTHER_CFLAGS' => '-DDEBUG' })
 
     assert_equal('-DDEBUG', build_settings['OTHER_CFLAGS'])
-
-
     override_build_settings!(build_settings, { 'ONLY_ACTIVE_ARCH' => 'YES' })
 
     assert_equal('YES', build_settings['ONLY_ACTIVE_ARCH'])
