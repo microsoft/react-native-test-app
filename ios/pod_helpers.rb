@@ -98,15 +98,9 @@ def try_pod(name, podspec, project_root)
   pod name, :podspec => podspec if File.exist?(File.join(project_root, podspec))
 end
 
-def append_additional_build_settings!(build_settings, settings_to_append)
+def override_build_settings!(build_settings, settings_to_append)
   settings_to_append&.each do |setting, value|
-    if build_settings.key?(setting)
-      current = build_settings[setting]
-      build_settings[setting] += " #{value}" if current.is_a? String
-      build_settings[setting] += value if current.is_a? Array
-    else
-      build_settings[setting] = value
-    end
+    build_settings[setting] = value
   end
 end
 
