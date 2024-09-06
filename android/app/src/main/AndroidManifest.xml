@@ -26,7 +26,6 @@
         <activity
             android:name="com.microsoft.reacttestapp.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
         >
