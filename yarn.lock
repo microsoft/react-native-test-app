@@ -4667,9 +4667,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-android-driver@npm:^9.8.3":
-  version: 9.8.3
-  resolution: "appium-android-driver@npm:9.8.3"
+"appium-android-driver@npm:^9.9.0":
+  version: 9.10.0
+  resolution: "appium-android-driver@npm:9.10.0"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     "@colors/colors": "npm:^1.6.0"
@@ -4691,7 +4691,7 @@ __metadata:
     ws: "npm:^8.0.0"
   peerDependencies:
     appium: ^2.0.0
-  checksum: 10c0/316f6d4be3e48ff42810678832ef8ab94d6c529dcbed114e28d058616283e1d064c98494ef7f00a8fcd078aa9f12f3d74007154274d009838cbbb099071c9d25
+  checksum: 10c0/9ce1ac0e8584f01b01a5b9f4ab4bbc91d8347f4658f151ee855e49c6e8fd8c7f13e5af64ee084b35a02c83eb198b852ea4b1dd1ce5b5a17e34bc62f81ad40073
   languageName: node
   linkType: hard
 
@@ -4785,13 +4785,13 @@ __metadata:
   linkType: hard
 
 "appium-uiautomator2-driver@npm:^3.0.0":
-  version: 3.7.7
-  resolution: "appium-uiautomator2-driver@npm:3.7.7"
+  version: 3.7.9
+  resolution: "appium-uiautomator2-driver@npm:3.7.9"
   dependencies:
     appium-adb: "npm:^12.5.2"
-    appium-android-driver: "npm:^9.8.3"
+    appium-android-driver: "npm:^9.9.0"
     appium-chromedriver: "npm:^5.6.28"
-    appium-uiautomator2-server: "npm:^7.0.14"
+    appium-uiautomator2-server: "npm:^7.0.24"
     asyncbox: "npm:^3.0.0"
     axios: "npm:^1.6.5"
     bluebird: "npm:^3.5.1"
@@ -4804,14 +4804,14 @@ __metadata:
     type-fest: "npm:^4.4.0"
   peerDependencies:
     appium: ^2.4.1
-  checksum: 10c0/da2bcd1e07f2a99657b56a68e71d18e6f9872d21ff311738c353242a9e03095efe32879ff4d0b36c858630c20dc6d9b6b65a0994e2c6ce98cc18736b784c68e0
+  checksum: 10c0/ba0c738b0370e5e561fb10fc4b9b7f1bba0248dbcb07a43f174b4a2efa9affa5e045857f0fcd104610db57e6d2efe8370bc384f1f39e8ef1702deeada3e7e415
   languageName: node
   linkType: hard
 
-"appium-uiautomator2-server@npm:^7.0.14":
-  version: 7.0.23
-  resolution: "appium-uiautomator2-server@npm:7.0.23"
-  checksum: 10c0/0089e5b59904e53c6e7636067bca716904cde95a1547164f30f281790fceef2c7b9ccb7a95cbfa140f9af338f59d543cf77a3cb2852ad090adc0568b096a057d
+"appium-uiautomator2-server@npm:^7.0.24":
+  version: 7.0.25
+  resolution: "appium-uiautomator2-server@npm:7.0.25"
+  checksum: 10c0/0fd910da292add668ade0efd386ae17d4aea2d0106f54d491520495df339eec5bf4286a5cfbf0d5164ec8c0ceaa9d230912f7e903fb470a30fc7f54f1c99d354
   languageName: node
   linkType: hard
 
@@ -4854,8 +4854,8 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^7.0.0":
-  version: 7.24.18
-  resolution: "appium-xcuitest-driver@npm:7.24.18"
+  version: 7.26.2
+  resolution: "appium-xcuitest-driver@npm:7.26.2"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
@@ -4873,7 +4873,7 @@ __metadata:
     lru-cache: "npm:^10.0.0"
     moment: "npm:^2.29.4"
     moment-timezone: "npm:^0.x"
-    node-simctl: "npm:^7.1.17"
+    node-simctl: "npm:^7.6.0"
     portscanner: "npm:^2.2.0"
     semver: "npm:^7.5.4"
     source-map-support: "npm:^0.x"
@@ -4881,7 +4881,7 @@ __metadata:
     ws: "npm:^8.13.0"
   peerDependencies:
     appium: ^2.5.4
-  checksum: 10c0/6b0e9763ba5f0fc38be009f27ad894993a77ce1d9f90f9a1fd8e054b82b5b8a2102bfa998a0c0f6ef4e79030f2ce4e5e618854708532a80782f22a70e82c0ff5
+  checksum: 10c0/9952bd88a218c3b9776830506f0de69e1a45d208d313c566e9320d7596970b86221b56a240150d0183e3826d8cda1f3bc404c44c15fbe5a0a6eda3665d261b5d
   languageName: node
   linkType: hard
 
@@ -5045,16 +5045,6 @@ __metadata:
     delegates: "npm:^1.0.0"
     readable-stream: "npm:^3.6.0"
   checksum: 10c0/91cd4ad8a914437720bd726a36304ae279209fb13ce0f7e183ae752ae6d0070b56717a06a96b186728f9e74cb90837e5ee167a717119367b0ff3c4d2cef389ff
-  languageName: node
-  linkType: hard
-
-"are-we-there-yet@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "are-we-there-yet@npm:4.0.0"
-  dependencies:
-    delegates: "npm:^1.0.0"
-    readable-stream: "npm:^4.1.0"
-  checksum: 10c0/760008e32948e9f738c5a288792d187e235fee0f170e042850bc7ff242f2a499f3f2874d6dd43ac06f5d9f5306137bc51bbdd4ae0bb11379c58b01678e0f684d
   languageName: node
   linkType: hard
 
@@ -8189,22 +8179,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gauge@npm:^5.0.0":
-  version: 5.0.1
-  resolution: "gauge@npm:5.0.1"
-  dependencies:
-    aproba: "npm:^1.0.3 || ^2.0.0"
-    color-support: "npm:^1.1.3"
-    console-control-strings: "npm:^1.1.0"
-    has-unicode: "npm:^2.0.1"
-    signal-exit: "npm:^4.0.1"
-    string-width: "npm:^4.2.3"
-    strip-ansi: "npm:^6.0.1"
-    wide-align: "npm:^1.1.5"
-  checksum: 10c0/845f9a2534356cd0e9c1ae590ed471bbe8d74c318915b92a34e8813b8d3441ca8e0eb0fa87a48081e70b63b84d398c5e66a13b8e8040181c10b9d77e9fe3287f
-  languageName: node
-  linkType: hard
-
 "geckodriver@npm:^4.3.3":
   version: 4.4.3
   resolution: "geckodriver@npm:4.4.3"
@@ -11109,21 +11083,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-simctl@npm:^7.1.17, node-simctl@npm:^7.4.1":
-  version: 7.4.1
-  resolution: "node-simctl@npm:7.4.1"
+"node-simctl@npm:^7.4.1, node-simctl@npm:^7.6.0":
+  version: 7.6.0
+  resolution: "node-simctl@npm:7.6.0"
   dependencies:
+    "@appium/logger": "npm:^1.3.0"
     asyncbox: "npm:^3.0.0"
     bluebird: "npm:^3.5.1"
     lodash: "npm:^4.2.1"
-    npmlog: "npm:^7.0.1"
     rimraf: "npm:^5.0.0"
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
-    teen_process: "npm:^2.0.0"
-    uuid: "npm:^9.0.0"
+    teen_process: "npm:^2.2.0"
+    uuid: "npm:^10.0.0"
     which: "npm:^4.0.0"
-  checksum: 10c0/c2f6faa8ea4c286042e16205b17d41a65d9515ecf419ee340822eccc86a1cef0bda00fc63ac3a061c25ceff7122cce70367893519a6f54415d775c1968938d69
+  checksum: 10c0/6195600821163adec46bd9f649686d9353ec80e7501d8a38fff670ff563e5802e409a7d3c1fd241576fc0494534629afdc82e5a3716ab3112b8229a9748a1953
   languageName: node
   linkType: hard
 
@@ -11225,18 +11199,6 @@ __metadata:
     gauge: "npm:^4.0.3"
     set-blocking: "npm:^2.0.0"
   checksum: 10c0/0cacedfbc2f6139c746d9cd4a85f62718435ad0ca4a2d6459cd331dd33ae58206e91a0742c1558634efcde3f33f8e8e7fd3adf1bfe7978310cf00bd55cccf890
-  languageName: node
-  linkType: hard
-
-"npmlog@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "npmlog@npm:7.0.1"
-  dependencies:
-    are-we-there-yet: "npm:^4.0.0"
-    console-control-strings: "npm:^1.1.0"
-    gauge: "npm:^5.0.0"
-    set-blocking: "npm:^2.0.0"
-  checksum: 10c0/d4e6a2aaa7b5b5d2e2ed8f8ac3770789ca0691a49f3576b6a8c97d560a4c3305d2c233a9173d62be737e6e4506bf9e89debd6120a3843c1d37315c34f90fef71
   languageName: node
   linkType: hard
 
@@ -12642,7 +12604,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^4.0.0, readable-stream@npm:^4.1.0":
+"readable-stream@npm:^4.0.0":
   version: 4.5.2
   resolution: "readable-stream@npm:4.5.2"
   dependencies:
@@ -14795,15 +14757,6 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 10c0/bcbb807a917d374a49f475fae2e87fdca7da5e5530820ef53f65ba1d12131bd81a92ecf259cc7ce317cbe0f289e7d79fdfebcef9bfa3087c8c8a2fa304c9be54
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^9.0.0":
-  version: 9.0.1
-  resolution: "uuid@npm:9.0.1"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 10c0/1607dd32ac7fc22f2d8f77051e6a64845c9bce5cd3dd8aa0070c074ec73e666a1f63c7b4e0f4bf2bc8b9d59dc85a15e17807446d9d2b17c8485fbc2147b27f9b
   languageName: node
   linkType: hard
 
