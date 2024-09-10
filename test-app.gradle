@@ -15,11 +15,11 @@ private static void applyConfigPlugins(String testAppDir, File rootDir) {
 
 private static Object autolinkModules(File projectRoot, File output, String testAppDir) {
     String[] autolink = ["node", "${testAppDir}/android/autolink.mjs", projectRoot.toString(), output.toString()]
-    def stdout = new StringBuffer()
+    def stderr = new StringBuffer()
     def proc = Runtime.runtime.exec(autolink, null, projectRoot)
-    proc.waitForProcessOutput(null, stdout)
+    proc.waitForProcessOutput(null, stderr)
     if (proc.exitValue() != 0) {
-        throw new RuntimeException("Failed to autolink:\n${stdout}")
+        throw new RuntimeException("Failed to autolink:\n${stderr}")
     }
 
     return new JsonSlurper().parseText(output.text)
@@ -58,7 +58,7 @@ private static boolean isMediaFile(File file) {
 def testAppDir = buildscript.sourceFile.getParent()
 apply(from: "${testAppDir}/android/test-app-util.gradle")
 
-checkEnvironment(rootDir)
+checkEnvironment(rootDir, testAppDir)
 
 def reactNativeDir = file(findNodeModulesPath("react-native", rootDir))
 def cliAndroidDir = findNodeModulesPath("@react-native-community/cli-platform-android", reactNativeDir)

@@ -9,22 +9,22 @@ ext.autolinkingInfo = { buildDir ->
     return new JsonSlurper().parseText(autolinking.text)
 }
 
-ext.checkEnvironment = { rootDir ->
-    // Keep this in sync with the JS version in `android/gradle-wrapper.js`
-    //
+ext.checkEnvironment = { rootDir, testAppDir ->
+    String[] args = ["node", "-p", "JSON.stringify(require('./android/gradle-wrapper.js').GRADLE_VERSIONS)"]
+    def stdout = new StringBuffer()
+    def stderr = new StringBuffer()
+    def node = Runtime.runtime.exec(args, null, file(testAppDir))
+    node.waitForProcessOutput(stdout, stderr)
+    if (node.exitValue() != 0) {
+        throw new RuntimeException("Failed to load 'android/gradle-wrapper.js':\n${stderr}")
+    }
+
     // We have two implementations because there are currently two ways to build
     // the Android app. If built via `@react-native-community/cli`, the JS
     // script will be run and we can change Gradle version before it is
     // executed. If it's built with Gradle directly, it's already too late and
     // the best we can do is to warn the user.
-    def gradleVersions = [
-      [v(0, 76, 0), [v(8, 9, 0), "8.9"], [Integer.MAX_VALUE, ""]],  //  0.76: [8.9, *)
-      [v(0, 75, 0), [v(8, 8, 0), "8.8"], [v(8, 9, 0), "8.8"]],      //  0.75: [8.8, 8.9)
-      [v(0, 74, 0), [v(8, 6, 0), "8.6"], [v(8, 9, 0), "8.8"]],      //  0.74: [8.6, 8.9)
-      [v(0, 73, 0), [v(8, 3, 0), "8.3"], [v(8, 9, 0), "8.8"]],      //  0.73: [8.3, 8.9)
-      [v(0, 72, 0), [v(8, 1, 1), "8.1.1"], [v(8, 3, 0), "8.2.1"]],  //  0.72: [8.1.1, 8.3)
-      [0, [v(7, 5, 1), "7.6.4"], [v(8, 0, 0), "7.6.4"]],            // <0.72: [7.5.1, 8.0.0)
-    ]
+    def gradleVersions = new JsonSlurper().parseText(stdout.toString())
 
     def warnGradle = { gradleVersion, reactNativeVersion ->
         def message = [
