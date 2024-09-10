@@ -82,7 +82,7 @@ export function pickAndroidDependencies({ dependencies }) {
   for (const dependency of Object.values(dependencies)) {
     const { android } = dependency.platforms;
     const projectDir = android?.sourceDir;
-    if (projectDir) {
+    if (projectDir && android?.isPureCxxDependency != true) {
       const name = ":" + cleanDependencyName(dependency.name);
 
       /** @type {AndroidDependencies[string]["configurations"]} */
