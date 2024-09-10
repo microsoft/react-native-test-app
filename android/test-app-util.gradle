@@ -37,8 +37,6 @@ ext.checkEnvironment = { rootDir, testAppDir ->
         logger.error(message, gradleVersion, reactNativeVersion, gradleVersion)
     }
 
-    // Gradle version can be found in the template:
-    // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/gradle/wrapper/gradle-wrapper.properties
     def gradleVersion = toVersionNumber(gradle.gradleVersion)
 
     def reactNativeVersionString = getPackageVersion("react-native", rootDir)

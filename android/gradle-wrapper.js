@@ -28,6 +28,9 @@ const INT_MAX = 2 ** 31 - 1;
  * with Gradle directly, it's already too late and the best we can do is to warn
  * the user.
  *
+ * Gradle version can be found in the template:
+ * https://github.com/react-native-community/template/blob/main/template/android/gradle/wrapper/gradle-wrapper.properties
+ *
  * @type {[number, [number, string], [number, string]][]}
  */
 const GRADLE_VERSIONS = [
