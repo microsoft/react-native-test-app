@@ -15,8 +15,12 @@ const {
   v,
 } = require("../scripts/helpers");
 
+// Maximum value of a 32-bit integer (to ensure compatibility across language
+// boundaries)
+const INT_MAX = 2 ** 31 - 1;
+
 /**
- * Keep this in sync with the Groovy version in `android/test-app-util.gradle`!
+ * This table is also used by `android/test-app-util.gradle`!
  *
  * We have two implementations because there are currently two ways to build the
  * Android app. If built via `@react-native-community/cli`, this script will be
@@ -24,10 +28,13 @@ const {
  * with Gradle directly, it's already too late and the best we can do is to warn
  * the user.
  *
+ * Gradle version can be found in the template:
+ * https://github.com/react-native-community/template/blob/main/template/android/gradle/wrapper/gradle-wrapper.properties
+ *
  * @type {[number, [number, string], [number, string]][]}
  */
 const GRADLE_VERSIONS = [
-  [v(0, 76, 0), [v(8, 9, 0), "8.9"], [Number.MAX_SAFE_INTEGER, ""]], // 0.76: [8.9, *)
+  [v(0, 76, 0), [v(8, 10, 1), "8.10.1"], [INT_MAX, ""]], // 0.76: [8.10.1, *)
   [v(0, 75, 0), [v(8, 8, 0), "8.8"], [v(8, 9, 0), "8.8"]], // 0.75: [8.8, 8.9)
   [v(0, 74, 0), [v(8, 6, 0), "8.6"], [v(8, 9, 0), "8.8"]], // 0.74: [8.6, 8.9)
   [v(0, 73, 0), [v(8, 3, 0), "8.3"], [v(8, 9, 0), "8.8"]], // 0.73: [8.3, 8.9)
@@ -99,4 +106,5 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
   }
 }
 
+exports.GRADLE_VERSIONS = GRADLE_VERSIONS;
 exports.configureGradleWrapper = configureGradleWrapper;
