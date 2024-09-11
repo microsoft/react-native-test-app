@@ -3,7 +3,7 @@
 import * as nodefs from "node:fs";
 import { createRequire } from "node:module";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import semverCoerce from "semver/functions/coerce.js";
 import semverSatisfies from "semver/functions/satisfies.js";
 import { cliPlatformIOSVersion } from "./configure-projects.js";
@@ -600,7 +600,7 @@ export function updatePackageManifest(
 
   const { name: rntaName, version: rntaVersion } = readManifest();
   manifest["devDependencies"] = mergeObjects(manifest["devDependencies"], {
-    "@rnx-kit/metro-config": "^1.3.17",
+    "@rnx-kit/metro-config": "^2.0.0",
     [rntaName]: `^${rntaVersion}`,
   });
 

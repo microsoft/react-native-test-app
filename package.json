@@ -72,7 +72,7 @@
     "generate:code": "node scripts/internal/generate-manifest.mjs",
     "generate:docs": "node scripts/internal/generate-manifest-docs.mjs",
     "generate:schema": "node scripts/internal/generate-schema.mjs",
-    "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@1.0.1",
+    "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
     "lint:js": "eslint $(git ls-files '*.[cm]js' '*.[jt]s' '*.tsx' ':!:*.config.js' ':!:.yarn/releases') && tsc && tsc --project tsconfig.cjs.json",
     "lint:kt": "ktlint --relative 'android/app/src/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
@@ -88,7 +88,7 @@
     "test:rb": "bundle exec ruby -Ilib:test -e \"Dir.glob('./test/test_*.rb').each { |file| require(file) }\""
   },
   "dependencies": {
-    "@rnx-kit/react-native-host": "^0.4.12",
+    "@rnx-kit/react-native-host": "^0.5.0",
     "ajv": "^8.0.0",
     "cliui": "^8.0.0",
     "fast-xml-parser": "^4.0.0",
@@ -127,8 +127,8 @@
     "@microsoft/eslint-plugin-sdl": "^0.2.0",
     "@react-native-community/cli": "^14.0.0",
     "@react-native-community/template": "^0.75.0",
-    "@rnx-kit/eslint-plugin": "^0.7.0",
-    "@rnx-kit/tsconfig": "^1.0.0",
+    "@rnx-kit/eslint-plugin": "^0.8.0",
+    "@rnx-kit/tsconfig": "^2.0.0",
     "@types/js-yaml": "^4.0.5",
     "@types/mustache": "^4.0.0",
     "@types/node": "^20.0.0",

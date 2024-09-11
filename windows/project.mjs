@@ -2,7 +2,7 @@
 import { XMLParser } from "fast-xml-parser";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { v5 as uuidv5 } from "uuid";
 import {
   findNearest,

@@ -1,7 +1,7 @@
 import { equal, fail, notEqual } from "node:assert/strict";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import {
   findNearest,
   getPackageVersion,

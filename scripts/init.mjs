@@ -2,7 +2,7 @@
 // @ts-check
 import { createRequire } from "node:module";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import prompts from "prompts";
 import { configure, getDefaultPlatformPackageName } from "./configure.mjs";
 import { memo, readJSONFile, toVersionNumber, v } from "./helpers.js";

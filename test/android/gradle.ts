@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as fsp from "node:fs/promises";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { gatherConfig, writeAllFiles } from "../../scripts/configure.mjs";
 import { findNearest, readJSONFile } from "../../scripts/helpers.js";
 import type { ConfigureParams } from "../../scripts/types.js";
