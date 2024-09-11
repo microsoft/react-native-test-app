@@ -6,7 +6,7 @@
  */
 import { spawn } from "node:child_process";
 import * as fs from "node:fs";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import * as util from "node:util";
 import { readTextFile } from "../helpers.js";
 import { setReactVersion } from "../internal/set-react-version.mjs";

@@ -3,7 +3,7 @@ import { deepEqual, equal, match, notEqual, ok } from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { after, before, test } from "node:test";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { findNearest, readJSONFile } from "../../scripts/helpers.js";
 
 function getCliVersion() {

@@ -2,7 +2,8 @@
   "extends": "@rnx-kit/tsconfig/tsconfig.json",
   "compilerOptions": {
     "jsx": "react-native",
-    "noEmit": true
+    "noEmit": true,
+    "lib": ["ES2021", "DOM"]
   },
   "include": [
     "App.tsx",

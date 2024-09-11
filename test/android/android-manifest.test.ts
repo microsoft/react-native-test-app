@@ -2,7 +2,7 @@ import { equal, fail } from "node:assert/strict";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { generateAndroidManifest as generateAndroidManifestActual } from "../../android/android-manifest.js";
 
 describe("generateAndroidManifest()", () => {

@@ -3,7 +3,7 @@
 import * as nodefs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import {
   findNearest,
   isMain,
