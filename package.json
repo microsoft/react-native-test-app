@@ -193,6 +193,7 @@
     "bplist-creator": "~0.1.1",
     "bplist-parser": "~0.3.2",
     "compression/bytes": "^3.0.0",
+    "express/qs": "^6.11.0",
     "safe-buffer": "~5.2.1"
   },
   "workspaces": [
