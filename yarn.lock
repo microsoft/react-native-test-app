@@ -3073,9 +3073,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-webapis/web-storage@npm:^0.2.8":
-  version: 0.2.8
-  resolution: "@react-native-webapis/web-storage@npm:0.2.8"
+"@react-native-webapis/web-storage@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@react-native-webapis/web-storage@npm:0.3.0"
   peerDependencies:
     "@callstack/react-native-visionos": ">=0.73"
     react: ">=18.2.0"
@@ -3089,7 +3089,7 @@ __metadata:
       optional: true
     react-native-windows:
       optional: true
-  checksum: 10c0/173cd527346c1fafd8bd3c2187b693184ca8373fc9b16a84c2c62602dd0752692cc33849517c041b862fd19543e93e1bf2a246e30db54ba7a894686a7a27f6b1
+  checksum: 10c0/beb7d762abce424dca060c9af53c2c65fa5033098cc7ad552fa0d75d588046da1027d7f776d4fb2d90ee4c445890e229d9fd3c167ed8f9e8d7c5bf189043560d
   languageName: node
   linkType: hard
 
@@ -5305,13 +5305,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.4.0, axios@npm:^1.6.5, axios@npm:^1.6.7, axios@npm:^1.7.4, axios@npm:^1.x":
-  version: 1.7.5
-  resolution: "axios@npm:1.7.5"
+  version: 1.7.7
+  resolution: "axios@npm:1.7.7"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/1d5daeb28b3d1bb2a7b9f0743433c4bfbeaddc15461e50ebde487eec6c009af2515749d5261096dd430c90cd891bd310bcba5ec3967bae2033c4a307f58a6ad3
+  checksum: 10c0/4499efc89e86b0b49ffddc018798de05fab26e3bf57913818266be73279a6418c3ce8f9e934c7d2d707ab8c095e837fc6c90608fb7715b94d357720b5f568af7
   languageName: node
   linkType: hard
 
@@ -7347,8 +7347,8 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-react@npm:^7.33.0":
-  version: 7.35.0
-  resolution: "eslint-plugin-react@npm:7.35.0"
+  version: 7.35.2
+  resolution: "eslint-plugin-react@npm:7.35.2"
   dependencies:
     array-includes: "npm:^3.1.8"
     array.prototype.findlast: "npm:^1.2.5"
@@ -7370,7 +7370,7 @@ __metadata:
     string.prototype.repeat: "npm:^1.0.0"
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
-  checksum: 10c0/eedcc33de4b2cda91d56ae517a4f771a0c76da9c1e26c95543969012871381e11d4d6cffdf6fa8423036585c289eb3500f3f93fb1d314fb2624e0aa1e463305e
+  checksum: 10c0/5f891f5a77e902a0ca8d10b23d0b800e90a09400187febe5986c5078d6277baa4b974d6acdbba25baae065dbcf12eb9241b5f5782527d0780314c2ee5006a8af
   languageName: node
   linkType: hard
 
@@ -7553,7 +7553,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.20.0"
     "@callstack/react-native-visionos": "npm:^0.75.0"
     "@react-native-community/cli": "npm:^14.0.0"
-    "@react-native-webapis/web-storage": "npm:^0.2.8"
+    "@react-native-webapis/web-storage": "npm:^0.3.0"
     "@react-native/babel-preset": "npm:^0.75.0"
     "@react-native/metro-config": "npm:^0.75.0"
     "@rnx-kit/metro-config": "npm:^2.0.0"
@@ -15285,11 +15285,11 @@ __metadata:
   linkType: hard
 
 "yaml@npm:^2.2.1, yaml@npm:^2.5.0":
-  version: 2.5.0
-  resolution: "yaml@npm:2.5.0"
+  version: 2.5.1
+  resolution: "yaml@npm:2.5.1"
   bin:
     yaml: bin.mjs
-  checksum: 10c0/771a1df083c8217cf04ef49f87244ae2dd7d7457094425e793b8f056159f167602ce172aa32d6bca21f787d24ec724aee3cecde938f6643564117bd151452631
+  checksum: 10c0/40fba5682898dbeeb3319e358a968fe886509fab6f58725732a15f8dda3abac509f91e76817c708c9959a15f786f38ff863c1b88062d7c1162c5334a7d09cb4a
   languageName: node
   linkType: hard
 
