@@ -50,9 +50,12 @@ namespace
 
         auto hwnd = winrt::Microsoft::UI::GetWindowFromWindowId(window.Id());
         auto scaleFactor = ScaleFactor(hwnd);
+        winrt::Microsoft::ReactNative::LayoutConstraints constraints;
         winrt::Size size{window.ClientSize().Width / scaleFactor,
                          window.ClientSize().Height / scaleFactor};
-        rootView.Arrange({size, size, winrt::LayoutDirection::Undefined}, {0, 0});
+        constraints.MinimumSize = constraints.MaximumSize = size;
+        IsIconic(hwnd) ? constraints.LayoutDirection = winrt::LayoutDirection::Undefined : winrt::LayoutDirection::LeftToRight;
+        rootView.Arrange(constraints, {0, 0});
     }
 
     winrt::ReactViewOptions MakeReactViewOptions(ReactApp::Component const &component)
