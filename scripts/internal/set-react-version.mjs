@@ -218,14 +218,16 @@ async function resolveCommonDependencies(
           // `metro-react-native-babel-transformer` is no longer a direct
           // dependency of `react-native`. As of 0.72, we should go through
           // `@react-native-community/cli-plugin-metro` instead.
-          const cliVersion = dependencies["@react-native-community/cli"]
-            .replace("^", "")
-            .split(".")
-            .slice(0, 2)
-            .join(".");
+          const cliVersion = dependencies["@react-native-community/cli"];
+          if (!cliVersion) {
+            // `@react-native-community/cli` is no longer a direct dependency in
+            // 0.73. We should be using `@react-native/babel-preset` instead.
+            return {};
+          }
+
           const metroPluginInfo = await fetchPackageInfo(
             "@react-native-community/cli-plugin-metro",
-            cliVersion
+            cliVersion.replace("^", "").split(".").slice(0, 2).join(".")
           );
           return { version: metroPluginInfo.dependencies?.["metro"] };
         })(),
