@@ -54,7 +54,7 @@ namespace
         winrt::Size size{window.ClientSize().Width / scaleFactor,
                          window.ClientSize().Height / scaleFactor};
         constraints.MinimumSize = constraints.MaximumSize = size;
-        IsIconic(hwnd) ? constraints.LayoutDirection = winrt::LayoutDirection::Undefined : winrt::LayoutDirection::LeftToRight;
+        constraints.LayoutDirection = winrt::LayoutDirection::LeftToRight;
         rootView.Arrange(constraints, {0, 0});
     }
 
