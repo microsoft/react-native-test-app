@@ -95,6 +95,7 @@ describe("npm pack", () => {
       "android/app/src/reactactivitydelegate-0.75/java/com/microsoft/reacttestapp/component/ComponentActivityDelegate.kt",
       "android/app/src/reactactivitydelegate-pre-0.72/java/com/microsoft/reacttestapp/component/ComponentActivityDelegate.kt",
       "android/app/src/reactapplication-0.73/java/com/microsoft/reacttestapp/TestApp.kt",
+      "android/app/src/reactapplication-0.76/java/com/microsoft/reacttestapp/TestApp.kt",
       "android/app/src/reactapplication-pre-0.73/java/com/microsoft/reacttestapp/TestApp.kt",
       "android/app/src/reactinstanceeventlistener-0.68/java/com/microsoft/reacttestapp/compat/ReactInstanceEventListener.kt",
       "android/app/src/reactinstanceeventlistener-pre-0.68/java/com/microsoft/reacttestapp/compat/ReactInstanceEventListener.kt",
