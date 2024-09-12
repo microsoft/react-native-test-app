@@ -33,7 +33,7 @@ npx --package react-native-test-app@latest init
 In this example, we will create a project named "sample" in `sample` with apps
 for all platforms:
 
-```sh
+```
 ✔ What is the name of your test app? … sample
 ? Which platforms do you need test apps for? ›
 Instructions:
@@ -44,8 +44,9 @@ Instructions:
 ◉   Android
 ◉   iOS
 ◉   macOS
+◯   visionOS (Experimental)
 ◉   Windows
-✔ Where should we create the new project?? … sample
+✔ Where should we create the new project? … sample
 ```
 
 Install npm dependencies inside the new project folder:
@@ -100,9 +101,11 @@ in the wiki.
 [react-native-datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker) &bull;
 [react-native-google-signin](https://github.com/react-native-google-signin/google-signin) &bull;
 [react-native-image-editor](https://github.com/callstack/react-native-image-editor) &bull;
+[react-native-keychain](https://github.com/oblador/react-native-keychain) &bull;
 [react-native-masked-view](https://github.com/react-native-masked-view/masked-view) &bull;
 [react-native-menu](https://github.com/react-native-menu/menu) &bull;
 [react-native-netinfo](https://github.com/react-native-netinfo/react-native-netinfo) &bull;
+[react-native-pager-view](https://github.com/callstack/react-native-pager-view) &bull;
 [react-native-segmented-control](https://github.com/react-native-segmented-control/segmented-control) &bull;
 [react-native-webview](https://github.com/react-native-webview/react-native-webview) &bull;
 [realm-js](https://github.com/realm/realm-js) &bull;
