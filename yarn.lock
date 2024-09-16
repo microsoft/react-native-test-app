@@ -3050,9 +3050,9 @@ __metadata:
   linkType: hard
 
 "@react-native-community/template@npm:^0.75.0":
-  version: 0.75.2
-  resolution: "@react-native-community/template@npm:0.75.2"
-  checksum: 10c0/27907c844fe74a95f47bd5930d746f062c702c39c664af7905bdccbe18738397aa17c697bd1fa88bfaa3607641b1233024709f9131f8ee8348bf1a34174d4ec6
+  version: 0.75.5
+  resolution: "@react-native-community/template@npm:0.75.5"
+  checksum: 10c0/369152c31c39825c94e9d16e3ed2b4e80075fcacdbed7228c06be120b1fe7285c2e7983abdd0f827e219de492a1198aac189f08268006f88b4c2bd7fa26478eb
   languageName: node
   linkType: hard
 
