@@ -198,6 +198,10 @@ export function generateSolution(destPath, options, fs = nodefs) {
           ...templateView,
           name: path.basename(projectFileName, path.extname(projectFileName)),
           useExperimentalNuget: info.useExperimentalNuGet,
+          rnwPathFromProjectRoot: path.relative(
+            path.dirname(projectManifest),
+            rnWindowsPath
+          ),
         })
         // The current version of this template (v0.63.18) assumes that
         // `react-native-windows` is always installed in
