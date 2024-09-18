@@ -7,7 +7,7 @@ def find_node
 
   # If a wrapper is found, remove the path from `PATH` and try again. This can
   # sometimes happen when `pod install` is run inside a "virtual" environment
-  # like Turborepo.
+  # like [Turborepo](https://turbo.build).
   bin_dir = File.dirname(node_bin)
   filtered_paths = ENV['PATH'].split(':').reject { |p| p.eql?(bin_dir) }
   raise "Could not find Node" if filtered_paths.empty?
