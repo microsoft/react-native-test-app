@@ -149,6 +149,7 @@ describe("npm pack", () => {
       "ios/assets_catalog.rb",
       "ios/entitlements.rb",
       "ios/info_plist.rb",
+      "ios/node.rb",
       "ios/pod_helpers.rb",
       "ios/privacy_manifest.rb",
       "ios/test_app.rb",

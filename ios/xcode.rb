@@ -14,3 +14,9 @@ PRODUCT_DISPLAY_NAME = 'PRODUCT_DISPLAY_NAME'.freeze
 PRODUCT_VERSION = 'PRODUCT_VERSION'.freeze
 USER_HEADER_SEARCH_PATHS = 'USER_HEADER_SEARCH_PATHS'.freeze
 WARNING_CFLAGS = 'WARNING_CFLAGS'.freeze
+
+def override_build_settings!(build_settings, overrides)
+  overrides&.each do |setting, value|
+    build_settings[setting] = value
+  end
+end
