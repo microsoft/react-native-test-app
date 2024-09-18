@@ -10,6 +10,8 @@ def find_node
   # like Turborepo.
   bin_dir = File.dirname(node_bin)
   filtered_paths = ENV['PATH'].split(':').reject { |p| p.eql?(bin_dir) }
+  raise "Could not find Node" if filtered_paths.empty?
+
   ENV['PATH'] = filtered_paths.join(':')
 
   find_node
