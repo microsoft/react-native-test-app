@@ -22,12 +22,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appium/base-driver@npm:^9.0.0, @appium/base-driver@npm:^9.1.0, @appium/base-driver@npm:^9.11.3":
-  version: 9.11.3
-  resolution: "@appium/base-driver@npm:9.11.3"
+"@appium/base-driver@npm:^9.0.0, @appium/base-driver@npm:^9.1.0, @appium/base-driver@npm:^9.11.4":
+  version: 9.11.4
+  resolution: "@appium/base-driver@npm:9.11.4"
   dependencies:
-    "@appium/support": "npm:^5.1.3"
-    "@appium/types": "npm:^0.21.2"
+    "@appium/support": "npm:^5.1.4"
+    "@appium/types": "npm:^0.21.3"
     "@colors/colors": "npm:1.6.0"
     "@types/async-lock": "npm:1.4.2"
     "@types/bluebird": "npm:3.5.42"
@@ -37,35 +37,35 @@ __metadata:
     "@types/serve-favicon": "npm:2.5.7"
     async-lock: "npm:1.4.1"
     asyncbox: "npm:3.0.0"
-    axios: "npm:1.7.3"
+    axios: "npm:1.7.7"
     bluebird: "npm:3.7.2"
-    body-parser: "npm:1.20.2"
-    express: "npm:4.19.2"
+    body-parser: "npm:1.20.3"
+    express: "npm:4.21.0"
     http-status-codes: "npm:2.3.0"
     lodash: "npm:4.17.21"
     lru-cache: "npm:10.4.3"
     method-override: "npm:3.0.0"
     morgan: "npm:1.10.0"
-    path-to-regexp: "npm:7.1.0"
+    path-to-regexp: "npm:8.1.0"
     serve-favicon: "npm:2.5.0"
     source-map-support: "npm:0.5.21"
     spdy: "npm:4.0.2"
-    type-fest: "npm:4.23.0"
+    type-fest: "npm:4.26.1"
     validate.js: "npm:0.13.1"
   dependenciesMeta:
     spdy:
       optional: true
-  checksum: 10c0/399e53c33366476b814d5ec65752a5d61d940333c2a4592cb31ecbcfbaab477d3afb89c85c7d233bfdf8f4e3e1714da72da9b0d980a9230b7ca0efb7a4b0ba65
+  checksum: 10c0/0773c4a491caf12a2f660468c8f8e9062572542f55d1d0162db954fde75c48ef2dec02b86f903844d13bb04338f3f8082f5b137ee7feef65748864666b8bfb92
   languageName: node
   linkType: hard
 
-"@appium/base-plugin@npm:^2.2.43":
-  version: 2.2.43
-  resolution: "@appium/base-plugin@npm:2.2.43"
+"@appium/base-plugin@npm:^2.2.44":
+  version: 2.2.44
+  resolution: "@appium/base-plugin@npm:2.2.44"
   dependencies:
-    "@appium/base-driver": "npm:^9.11.3"
-    "@appium/support": "npm:^5.1.3"
-  checksum: 10c0/2ff0c65847feebbedc259b07cb3ca7d9ba545cb0357b8a7adf1440be18a2bf28b2d6f106075fcfd91afee3c7c8e56278178702782ecea943ea6029cbf6a9a9af
+    "@appium/base-driver": "npm:^9.11.4"
+    "@appium/support": "npm:^5.1.4"
+  checksum: 10c0/c144f6fc4133d54e22591d223d2f403f61922bda82e769abcd2d425e450b367480f85fffb9cb2cad305f15dbbd7637b4b74a9f0d0e8c8c276b549293c2df53df
   languageName: node
   linkType: hard
 
@@ -108,13 +108,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appium/support@npm:^5.0.3, @appium/support@npm:^5.1.1, @appium/support@npm:^5.1.3":
-  version: 5.1.3
-  resolution: "@appium/support@npm:5.1.3"
+"@appium/support@npm:^5.0.3, @appium/support@npm:^5.1.1, @appium/support@npm:^5.1.4":
+  version: 5.1.4
+  resolution: "@appium/support@npm:5.1.4"
   dependencies:
     "@appium/logger": "npm:^1.6.1"
     "@appium/tsconfig": "npm:^0.3.3"
-    "@appium/types": "npm:^0.21.2"
+    "@appium/types": "npm:^0.21.3"
     "@colors/colors": "npm:1.6.0"
     "@types/archiver": "npm:6.0.2"
     "@types/base64-stream": "npm:1.0.5"
@@ -132,7 +132,7 @@ __metadata:
     "@types/uuid": "npm:10.0.0"
     "@types/which": "npm:3.0.4"
     archiver: "npm:7.0.1"
-    axios: "npm:1.7.3"
+    axios: "npm:1.7.7"
     base64-stream: "npm:1.0.0"
     bluebird: "npm:3.7.2"
     bplist-creator: "npm:0.1.1"
@@ -156,19 +156,19 @@ __metadata:
     resolve-from: "npm:5.0.0"
     sanitize-filename: "npm:1.6.3"
     semver: "npm:7.6.3"
-    sharp: "npm:0.33.4"
+    sharp: "npm:0.33.5"
     shell-quote: "npm:1.8.1"
     source-map-support: "npm:0.5.21"
     supports-color: "npm:8.1.1"
     teen_process: "npm:2.2.0"
-    type-fest: "npm:4.23.0"
+    type-fest: "npm:4.26.1"
     uuid: "npm:10.0.0"
     which: "npm:4.0.0"
     yauzl: "npm:3.1.3"
   dependenciesMeta:
     sharp:
       optional: true
-  checksum: 10c0/2802978c0b2871b3a12589db57e8dde1c2b09e9d2ec7af9cea8a99dc38068fbaab7b5a26ba46d358d92afffb30ed0fcdd747fa9e22a37ccc1eb9f4df68317f38
+  checksum: 10c0/41df1289271c74bb48cdb92988ae73b4c2dd34a666d16bf11cac4d321e33fe447d5592a4621f73143a4d28bb0139225bacd1e6c4e10c033b6c81348726ab84cb
   languageName: node
   linkType: hard
 
@@ -181,17 +181,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appium/types@npm:^0.21.2":
-  version: 0.21.2
-  resolution: "@appium/types@npm:0.21.2"
+"@appium/types@npm:^0.21.3":
+  version: 0.21.3
+  resolution: "@appium/types@npm:0.21.3"
   dependencies:
     "@appium/logger": "npm:^1.6.1"
     "@appium/schema": "npm:^0.6.1"
     "@appium/tsconfig": "npm:^0.3.3"
     "@types/express": "npm:4.17.21"
     "@types/ws": "npm:8.5.12"
-    type-fest: "npm:4.23.0"
-  checksum: 10c0/d6a52451d3d5b97c3146145d83af1da35bb54581eff0c0234873228c441131f828c420ceb0bcee9b9f6dbd130d87f65952d1618b8ddfad389adedc517d608f30
+    type-fest: "npm:4.26.1"
+  checksum: 10c0/b6ee23be7392ab3e4f954bb35836ba8ce290a9bcddcfc2f8d54977b39602118824686ee32ccfcf3e45b7a3d7eb5974634a672de94892188db96bab58b583854f
   languageName: node
   linkType: hard
 
@@ -275,7 +275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.16.0, @babel/code-frame@npm:^7.22.13, @babel/code-frame@npm:^7.24.7":
+"@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.22.13, @babel/code-frame@npm:^7.24.7":
   version: 7.24.7
   resolution: "@babel/code-frame@npm:7.24.7"
   dependencies:
@@ -1876,7 +1876,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emnapi/runtime@npm:^1.1.1":
+"@emnapi/runtime@npm:^1.2.0":
   version: 1.2.0
   resolution: "@emnapi/runtime@npm:1.2.0"
   dependencies:
@@ -2202,11 +2202,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-darwin-arm64@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-darwin-arm64@npm:0.33.4"
+"@img/sharp-darwin-arm64@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-darwin-arm64@npm:0.33.5"
   dependencies:
-    "@img/sharp-libvips-darwin-arm64": "npm:1.0.2"
+    "@img/sharp-libvips-darwin-arm64": "npm:1.0.4"
   dependenciesMeta:
     "@img/sharp-libvips-darwin-arm64":
       optional: true
@@ -2214,11 +2214,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-darwin-x64@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-darwin-x64@npm:0.33.4"
+"@img/sharp-darwin-x64@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-darwin-x64@npm:0.33.5"
   dependencies:
-    "@img/sharp-libvips-darwin-x64": "npm:1.0.2"
+    "@img/sharp-libvips-darwin-x64": "npm:1.0.4"
   dependenciesMeta:
     "@img/sharp-libvips-darwin-x64":
       optional: true
@@ -2226,67 +2226,67 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-darwin-arm64@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@img/sharp-libvips-darwin-arm64@npm:1.0.2"
+"@img/sharp-libvips-darwin-arm64@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@img/sharp-libvips-darwin-arm64@npm:1.0.4"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-darwin-x64@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@img/sharp-libvips-darwin-x64@npm:1.0.2"
+"@img/sharp-libvips-darwin-x64@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@img/sharp-libvips-darwin-x64@npm:1.0.4"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-arm64@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@img/sharp-libvips-linux-arm64@npm:1.0.2"
+"@img/sharp-libvips-linux-arm64@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@img/sharp-libvips-linux-arm64@npm:1.0.4"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-arm@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@img/sharp-libvips-linux-arm@npm:1.0.2"
+"@img/sharp-libvips-linux-arm@npm:1.0.5":
+  version: 1.0.5
+  resolution: "@img/sharp-libvips-linux-arm@npm:1.0.5"
   conditions: os=linux & cpu=arm & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-s390x@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@img/sharp-libvips-linux-s390x@npm:1.0.2"
+"@img/sharp-libvips-linux-s390x@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@img/sharp-libvips-linux-s390x@npm:1.0.4"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linux-x64@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@img/sharp-libvips-linux-x64@npm:1.0.2"
+"@img/sharp-libvips-linux-x64@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@img/sharp-libvips-linux-x64@npm:1.0.4"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linuxmusl-arm64@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@img/sharp-libvips-linuxmusl-arm64@npm:1.0.2"
+"@img/sharp-libvips-linuxmusl-arm64@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@img/sharp-libvips-linuxmusl-arm64@npm:1.0.4"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@img/sharp-libvips-linuxmusl-x64@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@img/sharp-libvips-linuxmusl-x64@npm:1.0.2"
+"@img/sharp-libvips-linuxmusl-x64@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@img/sharp-libvips-linuxmusl-x64@npm:1.0.4"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-arm64@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-linux-arm64@npm:0.33.4"
+"@img/sharp-linux-arm64@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-linux-arm64@npm:0.33.5"
   dependencies:
-    "@img/sharp-libvips-linux-arm64": "npm:1.0.2"
+    "@img/sharp-libvips-linux-arm64": "npm:1.0.4"
   dependenciesMeta:
     "@img/sharp-libvips-linux-arm64":
       optional: true
@@ -2294,11 +2294,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-arm@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-linux-arm@npm:0.33.4"
+"@img/sharp-linux-arm@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-linux-arm@npm:0.33.5"
   dependencies:
-    "@img/sharp-libvips-linux-arm": "npm:1.0.2"
+    "@img/sharp-libvips-linux-arm": "npm:1.0.5"
   dependenciesMeta:
     "@img/sharp-libvips-linux-arm":
       optional: true
@@ -2306,11 +2306,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-s390x@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-linux-s390x@npm:0.33.4"
+"@img/sharp-linux-s390x@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-linux-s390x@npm:0.33.5"
   dependencies:
-    "@img/sharp-libvips-linux-s390x": "npm:1.0.2"
+    "@img/sharp-libvips-linux-s390x": "npm:1.0.4"
   dependenciesMeta:
     "@img/sharp-libvips-linux-s390x":
       optional: true
@@ -2318,11 +2318,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linux-x64@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-linux-x64@npm:0.33.4"
+"@img/sharp-linux-x64@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-linux-x64@npm:0.33.5"
   dependencies:
-    "@img/sharp-libvips-linux-x64": "npm:1.0.2"
+    "@img/sharp-libvips-linux-x64": "npm:1.0.4"
   dependenciesMeta:
     "@img/sharp-libvips-linux-x64":
       optional: true
@@ -2330,11 +2330,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linuxmusl-arm64@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-linuxmusl-arm64@npm:0.33.4"
+"@img/sharp-linuxmusl-arm64@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-linuxmusl-arm64@npm:0.33.5"
   dependencies:
-    "@img/sharp-libvips-linuxmusl-arm64": "npm:1.0.2"
+    "@img/sharp-libvips-linuxmusl-arm64": "npm:1.0.4"
   dependenciesMeta:
     "@img/sharp-libvips-linuxmusl-arm64":
       optional: true
@@ -2342,11 +2342,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-linuxmusl-x64@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-linuxmusl-x64@npm:0.33.4"
+"@img/sharp-linuxmusl-x64@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-linuxmusl-x64@npm:0.33.5"
   dependencies:
-    "@img/sharp-libvips-linuxmusl-x64": "npm:1.0.2"
+    "@img/sharp-libvips-linuxmusl-x64": "npm:1.0.4"
   dependenciesMeta:
     "@img/sharp-libvips-linuxmusl-x64":
       optional: true
@@ -2354,25 +2354,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@img/sharp-wasm32@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-wasm32@npm:0.33.4"
+"@img/sharp-wasm32@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-wasm32@npm:0.33.5"
   dependencies:
-    "@emnapi/runtime": "npm:^1.1.1"
+    "@emnapi/runtime": "npm:^1.2.0"
   conditions: cpu=wasm32
   languageName: node
   linkType: hard
 
-"@img/sharp-win32-ia32@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-win32-ia32@npm:0.33.4"
+"@img/sharp-win32-ia32@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-win32-ia32@npm:0.33.5"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@img/sharp-win32-x64@npm:0.33.4":
-  version: 0.33.4
-  resolution: "@img/sharp-win32-x64@npm:0.33.4"
+"@img/sharp-win32-x64@npm:0.33.5":
+  version: 0.33.5
+  resolution: "@img/sharp-win32-x64@npm:0.33.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3632,15 +3632,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sidvind/better-ajv-errors@npm:2.1.3":
-  version: 2.1.3
-  resolution: "@sidvind/better-ajv-errors@npm:2.1.3"
+"@sidvind/better-ajv-errors@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@sidvind/better-ajv-errors@npm:3.0.1"
   dependencies:
-    "@babel/code-frame": "npm:^7.16.0"
-    chalk: "npm:^4.1.0"
+    kleur: "npm:^4.1.0"
   peerDependencies:
-    ajv: 4.11.8 - 8
-  checksum: 10c0/ce2bee581b1c3159161b08aad826d88c7f6d572fbbae2a55a386c6f8836db8a28cef3a905d0065020f16eb8b94e75b2a964e7415cfee0f16ec6e32e4dae7789b
+    ajv: ^6.12.3 || ^7.0.0 || ^8.0.0
+  checksum: 10c0/0d151b0a08bb178ea196025affd8a466621a265778e2214f1e4d2d329e6c1c694b2b61fbb68c3169708f37cb4d116d1c609140de16e23bf35669ce5a34cc488a
   languageName: node
   linkType: hard
 
@@ -4650,31 +4649,31 @@ __metadata:
   linkType: hard
 
 "appium-adb@npm:^12.0.0, appium-adb@npm:^12.5.2":
-  version: 12.5.2
-  resolution: "appium-adb@npm:12.5.2"
+  version: 12.6.0
+  resolution: "appium-adb@npm:12.6.0"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     async-lock: "npm:^1.0.0"
     asyncbox: "npm:^3.0.0"
     bluebird: "npm:^3.4.7"
-    ini: "npm:^4.1.1"
+    ini: "npm:^5.0.0"
     lodash: "npm:^4.0.0"
     lru-cache: "npm:^10.0.0"
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
-  checksum: 10c0/6c0154fb3a1832ca41eee330afb4791a5527f4eb8dfa599e4c92768776cc1895ad1db13cbda41c619546ca18ed79bb0ec7c47605c4c09ed9e33b53c7c4da684c
+  checksum: 10c0/436a0f912e220a2bc27bcd5c0201f320d84465934a7c81adcf6bc3c5fe5ffae975ae29ce2eccb9a7e78eb63a047e5d26a0a1df2770d2ee9a95f0517cc50ce983
   languageName: node
   linkType: hard
 
-"appium-android-driver@npm:^9.9.0":
-  version: 9.10.0
-  resolution: "appium-android-driver@npm:9.10.0"
+"appium-android-driver@npm:^9.11.0":
+  version: 9.11.0
+  resolution: "appium-android-driver@npm:9.11.0"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     "@colors/colors": "npm:^1.6.0"
     appium-adb: "npm:^12.5.2"
-    appium-chromedriver: "npm:^5.5.1"
+    appium-chromedriver: "npm:^6.0.1"
     asyncbox: "npm:^3.0.0"
     axios: "npm:^1.x"
     bluebird: "npm:^3.4.7"
@@ -4691,13 +4690,13 @@ __metadata:
     ws: "npm:^8.0.0"
   peerDependencies:
     appium: ^2.0.0
-  checksum: 10c0/9ce1ac0e8584f01b01a5b9f4ab4bbc91d8347f4658f151ee855e49c6e8fd8c7f13e5af64ee084b35a02c83eb198b852ea4b1dd1ce5b5a17e34bc62f81ad40073
+  checksum: 10c0/c619a30b94cbce5916949df043c4663009f324e3bfe1461a01f4c53f96dd30314418eb60280f227e3416362ec5ffde208d5698bef83f209f828bba9948b8b141
   languageName: node
   linkType: hard
 
-"appium-chromedriver@npm:^5.5.1, appium-chromedriver@npm:^5.6.28":
-  version: 5.6.72
-  resolution: "appium-chromedriver@npm:5.6.72"
+"appium-chromedriver@npm:^6.0.1":
+  version: 6.0.2
+  resolution: "appium-chromedriver@npm:6.0.2"
   dependencies:
     "@appium/base-driver": "npm:^9.1.0"
     "@appium/support": "npm:^5.1.1"
@@ -4712,7 +4711,7 @@ __metadata:
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
     xpath: "npm:^0.x"
-  checksum: 10c0/4dbbdf608440993e104406276f36bbdd3a311b0ed583e9ebd5c145af8c98a0e8a7f9ff07c03cbe4a4ad8277500f12397de41424ce6c15f165df51cfb6e4e39bd
+  checksum: 10c0/8e742d422c3c49e805a8d635d4161f7cbdf72fc4829436c4eefd6e4fea5ce19419a1a62c7931d4bc7aa770560eb25b50404622dcb4cb7b811bb4f9f2ebedb9db
   languageName: node
   linkType: hard
 
@@ -4749,8 +4748,8 @@ __metadata:
   linkType: hard
 
 "appium-ios-simulator@npm:^6.0.0, appium-ios-simulator@npm:^6.1.7":
-  version: 6.1.11
-  resolution: "appium-ios-simulator@npm:6.1.11"
+  version: 6.1.13
+  resolution: "appium-ios-simulator@npm:6.1.13"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     "@xmldom/xmldom": "npm:^0.x"
@@ -4763,13 +4762,13 @@ __metadata:
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/fb22c61579a24111eea01a9e986f4674cd9e11462410e462ef34cb3a4dcd09221672e1aa0128fa2499130329cc7f828fe33bcb6d984903334f92ba280a314825
+  checksum: 10c0/ef10cc89954dada4b26d935b9679d6ab2121f984d83bf125c421fb89e71193ec3afc76ecc4c516f715ff9ceb7a860fb7e1f72365d4e5f4a76fe1aca95ef89430
   languageName: node
   linkType: hard
 
 "appium-remote-debugger@npm:^12.1.1":
-  version: 12.1.1
-  resolution: "appium-remote-debugger@npm:12.1.1"
+  version: 12.1.2
+  resolution: "appium-remote-debugger@npm:12.1.2"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/support": "npm:^5.0.3"
@@ -4780,17 +4779,16 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/1adc294b9591e3dad1ace8f98a398a6390accf3259712bb65890c7d1acf8b1e4ca92fafa79c06ebbb9de6fbf553de77198ed3f80060f07a1158ee3dc62e44460
+  checksum: 10c0/460856ea78027d0967c82385e8016e6ce854f66acc1664e44e66f87f4f5f3dff5c5831f99fa025f6460e41e46183e22dcf48b2e1ded244fc5c03555ddf81b759
   languageName: node
   linkType: hard
 
 "appium-uiautomator2-driver@npm:^3.0.0":
-  version: 3.7.9
-  resolution: "appium-uiautomator2-driver@npm:3.7.9"
+  version: 3.8.0
+  resolution: "appium-uiautomator2-driver@npm:3.8.0"
   dependencies:
     appium-adb: "npm:^12.5.2"
-    appium-android-driver: "npm:^9.9.0"
-    appium-chromedriver: "npm:^5.6.28"
+    appium-android-driver: "npm:^9.11.0"
     appium-uiautomator2-server: "npm:^7.0.24"
     asyncbox: "npm:^3.0.0"
     axios: "npm:^1.6.5"
@@ -4804,7 +4802,7 @@ __metadata:
     type-fest: "npm:^4.4.0"
   peerDependencies:
     appium: ^2.4.1
-  checksum: 10c0/ba0c738b0370e5e561fb10fc4b9b7f1bba0248dbcb07a43f174b4a2efa9affa5e045857f0fcd104610db57e6d2efe8370bc384f1f39e8ef1702deeada3e7e415
+  checksum: 10c0/d2cb1286d8f5ef3c115062ed0f10aa316c13fc0a74b74e409b434f6f4a2573d26bfeb265b8c83494c5ba60eafc5111fd3bd41803741d9b254127f8eb9017835a
   languageName: node
   linkType: hard
 
@@ -4816,8 +4814,8 @@ __metadata:
   linkType: hard
 
 "appium-webdriveragent@npm:^8.9.1":
-  version: 8.9.1
-  resolution: "appium-webdriveragent@npm:8.9.1"
+  version: 8.9.2
+  resolution: "appium-webdriveragent@npm:8.9.2"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/strongbox": "npm:^0.x"
@@ -4831,7 +4829,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
-  checksum: 10c0/bcbc1a5c139056cb2d19a73811dafee2c9ab23d8eb65c253ba4abb21d6c7d8ada49b342258d67e8acc2799c312e22f7903c05923d9719bcbff9914944051cf05
+  checksum: 10c0/d69b53559ef1f37f925b509cbd266f98cae9078a68ff3d720773d264955923b511a6583f5ecc9097b1c1ce133ef36054cf462ada4479ef4b4fa3d43b25abd502
   languageName: node
   linkType: hard
 
@@ -4854,8 +4852,8 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^7.0.0":
-  version: 7.26.2
-  resolution: "appium-xcuitest-driver@npm:7.26.2"
+  version: 7.26.4
+  resolution: "appium-xcuitest-driver@npm:7.26.4"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
@@ -4881,22 +4879,22 @@ __metadata:
     ws: "npm:^8.13.0"
   peerDependencies:
     appium: ^2.5.4
-  checksum: 10c0/9952bd88a218c3b9776830506f0de69e1a45d208d313c566e9320d7596970b86221b56a240150d0183e3826d8cda1f3bc404c44c15fbe5a0a6eda3665d261b5d
+  checksum: 10c0/6365478ffee2d7dfbca2cf64517616cd691bf2e96782ad8ec53b9f81bf4db9fc7f913b8f170760ce6cb4f4c1caa33f163163ea1a58d00abf1c88961751883296
   languageName: node
   linkType: hard
 
-"appium@npm:2.11.3":
-  version: 2.11.3
-  resolution: "appium@npm:2.11.3"
+"appium@npm:2.11.4":
+  version: 2.11.4
+  resolution: "appium@npm:2.11.4"
   dependencies:
-    "@appium/base-driver": "npm:^9.11.3"
-    "@appium/base-plugin": "npm:^2.2.43"
-    "@appium/docutils": "npm:^1.0.19"
+    "@appium/base-driver": "npm:^9.11.4"
+    "@appium/base-plugin": "npm:^2.2.44"
+    "@appium/docutils": "npm:^1.0.20"
     "@appium/logger": "npm:^1.6.1"
     "@appium/schema": "npm:^0.6.1"
-    "@appium/support": "npm:^5.1.3"
-    "@appium/types": "npm:^0.21.2"
-    "@sidvind/better-ajv-errors": "npm:2.1.3"
+    "@appium/support": "npm:^5.1.4"
+    "@appium/types": "npm:^0.21.3"
+    "@sidvind/better-ajv-errors": "npm:3.0.1"
     "@types/argparse": "npm:2.0.16"
     "@types/bluebird": "npm:3.5.42"
     "@types/semver": "npm:7.5.8"
@@ -4907,7 +4905,7 @@ __metadata:
     argparse: "npm:2.0.1"
     async-lock: "npm:1.4.1"
     asyncbox: "npm:3.0.0"
-    axios: "npm:1.7.3"
+    axios: "npm:1.7.7"
     bluebird: "npm:3.7.2"
     cross-env: "npm:7.0.3"
     lilconfig: "npm:3.1.2"
@@ -4919,29 +4917,29 @@ __metadata:
     semver: "npm:7.6.3"
     source-map-support: "npm:0.5.21"
     teen_process: "npm:2.2.0"
-    type-fest: "npm:4.23.0"
-    winston: "npm:3.13.1"
+    type-fest: "npm:4.26.1"
+    winston: "npm:3.14.2"
     wrap-ansi: "npm:7.0.0"
     ws: "npm:8.18.0"
-    yaml: "npm:2.5.0"
+    yaml: "npm:2.5.1"
   bin:
     appium: index.js
-  checksum: 10c0/9489c8efbcddf118e51dc649fbd1a88287adca6ab0a6eea2b63c1d3d369590a9f01ae5311eb3f68b8225018d14e0decd9aea9a48b0e536a5dac8ba92e1f7935a
+  checksum: 10c0/e0edc6c58047b8ecfafdafe74edad089c048f58759a8ea190f3e8c1ca86c7a4c0e4db1bc3292904fed266a7ec2227e17f4a76e4720443f8d0ce9c2b353d46e8b
   languageName: node
   linkType: hard
 
-"appium@patch:appium@npm%3A2.11.3#~/.yarn/patches/appium-npm-2.11.2-f39bb587af.patch":
-  version: 2.11.3
-  resolution: "appium@patch:appium@npm%3A2.11.3#~/.yarn/patches/appium-npm-2.11.2-f39bb587af.patch::version=2.11.3&hash=a03974"
+"appium@patch:appium@npm%3A2.11.4#~/.yarn/patches/appium-npm-2.11.2-f39bb587af.patch":
+  version: 2.11.4
+  resolution: "appium@patch:appium@npm%3A2.11.4#~/.yarn/patches/appium-npm-2.11.2-f39bb587af.patch::version=2.11.4&hash=a03974"
   dependencies:
-    "@appium/base-driver": "npm:^9.11.3"
-    "@appium/base-plugin": "npm:^2.2.43"
-    "@appium/docutils": "npm:^1.0.19"
+    "@appium/base-driver": "npm:^9.11.4"
+    "@appium/base-plugin": "npm:^2.2.44"
+    "@appium/docutils": "npm:^1.0.20"
     "@appium/logger": "npm:^1.6.1"
     "@appium/schema": "npm:^0.6.1"
-    "@appium/support": "npm:^5.1.3"
-    "@appium/types": "npm:^0.21.2"
-    "@sidvind/better-ajv-errors": "npm:2.1.3"
+    "@appium/support": "npm:^5.1.4"
+    "@appium/types": "npm:^0.21.3"
+    "@sidvind/better-ajv-errors": "npm:3.0.1"
     "@types/argparse": "npm:2.0.16"
     "@types/bluebird": "npm:3.5.42"
     "@types/semver": "npm:7.5.8"
@@ -4952,7 +4950,7 @@ __metadata:
     argparse: "npm:2.0.1"
     async-lock: "npm:1.4.1"
     asyncbox: "npm:3.0.0"
-    axios: "npm:1.7.3"
+    axios: "npm:1.7.7"
     bluebird: "npm:3.7.2"
     cross-env: "npm:7.0.3"
     lilconfig: "npm:3.1.2"
@@ -4964,14 +4962,14 @@ __metadata:
     semver: "npm:7.6.3"
     source-map-support: "npm:0.5.21"
     teen_process: "npm:2.2.0"
-    type-fest: "npm:4.23.0"
-    winston: "npm:3.13.1"
+    type-fest: "npm:4.26.1"
+    winston: "npm:3.14.2"
     wrap-ansi: "npm:7.0.0"
     ws: "npm:8.18.0"
-    yaml: "npm:2.5.0"
+    yaml: "npm:2.5.1"
   bin:
     appium: index.js
-  checksum: 10c0/2a9cdedf61cd75eba126bc91148f2676f418fa1dd115bfcdbdd7007680740f99615aaea9147d7d6f514424a5f4d328243115c4a02114fb7c00c0987c22e0191e
+  checksum: 10c0/5dc8e26e47846dd204ef1e74afd0a522e270ec8240560f89cdc8e13d7e93fea3a5b410526172fbdea183a457ffe9ee954e2ec3a1833b5c9f3796bfeff4197dc9
   languageName: node
   linkType: hard
 
@@ -5304,7 +5302,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.4.0, axios@npm:^1.6.5, axios@npm:^1.6.7, axios@npm:^1.7.4, axios@npm:^1.x":
+"axios@npm:^1.4.0, axios@npm:^1.6.5, axios@npm:^1.6.7, axios@npm:^1.7.7, axios@npm:^1.x":
   version: 1.7.7
   resolution: "axios@npm:1.7.7"
   dependencies:
@@ -5498,7 +5496,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:~1.20.2":
+"body-parser@npm:~1.20.3":
   version: 1.20.3
   resolution: "body-parser@npm:1.20.3"
   dependencies:
@@ -6921,6 +6919,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"encodeurl@npm:~2.0.0":
+  version: 2.0.0
+  resolution: "encodeurl@npm:2.0.0"
+  checksum: 10c0/5d317306acb13e6590e28e27924c754163946a2480de11865c991a3a7eed4315cd3fba378b543ca145829569eefe9b899f3d84bb09870f675ae60bc924b01ceb
+  languageName: node
+  linkType: hard
+
 "encoding-sniffer@npm:^0.2.0":
   version: 0.2.0
   resolution: "encoding-sniffer@npm:0.2.0"
@@ -7560,7 +7565,7 @@ __metadata:
     "@rnx-kit/polyfills": "npm:^0.2.0"
     "@rnx-kit/tsconfig": "npm:^2.0.0"
     "@types/react": "npm:~18.3.0"
-    appium: "patch:appium@npm%3A2.11.3#~/.yarn/patches/appium-npm-2.11.2-f39bb587af.patch"
+    appium: "patch:appium@npm%3A2.11.4#~/.yarn/patches/appium-npm-2.11.2-f39bb587af.patch"
     appium-uiautomator2-driver: "npm:^3.0.0"
     appium-xcuitest-driver: "npm:^7.0.0"
     react: "npm:^18.2.0"
@@ -7665,42 +7670,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:4.19.2":
-  version: 4.19.2
-  resolution: "express@npm:4.19.2"
+"express@npm:4.21.0":
+  version: 4.21.0
+  resolution: "express@npm:4.21.0"
   dependencies:
     accepts: "npm:~1.3.8"
     array-flatten: "npm:1.1.1"
-    body-parser: "npm:1.20.2"
+    body-parser: "npm:1.20.3"
     content-disposition: "npm:0.5.4"
     content-type: "npm:~1.0.4"
     cookie: "npm:0.6.0"
     cookie-signature: "npm:1.0.6"
     debug: "npm:2.6.9"
     depd: "npm:2.0.0"
-    encodeurl: "npm:~1.0.2"
+    encodeurl: "npm:~2.0.0"
     escape-html: "npm:~1.0.3"
     etag: "npm:~1.8.1"
-    finalhandler: "npm:1.2.0"
+    finalhandler: "npm:1.3.1"
     fresh: "npm:0.5.2"
     http-errors: "npm:2.0.0"
-    merge-descriptors: "npm:1.0.1"
+    merge-descriptors: "npm:1.0.3"
     methods: "npm:~1.1.2"
     on-finished: "npm:2.4.1"
     parseurl: "npm:~1.3.3"
-    path-to-regexp: "npm:0.1.7"
+    path-to-regexp: "npm:0.1.10"
     proxy-addr: "npm:~2.0.7"
-    qs: "npm:6.11.0"
+    qs: "npm:6.13.0"
     range-parser: "npm:~1.2.1"
     safe-buffer: "npm:5.2.1"
-    send: "npm:0.18.0"
-    serve-static: "npm:1.15.0"
+    send: "npm:0.19.0"
+    serve-static: "npm:1.16.2"
     setprototypeof: "npm:1.2.0"
     statuses: "npm:2.0.1"
     type-is: "npm:~1.6.18"
     utils-merge: "npm:1.0.1"
     vary: "npm:~1.1.2"
-  checksum: 10c0/e82e2662ea9971c1407aea9fc3c16d6b963e55e3830cd0ef5e00b533feda8b770af4e3be630488ef8a752d7c75c4fcefb15892868eeaafe7353cb9e3e269fdcb
+  checksum: 10c0/4cf7ca328f3fdeb720f30ccb2ea7708bfa7d345f9cc460b64a82bf1b2c91e5b5852ba15a9a11b2a165d6089acf83457fc477dc904d59cd71ed34c7a91762c6cc
   languageName: node
   linkType: hard
 
@@ -7882,18 +7887,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"finalhandler@npm:1.2.0":
-  version: 1.2.0
-  resolution: "finalhandler@npm:1.2.0"
+"finalhandler@npm:1.3.1":
+  version: 1.3.1
+  resolution: "finalhandler@npm:1.3.1"
   dependencies:
     debug: "npm:2.6.9"
-    encodeurl: "npm:~1.0.2"
+    encodeurl: "npm:~2.0.0"
     escape-html: "npm:~1.0.3"
     on-finished: "npm:2.4.1"
     parseurl: "npm:~1.3.3"
     statuses: "npm:2.0.1"
     unpipe: "npm:~1.0.0"
-  checksum: 10c0/64b7e5ff2ad1fcb14931cd012651631b721ce657da24aedb5650ddde9378bf8e95daa451da43398123f5de161a81e79ff5affe4f9f2a6d2df4a813d6d3e254b7
+  checksum: 10c0/d38035831865a49b5610206a3a9a9aae4e8523cbbcd01175d0480ffbf1278c47f11d89be3ca7f617ae6d94f29cf797546a4619cd84dd109009ef33f12f69019f
   languageName: node
   linkType: hard
 
@@ -8994,10 +8999,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ini@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "ini@npm:4.1.1"
-  checksum: 10c0/7fddc8dfd3e63567d4fdd5d999d1bf8a8487f1479d0b34a1d01f28d391a9228d261e19abc38e1a6a1ceb3400c727204fce05725d5eb598dfcf2077a1e3afe211
+"ini@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "ini@npm:5.0.0"
+  checksum: 10c0/657491ce766cbb4b335ab221ee8f72b9654d9f0e35c32fe5ff2eb7ab8c5ce72237ff6456555b50cde88e6507a719a70e28e327b450782b4fc20c90326ec8c1a8
   languageName: node
   linkType: hard
 
@@ -9877,6 +9882,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"kleur@npm:^4.1.0":
+  version: 4.1.5
+  resolution: "kleur@npm:4.1.5"
+  checksum: 10c0/e9de6cb49657b6fa70ba2d1448fd3d691a5c4370d8f7bbf1c2f64c24d461270f2117e1b0afe8cb3114f13bbd8e51de158c2a224953960331904e636a5e4c0f2a
+  languageName: node
+  linkType: hard
+
 "kuler@npm:^2.0.0":
   version: 2.0.0
   resolution: "kuler@npm:2.0.0"
@@ -10346,10 +10358,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"merge-descriptors@npm:1.0.1":
-  version: 1.0.1
-  resolution: "merge-descriptors@npm:1.0.1"
-  checksum: 10c0/b67d07bd44cfc45cebdec349bb6e1f7b077ee2fd5beb15d1f7af073849208cb6f144fe403e29a36571baf3f4e86469ac39acf13c318381e958e186b2766f54ec
+"merge-descriptors@npm:1.0.3":
+  version: 1.0.3
+  resolution: "merge-descriptors@npm:1.0.3"
+  checksum: 10c0/866b7094afd9293b5ea5dcd82d71f80e51514bed33b4c4e9f516795dc366612a4cbb4dc94356e943a8a6914889a914530badff27f397191b9b75cda20b6bae93
   languageName: node
   linkType: hard
 
@@ -11837,17 +11849,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:0.1.7":
-  version: 0.1.7
-  resolution: "path-to-regexp@npm:0.1.7"
-  checksum: 10c0/50a1ddb1af41a9e68bd67ca8e331a705899d16fb720a1ea3a41e310480948387daf603abb14d7b0826c58f10146d49050a1291ba6a82b78a382d1c02c0b8f905
+"path-to-regexp@npm:0.1.10":
+  version: 0.1.10
+  resolution: "path-to-regexp@npm:0.1.10"
+  checksum: 10c0/34196775b9113ca6df88e94c8d83ba82c0e1a2063dd33bfe2803a980da8d49b91db8104f49d5191b44ea780d46b8670ce2b7f4a5e349b0c48c6779b653f1afe4
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:7.1.0":
-  version: 7.1.0
-  resolution: "path-to-regexp@npm:7.1.0"
-  checksum: 10c0/8a5e6a496e980c7e8769bfa57fa9e2b6c79a9410e59739095f0bc9ea847b5d719ba629d4840dc1428791082d73e7d4a08bc1223a365eae26653f8f0eb0e0f7cb
+"path-to-regexp@npm:8.1.0":
+  version: 8.1.0
+  resolution: "path-to-regexp@npm:8.1.0"
+  checksum: 10c0/1c46be3806ab081bedc51eb238fcb026b61b15f19e8924b26e7dad88812dda499efe357a780665dc915dcab3be67213f145f5e2921b8fc8c6c497608d4e092ed
   languageName: node
   linkType: hard
 
@@ -12152,7 +12164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:6.13.0, qs@npm:^6.11.0, qs@npm:^6.9.1":
+"qs@npm:6.13.0, qs@npm:^6.13.0, qs@npm:^6.9.1":
   version: 6.13.0
   resolution: "qs@npm:6.13.0"
   dependencies:
@@ -13142,9 +13154,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"send@npm:0.18.0":
-  version: 0.18.0
-  resolution: "send@npm:0.18.0"
+"send@npm:0.19.0":
+  version: 0.19.0
+  resolution: "send@npm:0.19.0"
   dependencies:
     debug: "npm:2.6.9"
     depd: "npm:2.0.0"
@@ -13159,7 +13171,7 @@ __metadata:
     on-finished: "npm:2.4.1"
     range-parser: "npm:~1.2.1"
     statuses: "npm:2.0.1"
-  checksum: 10c0/0eb134d6a51fc13bbcb976a1f4214ea1e33f242fae046efc311e80aff66c7a43603e26a79d9d06670283a13000e51be6e0a2cb80ff0942eaf9f1cd30b7ae736a
+  checksum: 10c0/ea3f8a67a8f0be3d6bf9080f0baed6d2c51d11d4f7b4470de96a5029c598a7011c497511ccc28968b70ef05508675cebff27da9151dd2ceadd60be4e6cf845e3
   languageName: node
   linkType: hard
 
@@ -13192,15 +13204,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serve-static@npm:1.15.0, serve-static@npm:^1.13.1":
-  version: 1.15.0
-  resolution: "serve-static@npm:1.15.0"
+"serve-static@npm:1.16.2, serve-static@npm:^1.13.1":
+  version: 1.16.2
+  resolution: "serve-static@npm:1.16.2"
   dependencies:
-    encodeurl: "npm:~1.0.2"
+    encodeurl: "npm:~2.0.0"
     escape-html: "npm:~1.0.3"
     parseurl: "npm:~1.3.3"
-    send: "npm:0.18.0"
-  checksum: 10c0/fa9f0e21a540a28f301258dfe1e57bb4f81cd460d28f0e973860477dd4acef946a1f41748b5bd41c73b621bea2029569c935faa38578fd34cd42a9b4947088ba
+    send: "npm:0.19.0"
+  checksum: 10c0/528fff6f5e12d0c5a391229ad893910709bc51b5705962b09404a1d813857578149b8815f35d3ee5752f44cd378d0f31669d4b1d7e2d11f41e08283d5134bd1f
   languageName: node
   linkType: hard
 
@@ -13260,32 +13272,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:0.33.4":
-  version: 0.33.4
-  resolution: "sharp@npm:0.33.4"
+"sharp@npm:0.33.5":
+  version: 0.33.5
+  resolution: "sharp@npm:0.33.5"
   dependencies:
-    "@img/sharp-darwin-arm64": "npm:0.33.4"
-    "@img/sharp-darwin-x64": "npm:0.33.4"
-    "@img/sharp-libvips-darwin-arm64": "npm:1.0.2"
-    "@img/sharp-libvips-darwin-x64": "npm:1.0.2"
-    "@img/sharp-libvips-linux-arm": "npm:1.0.2"
-    "@img/sharp-libvips-linux-arm64": "npm:1.0.2"
-    "@img/sharp-libvips-linux-s390x": "npm:1.0.2"
-    "@img/sharp-libvips-linux-x64": "npm:1.0.2"
-    "@img/sharp-libvips-linuxmusl-arm64": "npm:1.0.2"
-    "@img/sharp-libvips-linuxmusl-x64": "npm:1.0.2"
-    "@img/sharp-linux-arm": "npm:0.33.4"
-    "@img/sharp-linux-arm64": "npm:0.33.4"
-    "@img/sharp-linux-s390x": "npm:0.33.4"
-    "@img/sharp-linux-x64": "npm:0.33.4"
-    "@img/sharp-linuxmusl-arm64": "npm:0.33.4"
-    "@img/sharp-linuxmusl-x64": "npm:0.33.4"
-    "@img/sharp-wasm32": "npm:0.33.4"
-    "@img/sharp-win32-ia32": "npm:0.33.4"
-    "@img/sharp-win32-x64": "npm:0.33.4"
+    "@img/sharp-darwin-arm64": "npm:0.33.5"
+    "@img/sharp-darwin-x64": "npm:0.33.5"
+    "@img/sharp-libvips-darwin-arm64": "npm:1.0.4"
+    "@img/sharp-libvips-darwin-x64": "npm:1.0.4"
+    "@img/sharp-libvips-linux-arm": "npm:1.0.5"
+    "@img/sharp-libvips-linux-arm64": "npm:1.0.4"
+    "@img/sharp-libvips-linux-s390x": "npm:1.0.4"
+    "@img/sharp-libvips-linux-x64": "npm:1.0.4"
+    "@img/sharp-libvips-linuxmusl-arm64": "npm:1.0.4"
+    "@img/sharp-libvips-linuxmusl-x64": "npm:1.0.4"
+    "@img/sharp-linux-arm": "npm:0.33.5"
+    "@img/sharp-linux-arm64": "npm:0.33.5"
+    "@img/sharp-linux-s390x": "npm:0.33.5"
+    "@img/sharp-linux-x64": "npm:0.33.5"
+    "@img/sharp-linuxmusl-arm64": "npm:0.33.5"
+    "@img/sharp-linuxmusl-x64": "npm:0.33.5"
+    "@img/sharp-wasm32": "npm:0.33.5"
+    "@img/sharp-win32-ia32": "npm:0.33.5"
+    "@img/sharp-win32-x64": "npm:0.33.5"
     color: "npm:^4.2.3"
     detect-libc: "npm:^2.0.3"
-    semver: "npm:^7.6.0"
+    semver: "npm:^7.6.3"
   dependenciesMeta:
     "@img/sharp-darwin-arm64":
       optional: true
@@ -13325,7 +13337,7 @@ __metadata:
       optional: true
     "@img/sharp-win32-x64":
       optional: true
-  checksum: 10c0/428c5c6a84ff8968effe50c2de931002f5f30b9f263e1c026d0384e581673c13088a49322f7748114d3d9be4ae9476a74bf003a3af34743e97ef2f880d1cfe45
+  checksum: 10c0/6b81421ddfe6ee524d8d77e325c5e147fef22884e1c7b1656dfd89a88d7025894115da02d5f984261bf2e6daa16f98cadd1721c4ba408b4212b1d2a60f233484
   languageName: node
   linkType: hard
 
@@ -14358,10 +14370,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:4.23.0, type-fest@npm:^4.4.0, type-fest@npm:^4.6.0, type-fest@npm:^4.7.1":
-  version: 4.23.0
-  resolution: "type-fest@npm:4.23.0"
-  checksum: 10c0/c42bb14e99329ab37983d1f188e307bf0cc705a23807d9b2268d8fb2ae781d610ac6e2058dde8f9ea2b1b8ddc77ceb578d157fa81f69f8f70aef1d42fb002996
+"type-fest@npm:4.26.1, type-fest@npm:^4.4.0, type-fest@npm:^4.6.0, type-fest@npm:^4.7.1":
+  version: 4.26.1
+  resolution: "type-fest@npm:4.26.1"
+  checksum: 10c0/d2719ff8d380befe8a3c61068f37f28d6fa2849fd140c5d2f0f143099e371da6856aad7c97e56b83329d45bfe504afe9fd936a7cff600cc0d46aa9ffb008d6c6
   languageName: node
   linkType: hard
 
@@ -15062,9 +15074,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"winston@npm:3.13.1":
-  version: 3.13.1
-  resolution: "winston@npm:3.13.1"
+"winston@npm:3.14.2":
+  version: 3.14.2
+  resolution: "winston@npm:3.14.2"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     "@dabh/diagnostics": "npm:^2.0.2"
@@ -15077,7 +15089,7 @@ __metadata:
     stack-trace: "npm:0.0.x"
     triple-beam: "npm:^1.3.0"
     winston-transport: "npm:^4.7.0"
-  checksum: 10c0/986a542f17b71935b88c14465939bf7eaf64d8d13c18792f74b0eb19b31abdaf472df92049a1d7882405076aba95de13cdb5b3243d0c04c4f9632fac85f57788
+  checksum: 10c0/3f8fe505ea18310982e60452f335dd2b22fdbc9b25839b6ad882971b2416d5adc94a1f1a46e24cb37d967ad01dfe5499adaf5e53575626b5ebb2a25ff30f4e1d
   languageName: node
   linkType: hard
 
