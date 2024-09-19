@@ -98,12 +98,6 @@ def try_pod(name, podspec, project_root)
   pod name, :podspec => podspec if File.exist?(File.join(project_root, podspec))
 end
 
-def override_build_settings!(build_settings, settings_to_append)
-  settings_to_append&.each do |setting, value|
-    build_settings[setting] = value
-  end
-end
-
 def use_hermes?(options)
   use_hermes = ENV.fetch('USE_HERMES', nil)
   return use_hermes == '1' unless use_hermes.nil?

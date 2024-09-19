@@ -4,6 +4,7 @@ require('pathname')
 require_relative('assets_catalog')
 require_relative('entitlements')
 require_relative('info_plist')
+require_relative('node')
 require_relative('pod_helpers')
 require_relative('privacy_manifest')
 require_relative('xcode')
@@ -32,18 +33,6 @@ def autolink_script_path(project_root, target_platform)
   react_native = react_native_path(project_root, target_platform)
   package_path = resolve_module('@react-native-community/cli-platform-ios', react_native)
   File.join(package_path, 'native_modules')
-end
-
-def nearest_node_modules(project_root)
-  path = find_file('node_modules', project_root)
-  assert(!path.nil?, "Could not find 'node_modules'")
-
-  path
-end
-
-def package_version(package_path)
-  package_json = JSON.parse(File.read(File.join(package_path, 'package.json')))
-  Gem::Version.new(package_json['version'])
 end
 
 def react_native_path(project_root, target_platform)
@@ -217,14 +206,10 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   end
 
   # Note the location of Node so we can use it later in script phases
-  File.open(File.join(project_root, '.xcode.env'), 'w') do |f|
-    node_bin = `which node`.strip!
-    f.write("export NODE_BINARY=#{node_bin}\n")
-  end
-  File.open(File.join(destination, '.env'), 'w') do |f|
-    node_bin = `dirname $(which node)`.strip!
-    f.write("export PATH=#{node_bin}:$PATH\n")
-  end
+  node_bin = find_node
+  File.write(File.join(project_root, '.xcode.env'), "export NODE_BINARY='#{node_bin}'\n")
+  File.write(File.join(destination, '.env'),
+             "export PATH=#{`dirname '#{node_bin}'`.strip!}:$PATH\n")
 
   react_native = react_native_path(project_root, target_platform)
   rn_version = package_version(react_native.to_s).segments
