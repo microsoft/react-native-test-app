@@ -84,8 +84,7 @@ export function replaceContent(content, replacements) {
  */
 export function toProjectEntry(project, destPath) {
   return [
-    `Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "${
-      project.name
+    `Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "${project.name
     }", "${path.relative(destPath, project.path)}", "${project.guid}"`,
     "\tProjectSection(ProjectDependencies) = postProject",
     `\t\t${templateView.projectGuidUpper} = ${templateView.projectGuidUpper}`,
@@ -198,6 +197,10 @@ export function generateSolution(destPath, options, fs = nodefs) {
           ...templateView,
           name: path.basename(projectFileName, path.extname(projectFileName)),
           useExperimentalNuget: info.useExperimentalNuGet,
+          rnwPathFromProjectRoot: path.relative(
+            path.dirname(projectManifest),
+            rnWindowsPath
+          ),
         })
         // The current version of this template (v0.63.18) assumes that
         // `react-native-windows` is always installed in

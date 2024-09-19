@@ -3073,26 +3073,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-webapis/web-storage@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@react-native-webapis/web-storage@npm:0.3.0"
-  peerDependencies:
-    "@callstack/react-native-visionos": ">=0.73"
-    react: ">=18.2.0"
-    react-native: ">=0.72"
-    react-native-macos: ">=0.72"
-    react-native-windows: ">=0.72"
-  peerDependenciesMeta:
-    "@callstack/react-native-visionos":
-      optional: true
-    react-native-macos:
-      optional: true
-    react-native-windows:
-      optional: true
-  checksum: 10c0/beb7d762abce424dca060c9af53c2c65fa5033098cc7ad552fa0d75d588046da1027d7f776d4fb2d90ee4c445890e229d9fd3c167ed8f9e8d7c5bf189043560d
-  languageName: node
-  linkType: hard
-
 "@react-native-windows/cli@npm:0.75.1":
   version: 0.75.1
   resolution: "@react-native-windows/cli@npm:0.75.1"
@@ -7553,7 +7533,6 @@ __metadata:
     "@babel/preset-env": "npm:^7.20.0"
     "@callstack/react-native-visionos": "npm:^0.75.0"
     "@react-native-community/cli": "npm:^14.0.0"
-    "@react-native-webapis/web-storage": "npm:^0.3.0"
     "@react-native/babel-preset": "npm:^0.75.0"
     "@react-native/metro-config": "npm:^0.75.0"
     "@rnx-kit/metro-config": "npm:^2.0.0"
