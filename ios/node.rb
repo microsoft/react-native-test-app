@@ -2,19 +2,14 @@ require('json')
 require_relative('pod_helpers')
 
 def find_node
-  node_bin = `which node`.strip!
-  return node_bin if `file #{node_bin}`.include? 'Mach-O'
+  # If `pod install` is run inside a "virtual" environment like
+  # [Yarn](https://yarnpkg.com/), we might find Node wrappers instead of the
+  # actual binary.
+  paths = `type --all --path node`.split("\n")
+  i = paths.find_index { |bin| `file #{bin}`.include? 'Mach-O' }
+  raise 'Could not find Node' if i.nil?
 
-  # If a wrapper is found, remove the path from `PATH` and try again. This can
-  # sometimes happen when `pod install` is run inside a "virtual" environment
-  # like [Turborepo](https://turbo.build).
-  bin_dir = File.dirname(node_bin)
-  filtered_paths = ENV['PATH'].split(':').reject { |p| p.eql?(bin_dir) }
-  raise 'Could not find Node' if filtered_paths.empty?
-
-  ENV['PATH'] = filtered_paths.join(':')
-
-  find_node
+  paths[i]
 end
 
 def nearest_node_modules(project_root)
