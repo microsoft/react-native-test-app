@@ -1,71 +1,19 @@
 import groovy.json.JsonSlurper
 import java.nio.file.Paths
-import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.initialization.DefaultSettings
 
-private static void applyConfigPlugins(String testAppDir, File rootDir) {
-    String[] patch = ["node", "${testAppDir}/scripts/apply-config-plugins.mjs", "--android"]
-    def stderr = new StringBuffer()
-    def proc = Runtime.runtime.exec(patch, null, rootDir)
-    proc.waitForProcessOutput(null, stderr)
-    if (proc.exitValue() != 0) {
-        throw new RuntimeException("Failed to apply config plugins:\n${stderr}")
-    }
-}
-
-private static Object autolinkModules(File projectRoot, File output, String testAppDir) {
-    String[] autolink = ["node", "${testAppDir}/android/autolink.mjs", projectRoot.toString(), output.toString()]
-    def stderr = new StringBuffer()
-    def proc = Runtime.runtime.exec(autolink, null, projectRoot)
-    proc.waitForProcessOutput(null, stderr)
-    if (proc.exitValue() != 0) {
-        throw new RuntimeException("Failed to autolink:\n${stderr}")
-    }
-
-    return new JsonSlurper().parseText(output.text)
-}
-
-private static boolean isFontFile(File file) {
-    // https://github.com/facebook/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L28
-    return [".otf", ".ttf"].any { file.name.endsWith(it) }
-}
-
-private static boolean isMediaFile(File file) {
-    // https://developer.android.com/media/platform/supported-formats
-    return [
-        ".3gp",
-        ".aac",
-        ".amr",
-        ".flac",
-        ".imy",
-        ".m4a",
-        ".mid",
-        ".mkv",
-        ".mp3",
-        ".mp4",
-        ".mxmf",
-        ".ogg",
-        ".ota",
-        ".rtttl",
-        ".rtx",
-        ".ts",
-        ".wav",
-        ".webm",
-        ".xmf",
-    ].any { file.name.endsWith(it) }
-}
-
 def testAppDir = buildscript.sourceFile.getParent()
-apply(from: "${testAppDir}/android/test-app-util.gradle")
+apply(from: "${testAppDir}/android/autolink.gradle")
+apply(from: "${testAppDir}/android/config-plugins.gradle")
+apply(from: "${testAppDir}/android/media-types.gradle")
+apply(from: "${testAppDir}/android/node.gradle")
+apply(from: "${testAppDir}/android/utils.gradle")
 
 checkEnvironment(rootDir, testAppDir)
+applyConfigPlugins(rootDir, testAppDir)
 
 def reactNativeDir = file(findNodeModulesPath("react-native", rootDir))
 def cliAndroidDir = findNodeModulesPath("@react-native-community/cli-platform-android", reactNativeDir)
-
-if (findNodeModulesPath("@expo/config-plugins", rootDir)) {
-    applyConfigPlugins(testAppDir, rootDir)
-}
 
 apply(from: "${cliAndroidDir}/native_modules.gradle")
 

@@ -1,0 +1,18 @@
+import groovy.json.JsonSlurper
+
+ext.autolinkModules = { File projectRoot, File output, String testAppDir ->
+    String[] autolink = ["node", "${testAppDir}/android/autolink.mjs", projectRoot.toString(), output.toString()]
+    def stderr = new StringBuffer()
+    def proc = Runtime.runtime.exec(autolink, null, projectRoot)
+    proc.waitForProcessOutput(null, stderr)
+    if (proc.exitValue() != 0) {
+        throw new RuntimeException("Failed to autolink:\n${stderr}")
+    }
+
+    return new JsonSlurper().parseText(output.text)
+}
+
+ext.autolinkingInfo = { File buildDir ->
+    def autolinking = file("${buildDir}/generated/rnta/autolinking.json")
+    return new JsonSlurper().parseText(autolinking.text)
+}

@@ -20,7 +20,7 @@ const {
 const INT_MAX = 2 ** 31 - 1;
 
 /**
- * This table is also used by `android/test-app-util.gradle`!
+ * This table is also used by `android/utils.gradle`!
  *
  * We have two implementations because there are currently two ways to build the
  * Android app. If built via `@react-native-community/cli`, this script will be

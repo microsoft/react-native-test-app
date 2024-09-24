@@ -1,31 +1,47 @@
+apply(from: "${buildscript.sourceFile.getParent()}/node.gradle")
+apply(from: "${buildscript.sourceFile.getParent()}/react-native.gradle")
+
+/**
+ * Returns the recommended Gradle plugin version for the specified React Native
+ * version.
+ */
+def getDefaultGradlePluginVersion = { int reactNativeVersion ->
+    // Gradle plugin version can be found in the template:
+    // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/build.gradle
+    if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 73, 0)) {
+        return ""
+    } else if (reactNativeVersion >= v(0, 71, 0)) {
+        return "7.3.1"
+    } else {
+        return "7.2.2"
+    }
+}
+
+// TODO: Bump `minSdkVersion` to 24 in 4.0
+def getDefaultMinSdkVersion = { int reactNativeVersion ->
+    if (reactNativeVersion >= v(0, 76, 0)) {
+        return 24
+    } else {
+        return 23
+    }
+}
+
+def getKotlinVersion = { File baseDir ->
+    def fallbackVersion = "1.7.21"
+
+    def packagePath = findNodeModulesPath("react-native", baseDir)
+    def versionCatalog = file("${packagePath}/gradle/libs.versions.toml")
+    if (!versionCatalog.exists()) {
+        return fallbackVersion
+    }
+
+    def m = versionCatalog.text =~ /kotlin = "([.0-9]+)"/
+    def version = m.size() > 0 ? m[0][1] : fallbackVersion
+    logger.info("Detected Kotlin version: ${version}")
+    return version
+}
+
 ext {
-    apply(from: "${buildscript.sourceFile.getParent()}/test-app-util.gradle")
-
-    /**
-     * Returns the recommended Gradle plugin version for the specified React Native
-     * version.
-     */
-    def getDefaultGradlePluginVersion = { reactNativeVersion ->
-        // Gradle plugin version can be found in the template:
-        // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/build.gradle
-        if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 73, 0)) {
-            return ""
-        } else if (reactNativeVersion >= v(0, 71, 0)) {
-            return "7.3.1"
-        } else {
-            return "7.2.2"
-        }
-    }
-
-    // TODO: Bump `minSdkVersion` to 24 in 4.0
-    def getDefaultMinSdkVersion = { reactNativeVersion ->
-        if (reactNativeVersion >= v(0, 76, 0)) {
-            return 24
-        } else {
-            return 23
-        }
-    }
-
     reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
 
     compileSdkVersion = rootProject.findProperty("react.compileSdkVersion") ?: 34
