@@ -13,6 +13,17 @@
   </PropertyGroup>
   <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props" />
   <PropertyGroup>
+    <!--
+      `AppxManifest.xml` is output relative to the `.wapproj` file and
+      `run-windows` cannot find it because it expects `.wapproj` to be in the
+      same directory as the solution. We need to change the output directory so
+      that `run-windows` can find the file.
+
+      Note that we don't use `OutDir` because the project name is always
+      appended to it, e.g. `x64/Debug/ReactApp.Package`.
+    -->
+    <BaseOutputPath>$([MSBuild]::MakeRelative($(MSBuildThisFileDirectory), $(SolutionDir)))\$(MSBuildProjectName)\bin\</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)\$(Platform)\$(Configuration)\</OutputPath>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
   </PropertyGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
@@ -87,5 +98,21 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Composition.Package.props')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Composition.Package.props'))" />
     <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Composition.Package.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Composition.Package.targets'))" />
+  </Target>
+  <Target Name="CopyAppPackagesToOutputDirectory" AfterTargets="_GenerateAppxPackage">
+    <!--
+      `AppPackages` is output relative to the `.wapproj` file and `run-windows`
+      cannot find it because it expects `.wapproj` to be in the same directory
+      as the solution. We need to copy the files to the output directory so that
+      `run-windows` can find them.
+    -->
+    <ItemGroup>
+      <AppPackagesFiles Include="$(MSBuildThisFileDirectory)\AppPackages\**\*.*"/>
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(AppPackagesFiles)"
+      DestinationFolder="$(BaseOutputPath)\..\AppPackages\%(RecursiveDir)"
+      UseSymbolicLinksIfPossible="true"
+    />
   </Target>
 </Project>
