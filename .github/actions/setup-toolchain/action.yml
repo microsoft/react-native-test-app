@@ -79,6 +79,15 @@ runs:
       run: |
         sudo xcode-select --switch ${{ inputs.xcode-developer-dir }}
       shell: bash
+    - name: Download visionOS SDK
+      if: ${{ inputs.platform == 'visionos' }}
+      run: |
+        # https://github.com/actions/runner-images/issues/10559
+        sudo xcodebuild -runFirstLaunch
+        sudo xcrun simctl list
+        sudo xcodebuild -downloadPlatform visionOS
+        sudo xcodebuild -runFirstLaunch
+      shell: bash
     - name: Cache /.ccache
       if: ${{ steps.setup-ccache.outputs.cache-key }}
       uses: actions/cache@v4
