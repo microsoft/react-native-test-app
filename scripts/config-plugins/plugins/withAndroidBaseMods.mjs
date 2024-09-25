@@ -36,7 +36,10 @@ const defaultProviders = {
   ),
   projectBuildGradle: expoProviders.projectBuildGradle,
   settingsGradle: expoProviders.settingsGradle,
-  appBuildGradle: expoProviders.appBuildGradle,
+  appBuildGradle: modifyFilePath(
+    expoProviders.appBuildGradle,
+    "app/build.gradle"
+  ),
   mainActivity: modifyFilePath(
     expoProviders.mainActivity,
     "app/src/main/java/com/microsoft/reacttestapp/MainActivity.kt"
