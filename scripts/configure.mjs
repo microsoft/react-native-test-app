@@ -109,6 +109,20 @@ export function mergeConfig(lhs, rhs) {
 }
 
 /**
+ * Returns whether `react-native.config.js` needs to be updated.
+ * @param {string} packagePath
+ * @returns {boolean}
+ */
+function shouldUpdateReactNativeConfig(packagePath, fs = nodefs) {
+  const configPath = path.join(packagePath, "react-native.config.js");
+  const config = readTextFile(configPath, fs);
+  return (
+    !/["'`]react-native-test-app["'`]/.test(config) ||
+    !config.includes("configureProjects")
+  );
+}
+
+/**
  * Sort the keys in specified object.
  * @param {Record<string, unknown>} obj
  */
@@ -609,15 +623,14 @@ export function updatePackageManifest(
 
 /**
  * Writes all specified files to disk.
- * @param {Configuration["files"]} files
+ * @param {[string, string | FileCopy][]} files
  * @param {string} destination
  * @returns {Promise<void[]>}
  */
 export function writeAllFiles(files, destination, fs = nodefs.promises) {
   const options = { recursive: true, mode: 0o755 };
   return Promise.all(
-    Object.keys(files).map(async (filename) => {
-      const content = files[filename];
+    files.map(async ([filename, content]) => {
       if (!content) {
         return;
       }
@@ -665,8 +678,24 @@ export function configure(params, fs = nodefs) {
   }
 
   const { files, oldFiles } = config;
+  const templateFiles = Object.entries(files).filter(([filename]) => {
+    switch (filename) {
+      case "react-native.config.js": {
+        const needsUpdate = shouldUpdateReactNativeConfig(packagePath);
+        if (!needsUpdate) {
+          warn(
+            `skipped modifying '${filename}' because it may already be configured for 'react-native-test-app'`
+          );
+        }
+        return needsUpdate;
+      }
 
-  writeAllFiles(files, packagePath).then(() => {
+      default:
+        return true;
+    }
+  });
+
+  writeAllFiles(templateFiles, packagePath).then(() => {
     const packageManifest = path.join(packagePath, "package.json");
     if (!fs.existsSync(packageManifest)) {
       // We cannot assume that the app itself is an npm package. Some libraries
