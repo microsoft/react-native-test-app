@@ -110,11 +110,14 @@ export function mergeConfig(lhs, rhs) {
 
 /**
  * Returns whether `react-native.config.js` needs to be updated.
- * @param {string} packagePath
+ * @param {string} configPath
  * @returns {boolean}
  */
-function shouldUpdateReactNativeConfig(packagePath, fs = nodefs) {
-  const configPath = path.join(packagePath, "react-native.config.js");
+function shouldUpdateReactNativeConfig(configPath, fs = nodefs) {
+  if (!fs.existsSync(configPath)) {
+    return true;
+  }
+
   const config = readTextFile(configPath, fs);
   return (
     !/["'`]react-native-test-app["'`]/.test(config) ||
@@ -681,7 +684,8 @@ export function configure(params, fs = nodefs) {
   const templateFiles = Object.entries(files).filter(([filename]) => {
     switch (filename) {
       case "react-native.config.js": {
-        const needsUpdate = shouldUpdateReactNativeConfig(packagePath);
+        const configPath = path.join(packagePath, filename);
+        const needsUpdate = shouldUpdateReactNativeConfig(configPath);
         if (!needsUpdate) {
           warn(
             `skipped modifying '${filename}' because it may already be configured for 'react-native-test-app'`
