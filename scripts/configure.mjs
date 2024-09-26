@@ -113,7 +113,7 @@ export function mergeConfig(lhs, rhs) {
  * @param {string} configPath
  * @returns {boolean}
  */
-function shouldUpdateReactNativeConfig(configPath, fs = nodefs) {
+export function shouldUpdateReactNativeConfig(configPath, fs = nodefs) {
   if (!fs.existsSync(configPath)) {
     return true;
   }
