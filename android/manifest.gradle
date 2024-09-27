@@ -1,0 +1,128 @@
+import groovy.json.JsonSlurper
+import java.nio.file.Paths
+
+def _manifest = null
+
+ext.getAppName = {
+    def manifest = getManifest()
+    if (manifest != null) {
+        def displayName = manifest["displayName"]
+        if (displayName instanceof String) {
+            return displayName
+        }
+
+        def name = manifest["name"]
+        if (name instanceof String) {
+            return name
+        }
+    }
+
+    return "ReactTestApp"
+}
+
+ext.getApplicationId = {
+    def manifest = getManifest()
+    if (manifest != null) {
+        def config = manifest["android"]
+        if (config instanceof Object && config.containsKey("package")) {
+            return config["package"]
+        }
+    }
+
+    return "com.microsoft.reacttestapp"
+}
+
+ext.getArchitectures = { Project project ->
+    def archs = project.findProperty("react.nativeArchitectures")
+                    ?: project.findProperty("reactNativeArchitectures")
+    return archs != null
+        ? archs.split(",")
+        : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
+
+ext.getManifest = {
+    if (_manifest == null) {
+        def manifestFile = findFile("app.json")
+        if (manifestFile == null) {
+            return null
+        }
+
+        _manifest = new JsonSlurper().parseText(manifestFile.text)
+    }
+    return _manifest
+}
+
+ext.getSigningConfigs = {
+    def safeSetMap = { varName, map, prop, defaultVal ->
+        map[varName] = prop.containsKey(varName) ? prop.get(varName) : defaultVal
+    }
+
+    def definedConfigs = new LinkedHashMap<String, Object>()
+    def manifestFile = findFile("app.json")
+    if (manifestFile != null) {
+        def manifest = new JsonSlurper().parseText(manifestFile.text)
+
+        if (!manifest["android"]) {
+            return definedConfigs
+        }
+
+        def signingConfigs = manifest["android"]["signingConfigs"]
+        if (signingConfigs) {
+            signingConfigs.each { config ->
+                def configName = config.key
+                def props = config.value
+                def pathStoreFile = props.containsKey("storeFile")
+                    ? Paths.get(manifestFile.getParent(), props.get("storeFile")).normalize().toAbsolutePath()
+                    : null
+                if (pathStoreFile == null || !file(pathStoreFile).exists() || !file(pathStoreFile).isFile()) {
+                    throw new FileNotFoundException("Signing storeFile for flavor ${configName} is missing: " + pathStoreFile)
+                }
+
+                def signConfig = new LinkedHashMap<String, Object>()
+                safeSetMap("keyAlias", signConfig, props, "androiddebugkey")
+                safeSetMap("keyPassword", signConfig, props, "android")
+                safeSetMap("storePassword", signConfig, props, "android")
+                signConfig["storeFile"] = pathStoreFile.toFile()
+                definedConfigs[configName] = signConfig
+            }
+        }
+    }
+
+    return definedConfigs
+}
+
+ext.getSingleAppMode = {
+    def manifest = getManifest()
+    if (manifest != null) {
+        def singleApp = manifest["singleApp"]
+        if (singleApp instanceof String) {
+            return singleApp
+        }
+    }
+
+    return false
+}
+
+ext.getVersionCode = {
+    def manifest = getManifest()
+    if (manifest != null) {
+        def config = manifest["android"]
+        if (config instanceof Object && config.containsKey("versionCode")) {
+            return config["versionCode"]
+        }
+    }
+
+    return 1
+}
+
+ext.getVersionName = {
+    def manifest = getManifest()
+    if (manifest != null) {
+        def version = manifest["version"]
+        if (version instanceof String) {
+            return version
+        }
+    }
+
+    return "1.0"
+}

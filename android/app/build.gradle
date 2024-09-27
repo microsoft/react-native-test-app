@@ -1,7 +1,8 @@
 buildscript {
     def androidDir = "${buildscript.sourceFile.getParent()}/../"
-    apply(from: "${androidDir}/test-app-util.gradle")
+    apply(from: "${androidDir}/autolink.gradle")
     apply(from: "${androidDir}/dependencies.gradle")
+    apply(from: "${androidDir}/manifest.gradle")
 }
 
 plugins {

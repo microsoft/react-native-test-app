@@ -1,0 +1,15 @@
+apply(from: "${buildscript.sourceFile.getParent()}/node.gradle")
+
+ext.applyConfigPlugins = { File rootDir, String testAppDir ->
+    if (!findNodeModulesPath("@expo/config-plugins", rootDir)) {
+        return
+    }
+
+    String[] patch = ["node", "${testAppDir}/scripts/apply-config-plugins.mjs", "--android"]
+    def stderr = new StringBuffer()
+    def proc = Runtime.runtime.exec(patch, null, rootDir)
+    proc.waitForProcessOutput(null, stderr)
+    if (proc.exitValue() != 0) {
+        throw new RuntimeException("Failed to apply config plugins:\n${stderr}")
+    }
+}

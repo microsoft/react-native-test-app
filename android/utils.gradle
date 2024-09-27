@@ -1,0 +1,74 @@
+import groovy.json.JsonSlurper
+import java.nio.file.Paths
+
+ext.checkEnvironment = { rootDir, testAppDir ->
+    String[] args = ["node", "-p", "JSON.stringify(require('./android/gradle-wrapper.js').GRADLE_VERSIONS)"]
+    def stdout = new StringBuffer()
+    def stderr = new StringBuffer()
+    def node = Runtime.runtime.exec(args, null, file(testAppDir))
+    node.waitForProcessOutput(stdout, stderr)
+    if (node.exitValue() != 0) {
+        throw new RuntimeException("Failed to load 'android/gradle-wrapper.js':\n${stderr}")
+    }
+
+    // We have two implementations because there are currently two ways to build
+    // the Android app. If built via `@react-native-community/cli`, the JS
+    // script will be run and we can change Gradle version before it is
+    // executed. If it's built with Gradle directly, it's already too late and
+    // the best we can do is to warn the user.
+    def gradleVersions = new JsonSlurper().parseText(stdout.toString())
+
+    def warnGradle = { gradleVersion, reactNativeVersion ->
+        def message = [
+            "\n",
+            "Gradle {} is recommended for React Native {}.\n",
+            "> Run the following command in the 'android' folder to install a supported version:\n",
+            "   > ./gradlew wrapper --gradle-version={}\n",
+            "> If the command above fails, you can manually modify 'gradle/wrapper/gradle-wrapper.properties'.",
+        ].join("")
+        logger.error(message, gradleVersion, reactNativeVersion, gradleVersion)
+    }
+
+    def gradleVersion = toVersionNumber(gradle.gradleVersion)
+
+    def reactNativeVersionString = getPackageVersion("react-native", rootDir)
+    def reactNativeVersion = toVersionNumber(reactNativeVersionString)
+
+    for (gradleVersionRange in gradleVersions) {
+        def (rnVersion, lower, upper) = gradleVersionRange
+        if (reactNativeVersion >= rnVersion) {
+            if (gradleVersion < lower[0]) {
+                warnGradle(lower[1], reactNativeVersionString)
+            } else if (gradleVersion >= upper[0]) {
+                warnGradle(upper[1], reactNativeVersionString)
+            }
+            return
+        }
+    }
+}
+
+ext.findFile = { String fileName ->
+    def currentDirPath = rootDir == null ? null : rootDir.toString()
+
+    while (currentDirPath != null) {
+        def currentDir = file(currentDirPath)
+        def requestedFile = Paths.get(currentDirPath, fileName).toFile()
+
+        if (requestedFile.exists()) {
+            return requestedFile
+        }
+
+        currentDirPath = currentDir.getParent()
+    }
+
+    return null
+}
+
+ext.toVersionNumber = { String version ->
+    def (major, minor, patch) = version.findAll(/\d+/)
+    return v(major as int, minor as int, (patch ?: 0) as int)
+}
+
+ext.v = { int major, int minor, int patch ->
+    return (major * 1000000) + (minor * 1000) + patch
+}
