@@ -17,11 +17,11 @@ describe("writeAllFiles()", () => {
   it("writes all files to disk", async () => {
     setMockFiles({ "file-on-disk": "0" });
     await writeAllFiles(
-      [
-        ["file0", { source: "file-on-disk" }],
-        ["file1", "1"],
-        ["file2", "2"],
-      ],
+      {
+        file0: { source: "file-on-disk" },
+        file1: "1",
+        file2: "2",
+      },
       "test"
     );
 
@@ -32,11 +32,11 @@ describe("writeAllFiles()", () => {
 
   it("ignores files with no content", async () => {
     await writeAllFiles(
-      [
-        ["file1", "1"],
-        ["file2", "2"],
-        ["file3", ""],
-      ],
+      {
+        file1: "1",
+        file2: "2",
+        file3: "",
+      },
       "."
     );
 
@@ -48,23 +48,25 @@ describe("writeAllFiles()", () => {
   it("rethrows write exceptions", async () => {
     await rejects(
       writeAllFiles(
-        [
-          // This entry will throw an exception
-          ["file0", { source: "Bad Arnold movies.txt" }],
-          ["file1", "1"],
-          ["file2", "2"],
-        ],
+        {
+          file0: {
+            // This entry will throw an exception
+            source: "Bad Arnold movies.txt",
+          },
+          file1: "1",
+          file2: "2",
+        },
         "."
       )
     );
 
     await rejects(
       writeAllFiles(
-        [
-          ["file1", "1"],
-          ["file2", "2"],
-          ["", "3"], // This entry will throw an exception
-        ],
+        {
+          file1: "1",
+          file2: "2",
+          "": "3", // This entry will throw an exception
+        },
         "."
       )
     );
