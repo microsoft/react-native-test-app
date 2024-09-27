@@ -73,7 +73,7 @@ async function makeProject(
     init: true,
   });
 
-  await writeAllFiles(Object.entries(files), packagePath);
+  await writeAllFiles(files, packagePath);
 
   try {
     await fsp.symlink(
