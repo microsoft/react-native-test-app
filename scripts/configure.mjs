@@ -552,7 +552,8 @@ export function isDestructive(packagePath, { files, oldFiles }, fs = nodefs) {
 
   if (modified.length > 0 || removed.length > 0) {
     if (modified.length > 0) {
-      warn("The following files will be overwritten:");
+      const reset = colors.bold("reset");
+      warn(`The following files will be ${reset} to their original state:`);
       modified.sort().forEach((file) => warn(file, "    "));
     }
     if (removed.length > 0) {
@@ -657,10 +658,11 @@ export function configure(params, fs = nodefs) {
   const config = gatherConfig(params);
 
   if (!force && isDestructive(packagePath, config)) {
-    error("Destructive file operations are required.");
-    console.log(
-      `Re-run with ${colors.bold("--force")} if you're fine with this.`
+    error(
+      "Some files will be reset and/or removed: You may have to manually restore your own or your template's customizations to get the app working again (for more details, see https://github.com/microsoft/react-native-test-app/wiki/Updating#reconfiguringresetting-rnta)"
     );
+    const forceFlag = colors.bold("--force");
+    console.log(`Re-run with ${forceFlag} if you're fine with this.`);
     return 1;
   }
 
