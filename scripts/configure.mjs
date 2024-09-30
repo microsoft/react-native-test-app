@@ -659,7 +659,7 @@ export function configure(params, fs = nodefs) {
 
   if (!force && isDestructive(packagePath, config)) {
     error(
-      "Some files will be reset and/or removed: You may have to manually restore any customizations to get the app working again (for more details, see https://github.com/microsoft/react-native-test-app/wiki/Updating#reconfiguringresetting-rnta)"
+      "Some files will be reset and/or removed: You may have to manually restore your own or your template's customizations to get the app working again (for more details, see https://github.com/microsoft/react-native-test-app/wiki/Updating#reconfiguringresetting-rnta)"
     );
     const forceFlag = colors.bold("--force");
     console.log(`Re-run with ${forceFlag} if you're fine with this.`);
