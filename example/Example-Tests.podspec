@@ -22,5 +22,4 @@ Pod::Spec.new do |s|
   s.user_target_xcconfig  = { 'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => '$(inherited)' }
 
   s.source_files = 'ios/ExampleTests/**/*.{m,swift}'
-  s.osx.exclude_files = 'ios/ExampleTests/ReactNativePerformanceTests.m'
 end

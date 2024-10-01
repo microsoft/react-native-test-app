@@ -17,8 +17,6 @@ if [[ $platform == ios/* ]]; then
   else
     destination='-destination "generic/platform=iOS Simulator"'
   fi
-
-  skip_testing='-skip-testing:ReactTestAppTests/ReactNativePerformanceTests'
 elif [[ $platform == macos/* ]]; then
   destination=''
   skip_testing=''
@@ -32,8 +30,6 @@ elif [[ $platform == visionos/* ]]; then
   else
     destination='-destination "generic/platform=visionOS Simulator"'
   fi
-
-  skip_testing='-skip-testing:ReactTestAppTests/ReactNativePerformanceTests'
 else
   echo "Cannot detect platform: $workspace"
   exit 1
