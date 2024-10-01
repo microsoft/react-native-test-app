@@ -5,11 +5,7 @@ def find_node
   # If `pod install` is run inside a "virtual" environment like
   # [Yarn](https://yarnpkg.com/), we might find Node wrappers instead of the
   # actual binary.
-  paths = `type --all --path node`.split("\n")
-  i = paths.find_index { |bin| `file #{bin}`.include? 'Mach-O' }
-  raise 'Could not find Node' if i.nil?
-
-  paths[i]
+  `node --print "process.argv[0]"`.strip
 end
 
 def nearest_node_modules(project_root)
