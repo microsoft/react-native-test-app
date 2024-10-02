@@ -450,7 +450,7 @@ export function projectInfo(
       (newArch || (useHermes ?? versionNumber >= v(0, 73, 0))) &&
       getHermesVersion(rnWindowsPath, fs),
     nugetDependencies: getNuGetDependencies(rnWindowsPath),
-    useExperimentalNuGet: !newArch && useNuGet,
+    useExperimentalNuGet: newArch || useNuGet,
     useFabric: newArch,
     usePackageReferences: versionNumber === 0 || versionNumber >= v(0, 68, 0),
     xamlVersion:
