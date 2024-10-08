@@ -45,10 +45,47 @@
   "eslintConfig": {
     "extends": "../.github/eslint.config.js"
   },
-  "rnx-kit//disabled": {
-    "//": "This configuration is only used for Viewfinder",
+  "rnx-kit": {
     "kitType": "app",
-    "alignDeps": {
+    "bundle": [
+      {
+        "id": "main",
+        "entryFile": "index.ts",
+        "assetsDest": "dist",
+        "targets": [
+          "android",
+          "ios",
+          "macos",
+          "visionos",
+          "windows"
+        ],
+        "platforms": {
+          "android": {
+            "bundleOutput": "dist/main.android.jsbundle",
+            "sourcemapOutput": "dist/main.android.jsbundle.map",
+            "assetsDest": "dist/res"
+          },
+          "ios": {
+            "bundleOutput": "dist/main.ios.jsbundle",
+            "sourcemapOutput": "dist/main.ios.jsbundle.map"
+          },
+          "macos": {
+            "bundleOutput": "dist/main.macos.jsbundle",
+            "sourcemapOutput": "dist/main.macos.jsbundle.map"
+          },
+          "visionos": {
+            "bundleOutput": "dist/main.visionos.jsbundle",
+            "sourcemapOutput": "dist/main.visionos.jsbundle.map"
+          },
+          "windows": {
+            "bundleOutput": "dist/main.windows.bundle",
+            "sourcemapOutput": "dist/main.windows.bundle.map"
+          }
+        }
+      }
+    ],
+    "alignDeps//disabled": {
+      "//": "This configuration is only used for Viewfinder",
       "requirements": [
         "react-native@0.75"
       ],
