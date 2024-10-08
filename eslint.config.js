@@ -1,15 +1,9 @@
-const { FlatCompat } = require("@eslint/eslintrc");
-const js = require("@eslint/js");
+const sdl = require("@microsoft/eslint-plugin-sdl");
 const rnx = require("@rnx-kit/eslint-plugin");
 const wdio = require("eslint-plugin-wdio");
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-});
-
 module.exports = [
-  ...compat.extends("plugin:@microsoft/sdl/required"),
+  ...sdl.configs.recommended,
   wdio.configs["flat/recommended"],
   ...rnx.configs.strict,
   {
