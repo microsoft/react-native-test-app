@@ -50,7 +50,7 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
   const androidCommands = ["build-android", "run-android"];
   if (
     process.env["RNTA_CONFIGURE_GRADLE_WRAPPER"] === "0" ||
-    (process.argv.length > 1 &&  // Allow this script to be called directly
+    (process.argv.length > 1 && // Allow this script to be called directly
       !process.argv.some((arg) => androidCommands.includes(arg)))
   ) {
     return;
