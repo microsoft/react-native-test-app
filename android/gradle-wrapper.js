@@ -34,7 +34,7 @@ const INT_MAX = 2 ** 31 - 1;
  * @type {[number, [number, string], [number, string]][]}
  */
 const GRADLE_VERSIONS = [
-  [v(0, 76, 0), [v(8, 10, 1), "8.10.1"], [INT_MAX, ""]], // 0.76: [8.10.1, *)
+  [v(0, 76, 0), [v(8, 10, 2), "8.10.2"], [INT_MAX, ""]], // 0.76: [8.10.2, *)
   [v(0, 75, 0), [v(8, 8, 0), "8.8"], [v(8, 9, 0), "8.8"]], // 0.75: [8.8, 8.9)
   [v(0, 74, 0), [v(8, 6, 0), "8.6"], [v(8, 9, 0), "8.8"]], // 0.74: [8.6, 8.9)
   [v(0, 73, 0), [v(8, 3, 0), "8.3"], [v(8, 9, 0), "8.8"]], // 0.73: [8.3, 8.9)
@@ -50,7 +50,8 @@ function configureGradleWrapper(sourceDir, fs = nodefs) {
   const androidCommands = ["build-android", "run-android"];
   if (
     process.env["RNTA_CONFIGURE_GRADLE_WRAPPER"] === "0" ||
-    !process.argv.some((arg) => androidCommands.includes(arg))
+    (process.argv.length > 1 &&  // Allow this script to be called directly
+      !process.argv.some((arg) => androidCommands.includes(arg)))
   ) {
     return;
   }
