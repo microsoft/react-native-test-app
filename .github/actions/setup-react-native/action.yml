@@ -13,4 +13,5 @@ runs:
         rm example/macos/Podfile.lock
         rm example/visionos/Podfile.lock
         npm run set-react-version -- ${{ inputs.version }}
+        node --eval "require('./android/gradle-wrapper.js').configureGradleWrapper('example/android')"
       shell: bash
