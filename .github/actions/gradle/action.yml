@@ -20,6 +20,10 @@ runs:
         fi
       shell: bash
       working-directory: ${{ inputs.project-root }}
+    - name: Configure Gradle wrapper
+      run: |
+        node --eval "require('./android/gradle-wrapper.js').configureGradleWrapper('${{ steps.build-root-directory-finder.outputs.build-root-directory }}')"
+      shell: bash
     - name: Build
       run: ./gradlew ${{ inputs.arguments }}
       shell: bash
