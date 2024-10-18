@@ -209,7 +209,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   node_bin = find_node
   File.write(File.join(project_root, '.xcode.env'), "export NODE_BINARY='#{node_bin}'\n")
   File.write(File.join(destination, '.env'),
-             "export PATH=#{`dirname '#{node_bin}'`.strip!}:$PATH\n")
+             "export PATH='#{`dirname '#{node_bin}'`.strip!}':$PATH\n")
 
   react_native = react_native_path(project_root, target_platform)
   rn_version = package_version(react_native.to_s).segments
