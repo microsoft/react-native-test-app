@@ -4,7 +4,7 @@
  * Reminder that this script is meant to be runnable without installing
  * dependencies. It can therefore not rely on any external libraries.
  */
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import { URL, fileURLToPath } from "node:url";
 import * as util from "node:util";
@@ -327,8 +327,7 @@ if (platforms.length === 0) {
     })
     .then(() => {
       showBanner(`Reconfigure existing app`);
-      $(
-        PACKAGE_MANAGER,
+      const args = [
         "configure-test-app",
         "-p",
         "android",
@@ -339,8 +338,12 @@ if (platforms.length === 0) {
         "-p",
         "visionos",
         "-p",
-        "windows"
-      );
+        "windows",
+      ];
+      const { status } = spawnSync(PACKAGE_MANAGER, args, { stdio: "inherit" });
+      if (status !== 1) {
+        throw new Error("Expected an error");
+      }
     })
     .then(() => {
       showBanner(green("✔ Pass"));
