@@ -1,3 +1,5 @@
+ext.rnta_media_types_gradle = true
+
 ext.isFontFile = { File file ->
     // https://github.com/facebook/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L28
     return [".otf", ".ttf"].any { file.name.endsWith(it) }

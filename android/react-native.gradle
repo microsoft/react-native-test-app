@@ -1,4 +1,8 @@
-apply(from: "${buildscript.sourceFile.getParent()}/node.gradle")
+ext.rnta_react_native_gradle = true
+
+if (!hasProperty("rnta_node_gradle")) {
+    apply(from: "${buildscript.sourceFile.getParent()}/node.gradle")
+}
 
 ext.isBridgelessEnabled = { Project project, boolean isNewArchEnabled ->
     if (isNewArchEnabled) {

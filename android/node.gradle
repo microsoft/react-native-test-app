@@ -1,7 +1,11 @@
 import groovy.json.JsonSlurper
 import java.nio.file.Paths
 
-apply(from: "${buildscript.sourceFile.getParent()}/utils.gradle")
+ext.rnta_node_gradle = true
+
+if (!hasProperty("rnta_utils_gradle")) {
+    apply(from: "${buildscript.sourceFile.getParent()}/utils.gradle")
+}
 
 def _dependencies = [:]
 
