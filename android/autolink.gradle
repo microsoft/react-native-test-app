@@ -1,5 +1,7 @@
 import groovy.json.JsonSlurper
 
+ext.rnta_autolink_gradle = true
+
 ext.autolinkModules = { File projectRoot, File output, String testAppDir ->
     String[] autolink = ["node", "${testAppDir}/android/autolink.mjs", projectRoot.toString(), output.toString()]
     def stderr = new StringBuffer()

@@ -1,6 +1,8 @@
 import groovy.json.JsonSlurper
 import java.nio.file.Paths
 
+ext.rnta_utils_gradle = true
+
 ext.checkEnvironment = { rootDir, testAppDir ->
     String[] args = ["node", "-p", "JSON.stringify(require('./android/gradle-wrapper.js').GRADLE_VERSIONS)"]
     def stdout = new StringBuffer()

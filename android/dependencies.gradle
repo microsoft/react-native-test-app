@@ -1,5 +1,9 @@
-apply(from: "${buildscript.sourceFile.getParent()}/node.gradle")
-apply(from: "${buildscript.sourceFile.getParent()}/react-native.gradle")
+if (!hasProperty("rnta_node_gradle")) {
+    apply(from: "${buildscript.sourceFile.getParent()}/node.gradle")
+}
+if (!hasProperty("rnta_react_native_gradle")) {
+    apply(from: "${buildscript.sourceFile.getParent()}/react-native.gradle")
+}
 
 /**
  * Returns the recommended Gradle plugin version for the specified React Native
