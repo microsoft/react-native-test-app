@@ -185,7 +185,7 @@
     "appium/semver": "^7.6.3",
     "appium/teen_process": "^2.2.0",
     "appium/ws": "^8.18.0",
-    "appium/yaml": "^2.5.0",
+    "appium/yaml": "^2.6.0",
     "argparse/sprintf-js": "^1.0.2",
     "body-parser": "~1.20.3",
     "bplist-creator": "~0.1.1",
