@@ -2089,7 +2089,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^3.0.0, @eslint/eslintrc@npm:^3.1.0":
+"@eslint/eslintrc@npm:^3.1.0":
   version: 3.1.0
   resolution: "@eslint/eslintrc@npm:3.1.0"
   dependencies:
@@ -3451,10 +3451,9 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/eslint-plugin@npm:^0.8.0":
-  version: 0.8.3
-  resolution: "@rnx-kit/eslint-plugin@npm:0.8.3"
+  version: 0.8.4
+  resolution: "@rnx-kit/eslint-plugin@npm:0.8.4"
   dependencies:
-    "@eslint/eslintrc": "npm:^3.0.0"
     "@react-native/eslint-plugin": "npm:^0.75.0"
     enhanced-resolve: "npm:^5.8.3"
     eslint-plugin-react: "npm:^7.35.2"
@@ -3462,7 +3461,7 @@ __metadata:
     typescript-eslint: "npm:^8.0.0"
   peerDependencies:
     eslint: ">=8.57.0"
-  checksum: 10c0/8e872f41d9ece5ca2bf5d66ffb2438f9bcfea0fb687290f7cc955029bc1c2dddc43fd9b76f9d3fa795d4699428e5ad07fdf7a1ec5012ce91df21b74b586419c3
+  checksum: 10c0/c5f1442bdc1a027776dadad62400006056ba89faccccaa104c527837125b9a48d89df42cab8529ab606877a18790386bde63de3d255f905a1dc493c529646edf
   languageName: node
   linkType: hard
 
