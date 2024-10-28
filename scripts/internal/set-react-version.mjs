@@ -7,6 +7,7 @@
 import { promises as fs } from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import * as util from "node:util";
 import {
   isMain,
   readJSONFile,
@@ -16,8 +17,10 @@ import {
 } from "../helpers.js";
 import { fetchPackageMetadata, npmRegistryBaseURL } from "../utils/npm.mjs";
 
+/** @typedef {import("../types.js").Manifest} Manifest */
 /**
- * @typedef {import("../types.js").Manifest} Manifest
+ * @template T
+ * @typedef {{ [P in keyof T]: Required<NonNullable<T[P]>> }} RequiredObject<T>
  */
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "nightly"];
@@ -343,13 +346,14 @@ async function getProfile(v, coreOnly) {
  * Sets specified React Native version.
  * @param {string} version
  * @param {boolean} coreOnly
+ * @param {Record<string, string>} [overrides]
  * @return {Promise<void>}
  */
-export async function setReactVersion(version, coreOnly) {
+export async function setReactVersion(version, coreOnly, overrides = {}) {
   /** @type {fs.FileHandle | undefined} */
   let fd;
   try {
-    const profile = await getProfile(version, coreOnly);
+    const profile = { ...(await getProfile(version, coreOnly)), ...overrides };
     console.dir(profile, { depth: null });
 
     const manifests = ["package.json", "example/package.json"];
@@ -394,15 +398,35 @@ export async function setReactVersion(version, coreOnly) {
   }
 }
 
-const { [1]: script, [2]: version } = process.argv;
 if (isMain(import.meta.url)) {
+  const { values, positionals } = util.parseArgs({
+    args: process.argv.slice(2),
+    options: {
+      "core-only": {
+        type: "boolean",
+        default: false,
+      },
+      overrides: {
+        type: "string",
+        default: "{}",
+      },
+    },
+    strict: true,
+    allowPositionals: true,
+    tokens: false,
+  });
+
+  const version = positionals[0];
   if (!isValidVersion(version)) {
+    const script = process.argv[1];
     console.log(
       `Usage: ${path.basename(script)} [<version number> | ${VALID_TAGS.join(" | ")}]`
     );
     process.exitCode = 1;
   } else {
-    setReactVersion(version, process.argv.includes("--core-only")).then(() => {
+    const { "core-only": coreOnly, overrides } =
+      /** @type {RequiredObject<typeof values>} */ (values);
+    setReactVersion(version, coreOnly, JSON.parse(overrides)).then(() => {
       const numVersion = VALID_TAGS.includes(version)
         ? Number.MAX_SAFE_INTEGER
         : toVersionNumber(version);
