@@ -29,9 +29,13 @@ def apply_config_plugins(project_root, target_platform)
   raise 'Failed to apply config plugins' unless result
 end
 
-def autolink_script_path(project_root, target_platform)
-  react_native = react_native_path(project_root, target_platform)
-  package_path = resolve_module('@react-native-community/cli-platform-ios', react_native)
+def autolink_script_path(project_root, target_platform, react_native_version)
+  start_dir = if react_native_version >= v(0, 76, 0)
+                project_root
+              else
+                react_native_path(project_root, target_platform)
+              end
+  package_path = resolve_module('@react-native-community/cli-platform-ios', start_dir)
   File.join(package_path, 'native_modules')
 end
 
@@ -356,7 +360,9 @@ def use_test_app_internal!(target_platform, options)
     install! 'cocoapods', :deterministic_uuids => false
   end
 
-  require_relative(autolink_script_path(project_root, target_platform))
+  require_relative(autolink_script_path(project_root,
+                                        target_platform,
+                                        project_target[:react_native_version]))
 
   begin
     platform :ios, platforms[:ios] if target_platform == :ios

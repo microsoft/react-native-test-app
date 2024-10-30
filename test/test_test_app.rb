@@ -37,10 +37,17 @@ class TestTestApp < Minitest::Test
 
   def test_autolink_script_path
     react_native_dir = fixture_path('test_app', 'node_modules', 'react-native')
+    autolink_path = fixture_path('test_app',
+                                 'node_modules',
+                                 '@react-native-community',
+                                 'cli-platform-ios',
+                                 'native_modules').to_s
 
     stub :react_native_path, react_native_dir do
-      assert(require(autolink_script_path(fixture_path('test_app'), :ios)))
+      assert_equal(autolink_script_path(fixture_path('test_app'), :ios, v(0, 75, 0)), autolink_path)
     end
+
+    assert_equal(autolink_script_path(fixture_path('test_app'), :ios, v(0, 76, 0)), autolink_path)
   end
 
   def test_react_native_pods

@@ -31,8 +31,10 @@ const {
  */
 const getRNPackageVersion = (() => {
   const isTesting = "NODE_TEST_CONTEXT" in process.env;
+
   /** @type {Record<string, number>} */
   let versions = {};
+
   /** @type {(packageName: string) => number} */
   return (packageName, fs = nodefs) => {
     if (isTesting || !versions[packageName]) {
@@ -49,7 +51,12 @@ const getRNPackageVersion = (() => {
  * @returns {number}
  */
 function cliPlatformIOSVersion() {
-  return getRNPackageVersion("@react-native-community/cli-platform-ios");
+  try {
+    return getRNPackageVersion("@react-native-community/cli-platform-ios");
+  } catch (_) {
+    // The returned value doesn't matter when we're on 0.76 or later
+    return Number.MAX_SAFE_INTEGER;
+  }
 }
 
 /**
@@ -61,17 +68,24 @@ function getAndroidPackageName(manifestPath, fs = nodefs) {
     return undefined;
   }
 
-  const rncliAndroidVersion = getRNPackageVersion(
-    "@react-native-community/cli-platform-android",
-    fs
-  );
-  if (rncliAndroidVersion < v(12, 3, 7)) {
-    // TODO: This block can be removed when we drop support for 0.72
-    return undefined;
-  }
-  if (rncliAndroidVersion >= v(13, 0, 0) && rncliAndroidVersion < v(13, 6, 9)) {
-    // TODO: This block can be removed when we drop support for 0.73
-    return undefined;
+  try {
+    const rncliAndroidVersion = getRNPackageVersion(
+      "@react-native-community/cli-platform-android",
+      fs
+    );
+    if (rncliAndroidVersion < v(12, 3, 7)) {
+      // TODO: This block can be removed when we drop support for 0.72
+      return undefined;
+    }
+    if (
+      rncliAndroidVersion >= v(13, 0, 0) &&
+      rncliAndroidVersion < v(13, 6, 9)
+    ) {
+      // TODO: This block can be removed when we drop support for 0.73
+      return undefined;
+    }
+  } catch (_) {
+    // We're on 0.76 or later
   }
 
   /** @type {{ android?: { package?: string }}} */
