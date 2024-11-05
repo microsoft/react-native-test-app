@@ -1,41 +1,41 @@
 {
-  "extends": ["config:base", "schedule:earlyMondays"],
+  "extends": ["config:recommended", "schedule:earlyMondays"],
   "labels": ["dependencies"],
   "packageRules": [
     {
       "groupName": "@react-native-community/cli",
-      "matchPackagePrefixes": ["@react-native-community/cli"],
-      "allowedVersions": "^14.0.0"
+      "allowedVersions": "^14.0.0",
+      "matchPackageNames": ["@react-native-community/cli{/,}**"]
     },
     {
       "groupName": "Android CameraX",
       "matchDatasources": ["maven"],
-      "matchPackagePrefixes": ["androidx.camera"]
+      "matchPackageNames": ["androidx.camera{/,}**"]
     },
     {
       "groupName": "Kotlin",
       "matchDatasources": ["maven"],
-      "matchPackagePrefixes": ["org.jetbrains.kotlin"]
+      "matchPackageNames": ["org.jetbrains.kotlin{/,}**"]
     },
     {
       "groupName": "ESLint",
-      "matchSourceUrlPrefixes": ["https://github.com/eslint/eslint"]
+      "matchSourceUrls": ["https://github.com/eslint/eslint{/,}**"]
     },
     {
       "groupName": "Metro",
-      "matchSourceUrlPrefixes": ["https://github.com/facebook/metro"],
-      "allowedVersions": "^0.80.0"
+      "allowedVersions": "^0.80.0",
+      "matchSourceUrls": ["https://github.com/facebook/metro{/,}**"]
     },
     {
       "groupName": "TypeScript type definitions",
       "matchDatasources": ["npm"],
-      "matchPackagePrefixes": ["@types/"]
+      "matchPackageNames": ["@types/{/,}**"]
     },
     {
       "groupName": "WebdriverIO",
-      "matchSourceUrlPrefixes": [
-        "https://github.com/appium/appium",
-        "https://github.com/webdriverio/webdriverio"
+      "matchSourceUrls": [
+        "https://github.com/appium/appium{/,}**",
+        "https://github.com/webdriverio/webdriverio{/,}**"
       ]
     },
     {
@@ -70,6 +70,6 @@
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
   "rangeStrategy": "update-lockfile",
-  "stabilityDays": 7,
+  "minimumReleaseAge": "7 days",
   "timezone": "Europe/Oslo"
 }
