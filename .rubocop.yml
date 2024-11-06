@@ -4,6 +4,7 @@ require:
 AllCops:
   NewCops: enable
   Exclude:
+    - "**/Pods/**/*"
     - "**/node_modules/**/*"
     - "vendor/bundle/**/*"
   TargetRubyVersion: 2.6
