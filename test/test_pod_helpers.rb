@@ -83,21 +83,47 @@ class TestPodHelpers < Minitest::Test
   end
 
   def test_use_hermes?
+    options = { path: '../node_modules/react-native' }
+
+    ENV.delete('RCT_BUILD_HERMES_FROM_SOURCE')
     ENV.delete('USE_HERMES')
 
-    refute(use_hermes?({}))
-    assert(use_hermes?({ hermes_enabled: true }))
+    refute(use_hermes?(options))
+    assert(use_hermes?({ **options, hermes_enabled: true }))
+    refute(ENV.fetch('RCT_BUILD_HERMES_FROM_SOURCE', nil))
 
     ENV['USE_HERMES'] = '0'
 
-    refute(use_hermes?({}))
-    refute(use_hermes?({ hermes_enabled: true }))
+    refute(use_hermes?(options))
+    refute(use_hermes?({ **options, hermes_enabled: true }))
+    refute(ENV.fetch('RCT_BUILD_HERMES_FROM_SOURCE', nil))
 
     ENV['USE_HERMES'] = '1'
 
-    assert(use_hermes?({}))
-    assert(use_hermes?({ hermes_enabled: true }))
+    assert(use_hermes?(options))
+    assert(use_hermes?({ **options, hermes_enabled: true }))
+    refute(ENV.fetch('RCT_BUILD_HERMES_FROM_SOURCE', nil))
 
+    ENV.delete('RCT_BUILD_HERMES_FROM_SOURCE')
+    ENV.delete('USE_HERMES')
+  end
+
+  def test_use_hermes_visionos?
+    options = {
+      path: '../node_modules/@callstack/react-native-visionos',
+      hermes_enabled: true,
+    }
+
+    ENV.delete('RCT_BUILD_HERMES_FROM_SOURCE')
+    ENV.delete('USE_HERMES')
+
+    assert(use_hermes?({ **options, version: v(0, 76, 0) }))
+    refute(ENV.fetch('RCT_BUILD_HERMES_FROM_SOURCE', nil))
+
+    assert(use_hermes?({ **options, version: v(0, 75, 0) }))
+    assert_equal('true', ENV.fetch('RCT_BUILD_HERMES_FROM_SOURCE'))
+
+    ENV.delete('RCT_BUILD_HERMES_FROM_SOURCE')
     ENV.delete('USE_HERMES')
   end
 
