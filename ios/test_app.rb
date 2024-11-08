@@ -360,9 +360,12 @@ def use_test_app_internal!(target_platform, options)
     install! 'cocoapods', :deterministic_uuids => false
   end
 
-  require_relative(autolink_script_path(project_root,
-                                        target_platform,
-                                        project_target[:react_native_version]))
+  # As of 0.75, we should use `use_native_modules!` from `react-native` instead
+  if project_target[:react_native_version] < v(0, 75, 0)
+    require_relative(autolink_script_path(project_root,
+                                          target_platform,
+                                          project_target[:react_native_version]))
+  end
 
   begin
     platform :ios, platforms[:ios] if target_platform == :ios
