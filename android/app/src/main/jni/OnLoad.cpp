@@ -19,6 +19,7 @@ using facebook::react::TurboModule;
 
 namespace
 {
+#ifndef REACTAPP_LEGACY_AUTOLINKING
     std::shared_ptr<TurboModule> cxxModuleProvider(const std::string &name,
                                                    const std::shared_ptr<CallInvoker> &jsInvoker)
     {
@@ -42,15 +43,18 @@ namespace
         // And we fallback to the module providers autolinked by RN CLI
         return autolinking_ModuleProvider(name, params);
     }
+#endif  // !REACTAPP_LEGACY_AUTOLINKING
 }  // namespace
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *)
 {
     return facebook::jni::initialize(vm, [] {
+#ifndef REACTAPP_LEGACY_AUTOLINKING
         DefaultTurboModuleManagerDelegate::cxxModuleProvider = &cxxModuleProvider;
         DefaultTurboModuleManagerDelegate::javaModuleProvider = &javaModuleProvider;
         DefaultComponentsRegistry::registerComponentDescriptorsFromEntryPoint =
             &autolinking_registerProviders;
+#endif  // !REACTAPP_LEGACY_AUTOLINKING
     });
 }
 
