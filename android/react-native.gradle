@@ -36,10 +36,13 @@ ext.isFabricEnabled = { Project project ->
 }
 
 ext.isNewArchitectureEnabled = { Project project ->
-    def newArchEnabled = project.findProperty("react.newArchEnabled")
-                             ?: project.findProperty("newArchEnabled")
+    def NEW_ARCH_ENABLED = "newArchEnabled"
+    def SCOPED_NEW_ARCH_ENABLED = "react.newArchEnabled"
+
+    def newArchEnabled = project.findProperty(SCOPED_NEW_ARCH_ENABLED)
+                             ?: project.findProperty(NEW_ARCH_ENABLED)
+    def version = getPackageVersionNumber("react-native", project.rootDir)
     if (newArchEnabled == "true") {
-        def version = getPackageVersionNumber("react-native", project.rootDir)
         def isSupported = version == 0 || version >= v(0, 71, 0)
         if (!isSupported) {
             throw new GradleException([
@@ -50,5 +53,13 @@ ext.isNewArchitectureEnabled = { Project project ->
         }
         return isSupported
     }
-    return false
+
+    if (version < v(0, 77, 0)) {
+        return false
+    }
+
+    // As of 0.77, New Architecture is assumed on and doesn't build otherwise
+    project.ext[NEW_ARCH_ENABLED] = "true"
+    project.ext[SCOPED_NEW_ARCH_ENABLED] = "true"
+    return true
 }
