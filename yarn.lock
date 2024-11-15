@@ -12380,6 +12380,7 @@ __metadata:
     "@react-native-community/template": "npm:^0.75.0"
     "@rnx-kit/eslint-plugin": "npm:^0.8.0"
     "@rnx-kit/react-native-host": "npm:^0.5.0"
+    "@rnx-kit/tools-react-native": "npm:^2.0.0"
     "@rnx-kit/tsconfig": "npm:^2.0.0"
     "@types/js-yaml": "npm:^4.0.5"
     "@types/mustache": "npm:^4.0.0"

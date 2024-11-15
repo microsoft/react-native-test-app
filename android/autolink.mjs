@@ -1,13 +1,12 @@
 // @ts-check
-import * as crypto from "node:crypto";
+import { getCurrentState } from "@rnx-kit/tools-react-native/cache";
+import { loadContext } from "@rnx-kit/tools-react-native/context";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import {
-  findFile,
   isMain,
   readJSONFile,
   readTextFile,
-  requireTransitive,
   writeTextFile,
 } from "../scripts/helpers.js";
 
@@ -31,45 +30,6 @@ export function cleanDependencyName(name) {
  */
 function ensureDirForFile(p) {
   fs.mkdirSync(path.dirname(p), { recursive: true, mode: 0o755 });
-}
-
-/**
- * @param {crypto.Hash} hash
- * @param {string[]} files
- * @param {string} projectRoot
- * @param {"all" | "first-only"} mode
- */
-function updateHash(hash, files, projectRoot, mode) {
-  for (const file of files) {
-    const p = findFile(file, projectRoot);
-    if (p) {
-      hash.update(fs.readFileSync(p));
-      if (mode === "first-only") {
-        break;
-      }
-    }
-  }
-}
-
-/**
- * @param {string} projectRoot
- * @returns {string}
- */
-function getCurrentState(projectRoot) {
-  const sha2 = crypto.createHash("sha256");
-
-  const configFiles = ["package.json", "react-native.config.js"];
-  updateHash(sha2, configFiles, projectRoot, "all");
-
-  const lockfiles = [
-    "yarn.lock",
-    "package-lock.json",
-    "pnpm-lock.yaml",
-    "bun.lockb",
-  ];
-  updateHash(sha2, lockfiles, projectRoot, "first-only");
-
-  return sha2.digest("hex");
 }
 
 /**
@@ -132,19 +92,9 @@ function loadConfig(json, projectRoot) {
     return readJSONFile(json);
   }
 
-  /** @type {import("@react-native-community/cli")} */
-  const { loadConfig } = requireTransitive(
-    ["react-native", "@react-native-community/cli"],
-    projectRoot
-  );
-
-  // The signature of `loadConfig` changed in 14.0.0:
-  // https://github.com/react-native-community/cli/commit/b787c89edb781bb788576cd615d2974fc81402fc
-  const argc = loadConfig.length;
-  // @ts-expect-error TS2345: Argument of type X is not assignable to parameter of type Y
-  const config = loadConfig(argc === 1 ? { projectRoot } : projectRoot);
-
+  const config = loadContext(projectRoot);
   const prunedConfig = pruneDependencies(config);
+
   ensureDirForFile(json);
   writeTextFile(json, JSON.stringify(prunedConfig, undefined, 2) + "\n");
   writeTextFile(stateFile, state);
