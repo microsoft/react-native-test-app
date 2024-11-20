@@ -3352,12 +3352,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-react-native@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@rnx-kit/tools-react-native@npm:2.0.0"
+"@rnx-kit/tools-react-native@npm:^2.0.0, @rnx-kit/tools-react-native@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@rnx-kit/tools-react-native@npm:2.0.1"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
-  checksum: 10c0/859ababb03313d6130b4eaa91fc6a9ec2fd97edec7e30a8fecf82491050e65eae3c1865950613cca87d0d78fff530fd8d72e85bd3a57b45151825f7c357abd48
+  checksum: 10c0/55ec8ea8c279b994da7d4411e216d0d7ed643d817f4f87271606a8f11fb4eebfa596c17dc2effb188a94769b754bc590d3ed1e48724edf9f7d1e5d24c7e06379
   languageName: node
   linkType: hard
 
@@ -12206,7 +12206,7 @@ __metadata:
     "@react-native-community/template": "npm:^0.75.0"
     "@rnx-kit/eslint-plugin": "npm:^0.8.0"
     "@rnx-kit/react-native-host": "npm:^0.5.0"
-    "@rnx-kit/tools-react-native": "npm:^2.0.0"
+    "@rnx-kit/tools-react-native": "npm:^2.0.1"
     "@rnx-kit/tsconfig": "npm:^2.0.0"
     "@types/js-yaml": "npm:^4.0.5"
     "@types/mustache": "npm:^4.0.0"

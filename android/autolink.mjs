@@ -1,6 +1,6 @@
 // @ts-check
 import { getCurrentState } from "@rnx-kit/tools-react-native/cache";
-import { loadContext } from "@rnx-kit/tools-react-native/context";
+import { loadContextAsync } from "@rnx-kit/tools-react-native";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import {
@@ -83,16 +83,16 @@ export function pruneDependencies(config) {
 /**
  * @param {string} json
  * @param {string} projectRoot
- * @returns {Config}
+ * @returns {Promise<Config>}
  */
-function loadConfig(json, projectRoot) {
+async function loadConfig(json, projectRoot) {
   const state = getCurrentState(projectRoot);
   const stateFile = json.substring(0, json.length - "json".length) + "sha256";
   if (fs.existsSync(stateFile) && readTextFile(stateFile) === state) {
     return readJSONFile(json);
   }
 
-  const config = loadContext(projectRoot);
+  const config = await loadContextAsync(projectRoot);
   const prunedConfig = pruneDependencies(config);
 
   ensureDirForFile(json);
@@ -101,10 +101,13 @@ function loadConfig(json, projectRoot) {
   return prunedConfig;
 }
 
-if (isMain(import.meta.url)) {
-  const [, , projectRoot = process.cwd(), output] = process.argv;
-
-  const config = loadConfig(
+/**
+ * @param {string} projectRoot
+ * @param {string} output
+ * @returns {Promise<void>}
+ */
+async function main(projectRoot, output) {
+  const config = await loadConfig(
     output.replace(
       /[/\\]app[/\\]build[/\\]generated[/\\]rnta[/\\]/,
       "/build/generated/autolinking/"
@@ -120,4 +123,9 @@ if (isMain(import.meta.url)) {
     ensureDirForFile(output);
     writeTextFile(output, json + "\n");
   }
+}
+
+if (isMain(import.meta.url)) {
+  const [, , projectRoot = process.cwd(), output = ""] = process.argv;
+  await main(projectRoot, output);
 }
