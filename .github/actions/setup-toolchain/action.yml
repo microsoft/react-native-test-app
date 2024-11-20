@@ -72,7 +72,7 @@ runs:
     - name: Set up Node.js
       uses: actions/setup-node@v4.1.0
       with:
-        node-version: "20"
+        node-version: "22"
         cache: ${{ inputs.cache-npm-dependencies }}
     - name: Set up Xcode
       if: ${{ inputs.xcode-developer-dir != '' }}

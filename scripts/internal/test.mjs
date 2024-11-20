@@ -31,8 +31,8 @@ switch (getTarget(input)) {
     break;
   case "typescript":
     testWith(process.argv0, [
-      "--import",
-      "tsx",
+      "--experimental-transform-types",
+      "--no-warnings",
       "--test",
       "--experimental-test-coverage",
       ...input,
