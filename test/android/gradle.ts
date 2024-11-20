@@ -6,8 +6,8 @@ import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import { gatherConfig, writeAllFiles } from "../../scripts/configure.mjs";
 import { findNearest, readJSONFile } from "../../scripts/helpers.js";
-import type { ConfigureParams } from "../../scripts/types.js";
-import { templatePath } from "../template.js";
+import type { ConfigureParams } from "../../scripts/types.ts";
+import { templatePath } from "../template.ts";
 
 const GRADLE_TEST_TASK = "nodeTest";
 const MKDIR_OPTIONS = { recursive: true, mode: 0o755 };

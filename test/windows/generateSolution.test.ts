@@ -2,7 +2,7 @@ import { equal } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import { generateSolution as generateSolutionActual } from "../../windows/test-app.mjs";
-import { fs, setMockFiles } from "../fs.mock.js";
+import { fs, setMockFiles } from "../fs.mock.ts";
 
 describe("generateSolution()", () => {
   const generateSolution: typeof generateSolutionActual = (d, cfg) =>

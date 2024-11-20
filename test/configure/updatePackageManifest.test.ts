@@ -3,8 +3,8 @@ import { afterEach, describe, it } from "node:test";
 import { URL } from "node:url";
 import { updatePackageManifest as updatePackageManifestActual } from "../../scripts/configure.mjs";
 import { readJSONFile } from "../../scripts/helpers.js";
-import type { Manifest } from "../../scripts/types.js";
-import { fs, setMockFiles } from "../fs.mock.js";
+import type { Manifest } from "../../scripts/types.ts";
+import { fs, setMockFiles } from "../fs.mock.ts";
 
 function getExampleManifest() {
   const p = new URL("../../example/package.json", import.meta.url);

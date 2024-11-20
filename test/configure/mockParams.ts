@@ -1,5 +1,5 @@
 /* node:coverage disable */
-import type { ConfigureParams } from "../../scripts/types.js";
+import type { ConfigureParams } from "../../scripts/types.ts";
 
 /**
  * Returns mock parameters.

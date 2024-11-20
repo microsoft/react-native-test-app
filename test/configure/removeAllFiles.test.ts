@@ -1,7 +1,7 @@
 import { ok } from "node:assert/strict";
 import { after, beforeEach, describe, it } from "node:test";
 import { removeAllFiles as removeAllFilesActual } from "../../scripts/configure.mjs";
-import { fs, setMockFiles } from "../fs.mock.js";
+import { fs, setMockFiles } from "../fs.mock.ts";
 
 describe("removeAllFiles()", () => {
   const removeAllFiles: typeof removeAllFilesActual = (files, destination) =>

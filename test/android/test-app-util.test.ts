@@ -6,7 +6,7 @@ import {
   reactNativeVersion,
   removeProject,
   runGradleWithProject,
-} from "./gradle.js";
+} from "./gradle.ts";
 
 describe("test-app-util.gradle", () => {
   const defaultTestProject = "TestAppUtilTest";

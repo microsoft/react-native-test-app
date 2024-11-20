@@ -1,7 +1,7 @@
 import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { generate as generateActual } from "../../scripts/embed-manifest/kotlin.mjs";
-import * as fixtures from "./fixtures.js";
+import * as fixtures from "./fixtures.ts";
 
 describe("embed manifest (Kotlin)", () => {
   const generate = (json: Record<string, unknown>) => generateActual(json, "0");

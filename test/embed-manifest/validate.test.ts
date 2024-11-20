@@ -2,7 +2,7 @@ import { deepEqual, equal, match, notEqual } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { validate as validateActual } from "../../scripts/embed-manifest/validate.mjs";
 import { findFile as findFileActual } from "../../scripts/helpers.js";
-import { fs, setMockFiles } from "../fs.mock.js";
+import { fs, setMockFiles } from "../fs.mock.ts";
 
 describe("validate()", () => {
   const findFile: typeof findFileActual = (file, startDir = undefined) =>

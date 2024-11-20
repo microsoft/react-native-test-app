@@ -1,7 +1,7 @@
 import { equal, ok } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { isDestructive as isDestructiveActual } from "../../scripts/configure.mjs";
-import { fs, setMockFiles } from "../fs.mock.js";
+import { fs, setMockFiles } from "../fs.mock.ts";
 
 describe("isDestructive()", () => {
   /**

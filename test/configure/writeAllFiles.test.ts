@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
 import { writeAllFiles as writeAllFilesActual } from "../../scripts/configure.mjs";
 import { readTextFile as readTextFileActual } from "../../scripts/helpers.js";
-import { fs, setMockFiles } from "../fs.mock.js";
+import { fs, setMockFiles } from "../fs.mock.ts";
 
 describe("writeAllFiles()", () => {
   const readTextFile: typeof readTextFileActual = (p) =>
