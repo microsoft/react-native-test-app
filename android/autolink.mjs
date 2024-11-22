@@ -1,6 +1,6 @@
 // @ts-check
 import { getCurrentState } from "@rnx-kit/tools-react-native/cache";
-import { loadContextAsync } from "@rnx-kit/tools-react-native";
+import { loadContextAsync } from "@rnx-kit/tools-react-native/context";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import {
