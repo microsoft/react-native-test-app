@@ -4350,7 +4350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-adb@npm:^12.0.0, appium-adb@npm:^12.5.2, appium-adb@npm:^12.7.0":
+"appium-adb@npm:^12.0.0, appium-adb@npm:^12.7.0":
   version: 12.7.0
   resolution: "appium-adb@npm:12.7.0"
   dependencies:
@@ -4368,9 +4368,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-android-driver@npm:^9.12.1":
-  version: 9.12.3
-  resolution: "appium-android-driver@npm:9.12.3"
+"appium-android-driver@npm:^9.14.0":
+  version: 9.14.1
+  resolution: "appium-android-driver@npm:9.14.1"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     "@colors/colors": "npm:^1.6.0"
@@ -4392,7 +4392,7 @@ __metadata:
     ws: "npm:^8.0.0"
   peerDependencies:
     appium: ^2.0.0
-  checksum: 10c0/425fcb0dda40bbaae17f9dfd72638b62d3df33066c0eb2cb3f6f93b36f811deb23938eedca16780d105958232a3e16a13d3ff3a1b1d0b8b7166117981b2d53af
+  checksum: 10c0/327437df8d1d8e3151e9e1e5b4adb18d0d5a5cd9155d048fb8828b0a2d0fd19b02fb790741c2b56c6c3371a973f2c53c0aa0cdcf0a90afd23a6fee544d225072
   languageName: node
   linkType: hard
 
@@ -4431,9 +4431,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-ios-device@npm:^2.0.0, appium-ios-device@npm:^2.5.0, appium-ios-device@npm:^2.7.23":
-  version: 2.7.23
-  resolution: "appium-ios-device@npm:2.7.23"
+"appium-ios-device@npm:^2.0.0, appium-ios-device@npm:^2.7.23, appium-ios-device@npm:^2.7.25":
+  version: 2.7.25
+  resolution: "appium-ios-device@npm:2.7.25"
   dependencies:
     "@appium/support": "npm:^5.0.3"
     asyncbox: "npm:^3.0.0"
@@ -4444,8 +4444,8 @@ __metadata:
     lodash: "npm:^4.17.15"
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
-    uuid: "npm:^10.0.0"
-  checksum: 10c0/508106fb6f506dce2711ec83f02d0e0380f8f1c87d97a3731c80080d38bf0767ea3f51263d7856b094734cc5c829f7ad03bacb17e17d2a3879a9613709ba0ea6
+    uuid: "npm:^11.0.1"
+  checksum: 10c0/8622cc9a14d3de7483d93dde465f40edb67f437024d75d2d74760d149bbd9237b5b0e42b399cc965be0331c4e76396bbcadb013fae9e89983582c6c1b9f38a08
   languageName: node
   linkType: hard
 
@@ -4486,11 +4486,11 @@ __metadata:
   linkType: hard
 
 "appium-uiautomator2-driver@npm:^3.0.0":
-  version: 3.8.1
-  resolution: "appium-uiautomator2-driver@npm:3.8.1"
+  version: 3.9.0
+  resolution: "appium-uiautomator2-driver@npm:3.9.0"
   dependencies:
-    appium-adb: "npm:^12.5.2"
-    appium-android-driver: "npm:^9.12.1"
+    appium-adb: "npm:^12.7.0"
+    appium-android-driver: "npm:^9.14.0"
     appium-uiautomator2-server: "npm:^7.0.24"
     asyncbox: "npm:^3.0.0"
     axios: "npm:^1.6.5"
@@ -4504,7 +4504,7 @@ __metadata:
     type-fest: "npm:^4.4.0"
   peerDependencies:
     appium: ^2.4.1
-  checksum: 10c0/3676415af246303df187007e14e4e40385b03e42b20d391233d17621fd41d93f58ac5559648fdfc99287caeb1599179afbaebe100945934f0b22acd37fb9450f
+  checksum: 10c0/2d419e02b067b01bbcd8517bad533400667ea433b32e40cf32823887d6a553fa7949f522091905839877ead976bb56c1a9c04605060b33eea7976c9b9fe80e6b
   languageName: node
   linkType: hard
 
@@ -4515,14 +4515,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-webdriveragent@npm:^8.9.4":
-  version: 8.9.4
-  resolution: "appium-webdriveragent@npm:8.9.4"
+"appium-webdriveragent@npm:^8.11.0":
+  version: 8.11.1
+  resolution: "appium-webdriveragent@npm:8.11.1"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/strongbox": "npm:^0.x"
     "@appium/support": "npm:^5.0.3"
-    appium-ios-device: "npm:^2.5.0"
+    appium-ios-device: "npm:^2.7.25"
     appium-ios-simulator: "npm:^6.0.0"
     async-lock: "npm:^1.0.0"
     asyncbox: "npm:^3.0.0"
@@ -4531,7 +4531,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
-  checksum: 10c0/76b402324f1e39b1d7149a3b697fea95a78a350949047e5e08ba6b78b5761e43eece52bf8d7140dbb0ac6c67b84c60d5039d731a02b64a40a18c3f6e8db9c837
+  checksum: 10c0/389fd920e7810ea5d8b1e1f3ac29bdb83570228aff47454153d1e4a439bada7768faa681d2ed6da8418b44efd4a23ba111a33d55d47ced541b458b08de429a87
   languageName: node
   linkType: hard
 
@@ -4554,15 +4554,15 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^7.0.0":
-  version: 7.28.3
-  resolution: "appium-xcuitest-driver@npm:7.28.3"
+  version: 7.32.0
+  resolution: "appium-xcuitest-driver@npm:7.32.0"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
     appium-ios-device: "npm:^2.7.23"
     appium-ios-simulator: "npm:^6.1.7"
     appium-remote-debugger: "npm:^12.1.1"
-    appium-webdriveragent: "npm:^8.9.4"
+    appium-webdriveragent: "npm:^8.11.0"
     appium-xcode: "npm:^5.1.4"
     async-lock: "npm:^1.4.0"
     asyncbox: "npm:^3.0.0"
@@ -4581,7 +4581,7 @@ __metadata:
     ws: "npm:^8.13.0"
   peerDependencies:
     appium: ^2.5.4
-  checksum: 10c0/f756a6444b5ff9a4790c9bb02950a36a050357d4166ce1fc3b802802f95f19a0faa983a11f9ad7fff435fe87c70ab28c0f9b34c61f95439ec42fe8f528fc92b0
+  checksum: 10c0/914dd0f3027dc16d8c4d64fd9c7df9abd3688cd8741dbfadc6bbffd117b88cc5146ed8362807a63bb8a86f0e10fbeae7c03579f485346a0f9a50f14a4023ded2
   languageName: node
   linkType: hard
 
@@ -7013,9 +7013,9 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-wdio@npm:^9.0.0":
-  version: 9.0.8
-  resolution: "eslint-plugin-wdio@npm:9.0.8"
-  checksum: 10c0/b4596239e5dd0defb637e2d980ad008f84f4da67e11e17613bc22553beda8296f14f8d42e28a789356a02560d6b3d5888d63426918031bab96271c17e8c95787
+  version: 9.2.11
+  resolution: "eslint-plugin-wdio@npm:9.2.11"
+  checksum: 10c0/1bc79d5171b5067b3463bd5538c5b6509e0726af19485d43d426cacbc84f981d819187d8969e590d315a16456655d307dabe22339c966909dbfc588b74847186
   languageName: node
   linkType: hard
 
@@ -14337,6 +14337,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:^11.0.1":
+  version: 11.0.3
+  resolution: "uuid@npm:11.0.3"
+  bin:
+    uuid: dist/esm/bin/uuid
+  checksum: 10c0/cee762fc76d949a2ff9205770334699e0043d52bb766472593a25f150077c9deed821230251ea3d6ab3943a5ea137d2826678797f1d5f6754c7ce5ce27e9f7a6
+  languageName: node
+  linkType: hard
+
 "uuid@npm:^3.3.2":
   version: 3.4.0
   resolution: "uuid@npm:3.4.0"
@@ -14442,9 +14451,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webdriver@npm:9.2.8":
-  version: 9.2.8
-  resolution: "webdriver@npm:9.2.8"
+"webdriver@npm:9.3.1":
+  version: 9.3.1
+  resolution: "webdriver@npm:9.3.1"
   dependencies:
     "@types/node": "npm:^20.1.0"
     "@types/ws": "npm:^8.5.3"
@@ -14455,13 +14464,13 @@ __metadata:
     "@wdio/utils": "npm:9.2.8"
     deepmerge-ts: "npm:^7.0.3"
     ws: "npm:^8.8.0"
-  checksum: 10c0/76d94200b6bfe410ab6439ba8c7864e003febee2fdb31bb672101c9444afac460fcf3d3470ab12c3a184b86f31109c2a2ebc9ec66de7f56eb063b1e5eee1bea8
+  checksum: 10c0/11f8f40c3605e162c8dee9915148f675e35a5088a237c895c2cd506c83ff23c8c39b76673ca2dbe0f453d96c1ad360006752a6c904e3632e9929effeacbda2d9
   languageName: node
   linkType: hard
 
 "webdriverio@npm:^9.0.0":
-  version: 9.2.11
-  resolution: "webdriverio@npm:9.2.11"
+  version: 9.3.1
+  resolution: "webdriverio@npm:9.3.1"
   dependencies:
     "@types/node": "npm:^20.11.30"
     "@types/sinonjs__fake-timers": "npm:^8.1.5"
@@ -14489,13 +14498,13 @@ __metadata:
     rgb2hex: "npm:0.2.5"
     serialize-error: "npm:^11.0.3"
     urlpattern-polyfill: "npm:^10.0.0"
-    webdriver: "npm:9.2.8"
+    webdriver: "npm:9.3.1"
   peerDependencies:
     puppeteer-core: ^22.3.0
   peerDependenciesMeta:
     puppeteer-core:
       optional: true
-  checksum: 10c0/0bfab32dbc1ddea984e0740610b11e10aeea4c2a5037ea6d308a2c61cd6ddf31da9f95989ad427585a826fa4a6e109b01fcbfcd0a3aead92aed62f8dccaf3b66
+  checksum: 10c0/128d146e20b6ec3f876434652215ebde6d5a19dc09580007341935ab5857db0a3cdf9bcc701efccf5c75befa6bb6be1b5fe8be848a86676dec7fe509f5a51b0b
   languageName: node
   linkType: hard
 
