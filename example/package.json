@@ -19,19 +19,19 @@
     "windows": "react-native run-windows --no-packager"
   },
   "dependencies": {
-    "@callstack/react-native-visionos": "^0.75.0",
-    "@react-native-webapis/web-storage": "^0.4.0",
-    "react": "^18.2.0",
-    "react-native": "^0.75.0",
-    "react-native-macos": "^0.75.2",
-    "react-native-windows": "^0.75.0"
+    "@callstack/react-native-visionos": "^0.76.0",
+    "@react-native-webapis/web-storage": "^0.4.1",
+    "react": "18.3.1",
+    "react-native": "0.76.5",
+    "react-native-macos": "^0.76.0",
+    "react-native-windows": "^0.76.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
-    "@react-native-community/cli": "^14.0.0",
-    "@react-native/babel-preset": "^0.75.0",
-    "@react-native/metro-config": "^0.75.0",
+    "@react-native-community/cli": "^15.0.0",
+    "@react-native/babel-preset": "^0.76.0",
+    "@react-native/metro-config": "^0.76.0",
     "@rnx-kit/metro-config": "^2.0.0",
     "@rnx-kit/polyfills": "^0.2.0",
     "@rnx-kit/tsconfig": "^2.0.0",
@@ -87,7 +87,7 @@
     "alignDeps//disabled": {
       "//": "This configuration is only used for Viewfinder",
       "requirements": [
-        "react-native@0.75"
+        "react-native@0.76"
       ],
       "capabilities": [
         "core-android",
