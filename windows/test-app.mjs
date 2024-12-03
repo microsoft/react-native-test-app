@@ -238,6 +238,7 @@ export function generateSolution(destPath, options, fs = nodefs) {
     const { useExperimentalNuGet, useFabric, versionNumber } = info;
     const url = new URL(experimentalFeaturesPropsFilename, import.meta.url);
     copyAndReplaceAsync(fileURLToPath(url), experimentalFeaturesPropsPath, {
+      "<RnwNewArch>false</RnwNewArch>": `<RnwNewArch>${useFabric}</RnwNewArch>`,
       "<UseFabric>false</UseFabric>": `<UseFabric>${useFabric}</UseFabric>`,
       "<UseHermes>true</UseHermes>": `<UseHermes>${useHermes == null ? versionNumber >= v(0, 73, 0) : useHermes}</UseHermes>`,
       "<UseWinUI3>false</UseWinUI3>": `<UseWinUI3>${useFabric}</UseWinUI3>`,
