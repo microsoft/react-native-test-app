@@ -14,15 +14,8 @@ namespace ReactTestApp
         : public facebook::jni::HybridClass<TurboModuleManagerDelegate,
                                             facebook::react::TurboModuleManagerDelegate>
     {
-        // Signatures changed in 0.70 to avoid unnecessary string copies; see
-        // https://github.com/facebook/react-native/commit/3337add547c60b84816ef5dad82f4ead2e8742ef
-#if __has_include(<ReactCommon/CompositeTurboModuleManagerDelegate.h>)
         using SharedCallInvoker = const std::shared_ptr<facebook::react::CallInvoker> &;
         using StringRef = const std::string &;
-#else
-        using SharedCallInvoker = const std::shared_ptr<facebook::react::CallInvoker>;
-        using StringRef = const std::string;
-#endif
 
     public:
         static constexpr auto kJavaDescriptor =
