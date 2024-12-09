@@ -3650,7 +3650,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^22.0.0":
   version: 22.10.1
   resolution: "@types/node@npm:22.10.1"
   dependencies:
@@ -3659,7 +3659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.0.0, @types/node@npm:^20.1.0, @types/node@npm:^20.11.30":
+"@types/node@npm:^20.1.0, @types/node@npm:^20.11.30":
   version: 20.17.9
   resolution: "@types/node@npm:20.17.9"
   dependencies:
@@ -11965,7 +11965,7 @@ __metadata:
     "@rnx-kit/tsconfig": "npm:^2.0.0"
     "@types/js-yaml": "npm:^4.0.5"
     "@types/mustache": "npm:^4.0.0"
-    "@types/node": "npm:^20.0.0"
+    "@types/node": "npm:^22.0.0"
     "@types/prompts": "npm:~2.4.0"
     "@types/semver": "npm:^7.3.6"
     "@types/uuid": "npm:^10.0.0"
