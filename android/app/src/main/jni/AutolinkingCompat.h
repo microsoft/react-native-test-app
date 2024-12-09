@@ -9,17 +9,13 @@
 #define autolinking_cxxModuleProvider facebook::react::autolinking_cxxModuleProvider
 #define autolinking_registerProviders facebook::react::autolinking_registerProviders
 
-#elif __has_include(<rncli.h>)  // < 0.75
+#else  // < 0.75
 
 #include <rncli.h>
 
 #define autolinking_ModuleProvider facebook::react::rncli_ModuleProvider
 #define autolinking_cxxModuleProvider facebook::react::rncli_cxxModuleProvider
 #define autolinking_registerProviders facebook::react::rncli_registerProviders
-
-#else  // Autolinking is handled elsewhere in the old architecture (paper)
-
-#define REACTAPP_LEGACY_AUTOLINKING 1
 
 #endif  // __has_include(<autolinking.h>)
 

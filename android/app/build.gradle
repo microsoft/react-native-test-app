@@ -108,7 +108,7 @@ android {
         resValue "string", "app_name", project.ext.react.appName
 
         def cppStd = reactNativeVersion >= v(0, 74, 0) ? "-std=c++20" : "-std=c++17"
-        if (reactNativeVersion >= v(0, 76, 0) || enableNewArchitecture) {
+        if (enableNewArchitecture) {
             externalNativeBuild {
                 cmake {
                     arguments "-DANDROID_STL=c++_shared",

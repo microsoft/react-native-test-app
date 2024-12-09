@@ -28,13 +28,11 @@ std::shared_ptr<TurboModule> TurboModuleManagerDelegate::getTurboModule(StringRe
 std::shared_ptr<TurboModule> TurboModuleManagerDelegate::getTurboModule(
     StringRef name, const JavaTurboModule::InitParams &params)
 {
-#ifndef REACTAPP_LEGACY_AUTOLINKING
     // Try autolinked module providers first
     auto module = autolinking_ModuleProvider(name, params);
     if (module != nullptr) {
         return module;
     }
-#endif  // !REACTAPP_LEGACY_AUTOLINKING
 
     return rncore_ModuleProvider(name, params);
 }
