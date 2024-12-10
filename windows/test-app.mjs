@@ -118,9 +118,9 @@ export async function copyAndReplace(
  * Generates Visual Studio solution.
  * @param {string} destPath Destination path.
  * @param {MSBuildProjectOptions} options
- * @returns {string | undefined} An error message; `undefined` otherwise.
+ * @returns {Promise<string | undefined>} An error message; `undefined` otherwise.
  */
-export function generateSolution(destPath, options, fs = nodefs) {
+export async function generateSolution(destPath, options, fs = nodefs) {
   if (!destPath) {
     return "Missing or invalid destination path";
   }
@@ -141,7 +141,7 @@ export function generateSolution(destPath, options, fs = nodefs) {
     return "Could not find 'react-native-windows'";
   }
 
-  const info = projectInfo(options, rnWindowsPath, destPath, fs);
+  const info = await projectInfo(options, rnWindowsPath, destPath, fs);
   const { projDir, projectFileName, projectFiles, solutionTemplatePath } =
     info.useFabric ? configureForWin32(info) : configureForUWP(info);
 
@@ -276,10 +276,10 @@ export function generateSolution(destPath, options, fs = nodefs) {
   if (options.autolink) {
     const projectRoot = path.resolve(path.dirname(projectManifest));
     Promise.all(copyTasks)
-      .then(() => {
+      .then(async () => {
         // `react-native config` is cached by `@react-native-community/cli`. We
         // need to manually regenerate the Windows project config and inject it.
-        const config = loadReactNativeConfig(rnWindowsPath);
+        const config = await loadReactNativeConfig(rnWindowsPath);
         config.project.windows = config.platforms.windows.projectConfig(
           projectRoot,
           {
@@ -334,7 +334,7 @@ if (isMain(import.meta.url)) {
         default: false,
       },
     },
-    ({
+    async ({
       "project-directory": projectDirectory,
       autolink,
       "use-fabric": useFabric,
@@ -342,7 +342,8 @@ if (isMain(import.meta.url)) {
       "use-nuget": useNuGet,
     }) => {
       const options = { autolink, useFabric, useHermes, useNuGet };
-      const error = generateSolution(path.resolve(projectDirectory), options);
+      const destPath = path.resolve(projectDirectory);
+      const error = await generateSolution(destPath, options);
       if (error) {
         console.error(error);
         process.exitCode = 1;

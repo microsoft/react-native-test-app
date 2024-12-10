@@ -1,4 +1,5 @@
 // @ts-check
+import { resolveCommunityCLI } from "@rnx-kit/tools-react-native/context";
 import { XMLParser } from "fast-xml-parser";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
@@ -10,13 +11,13 @@ import {
   memo,
   readJSONFile,
   readTextFile,
-  requireTransitive,
   toVersionNumber,
   v,
 } from "../scripts/helpers.js";
 import * as colors from "../scripts/utils/colors.mjs";
 
 /**
+ * @import { Config } from "@react-native-community/cli-types"
  * @import {
  *   AppManifest,
  *   AppxBundle,
@@ -95,18 +96,20 @@ function generateCertificateItems(
 
 /**
  * Equivalent to invoking `react-native config`.
- * @param {string} rnWindowsPath
+ * @type {(rnWindowsPath: string) => Promise<Config>}
  */
 export const loadReactNativeConfig = memo((rnWindowsPath) => {
-  /** @type {import("@react-native-community/cli")} */
-  const { loadConfig } = requireTransitive(
-    ["@react-native-community/cli"],
-    rnWindowsPath
-  );
-  // The signature of `loadConfig` changed in 14.0.0:
-  // https://github.com/react-native-community/cli/commit/b787c89edb781bb788576cd615d2974fc81402fc
-  // @ts-expect-error TS2345: Argument of type X is not assignable to parameter of type Y
-  return loadConfig.length === 1 ? loadConfig({}) : loadConfig();
+  const rncli = "file://" + resolveCommunityCLI(rnWindowsPath);
+  return import(rncli).then(async (cli) => {
+    const { loadConfig, loadConfigAsync } = cli?.default ?? cli;
+    if (!loadConfigAsync) {
+      // The signature of `loadConfig` changed in 14.0.0:
+      // https://github.com/react-native-community/cli/commit/b787c89edb781bb788576cd615d2974fc81402fc
+      return loadConfig.length === 1 ? loadConfig({}) : loadConfig();
+    }
+
+    return await loadConfigAsync({});
+  });
 });
 
 /**
@@ -207,17 +210,16 @@ function generateContentItems(
  *
  * @see {@link https://github.com/microsoft/react-native-windows/issues/9578}
  * @param {string} rnWindowsPath
- * @returns {[string, string][]}
+ * @returns {Promise<[string, string][]>}
  */
-function getNuGetDependencies(rnWindowsPath, fs = nodefs) {
+async function getNuGetDependencies(rnWindowsPath, fs = nodefs) {
   const pkgJson = findNearest("package.json", undefined, fs);
   if (!pkgJson) {
     return [];
   }
 
-  const dependencies = Object.values(
-    loadReactNativeConfig(rnWindowsPath).dependencies
-  );
+  const config = await loadReactNativeConfig(rnWindowsPath);
+  const dependencies = Object.values(config.dependencies);
 
   const xml = new XMLParser({
     ignoreAttributes: false,
@@ -402,9 +404,9 @@ export function getBundleResources(manifestFilePath, fs = nodefs) {
  * @param {MSBuildProjectOptions} options
  * @param {string} rnWindowsPath
  * @param {string} destPath
- * @returns {ProjectInfo}
+ * @returns {Promise<ProjectInfo>}
  */
-export function projectInfo(
+export async function projectInfo(
   { useFabric, useNuGet },
   rnWindowsPath,
   destPath,
@@ -423,7 +425,7 @@ export function projectInfo(
     version,
     versionNumber,
     bundle: getBundleResources(findNearest("app.json", destPath, fs), fs),
-    nugetDependencies: getNuGetDependencies(rnWindowsPath),
+    nugetDependencies: await getNuGetDependencies(rnWindowsPath),
     useExperimentalNuGet: newArch || useNuGet,
     useFabric: newArch,
   };

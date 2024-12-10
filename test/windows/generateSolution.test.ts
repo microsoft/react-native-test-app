@@ -27,22 +27,28 @@ describe("generateSolution()", () => {
     process.chdir(cwd);
   });
 
-  it("exits if destination path is missing/invalid", () => {
-    equal(generateSolution("", options), "Missing or invalid destination path");
+  it("exits if destination path is missing/invalid", async () => {
+    equal(
+      await generateSolution("", options),
+      "Missing or invalid destination path"
+    );
   });
 
-  it("exits if 'package.json' folder cannot be found", () => {
-    equal(generateSolution("test", options), "Could not find 'package.json'");
+  it("exits if 'package.json' folder cannot be found", async () => {
+    equal(
+      await generateSolution("test", options),
+      "Could not find 'package.json'"
+    );
   });
 
-  it("exits if 'react-native-windows' folder cannot be found", () => {
+  it("exits if 'react-native-windows' folder cannot be found", async () => {
     setMockFiles({
       [path.resolve("", "package.json")]: testManifest,
       [path.resolve("", "node_modules", ".bin")]: "directory",
     });
 
     equal(
-      generateSolution("test", options),
+      await generateSolution("test", options),
       "Could not find 'react-native-windows'"
     );
   });
