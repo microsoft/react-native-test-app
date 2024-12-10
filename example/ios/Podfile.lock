@@ -1455,7 +1455,7 @@ PODS:
     - React-logger (= 0.75.4)
     - React-perflogger (= 0.75.4)
     - React-utils (= 0.75.4)
-  - ReactNativeHost (0.5.0):
+  - ReactNativeHost (0.5.2):
     - DoubleConversion
     - glog
     - RCT-Folly (= 2024.01.01.00)
@@ -1481,7 +1481,7 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
-  - RNWWebStorage (0.3.1):
+  - RNWWebStorage (0.4.1):
     - DoubleConversion
     - glog
     - RCT-Folly (= 2024.01.01.00)
@@ -1713,7 +1713,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: 4cb898d0bf20404aab1850c656dcea009429d6c1
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
-  Example-Tests: fd3881e0cd75134e3f658c9dbb1788c0c578a504
+  Example-Tests: fc629729804712c34ae6c28b9fc1c45619f6636d
   FBLazyVector: 430e10366de01d1e3d57374500b1b150fe482e6d
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: 69ef571f3de08433d766d614c73a9838a06bf7eb
@@ -1771,10 +1771,10 @@ SPEC CHECKSUMS:
   React-utils: 546831c4f1be57fac614f68de34ac8763e67db55
   ReactCodegen: 8b18ab308516d8d000056f7d3cec7cbc76796e03
   ReactCommon: 8377a2a5504f72e284ce1b1cd207d8455bdbfdf3
-  ReactNativeHost: 99c0ffb175cd69de2ac9a70892cd22dac65ea79d
-  ReactTestApp-DevSupport: c4abadbb90a8a9903400407e9857c2a2ef0343fb
-  ReactTestApp-Resources: 7db90c026cccdf40cfa495705ad436ccc4d64154
-  RNWWebStorage: 8b5b2e62945fa964799338c8ec0ebe2f08d04383
+  ReactNativeHost: 16eb1c3ca05f37db5dc02c79155598a094b7c325
+  ReactTestApp-DevSupport: adfef1c01c5a58237860e10b3c82d6c742c3a803
+  ReactTestApp-Resources: 1bd9ff10e4c24f2ad87101a32023721ae923bccf
+  RNWWebStorage: 18aa34e77968c60265bd4be065d1fbc4ac6d870d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 
