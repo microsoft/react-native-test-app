@@ -235,9 +235,9 @@ are the things that you'll need to do:
   - We own these pieces and should fix them ourselves.
   - Fixes should go directly to `trunk` if possible.
   - If we're adding version specific patches, make sure to add a `TODO` in the
-    code as well as updating the [Patches page][] in the wiki. This is to make it
-    easier to identify and remove unused code as we drop support for older React
-    Native versions.
+    code as well as updating the [Patches page][] in the wiki. This is to make
+    it easier to identify and remove unused code as we drop support for older
+    React Native versions.
 - Check if others are reporting the same issue in the releases discussion:
   - If this is the case, see if they need a minimal repro. This is something we
     can easily provide using our example app.
