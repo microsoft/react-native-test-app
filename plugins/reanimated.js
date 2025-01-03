@@ -6,7 +6,7 @@ const {
 const { getPackageVersion, toVersionNumber, v } = require("../scripts/helpers");
 const { withReactNativeHost } = require("./index");
 
-/** @typedef {import("@expo/config-plugins").ExportedConfig} ExportedConfig */
+/** @import { ExportedConfig } from "@expo/config-plugins" */
 
 const NAME = "react-native-reanimated";
 
