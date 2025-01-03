@@ -15,9 +15,7 @@ import { getIOSSimulatorName, installPods } from "./test-apple.mjs";
 import { $, $$, test } from "./test-e2e.mjs";
 
 /**
- * @typedef {import("../types.js").BuildConfig} BuildConfig
- * @typedef {import("../types.js").PlatformConfig} PlatformConfig
- * @typedef {import("../types.js").TargetPlatform} TargetPlatform
+ * @import { BuildConfig, PlatformConfig, TargetPlatform } from "../types.js";
  */
 
 const DEFAULT_PLATFORMS = ["android", "ios"];

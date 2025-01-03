@@ -1,10 +1,7 @@
 // @ts-check
 const { withMod } = require("@expo/config-plugins");
 
-/**
- * @typedef {import("@expo/config-plugins").ExportedConfig} ExportedConfig
- * @typedef {import("@expo/config-plugins").Mod} Mod
- */
+/** @import { ExportedConfig, Mod } from "@expo/config-plugins"; */
 
 /**
  * Provides the `ReactNativeHost` file for modification.

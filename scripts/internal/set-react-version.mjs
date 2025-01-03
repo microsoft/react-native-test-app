@@ -17,7 +17,7 @@ import {
 } from "../helpers.js";
 import { fetchPackageMetadata, npmRegistryBaseURL } from "../utils/npm.mjs";
 
-/** @typedef {import("../types.js").Manifest} Manifest */
+/** @import { Manifest } from "../types.js"; */
 /**
  * @template T
  * @typedef {{ [P in keyof T]: Required<NonNullable<T[P]>> }} RequiredObject<T>

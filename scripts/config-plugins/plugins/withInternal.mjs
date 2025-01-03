@@ -1,11 +1,8 @@
 // @ts-check
 /**
- * @typedef {import("../types.js").ProjectInfo} ProjectInfo
+ * @import { ConfigPlugin } from "@expo/config-plugins";
+ * @import { ProjectInfo } from "../types.js";
  * @typedef {Omit<ProjectInfo, "appJsonPath">} Internals
- */
-/**
- * @template Props
- * @typedef {import("@expo/config-plugins").ConfigPlugin<Internals>} ConfigPlugin
  */
 
 /** @type {ConfigPlugin<Internals>} */

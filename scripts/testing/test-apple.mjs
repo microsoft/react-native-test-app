@@ -10,9 +10,7 @@ import { URL, fileURLToPath } from "node:url";
 import { memo, readTextFile } from "../helpers.js";
 import { $ } from "./test-e2e.mjs";
 
-/**
- * @typedef {import("../types.js").BuildConfig} BuildConfig
- */
+/** @import { BuildConfig } from "../types.js"; */
 
 export const getIOSSimulatorName = memo(() => {
   const wdioConfig = new URL(

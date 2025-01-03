@@ -5,8 +5,8 @@ import { URL, fileURLToPath } from "node:url";
 import { generateSchema } from "../schema.mjs";
 
 /**
- * @typedef {import("ajv").SchemaObject} SchemaObject
- * @typedef {import("../types.js").Language} Language
+ * @import { SchemaObject } from "ajv";
+ * @import { Language } from "../types.js";
  */
 const thisScript = fileURLToPath(import.meta.url);
 

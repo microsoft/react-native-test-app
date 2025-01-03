@@ -5,13 +5,7 @@ import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import * as util from "node:util";
 
-/**
- * @typedef {import("../types.js").Options} Options;
- */
-/**
- * @template {Options} O
- * @typedef {import("../types.js").Args<O>} Args;
- */
+/** @import { Args, Options } from "../types.js"; */
 
 /**
  * @template {Options} O

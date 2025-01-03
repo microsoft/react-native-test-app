@@ -19,10 +19,7 @@ const {
   v,
 } = require("./helpers");
 
-/**
- * @typedef {import("./types.js").ProjectConfig} ProjectConfig
- * @typedef {import("./types.js").ProjectParams} ProjectParams
- */
+/** @import { ProjectConfig, ProjectParams } from "./types.js"; */
 
 /**
  * Returns the version number of a React Native dependency.

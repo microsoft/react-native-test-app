@@ -17,12 +17,14 @@ import {
 import * as colors from "../scripts/utils/colors.mjs";
 
 /**
- * @typedef {import("../scripts/types.js").AppManifest} AppManifest
- * @typedef {import("../scripts/types.js").AppxBundle} AppxBundle
- * @typedef {import("../scripts/types.js").AssetItems} AssetItems;
- * @typedef {import("../scripts/types.js").Assets} Assets;
- * @typedef {import("../scripts/types.js").MSBuildProjectOptions} MSBuildProjectOptions;
- * @typedef {import("../scripts/types.js").ProjectInfo} ProjectInfo;
+ * @import {
+ *   AppManifest,
+ *   AppxBundle,
+ *   AssetItems,
+ *   Assets,
+ *   MSBuildProjectOptions,
+ *   ProjectInfo,
+ * } from "../scripts/types.js";
  */
 
 const uniqueFilterIdentifier = "e48dc53e-40b1-40cb-970a-f89935452892";

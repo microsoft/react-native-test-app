@@ -2,10 +2,12 @@
 const { withMod } = require("@expo/config-plugins");
 
 /**
- * @typedef {import("@expo/config-plugins").ExportedConfig} ExportedConfig
- * @typedef {import("@expo/config-plugins").ExportedConfigWithProps} ExportedConfigWithProps
- * @typedef {import("@expo/config-plugins").Mod} Mod
- * @typedef {import("@expo/config-plugins").ModConfig} ModConfig
+ * @import {
+ *   ExportedConfig,
+ *   ExportedConfigWithProps,
+ *   Mod,
+ *   ModConfig,
+ * } from "@expo/config-plugins";
  * @typedef {ExportedConfigWithProps & { macos?: { infoPlist?: Record<string, unknown> }}} ExportedConfigWithPropsMac
  */
 
