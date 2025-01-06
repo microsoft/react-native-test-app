@@ -81,8 +81,8 @@ ext {
      */
     libraries = [
         androidAppCompat            : "androidx.appcompat:appcompat:1.7.0",
-        androidCamera               : "androidx.camera:camera-camera2:1.4.0",
-        androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.4.0",
+        androidCamera               : "androidx.camera:camera-camera2:1.4.1",
+        androidCameraMlKitVision    : "androidx.camera:camera-mlkit-vision:1.4.1",
         androidCoreKotlinExtensions : "androidx.core:core-ktx:1.13.1",
         androidRecyclerView         : "androidx.recyclerview:recyclerview:1.3.2",
         materialComponents          : "com.google.android.material:material:1.12.0",
