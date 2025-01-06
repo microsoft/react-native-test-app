@@ -122,7 +122,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
-    "@expo/config-plugins": "^8.0.0",
+    "@expo/config-plugins": "^9.0.0",
     "@microsoft/eslint-plugin-sdl": "^1.0.0",
     "@react-native-community/cli": "^14.0.0",
     "@react-native-community/template": "^0.75.0",
