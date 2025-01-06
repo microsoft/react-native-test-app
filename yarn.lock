@@ -3820,7 +3820,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:10.0.0, @types/uuid@npm:^10.0.0":
+"@types/uuid@npm:10.0.0":
   version: 10.0.0
   resolution: "@types/uuid@npm:10.0.0"
   checksum: 10c0/9a1404bf287164481cb9b97f6bb638f78f955be57c40c6513b7655160beb29df6f84c915aaf4089a1559c216557dc4d2f79b48d978742d3ae10b937420ddac60
@@ -12031,7 +12031,6 @@ __metadata:
     "@types/node": "npm:^22.0.0"
     "@types/prompts": "npm:~2.4.0"
     "@types/semver": "npm:^7.3.6"
-    "@types/uuid": "npm:^10.0.0"
     ajv: "npm:^8.0.0"
     cliui: "npm:^8.0.0"
     eslint: "npm:^9.12.0"
@@ -14465,15 +14464,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:11.0.3":
-  version: 11.0.3
-  resolution: "uuid@npm:11.0.3"
-  bin:
-    uuid: dist/esm/bin/uuid
-  checksum: 10c0/cee762fc76d949a2ff9205770334699e0043d52bb766472593a25f150077c9deed821230251ea3d6ab3943a5ea137d2826678797f1d5f6754c7ce5ce27e9f7a6
-  languageName: node
-  linkType: hard
-
 "uuid@npm:^10.0.0":
   version: 10.0.0
   resolution: "uuid@npm:10.0.0"
@@ -14483,7 +14473,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^11.0.0, uuid@npm:^11.0.1":
+"uuid@npm:^11.0.0, uuid@npm:^11.0.1, uuid@npm:^11.0.3":
   version: 11.0.4
   resolution: "uuid@npm:11.0.4"
   bin:
