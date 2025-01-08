@@ -192,24 +192,6 @@ export type AppManifest = {
   };
 };
 
-/*************************
- * generate-manifest.mjs *
- *************************/
-
-export type Language = {
-  options: {
-    indent: string;
-    level: number;
-    footer?: string;
-    header?: string;
-  };
-  arrayProperty: (name: string, type: string, required: boolean) => string;
-  objectProperty: (name: string, required: boolean) => string;
-  stringProperty: (name: string, required: boolean) => string;
-  structBegin: (name: string) => string;
-  structEnd: string;
-};
-
 /**************
  * schema.mjs *
  **************/
@@ -262,9 +244,9 @@ export type Manifest = Partial<{
   defaultPlatformPackages: Record<string, PlatformPackage | undefined>;
 }>;
 
-/*************************
- * test-matrix.mjs *
- *************************/
+/***************************
+ * testing/test-matrix.mts *
+ ***************************/
 
 export type ApplePlatform = "ios" | "macos" | "visionos";
 export type TargetPlatform = ApplePlatform | "android" | "windows";
@@ -273,11 +255,4 @@ export type BuildConfig = {
   platform: TargetPlatform;
   variant: "fabric" | "paper";
   engine?: "hermes" | "jsc";
-};
-
-export type PlatformConfig = {
-  name: string;
-  engines: ReadonlyArray<"hermes" | "jsc">;
-  isAvailable: (config: Required<BuildConfig>) => boolean;
-  prebuild: (config: Required<BuildConfig>) => Promise<void>;
 };

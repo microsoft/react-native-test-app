@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * Reminder that this script is meant to be runnable without installing
  * dependencies. It can therefore not rely on any external libraries.
@@ -8,9 +6,8 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import { URL, fileURLToPath } from "node:url";
 import { memo, readTextFile } from "../helpers.js";
-import { $ } from "./test-e2e.mjs";
-
-/** @import { BuildConfig } from "../types.js"; */
+import type { BuildConfig } from "../types.js";
+import { $ } from "./test-e2e.mts";
 
 export const getIOSSimulatorName = memo(() => {
   const wdioConfig = new URL(
@@ -39,10 +36,12 @@ export const getIOSSimulatorName = memo(() => {
 
 /**
  * Configures `Podfile` and invokes `pod install`.
- * @param {Required<BuildConfig>} config
- * @returns {Promise<void>}
  */
-export function installPods({ platform, engine, variant }) {
+export function installPods({
+  platform,
+  engine,
+  variant,
+}: Required<BuildConfig>): Promise<void> {
   const podfile = `${platform}/Podfile`;
   let content = readTextFile(podfile);
 

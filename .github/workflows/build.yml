@@ -239,7 +239,7 @@ jobs:
       - name: react-native run-ios
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/testing/react-native.mjs run-ios
+          ../scripts/testing/react-native.mts run-ios
         working-directory: template-example
     timeout-minutes: 60
   android:
@@ -326,7 +326,7 @@ jobs:
       - name: react-native run-android
         if: ${{ steps.affected.outputs.android != '' }}
         run: |
-          ../scripts/testing/react-native.mjs run-android
+          ../scripts/testing/react-native.mts run-android
         working-directory: template-example
     timeout-minutes: 60
   macos:

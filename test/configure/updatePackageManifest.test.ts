@@ -8,8 +8,8 @@ import { fs, setMockFiles } from "../fs.mock.ts";
 
 function getExampleManifest() {
   const p = new URL("../../example/package.json", import.meta.url);
-  const manifest = readJSONFile(p);
-  return manifest as Manifest;
+  const manifest = readJSONFile<Manifest>(p);
+  return manifest;
 }
 
 describe("updatePackageManifest()", () => {

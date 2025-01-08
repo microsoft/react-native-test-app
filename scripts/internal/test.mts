@@ -1,11 +1,8 @@
-// @ts-check
 import { spawnSync } from "node:child_process";
 
-/**
- * @param {string[]} files
- * @returns {"ruby" | "typescript" | undefined}
- */
-function getTarget(files) {
+type Language = "ruby" | "typescript";
+
+function getTarget(files: string[]): Language | undefined {
   if (files.some((file) => file.endsWith(".rb"))) {
     return "ruby";
   } else if (files.some((file) => file.endsWith(".ts"))) {
@@ -15,11 +12,7 @@ function getTarget(files) {
   }
 }
 
-/**
- * @param {string} command
- * @param {string[]} args
- */
-function testWith(command, args) {
+function testWith(command: string, args: string[]): void {
   const result = spawnSync(command, args, { stdio: "inherit" });
   process.exitCode = result.status ?? 1;
 }

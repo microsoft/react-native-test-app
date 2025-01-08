@@ -1,15 +1,13 @@
-#!/usr/bin/env node
-// @ts-check
+#!/usr/bin/env node --experimental-transform-types --no-warnings
+
 import { spawnSync } from "node:child_process";
 
 const DEVICE_ID = "T-800";
 
 /**
  * Runs the specified command.
- * @param {RegExp} successPattern The string to look for
- * @param  {...any} args The command to run and its arguments
  */
-function run(successPattern, ...args) {
+function run(successPattern: RegExp, ...args: readonly string[]) {
   const { stderr } = spawnSync("yarn", args, { encoding: "utf-8" });
   if (!successPattern.test(stderr)) {
     throw new Error(stderr);

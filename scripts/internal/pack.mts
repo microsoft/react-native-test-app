@@ -1,4 +1,3 @@
-// @ts-check
 import * as fs from "node:fs";
 import * as path from "node:path";
 
@@ -6,10 +5,8 @@ const files = ["example/.gitignore", "example/windows/.gitignore"];
 
 /**
  * Renames `.dotfile` to `_dotfile`.
- * @param {string} p
- * @returns {string}
  */
-function renameDotFile(p) {
+function renameDotFile(p: string): string {
   return path.join(path.dirname(p), "_" + path.basename(p).substring(1));
 }
 

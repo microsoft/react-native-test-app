@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * Reminder that this script is meant to be runnable without installing
  * dependencies. It can therefore not rely on any external libraries.
@@ -10,10 +8,8 @@ import { isMain } from "../helpers.js";
 
 /**
  * Invokes a shell command with optional arguments.
- * @param {string} command
- * @param {...string} args
  */
-export function $(command, ...args) {
+export function $(command: string, ...args: string[]) {
   const { status } = spawnSync(command, args, { stdio: "inherit" });
   if (status !== 0) {
     throw new Error(
@@ -25,11 +21,8 @@ export function $(command, ...args) {
 /**
  * Invokes a shell command with optional arguments. Similar {@link $}, but
  * captures and returns stdout/stderr.
- * @param {string} command
- * @param {...string} args
- * @returns {string}
  */
-export function $$(command, ...args) {
+export function $$(command: string, ...args: string[]): string {
   const { status, stderr, stdout } = spawnSync(command, args, {
     stdio: ["ignore", "pipe", "pipe"],
     encoding: "utf-8",
@@ -45,15 +38,13 @@ export function $$(command, ...args) {
 
 /**
  * Ensures Appium is available.
- * @returns {Promise<void>}
  */
-function ensureAppiumAvailable() {
+function ensureAppiumAvailable(): Promise<void> {
   return new Promise((resolve, reject) => {
     const socket = new Socket();
     socket.setTimeout(60 * 1000);
 
-    /** @type {(e: Error) => void} */
-    const onError = (e) => {
+    const onError = (e: Error) => {
       socket.destroy();
       reject(new Error(`Could not connect to Appium server: ${e}`));
     };
@@ -95,11 +86,7 @@ function prepareAndroid(androidHome = process.env["ANDROID_HOME"]) {
   $(adb, "install", "android/app/build/outputs/apk/debug/app-debug.apk");
 }
 
-/**
- * @param {string} target
- * @param {string[]=} args
- */
-export async function test(target, args = []) {
+export async function test(target: string, args: string[] = []) {
   switch (target) {
     case "android":
       prepareAndroid();

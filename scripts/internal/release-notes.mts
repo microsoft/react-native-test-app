@@ -1,25 +1,20 @@
 /**
  * This script is only used to help write release announcements.
  */
-// @ts-check
 // @ts-expect-error Could not find a declaration file for module
 import { generateNotes } from "@semantic-release/release-notes-generator";
 import { spawn } from "node:child_process";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import { readJSONFile } from "../helpers.js";
+import type { Manifest } from "../types.js";
 
-/** @typedef {import("../types.js").Manifest} Manifest */
-
-/**
- * @param {string} output
- * @param {string} lastRelease
- * @param {string} nextRelease
- * @returns {string}
- */
-function reformat(output, lastRelease, nextRelease) {
-  /** @type {[RegExp, string][]} */
-  const replacements = [
+function reformat(
+  output: string,
+  lastRelease: string,
+  nextRelease: string
+): string {
+  const replacements: [RegExp, string][] = [
     [/^# .*/m, `📣 react-native-test-app ${nextRelease}`],
     [/^### .*/m, `Other fixes since ${lastRelease}:`],
     [/^\* \*\*android:\*\*/gm, "* **Android:**"],
@@ -40,7 +35,7 @@ function reformat(output, lastRelease, nextRelease) {
 
 function repositoryUrl() {
   const p = fileURLToPath(new URL("../../package.json", import.meta.url));
-  const manifest = /** @type {Manifest} */ (readJSONFile(p));
+  const manifest = readJSONFile<Manifest>(p);
   return manifest.repository?.url;
 }
 
@@ -48,7 +43,7 @@ function repositoryUrl() {
  * @param {string} lastRelease
  * @param {string} nextRelease
  */
-function main(lastRelease, nextRelease) {
+function main(lastRelease: string, nextRelease: string): void {
   const args = [
     "log",
     `--pretty=format:{ "hash": "%H", "message": "%s" }`,
@@ -86,8 +81,7 @@ function main(lastRelease, nextRelease) {
       cwd: process.cwd(),
     };
 
-    /** @type {Promise<string>} */
-    const releaseNotes = generateNotes({}, context);
+    const releaseNotes: Promise<string> = generateNotes({}, context);
     releaseNotes
       .then((output) => reformat(output, lastRelease, nextRelease))
       .then((output) => console.log(output));

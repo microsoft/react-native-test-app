@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * Reminder that this script is meant to be runnable without installing
  * dependencies. It can therefore not rely on any external libraries.
@@ -15,42 +13,30 @@ import {
   toVersionNumber,
   v,
 } from "../helpers.js";
+import type { Manifest } from "../types.js";
 import { fetchPackageMetadata, npmRegistryBaseURL } from "../utils/npm.mjs";
-
-/** @import { Manifest } from "../types.js"; */
-/**
- * @template T
- * @typedef {{ [P in keyof T]: Required<NonNullable<T[P]>> }} RequiredObject<T>
- */
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "nightly"];
 
 /**
  * Returns whether specified string is a valid version number.
- * @param {string} v
- * @return {boolean}
  */
-function isValidVersion(v) {
+function isValidVersion(v: string): boolean {
   return /^\d+\.\d+$/.test(v) || VALID_TAGS.includes(v);
 }
 
 /**
  * Type-safe `Object.keys()`
- * @template {Record<string, unknown>} T
- * @param {T} obj
- * @returns {(keyof T)[]}
  */
-function keys(obj) {
-  return /** @type {(keyof T)[]} */ (Object.keys(obj));
+function keys<T extends Record<string, unknown>>(obj: T): (keyof T)[] {
+  return Object.keys(obj) as (keyof T)[];
 }
 
-/**
- * @param {string} filename
- * @param {string | RegExp} searchValue
- * @param {string} replaceValue
- * @returns {Promise<void>}
- */
-function searchReplaceInFile(filename, searchValue, replaceValue) {
+function searchReplaceInFile(
+  filename: string,
+  searchValue: string | RegExp,
+  replaceValue: string
+): Promise<void> {
   const current = readTextFile(filename);
   const updated = current.replace(searchValue, replaceValue);
   return updated === current
@@ -83,10 +69,12 @@ function disableWebStorage() {
 
 /**
  * Infer the React Native version an out-of-tree platform package is based on.
- * @param {Manifest} manifest
- * @returns {string}
  */
-function inferReactNativeVersion({ name, version, dependencies = {} }) {
+function inferReactNativeVersion({
+  name,
+  version,
+  dependencies = {},
+}: Manifest): string {
   const codegenVersion = dependencies["@react-native/codegen"];
   if (!codegenVersion) {
     throw new Error(
@@ -102,11 +90,8 @@ function inferReactNativeVersion({ name, version, dependencies = {} }) {
 
 /**
  * Fetches package information.
- * @param {string} pkg
- * @param {string} version
- * @return {Promise<Manifest>}
  */
-function fetchPackageInfo(pkg, version) {
+function fetchPackageInfo(pkg: string, version: string): Promise<Manifest> {
   return fetchPackageMetadata(pkg)
     .then(({ ["dist-tags"]: distTags, versions }) => {
       const tags = [version, version + "-stable", "v" + version + "-stable"];
@@ -131,7 +116,7 @@ function fetchPackageInfo(pkg, version) {
       }
       return fetch(npmRegistryBaseURL + pkg + "/" + foundVersion);
     })
-    .then((res) => res?.json() ?? /** @type {Manifest} */ ({}))
+    .then((res) => res?.json() ?? ({} as Manifest))
     .then(({ version, dependencies = {}, peerDependencies = {} }) => {
       return { version, dependencies, peerDependencies };
     });
@@ -139,9 +124,8 @@ function fetchPackageInfo(pkg, version) {
 
 /**
  * Fetches the latest react-native-windows@canary information via NuGet.
- * @return {Promise<Manifest>}
  */
-function fetchReactNativeWindowsCanaryInfoViaNuGet() {
+function fetchReactNativeWindowsCanaryInfoViaNuGet(): Promise<Manifest> {
   const rnwNuGetFeed =
     "https://pkgs.dev.azure.com/ms/react-native/_packaging/react-native-public/nuget/v3/index.json";
   return fetch(rnwNuGetFeed)
@@ -188,14 +172,11 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet() {
 
 /**
  * Returns an object with common dependencies.
- * @param {string} v
- * @param {Manifest} manifest
- * @return {Promise<Record<string, string | undefined>>}
  */
 async function resolveCommonDependencies(
-  v,
-  { dependencies = {}, peerDependencies = {} }
-) {
+  v: string,
+  { dependencies = {}, peerDependencies = {} }: Manifest
+): Promise<Record<string, string | undefined>> {
   const [rnBabelPresetVersion, rnMetroConfigVersion, metroBabelPresetVersion] =
     await (async () => {
       if (["^", "canary", "nightly"].some((tag) => v.includes(tag))) {
@@ -263,12 +244,12 @@ async function resolveCommonDependencies(
 
 /**
  * Returns a profile for specified version.
- * @param {string} v
- * @param {boolean} coreOnly
- * @return {Promise<Record<string, string | undefined>>}
  */
-async function getProfile(v, coreOnly) {
-  const manifest = /** @type {Manifest} */ (readJSONFile("package.json"));
+async function getProfile(
+  v: string,
+  coreOnly: boolean
+): Promise<Record<string, string | undefined>> {
+  const manifest = readJSONFile<Manifest>("package.json");
   const visionos = manifest.defaultPlatformPackages?.["visionos"];
   if (!visionos) {
     throw new Error("Missing platform package for visionOS");
@@ -329,8 +310,7 @@ async function getProfile(v, coreOnly) {
       const reactNative = await versions.core;
       const commonDeps = await resolveCommonDependencies(v, reactNative);
 
-      /** @type {(manifest: Manifest) => string | undefined} */
-      const getVersion = ({ version }) => version;
+      const getVersion = ({ version }: Manifest) => version;
       return {
         ...commonDeps,
         "react-native": reactNative.version,
@@ -344,21 +324,20 @@ async function getProfile(v, coreOnly) {
 
 /**
  * Sets specified React Native version.
- * @param {string} version
- * @param {boolean} coreOnly
- * @param {Record<string, string>} [overrides]
- * @return {Promise<void>}
  */
-export async function setReactVersion(version, coreOnly, overrides = {}) {
-  /** @type {fs.FileHandle | undefined} */
-  let fd;
+export async function setReactVersion(
+  version: string,
+  coreOnly: boolean,
+  overrides: Record<string, string> = {}
+): Promise<void> {
+  let fd: fs.FileHandle | undefined;
   try {
     const profile = { ...(await getProfile(version, coreOnly)), ...overrides };
     console.dir(profile, { depth: null });
 
     const manifests = ["package.json", "example/package.json"];
     for (const manifestPath of manifests) {
-      const manifest = /** @type {Manifest} */ (readJSONFile(manifestPath));
+      const manifest = readJSONFile<Manifest>(manifestPath);
       const { dependencies, devDependencies, resolutions = {} } = manifest;
       if (!devDependencies) {
         throw new Error("Expected 'devDependencies' to be declared");
@@ -424,8 +403,7 @@ if (isMain(import.meta.url)) {
     );
     process.exitCode = 1;
   } else {
-    const { "core-only": coreOnly, overrides } =
-      /** @type {RequiredObject<typeof values>} */ (values);
+    const { "core-only": coreOnly, overrides } = values;
     setReactVersion(version, coreOnly, JSON.parse(overrides)).then(() => {
       const numVersion = VALID_TAGS.includes(version)
         ? Number.MAX_SAFE_INTEGER

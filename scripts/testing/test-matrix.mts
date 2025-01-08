@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * Reminder that this script is meant to be runnable without installing
  * dependencies. It can therefore not rely on any external libraries.
@@ -9,20 +7,23 @@ import * as fs from "node:fs";
 import { URL, fileURLToPath } from "node:url";
 import * as util from "node:util";
 import { readTextFile } from "../helpers.js";
-import { setReactVersion } from "../internal/set-react-version.mjs";
+import { setReactVersion } from "../internal/set-react-version.mts";
+import type { BuildConfig, TargetPlatform } from "../types.js";
 import { green, red, yellow } from "../utils/colors.mjs";
-import { getIOSSimulatorName, installPods } from "./test-apple.mjs";
-import { $, $$, test } from "./test-e2e.mjs";
+import { getIOSSimulatorName, installPods } from "./test-apple.mts";
+import { $, $$, test } from "./test-e2e.mts";
 
-/**
- * @import { BuildConfig, PlatformConfig, TargetPlatform } from "../types.js";
- */
+type PlatformConfig = {
+  name: string;
+  engines: ReadonlyArray<"hermes" | "jsc">;
+  isAvailable: (config: Required<BuildConfig>) => boolean;
+  prebuild: (config: Required<BuildConfig>) => Promise<void>;
+};
 
 const DEFAULT_PLATFORMS = ["android", "ios"];
-const TEST_VARIANTS = /** @type {const} */ (["paper", "fabric"]);
+const TEST_VARIANTS = ["paper", "fabric"] as const;
 
-/** @type {Record<TargetPlatform, PlatformConfig>} */
-const PLATFORM_CONFIG = {
+const PLATFORM_CONFIG: Record<TargetPlatform, PlatformConfig> = {
   android: {
     name: "Android",
     engines: ["hermes"],
@@ -76,10 +77,8 @@ function log(message = "", tag = TAG) {
 
 /**
  * Invokes `npm run` and redirects stdout/stderr to specified file.
- * @param {string} script
- * @param {string} logPath
  */
-function run(script, logPath) {
+function run(script: string, logPath: string) {
   const fd = fs.openSync(logPath, "a", 0o644);
   const proc = spawn(PACKAGE_MANAGER, ["run", script], {
     stdio: ["ignore", fd, fd],
@@ -87,10 +86,7 @@ function run(script, logPath) {
   return proc;
 }
 
-/**
- * @param {string} message
- */
-function showBanner(message) {
+function showBanner(message: string) {
   log();
   log(message, "┗━━▶");
   log("", "");
@@ -112,13 +108,8 @@ function startDevServer(logPath = "metro.server.log") {
   return run("start", logPath);
 }
 
-/**
- * @param {string[]} platforms
- * @returns {TargetPlatform[]}
- */
-function validatePlatforms(platforms) {
-  /** @type {TargetPlatform[]} */
-  const filtered = [];
+function validatePlatforms(platforms: string[]): TargetPlatform[] {
+  const filtered: TargetPlatform[] = [];
   for (const platform of platforms) {
     switch (platform) {
       case "android":
@@ -140,10 +131,7 @@ function validatePlatforms(platforms) {
   return filtered;
 }
 
-/**
- * @param {string[]} args
- */
-function parseArgs(args) {
+function parseArgs(args: string[]) {
   const { values, positionals } = util.parseArgs({
     args,
     options: {
@@ -200,9 +188,8 @@ function prestart() {
 
 /**
  * Invokes `react-native run-<platform>`.
- * @param {TargetPlatform} platform
  */
-function buildAndRun(platform) {
+function buildAndRun(platform: TargetPlatform) {
   switch (platform) {
     case "ios": {
       const simulator = getIOSSimulatorName();
@@ -216,10 +203,7 @@ function buildAndRun(platform) {
   }
 }
 
-/**
- * @param {BuildConfig} config
- */
-async function buildRunTest({ platform, variant }) {
+async function buildRunTest({ platform, variant }: BuildConfig) {
   const setup = PLATFORM_CONFIG[platform];
   if (!setup) {
     log(yellow(`⚠ Unknown platform: ${platform}`));
@@ -239,10 +223,7 @@ async function buildRunTest({ platform, variant }) {
   }
 }
 
-/**
- * @param {string} rootDir
- */
-function reset(rootDir) {
+function reset(rootDir: string) {
   log("Resetting...");
 
   process.chdir(rootDir);
@@ -266,10 +247,11 @@ function reset(rootDir) {
 
 /**
  * Invokes callback within the context of specified React Native version.
- * @param {string} version
- * @param {() => Promise<void>} action
  */
-async function withReactNativeVersion(version, action) {
+async function withReactNativeVersion(
+  version: string,
+  action: () => Promise<void>
+) {
   reset(rootDir);
 
   if (version) {

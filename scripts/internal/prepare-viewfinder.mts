@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-// @ts-check
+#!/usr/bin/env node --experimental-transform-types --no-warnings
 
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
@@ -40,11 +39,8 @@ function configureAppManifest() {
 
 /**
  * Runs the specified command.
- * @param {string} command
- * @param {string[]} args
- * @param {Record<string, unknown>=} options
  */
-function $(command, args, options) {
+function $(command: string, args: string[], options?: Record<string, unknown>) {
   const { error, status } = spawnSync(command, args, {
     cwd: PROJECT_ROOT,
     stdio: "inherit",

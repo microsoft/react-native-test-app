@@ -1,6 +1,7 @@
-// @ts-check
+// eslint-disable-next-line no-restricted-imports
+import type { SchemaObject } from "ajv";
 import * as path from "node:path";
-import { readDocumentation } from "./generate-schema.mjs";
+import { assertDefinition, readDocumentation } from "./generate-schema.mts";
 import { generateSchema } from "../schema.mjs";
 
 async function generateManifestDocs() {
@@ -9,12 +10,13 @@ async function generateManifestDocs() {
 
   /**
    * Renders the specified JSON object schema.
-   * @param {import("ajv").SchemaObject} definition
-   * @param {string[]} toc
-   * @param {string[]} lines
-   * @param {string} scope
    */
-  const render = (definition, toc, lines, scope = "") => {
+  const render = (
+    definition: SchemaObject,
+    toc: string[],
+    lines: string[],
+    scope = ""
+  ) => {
     if (Array.isArray(definition.allOf)) {
       for (const { $ref } of definition.allOf) {
         render(schema.$defs[$ref.replace("#/$defs/", "")], toc, lines, scope);
@@ -37,6 +39,8 @@ async function generateManifestDocs() {
     })();
 
     for (const [key, def] of Object.entries(definition.properties)) {
+      assertDefinition(def);
+
       const { description, markdownDescription, type } = def;
       const text = markdownDescription || description;
       if (!text) {
