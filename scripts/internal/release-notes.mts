@@ -46,7 +46,7 @@ function repositoryUrl() {
 function main(lastRelease: string, nextRelease: string): void {
   const args = [
     "log",
-    `--pretty=format:{ "hash": "%H", "message": "%s" }`,
+    `--pretty=format:{ ＂hash＂: ＂%H＂, ＂message＂: ＂%s＂ }`,
     `${lastRelease}...${nextRelease}`,
   ];
   const git = spawn("git", args, { stdio: ["ignore", "pipe", "inherit"] });
@@ -65,6 +65,8 @@ function main(lastRelease: string, nextRelease: string): void {
     const output = Buffer.concat(buffers)
       .toString()
       .trim()
+      .replaceAll('"', '\\"')
+      .replaceAll("＂", '"')
       .replaceAll("\n", ",");
     const commits = JSON.parse(output);
     if (commits.length === 0) {
