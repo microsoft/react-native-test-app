@@ -1,4 +1,4 @@
-#!/usr/bin/env node --experimental-transform-types --no-warnings
+#!/usr/bin/env -S node --experimental-transform-types --no-warnings
 
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
