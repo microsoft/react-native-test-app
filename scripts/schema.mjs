@@ -93,6 +93,11 @@ export function generateSchema(docs = {}) {
             markdownDescription: docs["ios.developmentTeam"],
             type: "string",
           },
+          metalAPIValidation: {
+            description: extractBrief(docs["ios.metalAPIValidation"]),
+            markdownDescription: docs["ios.metalAPIValidation"],
+            type: "boolean",
+          },
           privacyManifest: {
             description: extractBrief(docs["ios.privacyManifest"]),
             markdownDescription: docs["ios.privacyManifest"],

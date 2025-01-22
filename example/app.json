@@ -13,6 +13,9 @@
       "presentationStyle": "modal"
     }
   ],
+  "ios": {
+    "metalAPIValidation": true
+  },
   "resources": {
     "android": [
       "dist/res",

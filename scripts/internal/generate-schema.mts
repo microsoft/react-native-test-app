@@ -52,6 +52,7 @@ export async function readDocumentation(): Promise<Partial<Docs>> {
     "ios.icons",
     "ios.icons.primaryIcon",
     "ios.icons.alternateIcons",
+    "ios.metalAPIValidation",
     "ios.privacyManifest",
     "macos.applicationCategoryType",
     "macos.humanReadableCopyright",
