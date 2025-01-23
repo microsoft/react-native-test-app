@@ -3175,11 +3175,11 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/react-native-host@npm:^0.5.2":
-  version: 0.5.2
-  resolution: "@rnx-kit/react-native-host@npm:0.5.2"
+  version: 0.5.3
+  resolution: "@rnx-kit/react-native-host@npm:0.5.3"
   peerDependencies:
     react-native: ">=0.66"
-  checksum: 10c0/2e02137d9e1ae4110d0729e65780add84ef1aa08f81ee72bd9b97ea4f3c42c681dc20a3c2754ba1eac6fc4c19fd3f26cff4ac2c4fd421ac6b93caa89a176b87b
+  checksum: 10c0/8faaa30914d36bd3ec8b07c3049be45f2a65c5c887d0d0402fc0a312b8c6f6ab03dc6d90a0cc58c0f3870f2c336c608e728aa763586c0c0bd16e450d75fbecc0
   languageName: node
   linkType: hard
 
