@@ -85,8 +85,8 @@
           "type": "string"
         },
         "metalAPIValidation": {
-          "description": "Whether to enable Metal API validation.",
-          "markdownDescription":"Whether to enable Metal API validation.",
+          "description": "The API Validation layer checks for code that calls the Metal API incorrectly, including errors in creating resources, encoding Metal commands, and performing other common tasks.",
+          "markdownDescription": "The API Validation layer checks for code that calls the Metal API incorrectly,\nincluding errors in creating resources, encoding Metal commands, and performing\nother common tasks.\n\n> **_NOTE:_** The API Validation layer has a small, but measureable, impact on\n> CPU performance.\n\nBy default, a `PrivacyInfo.xcprivacy` is on,\n\nFor more details, read Apple's documentation on\n[Validating your app’s Metal API usage](https://developer.apple.com/documentation/xcode/validating-your-apps-metal-api-usage/).\n\n<details>\n<summary>History</summary>\n</details>",
           "type": "boolean"
         },
         "privacyManifest": {
