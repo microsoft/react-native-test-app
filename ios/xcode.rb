@@ -24,11 +24,11 @@ def override_build_settings!(build_settings, overrides)
 end
 
 def configure_xcschemes!(xcschemes_path, project_root, target_platform, name)
-  xcscheme = File.join(xcschemes_path, "ReactTestApp.xcscheme")
+  xcscheme = File.join(xcschemes_path, 'ReactTestApp.xcscheme')
   metal_api_validation = platform_config('metalAPIValidation', project_root, target_platform)
 
-
-  # Oddly enough, to disable Metal API validation, we need to add `enableGPUValidationMode = "1"` to the xcscheme Launch Action.
+  # Oddly enough, to disable Metal API validation, we need to add `enableGPUValidationMode = "1"`
+  # to the xcscheme Launch Action.
   if metal_api_validation == false
     xcscheme_content = File.read(xcscheme)
     doc = REXML::Document.new(xcscheme_content)
@@ -39,8 +39,8 @@ def configure_xcschemes!(xcschemes_path, project_root, target_platform, name)
     end
   end
 
+  return if name.nil?
+
   # Make a copy of the ReactTestApp.xcscheme file with the app name for convenience.
-  unless name.nil?
-    FileUtils.cp(xcscheme, File.join(xcschemes_path, "#{name}.xcscheme"))
-  end
+  FileUtils.cp(xcscheme, File.join(xcschemes_path, "#{name}.xcscheme"))
 end
