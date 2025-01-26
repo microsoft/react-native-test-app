@@ -1,3 +1,6 @@
+require 'rexml/document'
+require 'rexml/xpath'
+
 IPHONEOS_DEPLOYMENT_TARGET = 'IPHONEOS_DEPLOYMENT_TARGET'.freeze
 MACOSX_DEPLOYMENT_TARGET = 'MACOSX_DEPLOYMENT_TARGET'.freeze
 XROS_DEPLOYMENT_TARGET = 'XROS_DEPLOYMENT_TARGET'.freeze
@@ -25,13 +28,16 @@ def configure_xcschemes!(xcschemes_path, project_root, target_platform, name)
   xcscheme = File.join(xcschemes_path, "ReactTestApp.xcscheme")
   metal_api_validation = platform_config('metalAPIValidation', project_root, target_platform)
 
-  # Oddly enough, to disable Metal API validation, we need to remove the `enableGPUValidationMode` key from the xcscheme file.
-  # A default Xcode project does not have this key, so lets follow that pattern and only add it if it is enabled.
-  if metal_api_validation.nil? || metal_api_validation == true
+
+  # Oddly enough, to disable Metal API validation, we need to add `enableGPUValidationMode = "1"` to the xcscheme Launch Action.
+  if metal_api_validation == false
     xcscheme_content = File.read(xcscheme)
-    new_content = xcscheme_content.gsub(/^\s*enableGPUValidationMode\s*=\s*"1"\s*$/, '')
-    File.write(xcscheme, new_content)
-    return
+    doc = REXML::Document.new(xcscheme_content)
+    doc.root.elements['LaunchAction'].attributes['enableGPUValidationMode'] = '1'
+
+    File.open(xcscheme, 'w') do |file|
+      doc.write(file)
+    end
   end
 
   # Make a copy of the ReactTestApp.xcscheme file with the app name for convenience.
