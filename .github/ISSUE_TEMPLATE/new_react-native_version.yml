@@ -8,17 +8,23 @@ body:
     attributes:
       label: Version
       description: What version of `react-native` needs to be added?
-      placeholder: "Example: 0.69.0"
+      placeholder: "Example: 1.0.0"
     validations:
       required: true
   - type: input
-    id: discussion
+    id: project
     attributes:
-      label: Discussion
-      description: Where is this release discussed?
-      placeholder: "Example: https://github.com/reactwg/react-native-releases/discussions/21"
+      label: Project
+      description: "Where is the project board for this release? Find the project at https://github.com/orgs/reactwg/projects and paste the link here."
+      placeholder: "Example: https://github.com/orgs/reactwg/projects/18"
     validations:
       required: true
+  - type: textarea
+    id: blockers
+    attributes:
+      label: Blocking issues
+      description: List of blocking issues.
+      placeholder: "Feel free to leave this field empty."
   - type: checkboxes
     id: platforms
     attributes:
