@@ -1,5 +1,4 @@
 require 'rexml/document'
-require 'rexml/xpath'
 
 IPHONEOS_DEPLOYMENT_TARGET = 'IPHONEOS_DEPLOYMENT_TARGET'.freeze
 MACOSX_DEPLOYMENT_TARGET = 'MACOSX_DEPLOYMENT_TARGET'.freeze
