@@ -20,3 +20,22 @@ def override_build_settings!(build_settings, overrides)
     build_settings[setting] = value
   end
 end
+
+def configure_xcschemes!(xcschemes_path, project_root, target_platform, name)
+  xcscheme = File.join(xcschemes_path, "ReactTestApp.xcscheme")
+  metal_api_validation = platform_config('metalAPIValidation', project_root, target_platform)
+
+  # Oddly enough, to disable Metal API validation, we need to remove the `enableGPUValidationMode` key from the xcscheme file.
+  # A default Xcode project does not have this key, so lets follow that pattern and only add it if it is enabled.
+  if metal_api_validation.nil? || metal_api_validation == true
+    xcscheme_content = File.read(xcscheme)
+    new_content = xcscheme_content.gsub(/^\s*enableGPUValidationMode\s*=\s*"1"\s*$/, '')
+    File.write(xcscheme, new_content)
+    return
+  end
+
+  # Make a copy of the ReactTestApp.xcscheme file with the app name for convenience.
+  unless name.nil?
+    FileUtils.cp(xcscheme, File.join(xcschemes_path, "#{name}.xcscheme"))
+  end
+end

@@ -161,25 +161,7 @@ def make_project!(xcodeproj, project_root, target_platform, options)
   FileUtils.cp_r(xcodeproj_src, destination)
   name, display_name, version, single_app = app_config(project_root)
   xcschemes_path = File.join(xcodeproj_dst, 'xcshareddata', 'xcschemes')
-
-  # Read "metalAPIValidation from the app config and apply it to the xcscheme"
-  metal_api_validation = platform_config('metalAPIValidation', project_root, target_platform)
-  puts "metalAPIValidation: #{metal_api_validation}"
-  
-  if metal_api_validation
-    xcscheme = File.join(xcschemes_path, "ReactTestApp.xcscheme")
-    puts "xcscheme: #{xcscheme}"
-    xcscheme_content = File.read(xcscheme)
-    new_content = xcscheme_content.gsub(/^\s*enableGPUValidationMode\s*=\s*"1"\s*$/, '')
-    puts "new_content: #{new_content}"
-    File.write(xcscheme, new_content)
-  end
-
-  unless name.nil?
-    FileUtils.cp(File.join(xcschemes_path, 'ReactTestApp.xcscheme'),
-                 File.join(xcschemes_path, "#{name}.xcscheme"))
-  end
-
+  configure_xcschemes!(xcschemes_path, project_root, target_platform, name)
 
   # Link source files
   %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
