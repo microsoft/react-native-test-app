@@ -15,4 +15,5 @@ For more details, read Apple's documentation on
 
 - [[4.1.0](https://github.com/microsoft/react-native-test-app/releases/tag/4.1.0)]
   Added
+
 </details>
