@@ -35,7 +35,7 @@ def configure_xcschemes!(xcschemes_path, project_root, target_platform, name)
     doc.root.elements['LaunchAction'].attributes['enableGPUValidationMode'] = '1'
 
     File.open(xcscheme, 'w') do |file|
-      doc.write(file)
+      doc.write(file, 3)
     end
   end
 
