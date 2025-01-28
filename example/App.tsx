@@ -14,8 +14,6 @@ import {
 // @ts-expect-error no type definitions available
 import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
-// @ts-expect-error no type definitions available
-import { isAsyncDebugging } from "react-native/Libraries/Utilities/DebugEnvironment";
 
 declare global {
   export const RN$Bridgeless: boolean;
@@ -186,6 +184,7 @@ function Separator(): React.ReactElement {
   return <View style={styles.separator} />;
 }
 
+// TODO: Remove this component when we drop support for <0.79
 function DevMenu(): React.ReactElement | null {
   const styles = useStyles();
 
@@ -193,13 +192,23 @@ function DevMenu(): React.ReactElement | null {
     return null;
   }
 
-  return (
-    <View style={styles.group}>
-      <Feature value={isAsyncDebugging} onValueChange={setRemoteDebugging}>
-        Remote Debugging
-      </Feature>
-    </View>
-  );
+  // Remote debugging was removed in 0.79:
+  // https://github.com/facebook/react-native/commit/9aae84a688b5af87faf4b68676b6357de26f797f
+  try {
+    const {
+      isAsyncDebugging,
+    } = require("react-native/Libraries/Utilities/DebugEnvironment");
+
+    return (
+      <View style={styles.group}>
+        <Feature value={isAsyncDebugging} onValueChange={setRemoteDebugging}>
+          Remote Debugging
+        </Feature>
+      </View>
+    );
+  } catch (_) {
+    return null;
+  }
 }
 
 export function App(props: AppProps): React.ReactElement<AppProps> {
