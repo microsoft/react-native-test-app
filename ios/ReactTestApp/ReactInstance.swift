@@ -81,7 +81,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
                 // When loading the embedded bundle, we must disable remote
                 // debugging to prevent the bridge from getting stuck in
                 // -[RCTWebSocketExecutor executeApplicationScript:sourceURL:onComplete:]
-                RTADisableRemoteDebugging();
+                RTADisableRemoteDebugging()
             }
             RCTTriggerReloadCommandListeners("ReactTestApp")
             return
