@@ -12,6 +12,10 @@
 
 #define MAKE_VERSION(maj, min, patch) ((maj * 1000000) + (min * 1000) + patch)
 
+#if REACT_NATIVE_VERSION < MAKE_VERSION(0, 79, 0)
+#import <React/RCTDevSettings.h>
+#endif
+
 IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
 {
     Method originalMethod = class_getInstanceMethod(class, originalSelector);
@@ -31,6 +35,16 @@ IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
     }
 
     return originalImpl;
+}
+
+// MARK: - [0.79.0] `isDebuggingRemotely` was removed
+// See https://github.com/facebook/react-native/commit/9aae84a688b5af87faf4b68676b6357de26f797f
+
+void RTADisableRemoteDebugging()
+{
+#if REACT_NATIVE_VERSION < MAKE_VERSION(0, 79, 0)
+    [[RCTDevSettings alloc] init].isDebuggingRemotely = NO;
+#endif
 }
 
 // MARK: - [0.71.13] The additional `inlineSourceMap:` was added in 0.71.13
