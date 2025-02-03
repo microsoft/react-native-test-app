@@ -3045,10 +3045,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/eslint-plugin@npm:^0.75.0":
-  version: 0.75.4
-  resolution: "@react-native/eslint-plugin@npm:0.75.4"
-  checksum: 10c0/f6fe94e58901bd01177209cf1ffd45f4b7bf191dfa8e17cd2b734bb4fbdb3000cd817ccdd5c6a19214f585c74ea709a32b4623d237a343329ad96be2d50e258a
+"@react-native/eslint-plugin@npm:^0.76.0":
+  version: 0.76.6
+  resolution: "@react-native/eslint-plugin@npm:0.76.6"
+  checksum: 10c0/f60f354567db41cb4979210b53af73662cfaf790c6466f907817a4a497ddd258fcf5a8f8ca7aae888950dab2a1d0ceef5dfc4fe3ea0bfc82ff30c0683bfde307
   languageName: node
   linkType: hard
 
@@ -3124,17 +3124,17 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/eslint-plugin@npm:^0.8.0":
-  version: 0.8.5
-  resolution: "@rnx-kit/eslint-plugin@npm:0.8.5"
+  version: 0.8.6
+  resolution: "@rnx-kit/eslint-plugin@npm:0.8.6"
   dependencies:
-    "@react-native/eslint-plugin": "npm:^0.75.0"
+    "@react-native/eslint-plugin": "npm:^0.76.0"
     enhanced-resolve: "npm:^5.8.3"
     eslint-plugin-react: "npm:^7.35.2"
     eslint-plugin-react-hooks: "npm:^5.0.0"
     typescript-eslint: "npm:^8.0.0"
   peerDependencies:
     eslint: ">=8.57.0"
-  checksum: 10c0/6d7fb84941a2c8da7d3efbf4764e1fa50173ec3100065d4090e2e8159bdb899a2d9a38a5b3f3252ca18a9bf04416f7b37a5c2871ccd23d1667fe0a9213d06a4d
+  checksum: 10c0/a0a6d87ce1bc2aba8127f95994a7d2df5b7e5d303e43c280cb473542b9d18df6f71d29f70278cd2c9c6beba1e5442543a342f351217645f3f55135007f9f4341
   languageName: node
   linkType: hard
 
