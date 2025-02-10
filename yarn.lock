@@ -2765,8 +2765,8 @@ __metadata:
   linkType: hard
 
 "@react-native-webapis/web-storage@npm:^0.4.0":
-  version: 0.4.1
-  resolution: "@react-native-webapis/web-storage@npm:0.4.1"
+  version: 0.4.2
+  resolution: "@react-native-webapis/web-storage@npm:0.4.2"
   peerDependencies:
     "@callstack/react-native-visionos": ">=0.74"
     react: ">=18.2.0"
@@ -2780,7 +2780,7 @@ __metadata:
       optional: true
     react-native-windows:
       optional: true
-  checksum: 10c0/b3f774879b19bf2feffbe07c080913a432ecfdaf603a8a5eb37fe8a93635a58482f7d0e9d40db654ec3bf4566b2634f23abd3f54e47a56e55de87eaf9b353827
+  checksum: 10c0/d4622479f5eb9af053d5bdc2c63981d05e2ec3eb97833d006aa703bb63e958451dde6e0ca977bd517fa6440ac82bdbb86911dcd005b20642bc13936f56a26a0f
   languageName: node
   linkType: hard
 
