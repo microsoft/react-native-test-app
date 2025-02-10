@@ -3169,11 +3169,11 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/tools-react-native@npm:^2.0.0, @rnx-kit/tools-react-native@npm:^2.0.2":
-  version: 2.0.3
-  resolution: "@rnx-kit/tools-react-native@npm:2.0.3"
+  version: 2.0.4
+  resolution: "@rnx-kit/tools-react-native@npm:2.0.4"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
-  checksum: 10c0/7a80b7de11200e297dc8a8c0e5e88d68200cf209047f2b86ae4ea98c67302b4bf0c05e78a958edb8a343e22816c1646e296b3a78ad437205c227f2978efcd925
+  checksum: 10c0/f10304a80e2e5f07c6c03e1656989e7aa5b9bceb468df14ce25fb97623dcb510c32a2358e08c248c231e70fa34364ce224f1ea66b559b3e4c3a3685c8664b9d7
   languageName: node
   linkType: hard
 
