@@ -245,16 +245,17 @@ export async function generateSolution(destPath, options, fs = nodefs) {
   }
 
   if (info.useExperimentalNuGet) {
-    // In 0.70, the template was renamed from `NuGet.Config` to `NuGet_Config`
-    const nugetConfigPath0_70 = path.join(
-      rnWindowsPath,
-      "template",
-      "shared-app",
-      "proj",
-      "NuGet_Config"
-    );
-    const nugetConfigPath = fs.existsSync(nugetConfigPath0_70)
-      ? nugetConfigPath0_70
+    const nugetConfigTemplatePath = info.useFabric
+      ? path.join(rnWindowsPath, "templates", "cpp-app", "NuGet_Config")
+      : path.join(
+          rnWindowsPath,
+          "template",
+          "shared-app",
+          "proj",
+          "NuGet_Config"
+        );
+    const nugetConfigPath = fs.existsSync(nugetConfigTemplatePath)
+      ? nugetConfigTemplatePath
       : null;
     if (nugetConfigPath) {
       const nugetConfigDest = path.join(destPath, "NuGet.Config");
@@ -263,8 +264,10 @@ export async function generateSolution(destPath, options, fs = nodefs) {
         copyTasks.push(fs.promises.cp(nugetConfigDest, nugetConfigCopy));
       } else {
         const template = readTextFile(nugetConfigPath, fs);
-        const nuGetADOFeed = info.version.startsWith("0.0.0-");
-        const nugetConfig = mustache.render(template, { nuGetADOFeed });
+        const nugetConfig = mustache.render(template, {
+          addReactNativePublicAdoFeed: true,
+          nuGetADOFeed: info.version.startsWith("0.0.0-"),
+        });
         copyTasks.push(
           writeTextFile(nugetConfigDest, nugetConfig, fs.promises),
           writeTextFile(nugetConfigCopy, nugetConfig, fs.promises)

@@ -102,8 +102,8 @@
     "@expo/config-plugins": ">=5.0",
     "react": "18.1 - 19.0",
     "react-native": "0.70 - 0.77 || >=0.78.0-0 <0.78.0",
-    "react-native-macos": "^0.0.0-0 || 0.71 - 0.76",
-    "react-native-windows": "^0.0.0-0 || 0.70 - 0.76"
+    "react-native-macos": "^0.0.0-0 || 0.71 - 0.77",
+    "react-native-windows": "^0.0.0-0 || 0.70 - 0.77"
   },
   "peerDependenciesMeta": {
     "@callstack/react-native-visionos": {
