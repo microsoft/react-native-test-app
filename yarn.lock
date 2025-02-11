@@ -2895,10 +2895,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/template@npm:^0.75.0":
-  version: 0.75.6
-  resolution: "@react-native-community/template@npm:0.75.6"
-  checksum: 10c0/6c3bab77127d3ec2a0f3f6eb6634f372e348b8f1b4506dd706c7aa318131040f14d0195f087f01f2760da1f52bbb678338f11ff1161e08e6fd2b08e025541890
+"@react-native-community/template@npm:^0.76.0":
+  version: 0.76.7
+  resolution: "@react-native-community/template@npm:0.76.7"
+  checksum: 10c0/9d22ef20b393737c4cbd6b5d1968900a2143a607d95fbc6a181d96e0cd02989371ee48b1f09fea03c03ec40579a349fa5721fa4f1b47e6a51c22f28738daff92
   languageName: node
   linkType: hard
 
@@ -7295,7 +7295,7 @@ __metadata:
     appium-uiautomator2-driver: "npm:^3.0.0"
     appium-xcuitest-driver: "npm:^7.0.0"
     react: "npm:18.3.1"
-    react-native: "npm:0.76.5"
+    react-native: "npm:0.76.6"
     react-native-macos: "npm:^0.76.0"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.76.0"
@@ -12025,7 +12025,7 @@ __metadata:
     "@expo/config-plugins": "npm:^9.0.0"
     "@microsoft/eslint-plugin-sdl": "npm:^1.0.0"
     "@react-native-community/cli": "npm:^15.0.0"
-    "@react-native-community/template": "npm:^0.75.0"
+    "@react-native-community/template": "npm:^0.76.0"
     "@rnx-kit/eslint-plugin": "npm:^0.8.0"
     "@rnx-kit/react-native-host": "npm:^0.5.3"
     "@rnx-kit/tools-react-native": "npm:^2.0.2"
@@ -12046,7 +12046,7 @@ __metadata:
     prettier: "npm:^3.0.0"
     prompts: "npm:^2.4.0"
     react: "npm:18.3.1"
-    react-native: "npm:0.76.5"
+    react-native: "npm:0.76.6"
     react-native-macos: "npm:^0.76.0"
     react-native-windows: "npm:^0.76.0"
     semantic-release: "npm:^24.0.0"
@@ -12136,18 +12136,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.76.5":
-  version: 0.76.5
-  resolution: "react-native@npm:0.76.5"
+"react-native@npm:0.76.6":
+  version: 0.76.6
+  resolution: "react-native@npm:0.76.6"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.6.3"
-    "@react-native/assets-registry": "npm:0.76.5"
-    "@react-native/codegen": "npm:0.76.5"
-    "@react-native/community-cli-plugin": "npm:0.76.5"
-    "@react-native/gradle-plugin": "npm:0.76.5"
-    "@react-native/js-polyfills": "npm:0.76.5"
-    "@react-native/normalize-colors": "npm:0.76.5"
-    "@react-native/virtualized-lists": "npm:0.76.5"
+    "@react-native/assets-registry": "npm:0.76.6"
+    "@react-native/codegen": "npm:0.76.6"
+    "@react-native/community-cli-plugin": "npm:0.76.6"
+    "@react-native/gradle-plugin": "npm:0.76.6"
+    "@react-native/js-polyfills": "npm:0.76.6"
+    "@react-native/normalize-colors": "npm:0.76.6"
+    "@react-native/virtualized-lists": "npm:0.76.6"
     abort-controller: "npm:^3.0.0"
     anser: "npm:^1.4.9"
     ansi-regex: "npm:^5.0.0"
@@ -12186,7 +12186,7 @@ __metadata:
       optional: true
   bin:
     react-native: cli.js
-  checksum: 10c0/8ddde44180b65d4742ab0e7cd1b5d162e2df0ce4bb26b4b4df031f73dd892780b06f5ab1921413210714ef395614f19951444ceb2d7b0ca62434a5dc5da8e17d
+  checksum: 10c0/4d6d47cbfd40df45b14488b3879eb16311e7a8a1b3e3ea35216f506de3335718b707e42f0e89e918ec8a13a3bf4a49dba2aebee15e6c69d9be5562e721e5590a
   languageName: node
   linkType: hard
 
