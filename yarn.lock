@@ -1858,10 +1858,10 @@ __metadata:
   linkType: hard
 
 "@expo/config-plugins@npm:^9.0.0":
-  version: 9.0.14
-  resolution: "@expo/config-plugins@npm:9.0.14"
+  version: 9.0.15
+  resolution: "@expo/config-plugins@npm:9.0.15"
   dependencies:
-    "@expo/config-types": "npm:^52.0.3"
+    "@expo/config-types": "npm:^52.0.4"
     "@expo/json-file": "npm:~9.0.1"
     "@expo/plist": "npm:^0.2.1"
     "@expo/sdk-runtime-versions": "npm:^1.0.0"
@@ -1875,14 +1875,14 @@ __metadata:
     slugify: "npm:^1.6.6"
     xcode: "npm:^3.0.1"
     xml2js: "npm:0.6.0"
-  checksum: 10c0/b688546c1e4af478b95146981b687992eb9bac80992b33fe1ff776735d930a58424642743b33a87d5bc7284c4b9c79b9cd0f72abee7a324c9ce619a21bd73faa
+  checksum: 10c0/d32c6276be723e9428c71b2b48cf829d66627becb54bbc27996d845d956ccf0edaf5aab08152baf361acf3a6ba41316cb2ad7bc9bf8802a13316c969e7c5ff16
   languageName: node
   linkType: hard
 
-"@expo/config-types@npm:^52.0.3":
-  version: 52.0.3
-  resolution: "@expo/config-types@npm:52.0.3"
-  checksum: 10c0/babf090f791594232b10dbcedaa43c2705167b03b5681ecc21bab53a181950d22eb05939e3fea079eeef5111e641ee28d74b580b6503057a6ba7b5673d3594c6
+"@expo/config-types@npm:^52.0.4":
+  version: 52.0.4
+  resolution: "@expo/config-types@npm:52.0.4"
+  checksum: 10c0/45d0895b87c0a6d88bb41079b2fcb9a58768b0fe11972589077bbbb6d8cd344166bfcbcae7a62c35ed7cb30bc19f64a4029cacb745fca4e204a62e754cc7d54c
   languageName: node
   linkType: hard
 
