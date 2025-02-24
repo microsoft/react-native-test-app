@@ -2939,14 +2939,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/cli@npm:0.76.3":
-  version: 0.76.3
-  resolution: "@react-native-windows/cli@npm:0.76.3"
+"@react-native-windows/cli@npm:0.76.4":
+  version: 0.76.4
+  resolution: "@react-native-windows/cli@npm:0.76.4"
   dependencies:
     "@react-native-windows/codegen": "npm:0.76.2"
     "@react-native-windows/fs": "npm:0.76.1"
     "@react-native-windows/package-utils": "npm:0.76.1"
-    "@react-native-windows/telemetry": "npm:0.76.2"
+    "@react-native-windows/telemetry": "npm:0.76.3"
     "@xmldom/xmldom": "npm:^0.7.7"
     chalk: "npm:^4.1.0"
     cli-spinners: "npm:^2.2.0"
@@ -2965,7 +2965,7 @@ __metadata:
     xpath: "npm:^0.0.27"
   peerDependencies:
     react-native: "*"
-  checksum: 10c0/f4b01e25302a4ff6126da2324e5dd055da288611490c8ca4d96134f10caa0f048934b33bda50e663086df874df64e68aa8b9f9ce5a36bcfaffa4a1d81904ca24
+  checksum: 10c0/b248cdfede776060f15dff2cc285944ce94bcaaaf9f8ab741650995c36c4cc4fde239b5a9dd92935a8631c7d6a303ac41f3ef5589f92a9603cef9ca81df1a839
   languageName: node
   linkType: hard
 
@@ -3018,9 +3018,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/telemetry@npm:0.76.2":
-  version: 0.76.2
-  resolution: "@react-native-windows/telemetry@npm:0.76.2"
+"@react-native-windows/telemetry@npm:0.76.3":
+  version: 0.76.3
+  resolution: "@react-native-windows/telemetry@npm:0.76.3"
   dependencies:
     "@azure/core-auth": "npm:1.5.0"
     "@microsoft/1ds-core-js": "npm:^4.3.0"
@@ -3032,7 +3032,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     os-locale: "npm:^5.0.0"
     xpath: "npm:^0.0.27"
-  checksum: 10c0/88f41e8443a6e7cf7b0ffc9907c91931aaeaf562ada4b56e64a02fe4c1725d5b404f7c4191495ed7d340c1b04087dbb5a3e2b86642f4c1bce8667a14134379b5
+  checksum: 10c0/ae7c8623382cc04da0ab7dcd796f83abd49f21e8329253368ac7cf27b4eb7130989838c4e49c8400144e81bb061e90ab883b1cc728736dd18b161c4dc32058d5
   languageName: node
   linkType: hard
 
@@ -7300,7 +7300,7 @@ __metadata:
     appium-uiautomator2-driver: "npm:^3.0.0"
     appium-xcuitest-driver: "npm:^7.0.0"
     react: "npm:18.3.1"
-    react-native: "npm:0.76.5"
+    react-native: "npm:0.76.7"
     react-native-macos: "npm:^0.76.0"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.76.0"
@@ -12058,7 +12058,7 @@ __metadata:
     prettier: "npm:^3.0.0"
     prompts: "npm:^2.4.0"
     react: "npm:18.3.1"
-    react-native: "npm:0.76.5"
+    react-native: "npm:0.76.7"
     react-native-macos: "npm:^0.76.0"
     react-native-windows: "npm:^0.76.0"
     semantic-release: "npm:^24.0.0"
@@ -12091,23 +12091,23 @@ __metadata:
   linkType: soft
 
 "react-native-windows@npm:^0.76.0":
-  version: 0.76.7
-  resolution: "react-native-windows@npm:0.76.7"
+  version: 0.76.8
+  resolution: "react-native-windows@npm:0.76.8"
   dependencies:
     "@babel/runtime": "npm:^7.0.0"
     "@jest/create-cache-key-function": "npm:^29.6.3"
     "@react-native-community/cli": "npm:15.0.0-alpha.2"
     "@react-native-community/cli-platform-android": "npm:15.0.0-alpha.2"
     "@react-native-community/cli-platform-ios": "npm:15.0.0-alpha.2"
-    "@react-native-windows/cli": "npm:0.76.3"
+    "@react-native-windows/cli": "npm:0.76.4"
     "@react-native/assets": "npm:1.0.0"
-    "@react-native/assets-registry": "npm:0.76.2"
-    "@react-native/codegen": "npm:0.76.2"
-    "@react-native/community-cli-plugin": "npm:0.76.2"
-    "@react-native/gradle-plugin": "npm:0.76.2"
-    "@react-native/js-polyfills": "npm:0.76.2"
-    "@react-native/normalize-colors": "npm:0.76.2"
-    "@react-native/virtualized-lists": "npm:0.76.2"
+    "@react-native/assets-registry": "npm:0.76.6"
+    "@react-native/codegen": "npm:0.76.6"
+    "@react-native/community-cli-plugin": "npm:0.76.6"
+    "@react-native/gradle-plugin": "npm:0.76.6"
+    "@react-native/js-polyfills": "npm:0.76.6"
+    "@react-native/normalize-colors": "npm:0.76.6"
+    "@react-native/virtualized-lists": "npm:0.76.6"
     abort-controller: "npm:^3.0.0"
     anser: "npm:^1.4.9"
     ansi-regex: "npm:^5.0.0"
@@ -12144,22 +12144,22 @@ __metadata:
     "@types/react": ^18.2.6
     react: ^18.2.0
     react-native: ^0.76.0
-  checksum: 10c0/3b7ce5259a8d8d4281817c5d98e820bfd942bf89d79922d05fbbf283fa7c04877312db0accf2377fc510cfe876c8d6fa61a1911ec6f9b249f3b9657653830b9c
+  checksum: 10c0/d2040afe9eb0a226cf330d5e12530c46106071adcdc792ab85a15eb10e0d46e8f915b701930fc8bceedc588ae0b77e6c0fb38268d9ccaea6f6c46cc1d4bf8841
   languageName: node
   linkType: hard
 
-"react-native@npm:0.76.5":
-  version: 0.76.5
-  resolution: "react-native@npm:0.76.5"
+"react-native@npm:0.76.7":
+  version: 0.76.7
+  resolution: "react-native@npm:0.76.7"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.6.3"
-    "@react-native/assets-registry": "npm:0.76.5"
-    "@react-native/codegen": "npm:0.76.5"
-    "@react-native/community-cli-plugin": "npm:0.76.5"
-    "@react-native/gradle-plugin": "npm:0.76.5"
-    "@react-native/js-polyfills": "npm:0.76.5"
-    "@react-native/normalize-colors": "npm:0.76.5"
-    "@react-native/virtualized-lists": "npm:0.76.5"
+    "@react-native/assets-registry": "npm:0.76.7"
+    "@react-native/codegen": "npm:0.76.7"
+    "@react-native/community-cli-plugin": "npm:0.76.7"
+    "@react-native/gradle-plugin": "npm:0.76.7"
+    "@react-native/js-polyfills": "npm:0.76.7"
+    "@react-native/normalize-colors": "npm:0.76.7"
+    "@react-native/virtualized-lists": "npm:0.76.7"
     abort-controller: "npm:^3.0.0"
     anser: "npm:^1.4.9"
     ansi-regex: "npm:^5.0.0"
@@ -12198,7 +12198,7 @@ __metadata:
       optional: true
   bin:
     react-native: cli.js
-  checksum: 10c0/8ddde44180b65d4742ab0e7cd1b5d162e2df0ce4bb26b4b4df031f73dd892780b06f5ab1921413210714ef395614f19951444ceb2d7b0ca62434a5dc5da8e17d
+  checksum: 10c0/ced7c959e03571d907aa31eb0f1c166d48173a5df1b938ce1d80ba2629b7904f7bbcafcbb249d01919db087fc12d0d742f77b309551ab8a63a9d130d0de13246
   languageName: node
   linkType: hard
 
