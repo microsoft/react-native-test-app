@@ -299,6 +299,18 @@ export function generateSchema(docs = {}) {
               },
             },
           },
+          metaData: {
+            description: extractBrief(docs["android.metaData"]),
+            markdownDescription: docs["android.metaData"],
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                "android:name": { type: "string" },
+                "android:value": { type: "string" },
+              },
+            },
+          },
         },
       },
       ios: {

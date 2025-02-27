@@ -42,6 +42,7 @@ export async function readDocumentation(): Promise<Partial<Docs>> {
     "android.icons",
     "android.package",
     "android.permissions",
+    "android.metaData",
     "android.signingConfigs",
     "android.versionCode",
     "ios.buildNumber",

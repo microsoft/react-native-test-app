@@ -14,12 +14,19 @@ export type AndroidConfig = {
       "android:name": string;
       "android:maxSdkVersion"?: string;
     }[];
+    metaData?: {
+      "android:name": string;
+      "android:value": string;
+    }[];
   };
 };
 
 export type AndroidManifest = {
   "uses-feature": Record<string, string>[];
   "uses-permission": Record<string, string>[];
+  application: {
+    "meta-data": Record<string, string>[];
+  };
 };
 
 /************************
@@ -207,6 +214,7 @@ export type Docs = {
   "android.icons": string;
   "android.package": string;
   "android.permissions": string;
+  "android.metaData": string;
   "android.signingConfigs": string;
   "android.versionCode": string;
   "ios.buildNumber": string;

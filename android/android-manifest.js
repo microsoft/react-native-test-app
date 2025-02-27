@@ -98,6 +98,17 @@ function generateAndroidManifest(appManifestPath, manifestOutput, fs = nodefs) {
     }
   }
 
+  // https://developer.android.com/guide/topics/manifest/meta-data-element
+  const metaData = android.metaData;
+  if (Array.isArray(metaData)) {
+    const names = ["android:name"];
+    const attributes = ["android:value"];
+    const entries = toXML(metaData, names, attributes, attributeNamePrefix);
+    if (entries.length > 0) {
+      manifest.application["meta-data"] = entries;
+    }
+  }
+
   const builder = new XMLBuilder(xmlOptions);
   fs.mkdirSync(path.dirname(manifestOutput), { recursive: true, mode: 0o755 });
   fs.writeFileSync(manifestOutput, builder.build(xml));
