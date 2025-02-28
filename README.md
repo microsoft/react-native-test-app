@@ -106,13 +106,13 @@ in the wiki.
 [react-native-menu](https://github.com/react-native-menu/menu) &bull;
 [react-native-netinfo](https://github.com/react-native-netinfo/react-native-netinfo) &bull;
 [react-native-pager-view](https://github.com/callstack/react-native-pager-view) &bull;
+[react-native-safe-area-context](https://github.com/AppAndFlow/react-native-safe-area-context) &bull;
 [react-native-segmented-control](https://github.com/react-native-segmented-control/segmented-control) &bull;
 [react-native-video](https://github.com/TheWidlarzGroup/react-native-video) &bull;
 [react-native-webview](https://github.com/react-native-webview/react-native-webview) &bull;
 [realm-js](https://github.com/realm/realm-js) &bull;
 [shopify/restyle](https://github.com/Shopify/restyle) &bull;
 [sparkfabrik-react-native-idfa-aaid](https://github.com/sparkfabrik/sparkfabrik-react-native-idfa-aaid) &bull;
-[react-native-safe-area-context](https://github.com/AppAndFlow/react-native-safe-area-context) &bull;
 [and many more…](https://github.com/microsoft/react-native-test-app/network/dependents)
 
 _Are you using RNTA? Submit a PR to add it to the list!_
