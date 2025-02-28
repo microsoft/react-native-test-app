@@ -329,7 +329,7 @@
         },
         "metaData": {
           "description": "A name-value pair for an item of additional, arbitrary data that can be supplied to the application.",
-          "markdownDescription": "A name-value pair for an item of additional, arbitrary data that can be supplied to the application.\n\nEquivalent to\n[`<meta-data>`](https://developer.android.com/guide/topics/manifest/meta-data-element).\n\nExample:\n\n```xml\n<application>\n  <meta-data\n      android:name=\"com.google.android.gms.wallet.api.enabled\"\n      android:value=\"true\" />\n</application>\n```\n\nbecomes\n\n```json\n{\n  \"android\": {\n    \"metaData\": [\n      {\n        \"android:name\": \"com.google.android.gms.wallet.api.enabled\",\n        \"android:value\": \"true\"\n      }\n    ]\n  }\n}\n```\n\n<details>\n<summary>History</summary>\n\nTODO\n\n</details>",
+          "markdownDescription": "A name-value pair for an item of additional, arbitrary data that can be supplied to the application.\n\nEquivalent to\n[`<meta-data>`](https://developer.android.com/guide/topics/manifest/meta-data-element).\n\nExample:\n\n```xml\n<application>\n  <meta-data\n      android:name=\"com.google.android.gms.wallet.api.enabled\"\n      android:value=\"true\" />\n</application>\n```\n\nbecomes\n\n```json\n{\n  \"android\": {\n    \"metaData\": [\n      {\n        \"android:name\": \"com.google.android.gms.wallet.api.enabled\",\n        \"android:value\": \"true\"\n      }\n    ]\n  }\n}\n```\n\n<details>\n<summary>History</summary>\n\n- [[4.2.0](https://github.com/microsoft/react-native-test-app/releases/tag/4.2.0)]\n  Added\n\n</details>",
           "type": "array",
           "items": {
             "type": "object",
