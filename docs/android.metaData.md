@@ -31,6 +31,7 @@ becomes
 <details>
 <summary>History</summary>
 
-TODO
+- [[4.2.0](https://github.com/microsoft/react-native-test-app/releases/tag/4.2.0)]
+  Added
 
 </details>
