@@ -89,7 +89,7 @@
   },
   "dependencies": {
     "@rnx-kit/react-native-host": "^0.5.4",
-    "@rnx-kit/tools-react-native": "^2.0.2",
+    "@rnx-kit/tools-react-native": "^2.1.0",
     "ajv": "^8.0.0",
     "cliui": "^8.0.0",
     "fast-xml-parser": "^4.0.0",
