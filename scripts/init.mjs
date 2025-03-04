@@ -230,9 +230,9 @@ function main() {
               { title: "iOS", value: "ios", selected: true },
               { title: "macOS", value: "macos", selected: true },
               {
-                title: "visionOS (Experimental)",
+                title: "visionOS",
                 value: "visionos",
-                selected: false,
+                selected: true,
               },
               { title: "Windows", value: "windows", selected: true },
             ],
