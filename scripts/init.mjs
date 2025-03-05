@@ -232,7 +232,7 @@ function main() {
               {
                 title: "visionOS",
                 value: "visionos",
-                selected: true,
+                selected: false,
               },
               { title: "Windows", value: "windows", selected: true },
             ],
