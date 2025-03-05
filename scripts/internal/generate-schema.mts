@@ -63,10 +63,12 @@ export async function readDocumentation(): Promise<Partial<Docs>> {
     "windows.certificateThumbprint",
   ];
 
+  const fileReadOptions = { encoding: "utf-8" } as const;
+
   await Promise.all(
     keys.map(async (name) => {
       const filename = path.join(docsDir, name + ".md");
-      const md = await fs.readFile(filename, { encoding: "utf-8" });
+      const md = await fs.readFile(filename, fileReadOptions);
       docs[name] = stripCarriageReturn(md).trim();
     })
   );

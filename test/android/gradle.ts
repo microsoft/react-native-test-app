@@ -77,11 +77,9 @@ async function makeProject(
   await writeAllFiles(files, packagePath);
 
   try {
-    await fsp.symlink(
-      fileURLToPath(new URL("../../example/node_modules", import.meta.url)),
-      path.join(packagePath, "node_modules"),
-      "dir"
-    );
+    const target = new URL("../../example/node_modules", import.meta.url);
+    const nodeModulesDir = path.join(packagePath, "node_modules");
+    fs.symlinkSync(fileURLToPath(target), nodeModulesDir, "dir");
   } catch (e) {
     if (e && typeof e === "object" && "code" in e && e.code !== "EEXIST") {
       throw e;
