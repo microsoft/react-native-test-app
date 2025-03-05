@@ -6,6 +6,9 @@ const project = (() => {
         sourceDir: "android",
       },
       ios: {
+        // `rnc-cli` does not account for all the ways CocoaPods can be
+        // installed and therefore breaks in many setups.
+        automaticPodsInstallation: false,
         sourceDir: "ios",
       },
       windows: {
