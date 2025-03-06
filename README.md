@@ -44,7 +44,7 @@ Instructions:
 ◉   Android
 ◉   iOS
 ◉   macOS
-◯   visionOS (Experimental)
+◯   visionOS
 ◉   Windows
 ✔ Where should we create the new project? … sample
 ```
