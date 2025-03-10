@@ -1,3 +1,14 @@
+export type JSONValue =
+  | string
+  | number
+  | boolean
+  | JSONArray
+  | JSONObject
+  | null;
+
+export type JSONArray = JSONValue[];
+export type JSONObject = { [key: string | symbol]: JSONValue };
+
 /********************************
  * android/android-manifest.mjs *
  ********************************/
