@@ -6,7 +6,9 @@ import { fileURLToPath } from "node:url";
 import { generateAssetsCatalogs as generateAssetsCatalogsActual } from "../../ios/assetsCatalog.mjs";
 import { fs as fsMock, setMockFiles, toJSON } from "../fs.mock.ts";
 
-describe("configureXcodeSchemes()", () => {
+const macosOnly = { skip: process.platform === "win32" };
+
+describe("configureXcodeSchemes()", macosOnly, () => {
   const projectRoot = ".";
 
   const generateAssetsCatalogs: typeof generateAssetsCatalogsActual = (

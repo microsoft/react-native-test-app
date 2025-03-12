@@ -8,7 +8,9 @@ import {
 import type { JSONObject } from "../../scripts/types.ts";
 import { fs, setMockFiles, toJSON } from "../fs.mock.ts";
 
-describe("configureXcodeSchemes()", () => {
+const macosOnly = { skip: process.platform === "win32" };
+
+describe("configureXcodeSchemes()", macosOnly, () => {
   const projectRoot = ".";
   const xcschemesDir = path.join(projectRoot, "xcshareddata", "xcschemes");
 
