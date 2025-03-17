@@ -1456,7 +1456,7 @@ PODS:
     - React-logger (= 0.77.0)
     - React-perflogger (= 0.77.0)
     - React-utils (= 0.77.0)
-  - ReactNativeHost (0.5.4):
+  - ReactNativeHost (0.5.5):
     - DoubleConversion
     - glog
     - RCT-Folly (= 2024.11.18.00)
@@ -1787,7 +1787,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 3e6f8f8cbc3007646e918776e149f9d279ea2e2d
   ReactCodegen: dcb86afc0d45a655b79cec427db85681e5920622
   ReactCommon: 699cc59ecdc5cc39e10ddb49fc29cefe16d8ab9f
-  ReactNativeHost: 8ef54ff7c6c17c1242e287c286699f8955f22e45
+  ReactNativeHost: 8bf59aebad1f1cdd377510f12172b4b9cdbb5161
   ReactTestApp-DevSupport: 2386e7c22084f8a550cfadcc0bde140c7dc328a1
   ReactTestApp-Resources: 86136e1efe3aa7201759371c03dea3df77079b42
   RNWWebStorage: cf4c36a41d7d31734b1a3424c70cb555e86801be
