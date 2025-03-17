@@ -164,7 +164,7 @@
     "@expo/config-plugins/glob": "^7.1.6",
     "@expo/json-file/@babel/code-frame": "^7.10.4",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-n": "^17.10.3",
-    "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.35.2",
+    "@microsoft/eslint-plugin-sdl/eslint-plugin-react": "^7.37.3",
     "@pnpm/network.ca-file/graceful-fs": "~4.2.10",
     "@react-native-community/cli": "^15.0.1",
     "@react-native-community/cli-platform-android": "^15.0.1",
