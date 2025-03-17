@@ -111,12 +111,6 @@ end
 def use_new_architecture!(options, react_native_version)
   return unless new_architecture_enabled?(options, react_native_version)
 
-  Pod::UI.warn(
-    'As of writing, New Architecture (Fabric) is still experimental and ' \
-    'subject to change. For more information, please see ' \
-    'https://reactnative.dev/docs/next/new-architecture-intro.'
-  )
-
   options[:fabric_enabled] = true
   options[:new_arch_enabled] = true
   ENV['RCT_NEW_ARCH_ENABLED'] = '1'
