@@ -27,8 +27,23 @@ _If you want to migrate an existing test app for a library, follow the
 You can generate a new project using `npx`:
 
 ```sh
-npx --package react-native-test-app@latest init
+npx --package react-native-test-app@<version> init
+# For example: npx --package react-native-test-app@4.2.3 init
 ```
+
+You can always find the latest version here:
+https://github.com/microsoft/react-native-test-app/releases
+
+Alternatively, if you're using a Bash-compatible shell:
+
+```sh
+npx --package react-native-test-app@$(npm view react-native-test-app version) init
+```
+
+> [!NOTE]
+>
+> We don't recommend using `@latest` because npm may not always use the latest
+> version. See https://github.com/npm/cli/issues/5262 for more details.
 
 In this example, we will create a project named "sample" in `sample` with apps
 for all platforms:
