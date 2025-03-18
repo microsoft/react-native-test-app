@@ -5,11 +5,11 @@
  * @typedef {{ configuration: Configuration; cwd: string; workspaces: Workspace[]; }} Project
  * @typedef {{ mode?: "skip-build" | "update-lockfile"; }} InstallOptions
  *
- * @type {{ name: string; factory: (require: NodeRequire) => unknown; }}
+ * @type {{ name: string; factory: (require: NodeJS.Require) => unknown; }}
  */
 module.exports = {
   name: "plugin-npm-workaround",
-  factory: (_require) => ({
+  factory: (require) => ({
     hooks: {
       /** @type {(project: Project, options: InstallOptions) => void} */
       afterAllInstalled(project, options) {
@@ -25,6 +25,7 @@ module.exports = {
           return;
         }
 
+        const { npath } = require("@yarnpkg/fslib");
         const fs = require("node:fs");
         const path = require("node:path");
 
@@ -32,18 +33,10 @@ module.exports = {
           "node_modules/@react-native-community/cli/build/tools/npm.js",
         ];
 
-        /**
-         * @param {string} p
-         * @returns {string}
-         */
-        function normalize(p) {
-          // On Windows, paths are prefixed with `/`
-          return p.replace(/^[/\\]([^/\\]+:[/\\])/, "$1");
-        }
-
         for (const ws of project.workspaces) {
           for (const file of filesToPatch) {
-            const jsPath = path.join(normalize(ws.cwd), file);
+            const workspaceDir = npath.fromPortablePath(ws.cwd);
+            const jsPath = path.join(workspaceDir, file);
             if (!fs.existsSync(jsPath)) {
               continue;
             }

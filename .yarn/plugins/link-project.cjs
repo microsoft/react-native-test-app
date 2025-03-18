@@ -5,11 +5,11 @@
  * @typedef {{ configuration: Configuration; cwd: string; workspaces: Workspace[]; }} Project
  * @typedef {{ mode?: "skip-build" | "update-lockfile"; }} InstallOptions
  *
- * @type {{ name: string; factory: (require: NodeRequire) => unknown; }}
+ * @type {{ name: string; factory: (require: NodeJS.Require) => unknown; }}
  */
 module.exports = {
   name: "plugin-link-project",
-  factory: (_require) => ({
+  factory: (require) => ({
     hooks: {
       /** @type {(project: Project, options: InstallOptions) => void} */
       afterAllInstalled(project, options) {
@@ -25,23 +25,15 @@ module.exports = {
           return;
         }
 
+        const { npath } = require("@yarnpkg/fslib");
         const fs = require("node:fs");
         const path = require("node:path");
-
-        /**
-         * @param {string} p
-         * @returns {string}
-         */
-        function normalize(p) {
-          // On Windows, paths are prefixed with `/`
-          return p.replace(/^[/\\]([^/\\]+:[/\\])/, "$1");
-        }
 
         const noop = () => null;
         const mkdirOptions = { recursive: true, mode: 0o755 };
         const rmOptions = { force: true, maxRetries: 3, recursive: true };
 
-        const projectRoot = normalize(project.cwd);
+        const projectRoot = npath.fromPortablePath(project.cwd);
         const manifestPath = path.join(projectRoot, "package.json");
 
         fs.readFile(manifestPath, { encoding: "utf-8" }, (_err, manifest) => {
@@ -52,7 +44,8 @@ module.exports = {
               continue;
             }
 
-            const nodeModulesDir = path.join(normalize(ws.cwd), "node_modules");
+            const workspaceDir = npath.fromPortablePath(ws.cwd);
+            const nodeModulesDir = path.join(workspaceDir, "node_modules");
             const linkPath = path.join(nodeModulesDir, name);
 
             fs.readlink(linkPath, (err, linkString) => {

@@ -23,6 +23,7 @@ module.exports = {
   factory: (require) => {
     const { npath } = require("@yarnpkg/fslib");
     const fs = require("node:fs");
+    const path = require("node:path");
 
     const asText = /** @type {const} */ ({ encoding: "utf-8" });
 
@@ -32,8 +33,8 @@ module.exports = {
       hooks: {
         /** @type {(project: Project) => void} */
         validateProject(project) {
-          const pp = npath.join(project.cwd, "package.json");
-          manifestPath = npath.fromPortablePath(pp);
+          const projectRoot = npath.fromPortablePath(project.cwd);
+          manifestPath = path.join(projectRoot, "package.json");
           orig_rawManifest = fs.readFileSync(manifestPath, asText);
         },
         /** @type {(project: Project, options: InstallOptions) => void} */
