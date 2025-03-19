@@ -106,6 +106,7 @@ export async function generatePrivacyManifest(
     }
   }
 
-  const xcprivacy = await toPlist(manifest);
-  fs.writeFileSync(path.join(destination, "PrivacyInfo.xcprivacy"), xcprivacy);
+  const filename = "PrivacyInfo.xcprivacy";
+  const xcprivacy = await toPlist(manifest, filename);
+  fs.writeFileSync(path.join(destination, filename), xcprivacy);
 }

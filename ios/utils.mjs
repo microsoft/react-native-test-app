@@ -29,9 +29,10 @@ export function projectPath(p, targetPlatform) {
 
 /**
  * @param {JSONObject} source
+ * @param {string} filename
  * @returns {Promise<string>}
  */
-export function toPlist(source) {
+export function toPlist(source, filename) {
   return new Promise((resolve, reject) => {
     const args = ["-convert", "xml1", "-r", "-o", "-", "--", "-"];
     const plutil = spawn("/usr/bin/plutil", args, {
@@ -44,7 +45,7 @@ export function toPlist(source) {
 
     plutil.on("exit", (exitCode) => {
       if (exitCode !== 0) {
-        reject(new Error("Failed to generate 'PrivacyInfo.xcprivacy'"));
+        reject(new Error(`Failed to generate '${filename}'`));
       } else {
         resolve(data.join(""));
       }
