@@ -157,6 +157,7 @@ describe("npm pack", () => {
       "ios/info_plist.rb",
       "ios/node.rb",
       "ios/pod_helpers.rb",
+      "ios/privacyManifest.mjs",
       "ios/privacy_manifest.rb",
       "ios/test_app.rb",
       "ios/use_react_native-0.70.rb",
