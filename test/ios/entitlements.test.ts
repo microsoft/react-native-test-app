@@ -12,10 +12,10 @@ describe("generatePrivacyManifest()", macosOnly, () => {
   function generateEntitlements(
     config: JSONObject,
     platform: (typeof targetPlatforms)[number]
-  ): Promise<void> {
+  ): void {
     const destination = ".";
     fs.mkdirSync(destination, { recursive: true, mode: 0o755 });
-    return generateEntitlementsActual(config, platform, destination, fs);
+    generateEntitlementsActual(config, platform, destination, fs);
   }
 
   function readEntitlements() {
@@ -29,14 +29,14 @@ describe("generatePrivacyManifest()", macosOnly, () => {
   });
 
   for (const platform of targetPlatforms) {
-    it(`[${platform}] generates a default manifest`, async () => {
-      await generateEntitlements({}, platform);
+    it(`[${platform}] generates a default manifest`, () => {
+      generateEntitlements({}, platform);
 
       deepEqual(readEntitlements(), DEFAULT_ENTITLEMENTS[platform]);
     });
 
-    it(`[${platform}] handles invalid manifest`, async () => {
-      await generateEntitlements(
+    it(`[${platform}] handles invalid manifest`, () => {
+      generateEntitlements(
         { [platform]: { codeSignEntitlements: false } },
         platform
       );
@@ -44,8 +44,8 @@ describe("generatePrivacyManifest()", macosOnly, () => {
       deepEqual(readEntitlements(), DEFAULT_ENTITLEMENTS[platform]);
     });
 
-    it(`[${platform}] does not generate a manifest when a path is specified`, async () => {
-      await generateEntitlements(
+    it(`[${platform}] does not generate a manifest when a path is specified`, () => {
+      generateEntitlements(
         { [platform]: { codeSignEntitlements: "App.entitlements" } },
         platform
       );
@@ -53,8 +53,8 @@ describe("generatePrivacyManifest()", macosOnly, () => {
       throws(readEntitlements);
     });
 
-    it(`[${platform}] appends to default manifest`, async () => {
-      await generateEntitlements(
+    it(`[${platform}] appends to default manifest`, () => {
+      generateEntitlements(
         {
           [platform]: {
             codeSignEntitlements: {

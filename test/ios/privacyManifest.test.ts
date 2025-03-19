@@ -7,10 +7,10 @@ import { fs, setMockFiles } from "../fs.mock.ts";
 const macosOnly = { skip: process.platform === "win32" };
 
 describe("generatePrivacyManifest()", macosOnly, () => {
-  function generatePrivacyManifest(config: JSONObject): Promise<void> {
+  function generatePrivacyManifest(config: JSONObject): void {
     const destination = ".";
     fs.mkdirSync(destination, { recursive: true, mode: 0o755 });
-    return generatePrivacyManifestActual(config, "ios", destination, fs);
+    generatePrivacyManifestActual(config, "ios", destination, fs);
   }
 
   function readPrivacyManifest() {
@@ -23,20 +23,20 @@ describe("generatePrivacyManifest()", macosOnly, () => {
     setMockFiles();
   });
 
-  it("generates a default manifest", async () => {
-    await generatePrivacyManifest({});
+  it("generates a default manifest", () => {
+    generatePrivacyManifest({});
 
     deepEqual(readPrivacyManifest(), DEFAULT_PRIVACY_MANIFEST);
   });
 
-  it("handles invalid configuration", async () => {
-    await generatePrivacyManifest({ ios: { privacyManifest: "YES" } });
+  it("handles invalid configuration", () => {
+    generatePrivacyManifest({ ios: { privacyManifest: "YES" } });
 
     deepEqual(readPrivacyManifest(), DEFAULT_PRIVACY_MANIFEST);
   });
 
-  it("appends to default manifest", async () => {
-    await generatePrivacyManifest({
+  it("appends to default manifest", () => {
+    generatePrivacyManifest({
       ios: {
         privacyManifest: {
           NSPrivacyTracking: true,

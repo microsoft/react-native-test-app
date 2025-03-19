@@ -41,9 +41,9 @@ function getCodeSignEntitlements(appConfig, targetPlatform) {
  * @param {JSONObject} appConfig
  * @param {ApplePlatform} targetPlatform
  * @param {string} destination
- * @returns {Promise<void>}
+ * @returns {void}
  */
-export async function generateEntitlements(
+export function generateEntitlements(
   appConfig,
   targetPlatform,
   destination,
@@ -56,7 +56,7 @@ export async function generateEntitlements(
   }
 
   const filename = "App.entitlements";
-  const entitlements = await toPlist(
+  const entitlements = toPlist(
     {
       ...(targetPlatform === "macos"
         ? DEFAULT_MACOS_ENTITLEMENTS

@@ -1,5 +1,5 @@
 // @ts-check
-import { spawn } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -30,28 +30,18 @@ export function projectPath(p, targetPlatform) {
 /**
  * @param {JSONObject} source
  * @param {string} filename
- * @returns {Promise<string>}
+ * @returns {string}
  */
 export function toPlist(source, filename) {
-  return new Promise((resolve, reject) => {
-    const args = ["-convert", "xml1", "-r", "-o", "-", "--", "-"];
-    const plutil = spawn("/usr/bin/plutil", args, {
-      stdio: ["pipe", "pipe", "inherit"],
-    });
-
-    /** @type {string[]} */
-    const data = [];
-    plutil.stdout.on("data", (chunk) => data.push(chunk.toString()));
-
-    plutil.on("exit", (exitCode) => {
-      if (exitCode !== 0) {
-        reject(new Error(`Failed to generate '${filename}'`));
-      } else {
-        resolve(data.join(""));
-      }
-    });
-
-    plutil.stdin.write(JSON.stringify(source));
-    plutil.stdin.end();
+  const args = ["-convert", "xml1", "-r", "-o", "-", "--", "-"];
+  const plutil = spawnSync("/usr/bin/plutil", args, {
+    stdio: ["pipe", "pipe", "inherit"],
+    input: JSON.stringify(source),
   });
+
+  if (plutil.status !== 0) {
+    throw new Error(`Failed to generate '${filename}'`);
+  }
+
+  return plutil.stdout.toString();
 }
