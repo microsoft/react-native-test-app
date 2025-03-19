@@ -1,7 +1,7 @@
 // @ts-check
 import * as nodefs from "node:fs";
 import * as path from "node:path";
-import { isObject, toPlist } from "./utils.mjs";
+import { isObject, plistFromJSON } from "./utils.mjs";
 
 /**
  * @import { ApplePlatform, JSONObject, JSONValue } from "../scripts/types.js";
@@ -107,6 +107,6 @@ export function generatePrivacyManifest(
   }
 
   const filename = "PrivacyInfo.xcprivacy";
-  const xcprivacy = toPlist(manifest, filename);
+  const xcprivacy = plistFromJSON(manifest, filename);
   fs.writeFileSync(path.join(destination, filename), xcprivacy);
 }

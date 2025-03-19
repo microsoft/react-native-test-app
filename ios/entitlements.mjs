@@ -1,7 +1,7 @@
 // @ts-check
 import * as nodefs from "node:fs";
 import * as path from "node:path";
-import { isObject, toPlist } from "./utils.mjs";
+import { isObject, plistFromJSON } from "./utils.mjs";
 
 /** @import { ApplePlatform, JSONObject } from "../scripts/types.js"; */
 
@@ -56,7 +56,7 @@ export function generateEntitlements(
   }
 
   const filename = "App.entitlements";
-  const entitlements = toPlist(
+  const entitlements = plistFromJSON(
     {
       ...(targetPlatform === "macos"
         ? DEFAULT_MACOS_ENTITLEMENTS

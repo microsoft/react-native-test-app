@@ -6,7 +6,7 @@ import { fs, setMockFiles } from "../fs.mock.ts";
 
 const macosOnly = { skip: process.platform === "win32" };
 
-describe("generatePrivacyManifest()", macosOnly, () => {
+describe("generateEntitlements()", macosOnly, () => {
   const targetPlatforms = ["ios", "macos", "visionos"] as const;
 
   function generateEntitlements(
