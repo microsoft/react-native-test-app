@@ -14,7 +14,9 @@ describe("generatePrivacyManifest()", macosOnly, () => {
   }
 
   function readPrivacyManifest() {
-    return fs.readFileSync("PrivacyInfo.xcprivacy", { encoding: "utf-8" });
+    return fs
+      .readFileSync("PrivacyInfo.xcprivacy", { encoding: "utf-8" })
+      .split("\n");
   }
 
   afterEach(() => {
@@ -24,13 +26,13 @@ describe("generatePrivacyManifest()", macosOnly, () => {
   it("generates a default manifest", async () => {
     await generatePrivacyManifest({});
 
-    deepEqual(readPrivacyManifest().split("\n"), DEFAULT_PRIVACY_MANIFEST);
+    deepEqual(readPrivacyManifest(), DEFAULT_PRIVACY_MANIFEST);
   });
 
   it("handles invalid configuration", async () => {
     await generatePrivacyManifest({ ios: { privacyManifest: "YES" } });
 
-    deepEqual(readPrivacyManifest().split("\n"), DEFAULT_PRIVACY_MANIFEST);
+    deepEqual(readPrivacyManifest(), DEFAULT_PRIVACY_MANIFEST);
   });
 
   it("appends to default manifest", async () => {
@@ -44,7 +46,7 @@ describe("generatePrivacyManifest()", macosOnly, () => {
       },
     });
 
-    deepEqual(readPrivacyManifest().split("\n"), [
+    deepEqual(readPrivacyManifest(), [
       '<?xml version="1.0" encoding="UTF-8"?>',
       '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">',
       '<plist version="1.0">',
