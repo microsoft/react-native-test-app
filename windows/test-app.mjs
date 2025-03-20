@@ -13,6 +13,7 @@ import {
   writeTextFile,
 } from "../scripts/helpers.js";
 import * as colors from "../scripts/utils/colors.mjs";
+import { cp_r, mkdir_p } from "../scripts/utils/filesystem.mjs";
 import { parseArgs } from "../scripts/utils/parseargs.mjs";
 import { loadReactNativeConfig, projectInfo } from "./project.mjs";
 import { configureForUWP } from "./uwp.mjs";
@@ -106,7 +107,7 @@ export async function copyAndReplace(
   fs = nodefs.promises
 ) {
   if (!replacements) {
-    return fs.cp(srcPath, destPath, { recursive: true });
+    return cp_r(srcPath, destPath, nodefs);
   }
 
   // Treat as text file
@@ -158,9 +159,8 @@ export async function generateSolution(destPath, options, fs = nodefs) {
     projDir
   );
 
-  const mkdirRecursiveOptions = { recursive: true, mode: 0o755 };
-  fs.mkdirSync(projectFilesDestPath, mkdirRecursiveOptions);
-  fs.mkdirSync(destPath, mkdirRecursiveOptions);
+  mkdir_p(projectFilesDestPath, fs);
+  mkdir_p(destPath, fs);
 
   /** @type {typeof copyAndReplace} */
   const copyAndReplaceAsync = (src, dst, r) =>

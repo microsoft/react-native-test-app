@@ -1,7 +1,7 @@
 // @ts-check
-import { createModFileProviders } from "./cocoaBaseMods.mjs";
 import { BaseMods } from "../ExpoConfigPlugins.mjs";
 import { makeFilePathModifier } from "../provider.mjs";
+import { createModFileProviders } from "./cocoaBaseMods.mjs";
 
 const modifyFilePath = makeFilePathModifier("node_modules/.generated/ios");
 const defaultProviders = createModFileProviders(modifyFilePath);

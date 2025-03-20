@@ -1,0 +1,88 @@
+import { ok } from "node:assert/strict";
+import { afterEach, before, describe, it } from "node:test";
+import { isBridgelessEnabled, isNewArchEnabled } from "../../ios/newArch.mjs";
+import { v } from "../../scripts/helpers.js";
+
+describe("isBridgelessEnabled()", () => {
+  // Bridgeless mode is first publicly available in 0.73
+  const firstAvailableVersion = v(0, 73, 0);
+
+  // Bridgeless mode is enabled by default starting with 0.74
+  const defaultVersion = v(0, 74, 0);
+
+  before(() => {
+    delete process.env["RCT_NEW_ARCH_ENABLED"];
+  });
+
+  afterEach(() => {
+    delete process.env["RCT_NEW_ARCH_ENABLED"];
+  });
+
+  it("returns true only when new architecture is enabled", () => {
+    ok(!isBridgelessEnabled({}, 0));
+    ok(!isBridgelessEnabled({}, firstAvailableVersion));
+
+    const options = { bridgelessEnabled: true, fabricEnabled: true };
+
+    ok(!isBridgelessEnabled(options, v(0, 72, 999)));
+    ok(isBridgelessEnabled(options, firstAvailableVersion));
+  });
+
+  it("returns true by default starting with 0.74", () => {
+    // Bridgeless mode is enabled by default starting with 0.74 unless opted-out of
+    ok(isBridgelessEnabled({ fabricEnabled: true }, defaultVersion));
+    ok(
+      !isBridgelessEnabled(
+        { bridgelessEnabled: false, fabricEnabled: true },
+        defaultVersion
+      )
+    );
+  });
+
+  it("does not return true just because `RCT_NEW_ARCH_ENABLED` is set", () => {
+    // `RCT_NEW_ARCH_ENABLED` does not enable bridgeless
+    process.env["RCT_NEW_ARCH_ENABLED"] = "1";
+
+    ok(!isBridgelessEnabled({}, v(0, 72, 999)));
+    ok(!isBridgelessEnabled({}, firstAvailableVersion));
+    ok(isBridgelessEnabled({}, defaultVersion));
+    ok(!isBridgelessEnabled({ bridgelessEnabled: false }, defaultVersion));
+  });
+});
+
+describe("isNewArchEnabled()", () => {
+  // New architecture is first publicly available in 0.68, but we'll require 0.71
+  const firstAvailableVersion = v(0, 71, 0);
+
+  before(() => {
+    delete process.env["RCT_NEW_ARCH_ENABLED"];
+  });
+
+  afterEach(() => {
+    delete process.env["RCT_NEW_ARCH_ENABLED"];
+  });
+
+  it("returns true if New Architecture is available and enabled", () => {
+    ok(!isNewArchEnabled({}, 0));
+    ok(!isNewArchEnabled({}, firstAvailableVersion));
+
+    // New architecture is first publicly available in 0.68, but we'll require 0.71
+    ok(!isNewArchEnabled({ fabricEnabled: true }, v(0, 70, 999)));
+    ok(isNewArchEnabled({ fabricEnabled: true }, firstAvailableVersion));
+  });
+
+  it("returns true if `RCT_NEW_ARCH_ENABLED=1`", () => {
+    process.env["RCT_NEW_ARCH_ENABLED"] = "1";
+
+    ok(!isNewArchEnabled({}, v(0, 70, 999)));
+    ok(isNewArchEnabled({}, firstAvailableVersion));
+  });
+
+  it("returns false if `RCT_NEW_ARCH_ENABLED=0`", () => {
+    process.env["RCT_NEW_ARCH_ENABLED"] = "0";
+
+    ok(!isNewArchEnabled({}, v(0, 70, 999)));
+    ok(!isNewArchEnabled({}, firstAvailableVersion));
+    ok(!isNewArchEnabled({ fabric_enabled: true }, firstAvailableVersion));
+  });
+});

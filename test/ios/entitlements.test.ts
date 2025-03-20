@@ -1,7 +1,9 @@
 import { deepEqual, throws } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { generateEntitlements as generateEntitlementsActual } from "../../ios/entitlements.mjs";
+import { readTextFile } from "../../scripts/helpers.js";
 import type { JSONObject } from "../../scripts/types.ts";
+import { mkdir_p } from "../../scripts/utils/filesystem.mjs";
 import { fs, setMockFiles } from "../fs.mock.ts";
 
 const macosOnly = { skip: process.platform === "win32" };
@@ -14,14 +16,12 @@ describe("generateEntitlements()", macosOnly, () => {
     platform: (typeof targetPlatforms)[number]
   ): void {
     const destination = ".";
-    fs.mkdirSync(destination, { recursive: true, mode: 0o755 });
+    mkdir_p(destination, fs);
     generateEntitlementsActual(config, platform, destination, fs);
   }
 
   function readEntitlements() {
-    return fs
-      .readFileSync("App.entitlements", { encoding: "utf-8" })
-      .split("\n");
+    return readTextFile("App.entitlements", fs).split("\n");
   }
 
   afterEach(() => {

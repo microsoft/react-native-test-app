@@ -1,16 +1,340 @@
-import { deepEqual, equal, match, notEqual } from "node:assert/strict";
+import { deepEqual, equal, match, notEqual, throws } from "node:assert/strict";
 import * as path from "node:path";
-import { afterEach, describe, it } from "node:test";
+import { afterEach, beforeEach, describe, it } from "node:test";
+import type { ProjectConfiguration } from "../../ios/xcode.mjs";
 import {
-  configureXcodeSchemes as configureXcodeSchemesActual,
+  CODE_SIGN_ENTITLEMENTS,
+  CODE_SIGN_IDENTITY,
+  DEVELOPMENT_TEAM,
+  GCC_PREPROCESSOR_DEFINITIONS,
+  OTHER_SWIFT_FLAGS,
+  PRODUCT_BUILD_NUMBER,
+  PRODUCT_BUNDLE_IDENTIFIER,
+  USER_HEADER_SEARCH_PATHS,
+  applyBuildSettings as applyBuildSettingsActual,
+  applyPreprocessorDefinitions,
+  applySwiftFlags,
+  applyUserHeaderSearchPaths,
+  configureBuildSchemes as configureBuildSchemesActual,
   overrideBuildSettings,
 } from "../../ios/xcode.mjs";
-import type { JSONObject } from "../../scripts/types.ts";
+import { readTextFile, v } from "../../scripts/helpers.js";
+import type { ApplePlatform, JSONObject } from "../../scripts/types.ts";
 import { fs, setMockFiles, toJSON } from "../fs.mock.ts";
 
 const macosOnly = { skip: process.platform === "win32" };
 
-describe("configureXcodeSchemes()", macosOnly, () => {
+function makeProjectConfiguration(): ProjectConfiguration {
+  return {
+    xcodeprojPath: "",
+    reactNativePath: "",
+    reactNativeVersion: 0,
+    useNewArch: false,
+    useBridgeless: false,
+    buildSettings: {},
+    testsBuildSettings: {},
+    uitestsBuildSettings: {},
+  };
+}
+
+describe("applyBuildSettings()", macosOnly, () => {
+  function applyBuildSettings(
+    config: JSONObject,
+    project: ProjectConfiguration,
+    projectRoot: string,
+    destination: string
+  ): ProjectConfiguration {
+    return applyBuildSettingsActual(
+      config,
+      project,
+      projectRoot,
+      destination,
+      fs
+    );
+  }
+
+  afterEach(() => {
+    setMockFiles();
+  });
+
+  it("sets codesign entitlements", () => {
+    const project = makeProjectConfiguration();
+    applyBuildSettings({}, project, ".", ".");
+
+    equal(project.buildSettings[CODE_SIGN_ENTITLEMENTS], undefined);
+
+    applyBuildSettings({ codeSignEntitlements: {} }, project, ".", ".");
+
+    equal(project.buildSettings[CODE_SIGN_ENTITLEMENTS], undefined);
+
+    const codeSignEntitlements = "App.entitlements";
+    const config = { codeSignEntitlements };
+
+    throws(() => applyBuildSettings(config, project, ".", "."));
+
+    setMockFiles({ "app.json": "" });
+    applyBuildSettings(config, project, ".", ".");
+
+    equal(project.buildSettings[CODE_SIGN_ENTITLEMENTS], codeSignEntitlements);
+  });
+
+  it("sets codesign identity", () => {
+    const project = makeProjectConfiguration();
+    applyBuildSettings({}, project, ".", ".");
+
+    equal(project.buildSettings[CODE_SIGN_IDENTITY], undefined);
+
+    applyBuildSettings({ codeSignIdentity: true }, project, ".", ".");
+
+    equal(project.buildSettings[CODE_SIGN_IDENTITY], undefined);
+
+    const codeSignIdentity = "-";
+    applyBuildSettings({ codeSignIdentity }, project, ".", ".");
+
+    equal(project.buildSettings[CODE_SIGN_IDENTITY], codeSignIdentity);
+  });
+
+  it("sets development team", () => {
+    const project = makeProjectConfiguration();
+    applyBuildSettings({}, project, ".", ".");
+
+    equal(project.buildSettings[DEVELOPMENT_TEAM], undefined);
+    equal(project.testsBuildSettings[DEVELOPMENT_TEAM], undefined);
+    equal(project.uitestsBuildSettings[DEVELOPMENT_TEAM], undefined);
+
+    applyBuildSettings({ developmentTeam: true }, project, ".", ".");
+
+    equal(project.buildSettings[DEVELOPMENT_TEAM], undefined);
+    equal(project.testsBuildSettings[DEVELOPMENT_TEAM], undefined);
+    equal(project.uitestsBuildSettings[DEVELOPMENT_TEAM], undefined);
+
+    const developmentTeam = "Contoso";
+    applyBuildSettings({ developmentTeam }, project, ".", ".");
+
+    equal(project.buildSettings[DEVELOPMENT_TEAM], developmentTeam);
+    equal(project.testsBuildSettings[DEVELOPMENT_TEAM], developmentTeam);
+    equal(project.uitestsBuildSettings[DEVELOPMENT_TEAM], developmentTeam);
+  });
+
+  it("sets bundle identifier", () => {
+    const project = makeProjectConfiguration();
+    applyBuildSettings({}, project, ".", ".");
+
+    equal(project.buildSettings[PRODUCT_BUNDLE_IDENTIFIER], undefined);
+    equal(project.testsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER], undefined);
+    equal(project.uitestsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER], undefined);
+
+    applyBuildSettings({ bundleIdentifier: true }, project, ".", ".");
+
+    equal(project.buildSettings[PRODUCT_BUNDLE_IDENTIFIER], undefined);
+    equal(project.testsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER], undefined);
+    equal(project.uitestsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER], undefined);
+
+    const bundleIdentifier = "com.contoso.ReactApp";
+    applyBuildSettings({ bundleIdentifier }, project, ".", ".");
+
+    equal(project.buildSettings[PRODUCT_BUNDLE_IDENTIFIER], bundleIdentifier);
+    equal(
+      project.testsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER],
+      bundleIdentifier + "Tests"
+    );
+    equal(
+      project.uitestsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER],
+      bundleIdentifier + "UITests"
+    );
+  });
+
+  it("sets build number", () => {
+    const project = makeProjectConfiguration();
+    applyBuildSettings({}, project, ".", ".");
+
+    equal(project.buildSettings[PRODUCT_BUILD_NUMBER], "1");
+
+    applyBuildSettings({ buildNumber: "" }, project, ".", ".");
+
+    equal(project.buildSettings[PRODUCT_BUILD_NUMBER], "1");
+
+    applyBuildSettings({ buildNumber: "9769" }, project, ".", ".");
+
+    equal(project.buildSettings[PRODUCT_BUILD_NUMBER], "9769");
+  });
+});
+
+describe("applyPreprocessorDefinitions()", () => {
+  it("sets `REACT_NATIVE_VERSION`", () => {
+    const project = makeProjectConfiguration();
+    const { buildSettings } = project;
+
+    applyPreprocessorDefinitions(project);
+
+    deepEqual(buildSettings[GCC_PREPROCESSOR_DEFINITIONS], [
+      "REACT_NATIVE_VERSION=0",
+    ]);
+  });
+
+  it("appends preprocessor definitions", () => {
+    const project = makeProjectConfiguration();
+    const { buildSettings } = project;
+    buildSettings[GCC_PREPROCESSOR_DEFINITIONS] = ["TEST=1"];
+
+    applyPreprocessorDefinitions(project);
+
+    deepEqual(buildSettings[GCC_PREPROCESSOR_DEFINITIONS], [
+      "TEST=1",
+      "REACT_NATIVE_VERSION=0",
+    ]);
+  });
+
+  it("appends New Arch specific preprocessors", () => {
+    const project = makeProjectConfiguration();
+    project.useNewArch = true;
+    applyPreprocessorDefinitions(project);
+
+    deepEqual(project.buildSettings[GCC_PREPROCESSOR_DEFINITIONS], [
+      "REACT_NATIVE_VERSION=0",
+      "FOLLY_NO_CONFIG=1",
+      "RCT_NEW_ARCH_ENABLED=1",
+      "USE_FABRIC=1",
+    ]);
+  });
+
+  it("appends bridgeless specific preprocessors", () => {
+    const project = makeProjectConfiguration();
+    project.useNewArch = true;
+    project.useBridgeless = true;
+    applyPreprocessorDefinitions(project);
+
+    deepEqual(project.buildSettings[GCC_PREPROCESSOR_DEFINITIONS], [
+      "REACT_NATIVE_VERSION=0",
+      "FOLLY_NO_CONFIG=1",
+      "RCT_NEW_ARCH_ENABLED=1",
+      "USE_FABRIC=1",
+      "USE_BRIDGELESS=1",
+    ]);
+  });
+
+  it("does not append bridgeless specific preprocessors if New Arch is disabled", () => {
+    const project = makeProjectConfiguration();
+    project.useNewArch = false;
+    project.useBridgeless = true;
+    applyPreprocessorDefinitions(project);
+
+    deepEqual(project.buildSettings[GCC_PREPROCESSOR_DEFINITIONS], [
+      "REACT_NATIVE_VERSION=0",
+    ]);
+  });
+
+  it("applies C++17 workarounds for unpatched versions", () => {
+    const versions = [
+      [v(0, 71, 0), true],
+      [v(0, 71, 3), true],
+      [v(0, 71, 4), false],
+      [v(0, 72, 0), true],
+      [v(0, 72, 4), true],
+      [v(0, 72, 5), false],
+    ] as const;
+
+    for (const [version, enable] of versions) {
+      const project = makeProjectConfiguration();
+      const { buildSettings } = project;
+
+      project.reactNativeVersion = version;
+      applyPreprocessorDefinitions(project);
+
+      const expected = [`REACT_NATIVE_VERSION=${version}`];
+      if (enable) {
+        expected.push("_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1");
+      }
+
+      deepEqual(buildSettings[GCC_PREPROCESSOR_DEFINITIONS], expected);
+    }
+  });
+});
+
+describe("applySwiftFlags()", () => {
+  it("appends compiler flags", () => {
+    const project = makeProjectConfiguration();
+    applySwiftFlags(project);
+
+    deepEqual(project.buildSettings[OTHER_SWIFT_FLAGS], []);
+
+    const flags = ["-Wall"];
+    project.buildSettings[OTHER_SWIFT_FLAGS] = flags;
+
+    applySwiftFlags(project);
+
+    deepEqual(project.buildSettings[OTHER_SWIFT_FLAGS], flags);
+  });
+
+  it("appends New Arch specific flags", () => {
+    const project = makeProjectConfiguration();
+    project.useNewArch = true;
+
+    applySwiftFlags(project);
+
+    deepEqual(project.buildSettings[OTHER_SWIFT_FLAGS], ["-DUSE_FABRIC"]);
+  });
+
+  it("appends bridgeless specific flags", () => {
+    const project = makeProjectConfiguration();
+    project.useNewArch = true;
+    project.useBridgeless = true;
+
+    applySwiftFlags(project);
+
+    deepEqual(project.buildSettings[OTHER_SWIFT_FLAGS], [
+      "-DUSE_FABRIC",
+      "-DUSE_BRIDGELESS",
+    ]);
+  });
+
+  it("does not append bridgeless specific flags if New Arch is disabled", () => {
+    const project = makeProjectConfiguration();
+    project.useBridgeless = true;
+
+    applySwiftFlags(project);
+
+    deepEqual(project.buildSettings[OTHER_SWIFT_FLAGS], []);
+  });
+
+  it("appends single app flags", () => {
+    const project = makeProjectConfiguration();
+    project.singleApp = "";
+
+    applySwiftFlags(project);
+
+    deepEqual(project.buildSettings[OTHER_SWIFT_FLAGS], []);
+
+    project.singleApp = "ContosoApp";
+
+    applySwiftFlags(project);
+
+    deepEqual(project.buildSettings[OTHER_SWIFT_FLAGS], [
+      "-DENABLE_SINGLE_APP_MODE",
+    ]);
+  });
+});
+
+describe("applyUserHeaderSearchPaths()", () => {
+  it("sets user header search paths", () => {
+    const project = makeProjectConfiguration();
+
+    applyUserHeaderSearchPaths(project, "ReactApp");
+
+    deepEqual(project.buildSettings[USER_HEADER_SEARCH_PATHS], ["."]);
+  });
+
+  it("appends user header search paths", () => {
+    const project = makeProjectConfiguration();
+    project.buildSettings[USER_HEADER_SEARCH_PATHS] = ["Test"];
+
+    applyUserHeaderSearchPaths(project, "ReactApp");
+
+    deepEqual(project.buildSettings[USER_HEADER_SEARCH_PATHS], ["Test", "."]);
+  });
+});
+
+describe("configureBuildSchemes()", macosOnly, () => {
   const projectRoot = ".";
   const xcschemesDir = path.join(projectRoot, "xcshareddata", "xcschemes");
 
@@ -26,20 +350,24 @@ describe("configureXcodeSchemes()", macosOnly, () => {
 </Scheme>
 `;
 
-  const configureXcodeSchemes: typeof configureXcodeSchemesActual = (
-    appConfig,
-    targetPlatform,
-    xcodeproj
-  ) => configureXcodeSchemesActual(appConfig, targetPlatform, xcodeproj, fs);
+  function configureBuildSchemes(
+    config: JSONObject,
+    targetPlatform: ApplePlatform,
+    xcodeproj: string
+  ) {
+    return configureBuildSchemesActual(config, targetPlatform, xcodeproj, fs);
+  }
+
+  beforeEach(() => {
+    setMockFiles({ [defaultSchemePath]: defaultScheme });
+  });
 
   afterEach(() => {
     setMockFiles();
   });
 
   it("does not write `.xcscheme` files unnecessarily", () => {
-    setMockFiles({ [defaultSchemePath]: defaultScheme });
-
-    configureXcodeSchemes({}, "ios", projectRoot);
+    configureBuildSchemes({}, "ios", projectRoot);
 
     const vol = Object.entries(toJSON());
 
@@ -49,9 +377,7 @@ describe("configureXcodeSchemes()", macosOnly, () => {
   });
 
   it("copies default `.xcscheme` if app is named", () => {
-    setMockFiles({ [defaultSchemePath]: defaultScheme });
-
-    configureXcodeSchemes({ name: "Test" }, "ios", projectRoot);
+    configureBuildSchemes({ name: "Test" }, "ios", projectRoot);
 
     const vol = Object.entries(toJSON());
 
@@ -66,12 +392,10 @@ describe("configureXcodeSchemes()", macosOnly, () => {
   });
 
   it("disables Metal API validation", () => {
-    setMockFiles({ [defaultSchemePath]: defaultScheme });
-
     const appConfig = { ios: { metalAPIValidation: false } };
-    configureXcodeSchemes(appConfig, "ios", projectRoot);
+    configureBuildSchemes(appConfig, "ios", projectRoot);
 
-    const output = fs.readFileSync(defaultSchemePath, { encoding: "utf-8" });
+    const output = readTextFile(defaultSchemePath, fs);
 
     notEqual(output, defaultScheme);
     match(

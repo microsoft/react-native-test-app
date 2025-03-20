@@ -4,6 +4,7 @@ import * as fs from "node:fs";
 import * as https from "node:https";
 import * as os from "node:os";
 import * as path from "node:path";
+import { mkdir_p } from "./filesystem.mjs";
 
 export const npmRegistryBaseURL = "https://registry.npmjs.org/";
 
@@ -99,7 +100,7 @@ export async function downloadPackage(pkg, version, useCache = false) {
   return new Promise((resolve, reject) => {
     https
       .get(url, (res) => {
-        fs.mkdirSync(tmpDir, { recursive: true });
+        mkdir_p(tmpDir);
 
         const fh = fs.createWriteStream(dest);
         res.pipe(fh);

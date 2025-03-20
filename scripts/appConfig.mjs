@@ -9,11 +9,15 @@ const SOURCE_KEY = Symbol.for("source");
 /** @type {JSONObject} */
 let appConfig;
 
-export function loadAppConfig(startDir = process.cwd(), fs = nodefs) {
+/**
+ * @param {string} projectRoot
+ * @returns {JSONObject}
+ */
+export function loadAppConfig(projectRoot, fs = nodefs) {
   if (!appConfig) {
-    const configFile = findFile("app.json", startDir, fs);
+    const configFile = findFile("app.json", projectRoot, fs);
     appConfig = configFile ? readJSONFile(configFile) : {};
-    appConfig[SOURCE_KEY] = configFile || startDir;
+    appConfig[SOURCE_KEY] = configFile || projectRoot;
   }
   return appConfig;
 }

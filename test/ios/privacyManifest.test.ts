@@ -1,7 +1,9 @@
 import { deepEqual } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { generatePrivacyManifest as generatePrivacyManifestActual } from "../../ios/privacyManifest.mjs";
+import { readTextFile } from "../../scripts/helpers.js";
 import type { JSONObject } from "../../scripts/types.ts";
+import { mkdir_p } from "../../scripts/utils/filesystem.mjs";
 import { fs, setMockFiles } from "../fs.mock.ts";
 
 const macosOnly = { skip: process.platform === "win32" };
@@ -9,14 +11,12 @@ const macosOnly = { skip: process.platform === "win32" };
 describe("generatePrivacyManifest()", macosOnly, () => {
   function generatePrivacyManifest(config: JSONObject): void {
     const destination = ".";
-    fs.mkdirSync(destination, { recursive: true, mode: 0o755 });
+    mkdir_p(destination, fs);
     generatePrivacyManifestActual(config, "ios", destination, fs);
   }
 
   function readPrivacyManifest() {
-    return fs
-      .readFileSync("PrivacyInfo.xcprivacy", { encoding: "utf-8" })
-      .split("\n");
+    return readTextFile("PrivacyInfo.xcprivacy", fs).split("\n");
   }
 
   afterEach(() => {

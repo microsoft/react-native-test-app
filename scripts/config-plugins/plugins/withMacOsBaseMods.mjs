@@ -1,6 +1,6 @@
 // @ts-check
-import { createModFileProviders } from "./cocoaBaseMods.mjs";
 import { makeFilePathModifier } from "../provider.mjs";
+import { createModFileProviders } from "./cocoaBaseMods.mjs";
 
 const modifyFilePath = makeFilePathModifier("node_modules/.generated/macos");
 const defaultProviders = createModFileProviders(modifyFilePath);

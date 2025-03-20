@@ -7,6 +7,7 @@ import * as fs from "node:fs";
 import { URL, fileURLToPath } from "node:url";
 import { memo, readTextFile } from "../helpers.js";
 import type { BuildConfig } from "../types.js";
+import { rm_r } from "../utils/filesystem.mjs";
 import { $ } from "./test-e2e.mts";
 
 export const getIOSSimulatorName = memo(() => {
@@ -60,15 +61,9 @@ export function installPods({
 
   fs.writeFileSync(podfile, content);
 
-  const options = {
-    force: true,
-    maxRetries: 3,
-    recursive: true,
-    retryDelay: 500,
-  };
-  fs.rmSync(`${platform}/Podfile.lock`, options);
-  fs.rmSync(`${platform}/Pods`, options);
-  fs.rmSync(`${platform}/build`, options);
+  rm_r(`${platform}/Podfile.lock`);
+  rm_r(`${platform}/Pods`);
+  rm_r(`${platform}/build`);
   $("pod", "install", `--project-directory=${platform}`);
 
   return Promise.resolve();

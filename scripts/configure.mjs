@@ -23,6 +23,7 @@ import {
   settingsGradle,
 } from "./template.mjs";
 import * as colors from "./utils/colors.mjs";
+import { mkdir_p } from "./utils/filesystem.mjs";
 import { downloadPackage } from "./utils/npm.mjs";
 import { parseArgs } from "./utils/parseargs.mjs";
 
@@ -616,7 +617,6 @@ export function updatePackageManifest(
  * @returns {Promise<void[]>}
  */
 export function writeAllFiles(files, destination, fs = nodefs.promises) {
-  const options = { recursive: true, mode: 0o755 };
   return Promise.all(
     Object.keys(files).map(async (filename) => {
       const content = files[filename];
@@ -625,7 +625,7 @@ export function writeAllFiles(files, destination, fs = nodefs.promises) {
       }
 
       const file = path.join(destination, filename);
-      await fs.mkdir(path.dirname(file), options);
+      mkdir_p(path.dirname(file), nodefs);
       if (typeof content === "string") {
         await fs.writeFile(file, content);
       } else {

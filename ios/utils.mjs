@@ -18,6 +18,14 @@ export function isObject(obj) {
 }
 
 /**
+ * @param {unknown} value
+ * @returns {value is string}
+ */
+export function isString(value) {
+  return typeof value === "string";
+}
+
+/**
  * @param {string} filename
  * @returns {JSONObject}
  */

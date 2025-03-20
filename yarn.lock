@@ -12127,6 +12127,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier-plugin-organize-imports@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "prettier-plugin-organize-imports@npm:4.1.0"
+  peerDependencies:
+    prettier: ">=2.0"
+    typescript: ">=2.9"
+    vue-tsc: ^2.1.0
+  peerDependenciesMeta:
+    vue-tsc:
+      optional: true
+  checksum: 10c0/fb2d6d415bac96b65a77ea7de9f708e8613436aeb9d82bbe63edeb312fd1362c0d3c57319bd4cc4adfc8b9964fb6c205cbbf8efd9546931b0f9874c0ae624a6a
+  languageName: node
+  linkType: hard
+
 "prettier@npm:^3.0.0":
   version: 3.4.2
   resolution: "prettier@npm:3.4.2"
@@ -12490,6 +12504,7 @@ __metadata:
     memfs: "npm:^4.0.0"
     minimatch: "npm:^9.0.0"
     prettier: "npm:^3.0.0"
+    prettier-plugin-organize-imports: "npm:^4.1.0"
     prompts: "npm:^2.4.0"
     react: "npm:18.3.1"
     react-native: "npm:^0.77.0"

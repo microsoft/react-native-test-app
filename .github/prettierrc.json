@@ -1,4 +1,5 @@
 {
+  "plugins": ["prettier-plugin-organize-imports"],
   "trailingComma": "es5",
   "endOfLine": "auto",
   "overrides": [

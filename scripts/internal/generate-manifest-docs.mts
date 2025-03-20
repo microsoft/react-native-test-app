@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-restricted-imports
 import type { SchemaObject } from "ajv";
 import * as path from "node:path";
-import { assertDefinition, readDocumentation } from "./generate-schema.mts";
 import { generateSchema } from "../schema.mjs";
+import { assertDefinition, readDocumentation } from "./generate-schema.mts";
 
 async function generateManifestDocs() {
   const docs = await readDocumentation();

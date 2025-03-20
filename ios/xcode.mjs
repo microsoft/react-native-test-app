@@ -2,12 +2,24 @@
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
-import { readTextFile } from "../scripts/helpers.js";
-import { isObject } from "./utils.mjs";
+import { findFile, readTextFile, v } from "../scripts/helpers.js";
+import { isObject, isString } from "./utils.mjs";
 
 /**
  * @import { XmlBuilderOptions } from "fast-xml-parser";
  * @import { ApplePlatform, JSONObject } from "../scripts/types.js";
+ *
+ * @typedef {{
+ *   xcodeprojPath: string;
+ *   reactNativePath: string;
+ *   reactNativeVersion: number;
+ *   singleApp?: string;
+ *   useNewArch: boolean;
+ *   useBridgeless: boolean;
+ *   buildSettings: Record<string, string | string[]>;
+ *   testsBuildSettings: Record<string, string>;
+ *   uitestsBuildSettings: Record<string, string>;
+ * }} ProjectConfiguration
  *
  * @typedef {Pick<
  *   Required<XmlBuilderOptions>,
@@ -33,12 +45,147 @@ export const USER_HEADER_SEARCH_PATHS = "USER_HEADER_SEARCH_PATHS";
 export const WARNING_CFLAGS = "WARNING_CFLAGS";
 
 /**
+ * @param {JSONObject} platformConfig
+ * @param {ProjectConfiguration} project
+ * @param {string} projectRoot
+ * @param {string} destination
+ * @returns {ProjectConfiguration}
+ */
+export function applyBuildSettings(
+  platformConfig,
+  project,
+  projectRoot,
+  destination,
+  fs = nodefs
+) {
+  const codeSignEntitlements = platformConfig["codeSignEntitlements"];
+  if (isString(codeSignEntitlements)) {
+    const appManifest = findFile("app.json", projectRoot, fs);
+    if (!appManifest) {
+      throw new Error("Cannot find 'app.json'");
+    }
+
+    const packageRoot = path.dirname(appManifest);
+    const entitlements = path.join(packageRoot, codeSignEntitlements);
+    const relPath = path.relative(destination, entitlements);
+    project.buildSettings[CODE_SIGN_ENTITLEMENTS] = relPath;
+  }
+
+  const codeSignIdentity = platformConfig["codeSignIdentity"];
+  if (isString(codeSignIdentity)) {
+    project.buildSettings[CODE_SIGN_IDENTITY] = codeSignIdentity;
+  }
+
+  const developmentTeam = platformConfig["developmentTeam"];
+  if (isString(developmentTeam)) {
+    project.buildSettings[DEVELOPMENT_TEAM] = developmentTeam;
+    project.testsBuildSettings[DEVELOPMENT_TEAM] = developmentTeam;
+    project.uitestsBuildSettings[DEVELOPMENT_TEAM] = developmentTeam;
+  }
+
+  const bundleIdentifier = platformConfig["bundleIdentifier"];
+  if (isString(bundleIdentifier)) {
+    project.buildSettings[PRODUCT_BUNDLE_IDENTIFIER] = bundleIdentifier;
+    project.testsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER] =
+      `${bundleIdentifier}Tests`;
+    project.uitestsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER] =
+      `${bundleIdentifier}UITests`;
+  }
+
+  const buildNumber = platformConfig["buildNumber"];
+  project.buildSettings[PRODUCT_BUILD_NUMBER] =
+    buildNumber && isString(buildNumber) ? buildNumber : "1";
+
+  return project;
+}
+
+/**
+ * @param {ProjectConfiguration} project
+ * @returns {void}
+ */
+export function applyPreprocessorDefinitions({
+  reactNativeVersion,
+  useNewArch,
+  useBridgeless,
+  buildSettings,
+}) {
+  const existing = buildSettings[GCC_PREPROCESSOR_DEFINITIONS];
+  const preprocessors = Array.isArray(existing) ? existing : [];
+
+  preprocessors.push(`REACT_NATIVE_VERSION=${reactNativeVersion}`);
+
+  // In Xcode 15, `unary_function` and `binary_function` are no longer provided
+  // in C++17 and newer Standard modes. See Xcode release notes:
+  // https://developer.apple.com/documentation/xcode-release-notes/xcode-15-release-notes#Deprecations
+  // Upstream issue: https://github.com/facebook/react-native/issues/37748
+  const enableCxx17RemovedUnaryBinaryFunction =
+    (reactNativeVersion >= v(0, 72, 0) && reactNativeVersion < v(0, 72, 5)) ||
+    (reactNativeVersion >= v(0, 71, 0) && reactNativeVersion < v(0, 71, 4)) ||
+    (reactNativeVersion > 0 && reactNativeVersion < v(0, 70, 14));
+  if (enableCxx17RemovedUnaryBinaryFunction) {
+    preprocessors.push("_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1");
+  }
+
+  if (useNewArch) {
+    preprocessors.push("FOLLY_NO_CONFIG=1");
+    preprocessors.push("RCT_NEW_ARCH_ENABLED=1");
+    preprocessors.push("USE_FABRIC=1");
+    if (useBridgeless) {
+      preprocessors.push("USE_BRIDGELESS=1");
+    }
+  }
+
+  buildSettings[GCC_PREPROCESSOR_DEFINITIONS] = preprocessors;
+}
+
+/**
+ * @param {ProjectConfiguration} project
+ * @returns {void}
+ */
+export function applySwiftFlags({
+  singleApp,
+  useNewArch,
+  useBridgeless,
+  buildSettings,
+}) {
+  const existingFlags = buildSettings[OTHER_SWIFT_FLAGS];
+  const flags = Array.isArray(existingFlags) ? existingFlags : [];
+
+  if (useNewArch) {
+    flags.push("-DUSE_FABRIC");
+    if (useBridgeless) {
+      flags.push("-DUSE_BRIDGELESS");
+    }
+  }
+
+  if (singleApp) {
+    flags.push("-DENABLE_SINGLE_APP_MODE");
+  }
+
+  buildSettings[OTHER_SWIFT_FLAGS] = flags;
+}
+
+/**
+ * @param {ProjectConfiguration} project
+ * @param {string} destination
+ * @returns {void}
+ */
+export function applyUserHeaderSearchPaths({ buildSettings }, destination) {
+  const existingPaths = buildSettings[USER_HEADER_SEARCH_PATHS];
+  const searchPaths = Array.isArray(existingPaths) ? existingPaths : [];
+
+  searchPaths.push(path.dirname(destination));
+
+  buildSettings[USER_HEADER_SEARCH_PATHS] = searchPaths;
+}
+
+/**
  * @param {JSONObject} appConfig
  * @param {ApplePlatform} targetPlatform
  * @param {string} xcodeproj
  * @returns {void}
  */
-export function configureXcodeSchemes(
+export function configureBuildSchemes(
   appConfig,
   targetPlatform,
   xcodeproj,

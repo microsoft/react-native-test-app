@@ -9,6 +9,7 @@ import {
   readTextFile,
   writeTextFile,
 } from "../scripts/helpers.js";
+import { mkdir_p } from "../scripts/utils/filesystem.mjs";
 
 /**
  * @typedef {import("@react-native-community/cli-types").Config} Config
@@ -29,7 +30,7 @@ export function cleanDependencyName(name) {
  * @param {string} p
  */
 function ensureDirForFile(p) {
-  fs.mkdirSync(path.dirname(p), { recursive: true, mode: 0o755 });
+  mkdir_p(path.dirname(p));
 }
 
 /**

@@ -1,7 +1,9 @@
 import { deepEqual } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { generateInfoPlist as generateInfoPlistActual } from "../../ios/infoPlist.mjs";
+import { readTextFile } from "../../scripts/helpers.js";
 import type { JSONObject } from "../../scripts/types.ts";
+import { mkdir_p } from "../../scripts/utils/filesystem.mjs";
 import { fs, setMockFiles } from "../fs.mock.ts";
 
 const macosOnly = { skip: process.platform === "win32" };
@@ -14,12 +16,12 @@ describe("generateInfoPlist()", macosOnly, () => {
     platform: (typeof targetPlatforms)[number]
   ): void {
     const destination = ".";
-    fs.mkdirSync(destination, { recursive: true, mode: 0o755 });
+    mkdir_p(destination, fs);
     generateInfoPlistActual(config, platform, destination, fs);
   }
 
   function readInfoPlist() {
-    return fs.readFileSync("Info.plist", { encoding: "utf-8" }).split("\n");
+    return readTextFile("Info.plist", fs).split("\n");
   }
 
   afterEach(() => {
@@ -35,9 +37,16 @@ describe("generateInfoPlist()", macosOnly, () => {
 
     it(`[${platform}] registers font files`, () => {
       generateInfoPlist(
-        {
-          resources: ["OpenType.otf", "TrueType.ttf"],
-        },
+        { resources: ["OpenType.otf", "TrueType.ttf"] },
+        platform
+      );
+
+      deepEqual(readInfoPlist(), INFO_PLIST_WITH_FONTS[platform]);
+    });
+
+    it(`[${platform}] registers platform specific font files`, () => {
+      generateInfoPlist(
+        { resources: { [platform]: ["OpenType.otf", "TrueType.ttf"] } },
         platform
       );
 

@@ -1,14 +1,14 @@
 import { deepEqual, ok } from "node:assert/strict";
-import * as fs from "node:fs";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
 import { generateAssetsCatalogs as generateAssetsCatalogsActual } from "../../ios/assetsCatalog.mjs";
+import { readTextFile } from "../../scripts/helpers.js";
 import { fs as fsMock, setMockFiles, toJSON } from "../fs.mock.ts";
 
 const macosOnly = { skip: process.platform === "win32" };
 
-describe("configureXcodeSchemes()", macosOnly, () => {
+describe("generateAssetsCatalogs()", macosOnly, () => {
   const projectRoot = ".";
 
   const generateAssetsCatalogs: typeof generateAssetsCatalogsActual = (
@@ -28,8 +28,6 @@ describe("configureXcodeSchemes()", macosOnly, () => {
     setMockFiles();
   });
 
-  const readOptions = { encoding: "utf-8" } as const;
-
   for (const platform of ["ios", "macos"] as const) {
     const assetsCatalogTemplatePath = path.join(
       projectRoot,
@@ -39,10 +37,7 @@ describe("configureXcodeSchemes()", macosOnly, () => {
       "AppIcon.appiconset",
       "Contents.json"
     );
-    const assetsCatalogTemplate = fs.readFileSync(
-      assetsCatalogTemplatePath,
-      readOptions
-    );
+    const assetsCatalogTemplate = readTextFile(assetsCatalogTemplatePath);
 
     it(`[${platform}] returns early if no icons are declared`, () => {
       generateAssetsCatalogs(configs.noConfig, platform, projectRoot);

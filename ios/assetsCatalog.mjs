@@ -4,6 +4,7 @@ import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { sourceForAppConfig } from "../scripts/appConfig.mjs";
 import { readJSONFile } from "../scripts/helpers.js";
+import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
 import { isObject, projectPath } from "./utils.mjs";
 
 /**
@@ -90,8 +91,8 @@ export function generateAssetsCatalogs(
   );
   const xcassets_dst = path.join(destination, path.basename(xcassets_src));
 
-  fs.rmSync(xcassets_dst, { force: true, maxRetries: 3, recursive: true });
-  fs.cpSync(xcassets_src, xcassets_dst, { recursive: true });
+  rm_r(xcassets_dst, fs);
+  cp_r(xcassets_src, xcassets_dst, fs);
 
   const platformConfig = appConfig[targetPlatform];
   if (!isObject(platformConfig)) {
@@ -120,11 +121,10 @@ export function generateAssetsCatalogs(
   }
 
   const appManifestDir = sourceForAppConfig(appConfig);
-  const mkdirOptions = { recursive: true, mode: 0o755 };
 
   for (const [setName, appIcon] of appIcons) {
     const appIconSet = path.join(destination, `${setName}.appiconset`);
-    fs.mkdirSync(appIconSet, mkdirOptions);
+    mkdir_p(appIconSet, fs);
 
     const icon = path.join(appManifestDir, appIcon.filename);
     const extname = path.extname(icon);
