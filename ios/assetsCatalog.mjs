@@ -4,7 +4,12 @@ import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { sourceForAppConfig } from "../scripts/appConfig.mjs";
 import { readJSONFile } from "../scripts/helpers.js";
-import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
+import {
+  cp_r,
+  mkdir_p,
+  rm_r,
+  writeJSONFile,
+} from "../scripts/utils/filesystem.mjs";
 import { isObject, projectPath } from "./utils.mjs";
 
 /**
@@ -146,6 +151,6 @@ export function generateAssetsCatalogs(
 
     const contents = { images, info: template["info"] };
     const dest = path.join(appIconSet, "Contents.json");
-    fs.writeFileSync(dest, JSON.stringify(contents, undefined, 2));
+    writeJSONFile(dest, contents);
   }
 }

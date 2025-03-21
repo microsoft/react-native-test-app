@@ -9,7 +9,7 @@ import {
   readTextFile,
   writeTextFile,
 } from "../scripts/helpers.js";
-import { mkdir_p } from "../scripts/utils/filesystem.mjs";
+import { mkdir_p, writeJSONFile } from "../scripts/utils/filesystem.mjs";
 
 /**
  * @typedef {import("@react-native-community/cli-types").Config} Config
@@ -97,7 +97,7 @@ async function loadConfig(json, projectRoot) {
   const prunedConfig = pruneDependencies(config);
 
   ensureDirForFile(json);
-  writeTextFile(json, JSON.stringify(prunedConfig, undefined, 2) + "\n");
+  writeJSONFile(json, prunedConfig);
   writeTextFile(stateFile, state);
   return prunedConfig;
 }
@@ -117,12 +117,11 @@ async function main(projectRoot, output) {
   );
   const dependencies = pickAndroidDependencies(config);
 
-  const json = JSON.stringify(dependencies, undefined, 2);
   if (!output) {
-    console.log(json);
+    console.log(JSON.stringify(dependencies, undefined, 2));
   } else {
     ensureDirForFile(output);
-    writeTextFile(output, json + "\n");
+    writeJSONFile(output, dependencies);
   }
 }
 

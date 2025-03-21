@@ -26,3 +26,14 @@ export function mkdir_p(p, fs = nodefs) {
 export function rm_r(p, fs = nodefs) {
   fs.rmSync(p, RM_R_OPTIONS);
 }
+
+/**
+ * @param {string} path
+ * @param {unknown} obj
+ */
+export function writeJSONFile(path, obj, fs = nodefs) {
+  const fd = fs.openSync(path, "w", 0o644);
+  fs.writeSync(fd, JSON.stringify(obj, undefined, 2));
+  fs.writeSync(fd, "\n");
+  fs.closeSync(fd);
+}

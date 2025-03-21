@@ -1,10 +1,10 @@
 #!/usr/bin/env -S node --experimental-transform-types --no-warnings
 
 import { spawnSync } from "node:child_process";
-import * as fs from "node:fs";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import { readJSONFile } from "../helpers.js";
+import { writeJSONFile } from "../utils/filesystem.mjs";
 
 const APP_IDENTIFIER = "com.microsoft.ReactNativeViewfinder";
 const PACKAGE_MANAGER = "yarn";
@@ -34,7 +34,7 @@ function configureAppManifest() {
     },
   };
 
-  fs.writeFileSync(APP_MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
+  writeJSONFile(APP_MANIFEST, manifest);
 }
 
 /**

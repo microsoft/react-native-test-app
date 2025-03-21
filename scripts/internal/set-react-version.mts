@@ -2,8 +2,7 @@
  * Reminder that this script is meant to be runnable without installing
  * dependencies. It can therefore not rely on any external libraries.
  */
-import { promises as fs } from "node:fs";
-import * as os from "node:os";
+import * as fs from "node:fs";
 import * as path from "node:path";
 import * as util from "node:util";
 import {
@@ -14,6 +13,7 @@ import {
   v,
 } from "../helpers.js";
 import type { Manifest } from "../types.js";
+import { writeJSONFile } from "../utils/filesystem.mjs";
 import { fetchPackageMetadata, npmRegistryBaseURL } from "../utils/npm.mjs";
 
 const VALID_TAGS = ["canary-macos", "canary-windows", "nightly"];
@@ -36,12 +36,12 @@ function searchReplaceInFile(
   filename: string,
   searchValue: string | RegExp,
   replaceValue: string
-): Promise<void> {
+): void {
   const current = readTextFile(filename);
   const updated = current.replace(searchValue, replaceValue);
-  return updated === current
-    ? Promise.resolve()
-    : fs.writeFile(filename, updated);
+  if (updated !== current) {
+    fs.writeFileSync(filename, updated);
+  }
 }
 
 /**
@@ -331,7 +331,6 @@ export async function setReactVersion(
   coreOnly: boolean,
   overrides: Record<string, string> = {}
 ): Promise<void> {
-  let fd: fs.FileHandle | undefined;
   try {
     const profile = { ...(await getProfile(version, coreOnly)), ...overrides };
     console.dir(profile, { depth: null });
@@ -363,18 +362,12 @@ export async function setReactVersion(
       }
 
       const tmpFile = manifestPath + ".tmp";
-      fd = await fs.open(tmpFile, "w", 0o644);
-      await fd.write(JSON.stringify(manifest, undefined, 2));
-      await fd.write(os.EOL);
-      await fd.close();
-      fd = undefined;
-      await fs.rename(tmpFile, manifestPath);
+      writeJSONFile(tmpFile, manifest);
+      fs.renameSync(tmpFile, manifestPath);
     }
   } catch (e) {
     console.error(e);
     process.exitCode = 1;
-  } finally {
-    fd?.close();
   }
 }
 
