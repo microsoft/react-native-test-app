@@ -6,19 +6,17 @@ import { findFile, readJSONFile } from "./helpers.js";
 
 const SOURCE_KEY = Symbol.for("source");
 
-/** @type {JSONObject} */
-let appConfig;
-
 /**
  * @param {string} projectRoot
  * @returns {JSONObject}
  */
 export function loadAppConfig(projectRoot, fs = nodefs) {
-  if (!appConfig) {
-    const configFile = findFile("app.json", projectRoot, fs);
-    appConfig = configFile ? readJSONFile(configFile) : {};
-    appConfig[SOURCE_KEY] = configFile || projectRoot;
-  }
+  const configFile = findFile("app.json", projectRoot, fs);
+
+  /** @type {JSONObject} */
+  const appConfig = configFile ? readJSONFile(configFile, fs) : {};
+  appConfig[SOURCE_KEY] = configFile || projectRoot;
+
   return appConfig;
 }
 

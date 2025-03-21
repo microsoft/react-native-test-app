@@ -68,7 +68,7 @@ export function plistFromJSON(source, filename) {
  */
 export function projectPath(p, targetPlatform) {
   const packageDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-  return path.join(packageDir, targetPlatform, p);
+  return path.resolve(packageDir, targetPlatform, p);
 }
 
 /**

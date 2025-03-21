@@ -9,6 +9,7 @@ import { isObject, isString } from "./utils.mjs";
  * @import {
  *   ApplePlatform,
  *   JSONObject,
+ *   JSONValue,
  *   ProjectConfiguration,
  *   XmlOptions,
  * } from "../scripts/types.js";
@@ -32,7 +33,7 @@ export const USER_HEADER_SEARCH_PATHS = "USER_HEADER_SEARCH_PATHS";
 export const WARNING_CFLAGS = "WARNING_CFLAGS";
 
 /**
- * @param {JSONObject} platformConfig
+ * @param {JSONValue} platformConfig
  * @param {ProjectConfiguration} project
  * @param {string} projectRoot
  * @param {string} destination
@@ -45,7 +46,9 @@ export function applyBuildSettings(
   destination,
   fs = nodefs
 ) {
-  const codeSignEntitlements = platformConfig["codeSignEntitlements"];
+  const config = isObject(platformConfig) ? platformConfig : {};
+
+  const codeSignEntitlements = config["codeSignEntitlements"];
   if (isString(codeSignEntitlements)) {
     const appManifest = findFile("app.json", projectRoot, fs);
     if (!appManifest) {
@@ -58,19 +61,19 @@ export function applyBuildSettings(
     project.buildSettings[CODE_SIGN_ENTITLEMENTS] = relPath;
   }
 
-  const codeSignIdentity = platformConfig["codeSignIdentity"];
+  const codeSignIdentity = config["codeSignIdentity"];
   if (isString(codeSignIdentity)) {
     project.buildSettings[CODE_SIGN_IDENTITY] = codeSignIdentity;
   }
 
-  const developmentTeam = platformConfig["developmentTeam"];
+  const developmentTeam = config["developmentTeam"];
   if (isString(developmentTeam)) {
     project.buildSettings[DEVELOPMENT_TEAM] = developmentTeam;
     project.testsBuildSettings[DEVELOPMENT_TEAM] = developmentTeam;
     project.uitestsBuildSettings[DEVELOPMENT_TEAM] = developmentTeam;
   }
 
-  const bundleIdentifier = platformConfig["bundleIdentifier"];
+  const bundleIdentifier = config["bundleIdentifier"];
   if (isString(bundleIdentifier)) {
     project.buildSettings[PRODUCT_BUNDLE_IDENTIFIER] = bundleIdentifier;
     project.testsBuildSettings[PRODUCT_BUNDLE_IDENTIFIER] =
@@ -79,7 +82,7 @@ export function applyBuildSettings(
       `${bundleIdentifier}UITests`;
   }
 
-  const buildNumber = platformConfig["buildNumber"];
+  const buildNumber = config["buildNumber"];
   project.buildSettings[PRODUCT_BUILD_NUMBER] =
     buildNumber && isString(buildNumber) ? buildNumber : "1";
 
@@ -161,7 +164,7 @@ export function applyUserHeaderSearchPaths({ buildSettings }, destination) {
   const existingPaths = buildSettings[USER_HEADER_SEARCH_PATHS];
   const searchPaths = Array.isArray(existingPaths) ? existingPaths : [];
 
-  searchPaths.push(path.dirname(destination));
+  searchPaths.push(path.resolve(path.dirname(destination)));
 
   buildSettings[USER_HEADER_SEARCH_PATHS] = searchPaths;
 }

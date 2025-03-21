@@ -134,7 +134,8 @@ export function generateProject(
   // Link source files
   const srcDirs = ["ReactTestApp", "ReactTestAppTests", "ReactTestAppUITests"];
   for (const file of srcDirs) {
-    fs.linkSync(projectPath(file, targetPlatform), destination);
+    const symlink = path.join(destination, file);
+    fs.linkSync(projectPath(file, targetPlatform), symlink);
   }
 
   // Shared code lives in `ios/ReactTestApp/`
@@ -168,8 +169,8 @@ export function generateProject(
 
   /** @type {ProjectConfiguration} */
   const project = {
-    xcodeprojPath: xcodeprojDst,
-    reactNativePath,
+    xcodeprojPath: path.resolve(xcodeprojDst),
+    reactNativePath: path.resolve(reactNativePath),
     reactNativeVersion,
     useNewArch,
     useBridgeless,
@@ -178,9 +179,7 @@ export function generateProject(
     uitestsBuildSettings: {},
   };
 
-  if (isObject(platformConfig)) {
-    applyBuildSettings(platformConfig, project, projectRoot, destination, fs);
-  }
+  applyBuildSettings(platformConfig, project, projectRoot, destination, fs);
 
   const overrides = options["buildSettingOverrides"];
   if (isObject(overrides)) {

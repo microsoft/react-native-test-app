@@ -29,7 +29,13 @@ describe("generateAssetsCatalogs()", macosOnly, () => {
   });
 
   for (const platform of ["ios", "macos"] as const) {
-    const assetsCatalogTemplatePath = path.join(
+    const appiconsetCopyPath = path.resolve(
+      projectRoot,
+      "Assets.xcassets",
+      "AppIcon.appiconset",
+      "Contents.json"
+    );
+    const appiconsetTemplatePath = path.resolve(
       projectRoot,
       platform,
       "ReactTestApp",
@@ -37,30 +43,43 @@ describe("generateAssetsCatalogs()", macosOnly, () => {
       "AppIcon.appiconset",
       "Contents.json"
     );
-    const assetsCatalogTemplate = readTextFile(assetsCatalogTemplatePath);
+    const appiconsetTemplate = readTextFile(appiconsetTemplatePath);
 
     it(`[${platform}] returns early if no icons are declared`, () => {
+      setMockFiles({ [appiconsetTemplatePath]: appiconsetTemplate });
+
       generateAssetsCatalogs(configs.noConfig, platform, projectRoot);
 
-      deepEqual(toJSON(), {});
+      deepEqual(Object.keys(toJSON()), [
+        appiconsetTemplatePath,
+        appiconsetCopyPath,
+      ]);
 
       generateAssetsCatalogs(configs.noIcons, platform, projectRoot);
 
-      deepEqual(toJSON(), {});
+      deepEqual(Object.keys(toJSON()), [
+        appiconsetTemplatePath,
+        appiconsetCopyPath,
+      ]);
     });
 
     it(`[${platform}] returns early if primary icon is missing`, () => {
+      setMockFiles({ [appiconsetTemplatePath]: appiconsetTemplate });
+
       generateAssetsCatalogs(
         configs.withAlternateIconsOnly,
         platform,
         projectRoot
       );
 
-      deepEqual(toJSON(), {});
+      deepEqual(Object.keys(toJSON()), [
+        appiconsetTemplatePath,
+        appiconsetCopyPath,
+      ]);
     });
 
     it(`[${platform}] generates asset catalog for primary icon`, () => {
-      setMockFiles({ [assetsCatalogTemplatePath]: assetsCatalogTemplate });
+      setMockFiles({ [appiconsetTemplatePath]: appiconsetTemplate });
 
       generateAssetsCatalogs(configs.withPrimaryIcon, platform, projectRoot);
 
@@ -72,7 +91,7 @@ describe("generateAssetsCatalogs()", macosOnly, () => {
     });
 
     it(`[${platform}] generates asset catalog for all icons`, () => {
-      setMockFiles({ [assetsCatalogTemplatePath]: assetsCatalogTemplate });
+      setMockFiles({ [appiconsetTemplatePath]: appiconsetTemplate });
 
       generateAssetsCatalogs(configs.withAlternateIcons, platform, projectRoot);
 

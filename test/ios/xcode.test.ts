@@ -21,6 +21,7 @@ import { readTextFile, v } from "../../scripts/helpers.js";
 import type {
   ApplePlatform,
   JSONObject,
+  JSONValue,
   ProjectConfiguration,
 } from "../../scripts/types.ts";
 import { fs, setMockFiles, toJSON } from "../fs.mock.ts";
@@ -42,7 +43,7 @@ function makeProjectConfiguration(): ProjectConfiguration {
 
 describe("applyBuildSettings()", macosOnly, () => {
   function applyBuildSettings(
-    config: JSONObject,
+    config: JSONValue,
     project: ProjectConfiguration,
     projectRoot: string,
     destination: string
@@ -58,6 +59,15 @@ describe("applyBuildSettings()", macosOnly, () => {
 
   afterEach(() => {
     setMockFiles();
+  });
+
+  it("sets default build settings", () => {
+    const project = makeProjectConfiguration();
+    applyBuildSettings(null, project, ".", ".");
+
+    deepEqual(project.buildSettings, { PRODUCT_BUILD_NUMBER: "1" });
+    deepEqual(project.testsBuildSettings, {});
+    deepEqual(project.uitestsBuildSettings, {});
   });
 
   it("sets codesign entitlements", () => {
@@ -319,12 +329,14 @@ describe("applySwiftFlags()", () => {
 });
 
 describe("applyUserHeaderSearchPaths()", () => {
+  const cwd = process.cwd();
+
   it("sets user header search paths", () => {
     const project = makeProjectConfiguration();
 
     applyUserHeaderSearchPaths(project, "ReactApp");
 
-    deepEqual(project.buildSettings[USER_HEADER_SEARCH_PATHS], ["."]);
+    deepEqual(project.buildSettings[USER_HEADER_SEARCH_PATHS], [cwd]);
   });
 
   it("appends user header search paths", () => {
@@ -333,7 +345,7 @@ describe("applyUserHeaderSearchPaths()", () => {
 
     applyUserHeaderSearchPaths(project, "ReactApp");
 
-    deepEqual(project.buildSettings[USER_HEADER_SEARCH_PATHS], ["Test", "."]);
+    deepEqual(project.buildSettings[USER_HEADER_SEARCH_PATHS], ["Test", cwd]);
   });
 });
 

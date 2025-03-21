@@ -92,7 +92,7 @@ export function generateAssetsCatalogs(
   const xcassets_dst = path.join(destination, path.basename(xcassets_src));
 
   rm_r(xcassets_dst, fs);
-  cp_r(xcassets_src, xcassets_dst, fs);
+  cp_r(xcassets_src, destination, fs);
 
   const platformConfig = appConfig[targetPlatform];
   if (!isObject(platformConfig)) {
