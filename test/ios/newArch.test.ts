@@ -40,7 +40,7 @@ describe("isBridgelessEnabled()", () => {
   });
 
   it("does not return true just because `RCT_NEW_ARCH_ENABLED` is set", () => {
-    // `RCT_NEW_ARCH_ENABLED` does not enable bridgeless
+    // `RCT_NEW_ARCH_ENABLED` does not enable bridgeless on older versions
     process.env["RCT_NEW_ARCH_ENABLED"] = "1";
 
     ok(!isBridgelessEnabled({}, v(0, 72, 999)));

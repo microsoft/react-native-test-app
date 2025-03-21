@@ -1,3 +1,5 @@
+import type { XmlBuilderOptions } from "fast-xml-parser";
+
 export type JSONValue =
   | string
   | number
@@ -114,6 +116,38 @@ export type ProjectConfig = {
   ios?: Pick<ProjectParams["ios"], "sourceDir">;
   windows?: Pick<ProjectParams["windows"], "sourceDir" | "solutionFile">;
 };
+
+/***************************
+ * ios/privacyManifest.mjs *
+ ***************************/
+
+export type PrivacyManifest = {
+  NSPrivacyTracking: boolean;
+  NSPrivacyTrackingDomains: JSONValue[];
+  NSPrivacyCollectedDataTypes: JSONValue[];
+  NSPrivacyAccessedAPITypes: JSONValue[];
+};
+
+/*****************
+ * ios/xcode.mjs *
+ *****************/
+
+export type ProjectConfiguration = {
+  xcodeprojPath: string;
+  reactNativePath: string;
+  reactNativeVersion: number;
+  singleApp?: string;
+  useNewArch: boolean;
+  useBridgeless: boolean;
+  buildSettings: Record<string, string | string[]>;
+  testsBuildSettings: Record<string, string>;
+  uitestsBuildSettings: Record<string, string>;
+};
+
+export type XmlOptions = Pick<
+  Required<XmlBuilderOptions>,
+  "attributeNamePrefix" | "ignoreAttributes" | "format" | "indentBy"
+>;
 
 /*****************
  * parseargs.mjs *

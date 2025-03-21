@@ -24,8 +24,12 @@ import {
 } from "./xcode.mjs";
 
 /**
- * @import { ApplePlatform, JSONObject, JSONValue } from "../scripts/types.ts";
- * @import { ProjectConfiguration } from "./xcode.mjs";
+ * @import {
+ *   ApplePlatform,
+ *   JSONObject,
+ *   JSONValue,
+ *   ProjectConfiguration,
+ * } from "../scripts/types.ts";
  */
 
 const SUPPORTED_PLATFORMS = ["ios", "macos", "visionos"];

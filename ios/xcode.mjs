@@ -6,25 +6,12 @@ import { findFile, readTextFile, v } from "../scripts/helpers.js";
 import { isObject, isString } from "./utils.mjs";
 
 /**
- * @import { XmlBuilderOptions } from "fast-xml-parser";
- * @import { ApplePlatform, JSONObject } from "../scripts/types.js";
- *
- * @typedef {{
- *   xcodeprojPath: string;
- *   reactNativePath: string;
- *   reactNativeVersion: number;
- *   singleApp?: string;
- *   useNewArch: boolean;
- *   useBridgeless: boolean;
- *   buildSettings: Record<string, string | string[]>;
- *   testsBuildSettings: Record<string, string>;
- *   uitestsBuildSettings: Record<string, string>;
- * }} ProjectConfiguration
- *
- * @typedef {Pick<
- *   Required<XmlBuilderOptions>,
- *   "attributeNamePrefix" | "ignoreAttributes" | "format" | "indentBy"
- * >} XmlOptions;
+ * @import {
+ *   ApplePlatform,
+ *   JSONObject,
+ *   ProjectConfiguration,
+ *   XmlOptions,
+ * } from "../scripts/types.js";
  */
 
 export const IPHONEOS_DEPLOYMENT_TARGET = "IPHONEOS_DEPLOYMENT_TARGET";

@@ -4,14 +4,11 @@ import * as path from "node:path";
 import { isObject, plistFromJSON } from "./utils.mjs";
 
 /**
- * @import { ApplePlatform, JSONObject, JSONValue } from "../scripts/types.js";
- *
- * @typedef {{
- *   NSPrivacyTracking: boolean;
- *   NSPrivacyTrackingDomains: JSONValue[];
- *   NSPrivacyCollectedDataTypes: JSONValue[];
- *   NSPrivacyAccessedAPITypes: JSONValue[];
- * }} PrivacyManifest;
+ * @import {
+ *   ApplePlatform,
+ *   JSONObject,
+ *   PrivacyManifest
+ * } from "../scripts/types.js";
  */
 
 // https://developer.apple.com/documentation/bundleresources/privacy_manifest_files

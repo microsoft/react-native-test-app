@@ -1,7 +1,6 @@
 import { deepEqual, equal, match, notEqual, throws } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import type { ProjectConfiguration } from "../../ios/xcode.mjs";
 import {
   CODE_SIGN_ENTITLEMENTS,
   CODE_SIGN_IDENTITY,
@@ -19,7 +18,11 @@ import {
   overrideBuildSettings,
 } from "../../ios/xcode.mjs";
 import { readTextFile, v } from "../../scripts/helpers.js";
-import type { ApplePlatform, JSONObject } from "../../scripts/types.ts";
+import type {
+  ApplePlatform,
+  JSONObject,
+  ProjectConfiguration,
+} from "../../scripts/types.ts";
 import { fs, setMockFiles, toJSON } from "../fs.mock.ts";
 
 const macosOnly = { skip: process.platform === "win32" };
