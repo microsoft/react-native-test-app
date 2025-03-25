@@ -1,21 +1,30 @@
-import { deepEqual, equal, match, notEqual, throws } from "node:assert/strict";
+import {
+  deepEqual,
+  equal,
+  match,
+  notEqual,
+  ok,
+  throws,
+} from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
+import { fileURLToPath, URL } from "node:url";
+import { isObject, jsonFromPlist } from "../../ios/utils.mjs";
 import {
-  CODE_SIGN_ENTITLEMENTS,
-  CODE_SIGN_IDENTITY,
-  DEVELOPMENT_TEAM,
-  GCC_PREPROCESSOR_DEFINITIONS,
-  OTHER_SWIFT_FLAGS,
-  PRODUCT_BUILD_NUMBER,
-  PRODUCT_BUNDLE_IDENTIFIER,
-  USER_HEADER_SEARCH_PATHS,
   applyBuildSettings as applyBuildSettingsActual,
   applyPreprocessorDefinitions,
   applySwiftFlags,
   applyUserHeaderSearchPaths,
+  CODE_SIGN_ENTITLEMENTS,
+  CODE_SIGN_IDENTITY,
   configureBuildSchemes as configureBuildSchemesActual,
+  DEVELOPMENT_TEAM,
+  GCC_PREPROCESSOR_DEFINITIONS,
+  OTHER_SWIFT_FLAGS,
   overrideBuildSettings,
+  PRODUCT_BUILD_NUMBER,
+  PRODUCT_BUNDLE_IDENTIFIER,
+  USER_HEADER_SEARCH_PATHS,
 } from "../../ios/xcode.mjs";
 import { readTextFile, v } from "../../scripts/helpers.js";
 import type {
@@ -452,5 +461,54 @@ describe("overrideBuildSettings()", () => {
     overrideBuildSettings(buildSettings, { ONLY_ACTIVE_ARCH: "YES" });
 
     equal(buildSettings["ONLY_ACTIVE_ARCH"], "YES");
+  });
+});
+
+describe("macos/ReactTestApp.xcodeproj", () => {
+  // Xcode expects the development team used for code signing to exist when
+  // targeting macOS. Unlike when targeting iOS, the warnings are treated as
+  // errors.
+  it("does not specify development team", () => {
+    const xcodeproj = jsonFromPlist(
+      fileURLToPath(
+        new URL(
+          "../../macos/ReactTestApp.xcodeproj/project.pbxproj",
+          import.meta.url
+        )
+      )
+    );
+
+    const { objects } = xcodeproj;
+
+    ok(isObject(objects));
+    ok(typeof xcodeproj.rootObject === "string");
+
+    const rootObject = objects[xcodeproj.rootObject];
+
+    ok(isObject(rootObject));
+    ok(Array.isArray(rootObject.targets));
+    ok(typeof rootObject.targets[0] === "string");
+
+    const appTarget = objects[rootObject.targets[0]];
+
+    ok(isObject(appTarget));
+    equal(appTarget.name, "ReactTestApp");
+    ok(typeof appTarget.buildConfigurationList === "string");
+
+    const buildConfigurationList = objects[appTarget.buildConfigurationList];
+
+    ok(isObject(buildConfigurationList));
+    ok(Array.isArray(buildConfigurationList.buildConfigurations));
+
+    for (const config of buildConfigurationList.buildConfigurations) {
+      ok(typeof config === "string");
+
+      const buildConfiguration: JSONValue = objects[config];
+
+      ok(isObject(buildConfiguration));
+      ok(isObject(buildConfiguration.buildSettings));
+      equal(buildConfiguration.buildSettings[CODE_SIGN_IDENTITY], "-");
+      equal(buildConfiguration.buildSettings[DEVELOPMENT_TEAM], undefined);
+    }
   });
 });
