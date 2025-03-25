@@ -4,7 +4,7 @@ import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import { loadAppConfig } from "../scripts/appConfig.mjs";
 import { findFile, readTextFile, toVersionNumber } from "../scripts/helpers.js";
-import { cp_r, mkdir_p } from "../scripts/utils/filesystem.mjs";
+import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
 import { generateAssetsCatalogs } from "./assetsCatalog.mjs";
 import { generateEntitlements } from "./entitlements.mjs";
 import { generateInfoPlist } from "./infoPlist.mjs";
@@ -143,7 +143,10 @@ export function generateProject(
   const srcDirs = ["ReactTestApp", "ReactTestAppTests", "ReactTestAppUITests"];
   for (const file of srcDirs) {
     const symlink = path.join(destination, file);
-    fs.linkSync(projectPath(file, targetPlatform), symlink);
+    if (fs.existsSync(symlink)) {
+      rm_r(symlink, fs);
+    }
+    fs.symlinkSync(projectPath(file, targetPlatform), symlink);
   }
 
   // Shared code lives in `ios/ReactTestApp/`
@@ -151,7 +154,7 @@ export function generateProject(
     const shared = path.join(destination, "Shared");
     if (!fs.existsSync(shared)) {
       const source = new URL("ReactTestApp", import.meta.url);
-      fs.linkSync(fileURLToPath(source), shared);
+      fs.symlinkSync(fileURLToPath(source), shared);
     }
   }
 
