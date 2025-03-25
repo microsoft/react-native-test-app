@@ -1,4 +1,5 @@
-import { deepEqual, equal, fail, throws } from "node:assert/strict";
+import { deepEqual, equal, fail, ok, throws } from "node:assert/strict";
+import * as fs from "node:fs";
 import { afterEach, before, describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
 import { generateProject as generateProjectActual } from "../../ios/app.mjs";
@@ -9,7 +10,7 @@ import type {
   JSONObject,
   ProjectConfiguration,
 } from "../../scripts/types.ts";
-import { fs, setMockFiles, toJSON } from "../fs.mock.ts";
+import { fs as mockfs, setMockFiles, toJSON } from "../fs.mock.ts";
 
 const macosOnly = { skip: process.platform === "win32" };
 
@@ -19,7 +20,7 @@ describe("generateProject()", macosOnly, () => {
     platform: ApplePlatform,
     options: JSONObject
   ): ProjectConfiguration {
-    return generateProjectActual(projectRoot, platform, options, fs);
+    return generateProjectActual(projectRoot, platform, options, mockfs);
   }
 
   function makeMockProject(overrides?: Record<string, unknown>) {
@@ -156,6 +157,28 @@ describe("generateProject()", macosOnly, () => {
 
       deepEqual(files, expected.files);
       deepEqual(trimPaths(result, cwd), expected.result);
+    });
+
+    it(`[${platform}] exports path to Node binary`, () => {
+      setMockFiles(makeMockProject());
+
+      generateProject(platform, platform, { fabricEnabled: true });
+      const xcode_env = readTextFile(`${platform}/.xcode.env`, mockfs);
+      const xcode_m = xcode_env.match(/export NODE_BINARY='(.*?)'/);
+
+      ok(xcode_m);
+      ok(xcode_m[1].startsWith("/"));
+      ok(fs.existsSync(xcode_m[1]));
+
+      const env = readTextFile(
+        `node_modules/.generated/${platform}/.env`,
+        mockfs
+      );
+      const env_m = env.match(/export PATH='(.*?)':\$PATH/);
+
+      ok(env_m);
+      ok(env_m[1].startsWith("/"));
+      ok(fs.existsSync(env_m[1]));
     });
 
     it(`[${platform}] applies build setting overrides`, () => {
