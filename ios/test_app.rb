@@ -1,20 +1,17 @@
 require('json')
 require('pathname')
 
-require_relative('assets_catalog')
-require_relative('entitlements')
-require_relative('info_plist')
-require_relative('node')
 require_relative('pod_helpers')
-require_relative('privacy_manifest')
-require_relative('xcode')
 
-def app_config(project_root)
-  manifest = app_manifest(project_root)
-  return [nil, nil, nil] if manifest.nil?
+IPHONEOS_DEPLOYMENT_TARGET = 'IPHONEOS_DEPLOYMENT_TARGET'.freeze
+MACOSX_DEPLOYMENT_TARGET = 'MACOSX_DEPLOYMENT_TARGET'.freeze
+XROS_DEPLOYMENT_TARGET = 'XROS_DEPLOYMENT_TARGET'.freeze
 
-  [manifest['name'], manifest['displayName'], manifest['version'], manifest['singleApp']]
-end
+CODE_SIGN_IDENTITY = 'CODE_SIGN_IDENTITY'.freeze
+DEVELOPMENT_TEAM = 'DEVELOPMENT_TEAM'.freeze
+ENABLE_TESTING_SEARCH_PATHS = 'ENABLE_TESTING_SEARCH_PATHS'.freeze
+GCC_PREPROCESSOR_DEFINITIONS = 'GCC_PREPROCESSOR_DEFINITIONS'.freeze
+WARNING_CFLAGS = 'WARNING_CFLAGS'.freeze
 
 def apply_config_plugins(project_root, target_platform)
   begin
@@ -29,33 +26,14 @@ def apply_config_plugins(project_root, target_platform)
   raise 'Failed to apply config plugins' unless result
 end
 
-def autolink_script_path(project_root, target_platform, react_native_version)
+def autolink_script_path(project_root, react_native_path, react_native_version)
   start_dir = if react_native_version >= v(0, 76, 0)
                 project_root
               else
-                react_native_path(project_root, target_platform)
+                react_native_path
               end
   package_path = resolve_module('@react-native-community/cli-platform-ios', start_dir)
   File.join(package_path, 'native_modules')
-end
-
-def react_native_path(project_root, target_platform)
-  @react_native_path ||= {}
-
-  unless @react_native_path.key?(target_platform)
-    react_native_path = platform_config('reactNativePath', project_root, target_platform)
-    if react_native_path.is_a? String
-      @react_native_path[target_platform] = Pathname.new(resolve_module(react_native_path))
-    else
-      manifest = JSON.parse(File.read(File.join(__dir__, '..', 'package.json')))
-      react_native = manifest['defaultPlatformPackages'][target_platform.to_s]
-      raise "Unsupported target platform: #{target_platform}" if react_native.nil?
-
-      @react_native_path[target_platform] = Pathname.new(resolve_module(react_native))
-    end
-  end
-
-  @react_native_path[target_platform]
 end
 
 def target_product_type(target)
@@ -137,8 +115,7 @@ def resources_pod(project_root, target_platform, platforms)
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
-def use_react_native!(project_root, target_platform, options)
-  react_native = react_native_path(project_root, target_platform)
+def use_react_native!(project_root, react_native, options)
   version = package_version(react_native.to_s).segments
   version = v(version[0], version[1], version[2])
 
@@ -146,162 +123,44 @@ def use_react_native!(project_root, target_platform, options)
 
   include_react_native!(**options,
                         app_path: find_file('package.json', project_root).parent.to_s,
-                        path: react_native.relative_path_from(project_root).to_s,
+                        path: Pathname.new(react_native).relative_path_from(project_root).to_s,
                         rta_project_root: project_root,
                         version: version)
 end
 
-def make_project!(xcodeproj, project_root, target_platform, options)
-  xcodeproj_src = project_path(xcodeproj, target_platform)
-  destination = File.join(nearest_node_modules(project_root), '.generated', target_platform.to_s)
-  xcodeproj_dst = File.join(destination, xcodeproj)
+def make_project!(project_root, target_platform, options)
+  generate_project = File.join(__dir__, 'app.mjs')
+  options_json = JSON.fast_generate(options.transform_keys { |key| key.to_s.camelize(:lower) })
+  result = `node "#{generate_project}" "#{project_root}" #{target_platform} '#{options_json}'`
+  project = JSON.parse(result)
 
-  # Copy Xcode project files
-  FileUtils.mkdir_p(destination)
-  FileUtils.cp_r(xcodeproj_src, destination)
-  name, display_name, version, single_app = app_config(project_root)
-  xcschemes_path = File.join(xcodeproj_dst, 'xcshareddata', 'xcschemes')
-  configure_xcschemes!(xcschemes_path, project_root, target_platform, name)
+  xcodeproj_path = project['xcodeprojPath']
+  build_settings = project['buildSettings']
 
-  # Link source files
-  %w[ReactTestApp ReactTestAppTests ReactTestAppUITests].each do |file|
-    FileUtils.ln_sf(project_path(file, target_platform), destination)
-  end
-
-  # Shared code lives in `ios/ReactTestApp/`
-  if target_platform != :ios
-    source = File.expand_path('ReactTestApp', __dir__)
-    shared_path = File.join(destination, 'Shared')
-    FileUtils.ln_sf(source, shared_path) unless File.exist?(shared_path)
-  end
-
-  generate_assets_catalog!(project_root, target_platform, destination)
-  generate_entitlements!(project_root, target_platform, destination)
-  generate_info_plist!(project_root, target_platform, destination)
-  generate_privacy_manifest!(project_root, target_platform, destination)
-
-  # Copy localization files and replace instances of `ReactTestApp` with app display name
-  product_name = display_name || name
-  product_name = target.name unless product_name.is_a? String
-  localizations_src = project_path('Localizations', target_platform)
-  if File.exist?(localizations_src)
-    main_strings = 'Main.strings'
-    localizations_dst = File.join(destination, 'Localizations')
-
-    Dir.entries(localizations_src).each do |entry|
-      next if entry.start_with?('.')
-
-      lproj = File.join(localizations_dst, entry)
-      FileUtils.mkdir_p(lproj)
-
-      File.open(File.join(lproj, main_strings), 'w') do |f|
-        File.foreach(File.join(localizations_src, entry, main_strings)) do |line|
-          f.write(line.sub('ReactTestApp', product_name))
-        end
-      end
-    end
-  end
-
-  # Note the location of Node so we can use it later in script phases
-  node_bin = find_node
-  File.write(File.join(project_root, '.xcode.env'), "export NODE_BINARY='#{node_bin}'\n")
-  File.write(File.join(destination, '.env'),
-             "export PATH='#{`dirname '#{node_bin}'`.strip!}':$PATH\n")
-
-  react_native = react_native_path(project_root, target_platform)
-  rn_version = package_version(react_native.to_s).segments
-  rn_version = v(rn_version[0], rn_version[1], rn_version[2])
-  version_macro = "REACT_NATIVE_VERSION=#{rn_version}"
-
-  build_settings = {}
-  tests_build_settings = {}
-  uitests_build_settings = {}
-
-  code_sign_entitlements = platform_config('codeSignEntitlements', project_root, target_platform)
-  if code_sign_entitlements.is_a? String
-    package_root = File.dirname(find_file('app.json', project_root))
-    entitlements = Pathname.new(File.join(package_root, code_sign_entitlements))
-    build_settings[CODE_SIGN_ENTITLEMENTS] = entitlements.relative_path_from(destination).to_s
-  end
-
-  code_sign_identity = platform_config('codeSignIdentity', project_root, target_platform)
-  build_settings[CODE_SIGN_IDENTITY] = code_sign_identity if code_sign_identity.is_a? String
-
-  development_team = platform_config('developmentTeam', project_root, target_platform)
-  if development_team.is_a? String
-    build_settings[DEVELOPMENT_TEAM] = development_team
-    tests_build_settings[DEVELOPMENT_TEAM] = development_team
-    uitests_build_settings[DEVELOPMENT_TEAM] = development_team
-  end
-
-  product_bundle_identifier = platform_config('bundleIdentifier', project_root, target_platform)
-  if product_bundle_identifier.is_a? String
-    build_settings[PRODUCT_BUNDLE_IDENTIFIER] = product_bundle_identifier
-    tests_build_settings[PRODUCT_BUNDLE_IDENTIFIER] = "#{product_bundle_identifier}Tests"
-    uitests_build_settings[PRODUCT_BUNDLE_IDENTIFIER] = "#{product_bundle_identifier}UITests"
-  end
-
-  override_build_settings!(build_settings, options[:build_setting_overrides])
-
-  build_settings[PRODUCT_DISPLAY_NAME] = display_name
-  build_settings[PRODUCT_VERSION] = version || '1.0'
-
-  build_number = platform_config('buildNumber', project_root, target_platform)
-  build_settings[PRODUCT_BUILD_NUMBER] = build_number || '1'
-
-  use_new_arch = new_architecture_enabled?(options, rn_version)
-  use_bridgeless = bridgeless_enabled?(options, rn_version)
-  app_project = Xcodeproj::Project.open(xcodeproj_dst)
+  app_project = Xcodeproj::Project.open(xcodeproj_path)
   app_project.native_targets.each do |target|
     case target.name
     when 'ReactTestApp'
-      # In Xcode 15, `unary_function` and `binary_function` are no longer
-      # provided in C++17 and newer Standard modes. See Xcode release notes:
-      # https://developer.apple.com/documentation/xcode-release-notes/xcode-15-release-notes#Deprecations
-      # Upstream issue: https://github.com/facebook/react-native/issues/37748
-      enable_cxx17_removed_unary_binary_function =
-        (rn_version >= v(0, 72, 0) && rn_version < v(0, 72, 5)) ||
-        (rn_version >= v(0, 71, 0) && rn_version < v(0, 71, 4)) ||
-        (rn_version.positive? && rn_version < v(0, 70, 14))
       target.build_configurations.each do |config|
-        config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] ||= ['$(inherited)']
-        config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << version_macro
-        if enable_cxx17_removed_unary_binary_function
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] <<
-            '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
-        end
-        if use_new_arch
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'FOLLY_NO_CONFIG=1'
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'RCT_NEW_ARCH_ENABLED=1'
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'USE_FABRIC=1'
-          if use_bridgeless
-            config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'USE_BRIDGELESS=1'
+        build_settings.each do |setting, value|
+          if value.is_a? Array
+            arr = config.build_settings[setting] || ['$(inherited)']
+            value.each { |v| arr << v }
+            config.build_settings[setting] = arr
+          else
+            config.build_settings[setting] = value
           end
         end
-
-        build_settings.each do |setting, value|
-          config.build_settings[setting] = value
-        end
-
-        config.build_settings[OTHER_SWIFT_FLAGS] ||= ['$(inherited)']
-        config.build_settings[OTHER_SWIFT_FLAGS] << '-DUSE_FABRIC' if use_new_arch
-        config.build_settings[OTHER_SWIFT_FLAGS] << '-DUSE_BRIDGELESS' if use_bridgeless
-        if single_app.is_a? String
-          config.build_settings[OTHER_SWIFT_FLAGS] << '-DENABLE_SINGLE_APP_MODE'
-        end
-
-        config.build_settings[USER_HEADER_SEARCH_PATHS] ||= ['$(inherited)']
-        config.build_settings[USER_HEADER_SEARCH_PATHS] << File.dirname(destination)
       end
     when 'ReactTestAppTests'
       target.build_configurations.each do |config|
-        tests_build_settings.each do |setting, value|
+        project['uitestsBuildSettings'].each do |setting, value|
           config.build_settings[setting] = value
         end
       end
     when 'ReactTestAppUITests'
       target.build_configurations.each do |config|
-        uitests_build_settings.each do |setting, value|
+        project['uitestsBuildSettings'].each do |setting, value|
           config.build_settings[setting] = value
         end
       end
@@ -311,16 +170,17 @@ def make_project!(xcodeproj, project_root, target_platform, options)
 
   config = app_project.build_configurations[0]
   {
-    :xcodeproj_path => xcodeproj_dst,
+    :xcodeproj_path => xcodeproj_path,
     :platforms => {
       :ios => config.resolve_build_setting(IPHONEOS_DEPLOYMENT_TARGET),
       :macos => config.resolve_build_setting(MACOSX_DEPLOYMENT_TARGET),
       :visionos => config.resolve_build_setting(XROS_DEPLOYMENT_TARGET),
     },
-    :react_native_version => rn_version,
-    :use_new_arch => use_new_arch,
-    :code_sign_identity => code_sign_identity || '',
-    :development_team => development_team || '',
+    :react_native_path => project['reactNativePath'],
+    :react_native_version => project['reactNativeVersion'],
+    :use_new_arch => project['useNewArch'],
+    :code_sign_identity => build_settings[CODE_SIGN_IDENTITY] || '',
+    :development_team => build_settings[DEVELOPMENT_TEAM] || '',
   }
 end
 
@@ -331,7 +191,7 @@ def use_test_app_internal!(target_platform, options)
 
   xcodeproj = 'ReactTestApp.xcodeproj'
   project_root = Pod::Config.instance.installation_root
-  project_target = make_project!(xcodeproj, project_root, target_platform, options)
+  project_target = make_project!(project_root, target_platform, options)
   xcodeproj_dst, platforms = project_target.values_at(:xcodeproj_path, :platforms)
 
   if project_target[:use_new_arch] || project_target[:react_native_version] >= v(0, 73, 0)
@@ -341,7 +201,7 @@ def use_test_app_internal!(target_platform, options)
   # As of 0.75, we should use `use_native_modules!` from `react-native` instead
   if project_target[:react_native_version] < v(0, 75, 0)
     require_relative(autolink_script_path(project_root,
-                                          target_platform,
+                                          project_target[:react_native_path],
                                           project_target[:react_native_version]))
   end
 
@@ -358,7 +218,8 @@ def use_test_app_internal!(target_platform, options)
   react_native_post_install = nil
 
   target 'ReactTestApp' do
-    react_native_post_install = use_react_native!(project_root, target_platform, options)
+    react_native_post_install = use_react_native!(project_root, project_target[:react_native_path],
+                                                  options)
 
     pod 'ReactNativeHost', :path => resolve_module_relative('@rnx-kit/react-native-host')
 

@@ -2,7 +2,7 @@
 import type { DirectoryJSON } from "memfs";
 import { fs as memfs, vol } from "memfs";
 import * as path from "node:path";
-import { mkdir_p } from "../scripts/utils/filesystem.mjs";
+import { mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
 
 export const fs = memfs as unknown as typeof import("node:fs");
 
@@ -11,34 +11,22 @@ fs.cpSync =
   fs.cpSync ??
   ((src: string, dst: string, options) => {
     const srcStat = fs.statSync(src);
-    const dstStat = fs.statSync(dst);
     if (!srcStat.isDirectory()) {
-      const finalDst = dstStat.isDirectory()
-        ? path.join(dst, path.basename(src))
-        : dst;
-      return fs.copyFileSync(src, finalDst);
+      return fs.copyFileSync(src, dst);
     }
 
-    let finalDst: string;
-    if (!dstStat.isDirectory()) {
-      fs.rmSync(dst);
-      finalDst = dst;
-    } else {
-      finalDst = path.join(dst, path.basename(src));
-    }
+    rm_r(dst, fs);
+    mkdir_p(dst, fs);
 
-    mkdir_p(finalDst, fs);
     for (const filename of fs.readdirSync(src)) {
       const p = path.join(src, filename);
+      const finalDst = path.join(dst, filename);
+
       const pStat = fs.statSync(p);
       if (pStat.isDirectory()) {
-        if (options?.recursive) {
-          fs.cpSync(p, finalDst, options);
-        } else {
-          mkdir_p(path.join(finalDst, filename));
-        }
+        fs.cpSync(p, finalDst, options);
       } else {
-        fs.copyFileSync(p, path.join(finalDst, filename));
+        fs.copyFileSync(p, finalDst);
       }
     }
   });

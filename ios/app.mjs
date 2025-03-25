@@ -3,7 +3,12 @@ import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import { loadAppConfig } from "../scripts/appConfig.mjs";
-import { findFile, readTextFile, toVersionNumber } from "../scripts/helpers.js";
+import {
+  findFile,
+  isMain,
+  readTextFile,
+  toVersionNumber,
+} from "../scripts/helpers.js";
 import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
 import { generateAssetsCatalogs } from "./assetsCatalog.mjs";
 import { generateEntitlements } from "./entitlements.mjs";
@@ -136,7 +141,7 @@ export function generateProject(
 
   // Copy Xcode project files
   mkdir_p(destination, fs);
-  cp_r(xcodeprojSrc, destination, fs);
+  cp_r(xcodeprojSrc, xcodeprojDst, fs);
   configureBuildSchemes(appConfig, targetPlatform, xcodeprojDst, fs);
 
   // Link source files
@@ -213,4 +218,11 @@ export function generateProject(
   applyUserHeaderSearchPaths(project, destination);
 
   return project;
+}
+
+if (isMain(import.meta.url)) {
+  const [, , projectRoot, platform, options] = process.argv;
+  const user = typeof options === "string" ? JSON.parse(options) : {};
+  const project = generateProject(projectRoot, platform, user);
+  console.log(JSON.stringify(project, undefined, 2));
 }

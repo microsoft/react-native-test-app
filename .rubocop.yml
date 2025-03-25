@@ -5,6 +5,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - "**/Pods/**/*"
+    - "**/build/generated/**/*"
     - "**/node_modules/**/*"
     - "vendor/bundle/**/*"
   TargetRubyVersion: 2.6

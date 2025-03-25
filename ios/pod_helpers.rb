@@ -50,16 +50,9 @@ def new_architecture_enabled?(options, react_native_version)
   ENV.fetch('RCT_NEW_ARCH_ENABLED', options[:fabric_enabled] ? '1' : '0') != '0'
 end
 
-def platform_config(key, project_root, target_platform)
-  manifest = app_manifest(project_root)
-  return if manifest.nil?
-
-  config = manifest[target_platform.to_s]
-  config[key] if !config.nil? && !config.empty?
-end
-
-def project_path(file, target_platform)
-  File.expand_path(file, File.join(__dir__, '..', target_platform.to_s))
+def package_version(package_path)
+  package_json = JSON.parse(File.read(File.join(package_path, 'package.json')))
+  Gem::Version.new(package_json['version'])
 end
 
 def resolve_module(request, start_dir = Pod::Config.instance.installation_root)

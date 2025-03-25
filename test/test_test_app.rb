@@ -18,23 +18,6 @@ def fixture_path(*args)
 end
 
 class TestTestApp < Minitest::Test
-  def test_app_config
-    name, display_name, single_app = app_config(fixture_path('with_resources'))
-
-    assert_equal('TestFixture', name)
-    assert_equal('Test Fixture', display_name)
-    assert_nil(single_app)
-  end
-
-  def test_app_config_single_app
-    name, display_name, version, single_app = app_config(fixture_path('single_app_mode'))
-
-    assert_equal('TestFixture', name)
-    assert_equal('Test Fixture', display_name)
-    assert_equal('1.0.0', version)
-    assert_equal('test-fixture', single_app)
-  end
-
   def test_autolink_script_path
     react_native_dir = fixture_path('test_app', 'node_modules', 'react-native')
     autolink_path = fixture_path('test_app',
@@ -69,21 +52,6 @@ class TestTestApp < Minitest::Test
   end
 
   %i[ios macos].each do |target|
-    define_method("test_#{target}_project_settings") do
-      %w[
-        bundleIdentifier
-        codeSignEntitlements
-        codeSignIdentity
-        developmentTeam
-        reactNativePath
-      ].each do |setting|
-        assert_equal("#{setting}-#{target}",
-                     platform_config(setting, fixture_path('with_platform_resources'), target))
-        assert_nil(platform_config(setting, fixture_path('without_platform_resources'), target))
-        assert_nil(platform_config(setting, fixture_path('without_resources'), target))
-      end
-    end
-
     define_method("test_#{target}_resources_pod_returns_spec_path") do
       platforms = { :ios => '14.0', :macos => '11.0', :visionos => '1.0' }
 
