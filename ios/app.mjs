@@ -35,6 +35,16 @@ import {
 const SUPPORTED_PLATFORMS = ["ios", "macos", "visionos"];
 
 /**
+ * @param {string} platform
+ * @returns {asserts platform is ApplePlatform}
+ */
+function assertSupportedPlatform(platform) {
+  if (!SUPPORTED_PLATFORMS.includes(platform)) {
+    throw new Error(`Unsupported platform: ${platform}`);
+  }
+}
+
+/**
  * @param {string} projectRoot
  * @param {string} destination
  * @returns {void}
@@ -99,7 +109,7 @@ function readPackageVersion(p, fs = nodefs) {
 
 /**
  * @param {string} projectRoot
- * @param {ApplePlatform} targetPlatform
+ * @param {string} targetPlatform
  * @param {JSONObject} options
  * @returns {ProjectConfiguration}
  */
@@ -109,9 +119,7 @@ export function generateProject(
   options,
   fs = nodefs
 ) {
-  if (!SUPPORTED_PLATFORMS.includes(targetPlatform)) {
-    throw new Error(`Unsupported platform: ${targetPlatform}`);
-  }
+  assertSupportedPlatform(targetPlatform);
 
   const appConfig = loadAppConfig(projectRoot, fs);
 

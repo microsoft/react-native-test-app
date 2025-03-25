@@ -464,7 +464,7 @@ describe("overrideBuildSettings()", () => {
   });
 });
 
-describe("macos/ReactTestApp.xcodeproj", () => {
+describe("macos/ReactTestApp.xcodeproj", macosOnly, () => {
   // Xcode expects the development team used for code signing to exist when
   // targeting macOS. Unlike when targeting iOS, the warnings are treated as
   // errors.
