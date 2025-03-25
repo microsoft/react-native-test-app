@@ -50,7 +50,7 @@ function assertSupportedPlatform(platform) {
  * @returns {void}
  */
 function exportNodeBinaryPath(projectRoot, destination, fs = nodefs) {
-  const node = process.argv0;
+  const node = process.argv[0];
   fs.writeFileSync(
     path.join(projectRoot, ".xcode.env"),
     `export NODE_BINARY='${node}'\n`
