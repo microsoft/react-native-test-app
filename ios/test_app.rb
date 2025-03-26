@@ -115,10 +115,7 @@ def resources_pod(project_root, target_platform, platforms)
   Pathname.new(app_dir).relative_path_from(project_root).to_s
 end
 
-def use_react_native!(project_root, react_native, options)
-  version = package_version(react_native.to_s).segments
-  version = v(version[0], version[1], version[2])
-
+def use_react_native!(project_root, react_native, version, options)
   require_relative(react_native_pods(version))
 
   include_react_native!(**options,
@@ -154,7 +151,7 @@ def make_project!(project_root, target_platform, options)
       end
     when 'ReactTestAppTests'
       target.build_configurations.each do |config|
-        project['uitestsBuildSettings'].each do |setting, value|
+        project['testsBuildSettings'].each do |setting, value|
           config.build_settings[setting] = value
         end
       end
@@ -192,17 +189,17 @@ def use_test_app_internal!(target_platform, options)
   xcodeproj = 'ReactTestApp.xcodeproj'
   project_root = Pod::Config.instance.installation_root
   project_target = make_project!(project_root, target_platform, options)
-  xcodeproj_dst, platforms = project_target.values_at(:xcodeproj_path, :platforms)
+  xcodeproj_dst, platforms, react_native_path, react_native_version = project_target.values_at(
+    :xcodeproj_path, :platforms, :react_native_path, :react_native_version
+  )
 
-  if project_target[:use_new_arch] || project_target[:react_native_version] >= v(0, 73, 0)
+  if project_target[:use_new_arch] || react_native_version >= v(0, 73, 0)
     install! 'cocoapods', :deterministic_uuids => false
   end
 
   # As of 0.75, we should use `use_native_modules!` from `react-native` instead
-  if project_target[:react_native_version] < v(0, 75, 0)
-    require_relative(autolink_script_path(project_root,
-                                          project_target[:react_native_path],
-                                          project_target[:react_native_version]))
+  if react_native_version < v(0, 75, 0)
+    require_relative(autolink_script_path(project_root, react_native_path, react_native_version))
   end
 
   begin
@@ -218,7 +215,9 @@ def use_test_app_internal!(target_platform, options)
   react_native_post_install = nil
 
   target 'ReactTestApp' do
-    react_native_post_install = use_react_native!(project_root, project_target[:react_native_path],
+    react_native_post_install = use_react_native!(project_root,
+                                                  react_native_path,
+                                                  react_native_version,
                                                   options)
 
     pod 'ReactNativeHost', :path => resolve_module_relative('@rnx-kit/react-native-host')

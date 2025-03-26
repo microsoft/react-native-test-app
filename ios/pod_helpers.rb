@@ -50,11 +50,6 @@ def new_architecture_enabled?(options, react_native_version)
   ENV.fetch('RCT_NEW_ARCH_ENABLED', options[:fabric_enabled] ? '1' : '0') != '0'
 end
 
-def package_version(package_path)
-  package_json = JSON.parse(File.read(File.join(package_path, 'package.json')))
-  Gem::Version.new(package_json['version'])
-end
-
 def resolve_module(request, start_dir = Pod::Config.instance.installation_root)
   @module_cache ||= {}
   return @module_cache[request] if @module_cache.key?(request)
