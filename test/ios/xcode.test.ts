@@ -42,6 +42,7 @@ function makeProjectConfiguration(): ProjectConfiguration {
     xcodeprojPath: "",
     reactNativePath: "",
     reactNativeVersion: 0,
+    reactNativeHostPath: "",
     useNewArch: false,
     useBridgeless: false,
     buildSettings: {},

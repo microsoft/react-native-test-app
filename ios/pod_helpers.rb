@@ -1,15 +1,5 @@
 require('json')
 
-def app_manifest(project_root)
-  @app_manifest ||= {}
-  return @app_manifest[project_root] if @app_manifest.key?(project_root)
-
-  manifest_path = find_file('app.json', project_root)
-  return if manifest_path.nil?
-
-  @app_manifest[project_root] = JSON.parse(File.read(manifest_path))
-end
-
 def assert(condition, message)
   raise message unless condition
 end
@@ -50,39 +40,8 @@ def new_architecture_enabled?(options, react_native_version)
   ENV.fetch('RCT_NEW_ARCH_ENABLED', options[:fabric_enabled] ? '1' : '0') != '0'
 end
 
-def resolve_module(request, start_dir = Pod::Config.instance.installation_root)
-  @module_cache ||= {}
-  return @module_cache[request] if @module_cache.key?(request)
-
-  @module_cache[request] = resolve_module_uncached(request, start_dir).to_s
-end
-
-def resolve_module_relative(request)
-  path = resolve_module_uncached(request, Pathname.new(__dir__))
-  path.relative_path_from(Pod::Config.instance.installation_root).to_s
-end
-
-def resolve_module_uncached(request, start_dir)
-  # Always resolve `start_dir` as it may be a symlink
-  package_json = find_file("node_modules/#{request}/package.json", start_dir.realdirpath)
-  raise "Cannot find module '#{request}'" if package_json.nil?
-
-  package_json.dirname
-end
-
-def resolve_resources(manifest, target_platform)
-  resources = manifest['resources']
-  return if !resources || resources.empty?
-
-  resources.instance_of?(Array) ? resources : resources[target_platform.to_s]
-end
-
 def supports_new_architecture?(react_native_version)
   react_native_version.zero? || react_native_version >= v(0, 71, 0)
-end
-
-def try_pod(name, podspec, project_root)
-  pod name, :podspec => podspec if File.exist?(File.join(project_root, podspec))
 end
 
 def use_hermes?(options)

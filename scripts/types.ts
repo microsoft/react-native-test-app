@@ -136,12 +136,15 @@ export type ProjectConfiguration = {
   xcodeprojPath: string;
   reactNativePath: string;
   reactNativeVersion: number;
+  reactNativeHostPath: string;
+  communityAutolinkingScriptPath?: string;
   singleApp?: string;
   useNewArch: boolean;
   useBridgeless: boolean;
   buildSettings: Record<string, string | string[]>;
   testsBuildSettings: Record<string, string>;
   uitestsBuildSettings: Record<string, string>;
+  resources?: string[];
 };
 
 export type XmlOptions = Pick<

@@ -23,12 +23,23 @@ describe("generateProject()", macosOnly, () => {
     return generateProjectActual(projectRoot, platform, options, mockfs);
   }
 
-  function makeMockProject(overrides?: Record<string, unknown>) {
+  function makeMockProject(
+    overrides?: Record<string, unknown>,
+    reactNativeVersion = "1000.0.0"
+  ) {
     const manifestURL = new URL("../../package.json", import.meta.url);
     const manifest = readTextFile(fileURLToPath(manifestURL));
     const { name, version, defaultPlatformPackages } = JSON.parse(manifest);
     return {
-      "app.json": JSON.stringify({ name: "ContosoApp", ...overrides }),
+      "app.json": JSON.stringify({
+        name: "ContosoApp",
+        resources: {
+          ios: ["main.ios.jsbundle"],
+          macos: ["main.macos.jsbundle"],
+          visionos: ["main.visionos.jsbundle"],
+        },
+        ...overrides,
+      }),
       "ios/ReactTestApp.xcodeproj/xcshareddata/xcschemes/ReactTestApp.xcscheme":
         "",
       "ios/ReactTestApp/Assets.xcassets/AppIcon.iconset/Contents.json": "",
@@ -58,15 +69,21 @@ describe("generateProject()", macosOnly, () => {
       "node_modules/@callstack/react-native-visionos/package.json":
         JSON.stringify({
           name: "@callstack/react-native-visionos",
-          version: "1000.0.0",
+          version: reactNativeVersion,
         }),
+      "node_modules/@react-native-community/cli-platform-ios/native_modules.rb":
+        "",
+      "node_modules/@rnx-kit/react-native-host/package.json": JSON.stringify({
+        name: "@rnx-kit/react-native-host",
+        version: reactNativeVersion,
+      }),
       "node_modules/react-native/package.json": JSON.stringify({
         name: "react-native",
-        version: "1000.0.0",
+        version: reactNativeVersion,
       }),
       "node_modules/react-native-macos/package.json": JSON.stringify({
         name: "react-native-macos",
-        version: "1000.0.0",
+        version: reactNativeVersion,
       }),
     };
   }
@@ -214,6 +231,17 @@ describe("generateProject()", macosOnly, () => {
 
     deepEqual(trimPaths(result, cwd), PROJECT_FILES.customReactNative);
   });
+
+  it("finds community autolinking script for older versions", () => {
+    setMockFiles(makeMockProject(undefined, "0.74.0"));
+
+    const result = generateProject("ios", "ios", {});
+
+    equal(
+      result.communityAutolinkingScriptPath,
+      "node_modules/@react-native-community/cli-platform-ios/native_modules.rb"
+    );
+  });
 });
 
 const PROJECT_FILES = {
@@ -232,8 +260,11 @@ const PROJECT_FILES = {
       PRODUCT_VERSION: "1.0",
       USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
     },
+    communityAutolinkingScriptPath: undefined,
+    reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
     reactNativePath: "/~/node_modules/react-native-macos",
     reactNativeVersion: 1000000000,
+    resources: ["main.ios.jsbundle"],
     testsBuildSettings: {},
     uitestsBuildSettings: {},
     useBridgeless: true,
@@ -257,8 +288,11 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
+        communityAutolinkingScriptPath: undefined,
+        reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native",
         reactNativeVersion: 1000000000,
+        resources: ["main.ios.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: true,
@@ -288,6 +322,8 @@ const PROJECT_FILES = {
         "/visionos/ReactTestAppUITests/Info.plist",
         "/package.json",
         "/node_modules/@callstack/react-native-visionos/package.json",
+        "/node_modules/@react-native-community/cli-platform-ios/native_modules.rb",
+        "/node_modules/@rnx-kit/react-native-host/package.json",
         "/node_modules/react-native/package.json",
         "/node_modules/react-native-macos/package.json",
         "/node_modules/.generated/ios/ReactTestApp.xcodeproj/xcshareddata/xcschemes/ReactTestApp.xcscheme",
@@ -316,8 +352,11 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
+        communityAutolinkingScriptPath: undefined,
+        reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native-macos",
         reactNativeVersion: 1000000000,
+        resources: ["main.macos.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: true,
@@ -348,6 +387,8 @@ const PROJECT_FILES = {
         "/visionos/ReactTestAppUITests/Info.plist",
         "/package.json",
         "/node_modules/@callstack/react-native-visionos/package.json",
+        "/node_modules/@react-native-community/cli-platform-ios/native_modules.rb",
+        "/node_modules/@rnx-kit/react-native-host/package.json",
         "/node_modules/react-native/package.json",
         "/node_modules/react-native-macos/package.json",
         "/node_modules/.generated/macos/ReactTestApp.xcodeproj/xcshareddata/xcschemes/ReactTestApp.xcscheme",
@@ -376,8 +417,11 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
+        communityAutolinkingScriptPath: undefined,
+        reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/@callstack/react-native-visionos",
         reactNativeVersion: 1000000000,
+        resources: ["main.visionos.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: true,
@@ -408,6 +452,8 @@ const PROJECT_FILES = {
         "/visionos/.xcode.env",
         "/package.json",
         "/node_modules/@callstack/react-native-visionos/package.json",
+        "/node_modules/@react-native-community/cli-platform-ios/native_modules.rb",
+        "/node_modules/@rnx-kit/react-native-host/package.json",
         "/node_modules/react-native/package.json",
         "/node_modules/react-native-macos/package.json",
         "/node_modules/.generated/visionos/ReactTestApp.xcodeproj/xcshareddata/xcschemes/ReactTestApp.xcscheme",
@@ -432,8 +478,11 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
+        communityAutolinkingScriptPath: undefined,
+        reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native",
         reactNativeVersion: 1000000000,
+        resources: ["main.ios.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: false,
@@ -463,6 +512,8 @@ const PROJECT_FILES = {
         "/visionos/ReactTestAppUITests/Info.plist",
         "/package.json",
         "/node_modules/@callstack/react-native-visionos/package.json",
+        "/node_modules/@react-native-community/cli-platform-ios/native_modules.rb",
+        "/node_modules/@rnx-kit/react-native-host/package.json",
         "/node_modules/react-native/package.json",
         "/node_modules/react-native-macos/package.json",
         "/node_modules/.generated/ios/ReactTestApp.xcodeproj/xcshareddata/xcschemes/ReactTestApp.xcscheme",
@@ -485,8 +536,11 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
+        communityAutolinkingScriptPath: undefined,
+        reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native-macos",
         reactNativeVersion: 1000000000,
+        resources: ["main.macos.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: false,
@@ -517,6 +571,8 @@ const PROJECT_FILES = {
         "/visionos/ReactTestAppUITests/Info.plist",
         "/package.json",
         "/node_modules/@callstack/react-native-visionos/package.json",
+        "/node_modules/@react-native-community/cli-platform-ios/native_modules.rb",
+        "/node_modules/@rnx-kit/react-native-host/package.json",
         "/node_modules/react-native/package.json",
         "/node_modules/react-native-macos/package.json",
         "/node_modules/.generated/macos/ReactTestApp.xcodeproj/xcshareddata/xcschemes/ReactTestApp.xcscheme",
@@ -539,8 +595,11 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
+        communityAutolinkingScriptPath: undefined,
+        reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/@callstack/react-native-visionos",
         reactNativeVersion: 1000000000,
+        resources: ["main.visionos.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: false,
@@ -571,6 +630,8 @@ const PROJECT_FILES = {
         "/visionos/.xcode.env",
         "/package.json",
         "/node_modules/@callstack/react-native-visionos/package.json",
+        "/node_modules/@react-native-community/cli-platform-ios/native_modules.rb",
+        "/node_modules/@rnx-kit/react-native-host/package.json",
         "/node_modules/react-native/package.json",
         "/node_modules/react-native-macos/package.json",
         "/node_modules/.generated/visionos/ReactTestApp.xcodeproj/xcshareddata/xcschemes/ReactTestApp.xcscheme",

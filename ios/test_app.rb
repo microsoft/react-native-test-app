@@ -14,26 +14,13 @@ GCC_PREPROCESSOR_DEFINITIONS = 'GCC_PREPROCESSOR_DEFINITIONS'.freeze
 WARNING_CFLAGS = 'WARNING_CFLAGS'.freeze
 
 def apply_config_plugins(project_root, target_platform)
-  begin
-    resolve_module('@expo/config-plugins')
-  rescue StandardError
-    # Skip if `@expo/config-plugins` cannot be found
-    return
-  end
+  # Skip if `@expo/config-plugins` cannot be found
+  config_plugins_dir = find_file('node_modules/@expo/config-plugins', project_root)
+  return if config_plugins_dir.nil?
 
   apply_config_plugins = File.join(__dir__, '..', 'scripts', 'apply-config-plugins.mjs')
   result = system("node \"#{apply_config_plugins}\" \"#{project_root}\" --#{target_platform}")
   raise 'Failed to apply config plugins' unless result
-end
-
-def autolink_script_path(project_root, react_native_path, react_native_version)
-  start_dir = if react_native_version >= v(0, 76, 0)
-                project_root
-              else
-                react_native_path
-              end
-  package_path = resolve_module('@react-native-community/cli-platform-ios', start_dir)
-  File.join(package_path, 'native_modules')
 end
 
 def target_product_type(target)
@@ -79,13 +66,13 @@ def validate_resources(resources, app_dir)
   resources
 end
 
-def resources_pod(project_root, target_platform, platforms)
+def resources_pod(project_root, platforms, resources)
+  return if resources.nil? || resources.empty?
+
   app_manifest = find_file('app.json', project_root)
   return if app_manifest.nil?
 
   app_dir = File.dirname(app_manifest)
-  resources = resolve_resources(app_manifest(project_root), target_platform)
-  return if resources.nil? || resources.empty?
 
   spec = {
     'name' => 'ReactTestApp-Resources',
@@ -175,9 +162,12 @@ def make_project!(project_root, target_platform, options)
     },
     :react_native_path => project['reactNativePath'],
     :react_native_version => project['reactNativeVersion'],
+    :react_native_host_path => project['reactNativeHostPath'],
+    :community_autolinking_script_path => project['communityAutolinkingScriptPath'],
     :use_new_arch => project['useNewArch'],
     :code_sign_identity => build_settings[CODE_SIGN_IDENTITY] || '',
     :development_team => build_settings[DEVELOPMENT_TEAM] || '',
+    :resources => project['resources'],
   }
 end
 
@@ -198,8 +188,8 @@ def use_test_app_internal!(target_platform, options)
   end
 
   # As of 0.75, we should use `use_native_modules!` from `react-native` instead
-  if react_native_version < v(0, 75, 0)
-    require_relative(autolink_script_path(project_root, react_native_path, react_native_version))
+  if project_target[:community_autolinking_script_path].is_a? String
+    require_relative(project_target[:community_autolinking_script_path])
   end
 
   begin
@@ -220,9 +210,9 @@ def use_test_app_internal!(target_platform, options)
                                                   react_native_version,
                                                   options)
 
-    pod 'ReactNativeHost', :path => resolve_module_relative('@rnx-kit/react-native-host')
+    pod 'ReactNativeHost', :path => project_target[:react_native_host_path]
 
-    if (resources_pod_path = resources_pod(project_root, target_platform, platforms))
+    if (resources_pod_path = resources_pod(project_root, platforms, project_target[:resources]))
       pod 'ReactTestApp-Resources', :path => resources_pod_path
     end
 

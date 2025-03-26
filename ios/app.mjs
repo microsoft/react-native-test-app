@@ -8,6 +8,7 @@ import {
   isMain,
   readTextFile,
   toVersionNumber,
+  v,
 } from "../scripts/helpers.js";
 import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
 import { generateAssetsCatalogs } from "./assetsCatalog.mjs";
@@ -16,7 +17,7 @@ import { generateInfoPlist } from "./infoPlist.mjs";
 import { generateLocalizations, getProductName } from "./localizations.mjs";
 import { isBridgelessEnabled, isNewArchEnabled } from "./newArch.mjs";
 import { generatePrivacyManifest } from "./privacyManifest.mjs";
-import { isObject, isString, projectPath } from "./utils.mjs";
+import { isObject, isString, projectPath, resolveResources } from "./utils.mjs";
 import {
   PRODUCT_DISPLAY_NAME,
   PRODUCT_VERSION,
@@ -64,6 +65,45 @@ function exportNodeBinaryPath(projectRoot, destination, fs = nodefs) {
     path.join(destination, ".env"),
     `export PATH='${path.dirname(node)}':$PATH\n`
   );
+}
+
+/**
+ * @param {string} reactNativePath
+ * @param {number} reactNativeVersion
+ * @returns {string | undefined}
+ */
+function findCommunityAutolinkingScriptPath(
+  reactNativePath,
+  reactNativeVersion,
+  fs = nodefs
+) {
+  // As of 0.75, we should use `use_native_modules!` from `react-native` instead
+  if (reactNativeVersion < v(0, 75, 0)) {
+    const pkgPath = findFile(
+      "node_modules/@react-native-community/cli-platform-ios",
+      reactNativePath,
+      fs
+    );
+    if (pkgPath) {
+      return path.join(pkgPath, "native_modules.rb");
+    }
+  }
+
+  return undefined;
+}
+
+/**
+ * @param {string} projectRoot
+ * @returns {string}
+ */
+function findReactNativeHostPath(projectRoot, fs = nodefs) {
+  const dir = fileURLToPath(import.meta.url);
+  const rnhPath = findFile("node_modules/@rnx-kit/react-native-host", dir, fs);
+  if (!rnhPath) {
+    throw new Error("Cannot find module '@rnx-kit/react-native-host'");
+  }
+
+  return path.relative(projectRoot, rnhPath);
 }
 
 /**
@@ -188,11 +228,20 @@ export function generateProject(
     xcodeprojPath: path.resolve(xcodeprojDst),
     reactNativePath: path.resolve(reactNativePath),
     reactNativeVersion,
+    reactNativeHostPath: findReactNativeHostPath(projectRoot, fs),
+    communityAutolinkingScriptPath: findCommunityAutolinkingScriptPath(
+      reactNativePath,
+      reactNativeVersion,
+      fs
+    ),
     useNewArch,
     useBridgeless,
     buildSettings: {},
     testsBuildSettings: {},
     uitestsBuildSettings: {},
+    resources: resolveResources(appConfig, targetPlatform)?.filter(
+      (item) => typeof item === "string"
+    ),
   };
 
   applyBuildSettings(platformConfig, project, projectRoot, destination, fs);
