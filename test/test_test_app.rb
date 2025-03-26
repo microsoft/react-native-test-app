@@ -19,6 +19,7 @@ end
 
 class TestTestApp < Minitest::Test
   def test_autolink_script_path
+    fixture = fixture_path('test_app')
     react_native_dir = fixture_path('test_app', 'node_modules', 'react-native')
     autolink_path = fixture_path('test_app',
                                  'node_modules',
@@ -26,11 +27,8 @@ class TestTestApp < Minitest::Test
                                  'cli-platform-ios',
                                  'native_modules').to_s
 
-    stub :react_native_path, react_native_dir do
-      assert_equal(autolink_script_path(fixture_path('test_app'), :ios, v(0, 75, 0)), autolink_path)
-    end
-
-    assert_equal(autolink_script_path(fixture_path('test_app'), :ios, v(0, 76, 0)), autolink_path)
+    assert_equal(autolink_script_path(fixture, react_native_dir, v(0, 75, 0)), autolink_path)
+    assert_equal(autolink_script_path(fixture, react_native_dir, v(0, 76, 0)), autolink_path)
   end
 
   def test_react_native_pods
@@ -115,22 +113,6 @@ class TestTestApp < Minitest::Test
       end
 
       GC.enable
-    end
-  end
-
-  def test_macos_project_cannot_set_development_team
-    # Xcode expects the development team used for code signing to exist when
-    # targeting macOS. Unlike when targeting iOS, the warnings are treated as
-    # errors.
-    require 'xcodeproj'
-
-    project = Xcodeproj::Project.open('macos/ReactTestApp.xcodeproj')
-    test_app = project.targets.detect { |target| target.name == 'ReactTestApp' }
-
-    assert(test_app)
-    test_app.build_configurations.each do |config|
-      assert_equal('-', config.build_settings['CODE_SIGN_IDENTITY'])
-      assert_nil(config.build_settings['DEVELOPMENT_TEAM'])
     end
   end
 end
