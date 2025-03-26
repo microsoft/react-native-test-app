@@ -94,13 +94,16 @@ function windowsProjectPath(solutionFile, fs = nodefs) {
  * @returns {Partial<ProjectParams>}
  */
 function configureProjects({ android, ios, windows }, fs = nodefs) {
-  const reactNativeConfig = findNearest(
-    "react-native.config.js",
-    undefined,
-    fs
-  );
+  const configFiles = ["react-native.config.js", "react-native.config.mjs", "react-native.config.cjs", "react-native.config.ts"];
+
+  let reactNativeConfig;
+  for (const file of configFiles) {
+    reactNativeConfig = findNearest(file, undefined, fs);
+    if (reactNativeConfig) break;
+  }
+  
   if (!reactNativeConfig) {
-    throw new Error("Failed to find `react-native.config.js`");
+    throw new Error("Failed to find `react-native.config.[js,mjs,cjs,ts]`");
   }
 
   /** @type {Partial<ProjectParams>} */
