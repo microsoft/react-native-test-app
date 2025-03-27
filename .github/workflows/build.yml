@@ -550,6 +550,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: windows
+          node-version: "22.13"
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         uses: ./.github/actions/setup-react-native
@@ -606,6 +607,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: windows
+          node-version: "22.13"
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:

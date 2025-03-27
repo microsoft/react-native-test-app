@@ -13,6 +13,9 @@ inputs:
   java-version:
     description: Desired Java version
     default: "17"
+  node-version:
+    description: Desired Node version
+    default: "22"
   xcode-developer-dir:
     description: Set the path for the active Xcode developer directory
 runs:
@@ -72,7 +75,7 @@ runs:
     - name: Set up Node.js
       uses: actions/setup-node@v4.2.0
       with:
-        node-version: "22"
+        node-version: ${{ inputs.node-version }}
         cache: ${{ inputs.cache-npm-dependencies }}
     - name: Set up Xcode
       if: ${{ inputs.xcode-developer-dir != '' }}
