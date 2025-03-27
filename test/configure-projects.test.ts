@@ -105,7 +105,7 @@ describe("findReactNativeConfig()", () => {
         ...nodefs,
         existsSync: (p) => typeof p === "string" && p.endsWith(configFile),
       });
-      ok(result);
+      ok(result.endsWith(configFile));
     });
   }
 });
