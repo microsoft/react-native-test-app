@@ -1,4 +1,4 @@
-import { deepEqual, equal, fail } from "node:assert/strict";
+import { deepEqual, equal, fail, ok, throws } from "node:assert/strict";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
@@ -80,6 +80,34 @@ describe("configureProjects()", () => {
       },
     });
   });
+});
+
+describe("findReactNativeConfig()", () => {
+  const { findReactNativeConfig } = internalForTestingPurposesOnly;
+
+  const configFiles = [
+    "react-native.config.ts",
+    "react-native.config.mjs",
+    "react-native.config.cjs",
+    "react-native.config.js",
+  ];
+
+  it("throws if no config file is found", () => {
+    throws(
+      () => findReactNativeConfig({ ...nodefs, existsSync: () => false }),
+      new Error("Failed to find `react-native.config.[ts,mjs,cjs,js]`")
+    );
+  });
+
+  for (const configFile of configFiles) {
+    it(`finds '${configFile}'`, () => {
+      const result = findReactNativeConfig({
+        ...nodefs,
+        existsSync: (p) => typeof p === "string" && p.endsWith(configFile),
+      });
+      ok(result);
+    });
+  }
 });
 
 describe("getAndroidPackageName()", () => {

@@ -47,7 +47,7 @@ function findReactNativeConfig(fs = nodefs) {
 
     if (Array.isArray(stack)) {
       const file = stack[position]?.getFileName();
-      if (file) {
+      if (path.basename(file).startsWith("react-native.config.")) {
         return file;
       }
     }
@@ -196,5 +196,6 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
 
 exports.configureProjects = configureProjects;
 exports.internalForTestingPurposesOnly = {
+  findReactNativeConfig,
   getAndroidPackageName,
 };
