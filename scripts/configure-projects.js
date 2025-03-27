@@ -26,7 +26,16 @@ const {
  *
  * @note A naive search on disk might yield false positives so we also try to
  * use the stack trace to find it. This currently works in Node (V8) and Bun
- * (JSC).
+ * (JSC), but not on Windows for some reason. On Windows, this causes 'xpath' to
+ * crash:
+ *
+ *     [xmldom error]	invalid doc source
+ *     #[line:0,col:undefined]
+ *
+ *     D:\~\node_modules\xpath\xpath.js:1787
+ *         if (firstNode.nodeType === 9) {
+ *                       ^
+ *     TypeError: Cannot read properties of undefined (reading 'nodeType')
  *
  * @returns {string}
  */
@@ -35,7 +44,7 @@ function findReactNativeConfig(fs = nodefs) {
   // stack[1] holds where this function was called
   // stack[2] holds the file we're interested in
   const position = 2;
-  if (position < Error.stackTraceLimit) {
+  if (position < Error.stackTraceLimit && process.platform !== "win32") {
     const orig_prepareStackTrace = Error.prepareStackTrace;
     let stack;
     try {
@@ -46,9 +55,12 @@ function findReactNativeConfig(fs = nodefs) {
     }
 
     if (Array.isArray(stack)) {
-      const file = stack[position]?.getFileName();
-      if (path.basename(file).startsWith("react-native.config.")) {
-        return file;
+      const callsite = stack[position];
+      if (callsite && typeof callsite === "object" && "getFileName" in callsite) {
+        const file = callsite.getFileName();
+        if (path.basename(file).startsWith("react-native.config.")) {
+          return file;
+        }
       }
     }
   }
