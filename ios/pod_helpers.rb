@@ -18,13 +18,6 @@ def assert_version(pod_version)
         "#{pod_version}, expected >=1.13"
 end
 
-def bridgeless_enabled?(options, react_native_version)
-  new_architecture_enabled?(options, react_native_version) && (
-    (react_native_version >= v(0, 74, 0) && options[:bridgeless_enabled] != false) ||
-    (react_native_version >= v(0, 73, 0) && options[:bridgeless_enabled])
-  )
-end
-
 def find_file(file_name, current_dir)
   return if current_dir.expand_path.to_s == '/'
 
@@ -32,16 +25,6 @@ def find_file(file_name, current_dir)
   return path if File.exist?(path)
 
   find_file(file_name, current_dir.parent)
-end
-
-def new_architecture_enabled?(options, react_native_version)
-  return false unless supports_new_architecture?(react_native_version)
-
-  ENV.fetch('RCT_NEW_ARCH_ENABLED', options[:fabric_enabled] ? '1' : '0') != '0'
-end
-
-def supports_new_architecture?(react_native_version)
-  react_native_version.zero? || react_native_version >= v(0, 71, 0)
 end
 
 def use_hermes?(options)
@@ -56,7 +39,7 @@ def use_hermes?(options)
 end
 
 def use_new_architecture!(options, react_native_version)
-  return unless new_architecture_enabled?(options, react_native_version)
+  return unless options[:use_new_arch]
 
   if react_native_version < v(0, 76, 0)
     Pod::UI.warn(
@@ -69,7 +52,7 @@ def use_new_architecture!(options, react_native_version)
   options[:fabric_enabled] = true
   options[:new_arch_enabled] = true
   ENV['RCT_NEW_ARCH_ENABLED'] = '1'
-  ENV['USE_BRIDGELESS'] = '1' if bridgeless_enabled?(options, react_native_version)
+  ENV['USE_BRIDGELESS'] = '1' if options[:use_bridgeless]
 end
 
 def v(major, minor, patch)

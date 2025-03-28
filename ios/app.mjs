@@ -13,9 +13,9 @@ import {
 import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
 import { generateAssetsCatalogs } from "./assetsCatalog.mjs";
 import { generateEntitlements } from "./entitlements.mjs";
+import { isBridgelessEnabled, isNewArchEnabled } from "./features.mjs";
 import { generateInfoPlist } from "./infoPlist.mjs";
 import { generateLocalizations, getProductName } from "./localizations.mjs";
-import { isBridgelessEnabled, isNewArchEnabled } from "./newArch.mjs";
 import { generatePrivacyManifest } from "./privacyManifest.mjs";
 import { isObject, isString, projectPath, resolveResources } from "./utils.mjs";
 import {

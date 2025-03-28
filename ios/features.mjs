@@ -1,14 +1,11 @@
 // @ts-check
+/** @import { JSONObject } from "../scripts/types.ts"; */
 import { v } from "../scripts/helpers.js";
-
-/**
- * @typedef {import("../scripts/types.ts").JSONObject} JSONObject;
- */
 
 /**
  * @param {number} reactNativeVersion
  */
-export function supportsNewArch(reactNativeVersion) {
+function supportsNewArch(reactNativeVersion) {
   return reactNativeVersion === 0 || reactNativeVersion >= v(0, 71, 0);
 }
 
@@ -27,7 +24,16 @@ export function isNewArchEnabled(options, reactNativeVersion) {
     return envVar !== "0";
   }
 
-  return Boolean(options["fabricEnabled"]);
+  if ("newArchEnabled" in options) {
+    return Boolean(options["newArchEnabled"]);
+  }
+
+  if ("fabricEnabled" in options) {
+    return Boolean(options["fabricEnabled"]);
+  }
+
+  // TODO: https://github.com/microsoft/react-native-test-app/issues/2321
+  return false;
 }
 
 /**

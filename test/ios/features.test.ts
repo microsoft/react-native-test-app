@@ -1,6 +1,6 @@
 import { ok } from "node:assert/strict";
 import { afterEach, before, describe, it } from "node:test";
-import { isBridgelessEnabled, isNewArchEnabled } from "../../ios/newArch.mjs";
+import { isBridgelessEnabled, isNewArchEnabled } from "../../ios/features.mjs";
 import { v } from "../../scripts/helpers.js";
 
 describe("isBridgelessEnabled()", () => {
@@ -69,6 +69,7 @@ describe("isNewArchEnabled()", () => {
     // New architecture is first publicly available in 0.68, but we'll require 0.71
     ok(!isNewArchEnabled({ fabricEnabled: true }, v(0, 70, 999)));
     ok(isNewArchEnabled({ fabricEnabled: true }, firstAvailableVersion));
+    ok(isNewArchEnabled({ newArchEnabled: true }, firstAvailableVersion));
   });
 
   it("returns true if `RCT_NEW_ARCH_ENABLED=1`", () => {
