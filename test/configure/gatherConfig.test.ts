@@ -42,8 +42,8 @@ describe("gatherConfig()", () => {
   it("returns configuration for all platforms", () => {
     deepEqual(gatherConfig(mockParams()), {
       dependencies: {
-        "react-native-macos": "^0.73.0",
-        "react-native-windows": "^0.73.0",
+        "react-native-macos": "^0.76.0",
+        "react-native-windows": "^0.76.0",
       },
       files: {
         ".gitignore": {
@@ -147,7 +147,7 @@ describe("gatherConfig()", () => {
           "",
           "workspace 'Test.xcworkspace'",
           "",
-          "use_test_app! :hermes_enabled => true",
+          "use_test_app! :hermes_enabled => true, :fabric_enabled => true",
           ""
         ),
         "macos/Podfile": join(
@@ -159,7 +159,7 @@ describe("gatherConfig()", () => {
           "",
           "workspace 'Test.xcworkspace'",
           "",
-          "use_test_app! :hermes_enabled => true",
+          "use_test_app! :hermes_enabled => true, :fabric_enabled => false",
           ""
         ),
         "metro.config.js": {
@@ -340,7 +340,7 @@ describe("gatherConfig()", () => {
           "",
           "workspace 'Test.xcworkspace'",
           "",
-          "use_test_app! :hermes_enabled => true",
+          "use_test_app! :hermes_enabled => true, :fabric_enabled => true",
           ""
         ),
         "metro.config.js": {
@@ -495,7 +495,7 @@ describe("gatherConfig()", () => {
           "",
           "workspace 'Test.xcworkspace'",
           "",
-          "use_test_app! :hermes_enabled => true",
+          "use_test_app! :hermes_enabled => true, :fabric_enabled => true",
           ""
         ),
         "metro.config.js": {

@@ -1,4 +1,5 @@
 // @ts-check
+import { v } from "./helpers.js";
 
 /**
  * Joins all specified lines into a single string.
@@ -98,10 +99,18 @@ export function buildGradle() {
 
 /**
  * @param {string} name Root project name
- * @param {string} prefix Platform prefix
+ * @param {"" | "macos/" | "visionos/"} prefix Platform prefix
+ * @param {number} targetVersion Target React Native version
  * @returns {string}
  */
-export function podfile(name, prefix) {
+export function podfile(name, prefix, targetVersion) {
+  /** @type {Record<typeof prefix, number>} */
+  const newArchMatrix = {
+    "": v(0, 76, 0),
+    "macos/": v(1000, 0, 0),
+    "visionos/": v(0, 76, 0),
+  };
+  const newArchEnabled = targetVersion >= newArchMatrix[prefix];
   return join(
     "ws_dir = Pathname.new(__dir__)",
     "ws_dir = ws_dir.parent until",
@@ -111,7 +120,7 @@ export function podfile(name, prefix) {
     "",
     `workspace '${name}.xcworkspace'`,
     "",
-    `use_test_app! :hermes_enabled => true`,
+    `use_test_app! :hermes_enabled => true, :fabric_enabled => ${newArchEnabled}`,
     ""
   );
 }

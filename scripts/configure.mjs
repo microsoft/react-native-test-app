@@ -268,6 +268,8 @@ export const getConfig = (() => {
           path.dirname(require.resolve("react-native/template/package.json"))
         );
 
+      const targetVersionNum = toVersionNumber(targetVersion);
+
       configuration = {
         common: {
           files: {
@@ -343,7 +345,7 @@ export const getConfig = (() => {
                 "gradle-wrapper.properties"
               );
               const props = readTextFile(gradleWrapperProperties);
-              if (toVersionNumber(targetVersion) < v(0, 73, 0)) {
+              if (targetVersionNum < v(0, 73, 0)) {
                 return props.replace(
                   /gradle-[.0-9]*-bin\.zip/,
                   "gradle-7.6.4-bin.zip"
@@ -382,7 +384,7 @@ export const getConfig = (() => {
         },
         ios: {
           files: {
-            Podfile: podfile(name, ""),
+            Podfile: podfile(name, "", targetVersionNum),
           },
           oldFiles: [
             "Podfile.lock",
@@ -399,7 +401,7 @@ export const getConfig = (() => {
         },
         macos: {
           files: {
-            Podfile: podfile(name, "macos/"),
+            Podfile: podfile(name, "macos/", targetVersionNum),
           },
           oldFiles: [
             "Podfile.lock",
@@ -416,7 +418,7 @@ export const getConfig = (() => {
         },
         visionos: {
           files: {
-            Podfile: podfile(name, "visionos/"),
+            Podfile: podfile(name, "visionos/", targetVersionNum),
           },
           oldFiles: [
             "Podfile.lock",

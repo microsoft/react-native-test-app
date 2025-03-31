@@ -11,7 +11,7 @@ export function mockParams(
     name: "Test",
     packagePath: "test",
     testAppPath: ".",
-    targetVersion: "^0.73.6",
+    targetVersion: "0.76.8",
     platforms: ["android", "ios", "macos", "windows"],
     force: false,
     init: false,
