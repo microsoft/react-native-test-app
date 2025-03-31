@@ -86,7 +86,7 @@ export function buildGradle() {
     "                    break",
     "                }",
     "            } while (searchDir = searchDir.getParent())",
-    "            // As of 0.79, React Native is no longer installed from npm",
+    "            // As of 0.80, React Native is no longer installed from npm",
     "        }()",
     "        mavenCentral()",
     "        google()",
