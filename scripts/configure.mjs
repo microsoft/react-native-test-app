@@ -18,6 +18,7 @@ import {
 import {
   appManifest,
   buildGradle,
+  gradleProperties,
   podfile,
   serialize,
   settingsGradle,
@@ -353,14 +354,7 @@ export const getConfig = (() => {
               }
               return props;
             })(),
-            "gradle.properties": {
-              source: path.join(
-                testAppPath,
-                "example",
-                "android",
-                "gradle.properties"
-              ),
-            },
+            "gradle.properties": gradleProperties(targetVersionNum),
             gradlew: {
               source: path.join(testAppPath, "example", "android", "gradlew"),
             },
