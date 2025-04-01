@@ -43,6 +43,7 @@ function makeProjectConfiguration(): ProjectConfiguration {
     reactNativePath: "",
     reactNativeVersion: 0,
     reactNativeHostPath: "",
+    useHermes: false,
     useNewArch: false,
     useBridgeless: false,
     buildSettings: {},
