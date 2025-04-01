@@ -1,5 +1,5 @@
 // @ts-check
-/** @import { JSONObject } from "../scripts/types.ts"; */
+/** @import { ApplePlatform, JSONObject } from "../scripts/types.ts"; */
 import { v } from "../scripts/helpers.js";
 
 /**
@@ -10,18 +10,18 @@ function supportsNewArch(reactNativeVersion) {
 }
 
 /**
- * @param {JSONObject} options
  * @param {number} reactNativeVersion
+ * @param {JSONObject} options
  * @returns {boolean}
  */
-export function isNewArchEnabled(options, reactNativeVersion) {
+export function isNewArchEnabled(reactNativeVersion, options) {
   if (!supportsNewArch(reactNativeVersion)) {
     return false;
   }
 
-  const envVar = process.env["RCT_NEW_ARCH_ENABLED"];
-  if (typeof envVar === "string") {
-    return envVar !== "0";
+  const newArchEnabled = process.env["RCT_NEW_ARCH_ENABLED"];
+  if (typeof newArchEnabled === "string") {
+    return newArchEnabled !== "0";
   }
 
   if ("newArchEnabled" in options) {
@@ -37,12 +37,12 @@ export function isNewArchEnabled(options, reactNativeVersion) {
 }
 
 /**
- * @param {JSONObject} options
  * @param {number} reactNativeVersion
+ * @param {JSONObject} options
  * @returns {boolean}
  */
-export function isBridgelessEnabled(options, reactNativeVersion) {
-  if (isNewArchEnabled(options, reactNativeVersion)) {
+export function isBridgelessEnabled(reactNativeVersion, options) {
+  if (isNewArchEnabled(reactNativeVersion, options)) {
     if (reactNativeVersion >= v(0, 74, 0)) {
       return options["bridgelessEnabled"] !== false;
     }
@@ -51,4 +51,25 @@ export function isBridgelessEnabled(options, reactNativeVersion) {
     }
   }
   return false;
+}
+
+/**
+ * @param {ApplePlatform} platform
+ * @param {number} reactNativeVersion
+ * @param {JSONObject} options
+ * @returns {boolean | "from-source"}
+ */
+export function isHermesEnabled(platform, reactNativeVersion, options) {
+  const useHermes = process.env["USE_HERMES"];
+  const enabled =
+    typeof useHermes === "string"
+      ? useHermes === "1"
+      : options["hermesEnabled"] === true;
+
+  // Hermes prebuilds for visionOS was introduced in 0.76
+  if (enabled && platform === "visionos" && reactNativeVersion < v(0, 76, 0)) {
+    return "from-source";
+  }
+
+  return enabled;
 }

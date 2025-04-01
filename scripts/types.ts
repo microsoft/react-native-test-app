@@ -139,6 +139,7 @@ export type ProjectConfiguration = {
   reactNativeHostPath: string;
   communityAutolinkingScriptPath?: string;
   singleApp?: string;
+  useHermes: boolean | "from-source";
   useNewArch: boolean;
   useBridgeless: boolean;
   buildSettings: Record<string, string | string[]>;

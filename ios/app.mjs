@@ -13,7 +13,11 @@ import {
 import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
 import { generateAssetsCatalogs } from "./assetsCatalog.mjs";
 import { generateEntitlements } from "./entitlements.mjs";
-import { isBridgelessEnabled, isNewArchEnabled } from "./features.mjs";
+import {
+  isBridgelessEnabled,
+  isHermesEnabled,
+  isNewArchEnabled,
+} from "./features.mjs";
 import { generateInfoPlist } from "./infoPlist.mjs";
 import { generateLocalizations, getProductName } from "./localizations.mjs";
 import { generatePrivacyManifest } from "./privacyManifest.mjs";
@@ -220,8 +224,6 @@ export function generateProject(
     fs
   );
   const reactNativeVersion = readPackageVersion(reactNativePath, fs);
-  const useNewArch = isNewArchEnabled(options, reactNativeVersion);
-  const useBridgeless = isBridgelessEnabled(options, reactNativeVersion);
 
   /** @type {ProjectConfiguration} */
   const project = {
@@ -234,8 +236,9 @@ export function generateProject(
       reactNativeVersion,
       fs
     ),
-    useNewArch,
-    useBridgeless,
+    useHermes: isHermesEnabled(targetPlatform, reactNativeVersion, options),
+    useNewArch: isNewArchEnabled(reactNativeVersion, options),
+    useBridgeless: isBridgelessEnabled(reactNativeVersion, options),
     buildSettings: {},
     testsBuildSettings: {},
     uitestsBuildSettings: {},

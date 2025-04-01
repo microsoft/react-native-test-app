@@ -28,14 +28,9 @@ def find_file(file_name, current_dir)
 end
 
 def use_hermes?(options)
-  use_hermes = ENV.fetch('USE_HERMES', nil)
-  return use_hermes == '1' unless use_hermes.nil?
-
-  # Hermes prebuilds for visionOS was introduced in 0.76
-  is_visionos = options[:path].end_with?('react-native-visionos')
-  ENV['RCT_BUILD_HERMES_FROM_SOURCE'] = 'true' if is_visionos && options[:version] < v(0, 76, 0)
-
-  options[:hermes_enabled] == true
+  use_hermes = options[:use_hermes]
+  ENV['RCT_BUILD_HERMES_FROM_SOURCE'] = 'true' if use_hermes == 'from-source'
+  use_hermes != false
 end
 
 def use_new_architecture!(options, react_native_version)

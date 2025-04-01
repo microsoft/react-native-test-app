@@ -1,6 +1,10 @@
-import { ok } from "node:assert/strict";
+import { equal, ok } from "node:assert/strict";
 import { afterEach, before, describe, it } from "node:test";
-import { isBridgelessEnabled, isNewArchEnabled } from "../../ios/features.mjs";
+import {
+  isBridgelessEnabled,
+  isHermesEnabled,
+  isNewArchEnabled,
+} from "../../ios/features.mjs";
 import { v } from "../../scripts/helpers.js";
 
 describe("isBridgelessEnabled()", () => {
@@ -19,23 +23,23 @@ describe("isBridgelessEnabled()", () => {
   });
 
   it("returns true only when new architecture is enabled", () => {
-    ok(!isBridgelessEnabled({}, 0));
-    ok(!isBridgelessEnabled({}, firstAvailableVersion));
+    ok(!isBridgelessEnabled(0, {}));
+    ok(!isBridgelessEnabled(firstAvailableVersion, {}));
 
     const options = { bridgelessEnabled: true, fabricEnabled: true };
 
-    ok(!isBridgelessEnabled(options, v(0, 72, 999)));
-    ok(isBridgelessEnabled(options, firstAvailableVersion));
+    ok(!isBridgelessEnabled(v(0, 72, 999), options));
+    ok(isBridgelessEnabled(firstAvailableVersion, options));
   });
 
   it("returns true by default starting with 0.74", () => {
     // Bridgeless mode is enabled by default starting with 0.74 unless opted-out of
-    ok(isBridgelessEnabled({ fabricEnabled: true }, defaultVersion));
+    ok(isBridgelessEnabled(defaultVersion, { fabricEnabled: true }));
     ok(
-      !isBridgelessEnabled(
-        { bridgelessEnabled: false, fabricEnabled: true },
-        defaultVersion
-      )
+      !isBridgelessEnabled(defaultVersion, {
+        bridgelessEnabled: false,
+        fabricEnabled: true,
+      })
     );
   });
 
@@ -43,10 +47,52 @@ describe("isBridgelessEnabled()", () => {
     // `RCT_NEW_ARCH_ENABLED` does not enable bridgeless on older versions
     process.env["RCT_NEW_ARCH_ENABLED"] = "1";
 
-    ok(!isBridgelessEnabled({}, v(0, 72, 999)));
-    ok(!isBridgelessEnabled({}, firstAvailableVersion));
-    ok(isBridgelessEnabled({}, defaultVersion));
-    ok(!isBridgelessEnabled({ bridgelessEnabled: false }, defaultVersion));
+    ok(!isBridgelessEnabled(v(0, 72, 999), {}));
+    ok(!isBridgelessEnabled(firstAvailableVersion, {}));
+    ok(isBridgelessEnabled(defaultVersion, {}));
+    ok(!isBridgelessEnabled(defaultVersion, { bridgelessEnabled: false }));
+  });
+});
+
+describe("isHermesEnabled()", () => {
+  before(() => {
+    delete process.env["USE_HERMES"];
+  });
+
+  afterEach(() => {
+    delete process.env["USE_HERMES"];
+  });
+
+  for (const platform of ["ios", "macos", "visionos"] as const) {
+    it(`[${platform}] is disabled by default`, () => {
+      ok(!isHermesEnabled(platform, v(1, 0, 0), {}));
+    });
+
+    it(`[${platform}] returns true when enabled`, () => {
+      ok(isHermesEnabled(platform, v(1, 0, 0), { hermesEnabled: true }));
+    });
+
+    it(`[${platform}] returns true if 'USE_HERMES=1'`, () => {
+      process.env["USE_HERMES"] = "1";
+      ok(isHermesEnabled(platform, v(1, 0, 0), {}));
+    });
+
+    it(`[${platform}] returns false if 'USE_HERMES=0'`, () => {
+      process.env["USE_HERMES"] = "0";
+      ok(!isHermesEnabled(platform, v(1, 0, 0), { hermesEnabled: true }));
+    });
+  }
+
+  it("[visionos] builds from source when necessary", () => {
+    const options = { hermesEnabled: true };
+
+    equal(isHermesEnabled("visionos", v(0, 75, 0), options), "from-source");
+    equal(isHermesEnabled("visionos", v(0, 76, 0), options), true);
+
+    process.env["USE_HERMES"] = "1";
+
+    equal(isHermesEnabled("visionos", v(0, 75, 0), {}), "from-source");
+    equal(isHermesEnabled("visionos", v(0, 76, 0), {}), true);
   });
 });
 
@@ -63,27 +109,27 @@ describe("isNewArchEnabled()", () => {
   });
 
   it("returns true if New Architecture is available and enabled", () => {
-    ok(!isNewArchEnabled({}, 0));
-    ok(!isNewArchEnabled({}, firstAvailableVersion));
+    ok(!isNewArchEnabled(0, {}));
+    ok(!isNewArchEnabled(firstAvailableVersion, {}));
 
     // New architecture is first publicly available in 0.68, but we'll require 0.71
-    ok(!isNewArchEnabled({ fabricEnabled: true }, v(0, 70, 999)));
-    ok(isNewArchEnabled({ fabricEnabled: true }, firstAvailableVersion));
-    ok(isNewArchEnabled({ newArchEnabled: true }, firstAvailableVersion));
+    ok(!isNewArchEnabled(v(0, 70, 999), { fabricEnabled: true }));
+    ok(isNewArchEnabled(firstAvailableVersion, { fabricEnabled: true }));
+    ok(isNewArchEnabled(firstAvailableVersion, { newArchEnabled: true }));
   });
 
   it("returns true if `RCT_NEW_ARCH_ENABLED=1`", () => {
     process.env["RCT_NEW_ARCH_ENABLED"] = "1";
 
-    ok(!isNewArchEnabled({}, v(0, 70, 999)));
-    ok(isNewArchEnabled({}, firstAvailableVersion));
+    ok(!isNewArchEnabled(v(0, 70, 999), {}));
+    ok(isNewArchEnabled(firstAvailableVersion, {}));
   });
 
   it("returns false if `RCT_NEW_ARCH_ENABLED=0`", () => {
     process.env["RCT_NEW_ARCH_ENABLED"] = "0";
 
-    ok(!isNewArchEnabled({}, v(0, 70, 999)));
-    ok(!isNewArchEnabled({}, firstAvailableVersion));
-    ok(!isNewArchEnabled({ fabric_enabled: true }, firstAvailableVersion));
+    ok(!isNewArchEnabled(v(0, 70, 999), {}));
+    ok(!isNewArchEnabled(firstAvailableVersion, {}));
+    ok(!isNewArchEnabled(firstAvailableVersion, { fabric_enabled: true }));
   });
 });

@@ -111,6 +111,7 @@ def use_react_native!(project_root, project, options)
                         app_path: find_file('package.json', project_root).parent.to_s,
                         path: react_native_path.relative_path_from(project_root).to_s,
                         rta_project_root: project_root,
+                        use_hermes: project[:use_hermes],
                         use_new_arch: project[:use_new_arch],
                         use_bridgeless: project[:use_bridgeless],
                         version: project[:react_native_version])
@@ -168,6 +169,7 @@ def make_project!(project_root, target_platform, options)
     :react_native_version => project['reactNativeVersion'],
     :react_native_host_path => project['reactNativeHostPath'],
     :community_autolinking_script_path => project['communityAutolinkingScriptPath'],
+    :use_hermes => project['useHermes'],
     :use_new_arch => project['useNewArch'],
     :use_bridgeless => project['useBridgeless'],
     :code_sign_identity => build_settings[CODE_SIGN_IDENTITY] || '',
