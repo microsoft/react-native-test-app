@@ -268,6 +268,7 @@ const PROJECT_FILES = {
     testsBuildSettings: {},
     uitestsBuildSettings: {},
     useBridgeless: true,
+    useHermes: false,
     useNewArch: true,
     xcodeprojPath: "/~/node_modules/.generated/ios/ReactTestApp.xcodeproj",
   },
@@ -296,6 +297,7 @@ const PROJECT_FILES = {
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: true,
+        useHermes: false,
         useNewArch: true,
         xcodeprojPath: "/~/node_modules/.generated/ios/ReactTestApp.xcodeproj",
       },
@@ -360,6 +362,7 @@ const PROJECT_FILES = {
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: true,
+        useHermes: false,
         useNewArch: true,
         xcodeprojPath:
           "/~/node_modules/.generated/macos/ReactTestApp.xcodeproj",
@@ -425,6 +428,7 @@ const PROJECT_FILES = {
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: true,
+        useHermes: false,
         useNewArch: true,
         xcodeprojPath:
           "/~/node_modules/.generated/visionos/ReactTestApp.xcodeproj",
@@ -486,6 +490,7 @@ const PROJECT_FILES = {
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: false,
+        useHermes: false,
         useNewArch: false,
         xcodeprojPath: "/~/node_modules/.generated/ios/ReactTestApp.xcodeproj",
       },
@@ -544,6 +549,7 @@ const PROJECT_FILES = {
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: false,
+        useHermes: false,
         useNewArch: false,
         xcodeprojPath:
           "/~/node_modules/.generated/macos/ReactTestApp.xcodeproj",
@@ -603,6 +609,7 @@ const PROJECT_FILES = {
         testsBuildSettings: {},
         uitestsBuildSettings: {},
         useBridgeless: false,
+        useHermes: false,
         useNewArch: false,
         xcodeprojPath:
           "/~/node_modules/.generated/visionos/ReactTestApp.xcodeproj",
