@@ -127,35 +127,6 @@ def make_project!(project_root, target_platform, options)
   build_settings = project['buildSettings']
 
   app_project = Xcodeproj::Project.open(xcodeproj_path)
-  app_project.native_targets.each do |target|
-    case target.name
-    when 'ReactTestApp'
-      target.build_configurations.each do |config|
-        build_settings.each do |setting, value|
-          if value.is_a? Array
-            arr = config.build_settings[setting] || ['$(inherited)']
-            value.each { |v| arr << v }
-            config.build_settings[setting] = arr
-          else
-            config.build_settings[setting] = value
-          end
-        end
-      end
-    when 'ReactTestAppTests'
-      target.build_configurations.each do |config|
-        project['testsBuildSettings'].each do |setting, value|
-          config.build_settings[setting] = value
-        end
-      end
-    when 'ReactTestAppUITests'
-      target.build_configurations.each do |config|
-        project['uitestsBuildSettings'].each do |setting, value|
-          config.build_settings[setting] = value
-        end
-      end
-    end
-  end
-  app_project.save
 
   config = app_project.build_configurations[0]
   {

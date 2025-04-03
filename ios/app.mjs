@@ -21,7 +21,13 @@ import {
 import { generateInfoPlist } from "./infoPlist.mjs";
 import { generateLocalizations, getProductName } from "./localizations.mjs";
 import { generatePrivacyManifest } from "./privacyManifest.mjs";
-import { isObject, isString, projectPath, resolveResources } from "./utils.mjs";
+import {
+  assertObject,
+  isObject,
+  isString,
+  projectPath,
+  resolveResources,
+} from "./utils.mjs";
 import {
   PRODUCT_DISPLAY_NAME,
   PRODUCT_VERSION,
@@ -30,6 +36,7 @@ import {
   applySwiftFlags,
   applyUserHeaderSearchPaths,
   configureBuildSchemes,
+  openXcodeProject,
   overrideBuildSettings,
 } from "./xcode.mjs";
 
@@ -272,9 +279,57 @@ export function generateProject(
   return project;
 }
 
+/**
+ * @param {string} projectRoot
+ * @param {string} targetPlatform
+ * @param {JSONObject} options
+ * @returns {ProjectConfiguration}
+ */
+export function makeProject(projectRoot, targetPlatform, options, fs = nodefs) {
+  const project = generateProject(projectRoot, targetPlatform, options, fs);
+
+  /** @type {Record<string, Record<string, string | string[]>>} */
+  const mods = {
+    ReactTestApp: project.buildSettings,
+    ReactTestAppTests: project.testsBuildSettings,
+    ReactTestAppUITests: project.uitestsBuildSettings,
+  };
+
+  const pbxproj = openXcodeProject(project.xcodeprojPath, fs);
+  for (const target of pbxproj.targets) {
+    const { name: targetName } = target;
+    if (typeof targetName !== "string" || !(targetName in mods)) {
+      continue;
+    }
+
+    const targetBuildSettings = Object.entries(mods[targetName]);
+    for (const config of target.buildConfigurations) {
+      const { buildSettings } = config;
+      assertObject(buildSettings, "target.buildConfigurations[].buildSettings");
+
+      for (const [setting, value] of targetBuildSettings) {
+        if (Array.isArray(value)) {
+          const origValue = buildSettings[setting] ?? ["$(inherited)"];
+          if (Array.isArray(origValue)) {
+            origValue.push(...value);
+            buildSettings[setting] = origValue;
+          } else {
+            buildSettings[setting] = [origValue, ...value].join(" ");
+          }
+        } else {
+          buildSettings[setting] = value;
+        }
+      }
+    }
+  }
+  pbxproj.save();
+
+  return project;
+}
+
 if (isMain(import.meta.url)) {
   const [, , projectRoot, platform, options] = process.argv;
   const user = typeof options === "string" ? JSON.parse(options) : {};
-  const project = generateProject(projectRoot, platform, user);
+  const project = makeProject(projectRoot, platform, user);
   console.log(JSON.stringify(project, undefined, 2));
 }

@@ -9,7 +9,7 @@ import {
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import { fileURLToPath, URL } from "node:url";
-import { isObject, jsonFromPlist } from "../../ios/utils.mjs";
+import { isObject } from "../../ios/utils.mjs";
 import {
   applyBuildSettings as applyBuildSettingsActual,
   applyPreprocessorDefinitions,
@@ -20,6 +20,7 @@ import {
   configureBuildSchemes as configureBuildSchemesActual,
   DEVELOPMENT_TEAM,
   GCC_PREPROCESSOR_DEFINITIONS,
+  openXcodeProject,
   OTHER_SWIFT_FLAGS,
   overrideBuildSettings,
   PRODUCT_BUILD_NUMBER,
@@ -471,43 +472,17 @@ describe("macos/ReactTestApp.xcodeproj", macosOnly, () => {
   // targeting macOS. Unlike when targeting iOS, the warnings are treated as
   // errors.
   it("does not specify development team", () => {
-    const xcodeproj = jsonFromPlist(
-      fileURLToPath(
-        new URL(
-          "../../macos/ReactTestApp.xcodeproj/project.pbxproj",
-          import.meta.url
-        )
-      )
+    const xcodeproj = new URL(
+      "../../macos/ReactTestApp.xcodeproj",
+      import.meta.url
     );
-
-    const { objects } = xcodeproj;
-
-    ok(isObject(objects));
-    ok(typeof xcodeproj.rootObject === "string");
-
-    const rootObject = objects[xcodeproj.rootObject];
-
-    ok(isObject(rootObject));
-    ok(Array.isArray(rootObject.targets));
-    ok(typeof rootObject.targets[0] === "string");
-
-    const appTarget = objects[rootObject.targets[0]];
+    const project = openXcodeProject(fileURLToPath(xcodeproj));
+    const appTarget = project.targets[0];
 
     ok(isObject(appTarget));
     equal(appTarget.name, "ReactTestApp");
-    ok(typeof appTarget.buildConfigurationList === "string");
 
-    const buildConfigurationList = objects[appTarget.buildConfigurationList];
-
-    ok(isObject(buildConfigurationList));
-    ok(Array.isArray(buildConfigurationList.buildConfigurations));
-
-    for (const config of buildConfigurationList.buildConfigurations) {
-      ok(typeof config === "string");
-
-      const buildConfiguration: JSONValue = objects[config];
-
-      ok(isObject(buildConfiguration));
+    for (const buildConfiguration of appTarget.buildConfigurations) {
       ok(isObject(buildConfiguration.buildSettings));
       equal(buildConfiguration.buildSettings[CODE_SIGN_IDENTITY], "-");
       equal(buildConfiguration.buildSettings[DEVELOPMENT_TEAM], undefined);

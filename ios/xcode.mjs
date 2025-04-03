@@ -3,7 +3,15 @@ import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { findFile, readTextFile, v } from "../scripts/helpers.js";
-import { isObject, isString } from "./utils.mjs";
+import {
+  assertArray,
+  assertObject,
+  assertUniqueId,
+  isObject,
+  isString,
+  jsonFromPlist,
+  plistFromJSON,
+} from "./utils.mjs";
 
 /**
  * @import {
@@ -214,6 +222,56 @@ export function configureBuildSchemes(
     // Make a copy of `ReactTestApp.xcscheme` with the app name for convenience.
     fs.copyFileSync(xcscheme, path.join(xcschemesDir, `${name}.xcscheme`));
   }
+}
+
+/**
+ * @param {string} xcodeproj
+ */
+export function openXcodeProject(xcodeproj, fs = nodefs) {
+  const projectPath = path.join(xcodeproj, "project.pbxproj");
+  const pbxproj = jsonFromPlist(projectPath);
+  assertObject(pbxproj.objects, "pbxproj.objects");
+  assertUniqueId(pbxproj.rootObject, "pbxproj.rootObject");
+
+  const { objects } = pbxproj;
+  const project = objects[pbxproj.rootObject];
+  assertObject(project, pbxproj.rootObject);
+
+  const { targets } = project;
+  assertArray(targets, "rootObject.targets");
+
+  return {
+    save() {
+      fs.writeFileSync(projectPath, plistFromJSON(pbxproj, projectPath));
+    },
+    get targets() {
+      return targets.map((target, index) => {
+        assertUniqueId(target, `rootObject.targets[${index}]`);
+
+        const product = objects[target];
+        assertObject(product, target);
+
+        const { buildConfigurationList } = product;
+        assertUniqueId(buildConfigurationList, "buildConfigurationList");
+        assertObject(objects[buildConfigurationList], buildConfigurationList);
+
+        const { buildConfigurations } = objects[buildConfigurationList];
+        assertArray(buildConfigurations, "buildConfigurations");
+
+        /** @type {{ buildConfigurations: JSONObject[]; [key: string]: JSONValue; }} */
+        const targets = {
+          ...product,
+          buildConfigurations: buildConfigurations.map((config) => {
+            assertUniqueId(config, `buildConfigurations[${config}]`);
+            const buildConfiguration = objects[config];
+            assertObject(buildConfiguration, config);
+            return buildConfiguration;
+          }),
+        };
+        return targets;
+      });
+    },
+  };
 }
 
 /**

@@ -26,6 +26,39 @@ export function isString(value) {
 }
 
 /**
+ * @param {JSONValue} value
+ * @param {string} key
+ * @returns {asserts value is JSONValue[]}
+ */
+export function assertArray(value, key) {
+  if (!Array.isArray(value)) {
+    throw new Error(`Expected '${key}' to be an array`);
+  }
+}
+
+/**
+ * @param {JSONValue} value
+ * @param {string} key
+ * @returns {asserts value is JSONObject}
+ */
+export function assertObject(value, key) {
+  if (!isObject(value)) {
+    throw new Error(`Expected '${key}' to be an object`);
+  }
+}
+
+/**
+ * @param {JSONValue} value
+ * @param {string} key
+ * @returns {asserts value is string}
+ */
+export function assertUniqueId(value, key) {
+  if (typeof value !== "string") {
+    throw new Error(`Expected '${key}' to be a unique id string`);
+  }
+}
+
+/**
  * @param {string} filename
  * @returns {JSONObject}
  */
