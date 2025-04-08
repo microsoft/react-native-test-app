@@ -9,23 +9,6 @@ XROS_DEPLOYMENT_TARGET = 'XROS_DEPLOYMENT_TARGET'.freeze
 
 CODE_SIGN_IDENTITY = 'CODE_SIGN_IDENTITY'.freeze
 DEVELOPMENT_TEAM = 'DEVELOPMENT_TEAM'.freeze
-ENABLE_TESTING_SEARCH_PATHS = 'ENABLE_TESTING_SEARCH_PATHS'.freeze
-GCC_PREPROCESSOR_DEFINITIONS = 'GCC_PREPROCESSOR_DEFINITIONS'.freeze
-WARNING_CFLAGS = 'WARNING_CFLAGS'.freeze
-
-def apply_config_plugins(project_root, target_platform)
-  # Skip if `@expo/config-plugins` cannot be found
-  config_plugins_dir = find_file('node_modules/@expo/config-plugins', project_root)
-  return if config_plugins_dir.nil?
-
-  apply_config_plugins = File.join(__dir__, '..', 'scripts', 'apply-config-plugins.mjs')
-  result = system("node \"#{apply_config_plugins}\" \"#{project_root}\" --#{target_platform}")
-  raise 'Failed to apply config plugins' unless result
-end
-
-def target_product_type(target)
-  target.product_type if target.respond_to?(:product_type)
-end
 
 def react_native_pods(version)
   if version.zero? || version >= v(0, 71, 0)
@@ -198,63 +181,21 @@ def use_test_app_internal!(target_platform, options)
     react_native_post_install&.call(installer)
     options[:post_install]&.call(installer)
 
-    test_dependencies = {}
+    test_dependencies = []
     %w[ReactTestAppTests ReactTestAppUITests].each do |target|
       definition = target_definitions[target]
       next if definition.nil?
 
       definition.non_inherited_dependencies.each do |dependency|
-        test_dependencies[dependency.name] = dependency
+        test_dependencies << dependency.name
       end
     end
 
-    installer.pods_project.targets.each do |target|
-      case target.name
-      when /\AReact/, 'RCT-Folly', 'SocketRocket', 'Yoga', 'fmt', 'glog', 'libevent'
-        target.build_configurations.each do |config|
-          # TODO: Drop `_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION` when
-          #       we no longer support 0.72
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] ||= ['$(inherited)']
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] <<
-            '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
-          config.build_settings[WARNING_CFLAGS] ||= []
-          config.build_settings[WARNING_CFLAGS] << '-w'
-        end
-      when 'RNReanimated'
-        # Reanimated tries to automatically install itself by swizzling a method
-        # in `RCTAppDelegate`. We don't use it since it doesn't exist on older
-        # versions of React Native. Redirect users to the config plugin instead.
-        # See https://github.com/microsoft/react-native-test-app/issues/1195 and
-        # https://github.com/software-mansion/react-native-reanimated/commit/a8206f383e51251e144cb9fd5293e15d06896df0.
-        target.build_configurations.each do |config|
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] ||= ['$(inherited)']
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'DONT_AUTOINSTALL_REANIMATED'
-        end
-      else
-        # Ensure `ENABLE_TESTING_SEARCH_PATHS` is always set otherwise Xcode may
-        # fail to properly import XCTest
-        unless test_dependencies.assoc(target.name).nil?
-          target.build_configurations.each do |config|
-            setting = config.resolve_build_setting(ENABLE_TESTING_SEARCH_PATHS)
-            config.build_settings[ENABLE_TESTING_SEARCH_PATHS] = 'YES' if setting.nil?
-          end
-        end
-      end
+    project_target[:project_root] = project_root
+    project_target[:test_dependencies] = test_dependencies
+    options = JSON.fast_generate(project_target.transform_keys { |key| key.to_s.camelize(:lower) })
 
-      next unless target_product_type(target) == 'com.apple.product-type.bundle'
-
-      # Code signing of resource bundles was enabled in Xcode 14. Not sure if
-      # this is intentional, or if there's a bug in CocoaPods, but Xcode will
-      # fail to build when targeting devices. Until this is resolved, we'll just
-      # just have to make sure it's consistent with what's set in `app.json`.
-      # See also https://github.com/CocoaPods/CocoaPods/issues/11402.
-      target.build_configurations.each do |config|
-        config.build_settings[CODE_SIGN_IDENTITY] ||= project_target[:code_sign_identity]
-        config.build_settings[DEVELOPMENT_TEAM] ||= project_target[:development_team]
-      end
-    end
-
-    apply_config_plugins(project_root, target_platform)
+    `node "#{File.join(__dir__, 'postinstall.mjs')}" "#{installer.pods_project.path}" '#{options}'`
 
     Pod::UI.notice(
       "`#{xcodeproj}` was sourced from `react-native-test-app`. " \

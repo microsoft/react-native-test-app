@@ -4,14 +4,14 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { parseArgs } from "node:util";
-import { findFile } from "./helpers.js";
+import { findFile, isMain } from "./helpers.js";
 
 /**
  * @typedef {import("./config-plugins/types.js").ProjectInfo["platforms"]} Platforms
  * @param {string} projectRoot
  * @param {string[]} platforms
  */
-async function main(projectRoot = process.cwd(), platforms) {
+export async function main(projectRoot = process.cwd(), platforms) {
   const packageJsonPath = findFile("package.json", projectRoot);
   if (!packageJsonPath) {
     throw new Error("Failed to find `package.json`");
@@ -36,33 +36,35 @@ async function main(projectRoot = process.cwd(), platforms) {
   });
 }
 
-const { values, positionals } = parseArgs({
-  args: process.argv.slice(2),
-  options: {
-    android: {
-      description: "Apply Android config plugins",
-      type: "boolean",
+if (isMain(import.meta.url)) {
+  const { values, positionals } = parseArgs({
+    args: process.argv.slice(2),
+    options: {
+      android: {
+        description: "Apply Android config plugins",
+        type: "boolean",
+      },
+      ios: {
+        description: "Apply iOS config plugins",
+        type: "boolean",
+      },
+      macos: {
+        description: "Apply macOS config plugins",
+        type: "boolean",
+      },
+      visionos: {
+        description: "Apply visionOS config plugins",
+        type: "boolean",
+      },
+      windows: {
+        description: "Apply Windows config plugins",
+        type: "boolean",
+      },
     },
-    ios: {
-      description: "Apply iOS config plugins",
-      type: "boolean",
-    },
-    macos: {
-      description: "Apply macOS config plugins",
-      type: "boolean",
-    },
-    visionos: {
-      description: "Apply visionOS config plugins",
-      type: "boolean",
-    },
-    windows: {
-      description: "Apply Windows config plugins",
-      type: "boolean",
-    },
-  },
-  strict: true,
-  allowPositionals: true,
-  tokens: false,
-});
+    strict: true,
+    allowPositionals: true,
+    tokens: false,
+  });
 
-main(positionals[0], Object.keys(values));
+  main(positionals[0], Object.keys(values));
+}
