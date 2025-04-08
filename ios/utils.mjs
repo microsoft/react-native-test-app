@@ -9,6 +9,8 @@ import { fileURLToPath } from "node:url";
  * @typedef {import("../scripts/types.ts").JSONValue} JSONValue;
  */
 
+const MAX_BUFFER = 16 * 1024 * 1024; // 16 MB because some plists can get big
+
 /**
  * @param {JSONValue} obj
  * @returns {obj is JSONObject}
@@ -66,10 +68,11 @@ export function jsonFromPlist(filename) {
   const args = ["-convert", "json", "-o", "-", filename];
   const plutil = spawnSync("/usr/bin/plutil", args, {
     stdio: ["ignore", "pipe", "inherit"],
+    maxBuffer: MAX_BUFFER,
   });
 
   if (plutil.status !== 0) {
-    throw new Error(`Failed to read '${filename}'`);
+    throw plutil.error ?? new Error(`Failed to read '${filename}'`);
   }
 
   return JSON.parse(plutil.stdout.toString());
@@ -85,10 +88,11 @@ export function plistFromJSON(source, filename) {
   const plutil = spawnSync("/usr/bin/plutil", args, {
     stdio: ["pipe", "pipe", "inherit"],
     input: JSON.stringify(source),
+    maxBuffer: MAX_BUFFER,
   });
 
   if (plutil.status !== 0) {
-    throw new Error(`Failed to generate '${filename}'`);
+    throw plutil.error ?? new Error(`Failed to generate '${filename}'`);
   }
 
   return plutil.stdout.toString();
@@ -123,4 +127,21 @@ export function resolveResources(appConfig, targetPlatform) {
   }
 
   return undefined;
+}
+
+/**
+ * @param {string} destination
+ * @param {JSONObject} source
+ * @returns {void}
+ */
+export function writePlistFromJSON(destination, source) {
+  const args = ["-convert", "xml1", "-r", "-o", destination, "--", "-"];
+  const plutil = spawnSync("/usr/bin/plutil", args, {
+    stdio: ["pipe", "pipe", "inherit"],
+    input: JSON.stringify(source),
+  });
+
+  if (plutil.status !== 0) {
+    throw plutil.error ?? new Error(`Failed to write '${destination}'`);
+  }
 }

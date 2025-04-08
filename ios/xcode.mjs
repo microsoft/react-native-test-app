@@ -10,7 +10,7 @@ import {
   isObject,
   isString,
   jsonFromPlist,
-  plistFromJSON,
+  writePlistFromJSON,
 } from "./utils.mjs";
 
 /**
@@ -227,7 +227,7 @@ export function configureBuildSchemes(
 /**
  * @param {string} xcodeproj
  */
-export function openXcodeProject(xcodeproj, fs = nodefs) {
+export function openXcodeProject(xcodeproj) {
   const projectPath = path.join(xcodeproj, "project.pbxproj");
   const pbxproj = jsonFromPlist(projectPath);
   assertObject(pbxproj.objects, "pbxproj.objects");
@@ -242,7 +242,7 @@ export function openXcodeProject(xcodeproj, fs = nodefs) {
 
   return {
     save() {
-      fs.writeFileSync(projectPath, plistFromJSON(pbxproj, projectPath));
+      writePlistFromJSON(projectPath, pbxproj);
     },
     get targets() {
       return targets.map((target, index) => {

@@ -295,7 +295,7 @@ export function makeProject(projectRoot, targetPlatform, options, fs = nodefs) {
     ReactTestAppUITests: project.uitestsBuildSettings,
   };
 
-  const pbxproj = openXcodeProject(project.xcodeprojPath, fs);
+  const pbxproj = openXcodeProject(project.xcodeprojPath);
   for (const target of pbxproj.targets) {
     const { name: targetName } = target;
     if (typeof targetName !== "string" || !(targetName in mods)) {
@@ -303,8 +303,7 @@ export function makeProject(projectRoot, targetPlatform, options, fs = nodefs) {
     }
 
     const targetBuildSettings = Object.entries(mods[targetName]);
-    for (const config of target.buildConfigurations) {
-      const { buildSettings } = config;
+    for (const { buildSettings } of target.buildConfigurations) {
       assertObject(buildSettings, "target.buildConfigurations[].buildSettings");
 
       for (const [setting, value] of targetBuildSettings) {
