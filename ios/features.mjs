@@ -60,16 +60,24 @@ export function isBridgelessEnabled(reactNativeVersion, options) {
  * @returns {boolean | "from-source"}
  */
 export function isHermesEnabled(platform, reactNativeVersion, options) {
-  const useHermes = process.env["USE_HERMES"];
-  const enabled =
-    typeof useHermes === "string"
-      ? useHermes === "1"
-      : options["hermesEnabled"] === true;
+  if (reactNativeVersion < v(0, 80, 0)) {
+    const useHermes = process.env["USE_HERMES"];
+    const enabled =
+      typeof useHermes === "string"
+        ? useHermes === "1"
+        : options["hermesEnabled"] === true;
 
-  // Hermes prebuilds for visionOS was introduced in 0.76
-  if (enabled && platform === "visionos" && reactNativeVersion < v(0, 76, 0)) {
-    return "from-source";
+    // Hermes prebuilds for visionOS was introduced in 0.76
+    if (
+      enabled &&
+      platform === "visionos" &&
+      reactNativeVersion < v(0, 76, 0)
+    ) {
+      return "from-source";
+    }
+
+    return enabled;
   }
 
-  return enabled;
+  return true;
 }

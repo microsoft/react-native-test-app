@@ -55,31 +55,39 @@ describe("isBridgelessEnabled()", () => {
 });
 
 describe("isHermesEnabled()", () => {
-  before(() => {
+  function resetEnvironmentVariables() {
     delete process.env["USE_HERMES"];
-  });
+  }
 
-  afterEach(() => {
-    delete process.env["USE_HERMES"];
-  });
+  before(resetEnvironmentVariables);
+
+  afterEach(resetEnvironmentVariables);
 
   for (const platform of ["ios", "macos", "visionos"] as const) {
     it(`[${platform}] is disabled by default`, () => {
-      ok(!isHermesEnabled(platform, v(1, 0, 0), {}));
+      ok(!isHermesEnabled(platform, v(0, 79, 0), {}));
     });
 
     it(`[${platform}] returns true when enabled`, () => {
-      ok(isHermesEnabled(platform, v(1, 0, 0), { hermesEnabled: true }));
+      ok(isHermesEnabled(platform, v(0, 79, 0), { hermesEnabled: true }));
     });
 
     it(`[${platform}] returns true if 'USE_HERMES=1'`, () => {
       process.env["USE_HERMES"] = "1";
-      ok(isHermesEnabled(platform, v(1, 0, 0), {}));
+      ok(isHermesEnabled(platform, v(0, 79, 0), {}));
     });
 
     it(`[${platform}] returns false if 'USE_HERMES=0'`, () => {
       process.env["USE_HERMES"] = "0";
-      ok(!isHermesEnabled(platform, v(1, 0, 0), { hermesEnabled: true }));
+      ok(!isHermesEnabled(platform, v(0, 79, 0), { hermesEnabled: true }));
+    });
+
+    it(`[${platform}] always returns true from 0.80 on`, () => {
+      ok(isHermesEnabled(platform, v(0, 80, 0), {}));
+
+      process.env["USE_HERMES"] = "0";
+
+      ok(isHermesEnabled(platform, v(0, 80, 0), {}));
     });
   }
 
