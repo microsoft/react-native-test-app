@@ -73,7 +73,7 @@ runs:
         bundler: Gemfile.lock
         bundler-cache: true
     - name: Set up Node.js
-      uses: actions/setup-node@v4.2.0
+      uses: actions/setup-node@v4.4.0
       with:
         node-version: ${{ inputs.node-version }}
         cache: ${{ inputs.cache-npm-dependencies }}
