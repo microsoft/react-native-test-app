@@ -37,7 +37,7 @@ jobs:
       pull-requests: write # create code reviews (suggestion-bot)
     strategy:
       matrix:
-        runner: [macos-14, windows-2022]
+        runner: [macos-15, windows-2025]
     runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -145,7 +145,7 @@ jobs:
     timeout-minutes: 60
   ios:
     name: "iOS"
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -201,7 +201,7 @@ jobs:
     strategy:
       matrix:
         template: [all, ios]
-    runs-on: macos-14
+    runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -246,7 +246,7 @@ jobs:
     name: "Android"
     strategy:
       matrix:
-        runner: [ubuntu-24.04, windows-2022]
+        runner: [ubuntu-24.04, windows-2025]
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
@@ -294,7 +294,7 @@ jobs:
     strategy:
       matrix:
         template: [all, android]
-        runner: [ubuntu-24.04, windows-2022]
+        runner: [ubuntu-24.04, windows-2025]
     runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -331,7 +331,7 @@ jobs:
     timeout-minutes: 60
   macos:
     name: "macOS"
-    runs-on: macos-14
+    runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -405,7 +405,7 @@ jobs:
     strategy:
       matrix:
         template: [all, macos]
-    runs-on: macos-14
+    runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -443,7 +443,7 @@ jobs:
     timeout-minutes: 60
   visionos:
     name: "visionOS"
-    runs-on: macos-14
+    runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -496,7 +496,7 @@ jobs:
     strategy:
       matrix:
         template: [all, visionos]
-    runs-on: macos-14
+    runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -535,7 +535,7 @@ jobs:
     timeout-minutes: 60
   windows:
     name: "Windows"
-    runs-on: windows-2022
+    runs-on: windows-2025
     strategy:
       matrix:
         platform: [ARM64, x64]
@@ -592,7 +592,7 @@ jobs:
     timeout-minutes: 60
   windows-template:
     name: "Windows [template]"
-    runs-on: windows-2022
+    runs-on: windows-2025
     if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
