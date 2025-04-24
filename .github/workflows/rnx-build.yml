@@ -30,6 +30,7 @@ on:
 jobs:
   build-android:
     name: Build Android
+    permissions: {}
     if: ${{ github.event.inputs.platform == 'android' }}
     runs-on: ubuntu-24.04
     steps:
@@ -57,6 +58,7 @@ jobs:
           retention-days: 14
   build-ios:
     name: Build iOS
+    permissions: {}
     if: ${{ github.event.inputs.platform == 'ios' }}
     runs-on: macos-14
     env:
@@ -116,6 +118,7 @@ jobs:
           retention-days: 14
   build-macos:
     name: Build macOS
+    permissions: {}
     if: ${{ github.event.inputs.platform == 'macos' }}
     runs-on: macos-14
     steps:
@@ -150,6 +153,7 @@ jobs:
           retention-days: 14
   build-windows:
     name: Build Windows
+    permissions: {}
     if: ${{ github.event.inputs.platform == 'windows' }}
     runs-on: windows-2022
     steps:
@@ -192,6 +196,7 @@ jobs:
           retention-days: 14
   distribute:
     name: Distribute build
+    permissions: {}
     needs: [build-android, build-ios]
     runs-on: ubuntu-24.04
     if: ${{ github.event.inputs.distribution != 'local' && !cancelled() && !failure() }} # `success()` excludes skipped jobs

@@ -18,6 +18,7 @@ concurrency:
 jobs:
   lint-commit:
     name: "lint commit message"
+    permissions: {}
     runs-on: ubuntu-24.04
     if: ${{ github.event_name == 'pull_request' }}
     steps:
@@ -145,6 +146,7 @@ jobs:
     timeout-minutes: 60
   ios:
     name: "iOS"
+    permissions: {}
     runs-on: macos-15
     steps:
       - name: Checkout
@@ -198,6 +200,7 @@ jobs:
     timeout-minutes: 60
   ios-template:
     name: "iOS [template]"
+    permissions: {}
     strategy:
       matrix:
         template: [all, ios]
@@ -244,6 +247,7 @@ jobs:
     timeout-minutes: 60
   android:
     name: "Android"
+    permissions: {}
     strategy:
       matrix:
         runner: [ubuntu-24.04, windows-2025]
@@ -291,6 +295,7 @@ jobs:
     timeout-minutes: 60
   android-template:
     name: "Android [template]"
+    permissions: {}
     strategy:
       matrix:
         template: [all, android]
@@ -331,6 +336,7 @@ jobs:
     timeout-minutes: 60
   macos:
     name: "macOS"
+    permissions: {}
     runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -402,6 +408,7 @@ jobs:
     timeout-minutes: 60
   macos-template:
     name: "macOS [template]"
+    permissions: {}
     strategy:
       matrix:
         template: [all, macos]
@@ -443,6 +450,7 @@ jobs:
     timeout-minutes: 60
   visionos:
     name: "visionOS"
+    permissions: {}
     runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -492,6 +500,7 @@ jobs:
     timeout-minutes: 60
   visionos-template:
     name: "visionOS [template]"
+    permissions: {}
     strategy:
       matrix:
         template: [all, visionos]
@@ -533,6 +542,7 @@ jobs:
     timeout-minutes: 60
   windows:
     name: "Windows"
+    permissions: {}
     runs-on: windows-2025
     strategy:
       matrix:
@@ -590,6 +600,7 @@ jobs:
     timeout-minutes: 60
   windows-template:
     name: "Windows [template]"
+    permissions: {}
     runs-on: windows-2025
     if: ${{ github.event_name != 'schedule' }}
     strategy:
