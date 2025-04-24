@@ -457,7 +457,6 @@ jobs:
           platform: visionos
           project-root: example
           cache-key-prefix: example
-          xcode-developer-dir: /Applications/Xcode_15.2.app
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         uses: ./.github/actions/setup-react-native
@@ -510,7 +509,6 @@ jobs:
           platform: visionos
           project-root: example
           cache-key-prefix: template-${{ matrix.template }}
-          xcode-developer-dir: /Applications/Xcode_15.2.app
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
