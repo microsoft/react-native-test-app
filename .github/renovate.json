@@ -66,7 +66,7 @@
         "react-native-macos",
         "react-native-windows"
       ],
-      "allowedVersions": "^0.77.0"
+      "allowedVersions": "^0.78.0"
     }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
