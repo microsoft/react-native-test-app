@@ -13,7 +13,6 @@ import {
 } from "react-native";
 // @ts-expect-error no type definitions available
 import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
-import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 
 declare global {
   export const RN$Bridgeless: boolean;
@@ -32,14 +31,38 @@ type FeatureProps =
       onValueChange?: (value: boolean) => void;
     };
 
+// https://github.com/facebook/react-native/blob/0abd5d63e1c0c4708f81bd698e6d011fa75f01e5/packages/new-app-screen/src/Theme.js#L16-L33
+const COLORS = {
+  light: {
+    background: "#f3f3f3",
+    backgroundHighlight: "#cfe6ee",
+    cardBackground: "#fff",
+    cardOutline: "#dae1e7",
+    textPrimary: "#000",
+    textSecondary: "#404756",
+  },
+  dark: {
+    background: "#000",
+    backgroundHighlight: "#193c47",
+    cardBackground: "#222",
+    cardOutline: "#444",
+    textPrimary: "#fff",
+    textSecondary: "#c0c1c4",
+  },
+};
+
 function getHermesVersion(): string | undefined {
-  return (
+  const version =
     "HermesInternal" in global &&
     HermesInternal &&
     "getRuntimeProperties" in HermesInternal &&
     typeof HermesInternal.getRuntimeProperties === "function" &&
-    HermesInternal.getRuntimeProperties()["OSS Release Version"]
-  );
+    HermesInternal.getRuntimeProperties()["OSS Release Version"];
+  if (!version) {
+    return undefined;
+  }
+
+  return `Hermes ${version}`;
 }
 
 function getReactNativeVersion(): string {
@@ -118,7 +141,7 @@ function useLocalStorageStatus() {
 function useStyles() {
   const colorScheme = useColorScheme();
   return useMemo(() => {
-    const isDarkMode = colorScheme === "dark";
+    const colors = COLORS[colorScheme ?? "light"];
 
     const fontSize = 18;
     const groupBorderRadius = 8;
@@ -126,11 +149,11 @@ function useStyles() {
 
     return StyleSheet.create({
       body: {
-        backgroundColor: isDarkMode ? Colors.black : Colors.lighter,
+        backgroundColor: colors.background,
         flex: 1,
       },
       group: {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.white,
+        backgroundColor: colors.cardBackground,
         borderRadius: groupBorderRadius,
         margin,
       },
@@ -140,20 +163,28 @@ function useStyles() {
         paddingHorizontal: margin,
       },
       groupItemLabel: {
-        color: isDarkMode ? Colors.white : Colors.black,
+        color: colors.textPrimary,
         flex: 1,
         fontSize,
         marginVertical: 12,
       },
       groupItemValue: {
-        color: isDarkMode ? Colors.light : Colors.dark,
+        color: colors.textSecondary,
         fontSize: fontSize,
         textAlign: "right",
       },
       separator: {
-        backgroundColor: isDarkMode ? Colors.dark : Colors.light,
+        backgroundColor: colors.cardOutline,
         height: StyleSheet.hairlineWidth,
         marginStart: margin,
+      },
+      title: {
+        fontSize: 40,
+        fontWeight: "700",
+        paddingTop: 64,
+        paddingHorizontal: 32,
+        paddingBottom: 40,
+        textAlign: "center",
       },
     });
   }, [colorScheme]);
@@ -225,7 +256,7 @@ export function App(props: AppProps): React.ReactElement<AppProps> {
         onLayout={setIsFabric}
         style={styles.body}
       >
-        <Header />
+        <Text style={styles.title}>Welcome to React Native</Text>
         <DevMenu />
         <View style={styles.group}>
           <Feature value={localStorageStatus}>window.localStorage</Feature>
@@ -233,7 +264,7 @@ export function App(props: AppProps): React.ReactElement<AppProps> {
         <View style={styles.group}>
           <Feature value={getReactNativeVersion()}>React Native</Feature>
           <Separator />
-          <Feature value={isOnOrOff(getHermesVersion())}>Hermes</Feature>
+          <Feature value={getHermesVersion() ?? "JSC"}>JS Engine</Feature>
           <Separator />
           <Feature value={isOnOrOff(isFabric)}>Fabric</Feature>
           <Separator />
