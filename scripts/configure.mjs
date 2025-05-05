@@ -38,6 +38,14 @@ import { parseArgs } from "./utils/parseargs.mjs";
  */
 
 /**
+ * @param {...string} paths
+ * @returns {{ source: string; }}
+ */
+function copyFrom(...paths) {
+  return { source: path.join(...paths) };
+}
+
+/**
  * Merges two objects.
  * @param {unknown} lhs
  * @param {Record<string, unknown>} rhs
@@ -274,18 +282,14 @@ export const getConfig = (() => {
       configuration = {
         common: {
           files: {
-            ".gitignore": {
-              source: path.join(testAppPath, "example", gitignore),
-            },
-            ".watchmanconfig": {
-              source: path.join(templateDir, "_watchmanconfig"),
-            },
-            "babel.config.js": {
-              source: path.join(templateDir, "babel.config.js"),
-            },
-            "metro.config.js": {
-              source: path.join(testAppPath, "example", "metro.config.js"),
-            },
+            ".gitignore": copyFrom(testAppPath, "example", gitignore),
+            ".watchmanconfig": copyFrom(templateDir, "_watchmanconfig"),
+            "babel.config.js": copyFrom(templateDir, "babel.config.js"),
+            "metro.config.js": copyFrom(
+              testAppPath,
+              "example",
+              "metro.config.js"
+            ),
             "react-native.config.js": reactNativeConfig(params),
             ...(!init
               ? undefined
@@ -294,23 +298,15 @@ export const getConfig = (() => {
                   // drop support for 0.70
                   ...(fs.existsSync(path.join(templateDir, "App.tsx"))
                     ? {
-                        "App.tsx": {
-                          source: path.join(templateDir, "App.tsx"),
-                        },
-                        "tsconfig.json": {
-                          source: path.join(templateDir, "tsconfig.json"),
-                        },
+                        "App.tsx": copyFrom(templateDir, "App.tsx"),
+                        "tsconfig.json": copyFrom(templateDir, "tsconfig.json"),
                       }
                     : {
-                        "App.js": { source: path.join(templateDir, "App.js") },
+                        "App.js": copyFrom(templateDir, "App.js"),
                       }),
-                  Gemfile: {
-                    source: path.join(templateDir, "Gemfile"),
-                  },
+                  Gemfile: copyFrom(templateDir, "Gemfile"),
                   "app.json": appManifest(name),
-                  "index.js": {
-                    source: path.join(templateDir, "index.js"),
-                  },
+                  "index.js": copyFrom(templateDir, "index.js"),
                   "package.json": readTextFile(
                     path.join(templateDir, "package.json"),
                     fs
@@ -329,16 +325,14 @@ export const getConfig = (() => {
         android: {
           files: {
             "build.gradle": buildGradle(),
-            "gradle/wrapper/gradle-wrapper.jar": {
-              source: path.join(
-                testAppPath,
-                "example",
-                "android",
-                "gradle",
-                "wrapper",
-                "gradle-wrapper.jar"
-              ),
-            },
+            "gradle/wrapper/gradle-wrapper.jar": copyFrom(
+              testAppPath,
+              "example",
+              "android",
+              "gradle",
+              "wrapper",
+              "gradle-wrapper.jar"
+            ),
             "gradle/wrapper/gradle-wrapper.properties": (() => {
               const gradleWrapperProperties = path.join(
                 testAppPath,
@@ -358,17 +352,13 @@ export const getConfig = (() => {
               return props;
             })(),
             "gradle.properties": gradleProperties(targetVersionNum),
-            gradlew: {
-              source: path.join(testAppPath, "example", "android", "gradlew"),
-            },
-            "gradlew.bat": {
-              source: path.join(
-                testAppPath,
-                "example",
-                "android",
-                "gradlew.bat"
-              ),
-            },
+            gradlew: copyFrom(testAppPath, "example", "android", "gradlew"),
+            "gradlew.bat": copyFrom(
+              testAppPath,
+              "example",
+              "android",
+              "gradlew.bat"
+            ),
             "settings.gradle": settingsGradle(name),
           },
           oldFiles: [],
@@ -432,9 +422,12 @@ export const getConfig = (() => {
         },
         windows: {
           files: {
-            ".gitignore": {
-              source: path.join(testAppPath, "example", "windows", gitignore),
-            },
+            ".gitignore": copyFrom(
+              testAppPath,
+              "example",
+              "windows",
+              gitignore
+            ),
           },
           oldFiles: [
             `${name}.sln`,
