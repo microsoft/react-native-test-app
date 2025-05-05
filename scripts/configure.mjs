@@ -1,5 +1,16 @@
 #!/usr/bin/env node
 // @ts-check
+/**
+ * @import {
+ *   Configuration,
+ *   ConfigureParams,
+ *   FileCopy,
+ *   Manifest,
+ *   Platform,
+ *   PlatformConfiguration,
+ *   PlatformPackage,
+ * } from "./types.js";
+ */
 import * as nodefs from "node:fs";
 import { createRequire } from "node:module";
 import * as path from "node:path";
@@ -28,16 +39,6 @@ import { downloadPackage } from "./utils/npm.mjs";
 import { parseArgs } from "./utils/parseargs.mjs";
 
 /**
- * @typedef {import("./types.js").Configuration} Configuration
- * @typedef {import("./types.js").ConfigureParams} ConfigureParams
- * @typedef {import("./types.js").FileCopy} FileCopy
- * @typedef {Required<import("./types.js").Manifest>} Manifest
- * @typedef {import("./types.js").PlatformConfiguration} PlatformConfiguration
- * @typedef {import("./types.js").PlatformPackage} PlatformPackage
- * @typedef {import("./types.js").Platform} Platform
- */
-
-/**
  * @param {...string} paths
  * @returns {{ source: string; }}
  */
@@ -57,7 +58,7 @@ function mergeObjects(lhs, rhs) {
     : sortByKeys(rhs);
 }
 
-/** @type {() => Manifest} */
+/** @type {() => Required<Manifest>} */
 const readManifest = memo(() =>
   readJSONFile(new URL("../package.json", import.meta.url))
 );
