@@ -5,3 +5,4 @@ disabled_rules:
 excluded:
   - example/*/Pods/
   - example/node_modules/
+  - node_modules/
