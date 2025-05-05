@@ -304,6 +304,9 @@ export const getConfig = (() => {
                     : {
                         "App.js": { source: path.join(templateDir, "App.js") },
                       }),
+                  Gemfile: {
+                    source: path.join(templateDir, "Gemfile"),
+                  },
                   "app.json": appManifest(name),
                   "index.js": {
                     source: path.join(templateDir, "index.js"),

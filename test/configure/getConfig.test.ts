@@ -48,6 +48,7 @@ describe("getConfig()", () => {
       ".gitignore",
       ".watchmanconfig",
       "App.tsx",
+      "Gemfile",
       "app.json",
       "babel.config.js",
       "index.js",
