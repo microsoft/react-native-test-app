@@ -4,6 +4,8 @@
 *.xcworkspace/
 .DS_Store
 .android-test-*
+.bundle/*
+!.bundle/config
 .ccache/*
 !.ccache/ccache.conf
 .cxx/

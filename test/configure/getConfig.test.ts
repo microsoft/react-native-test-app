@@ -45,6 +45,7 @@ describe("getConfig()", () => {
     const config = getConfig(params, "common");
 
     deepEqual(Object.keys(config.files).sort(), [
+      ".bundle/config",
       ".gitignore",
       ".watchmanconfig",
       "App.tsx",

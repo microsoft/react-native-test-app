@@ -305,6 +305,7 @@ export const getConfig = (() => {
                     : {
                         "App.js": copyFrom(templateDir, "App.js"),
                       }),
+                  ".bundle/config": copyFrom(testAppPath, ".bundle", "config"),
                   Gemfile: copyFrom(templateDir, "Gemfile"),
                   "app.json": appManifest(name),
                   "index.js": copyFrom(templateDir, "index.js"),
