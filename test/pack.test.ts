@@ -26,6 +26,7 @@ describe("npm pack", () => {
       .sort();
 
     deepEqual(content, [
+      ".bundle/config",
       "CODE_OF_CONDUCT.md",
       "CONTRIBUTING.md",
       "LICENSE",

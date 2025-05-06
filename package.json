@@ -22,6 +22,7 @@
   },
   "files": [
     "*.md",
+    ".bundle/config",
     "ReactTestApp-DevSupport.podspec",
     "android/**/*.gradle",
     "android/android-manifest.js",
