@@ -98,6 +98,18 @@ export function buildGradle() {
 }
 
 /**
+ * Returns `.bundle/config`.
+ *
+ * @note We don't use a checked in file because of
+ * https://github.com/ruby/setup-ruby/discussions/576.
+ *
+ * @returns {string}
+ */
+export function bundleConfig() {
+  return join('BUNDLE_PATH: ".bundle"', "BUNDLE_FORCE_RUBY_PLATFORM: 1");
+}
+
+/**
  * @param {number} targetVersion Target React Native version
  * @returns {string}
  */

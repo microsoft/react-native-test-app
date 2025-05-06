@@ -29,6 +29,7 @@ import {
 import {
   appManifest,
   buildGradle,
+  bundleConfig,
   gradleProperties,
   podfile,
   serialize,
@@ -305,7 +306,7 @@ export const getConfig = (() => {
                     : {
                         "App.js": copyFrom(templateDir, "App.js"),
                       }),
-                  ".bundle/config": copyFrom(testAppPath, ".bundle", "config"),
+                  ".bundle/config": bundleConfig(),
                   Gemfile: copyFrom(templateDir, "Gemfile"),
                   "app.json": appManifest(name),
                   "index.js": copyFrom(templateDir, "index.js"),

@@ -26,11 +26,10 @@ module.exports = {
         );
         fs.rmSync(symlink, { force: true, maxRetries: 3, recursive: true });
 
-        spawnSync(
-          "git",
-          ["clean", "-dfqx", "--exclude=.bundle", "--exclude=.yarn/cache"],
-          { cwd: projectRoot, stdio: "inherit" }
-        );
+        spawnSync("git", ["clean", "-dfqx", "--exclude=.yarn/cache"], {
+          cwd: projectRoot,
+          stdio: "inherit",
+        });
       }
     }
 
