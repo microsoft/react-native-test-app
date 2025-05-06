@@ -16,8 +16,7 @@ using facebook::jsi::Runtime;
 
 void RTAPostDidRegisterAppsNotification(NSValue *value)
 {
-    Runtime *runtime = static_cast<Runtime *>([value pointerValue]);
-
+    auto runtime = static_cast<Runtime *>([value pointerValue]);
     auto appKeys = ReactTestApp::GetAppKeys(*runtime);
     if (appKeys.empty()) {
         return;
