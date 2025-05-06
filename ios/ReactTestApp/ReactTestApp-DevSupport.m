@@ -1,17 +1,22 @@
 #import <Foundation/Foundation.h>
 
-NSNotificationName const ReactAppDidInitializeNotification = @"ReactAppDidInitializeNotification";
+NSNotificationName const ReactAppDidFinishLaunchingNotification =
+    @"ReactAppDidFinishLaunchNotification";
+
 NSNotificationName const ReactAppWillInitializeReactNativeNotification =
     @"ReactAppWillInitializeReactNativeNotification";
 NSNotificationName const ReactAppDidInitializeReactNativeNotification =
     @"ReactAppDidInitializeReactNativeNotification";
+
+NSNotificationName const ReactAppRuntimeReady = @"ReactAppRuntimeReady";
 NSNotificationName const ReactAppDidRegisterAppsNotification =
     @"ReactAppDidRegisterAppsNotification";
-NSNotificationName const ReactAppRuntimeReady = @"ReactAppRuntimeReady";
+
 NSNotificationName const ReactAppSceneDidOpenURLNotification =
     @"ReactAppSceneDidOpenURLNotification";
 
-NSNotificationName const ReactTestAppDidInitializeNotification = ReactAppDidInitializeNotification;
+NSNotificationName const ReactTestAppDidInitializeNotification =
+    ReactAppDidFinishLaunchingNotification;
 NSNotificationName const ReactTestAppWillInitializeReactNativeNotification =
     ReactAppWillInitializeReactNativeNotification;
 NSNotificationName const ReactTestAppDidInitializeReactNativeNotification =

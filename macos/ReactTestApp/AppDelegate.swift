@@ -23,7 +23,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_: Notification) {
         NotificationCenter.default.post(
-            name: .ReactAppDidInitialize,
+            name: .ReactAppDidFinishLaunching,
             object: nil
         )
 
