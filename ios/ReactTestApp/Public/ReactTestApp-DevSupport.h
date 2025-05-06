@@ -7,7 +7,7 @@ OBJC_EXTERN NSNotificationName const ReactAppDidFinishLaunchingNotification;
 OBJC_EXTERN NSNotificationName const ReactAppWillInitializeReactNativeNotification;
 OBJC_EXTERN NSNotificationName const ReactAppDidInitializeReactNativeNotification;
 
-OBJC_EXTERN NSNotificationName const ReactAppRuntimeReady;
+OBJC_EXTERN NSNotificationName const ReactAppRuntimeReadyNotification;
 OBJC_EXTERN NSNotificationName const ReactAppDidRegisterAppsNotification;
 
 OBJC_EXTERN NSNotificationName const ReactAppSceneDidOpenURLNotification;

@@ -8,7 +8,7 @@ NSNotificationName const ReactAppWillInitializeReactNativeNotification =
 NSNotificationName const ReactAppDidInitializeReactNativeNotification =
     @"ReactAppDidInitializeReactNativeNotification";
 
-NSNotificationName const ReactAppRuntimeReady = @"ReactAppRuntimeReady";
+NSNotificationName const ReactAppRuntimeReadyNotification = @"ReactAppRuntimeReadyNotification";
 NSNotificationName const ReactAppDidRegisterAppsNotification =
     @"ReactAppDidRegisterAppsNotification";
 
