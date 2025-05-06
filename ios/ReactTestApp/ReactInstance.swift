@@ -37,8 +37,10 @@ final class ReactInstance: NSObject, RNXHostConfig {
     override init() {
         super.init()
 
+        let defaultNotificationCenter = NotificationCenter.default
+
         // Bridged
-        NotificationCenter.default.addObserver(
+        defaultNotificationCenter.addObserver(
             self,
             selector: #selector(onJavaScriptLoaded(_:)),
             name: .RCTJavaScriptDidLoad,
@@ -46,15 +48,22 @@ final class ReactInstance: NSObject, RNXHostConfig {
         )
 
         // Bridgeless
-        NotificationCenter.default.addObserver(
+        defaultNotificationCenter.addObserver(
             self,
             selector: #selector(onJavaScriptLoaded(_:)),
             name: .ReactInstanceDidLoadBundle,
             object: nil
         )
 
+        defaultNotificationCenter.addObserver(
+            self,
+            selector: #selector(onRuntimeReady(_:)),
+            name: .ReactAppRuntimeReady,
+            object: nil
+        )
+
         #if os(iOS)
-        NotificationCenter.default.addObserver(
+        defaultNotificationCenter.addObserver(
             self,
             selector: #selector(onRemoteBundleURLReceived(_:)),
             name: .didReceiveRemoteBundleURL,
@@ -90,7 +99,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
         self.bundleRoot = bundleRoot
 
         NotificationCenter.default.post(
-            name: .ReactTestAppWillInitializeReactNative,
+            name: .ReactAppWillInitializeReactNative,
             object: nil
         )
 
@@ -98,7 +107,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
         host = reactNativeHost
 
         NotificationCenter.default.post(
-            name: .ReactTestAppDidInitializeReactNative,
+            name: .ReactAppDidInitializeReactNative,
             object: reactNativeHost
         )
 
@@ -219,6 +228,13 @@ final class ReactInstance: NSObject, RNXHostConfig {
 
         urlComponents.queryItems = [URLQueryItem(name: "platform", value: "ios")]
         remoteBundleURL = urlComponents.url
+    }
+
+    @objc
+    private func onRuntimeReady(_ notification: Notification) {
+        if let runtime = notification.userInfo?["runtime"] as? NSValue {
+            RTAPostDidRegisterAppsNotification(runtime)
+        }
     }
 }
 

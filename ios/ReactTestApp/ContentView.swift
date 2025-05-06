@@ -92,7 +92,7 @@ final class ContentViewController: UITableViewController {
         let components = manifest.components ?? []
         if components.isEmpty {
             NotificationCenter.default.addObserver(
-                forName: .ReactTestAppDidRegisterApps,
+                forName: .ReactAppDidRegisterApps,
                 object: nil,
                 queue: .main,
                 using: { [weak self] note in

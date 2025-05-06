@@ -50,7 +50,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         NotificationCenter.default.post(
-            name: .ReactTestAppSceneDidOpenURL,
+            name: .ReactAppSceneDidOpenURL,
             object: [
                 "scene": scene,
                 "URLContexts": URLContexts,

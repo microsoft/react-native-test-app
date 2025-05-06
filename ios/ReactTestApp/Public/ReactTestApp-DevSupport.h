@@ -2,14 +2,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSNotificationName const ReactTestAppDidInitializeNotification;
+OBJC_EXTERN NSNotificationName const ReactAppDidInitializeNotification;
+OBJC_EXTERN NSNotificationName const ReactAppWillInitializeReactNativeNotification;
+OBJC_EXTERN NSNotificationName const ReactAppDidInitializeReactNativeNotification;
+OBJC_EXTERN NSNotificationName const ReactAppDidRegisterAppsNotification;
+OBJC_EXTERN NSNotificationName const ReactAppRuntimeReady;
+OBJC_EXTERN NSNotificationName const ReactAppSceneDidOpenURLNotification;
 
-extern NSNotificationName const ReactTestAppWillInitializeReactNativeNotification;
-extern NSNotificationName const ReactTestAppDidInitializeReactNativeNotification;
-extern NSNotificationName const ReactTestAppDidRegisterAppsNotification;
+OBJC_EXTERN NSNotificationName const ReactTestAppDidInitializeNotification
+    __deprecated_msg("Use 'ReactAppDidInitializeNotification' instead");
+OBJC_EXTERN NSNotificationName const ReactTestAppWillInitializeReactNativeNotification
+    __deprecated_msg("Use 'ReactAppWillInitializeReactNativeNotification' instead");
+OBJC_EXTERN NSNotificationName const ReactTestAppDidInitializeReactNativeNotification
+    __deprecated_msg("Use 'ReactAppDidInitializeReactNativeNotification' instead");
+OBJC_EXTERN NSNotificationName const ReactTestAppDidRegisterAppsNotification
+    __deprecated_msg("Use 'ReactAppDidRegisterAppsNotification' instead");
+OBJC_EXTERN NSNotificationName const ReactTestAppSceneDidOpenURLNotification
+    __deprecated_msg("Use 'ReactAppSceneDidOpenURLNotification' instead");
 
-extern NSNotificationName const ReactTestAppSceneDidOpenURLNotification;
+OBJC_EXTERN NSNotificationName const ReactInstanceDidLoadBundle;
 
-extern NSNotificationName const ReactInstanceDidLoadBundle;
+OBJC_EXTERN void RTAPostDidRegisterAppsNotification(NSValue *runtime);
 
 NS_ASSUME_NONNULL_END

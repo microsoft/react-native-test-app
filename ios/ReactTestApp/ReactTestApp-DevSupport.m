@@ -1,17 +1,25 @@
 #import <Foundation/Foundation.h>
 
-NSNotificationName const ReactTestAppDidInitializeNotification =
-    @"ReactTestAppDidInitializeNotification";
+NSNotificationName const ReactAppDidInitializeNotification = @"ReactAppDidInitializeNotification";
+NSNotificationName const ReactAppWillInitializeReactNativeNotification =
+    @"ReactAppWillInitializeReactNativeNotification";
+NSNotificationName const ReactAppDidInitializeReactNativeNotification =
+    @"ReactAppDidInitializeReactNativeNotification";
+NSNotificationName const ReactAppDidRegisterAppsNotification =
+    @"ReactAppDidRegisterAppsNotification";
+NSNotificationName const ReactAppRuntimeReady = @"ReactAppRuntimeReady";
+NSNotificationName const ReactAppSceneDidOpenURLNotification =
+    @"ReactAppSceneDidOpenURLNotification";
 
+NSNotificationName const ReactTestAppDidInitializeNotification = ReactAppDidInitializeNotification;
 NSNotificationName const ReactTestAppWillInitializeReactNativeNotification =
-    @"ReactTestAppWillInitializeReactNativeNotification";
+    ReactAppWillInitializeReactNativeNotification;
 NSNotificationName const ReactTestAppDidInitializeReactNativeNotification =
-    @"ReactTestAppDidInitializeReactNativeNotification";
+    ReactAppDidInitializeReactNativeNotification;
 NSNotificationName const ReactTestAppDidRegisterAppsNotification =
-    @"ReactTestAppDidRegisterAppsNotification";
-
+    ReactAppDidRegisterAppsNotification;
 NSNotificationName const ReactTestAppSceneDidOpenURLNotification =
-    @"ReactTestAppSceneDidOpenURLNotification";
+    ReactAppSceneDidOpenURLNotification;
 
 // https://github.com/facebook/react-native/blob/v0.73.4/packages/react-native/ReactCommon/react/runtime/platform/ios/ReactCommon/RCTInstance.mm#L448
 NSNotificationName const ReactInstanceDidLoadBundle = @"RCTInstanceDidLoadBundle";

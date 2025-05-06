@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         defer {
             NotificationCenter.default.post(
-                name: .ReactTestAppDidInitialize,
+                name: .ReactAppDidInitialize,
                 object: nil
             )
         }

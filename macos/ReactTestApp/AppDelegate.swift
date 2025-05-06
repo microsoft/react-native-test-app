@@ -23,7 +23,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_: Notification) {
         NotificationCenter.default.post(
-            name: .ReactTestAppDidInitialize,
+            name: .ReactAppDidInitialize,
             object: nil
         )
 
@@ -106,7 +106,7 @@ extension AppDelegate {
         let components = manifest.components ?? []
         if components.isEmpty {
             NotificationCenter.default.addObserver(
-                forName: .ReactTestAppDidRegisterApps,
+                forName: .ReactAppDidRegisterApps,
                 object: nil,
                 queue: .main,
                 using: { [weak self] note in

@@ -14,6 +14,25 @@ using facebook::jsi::Runtime;
 - (void)invokeAsync:(std::function<void()> &&)func;
 @end
 
+void RTAPostDidRegisterAppsNotification(NSValue *value)
+{
+    Runtime *runtime = static_cast<Runtime *>([value pointerValue]);
+
+    auto appKeys = ReactTestApp::GetAppKeys(*runtime);
+    if (appKeys.empty()) {
+        return;
+    }
+
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:appKeys.size()];
+    for (const auto &appKey : appKeys) {
+        [array addObject:[NSString stringWithUTF8String:appKey.c_str()]];
+    }
+
+    [NSNotificationCenter.defaultCenter postNotificationName:ReactAppDidRegisterAppsNotification
+                                                      object:nil
+                                                    userInfo:@{@"appKeys": [array copy]}];
+}
+
 @implementation RTAAppRegistryModule
 
 RCT_EXPORT_MODULE();
@@ -50,20 +69,7 @@ RCT_EXPORT_MODULE();
             return;
         }
 
-        auto appKeys = ReactTestApp::GetAppKeys(*runtime);
-        if (appKeys.empty()) {
-            return;
-        }
-
-        NSMutableArray *array = [NSMutableArray arrayWithCapacity:appKeys.size()];
-        for (const auto &appKey : appKeys) {
-            [array addObject:[NSString stringWithUTF8String:appKey.c_str()]];
-        }
-
-        [NSNotificationCenter.defaultCenter
-            postNotificationName:ReactTestAppDidRegisterAppsNotification
-                          object:nil
-                        userInfo:@{@"appKeys": [array copy]}];
+        RTAPostDidRegisterAppsNotification([NSValue valueWithPointer:runtime]);
     }];
 }
 
