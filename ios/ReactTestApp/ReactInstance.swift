@@ -218,6 +218,10 @@ final class ReactInstance: NSObject, RNXHostConfig {
             })
             #endif
         }
+
+        if let bridge = notification.userInfo?["bridge"] {
+            RTAPostDidRegisterAppsNotificationWithBridge(bridge)
+        }
     }
 
     @objc

@@ -32,29 +32,8 @@ void RTAPostDidRegisterAppsNotification(NSValue *value)
                                                     userInfo:@{@"appKeys": [array copy]}];
 }
 
-@implementation RTAAppRegistryModule
-
-RCT_EXPORT_MODULE();
-
-+ (BOOL)requiresMainQueueSetup
+void RTAPostDidRegisterAppsNotificationWithBridge(id bridge)
 {
-    return YES;
-}
-
-- (instancetype)init
-{
-    if (self = [super init]) {
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(javascriptDidLoadNotification:)
-                                                   name:RCTJavaScriptDidLoadNotification
-                                                 object:nil];
-    }
-    return self;
-}
-
-- (void)javascriptDidLoadNotification:(NSNotification *)note
-{
-    id bridge = note.userInfo[@"bridge"];
     if (![bridge isKindOfClass:[RCTCxxBridge class]] ||
         ![bridge respondsToSelector:@selector(runtime)] ||
         ![bridge respondsToSelector:@selector(invokeAsync:)]) {
@@ -71,5 +50,3 @@ RCT_EXPORT_MODULE();
         RTAPostDidRegisterAppsNotification([NSValue valueWithPointer:runtime]);
     }];
 }
-
-@end
