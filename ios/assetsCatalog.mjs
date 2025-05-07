@@ -151,6 +151,6 @@ export function generateAssetsCatalogs(
 
     const contents = { images, info: template["info"] };
     const dest = path.join(appIconSet, "Contents.json");
-    writeJSONFile(dest, contents);
+    writeJSONFile(dest, contents, fs);
   }
 }
