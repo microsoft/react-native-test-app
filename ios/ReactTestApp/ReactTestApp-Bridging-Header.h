@@ -12,6 +12,9 @@
 #import <React/RCTRootView.h>
 #import <React/RCTUtils.h>
 #import <React/RCTVersion.h>
+#if __has_include(<RCTDeprecation/RCTDeprecation.h>)
+#import <RCTDeprecation/RCTDeprecation.h>
+#endif  // __has_include(<RCTDeprecation/RCTDeprecation.h>)
 #pragma clang diagnostic pop
 
 #import "React+Compatibility.h"
