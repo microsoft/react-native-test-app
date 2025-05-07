@@ -373,7 +373,7 @@ jobs:
         with:
           project-directory: macos
           working-directory: example
-      - name: Build x86
+      - name: Build
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           ../scripts/build/xcodebuild.sh macos/Example.xcworkspace build-for-testing
@@ -384,26 +384,9 @@ jobs:
           node --test test/config.test.mjs
         working-directory: example
       - name: Test
-        # Temporarily disabled due to random failures
-        if: false # ${{ steps.affected.outputs.macos != '' && github.event_name != 'schedule' }}
+        if: ${{ steps.affected.outputs.macos != '' && github.event_name != 'schedule' }}
         run: |
           ../scripts/build/xcodebuild.sh macos/Example.xcworkspace test-without-building
-        working-directory: example
-      - name: Prepare for arm64 build
-        if: ${{ steps.affected.outputs.macos != '' }}
-        run: |
-          rm -fr macos/build
-        working-directory: example
-      - name: Install Pods
-        if: ${{ steps.affected.outputs.macos != '' }}
-        uses: ./.github/actions/cocoapods
-        with:
-          project-directory: macos
-          working-directory: example
-      - name: Build arm64
-        if: ${{ steps.affected.outputs.macos != '' }}
-        run: |
-          ../scripts/build/xcodebuild.sh macos/Example.xcworkspace build ARCHS=arm64
         working-directory: example
     timeout-minutes: 60
   macos-template:

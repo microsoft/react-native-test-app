@@ -12,6 +12,8 @@
     XCTAssertNotNil(ReactAppDidFinishLaunchingNotification);
     XCTAssertNotNil(ReactAppWillInitializeReactNativeNotification);
     XCTAssertNotNil(ReactAppDidInitializeReactNativeNotification);
+    XCTAssertNotNil(ReactAppRuntimeReadyNotification);
+    XCTAssertNotNil(ReactAppDidRegisterAppsNotification);
     XCTAssertNotNil(ReactAppSceneDidOpenURLNotification);
 }
 
