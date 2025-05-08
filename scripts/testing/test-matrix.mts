@@ -6,7 +6,7 @@ import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import { URL, fileURLToPath } from "node:url";
 import * as util from "node:util";
-import { readTextFile } from "../helpers.js";
+import { readTextFile, toVersionNumber, v } from "../helpers.js";
 import { setReactVersion } from "../internal/set-react-version.mts";
 import type { BuildConfig, TargetPlatform } from "../types.js";
 import { green, red, yellow } from "../utils/colors.mjs";
@@ -43,7 +43,17 @@ const PLATFORM_CONFIG: Record<TargetPlatform, PlatformConfig> = {
   ios: {
     name: "iOS",
     engines: ["jsc", "hermes"],
-    isAvailable: () => process.platform === "darwin",
+    isAvailable: ({ version, engine }) => {
+      if (process.platform !== "darwin") {
+        return false;
+      }
+
+      if (engine === "jsc" && toVersionNumber(version) >= v(0, 80, 0)) {
+        return false;
+      }
+
+      return true;
+    },
     prebuild: installPods,
   },
   macos: {
@@ -203,7 +213,7 @@ function buildAndRun(platform: TargetPlatform) {
   }
 }
 
-async function buildRunTest({ platform, variant }: BuildConfig) {
+async function buildRunTest({ version, platform, variant }: BuildConfig) {
   const setup = PLATFORM_CONFIG[platform];
   if (!setup) {
     log(yellow(`⚠ Unknown platform: ${platform}`));
@@ -211,7 +221,7 @@ async function buildRunTest({ platform, variant }: BuildConfig) {
   }
 
   for (const engine of setup.engines) {
-    const configWithEngine = { platform, variant, engine };
+    const configWithEngine = { version, platform, variant, engine };
     if (!setup.isAvailable(configWithEngine)) {
       continue;
     }
@@ -285,13 +295,13 @@ if (platforms.length === 0) {
     return job.then(() =>
       withReactNativeVersion(version, async () => {
         for (const platform of platforms) {
-          await buildRunTest({ platform, variant });
+          await buildRunTest({ version, platform, variant });
         }
       })
     );
   }, prestart())
     .then(() => {
-      showBanner(`Initialize new app`);
+      showBanner("Initialize new app");
       $(
         PACKAGE_MANAGER,
         "init-test-app",
@@ -306,7 +316,7 @@ if (platforms.length === 0) {
       );
     })
     .then(() => {
-      showBanner(`Reconfigure existing app`);
+      showBanner("Reconfigure existing app");
       const args = [
         "configure-test-app",
         "-p",

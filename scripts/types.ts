@@ -310,6 +310,7 @@ export type ApplePlatform = "ios" | "macos" | "visionos";
 export type TargetPlatform = ApplePlatform | "android" | "windows";
 
 export type BuildConfig = {
+  version: string;
   platform: TargetPlatform;
   variant: "fabric" | "paper";
   engine?: "hermes" | "jsc";

@@ -1,5 +1,5 @@
 // @ts-check
-import { equal } from "node:assert/strict";
+import { equal, match } from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import { remote } from "webdriverio";
 import { findNearest, readTextFile } from "../../../scripts/helpers.js";
@@ -103,8 +103,9 @@ describe("App", () => {
     const reactNative = await client.$(byId("react-native-value"));
     equal(await reactNative.getText(), reactNativeVersion);
 
-    const hermes = await client.$(byId("hermes-value"));
-    equal(await hermes.getText(), getCapability("react:hermes"));
+    const jsEngine = await client.$(byId("js-engine-value"));
+    const isHermes = config.capabilities["react:hermes"];
+    match(await jsEngine.getText(), isHermes ? /^Hermes/ : /^JSC$/);
 
     const fabric = await client.$(byId("fabric-value"));
     equal(await fabric.getText(), getCapability("react:fabric"));
