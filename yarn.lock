@@ -3830,12 +3830,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.5.8":
-  version: 0.5.8
-  resolution: "@rnx-kit/react-native-host@npm:0.5.8"
+"@rnx-kit/react-native-host@npm:^0.5.9":
+  version: 0.5.9
+  resolution: "@rnx-kit/react-native-host@npm:0.5.9"
   peerDependencies:
     react-native: ">=0.66"
-  checksum: 10c0/7c8accf892cc78155e7748e121bfd5a670ebdd5816e679e9c19b4de86c7372277d47bbb438e57e80bd70c83da5e15fcea19d25f1ed7136e457cec7ac4301cb77
+  checksum: 10c0/a1533b25178b7b27bc0dc4e91bceb998f4b00e4982bd322b7686fe2d6207dd56684fe18f1e361973ad0097eda6d1dcbcb4822bd10464d85b3ffbce96a9493d87
   languageName: node
   linkType: hard
 
@@ -12119,7 +12119,7 @@ __metadata:
     "@react-native-community/cli": "npm:^15.0.1"
     "@react-native-community/template": "npm:^0.78.0"
     "@rnx-kit/eslint-plugin": "npm:^0.8.0"
-    "@rnx-kit/react-native-host": "npm:^0.5.8"
+    "@rnx-kit/react-native-host": "npm:^0.5.9"
     "@rnx-kit/tools-react-native": "npm:^2.1.0"
     "@rnx-kit/tsconfig": "npm:^2.0.0"
     "@swc-node/register": "npm:^1.10.0"
@@ -12153,7 +12153,7 @@ __metadata:
     "@callstack/react-native-visionos": 0.73 - 0.78
     "@expo/config-plugins": ">=5.0"
     react: 18.1 - 19.1
-    react-native: 0.70 - 0.79 || >=0.80.0-0 <0.80.0
+    react-native: 0.70 - 0.80 || >=0.81.0-0 <0.81.0
     react-native-macos: ^0.0.0-0 || 0.71 - 0.78
     react-native-windows: ^0.0.0-0 || 0.70 - 0.78
   peerDependenciesMeta:

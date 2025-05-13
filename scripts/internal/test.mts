@@ -24,7 +24,7 @@ switch (getTarget(input)) {
     break;
   case "typescript":
     testWith(process.argv0, [
-      "--experimental-transform-types",
+      "--experimental-strip-types",
       "--no-warnings",
       "--test",
       "--experimental-test-coverage",

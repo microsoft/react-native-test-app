@@ -257,13 +257,13 @@ If the test script succeeds, we are ready to open a PR:
   - The test script we ran should have generated screenshots for the table
 
 ```markdown
-| Configuration | JSC  | Hermes | Fabric | Fabric + Hermes |
-| :------------ | :--: | :----: | :----: | :-------------: |
-| Android       | n/a  |  TODO  |  n/a   |      TODO       |
-| iOS           | TODO |  TODO  |  TODO  |      TODO       |
-| macOS         | TODO |  TODO  |  TODO  |      TODO       |
-| visionOS      | TODO |  TODO  |  TODO  |      TODO       |
-| Windows       | n/a  |  TODO  |  n/a   |      TODO       |
+| Configuration | JSC | Hermes | Fabric | Fabric + Hermes |
+| :------------ | :-: | :----: | :----: | :-------------: |
+| Android       | n/a |  TODO  |  n/a   |      TODO       |
+| iOS           | n/a |  TODO  |  n/a   |      TODO       |
+| macOS         | n/a |  TODO  |  n/a   |      TODO       |
+| visionOS      | n/a |  TODO  |  n/a   |      TODO       |
+| Windows       | n/a |  TODO  |  n/a   |      TODO       |
 ```
 
 While the PR is open:
