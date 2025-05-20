@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "trunk",
+  "release": {
+    "projects": ["react-native-test-app"],
+    "projectsRelationship": "independent",
+    "changelog": {
+      "workspaceChangelog": false,
+      "projectChangelogs": {
+        "createRelease": "github",
+        "file": false,
+        "renderOptions": {
+          "applyUsernameToAuthors": false
+        }
+      }
+    },
+    "version": {
+      "conventionalCommits": true,
+      "versionActionsOptions": {
+        "skipLockFileUpdate": true
+      }
+    },
+    "releaseTagPattern": "{version}",
+    "git": {
+      "commit": false
+    }
+  }
+}

@@ -625,8 +625,8 @@ jobs:
     timeout-minutes: 60
   release:
     permissions:
-      contents: write # create releases (semantic-release)
-      id-token: write # enable use of OIDC for npm provenance (semantic-release)
+      contents: write # create releases (Nx Release)
+      id-token: write # enable use of OIDC for npm provenance (Nx Release)
     needs:
       - review
       - ios
@@ -652,12 +652,18 @@ jobs:
       - name: Verify tarball content
         run: |
           yarn test test/pack.test.ts
+      - name: Release (dry run)
+        if: ${{ github.ref != 'refs/heads/trunk' }}
+        run: |
+          yarn nx release --dry-run
       - name: Release
+        if: ${{ github.ref == 'refs/heads/trunk' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
         run: |
-          yarn semantic-release
+          yarn nx release
   autobot:
     name: "Autobot"
     permissions:

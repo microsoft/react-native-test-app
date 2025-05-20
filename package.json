@@ -67,7 +67,7 @@
   },
   "scripts": {
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
-    "format:js": "prettier --write --log-level error $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' '*.yml' 'CONTRIBUTING.md' 'README.md' 'test/**/*.json' ':!:.yarn/releases')",
+    "format:js": "prettier --write --log-level error $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' '*.yml' '.github/*.json' 'CONTRIBUTING.md' 'README.md' 'nx.json' 'test/**/*.json' ':!:.yarn/releases')",
     "format:swift": "swiftformat $(git ls-files '*.swift')",
     "generate:code": "node --experimental-transform-types --no-warnings scripts/internal/generate-manifest.mts",
     "generate:docs": "node --experimental-transform-types --no-warnings scripts/internal/generate-manifest-docs.mts",
@@ -124,10 +124,13 @@
     "@babel/preset-env": "^7.20.0",
     "@expo/config-plugins": "^9.0.0",
     "@microsoft/eslint-plugin-sdl": "^1.0.0",
+    "@nx/js": "^21.0.0",
     "@react-native-community/cli": "^15.0.1",
     "@react-native-community/template": "^0.78.0",
     "@rnx-kit/eslint-plugin": "^0.8.0",
     "@rnx-kit/tsconfig": "^2.0.0",
+    "@swc-node/register": "^1.10.0",
+    "@swc/core": "^1.11.0",
     "@types/js-yaml": "^4.0.5",
     "@types/mustache": "^4.0.0",
     "@types/node": "^22.0.0",
@@ -138,13 +141,13 @@
     "js-yaml": "^4.1.0",
     "memfs": "^4.0.0",
     "minimatch": "^9.0.0",
+    "nx": "^21.0.0",
     "prettier": "^3.0.0",
     "prettier-plugin-organize-imports": "^4.1.0",
     "react": "19.0.0",
     "react-native": "^0.78.0",
     "react-native-macos": "^0.78.0",
     "react-native-windows": "^0.78.0",
-    "semantic-release": "^24.0.0",
     "suggestion-bot": "^3.0.0",
     "typescript": "^5.0.0"
   },
@@ -179,7 +182,6 @@
     "@react-native/js-polyfills": "^0.78.0",
     "@react-native/normalize-colors": "^0.78.0",
     "@react-native/virtualized-lists": "^0.78.0",
-    "@semantic-release/npm/npm": "link:./example",
     "appium/ajv": "^8.17.1",
     "appium/axios": "^1.8.3",
     "appium/semver": "^7.7.1",
@@ -196,6 +198,7 @@
     "safe-buffer": "~5.2.1"
   },
   "workspaces": [
+    ".",
     "example"
   ],
   "defaultPlatformPackages": {
@@ -205,8 +208,5 @@
     "visionos": "@callstack/react-native-visionos",
     "windows": "react-native-windows"
   },
-  "prettier": "./.github/prettierrc.json",
-  "release": {
-    "extends": "./.github/semantic-release.json"
-  }
+  "prettier": "./.github/prettierrc.json"
 }

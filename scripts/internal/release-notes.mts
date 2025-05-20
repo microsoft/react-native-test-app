@@ -1,49 +1,41 @@
 /**
  * This script is only used to help write release announcements.
  */
-// @ts-expect-error Could not find a declaration file for module
-import { generateNotes } from "@semantic-release/release-notes-generator";
 import { spawn } from "node:child_process";
 import * as path from "node:path";
-import { URL, fileURLToPath } from "node:url";
-import { readJSONFile } from "../helpers.js";
-import type { Manifest } from "../types.js";
+import { fileURLToPath } from "node:url";
 
-function reformat(
-  output: string,
+type Commit = {
+  hash: string;
+  message: string;
+};
+
+type Group =
+  | "general"
+  | "android"
+  | "apple"
+  | "ios"
+  | "macos"
+  | "visionos"
+  | "windows";
+
+type Changes = Record<string, Record<Group, string[]>>;
+
+function assertCategory(category: string): asserts category is "feat" | "fix" {
+  if (category !== "feat" && category !== "fix") {
+    throw new Error(`Unknown category: ${category}`);
+  }
+}
+
+function capitalize(s: string): string {
+  return String(s[0]).toUpperCase() + s.substring(1);
+}
+
+function getCommits(
   lastRelease: string,
-  nextRelease: string
-): string {
-  const replacements: [RegExp, string][] = [
-    [/^# .*/m, `📣 react-native-test-app ${nextRelease}`],
-    [/^### .*/m, `Other fixes since ${lastRelease}:`],
-    [/^\* \*\*android:\*\*/gm, "* **Android:**"],
-    [/^\* \*\*apple:\*\*/gm, "* **Apple:**"],
-    [/^\* \*\*ios:\*\*/gm, "* **iOS:**"],
-    [/^\* \*\*macos:\*\*/gm, "* **macOS:**"],
-    [/^\* \*\*visionos:\*\*/gm, "* **visionOS:**"],
-    [/^\* \*\*windows:\*\*/gm, "* **Windows:**"],
-    [/\s*\(\[#\d+\]\(https:\/\/github.com.*/gm, ""],
-  ];
-  return replacements
-    .reduce(
-      (output, [search, replace]) => output.replace(search, replace),
-      output
-    )
-    .trim();
-}
-
-function repositoryUrl() {
-  const p = fileURLToPath(new URL("../../package.json", import.meta.url));
-  const manifest = readJSONFile<Manifest>(p);
-  return manifest.repository?.url;
-}
-
-/**
- * @param {string} lastRelease
- * @param {string} nextRelease
- */
-function main(lastRelease: string, nextRelease: string): void {
+  nextRelease: string,
+  callback: (commits: Commit[]) => void
+): void {
   const args = [
     "log",
     `--pretty=format:{ ＂hash＂: ＂%H＂, ＂message＂: ＂%s＂ }`,
@@ -68,26 +60,98 @@ function main(lastRelease: string, nextRelease: string): void {
       .replaceAll('"', '\\"')
       .replaceAll("＂", '"')
       .replaceAll("\n", ",");
+
     const commits = JSON.parse(output);
     if (commits.length === 0) {
-      return;
+      return
     }
 
-    const context = {
-      commits,
-      lastRelease: { gitTag: lastRelease },
-      nextRelease: { gitTag: nextRelease },
-      options: {
-        repositoryUrl: repositoryUrl(),
-      },
-      cwd: process.cwd(),
-    };
-
-    const releaseNotes: Promise<string> = generateNotes({}, context);
-    releaseNotes
-      .then((output) => reformat(output, lastRelease, nextRelease))
-      .then((output) => console.log(output));
+    callback(commits);
   });
+}
+
+function sanitizeGroup(group: string): Group {
+  switch (group) {
+    case "android":
+    case "apple":
+    case "ios":
+    case "macos":
+    case "visionos":
+    case "windows":
+      return group;
+    default:
+      return "general";
+  }
+}
+
+function parseCommits(commits: Commit[]): Changes {
+  const changes: Changes = {
+    feat: {
+      general: [],
+      android: [],
+      apple: [],
+      ios: [],
+      macos: [],
+      visionos: [],
+      windows: [],
+    },
+    fix: {
+      general: [],
+      android: [],
+      apple: [],
+      ios: [],
+      macos: [],
+      visionos: [],
+      windows: [],
+    },
+  };
+
+  for (const { message } of commits) {
+    const m = message.match(/^(feat|fix)(?:\((.*?)\))?: (.*)$/);
+    if (m) {
+      const [, cat, group, message] = m;
+      assertCategory(cat);
+      changes[cat][sanitizeGroup(group)].push(message);
+    }
+  }
+
+  return changes;
+}
+
+function renderGroup(group: string): string {
+  switch (group) {
+    case "android":
+      return "**Android:** ";
+    case "apple":
+      return "**Apple:** ";
+    case "ios":
+      return "**iOS:** ";
+    case "macos":
+      return "**macOS:** ";
+    case "visionos":
+      return "**visionOS:** ";
+    case "windows":
+      return "**Windows:** ";
+    default:
+      return "";
+  }
+}
+
+function renderCategory(
+  header: string,
+  changes: Changes[string],
+  output: string[]
+): string[] {
+  const groups = Object.entries(changes);
+  if (groups.length > 0) {
+    output.push("", header, "");
+    for (const [group, entries] of groups) {
+      for (const entry of entries) {
+        output.push(`- ${renderGroup(group)}${capitalize(entry)}`);
+      }
+    }
+  }
+  return output;
 }
 
 const [, , lastRelease, nextRelease] = process.argv;
@@ -96,5 +160,13 @@ if (!lastRelease || !nextRelease) {
   console.log(`Usage: ${thisScript} <start tag> <end tag>`);
   process.exitCode = 1;
 } else {
-  main(lastRelease, nextRelease);
+  getCommits(lastRelease, nextRelease, (commits) => {
+    const { feat, fix } = parseCommits(commits);
+
+    const lines = [`📣 react-native-test-app ${nextRelease}`];
+    renderCategory("New features:", feat, lines);
+    renderCategory(`Fixes since ${lastRelease}:`, fix, lines);
+
+    console.log(lines.join("\n"));
+  });
 }

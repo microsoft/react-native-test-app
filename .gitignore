@@ -9,6 +9,8 @@
 .cxx/
 .gradle/
 .idea/
+.nx/cache
+.nx/workspace-data
 .vs/
 .watchman-*
 .yarn/*
