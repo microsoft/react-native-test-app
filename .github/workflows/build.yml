@@ -423,6 +423,9 @@ jobs:
       - name: Install Pods
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
+          # TODO: Disable Hermes while build issues are being resolved
+          # https://github.com/microsoft/react-native-macos/issues/2499
+          sed -i '' 's/:hermes_enabled => true/:hermes_enabled => false/' macos/Podfile
           pod install --project-directory=macos
         working-directory: template-example
       - name: Build
