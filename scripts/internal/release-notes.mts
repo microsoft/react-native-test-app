@@ -63,7 +63,7 @@ function getCommits(
 
     const commits = JSON.parse(output);
     if (commits.length === 0) {
-      return
+      return;
     }
 
     callback(commits);
