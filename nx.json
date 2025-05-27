@@ -10,6 +10,7 @@
         "createRelease": "github",
         "file": false,
         "renderOptions": {
+          "authors": false,
           "applyUsernameToAuthors": false
         }
       }
