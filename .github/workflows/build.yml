@@ -661,6 +661,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
         run: |
+          git config user.email 'github-actions[bot]'
+          git config user.name 'github-actions[bot]@users.noreply.github.com'
           yarn nx release
   autobot:
     name: "Autobot"
