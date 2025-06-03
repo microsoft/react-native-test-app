@@ -3317,11 +3317,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/cli@npm:0.78.2":
-  version: 0.78.2
-  resolution: "@react-native-windows/cli@npm:0.78.2"
+"@react-native-windows/cli@npm:0.78.3":
+  version: 0.78.3
+  resolution: "@react-native-windows/cli@npm:0.78.3"
   dependencies:
-    "@react-native-windows/codegen": "npm:0.78.1"
+    "@react-native-windows/codegen": "npm:0.78.2"
     "@react-native-windows/fs": "npm:0.78.0"
     "@react-native-windows/package-utils": "npm:0.78.0"
     "@react-native-windows/telemetry": "npm:0.78.0"
@@ -3343,13 +3343,13 @@ __metadata:
     xpath: "npm:^0.0.27"
   peerDependencies:
     react-native: "*"
-  checksum: 10c0/73d5f083a043f7326442f6f292c6e7f74586036de72ad73af462fa3f332d2aead5661bdb0a0d1ab893f7d48b902a1b5b343487e5627fd3797bb0853b4850aab0
+  checksum: 10c0/fafd46ee8a5cdba3b339983fb274b5b2987bd516b955fa9314585e1818b55ea7a9dbc07cf98126b73be02e124c933639f944e39895bd1228a7f9f730334f4f15
   languageName: node
   linkType: hard
 
-"@react-native-windows/codegen@npm:0.78.1":
-  version: 0.78.1
-  resolution: "@react-native-windows/codegen@npm:0.78.1"
+"@react-native-windows/codegen@npm:0.78.2":
+  version: 0.78.2
+  resolution: "@react-native-windows/codegen@npm:0.78.2"
   dependencies:
     "@react-native-windows/fs": "npm:0.78.0"
     chalk: "npm:^4.1.0"
@@ -3361,7 +3361,7 @@ __metadata:
     react-native: "*"
   bin:
     react-native-windows-codegen: bin.js
-  checksum: 10c0/1907e629f888a0f7a5c5c6505a43dd585fa3ad5c4ec03f33bb6386f499dce93c1308b82c501e2e749bfa1d9238fbf373c6eaf3923c2fa81107e22461bf9e8426
+  checksum: 10c0/9d4cd766a2ed34d5138ccdc15281cb613d79babfa4d9c835dead92e952344641c54285e69d3b286fa1cd21f947228f843488d12e95c9f5ad3c10e64af208e360
   languageName: node
   linkType: hard
 
@@ -12034,13 +12034,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.0.0":
-  version: 18.2.0
-  resolution: "react-is@npm:18.2.0"
-  checksum: 10c0/6eb5e4b28028c23e2bfcf73371e72cd4162e4ac7ab445ddae2afe24e347a37d6dc22fae6e1748632cd43c6d4f9b8f86dcf26bf9275e1874f436d129952528ae0
-  languageName: node
-  linkType: hard
-
 "react-is@npm:^16.13.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -12052,6 +12045,13 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 10c0/2bdb6b93fbb1820b024b496042cce405c57e2f85e777c9aabd55f9b26d145408f9f74f5934676ffdc46f3dcff656d78413a6e43968e7b3f92eea35b3052e9053
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^18.0.0":
+  version: 18.2.0
+  resolution: "react-is@npm:18.2.0"
+  checksum: 10c0/6eb5e4b28028c23e2bfcf73371e72cd4162e4ac7ab445ddae2afe24e347a37d6dc22fae6e1748632cd43c6d4f9b8f86dcf26bf9275e1874f436d129952528ae0
   languageName: node
   linkType: hard
 
@@ -12174,15 +12174,15 @@ __metadata:
   linkType: soft
 
 "react-native-windows@npm:^0.78.0":
-  version: 0.78.4
-  resolution: "react-native-windows@npm:0.78.4"
+  version: 0.78.6
+  resolution: "react-native-windows@npm:0.78.6"
   dependencies:
     "@babel/runtime": "npm:^7.0.0"
     "@jest/create-cache-key-function": "npm:^29.6.3"
     "@react-native-community/cli": "npm:^15.0.0"
     "@react-native-community/cli-platform-android": "npm:^15.0.0"
     "@react-native-community/cli-platform-ios": "npm:^15.0.0"
-    "@react-native-windows/cli": "npm:0.78.2"
+    "@react-native-windows/cli": "npm:0.78.3"
     "@react-native/assets": "npm:1.0.0"
     "@react-native/assets-registry": "npm:0.78.0"
     "@react-native/codegen": "npm:0.78.0"
@@ -12213,7 +12213,6 @@ __metadata:
     promise: "npm:^8.3.0"
     react-devtools-core: "npm:^6.0.1"
     react-refresh: "npm:^0.14.0"
-    react-shallow-renderer: "npm:^16.15.0"
     regenerator-runtime: "npm:^0.13.2"
     scheduler: "npm:0.25.0"
     semver: "npm:^7.1.3"
@@ -12226,7 +12225,7 @@ __metadata:
     "@types/react": ^19.0.0
     react: ^19.0.0
     react-native: ^0.78.0
-  checksum: 10c0/f1f9ec57cb4aa76e96ff9e2ae2240e1b4e3454c1f5e0f0a05c621b4b514e15bc57b9e5624e02f215e80712e60fb60892be138924baaf30fca641fa619a624265
+  checksum: 10c0/61ca6371df4578621f0488f066304c0aaa4c97c2a0433a89e43b1bbf6acf73b16191c8689c78fdd97b4a097861906a7da1eb259639f5919ae7648418e65d6835
   languageName: node
   linkType: hard
 
@@ -12286,18 +12285,6 @@ __metadata:
   version: 0.14.0
   resolution: "react-refresh@npm:0.14.0"
   checksum: 10c0/b8ae07ad153357d77830928a7f1fc2df837aabefee907fa273ba04c7643f3b860e986f1d4b7ada9b721c8d79b8c24b5b911a314a1a2398b105f1b13d19ea2b8d
-  languageName: node
-  linkType: hard
-
-"react-shallow-renderer@npm:^16.15.0":
-  version: 16.15.0
-  resolution: "react-shallow-renderer@npm:16.15.0"
-  dependencies:
-    object-assign: "npm:^4.1.1"
-    react-is: "npm:^16.12.0 || ^17.0.0 || ^18.0.0"
-  peerDependencies:
-    react: ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/c194d741792e86043a4ae272f7353c1cb9412bc649945c4220c6a101a6ea5410cceb3d65d5a4d750f11a24f7426e8eec7977e8a4e3ad5d3ee235ca2b18166fa8
   languageName: node
   linkType: hard
 
