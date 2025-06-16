@@ -33,7 +33,7 @@
     "@react-native/babel-preset": "^0.78.0",
     "@react-native/metro-config": "^0.78.0",
     "@rnx-kit/cli": "^0.18.7",
-    "@rnx-kit/metro-config": "^2.0.0",
+    "@rnx-kit/metro-config": "^2.1.0",
     "@rnx-kit/polyfills": "^0.2.0",
     "@rnx-kit/tsconfig": "^2.0.0",
     "@types/react": "~19.0.0",
