@@ -128,6 +128,7 @@
     "@react-native-community/cli": "^15.0.1",
     "@react-native-community/template": "^0.78.0",
     "@rnx-kit/eslint-plugin": "^0.8.0",
+    "@rnx-kit/lint-lockfile": "^0.1.0",
     "@rnx-kit/tsconfig": "^2.0.0",
     "@swc-node/register": "^1.10.0",
     "@swc/core": "^1.11.0",
@@ -208,5 +209,17 @@
     "visionos": "@callstack/react-native-visionos",
     "windows": "react-native-windows"
   },
-  "prettier": "./.github/prettierrc.json"
+  "prettier": "./.github/prettierrc.json",
+  "rnx-kit": {
+    "lint": {
+      "lockfile": {
+        "noDuplicates": {
+          "packages": [
+            "#react-native",
+            "@babel/core"
+          ]
+        }
+      }
+    }
+  }
 }

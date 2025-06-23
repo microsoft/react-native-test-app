@@ -56,6 +56,9 @@ jobs:
           yarn dedupe --check
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
+      - name: Lint lockfile
+        run: |
+          yarn lint-lockfile
       - name: Validate generated files
         if: ${{ github.event_name == 'pull_request' }}
         env:
