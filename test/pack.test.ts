@@ -322,8 +322,8 @@ describe("npm pack", () => {
       "windows/Win32/pch.h",
       "windows/Win32/resource.h",
       "windows/Win32/targetver.h",
+      "windows/app.mjs",
       "windows/project.mjs",
-      "windows/test-app.mjs",
       "windows/uwp.mjs",
       "windows/win32.mjs",
     ]);

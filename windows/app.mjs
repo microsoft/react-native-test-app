@@ -63,6 +63,29 @@ export function findUserProjects(projectDir, projects = [], fs = nodefs) {
 }
 
 /**
+ * @param {string | undefined} msbuildprops
+ * @returns {string | undefined} XML elements for additional MSBuild properties.
+ */
+export function parseMSBuildProperties(msbuildprops) {
+  if (!msbuildprops) {
+    return undefined;
+  }
+
+  return msbuildprops
+    .split(",")
+    .map((prop) => {
+      const [name, value] = prop.split("=");
+      if (!name || !value) {
+        throw new Error(
+          `Invalid MSBuild property: "${prop}"; expected format: "Name=Value".`
+        );
+      }
+      return `<${name}>${value}</${name}>`;
+    })
+    .join("\n");
+}
+
+/**
  * Replaces parts in specified content.
  * @param {string} content Content to be replaced.
  * @param {{ [pattern: string]: string }} replacements e.g. {'TextToBeReplaced': 'Replacement'}
@@ -232,7 +255,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
     const props = path.relative(process.cwd(), experimentalFeaturesPropsPath);
     console.log(colors.cyan(colors.bold("info")), `'${props}' already exists`);
   } else {
-    const { useHermes } = options;
+    const { msbuildprops, useHermes } = options;
     const { useExperimentalNuGet, useFabric, versionNumber } = info;
     const url = new URL(experimentalFeaturesPropsFilename, import.meta.url);
     copyAndReplaceAsync(fileURLToPath(url), experimentalFeaturesPropsPath, {
@@ -241,6 +264,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
       "<UseHermes>true</UseHermes>": `<UseHermes>${useHermes == null ? versionNumber >= v(0, 73, 0) : useHermes}</UseHermes>`,
       "<UseWinUI3>false</UseWinUI3>": `<UseWinUI3>${useFabric}</UseWinUI3>`,
       "<UseExperimentalNuget>false</UseExperimentalNuget>": `<UseExperimentalNuget>${useExperimentalNuGet}</UseExperimentalNuget>`,
+      "<!-- AdditionalMSBuildProperties -->": msbuildprops ?? "",
     });
   }
 
@@ -322,6 +346,10 @@ if (isMain(import.meta.url)) {
         type: "boolean",
         default: os.platform() === "win32",
       },
+      msbuildprops: {
+        description: `Comma-separated properties passed to MSBuild e.g., UseWinUI3=true,WindowsTargetPlatformVersion=10.0.26100.0`,
+        type: "string",
+      },
       "use-fabric": {
         description: "Use New Architecture [experimental] (supported on 0.73+)",
         type: "boolean",
@@ -340,13 +368,19 @@ if (isMain(import.meta.url)) {
     async ({
       "project-directory": projectDirectory,
       autolink,
+      msbuildprops,
       "use-fabric": useFabric,
       "use-hermes": useHermes,
       "use-nuget": useNuGet,
     }) => {
-      const options = { autolink, useFabric, useHermes, useNuGet };
       const destPath = path.resolve(projectDirectory);
-      const error = await generateSolution(destPath, options);
+      const error = await generateSolution(destPath, {
+        autolink,
+        msbuildprops: parseMSBuildProperties(msbuildprops),
+        useFabric,
+        useHermes,
+        useNuGet,
+      });
       if (error) {
         console.error(error);
         process.exitCode = 1;

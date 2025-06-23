@@ -12178,7 +12178,7 @@ __metadata:
     configure-test-app: scripts/configure.mjs
     init: scripts/init.mjs
     init-test-app: scripts/init.mjs
-    install-windows-test-app: windows/test-app.mjs
+    install-windows-test-app: windows/app.mjs
   languageName: unknown
   linkType: soft
 

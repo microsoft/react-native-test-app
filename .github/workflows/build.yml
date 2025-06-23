@@ -564,7 +564,7 @@ jobs:
           yarn build:windows
       - name: Generate Visual Studio solution
         run: |
-          yarn install-windows-test-app --use-nuget
+          yarn install-windows-test-app --use-nuget --msbuildprops WindowsTargetPlatformVersion=10.0.26100.0
         working-directory: example
       - name: Test `react-native config`
         run: |
@@ -616,7 +616,7 @@ jobs:
           yarn build:windows
       - name: Generate Visual Studio solution
         run: |
-          yarn install-windows-test-app --use-nuget
+          yarn install-windows-test-app --use-nuget --msbuildprops WindowsTargetPlatformVersion=10.0.26100.0
         working-directory: template-example
       - name: Determine whether the Windows app needs to be built
         id: affected

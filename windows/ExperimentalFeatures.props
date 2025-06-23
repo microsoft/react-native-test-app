@@ -33,6 +33,8 @@
     -->
     <UseExperimentalNuget>false</UseExperimentalNuget>
 
+    <!-- AdditionalMSBuildProperties -->
+
     <ReactExperimentalFeaturesSet>true</ReactExperimentalFeaturesSet>
   </PropertyGroup>
 </Project>

@@ -59,7 +59,7 @@
     "init": "scripts/init.mjs",
     "init-test-app": "scripts/init.mjs",
     "configure-test-app": "scripts/configure.mjs",
-    "install-windows-test-app": "windows/test-app.mjs"
+    "install-windows-test-app": "windows/app.mjs"
   },
   "repository": {
     "type": "git",
