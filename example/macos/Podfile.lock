@@ -1212,6 +1212,8 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
+  - react-native-safe-area-context (5.5.2):
+    - React-Core
   - React-NativeModulesApple (0.78.3):
     - glog
     - React-callinvoker
@@ -1573,6 +1575,7 @@ DEPENDENCIES:
   - React-logger (from `../../node_modules/react-native-macos/ReactCommon/logger`)
   - React-Mapbuffer (from `../../node_modules/react-native-macos/ReactCommon`)
   - React-microtasksnativemodule (from `../../node_modules/react-native-macos/ReactCommon/react/nativemodule/microtasks`)
+  - react-native-safe-area-context (from `../../node_modules/react-native-safe-area-context`)
   - React-NativeModulesApple (from `../../node_modules/react-native-macos/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../../node_modules/react-native-macos/ReactCommon/reactperflogger`)
   - React-performancetimeline (from `../../node_modules/react-native-macos/ReactCommon/react/performance/timeline`)
@@ -1682,6 +1685,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/react-native-macos/ReactCommon"
   React-microtasksnativemodule:
     :path: "../../node_modules/react-native-macos/ReactCommon/react/nativemodule/microtasks"
+  react-native-safe-area-context:
+    :path: "../../node_modules/react-native-safe-area-context"
   React-NativeModulesApple:
     :path: "../../node_modules/react-native-macos/ReactCommon/react/nativemodule/core/platform/ios"
   React-perflogger:
@@ -1787,6 +1792,7 @@ SPEC CHECKSUMS:
   React-logger: 403502d548fbc097ab2c5a783ca98f5e84390bad
   React-Mapbuffer: 3815edc6553967769cdd5e9127284926416270f0
   React-microtasksnativemodule: 67e75d6d737a78daaee8ea4300ddb555ef0909b0
+  react-native-safe-area-context: 0f7bf11598f9a61b7ceac8dc3f59ef98697e99e1
   React-NativeModulesApple: b575fb27ea57ed5be05928d26ebae10ec2784a43
   React-perflogger: 3756bfe3ff8cc8fffed3c51dce34cef861d4b82a
   React-performancetimeline: c4678b2226a660268cc478662ffc43a2ab1b5d30

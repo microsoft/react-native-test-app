@@ -24,6 +24,7 @@
     "react": "19.0.0",
     "react-native": "^0.78.0",
     "react-native-macos": "^0.78.0",
+    "react-native-safe-area-context": "^5.5.2",
     "react-native-windows": "^0.78.0"
   },
   "devDependencies": {

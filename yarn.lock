@@ -7769,6 +7769,7 @@ __metadata:
     react: "npm:19.0.0"
     react-native: "npm:^0.78.0"
     react-native-macos: "npm:^0.78.0"
+    react-native-safe-area-context: "npm:^5.5.2"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.78.0"
     webdriverio: "npm:^9.0.0"
@@ -12159,6 +12160,16 @@ __metadata:
   bin:
     react-native: cli.js
   checksum: 10c0/b32f2cd32d66eb2ad03e5eafbe3e56115975c06858b874c20cd0c8882db5777d0694d3c0cb266a93ad90fab8cb2d8b211a8d84da36329a94ef4c05683dad3ff4
+  languageName: node
+  linkType: hard
+
+"react-native-safe-area-context@npm:^5.5.2":
+  version: 5.5.2
+  resolution: "react-native-safe-area-context@npm:5.5.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/529cafcafbc1d994f6d9c9be41ae4f78768b7c103a22265d3fe5223a930249e0a07a934b5ec358ce510622061f339a20c2147b620bd15032366b12b4258c2ce5
   languageName: node
   linkType: hard
 

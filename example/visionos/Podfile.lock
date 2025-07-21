@@ -1245,6 +1245,8 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
+  - react-native-safe-area-context (5.5.2):
+    - React-Core
   - React-NativeModulesApple (0.78.0):
     - glog
     - React-callinvoker
@@ -1626,6 +1628,7 @@ DEPENDENCIES:
   - "React-logger (from `../node_modules/@callstack/react-native-visionos/ReactCommon/logger`)"
   - "React-Mapbuffer (from `../node_modules/@callstack/react-native-visionos/ReactCommon`)"
   - "React-microtasksnativemodule (from `../node_modules/@callstack/react-native-visionos/ReactCommon/react/nativemodule/microtasks`)"
+  - react-native-safe-area-context (from `../../node_modules/react-native-safe-area-context`)
   - "React-NativeModulesApple (from `../node_modules/@callstack/react-native-visionos/ReactCommon/react/nativemodule/core/platform/ios`)"
   - "React-perflogger (from `../node_modules/@callstack/react-native-visionos/ReactCommon/reactperflogger`)"
   - "React-performancetimeline (from `../node_modules/@callstack/react-native-visionos/ReactCommon/react/performance/timeline`)"
@@ -1741,6 +1744,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@callstack/react-native-visionos/ReactCommon"
   React-microtasksnativemodule:
     :path: "../node_modules/@callstack/react-native-visionos/ReactCommon/react/nativemodule/microtasks"
+  react-native-safe-area-context:
+    :path: "../../node_modules/react-native-safe-area-context"
   React-NativeModulesApple:
     :path: "../node_modules/@callstack/react-native-visionos/ReactCommon/react/nativemodule/core/platform/ios"
   React-perflogger:
@@ -1850,6 +1855,7 @@ SPEC CHECKSUMS:
   React-logger: 9861e645fb221ca8c40a65fe19f7a0c968d6a324
   React-Mapbuffer: 4eebc9c2565dc0cd2453e70525cf591650345bfb
   React-microtasksnativemodule: c750a8a62a0b84afcab68e67f4e7fc6f594d34f4
+  react-native-safe-area-context: 0f7bf11598f9a61b7ceac8dc3f59ef98697e99e1
   React-NativeModulesApple: 302a72119df5cd41283fe789072eda34ec51317a
   React-perflogger: f7cf057acfecf79822c1ca760fc558c3401635e0
   React-performancetimeline: f155e5e07c033691618adc82429532119751cf2f

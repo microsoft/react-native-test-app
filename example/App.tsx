@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { NativeSyntheticEvent } from "react-native";
 import {
   NativeModules,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -13,6 +12,7 @@ import {
 } from "react-native";
 // @ts-expect-error no type definitions available
 import { version as coreVersion } from "react-native/Libraries/Core/ReactNativeVersion";
+import { SafeAreaView } from "./SafeAreaView";
 
 declare global {
   export const RN$Bridgeless: boolean;
