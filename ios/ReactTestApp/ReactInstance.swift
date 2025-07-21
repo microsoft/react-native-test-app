@@ -3,7 +3,7 @@ import ReactNativeHost
 import ReactTestApp_DevSupport
 
 final class ReactInstance: NSObject, RNXHostConfig {
-    public static let scanForQRCodeNotification =
+    static let scanForQRCodeNotification =
         NSNotification.Name("ReactInstance.scanForQRCodeNotification")
 
     static func jsBundleURL() -> URL? {

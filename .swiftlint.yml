@@ -3,6 +3,8 @@ disabled_rules:
   - opening_brace # Conflicts with SwiftFormat
   - trailing_comma
 excluded:
+  - example/*/DerivedData/
   - example/*/Pods/
+  - example/*/build/
   - example/node_modules/
   - node_modules/

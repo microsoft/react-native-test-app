@@ -39,7 +39,7 @@ final class ContentViewController: UITableViewController {
     private let reactInstance: ReactInstance
     private var sections: [SectionData]
 
-    public init(reactInstance: ReactInstance) {
+    init(reactInstance: ReactInstance) {
         self.reactInstance = reactInstance
         sections = []
 
@@ -53,7 +53,7 @@ final class ContentViewController: UITableViewController {
 
     // MARK: - UIResponder overrides
 
-    override public func motionEnded(_: UIEvent.EventSubtype, with event: UIEvent?) {
+    override func motionEnded(_: UIEvent.EventSubtype, with event: UIEvent?) {
         guard event?.subtype == .motionShake, let host = reactInstance.host else {
             return
         }
@@ -73,7 +73,7 @@ final class ContentViewController: UITableViewController {
 
     // MARK: - UIViewController overrides
 
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         let manifest = Manifest.load()
@@ -154,21 +154,21 @@ final class ContentViewController: UITableViewController {
 
     // MARK: - UITableViewDelegate overrides
 
-    override public func tableView(_: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+    override func tableView(_: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         indexPath.section == Section.components
     }
 
-    override public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         sections[indexPath.section].items[indexPath.row].action?()
     }
 
     // MARK: - UITableViewDataSource overrides
 
-    override public func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
         sections[section].items.count
     }
 
-    override public func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let link = sections[indexPath.section].items[indexPath.row]
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
 
@@ -193,11 +193,11 @@ final class ContentViewController: UITableViewController {
         return cell
     }
 
-    override public func numberOfSections(in _: UITableView) -> Int {
+    override func numberOfSections(in _: UITableView) -> Int {
         sections.count
     }
 
-    override public func tableView(_: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_: UITableView, titleForFooterInSection section: Int) -> String? {
         sections[section].footer
     }
 
