@@ -258,7 +258,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
     const { msbuildprops, useHermes } = options;
     const { useExperimentalNuGet, useFabric, versionNumber } = info;
     const url = new URL(experimentalFeaturesPropsFilename, import.meta.url);
-    copyAndReplaceAsync(fileURLToPath(url), experimentalFeaturesPropsPath, {
+    await copyAndReplaceAsync(fileURLToPath(url), experimentalFeaturesPropsPath, {
       "<RnwNewArch>false</RnwNewArch>": `<RnwNewArch>${useFabric}</RnwNewArch>`,
       "<UseFabric>false</UseFabric>": `<UseFabric>${useFabric}</UseFabric>`,
       "<UseHermes>true</UseHermes>": `<UseHermes>${useHermes == null ? versionNumber >= v(0, 73, 0) : useHermes}</UseHermes>`,
