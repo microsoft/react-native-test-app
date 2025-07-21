@@ -258,14 +258,18 @@ export async function generateSolution(destPath, options, fs = nodefs) {
     const { msbuildprops, useHermes } = options;
     const { useExperimentalNuGet, useFabric, versionNumber } = info;
     const url = new URL(experimentalFeaturesPropsFilename, import.meta.url);
-    await copyAndReplaceAsync(fileURLToPath(url), experimentalFeaturesPropsPath, {
-      "<RnwNewArch>false</RnwNewArch>": `<RnwNewArch>${useFabric}</RnwNewArch>`,
-      "<UseFabric>false</UseFabric>": `<UseFabric>${useFabric}</UseFabric>`,
-      "<UseHermes>true</UseHermes>": `<UseHermes>${useHermes == null ? versionNumber >= v(0, 73, 0) : useHermes}</UseHermes>`,
-      "<UseWinUI3>false</UseWinUI3>": `<UseWinUI3>${useFabric}</UseWinUI3>`,
-      "<UseExperimentalNuget>false</UseExperimentalNuget>": `<UseExperimentalNuget>${useExperimentalNuGet}</UseExperimentalNuget>`,
-      "<!-- AdditionalMSBuildProperties -->": msbuildprops ?? "",
-    });
+    await copyAndReplaceAsync(
+      fileURLToPath(url),
+      experimentalFeaturesPropsPath,
+      {
+        "<RnwNewArch>false</RnwNewArch>": `<RnwNewArch>${useFabric}</RnwNewArch>`,
+        "<UseFabric>false</UseFabric>": `<UseFabric>${useFabric}</UseFabric>`,
+        "<UseHermes>true</UseHermes>": `<UseHermes>${useHermes == null ? versionNumber >= v(0, 73, 0) : useHermes}</UseHermes>`,
+        "<UseWinUI3>false</UseWinUI3>": `<UseWinUI3>${useFabric}</UseWinUI3>`,
+        "<UseExperimentalNuget>false</UseExperimentalNuget>": `<UseExperimentalNuget>${useExperimentalNuGet}</UseExperimentalNuget>`,
+        "<!-- AdditionalMSBuildProperties -->": msbuildprops ?? "",
+      }
+    );
   }
 
   if (info.useExperimentalNuGet) {
