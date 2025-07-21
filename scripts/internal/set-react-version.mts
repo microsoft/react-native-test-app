@@ -239,7 +239,7 @@ async function resolveCommonDependencies(
     "@react-native/metro-config": rnMetroConfigVersion,
     "metro-react-native-babel-preset": metroBabelPresetVersion,
     // Replace range to avoid React version mismatch
-    react: peerDependencies["react"].replace(/^\^/, "~"),
+    react: peerDependencies["react"].replace(/^\^/, ""),
   };
 }
 

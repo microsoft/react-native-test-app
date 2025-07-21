@@ -6,7 +6,7 @@
     "lib": ["ES2021", "DOM"]
   },
   "include": [
-    "App.tsx",
-    "index.ts"
+    "index.ts",
+    "src/**/*"
   ]
 }
