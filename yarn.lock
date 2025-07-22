@@ -3864,7 +3864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.5.9":
+"@rnx-kit/react-native-host@npm:^0.5.10":
   version: 0.5.10
   resolution: "@rnx-kit/react-native-host@npm:0.5.10"
   peerDependencies:
@@ -12186,7 +12186,7 @@ __metadata:
     "@react-native-community/template": "npm:^0.78.0"
     "@rnx-kit/eslint-plugin": "npm:^0.8.0"
     "@rnx-kit/lint-lockfile": "npm:^0.1.0"
-    "@rnx-kit/react-native-host": "npm:^0.5.9"
+    "@rnx-kit/react-native-host": "npm:^0.5.10"
     "@rnx-kit/tools-react-native": "npm:^2.1.0"
     "@rnx-kit/tsconfig": "npm:^2.0.0"
     "@swc-node/register": "npm:^1.10.0"
