@@ -3764,12 +3764,12 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:2.0.0"
+  version: 2.0.1
+  resolution: "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:2.0.1"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
-  checksum: 10c0/8bb5748d339e1f73eaea299ce0e13972c93d7d58e871db316610dbf144814dbc815cce7ca3408274d7544b6ba3c83deb592ecf42be0be08a650f4c456a47f9d2
+  checksum: 10c0/31bb0d0ff87ea4f8d6b8eb14ca63625c30e24644a3d65c2953a3afae346d8f04ef35545f19ba0c1ca231da62fff1b00e3f63825cf9f30bea76c8f7307af1e2a1
   languageName: node
   linkType: hard
 
