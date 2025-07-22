@@ -196,9 +196,11 @@ android {
 
             !enableNewArchitecture
                 ? "src/old-arch/java"
-                : reactNativeVersion >= v(0, 73, 0)
-                    ? "src/new-arch-0.73/java"
-                    : "src/new-arch/java",
+                : reactNativeVersion >= v(0, 81, 0)
+                    ? "src/new-arch-0.81/java"
+                    : reactNativeVersion >= v(0, 73, 0)
+                        ? "src/new-arch-0.73/java"
+                        : "src/new-arch/java",
 
             // TODO: Remove this block when we drop support for 0.74
             // https://github.com/facebook/react-native/commit/3283202248a36dbda553745afc46a3e3e2ab41a6

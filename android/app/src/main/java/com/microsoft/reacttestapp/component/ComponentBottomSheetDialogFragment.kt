@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.facebook.react.ReactApplication
+import com.facebook.react.ReactActivity
 import com.facebook.react.ReactRootView
+import com.facebook.react.interfaces.fabric.ReactSurface
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.microsoft.reacttestapp.BuildConfig
 
@@ -30,19 +31,33 @@ class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private var surface: ReactSurface? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val reactApplication = requireActivity().application as ReactApplication
-        return ReactRootView(context).apply {
-            setIsFabric(BuildConfig.REACTAPP_USE_FABRIC)
-            startReactApplication(
-                reactApplication.reactNativeHost.reactInstanceManager,
-                requireArguments().getString(NAME),
+        val activity = requireActivity() as ReactActivity
+        if (BuildConfig.REACTAPP_USE_BRIDGELESS) {
+            val surface = activity.reactActivityDelegate.reactHost?.createSurface(
+                activity,
+                requireNotNull(requireArguments().getString(NAME)),
                 requireArguments().getBundle(INITIAL_PROPERTIES)
             )
+            this.surface = requireNotNull(surface)
+            surface.start()
+            return surface.view as View
+        } else {
+            return ReactRootView(context).apply {
+                setIsFabric(BuildConfig.REACTAPP_USE_FABRIC)
+                @Suppress("DEPRECATION")
+                startReactApplication(
+                    activity.reactActivityDelegate.reactInstanceManager,
+                    requireArguments().getString(NAME),
+                    requireArguments().getBundle(INITIAL_PROPERTIES)
+                )
+            }
         }
     }
 }

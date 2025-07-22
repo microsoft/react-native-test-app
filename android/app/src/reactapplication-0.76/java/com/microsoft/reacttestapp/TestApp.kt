@@ -29,6 +29,7 @@ class TestApp :
     override val reactHost: ReactHost
         get() = getDefaultReactHost(this.applicationContext, reactNativeHost)
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override val reactNativeHost: TestAppReactNativeHost
         get() = reactNativeHostInternal
 

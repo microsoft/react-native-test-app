@@ -3,7 +3,6 @@
 
 #include <DefaultComponentsRegistry.h>
 #include <DefaultTurboModuleManagerDelegate.h>
-#include <rncore.h>
 
 #include <fbjni/fbjni.h>
 

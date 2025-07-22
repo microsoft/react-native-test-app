@@ -5,8 +5,8 @@ import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import androidx.core.net.toUri
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
 import com.facebook.react.ReactInstanceEventListener
@@ -19,7 +19,6 @@ import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.MainActivity
 import com.microsoft.reacttestapp.R
-import com.microsoft.reacttestapp.compat.ReactNativeHostCompat
 import java.lang.ref.WeakReference
 import java.util.Collections.synchronizedList
 import java.util.concurrent.CountDownLatch
@@ -44,10 +43,11 @@ sealed class BundleSource {
     }
 }
 
+@Suppress("TYPEALIAS_EXPANSION_DEPRECATION")
 class TestAppReactNativeHost(
     application: Application,
     private val reactBundleNameProvider: ReactBundleNameProvider
-) : ReactNativeHostCompat(application) {
+) : com.microsoft.reacttestapp.compat.ReactNativeHostCompat(application) {
     val jsExecutorName: String
         get() = javaScriptExecutorFactory.toString()
 
@@ -146,7 +146,7 @@ class TestAppReactNativeHost(
     }
 
     fun reloadJSFromServer(activity: Activity, bundleURL: String) {
-        val uri = Uri.parse(bundleURL)
+        val uri = bundleURL.toUri()
         PackagerConnectionSettings(activity).debugServerHost =
             if (uri.port > 0) {
                 "${uri.host}:${uri.port}"
