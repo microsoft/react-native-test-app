@@ -3652,20 +3652,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/align-deps@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "@rnx-kit/align-deps@npm:3.0.6"
+"@rnx-kit/align-deps@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@rnx-kit/align-deps@npm:3.1.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/5c64ff8b69cc8e4ea49a5aa291d761efd82a697b5590eebc7e645318abbe80fcde48802c52dff0132be62f58e8bf6edd5c109b5f3d7693541fc820a9d5887313
+  checksum: 10c0/0fc17e7561bda184e5dcc0340285a085d5eea6b9ae3b89e781355d01064314eebc64a343a633a5771007d0ef5211150da42616d5c30af5c2d74beac9a7ba5d69
   languageName: node
   linkType: hard
 
 "@rnx-kit/cli@npm:^0.18.7":
-  version: 0.18.9
-  resolution: "@rnx-kit/cli@npm:0.18.9"
+  version: 0.18.10
+  resolution: "@rnx-kit/cli@npm:0.18.10"
   dependencies:
-    "@rnx-kit/align-deps": "npm:^3.0.6"
+    "@rnx-kit/align-deps": "npm:^3.1.0"
     "@rnx-kit/config": "npm:^0.7.0"
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/metro-plugin-cyclic-dependencies-detector": "npm:^2.0.0"
@@ -3677,6 +3677,7 @@ __metadata:
     "@rnx-kit/third-party-notices": "npm:^2.0.0"
     "@rnx-kit/tools-android": "npm:^0.2.0"
     "@rnx-kit/tools-apple": "npm:^0.2.1"
+    "@rnx-kit/tools-filesystem": "npm:^0.1.0"
     "@rnx-kit/tools-language": "npm:^3.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
     "@rnx-kit/tools-react-native": "npm:^2.0.3"
@@ -3693,7 +3694,7 @@ __metadata:
       optional: true
   bin:
     rnx-cli: bin/rnx-cli.cjs
-  checksum: 10c0/8014a7bba73dbacfa00c5b320699625ead4e7d637b9c817344e4a4a98b35767f6a55a34992098c8c64cf12d2c5164c8ceb5842fd52d7e76a7731b9fb9c0163eb
+  checksum: 10c0/b568d645374b7718966a9c9f11ca318de7bdbf1e2310397f163ddf93e3d9a457f9e3b63fc242ce9631de3ea925d830115720424ccc99a31ff5ed500ec8f8b3b2
   languageName: node
   linkType: hard
 
@@ -3903,6 +3904,13 @@ __metadata:
     "@rnx-kit/tools-shell": "npm:^0.2.0"
     fast-xml-parser: "npm:^4.0.0"
   checksum: 10c0/dc587048484d3087a481840f96b467f70e6202b7c83217ed8b16b1454def2bd56e862111912eaa0679aafea8a7ff87fbe3e419d6ee75ac4cced7ef8f54699def
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/tools-filesystem@npm:^0.1.0":
+  version: 0.1.2
+  resolution: "@rnx-kit/tools-filesystem@npm:0.1.2"
+  checksum: 10c0/36c740b611fd7d6f22f0e379e76274f52c1d57c5e6b56dc4caa4d91f9aacb001633ecb0860503a980c621e16fb18326905d3f21a5acda8614b70e35f33c53fb1
   languageName: node
   linkType: hard
 
