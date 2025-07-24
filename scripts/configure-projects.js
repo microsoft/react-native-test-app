@@ -15,7 +15,6 @@ const {
   findFile,
   findNearest,
   getPackageVersion,
-  readJSONFile,
   readTextFile,
   toVersionNumber,
   v,
