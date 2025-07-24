@@ -7,6 +7,10 @@ import {
   internalForTestingPurposesOnly,
 } from "../scripts/configure-projects.js";
 
+// This value needs to be the same as `package` in
+// `android/app/src/main/AndroidManifest.xml`
+const packageName = "com.microsoft.reacttestapp";
+
 describe("configureProjects()", () => {
   const manifestPath = path.join(
     "app",
@@ -29,7 +33,7 @@ describe("configureProjects()", () => {
       android: {
         sourceDir,
         manifestPath,
-        packageName: undefined,
+        packageName,
       },
     });
   });
@@ -113,10 +117,8 @@ describe("findReactNativeConfig()", () => {
 describe("getAndroidPackageName()", () => {
   const { getAndroidPackageName } = internalForTestingPurposesOnly;
 
-  const appManifest = "app.json";
-  const packageId = "com.testapp";
-
   function mockfs(cliPlatformAndroidVersion: string): typeof nodefs {
+    const appManifest = "app.json";
     const cliPlatformAndroidPackageManifest =
       /@react-native-community[/\\]cli-platform-android[/\\]package.json$/;
     return {
@@ -125,7 +127,7 @@ describe("getAndroidPackageName()", () => {
       // @ts-expect-error Type 'string' is not assignable to type 'Buffer'
       readFileSync: (p) => {
         if (p === appManifest) {
-          return JSON.stringify({ android: { package: packageId } });
+          return JSON.stringify({ android: { package: "com.testapp" } });
         } else if (
           typeof p === "string" &&
           cliPlatformAndroidPackageManifest.test(p)
@@ -141,28 +143,23 @@ describe("getAndroidPackageName()", () => {
     };
   }
 
-  it("returns early if specified path is falsy", () => {
-    equal(getAndroidPackageName(""), undefined);
-    equal(getAndroidPackageName(undefined), undefined);
-  });
-
   it("returns early if `@react-native-community/cli-platform-android` <12.3.7", () => {
-    equal(getAndroidPackageName(appManifest, mockfs("11.4.1")), undefined);
-    equal(getAndroidPackageName(appManifest, mockfs("12.3.6")), undefined);
+    equal(getAndroidPackageName(mockfs("11.4.1")), undefined);
+    equal(getAndroidPackageName(mockfs("12.3.6")), undefined);
   });
 
   it("returns package name if `@react-native-community/cli-platform-android` >=12.3.7 <13.0.0", () => {
-    equal(getAndroidPackageName(appManifest, mockfs("12.3.7")), packageId);
-    equal(getAndroidPackageName(appManifest, mockfs("12.999.999")), packageId);
+    equal(getAndroidPackageName(mockfs("12.3.7")), packageName);
+    equal(getAndroidPackageName(mockfs("12.999.999")), packageName);
   });
 
   it("returns early if `@react-native-community/cli-platform-android` <13.6.9", () => {
-    equal(getAndroidPackageName(appManifest, mockfs("13.0.0")), undefined);
-    equal(getAndroidPackageName(appManifest, mockfs("13.6.8")), undefined);
+    equal(getAndroidPackageName(mockfs("13.0.0")), undefined);
+    equal(getAndroidPackageName(mockfs("13.6.8")), undefined);
   });
 
   it("returns package name `@react-native-community/cli-platform-android` >=13.6.9", () => {
-    equal(getAndroidPackageName(appManifest, mockfs("13.6.9")), packageId);
-    equal(getAndroidPackageName(appManifest, mockfs("14.0.0")), packageId);
+    equal(getAndroidPackageName(mockfs("13.6.9")), packageName);
+    equal(getAndroidPackageName(mockfs("14.0.0")), packageName);
   });
 });

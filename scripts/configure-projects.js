@@ -100,14 +100,9 @@ const getRNPackageVersion = (() => {
 })();
 
 /**
- * @param {string | undefined} manifestPath
  * @returns {string | undefined}
  */
-function getAndroidPackageName(manifestPath, fs = nodefs) {
-  if (!manifestPath) {
-    return undefined;
-  }
-
+function getAndroidPackageName(fs = nodefs) {
   try {
     const rncliAndroidVersion = getRNPackageVersion(
       "@react-native-community/cli-platform-android",
@@ -128,9 +123,7 @@ function getAndroidPackageName(manifestPath, fs = nodefs) {
     // We're on 0.76 or later
   }
 
-  /** @type {{ android?: { package?: string }}} */
-  const manifest = readJSONFile(manifestPath, fs);
-  return manifest.android?.package;
+  return "com.microsoft.reacttestapp";
 }
 
 /**
@@ -179,7 +172,7 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
     config.android = {
       sourceDir,
       manifestPath,
-      packageName: packageName || getAndroidPackageName(appManifestPath, fs),
+      packageName: packageName || getAndroidPackageName(fs),
     };
 
     configureGradleWrapper(sourceDir, fs);
