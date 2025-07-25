@@ -7537,8 +7537,8 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-n@npm:^17.10.3":
-  version: 17.17.0
-  resolution: "eslint-plugin-n@npm:17.17.0"
+  version: 17.21.0
+  resolution: "eslint-plugin-n@npm:17.21.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.5.0"
     enhanced-resolve: "npm:^5.17.1"
@@ -7548,9 +7548,10 @@ __metadata:
     ignore: "npm:^5.3.2"
     minimatch: "npm:^9.0.5"
     semver: "npm:^7.6.3"
+    ts-declaration-location: "npm:^1.0.6"
   peerDependencies:
     eslint: ">=8.23.0"
-  checksum: 10c0/ac6b2e2bbdc8f49a84be1bf1add8a412093a56fe95e8820610ecd5185fa00a348197a06fe3fe36080c09dc5d5a8f0f4f543cb3cf193265ace3fd071a79a07e88
+  checksum: 10c0/23a27f7ddbefa5a11c37b944050245f9cf3590622e974431179e65a0dd76ff27909a439201279e4561d1979cdfeb93e434ae099526e91412e2f62ef2dd1f0b39
   languageName: node
   linkType: hard
 
@@ -7601,9 +7602,9 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-wdio@npm:^9.0.0":
-  version: 9.9.1
-  resolution: "eslint-plugin-wdio@npm:9.9.1"
-  checksum: 10c0/04f2ffe7a3af8bb203aa53b96b746562c66e0aa5a341d964051e7d7331c8424446b17d8c0491a4d8433e8303efcd5375a3241054c3648812cb346a91db4e1d67
+  version: 9.16.2
+  resolution: "eslint-plugin-wdio@npm:9.16.2"
+  checksum: 10c0/ba027a0fcfd548cc19ee9f1617b989bd1d424d5e27e671ca3c86da03ae04c8823fbdc1ca354fb1d519283511dbe03b4c67e390f8820291e84fe4bf93e43cf9db
   languageName: node
   linkType: hard
 
@@ -13968,6 +13969,17 @@ __metadata:
   peerDependencies:
     typescript: ">=4.8.4"
   checksum: 10c0/9806a38adea2db0f6aa217ccc6bc9c391ddba338a9fe3080676d0d50ed806d305bb90e8cef0276e793d28c8a929f400abb184ddd7ff83a416959c0f4d2ce754f
+  languageName: node
+  linkType: hard
+
+"ts-declaration-location@npm:^1.0.6":
+  version: 1.0.7
+  resolution: "ts-declaration-location@npm:1.0.7"
+  dependencies:
+    picomatch: "npm:^4.0.2"
+  peerDependencies:
+    typescript: ">=4.0.0"
+  checksum: 10c0/b579b7630907052cc174b051dffdb169424824d887d8fb5abdc61e7ab0eede348c2b71c998727b9e4b314c0436f5003a15bb7eedb1c851afe96e12499f159630
   languageName: node
   linkType: hard
 
