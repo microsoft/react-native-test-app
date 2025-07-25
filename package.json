@@ -161,6 +161,7 @@
     "@appium/docutils": "link:./example",
     "@appium/support/archiver": "^7.0.1",
     "@appium/support/axios": "^1.8.3",
+    "@appium/support/form-data": "^4.0.2",
     "@appium/support/semver": "^7.7.1",
     "@appium/support/teen_process": "^2.3.1",
     "@appium/support/uuid": "^11.1.0",
