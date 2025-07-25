@@ -3662,8 +3662,8 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/cli@npm:^0.18.7":
-  version: 0.18.10
-  resolution: "@rnx-kit/cli@npm:0.18.10"
+  version: 0.18.11
+  resolution: "@rnx-kit/cli@npm:0.18.11"
   dependencies:
     "@rnx-kit/align-deps": "npm:^3.1.0"
     "@rnx-kit/config": "npm:^0.7.0"
@@ -3675,7 +3675,7 @@ __metadata:
     "@rnx-kit/metro-serializer-esbuild": "npm:^0.2.1"
     "@rnx-kit/metro-service": "npm:^4.0.2"
     "@rnx-kit/third-party-notices": "npm:^2.0.0"
-    "@rnx-kit/tools-android": "npm:^0.2.0"
+    "@rnx-kit/tools-android": "npm:^0.2.1"
     "@rnx-kit/tools-apple": "npm:^0.2.1"
     "@rnx-kit/tools-filesystem": "npm:^0.1.0"
     "@rnx-kit/tools-language": "npm:^3.0.0"
@@ -3694,7 +3694,7 @@ __metadata:
       optional: true
   bin:
     rnx-cli: bin/rnx-cli.cjs
-  checksum: 10c0/b568d645374b7718966a9c9f11ca318de7bdbf1e2310397f163ddf93e3d9a457f9e3b63fc242ce9631de3ea925d830115720424ccc99a31ff5ed500ec8f8b3b2
+  checksum: 10c0/6d2fb5ab342290180cf74327e3e456b842e0b8213f14c98b85e6744deeb4872a304e028ee37fe95cf20a71adcd67e6ab4df5191cec7ea917edbff111fdc28966
   languageName: node
   linkType: hard
 
@@ -3888,12 +3888,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-android@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@rnx-kit/tools-android@npm:0.2.0"
+"@rnx-kit/tools-android@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "@rnx-kit/tools-android@npm:0.2.1"
   dependencies:
     "@rnx-kit/tools-shell": "npm:^0.2.0"
-  checksum: 10c0/112844ba10b8efdd6ba05d5a626aca1a0f319112a1ec54cdedf9d2c1c51ac424fe728575a6f457a2dbb5a1174b5e47d32a1afbd7feb08f05814ff1dc12c40f60
+  checksum: 10c0/63ec0ffb0325b3dd541b80052ad17401084132daa7812613057e445c0431741447046ea6356d237530167ce6383d51dfe56b82b5672aa83ce3523c027a941fcf
   languageName: node
   linkType: hard
 
