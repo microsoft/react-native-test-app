@@ -3801,16 +3801,16 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-serializer-esbuild@npm:^0.2.1":
-  version: 0.2.2
-  resolution: "@rnx-kit/metro-serializer-esbuild@npm:0.2.2"
+  version: 0.2.3
+  resolution: "@rnx-kit/metro-serializer-esbuild@npm:0.2.3"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.2"
-    "@rnx-kit/tools-react-native": "npm:^2.0.0"
+    "@rnx-kit/tools-react-native": "npm:^2.2.0"
     esbuild: "npm:^0.25.0"
     esbuild-plugin-lodash: "npm:^1.2.0"
     fast-glob: "npm:^3.2.7"
-  checksum: 10c0/6a0ec2e2450d02b2809adcce85106833f679df88282c000d96d4a431a571424a825e7f8e4769abcd537eef920c9e44e145dcc31383d17c7daf6775020711b079
+  checksum: 10c0/236ad2e80855d33a4140fe7c9fd9ef5eade3b95d1ebbf40f15296a488d415da6d00b1399dc768ed55589dcf49d21fe4f2cf2fd66b87ed8f44eb6009adae75c9f
   languageName: node
   linkType: hard
 
@@ -3825,12 +3825,12 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-service@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "@rnx-kit/metro-service@npm:4.0.2"
+  version: 4.1.1
+  resolution: "@rnx-kit/metro-service@npm:4.1.1"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
-    "@rnx-kit/tools-react-native": "npm:^2.0.0"
+    "@rnx-kit/tools-react-native": "npm:^2.2.0"
     node-fetch: "npm:^2.6.7"
   peerDependencies:
     "@office-iss/react-native-win32": "*"
@@ -3843,7 +3843,7 @@ __metadata:
       optional: true
     metro-react-native-babel-transformer:
       optional: true
-  checksum: 10c0/2e3d8e9475f92dcead8586b63dc1693d9884a5aa6932b9d6a58f7ce3034d249ec96e4fba6307ed64b3acd642a14ef8df1f1742c647722df88fab75dc13f72627
+  checksum: 10c0/a557e98ebc9de5b7c7bbcfbace70146d0e6891fa6ae4d039acbb953d550c1c20e094363851db59420089f84331f2b8b27c59a6bfcd040b9bf7167ac6f002c203
   languageName: node
   linkType: hard
 
@@ -3875,8 +3875,8 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/third-party-notices@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@rnx-kit/third-party-notices@npm:2.0.0"
+  version: 2.0.1
+  resolution: "@rnx-kit/third-party-notices@npm:2.0.1"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
@@ -3884,7 +3884,7 @@ __metadata:
     yargs: "npm:^16.0.0"
   bin:
     build-tpn: lib/build-tpn.js
-  checksum: 10c0/24514ae22b31199ecf9324db850c42e1212e24822ea28ae3cef341b3d80e1bddf07a376fb8b7959693e511906b1048819aa5d27d6063854f9dea270a5c3393ec
+  checksum: 10c0/d75272101084e023cd19c6d07fd8721ba273594490a6e5ed49757a8c274ebd2b3f9e2d8fb99d2bba1538d3af7696d8e3a7d730abe8927aeb85bff4fd6ddbda8e
   languageName: node
   linkType: hard
 
@@ -3929,21 +3929,21 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/tools-packages@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@rnx-kit/tools-packages@npm:0.1.0"
+  version: 0.1.1
+  resolution: "@rnx-kit/tools-packages@npm:0.1.1"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
     "@rnx-kit/tools-workspaces": "npm:^0.2.1"
-  checksum: 10c0/e98d091d944999a0a024f37d34a6364ad4b5d3b91d162facaf3e2562b5a59c59fbb94619ee212dd643b675983fd43e5169402b972cd622f3f560333961232d59
+  checksum: 10c0/88b2af4198c572b5079fb436904d50cb211b7ee026d89b4430ad5305200cd6f38a0849b52ba1b099d19b50837318e230e9904dbaeb24a6271aa65db9d30bd5d7
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-react-native@npm:^2.0.0, @rnx-kit/tools-react-native@npm:^2.0.3, @rnx-kit/tools-react-native@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@rnx-kit/tools-react-native@npm:2.1.0"
+"@rnx-kit/tools-react-native@npm:^2.0.0, @rnx-kit/tools-react-native@npm:^2.0.3, @rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@rnx-kit/tools-react-native@npm:2.2.0"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
-  checksum: 10c0/ac7bcaaf870463fe51cbd3f2aac631c41c085e00dd1809706ad33f498f1feba31cde611662d5ec55bd25b48ac367c8e5c4eead8749b6e6989b380b4cb6b9a161
+  checksum: 10c0/631eecefda6b2b53eccdd18656f24a5426625522b80e956504d2b37acbcdc1e98eddc692aec0833536e6fd1b285c4a5d75e27f23a16fdcb099fabae46013740d
   languageName: node
   linkType: hard
 
