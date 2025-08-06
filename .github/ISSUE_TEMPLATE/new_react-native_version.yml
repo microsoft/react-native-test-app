@@ -51,12 +51,8 @@ body:
       label: End-to-end tests
       description: Leave these unchecked. Combinations of configurations that have been tested.
       options:
-        - label: "Android - Fabric: disabled"
-        - label: "Android - Fabric: **enabled**"
-        - label: "iOS - Fabric: disabled / Hermes: disabled"
-        - label: "iOS - Fabric: disabled / Hermes: **enabled**"
-        - label: "iOS - Fabric: **enabled** / Hermes: disabled"
-        - label: "iOS - Fabric: **enabled** / Hermes: **enabled**"
+        - label: "Android"
+        - label: "iOS"
         - label: "macOS"
         - label: "visionOS"
         - label: "Windows - NuGet: disabled"

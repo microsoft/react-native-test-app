@@ -5,6 +5,13 @@ import { v } from "../scripts/helpers.js";
 /**
  * @param {number} reactNativeVersion
  */
+function isNewArchExclusive(reactNativeVersion) {
+  return reactNativeVersion >= v(0, 82, 0);
+}
+
+/**
+ * @param {number} reactNativeVersion
+ */
 function supportsNewArch(reactNativeVersion) {
   return reactNativeVersion === 0 || reactNativeVersion >= v(0, 71, 0);
 }
@@ -15,6 +22,10 @@ function supportsNewArch(reactNativeVersion) {
  * @returns {boolean}
  */
 export function isNewArchEnabled(reactNativeVersion, options) {
+  if (isNewArchExclusive(reactNativeVersion)) {
+    return true;
+  }
+
   if (!supportsNewArch(reactNativeVersion)) {
     return false;
   }
@@ -42,6 +53,10 @@ export function isNewArchEnabled(reactNativeVersion, options) {
  * @returns {boolean}
  */
 export function isBridgelessEnabled(reactNativeVersion, options) {
+  if (isNewArchExclusive(reactNativeVersion)) {
+    return true;
+  }
+
   if (isNewArchEnabled(reactNativeVersion, options)) {
     if (reactNativeVersion >= v(0, 74, 0)) {
       return options["bridgelessEnabled"] !== false;

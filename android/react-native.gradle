@@ -8,8 +8,16 @@ ext.isBridgelessEnabled = { Project project, boolean isNewArchEnabled ->
     if (isNewArchEnabled) {
         def bridgelessEnabled = project.findProperty("react.bridgelessEnabled")
                                     ?: project.findProperty("bridgelessEnabled")
+
+        def version = getPackageVersionNumber("react-native", project.rootDir)
+        if (version >= v(0, 82, 0)) {
+            if (bridgelessEnabled != null) {
+                logger.warn("WARNING: As of 0.82, bridgeless can no longer be disabled")
+            }
+            return true
+        }
+
         if (bridgelessEnabled != "false") {
-            def version = getPackageVersionNumber("react-native", project.rootDir)
             def isSupported = version == 0 || version >= v(0, 73, 0)
 
             if (bridgelessEnabled == "true") {
@@ -38,8 +46,16 @@ ext.isFabricEnabled = { Project project ->
 ext.isNewArchitectureEnabled = { Project project ->
     def newArchEnabled = project.findProperty("react.newArchEnabled")
                              ?: project.findProperty("newArchEnabled")
+
+    def version = getPackageVersionNumber("react-native", project.rootDir)
+    if (version >= v(0, 82, 0)) {
+        if (newArchEnabled != null) {
+            logger.warn("WARNING: As of 0.82, New Architecture can no longer be disabled")
+        }
+        return true
+    }
+
     if (newArchEnabled == "true") {
-        def version = getPackageVersionNumber("react-native", project.rootDir)
         def isSupported = version == 0 || version >= v(0, 71, 0)
         if (!isSupported) {
             throw new GradleException([
@@ -50,5 +66,6 @@ ext.isNewArchitectureEnabled = { Project project ->
         }
         return isSupported
     }
+
     return false
 }

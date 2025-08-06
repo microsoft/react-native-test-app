@@ -14,6 +14,9 @@ describe("isBridgelessEnabled()", () => {
   // Bridgeless mode is enabled by default starting with 0.74
   const defaultVersion = v(0, 74, 0);
 
+  // Bridgeless mode is always enabled starting with 0.82
+  const exclusiveVersion = v(0, 82, 0);
+
   before(() => {
     delete process.env["RCT_NEW_ARCH_ENABLED"];
   });
@@ -39,6 +42,18 @@ describe("isBridgelessEnabled()", () => {
       !isBridgelessEnabled(defaultVersion, {
         bridgelessEnabled: false,
         fabricEnabled: true,
+      })
+    );
+  });
+
+  it("always returns true starting with 0.82", () => {
+    ok(isBridgelessEnabled(exclusiveVersion, {}));
+    ok(isBridgelessEnabled(exclusiveVersion, { fabricEnabled: false }));
+    ok(isBridgelessEnabled(exclusiveVersion, { fabricEnabled: true }));
+    ok(
+      isBridgelessEnabled(exclusiveVersion, {
+        fabricEnabled: true,
+        bridgelessEnabled: false,
       })
     );
   });
@@ -108,6 +123,9 @@ describe("isNewArchEnabled()", () => {
   // New architecture is first publicly available in 0.68, but we'll require 0.71
   const firstAvailableVersion = v(0, 71, 0);
 
+  // New architecture is always enabled starting with 0.82
+  const exclusiveVersion = v(0, 82, 0);
+
   before(() => {
     delete process.env["RCT_NEW_ARCH_ENABLED"];
   });
@@ -139,5 +157,11 @@ describe("isNewArchEnabled()", () => {
     ok(!isNewArchEnabled(v(0, 70, 999), {}));
     ok(!isNewArchEnabled(firstAvailableVersion, {}));
     ok(!isNewArchEnabled(firstAvailableVersion, { fabric_enabled: true }));
+  });
+
+  it("always returns true starting with 0.82", () => {
+    ok(isNewArchEnabled(exclusiveVersion, {}));
+    ok(isNewArchEnabled(exclusiveVersion, { fabricEnabled: false }));
+    ok(isNewArchEnabled(exclusiveVersion, { newArchEnabled: false }));
   });
 });
