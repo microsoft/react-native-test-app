@@ -141,7 +141,7 @@ describe("generateProject()", macosOnly, () => {
 
   for (const platform of ["ios", "macos", "visionos"] as const) {
     it(`[${platform}] generates Xcode project files for old architecture`, () => {
-      setMockFiles(makeMockProject());
+      setMockFiles(makeMockProject(undefined, "0.81.0"));
 
       const result = generateProject(platform, platform, {});
 
@@ -475,7 +475,7 @@ const PROJECT_FILES = {
     ios: {
       result: {
         buildSettings: {
-          GCC_PREPROCESSOR_DEFINITIONS: ["REACT_NATIVE_VERSION=1000000000"],
+          GCC_PREPROCESSOR_DEFINITIONS: ["REACT_NATIVE_VERSION=81000"],
           OTHER_SWIFT_FLAGS: [],
           PRODUCT_BUILD_NUMBER: "1",
           PRODUCT_DISPLAY_NAME: "ContosoApp",
@@ -485,7 +485,7 @@ const PROJECT_FILES = {
         communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native",
-        reactNativeVersion: 1000000000,
+        reactNativeVersion: 81000,
         resources: ["main.ios.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
@@ -534,7 +534,7 @@ const PROJECT_FILES = {
     macos: {
       result: {
         buildSettings: {
-          GCC_PREPROCESSOR_DEFINITIONS: ["REACT_NATIVE_VERSION=1000000000"],
+          GCC_PREPROCESSOR_DEFINITIONS: ["REACT_NATIVE_VERSION=81000"],
           OTHER_SWIFT_FLAGS: [],
           PRODUCT_BUILD_NUMBER: "1",
           PRODUCT_DISPLAY_NAME: "ContosoApp",
@@ -544,7 +544,7 @@ const PROJECT_FILES = {
         communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native-macos",
-        reactNativeVersion: 1000000000,
+        reactNativeVersion: 81000,
         resources: ["main.macos.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
@@ -594,7 +594,7 @@ const PROJECT_FILES = {
     visionos: {
       result: {
         buildSettings: {
-          GCC_PREPROCESSOR_DEFINITIONS: ["REACT_NATIVE_VERSION=1000000000"],
+          GCC_PREPROCESSOR_DEFINITIONS: ["REACT_NATIVE_VERSION=81000"],
           OTHER_SWIFT_FLAGS: [],
           PRODUCT_BUILD_NUMBER: "1",
           PRODUCT_DISPLAY_NAME: "ContosoApp",
@@ -604,7 +604,7 @@ const PROJECT_FILES = {
         communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/@callstack/react-native-visionos",
-        reactNativeVersion: 1000000000,
+        reactNativeVersion: 81000,
         resources: ["main.visionos.jsbundle"],
         testsBuildSettings: {},
         uitestsBuildSettings: {},
