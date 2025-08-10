@@ -5060,9 +5060,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-ios-device@npm:^2.0.0, appium-ios-device@npm:^2.7.25, appium-ios-device@npm:^2.8.0":
-  version: 2.8.4
-  resolution: "appium-ios-device@npm:2.8.4"
+"appium-ios-device@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "appium-ios-device@npm:2.9.0"
   dependencies:
     "@appium/support": "npm:^6.0.0"
     asyncbox: "npm:^3.0.0"
@@ -5074,7 +5074,7 @@ __metadata:
     semver: "npm:^7.0.0"
     source-map-support: "npm:^0.x"
     uuid: "npm:^11.0.1"
-  checksum: 10c0/313cb57d22f672f875ba8786627cc5df685af3972e21cdbbef74a351f76f12a053dfa6043bccb2402f8676ed52fed39795863c60a7950d7f32b7c73d620a2534
+  checksum: 10c0/b501d058c96c2c39db6060cb3f277ad2e1333c88f9dd90dac2904eaaa7b655e681169bd46b7530b3e5520148f9fe1e0e536bb11427284f78aae8208a71616386
   languageName: node
   linkType: hard
 
@@ -5123,13 +5123,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-remote-debugger@npm:^13.1.0":
-  version: 13.1.0
-  resolution: "appium-remote-debugger@npm:13.1.0"
+"appium-remote-debugger@npm:^13.1.1":
+  version: 13.1.1
+  resolution: "appium-remote-debugger@npm:13.1.1"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/support": "npm:^6.0.0"
-    appium-ios-device: "npm:^2.0.0"
+    appium-ios-device: "npm:^2.9.0"
     async-lock: "npm:^1.4.1"
     asyncbox: "npm:^3.0.0"
     bluebird: "npm:^3.4.7"
@@ -5137,7 +5137,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.0.0"
-  checksum: 10c0/28a0b2251491b6c97bdc43135df11c16fc550fb82eebbf76d0df03ee4baca1a6c1efe7ef7eda7558f8c7a7e18e0341d346b5bd1b33de06cbd280446ede208af2
+  checksum: 10c0/d84dc550b0220d86bc7612f604109b6789fb5c884b07195ead8ce97fec263e8062a5096cabb724c2f663b3acf824aaae27e435e2901071b2fd3da21fb8bef327
   languageName: node
   linkType: hard
 
@@ -5171,14 +5171,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-webdriveragent@npm:^9.11.0":
-  version: 9.15.1
-  resolution: "appium-webdriveragent@npm:9.15.1"
+"appium-webdriveragent@npm:^9.15.2":
+  version: 9.15.2
+  resolution: "appium-webdriveragent@npm:9.15.2"
   dependencies:
     "@appium/base-driver": "npm:^9.0.0"
     "@appium/strongbox": "npm:^0.x"
     "@appium/support": "npm:^6.0.0"
-    appium-ios-device: "npm:^2.7.25"
+    appium-ios-device: "npm:^2.9.0"
     appium-ios-simulator: "npm:^6.2.2"
     async-lock: "npm:^1.0.0"
     asyncbox: "npm:^3.0.0"
@@ -5187,7 +5187,7 @@ __metadata:
     lodash: "npm:^4.17.11"
     source-map-support: "npm:^0.x"
     teen_process: "npm:^2.2.0"
-  checksum: 10c0/cf3f9f61effd29b6d13c8327397f6dc6f43b2f7360b6010ab25ba7e9d78c3dc60a893465e6e72d604cf7ad3b1e3213949d458e4efaec5f18fe823bff1694b350
+  checksum: 10c0/539a077b004cbcb407247ce034338d68efb15b8942075f59176a88839daa6a5ae1dd666eb58e99dca91001f4fe4aea1193669c2e49173a01c6a1b2b1c645af9e
   languageName: node
   linkType: hard
 
@@ -5210,18 +5210,18 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^9.0.0":
-  version: 9.10.0
-  resolution: "appium-xcuitest-driver@npm:9.10.0"
+  version: 9.10.4
+  resolution: "appium-xcuitest-driver@npm:9.10.4"
   dependencies:
     "@appium/strongbox": "npm:^0.x"
     "@appium/support": "npm:^6.1.1"
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^1.6.13"
-    appium-ios-device: "npm:^2.8.0"
+    appium-ios-device: "npm:^2.9.0"
     appium-ios-remotexpc: "npm:^0.x"
     appium-ios-simulator: "npm:^6.2.2"
-    appium-remote-debugger: "npm:^13.1.0"
-    appium-webdriveragent: "npm:^9.11.0"
+    appium-remote-debugger: "npm:^13.1.1"
+    appium-webdriveragent: "npm:^9.15.2"
     appium-xcode: "npm:^5.1.4"
     async-lock: "npm:^1.4.0"
     asyncbox: "npm:^3.0.0"
@@ -5241,7 +5241,10 @@ __metadata:
     ws: "npm:^8.13.0"
   peerDependencies:
     appium: ^2.5.4
-  checksum: 10c0/d214a2f5b07c321fd5d2415bcb6067443a3613e91abc65b211098b6c724764a167bd427d9e70f7dfc38ed310a456d563b563fc6fa0c5fbcae4c952eee004dddb
+  dependenciesMeta:
+    appium-ios-remotexpc:
+      optional: true
+  checksum: 10c0/d2da6e9589d913bee865e1be269e3f1583d57c2299832e649030be01f65194d77478aafcdf58ccd0c93774e05e3fb5f59c0930a4b33ddd014068b73f2183a678
   languageName: node
   linkType: hard
 
