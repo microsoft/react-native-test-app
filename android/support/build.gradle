@@ -8,22 +8,22 @@ repositories {
 }
 
 android {
-    namespace "com.microsoft.reacttestapp.support"
+    namespace = "com.microsoft.reacttestapp.support"
 
     def androidDir = "${buildscript.sourceFile.getParent()}/../"
     apply(from: "${androidDir}/dependencies.gradle")
 
-    compileSdkVersion project.ext.compileSdkVersion
+    compileSdkVersion = project.ext.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-        versionCode getVersionCode()
-        versionName getVersionName()
+        minSdkVersion = project.ext.minSdkVersion
+        targetSdkVersion = project.ext.targetSdkVersion
+        versionCode = getVersionCode()
+        versionName = getVersionName()
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }

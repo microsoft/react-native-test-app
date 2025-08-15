@@ -82,7 +82,7 @@ export function buildGradle() {
     '                def p = searchDir.resolve("node_modules/react-native/android")',
     "                if (p.toFile().exists()) {",
     "                    maven {",
-    "                        url(p.toRealPath().toString())",
+    "                        url = p.toRealPath().toString()",
     "                    }",
     "                    break",
     "                }",

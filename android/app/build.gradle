@@ -70,17 +70,17 @@ project.ext.react = [
 project.ext.signingConfigs = getSigningConfigs()
 
 android {
-    namespace "com.microsoft.reacttestapp"
+    namespace = "com.microsoft.reacttestapp"
 
-    compileSdkVersion project.ext.compileSdkVersion
+    compileSdkVersion = project.ext.compileSdkVersion
 
     if (project.hasProperty("ndkVersion")) {
-        ndkVersion project.ext.ndkVersion
+        ndkVersion = project.ext.ndkVersion
     }
 
     if (usePrefabs) {
         buildFeatures {
-            prefab true
+            prefab = true
         }
     }
 
@@ -89,34 +89,34 @@ android {
     }
 
     defaultConfig {
-        applicationId project.ext.react.applicationId
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-        versionCode project.ext.getVersionCode()
-        versionName project.ext.getVersionName()
+        applicationId = project.ext.react.applicationId
+        minSdkVersion = project.ext.minSdkVersion
+        targetSdkVersion = project.ext.targetSdkVersion
+        versionCode = project.ext.getVersionCode()
+        versionName = project.ext.getVersionName()
 
         def singleApp = getSingleAppMode()
-        buildConfigField "String", "REACTAPP_SINGLE_APP", singleApp ? "\"${singleApp}\"" : "null"
+        buildConfigField("String", "REACTAPP_SINGLE_APP", singleApp ? "\"${singleApp}\"" : "null")
 
-        buildConfigField "boolean", "REACTAPP_USE_FABRIC", enableNewArchitecture.toString()
-        buildConfigField "boolean", "REACTAPP_USE_BRIDGELESS", enableBridgeless.toString()
+        buildConfigField("boolean", "REACTAPP_USE_FABRIC", enableNewArchitecture.toString())
+        buildConfigField("boolean", "REACTAPP_USE_BRIDGELESS", enableBridgeless.toString())
 
         manifestPlaceholders = [
             rntaEnableCamera: project.ext.react.enableCamera ? "1000000" : "1"
         ]
 
-        resValue "string", "app_name", project.ext.react.appName
+        resValue("string", "app_name", project.ext.react.appName)
 
         def cppStd = reactNativeVersion >= v(0, 74, 0) ? "-std=c++20" : "-std=c++17"
         if (enableNewArchitecture) {
             externalNativeBuild {
                 cmake {
-                    arguments "-DANDROID_STL=c++_shared",
+                    arguments("-DANDROID_STL=c++_shared",
                               "-DNODE_MODULES_DIR=${reactNativePath}/..",
                               "-DPROJECT_BUILD_DIR=${buildDir}",
                               "-DREACT_ANDROID_BUILD_DIR=${reactNativePath}/ReactAndroid/build",
-                              "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid"
-                    cppFlags cppStd, "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
+                              "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid")
+                    cppFlags(cppStd, "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1")
                 }
             }
             if (!project.ext.react.abiSplit) {
@@ -127,10 +127,10 @@ android {
         } else {
             externalNativeBuild {
                 cmake {
-                    arguments "-DANDROID_STL=c++_shared",
+                    arguments("-DANDROID_STL=c++_shared",
                               "-DREACT_COMMON_DIR=${reactNativePath}/ReactCommon",
-                              "-DREACT_JNILIBS_DIR=${buildDir}/outputs/jniLibs"
-                    cppFlags cppStd, "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1"
+                              "-DREACT_JNILIBS_DIR=${buildDir}/outputs/jniLibs")
+                    cppFlags(cppStd, "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1")
                 }
             }
         }
@@ -138,7 +138,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path "${projectDir}/src/main/jni/CMakeLists.txt"
+            path = "${projectDir}/src/main/jni/CMakeLists.txt"
         }
     }
 
@@ -165,14 +165,14 @@ android {
     }
 
     lintOptions {
-        lintConfig file("lint.xml")
+        lintConfig = file("lint.xml")
     }
 
     packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
+        pickFirst("lib/armeabi-v7a/libc++_shared.so")
+        pickFirst("lib/arm64-v8a/libc++_shared.so")
+        pickFirst("lib/x86_64/libc++_shared.so")
+        pickFirst("lib/x86/libc++_shared.so")
     }
 
     project.ext.signingConfigs.each { name, config ->
@@ -244,8 +244,8 @@ android {
     splits {
         abi {
             reset()
-            enable(project.ext.react.abiSplit)
-            universalApk(false)
+            enable = project.ext.react.abiSplit
+            universalApk = false
             include(*project.ext.react.architectures)
         }
     }
@@ -271,15 +271,15 @@ dependencies {
         implementation("com.facebook.react:react-native:${version}")
     }
 
-    implementation libraries.androidAppCompat
-    implementation libraries.androidCoreKotlinExtensions
-    implementation libraries.androidRecyclerView
-    implementation libraries.materialComponents
+    implementation(libraries.androidAppCompat)
+    implementation(libraries.androidCoreKotlinExtensions)
+    implementation(libraries.androidRecyclerView)
+    implementation(libraries.materialComponents)
 
     if (project.ext.react.enableCamera) {
-        implementation libraries.androidCamera
-        implementation libraries.androidCameraMlKitVision
-        implementation libraries.mlKitBarcodeScanning
+        implementation(libraries.androidCamera)
+        implementation(libraries.androidCameraMlKitVision)
+        implementation(libraries.mlKitBarcodeScanning)
     }
 
     if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 75, 0)) {
