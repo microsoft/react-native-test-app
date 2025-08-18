@@ -13,5 +13,9 @@ runs:
       shell: bash
     - name: Install npm dependencies (ignore lockfile changes)
       if: ${{ inputs.immutable != 'true' }}
-      run: yarn --no-immutable
+      run: |
+        yarn --no-immutable
+        yarn why react-native
+        yarn why react-native-macos
+        yarn why react-native-windows
       shell: bash
