@@ -149,7 +149,7 @@
     "react-native": "^0.78.0",
     "react-native-macos": "^0.78.0",
     "react-native-windows": "^0.78.0",
-    "suggestion-bot": "^3.0.0",
+    "suggestion-bot": "^4.0.0",
     "typescript": "^5.0.0"
   },
   "engines": {
