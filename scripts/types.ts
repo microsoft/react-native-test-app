@@ -137,7 +137,6 @@ export type ProjectConfiguration = {
   reactNativePath: string;
   reactNativeVersion: number;
   reactNativeHostPath: string;
-  communityAutolinkingScriptPath?: string;
   singleApp?: string;
   useHermes: boolean | "from-source";
   useNewArch: boolean;

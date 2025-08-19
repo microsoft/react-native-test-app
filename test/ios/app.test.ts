@@ -231,17 +231,6 @@ describe("generateProject()", macosOnly, () => {
 
     deepEqual(trimPaths(result, cwd), PROJECT_FILES.customReactNative);
   });
-
-  it("finds community autolinking script for older versions", () => {
-    setMockFiles(makeMockProject(undefined, "0.74.0"));
-
-    const result = generateProject("ios", "ios", {});
-
-    equal(
-      result.communityAutolinkingScriptPath,
-      "node_modules/@react-native-community/cli-platform-ios/native_modules.rb"
-    );
-  });
 });
 
 const PROJECT_FILES = {
@@ -260,7 +249,6 @@ const PROJECT_FILES = {
       PRODUCT_VERSION: "1.0",
       USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
     },
-    communityAutolinkingScriptPath: undefined,
     reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
     reactNativePath: "/~/node_modules/react-native-macos",
     reactNativeVersion: 1000000000,
@@ -289,7 +277,6 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
-        communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native",
         reactNativeVersion: 1000000000,
@@ -354,7 +341,6 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
-        communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native-macos",
         reactNativeVersion: 1000000000,
@@ -420,7 +406,6 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
-        communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/@callstack/react-native-visionos",
         reactNativeVersion: 1000000000,
@@ -482,7 +467,6 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
-        communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native",
         reactNativeVersion: 81000,
@@ -541,7 +525,6 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
-        communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/react-native-macos",
         reactNativeVersion: 81000,
@@ -601,7 +584,6 @@ const PROJECT_FILES = {
           PRODUCT_VERSION: "1.0",
           USER_HEADER_SEARCH_PATHS: ["/~/node_modules/.generated"],
         },
-        communityAutolinkingScriptPath: undefined,
         reactNativeHostPath: "../node_modules/@rnx-kit/react-native-host",
         reactNativePath: "/~/node_modules/@callstack/react-native-visionos",
         reactNativeVersion: 81000,

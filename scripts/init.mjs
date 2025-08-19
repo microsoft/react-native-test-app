@@ -9,7 +9,7 @@ import {
   getDefaultPlatformPackageName,
   validatePlatforms,
 } from "./configure.mjs";
-import { memo, readJSONFile, toVersionNumber, v } from "./helpers.js";
+import { memo, readJSONFile } from "./helpers.js";
 import * as colors from "./utils/colors.mjs";
 import { downloadPackage, fetchPackageMetadata } from "./utils/npm.mjs";
 import { parseArgs } from "./utils/parseargs.mjs";
@@ -49,7 +49,7 @@ const getInstalledVersion = memo(() => {
  *
  * Checks the following in order:
  *
- *   - Command line flag, e.g. `--version 0.70`
+ *   - Command line flag, e.g. `--version 0.81`
  *   - Currently installed `react-native` version
  *   - Latest version from npm
  *
@@ -116,18 +116,10 @@ async function getVersion(platforms) {
  */
 async function fetchTemplate(platforms) {
   const version = await getVersion(platforms);
-  const useTemplatePackage = toVersionNumber(version) >= v(0, 75, 0);
-  if (!useTemplatePackage && getInstalledVersion() === version) {
-    const rnManifest = getInstalledReactNativeManifest();
-    if (rnManifest) {
-      return [version, path.join(path.dirname(rnManifest), "template")];
-    }
-  }
-
-  const template = useTemplatePackage
-    ? "@react-native-community/template"
-    : "react-native";
-  const output = await downloadPackage(template, version);
+  const output = await downloadPackage(
+    "@react-native-community/template",
+    version
+  );
   return [version, path.join(output, "template")];
 }
 

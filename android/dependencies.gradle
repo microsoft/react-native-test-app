@@ -5,22 +5,6 @@ if (!hasProperty("rnta_react_native_gradle")) {
     apply(from: "${buildscript.sourceFile.getParent()}/react-native.gradle")
 }
 
-/**
- * Returns the recommended Gradle plugin version for the specified React Native
- * version.
- */
-def getDefaultGradlePluginVersion = { int reactNativeVersion ->
-    // Gradle plugin version can be found in the template:
-    // https://github.com/facebook/react-native/blob/main/packages/react-native/template/android/build.gradle
-    if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 73, 0)) {
-        return ""
-    } else if (reactNativeVersion >= v(0, 71, 0)) {
-        return "7.3.1"
-    } else {
-        return "7.2.2"
-    }
-}
-
 def getDependencyVersionFromCatalog = { String versionCatalog, String dependency, String fallback ->
     if (versionCatalog == null) {
         return fallback
@@ -63,31 +47,18 @@ ext {
     targetSdkVersion = rootProject.findProperty("react.targetSdkVersion")
         ?: getDependencyVersionNumberFromCatalog(versionCatalog, "targetSdk", 33)
 
-    autodetectReactNativeVersion = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
     enableNewArchitecture = isNewArchitectureEnabled(project)
     enableBridgeless = isBridgelessEnabled(project, enableNewArchitecture)
-    usePrefabs = reactNativeVersion == 0 || reactNativeVersion >= v(0, 71, 0)
 
-    androidPluginVersion = getDefaultGradlePluginVersion(reactNativeVersion)
     kotlinVersion = rootProject.findProperty("KOTLIN_VERSION") ?: getKotlinVersion(versionCatalog)
 
     // We need only set `ndkVersion` when building react-native from source.
     if (rootProject.hasProperty("ANDROID_NDK_VERSION")) {
         ndkVersion = rootProject.properties["ANDROID_NDK_VERSION"]
-    } else if (reactNativeVersion >= v(0, 74, 0)) {
+    } else {
         // https://github.com/facebook/react-native/commit/9ce7b564131c5b2075489c09ff05325ddc28014a
         ndkVersion = getDependencyVersionFromCatalog(versionCatalog, "ndkVersion", "26.1.10909125")
-    } else if (System.properties["os.arch"] == "aarch64" && androidPluginVersion == "7.2.2") {
-        // NDK r23c has been patched to support Apple M1 and is default in AGP
-        // 7.3.0. Prior to 0.71, we still need to set `ndkVersion` because we'll
-        // be using AGP 7.2.2 (see `androidPluginVersion` above).
-        // Note that even though newer 23.x versions exist, we'll stick to AGP's
-        // default. See also
-        // https://developer.android.com/build/releases/past-releases/agp-7-3-0-release-notes
-        ndkVersion = "23.1.7779620"
     }
-
-    def kotlinVersionNumber = toVersionNumber(kotlinVersion)
 
     /**
      * Dependabot requires a `dependencies.gradle` to evaluate Java
@@ -109,33 +80,14 @@ ext {
         mlKitBarcodeScanning        : "com.google.mlkit:barcode-scanning:17.3.0",
     ]
 
-    // Separate block so bots can parse this file properly
-    if (compileSdkVersion < 35) {
-        libraries.androidCoreKotlinExtensions = ["androidx.core", "core-ktx", "1.13.1"].join(":")
-        libraries.androidRecyclerView = ["androidx.recyclerview", "recyclerview", "1.3.2"].join(":")
-    }
-    if (kotlinVersionNumber < v(1, 8, 0)) {
-        libraries.androidAppCompat = ["androidx.appcompat", "appcompat", "1.6.1"].join(":")
-        libraries.androidCamera = ["androidx.camera", "camera-camera2", "1.2.0-beta02"].join(":")
-        libraries.androidCameraMlKitVision = ["androidx.camera", "camera-mlkit-vision", "1.2.0-beta02"].join(":")
-        libraries.androidCoreKotlinExtensions = ["androidx.core", "core-ktx", "1.9.0"].join(":")
-    }
-
     getReactNativeDependencies = {
         // Hint: Use `./gradlew buildEnvironment` to check whether these are
         // correctly set.
-        def dependencies = [
-          androidPluginVersion == ""
-              ? "com.android.tools.build:gradle"
-              : "com.android.tools.build:gradle:${androidPluginVersion}",
+        return [
+          "com.android.tools.build:gradle",
           "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
+          "de.undercouch:gradle-download-task:5.6.0",
+          "com.facebook.react:react-native-gradle-plugin",
         ]
-
-        if (autodetectReactNativeVersion || enableNewArchitecture) {
-            dependencies << "com.facebook.react:react-native-gradle-plugin"
-            dependencies << "de.undercouch:gradle-download-task:5.6.0"
-        }
-
-        return dependencies
     }
 }

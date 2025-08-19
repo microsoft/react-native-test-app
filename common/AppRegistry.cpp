@@ -9,32 +9,18 @@ using facebook::jsi::String;
 
 namespace
 {
-    constexpr char kFbBatchedBridgeId[] = "__fbBatchedBridge";
     constexpr char kRNAppRegistryId[] = "RN$AppRegistry";
 
     Array GetRegisteredAppKeys(Runtime &runtime)
     {
         auto global = runtime.global();
-        if (global.hasProperty(runtime, kRNAppRegistryId)) {  // >= 0.73
-            // const appKeys = RN$AppRegistry.getAppKeys();
-            auto registry = global.getProperty(runtime, kRNAppRegistryId);
-            if (registry.isObject()) {
-                auto getAppKeys = std::move(registry).asObject(runtime).getPropertyAsFunction(
-                    runtime, "getAppKeys");
-                return getAppKeys.call(runtime, nullptr, 0).asObject(runtime).asArray(runtime);
-            }
-        } else if (global.hasProperty(runtime, kFbBatchedBridgeId)) {  // < 0.73
-            // const appRegistry = __fbBatchedBridge.getCallableModule("AppRegistry");
-            auto fbBatchedBridge = global.getPropertyAsObject(runtime, kFbBatchedBridgeId);
-            auto getCallableModule =
-                fbBatchedBridge.getPropertyAsFunction(runtime, "getCallableModule");
-            auto appRegistry =
-                getCallableModule.callWithThis(runtime, fbBatchedBridge, "AppRegistry")
-                    .asObject(runtime);
 
-            // const appKeys = appRegistry.getAppKeys();
-            auto getAppKeys = appRegistry.getPropertyAsFunction(runtime, "getAppKeys");
-            return getAppKeys.callWithThis(runtime, appRegistry).asObject(runtime).asArray(runtime);
+        // const appKeys = RN$AppRegistry.getAppKeys();
+        auto registry = global.getProperty(runtime, kRNAppRegistryId);
+        if (registry.isObject()) {
+            auto getAppKeys =
+                std::move(registry).asObject(runtime).getPropertyAsFunction(runtime, "getAppKeys");
+            return getAppKeys.call(runtime, nullptr, 0).asObject(runtime).asArray(runtime);
         }
 
         return Array(runtime, 0);

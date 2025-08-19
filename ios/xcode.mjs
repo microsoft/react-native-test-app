@@ -2,7 +2,7 @@
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
-import { findFile, readTextFile, v } from "../scripts/helpers.js";
+import { findFile, readTextFile } from "../scripts/helpers.js";
 import {
   assertArray,
   assertObject,
@@ -111,18 +111,6 @@ export function applyPreprocessorDefinitions({
   const preprocessors = Array.isArray(existing) ? existing : [];
 
   preprocessors.push(`REACT_NATIVE_VERSION=${reactNativeVersion}`);
-
-  // In Xcode 15, `unary_function` and `binary_function` are no longer provided
-  // in C++17 and newer Standard modes. See Xcode release notes:
-  // https://developer.apple.com/documentation/xcode-release-notes/xcode-15-release-notes#Deprecations
-  // Upstream issue: https://github.com/facebook/react-native/issues/37748
-  const enableCxx17RemovedUnaryBinaryFunction =
-    (reactNativeVersion >= v(0, 72, 0) && reactNativeVersion < v(0, 72, 5)) ||
-    (reactNativeVersion >= v(0, 71, 0) && reactNativeVersion < v(0, 71, 4)) ||
-    (reactNativeVersion > 0 && reactNativeVersion < v(0, 70, 14));
-  if (enableCxx17RemovedUnaryBinaryFunction) {
-    preprocessors.push("_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1");
-  }
 
   if (useNewArch) {
     preprocessors.push("FOLLY_NO_CONFIG=1");

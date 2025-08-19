@@ -27,7 +27,7 @@ import {
   PRODUCT_BUNDLE_IDENTIFIER,
   USER_HEADER_SEARCH_PATHS,
 } from "../../ios/xcode.mjs";
-import { readTextFile, v } from "../../scripts/helpers.js";
+import { readTextFile } from "../../scripts/helpers.js";
 import type {
   ApplePlatform,
   JSONObject,
@@ -247,32 +247,6 @@ describe("applyPreprocessorDefinitions()", () => {
     deepEqual(project.buildSettings[GCC_PREPROCESSOR_DEFINITIONS], [
       "REACT_NATIVE_VERSION=0",
     ]);
-  });
-
-  it("applies C++17 workarounds for unpatched versions", () => {
-    const versions = [
-      [v(0, 71, 0), true],
-      [v(0, 71, 3), true],
-      [v(0, 71, 4), false],
-      [v(0, 72, 0), true],
-      [v(0, 72, 4), true],
-      [v(0, 72, 5), false],
-    ] as const;
-
-    for (const [version, enable] of versions) {
-      const project = makeProjectConfiguration();
-      const { buildSettings } = project;
-
-      project.reactNativeVersion = version;
-      applyPreprocessorDefinitions(project);
-
-      const expected = [`REACT_NATIVE_VERSION=${version}`];
-      if (enable) {
-        expected.push("_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1");
-      }
-
-      deepEqual(buildSettings[GCC_PREPROCESSOR_DEFINITIONS], expected);
-    }
   });
 });
 

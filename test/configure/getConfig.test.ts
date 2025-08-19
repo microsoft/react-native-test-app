@@ -36,7 +36,7 @@ describe("getConfig()", () => {
       "react-native.config.js",
     ]);
     deepEqual(config.oldFiles, []);
-    deepEqual(Object.keys(config.scripts).sort(), ["mkdist", "start"]);
+    deepEqual(Object.keys(config.scripts).sort(), ["start"]);
     deepEqual(getDependencies("common", params), []);
   });
 
@@ -59,7 +59,7 @@ describe("getConfig()", () => {
       "tsconfig.json",
     ]);
     deepEqual(config.oldFiles, []);
-    deepEqual(Object.keys(config.scripts).sort(), ["mkdist", "start"]);
+    deepEqual(Object.keys(config.scripts).sort(), ["start"]);
     deepEqual(getDependencies("common", params), []);
   });
 

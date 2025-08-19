@@ -39,46 +39,15 @@ function installerFor(version, indent = "    ") {
   const minor = v(0, 1, 0);
   const minorVersion = Math.trunc(version / minor) % minor;
 
-  if (version > 0 && version < v(0, 72, 0)) {
-    const header = [
-      "#if !USE_FABRIC",
-      "#pragma clang diagnostic push",
-      '#pragma clang diagnostic ignored "-Wnullability-completeness"',
-      "",
-      `#define REACT_NATIVE_MINOR_VERSION ${minorVersion}`,
-      "#import <RNReanimated/REAInitializer.h>",
-      "",
-      "#if __has_include(<reacthermes/HermesExecutorFactory.h>)",
-      "#import <reacthermes/HermesExecutorFactory.h>",
-      "using ExecutorFactory = facebook::react::HermesExecutorFactory;",
-      "#elif __has_include(<React/HermesExecutorFactory.h>)",
-      "#import <React/HermesExecutorFactory.h>",
-      "using ExecutorFactory = facebook::react::HermesExecutorFactory;",
-      "#else",
-      "#import <React/JSCExecutorFactory.h>",
-      "using ExecutorFactory = facebook::react::JSCExecutorFactory;",
-      "#endif",
-      "",
-      "#pragma clang diagnostic pop",
-      "#endif  // !USE_FABRIC",
-    ].join("\n");
-    const installer = [
-      `${indent}const auto installer = reanimated::REAJSIExecutorRuntimeInstaller(bridge, nullptr);`,
-      `${indent}auto installBindings = facebook::react::RCTJSIExecutorRuntimeInstaller(installer);`,
-      `${indent}return std::make_unique<ExecutorFactory>(installBindings);`,
-    ].join("\n");
-    return [header, installer];
-  } else {
-    // As of React Native 0.72, we need to call `REAInitializer` instead. See
-    // https://github.com/software-mansion/react-native-reanimated/commit/a8206f383e51251e144cb9fd5293e15d06896df0.
-    const header = [
-      "#if !USE_FABRIC",
-      `#define REACT_NATIVE_MINOR_VERSION ${minorVersion}`,
-      "#import <RNReanimated/REAInitializer.h>",
-      "#endif  // !USE_FABRIC",
-    ].join("\n");
-    return [header, `${indent}reanimated::REAInitializer(bridge);`];
-  }
+  // As of React Native 0.72, we need to call `REAInitializer` instead. See
+  // https://github.com/software-mansion/react-native-reanimated/commit/a8206f383e51251e144cb9fd5293e15d06896df0.
+  const header = [
+    "#if !USE_FABRIC",
+    `#define REACT_NATIVE_MINOR_VERSION ${minorVersion}`,
+    "#import <RNReanimated/REAInitializer.h>",
+    "#endif  // !USE_FABRIC",
+  ].join("\n");
+  return [header, `${indent}reanimated::REAInitializer(bridge);`];
 }
 
 /**

@@ -8,7 +8,6 @@ import {
   isMain,
   readTextFile,
   toVersionNumber,
-  v,
 } from "../scripts/helpers.js";
 import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
 import { generateAssetsCatalogs } from "./assetsCatalog.mjs";
@@ -76,31 +75,6 @@ function exportNodeBinaryPath(projectRoot, destination, fs = nodefs) {
     path.join(destination, ".env"),
     `export PATH='${path.dirname(node)}':$PATH\n`
   );
-}
-
-/**
- * @param {string} reactNativePath
- * @param {number} reactNativeVersion
- * @returns {string | undefined}
- */
-function findCommunityAutolinkingScriptPath(
-  reactNativePath,
-  reactNativeVersion,
-  fs = nodefs
-) {
-  // As of 0.75, we should use `use_native_modules!` from `react-native` instead
-  if (reactNativeVersion < v(0, 75, 0)) {
-    const pkgPath = findFile(
-      "node_modules/@react-native-community/cli-platform-ios",
-      reactNativePath,
-      fs
-    );
-    if (pkgPath) {
-      return path.join(pkgPath, "native_modules.rb");
-    }
-  }
-
-  return undefined;
 }
 
 /**
@@ -238,12 +212,7 @@ export function generateProject(
     reactNativePath: path.resolve(reactNativePath),
     reactNativeVersion,
     reactNativeHostPath: findReactNativeHostPath(projectRoot, fs),
-    communityAutolinkingScriptPath: findCommunityAutolinkingScriptPath(
-      reactNativePath,
-      reactNativeVersion,
-      fs
-    ),
-    useHermes: isHermesEnabled(targetPlatform, reactNativeVersion, options),
+    useHermes: isHermesEnabled(reactNativeVersion, options),
     useNewArch: isNewArchEnabled(reactNativeVersion, options),
     useBridgeless: isBridgelessEnabled(reactNativeVersion, options),
     buildSettings: {},

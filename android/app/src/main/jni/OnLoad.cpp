@@ -31,12 +31,10 @@ namespace
     std::shared_ptr<TurboModule> javaModuleProvider(const std::string &name,
                                                     const JavaTurboModule::InitParams &params)
     {
-#if __has_include(<autolinking.h>)  // >= 0.75
         // We first try to look up core modules
         if (auto module = rncore_ModuleProvider(name, params)) {
             return module;
         }
-#endif  // __has_include(<autolinking.h>)
 
         // And we fallback to the module providers autolinked by RN CLI
         return autolinking_ModuleProvider(name, params);

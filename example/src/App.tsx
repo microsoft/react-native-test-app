@@ -15,7 +15,6 @@ import { Separator } from "./Separator";
 import {
   getHermesVersion,
   isBridgeless,
-  isConcurrentReactEnabled,
   isFabricInstance,
   ReactNativeVersion,
 } from "./core";
@@ -40,7 +39,7 @@ function useIsFabricComponent() {
   return [isFabric, setter] as const;
 }
 
-export function App(props: AppProps): React.ReactElement<AppProps> {
+export function App(_props: AppProps): React.ReactElement<AppProps> {
   const isDarkMode = useColorScheme() === "dark";
   const styles = useStyles();
   const [isFabric, setIsFabric] = useIsFabricComponent();
@@ -65,9 +64,7 @@ export function App(props: AppProps): React.ReactElement<AppProps> {
           <Separator />
           <Feature value={isFabric}>Fabric</Feature>
           <Separator />
-          <Feature value={isConcurrentReactEnabled(props, isFabric)}>
-            Concurrent React
-          </Feature>
+          <Feature value={isFabric}>Concurrent React</Feature>
           <Separator />
           <Feature value={isBridgeless()}>Bridgeless</Feature>
         </View>

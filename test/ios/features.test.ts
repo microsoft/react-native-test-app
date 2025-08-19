@@ -1,4 +1,4 @@
-import { equal, ok } from "node:assert/strict";
+import { ok } from "node:assert/strict";
 import { afterEach, before, describe, it } from "node:test";
 import {
   isBridgelessEnabled,
@@ -80,43 +80,31 @@ describe("isHermesEnabled()", () => {
 
   for (const platform of ["ios", "macos", "visionos"] as const) {
     it(`[${platform}] is disabled by default`, () => {
-      ok(!isHermesEnabled(platform, v(0, 79, 0), {}));
+      ok(!isHermesEnabled(v(0, 79, 0), {}));
     });
 
     it(`[${platform}] returns true when enabled`, () => {
-      ok(isHermesEnabled(platform, v(0, 79, 0), { hermesEnabled: true }));
+      ok(isHermesEnabled(v(0, 79, 0), { hermesEnabled: true }));
     });
 
     it(`[${platform}] returns true if 'USE_HERMES=1'`, () => {
       process.env["USE_HERMES"] = "1";
-      ok(isHermesEnabled(platform, v(0, 79, 0), {}));
+      ok(isHermesEnabled(v(0, 79, 0), {}));
     });
 
     it(`[${platform}] returns false if 'USE_HERMES=0'`, () => {
       process.env["USE_HERMES"] = "0";
-      ok(!isHermesEnabled(platform, v(0, 79, 0), { hermesEnabled: true }));
+      ok(!isHermesEnabled(v(0, 79, 0), { hermesEnabled: true }));
     });
 
     it(`[${platform}] always returns true from 0.80 on`, () => {
-      ok(isHermesEnabled(platform, v(0, 80, 0), {}));
+      ok(isHermesEnabled(v(0, 80, 0), {}));
 
       process.env["USE_HERMES"] = "0";
 
-      ok(isHermesEnabled(platform, v(0, 80, 0), {}));
+      ok(isHermesEnabled(v(0, 80, 0), {}));
     });
   }
-
-  it("[visionos] builds from source when necessary", () => {
-    const options = { hermesEnabled: true };
-
-    equal(isHermesEnabled("visionos", v(0, 75, 0), options), "from-source");
-    equal(isHermesEnabled("visionos", v(0, 76, 0), options), true);
-
-    process.env["USE_HERMES"] = "1";
-
-    equal(isHermesEnabled("visionos", v(0, 75, 0), {}), "from-source");
-    equal(isHermesEnabled("visionos", v(0, 76, 0), {}), true);
-  });
 });
 
 describe("isNewArchEnabled()", () => {
@@ -137,9 +125,6 @@ describe("isNewArchEnabled()", () => {
   it("returns true if New Architecture is available and enabled", () => {
     ok(!isNewArchEnabled(0, {}));
     ok(!isNewArchEnabled(firstAvailableVersion, {}));
-
-    // New architecture is first publicly available in 0.68, but we'll require 0.71
-    ok(!isNewArchEnabled(v(0, 70, 999), { fabricEnabled: true }));
     ok(isNewArchEnabled(firstAvailableVersion, { fabricEnabled: true }));
     ok(isNewArchEnabled(firstAvailableVersion, { newArchEnabled: true }));
   });
@@ -147,14 +132,12 @@ describe("isNewArchEnabled()", () => {
   it("returns true if `RCT_NEW_ARCH_ENABLED=1`", () => {
     process.env["RCT_NEW_ARCH_ENABLED"] = "1";
 
-    ok(!isNewArchEnabled(v(0, 70, 999), {}));
     ok(isNewArchEnabled(firstAvailableVersion, {}));
   });
 
   it("returns false if `RCT_NEW_ARCH_ENABLED=0`", () => {
     process.env["RCT_NEW_ARCH_ENABLED"] = "0";
 
-    ok(!isNewArchEnabled(v(0, 70, 999), {}));
     ok(!isNewArchEnabled(firstAvailableVersion, {}));
     ok(!isNewArchEnabled(firstAvailableVersion, { fabric_enabled: true }));
   });

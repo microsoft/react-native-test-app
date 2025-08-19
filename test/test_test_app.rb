@@ -23,7 +23,6 @@ class TestTestApp < Minitest::Test
       [0, '0.71'],
       [v(1000, 0, 0), '0.71'],
       [v(0, 71, 0), '0.71'],
-      [v(0, 70, 13), '0.70'],
     ].each do |target, profile|
       assert_equal("use_react_native-#{profile}", react_native_pods(target))
     end

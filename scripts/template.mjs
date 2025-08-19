@@ -71,28 +71,6 @@ export function buildGradle() {
     "        }",
     "    }",
     "}",
-    "",
-    // TODO: Remove this block when we drop support for 0.70
-    // https://github.com/facebook/react-native/commit/51a48d2e2c64a18012692b063368e369cd8ff797
-    "allprojects {",
-    "    repositories {",
-    "        {",
-    "            def searchDir = rootDir.toPath()",
-    "            do {",
-    '                def p = searchDir.resolve("node_modules/react-native/android")',
-    "                if (p.toFile().exists()) {",
-    "                    maven {",
-    "                        url = p.toRealPath().toString()",
-    "                    }",
-    "                    break",
-    "                }",
-    "            } while (searchDir = searchDir.getParent())",
-    "            // As of 0.80, React Native is no longer installed from npm",
-    "        }()",
-    "        mavenCentral()",
-    "        google()",
-    "    }",
-    "}",
     ""
   );
 }
@@ -110,14 +88,10 @@ export function bundleConfig() {
 }
 
 /**
- * @param {number} targetVersion Target React Native version
+ * @param {number} _targetVersion Target React Native version
  * @returns {string}
  */
-export function gradleProperties(targetVersion) {
-  // https://github.com/facebook/react-native/commit/14ccf6bc9c40a51e913bb89a67b114f035bf77cd
-  const enableJetifier = targetVersion < v(0, 75, 0) ? "" : "#";
-  // https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
-  const enableNewArch = targetVersion >= v(0, 76, 0) ? "" : "#";
+export function gradleProperties(_targetVersion) {
   return join(
     "# Project-wide Gradle settings.",
     "",
@@ -146,9 +120,9 @@ export function gradleProperties(targetVersion) {
     "# https://developer.android.com/topic/libraries/support-library/androidx-rn",
     "android.useAndroidX=true",
     "# Automatically convert third-party libraries to use AndroidX",
-    `${enableJetifier}android.enableJetifier=true`,
+    `#android.enableJetifier=true`,
     "# Jetifier randomly fails on these libraries",
-    `${enableJetifier}android.jetifier.ignorelist=hermes-android,react-android`,
+    `#android.jetifier.ignorelist=hermes-android,react-android`,
     "",
     "# Use this property to specify which architecture you want to build.",
     "# You can also override it from the CLI using",
@@ -161,7 +135,7 @@ export function gradleProperties(targetVersion) {
     "# to write custom TurboModules/Fabric components OR use libraries that",
     "# are providing them.",
     "# Note that this is incompatible with web debugging.",
-    `${enableNewArch}newArchEnabled=true`,
+    `newArchEnabled=true`,
     "#bridgelessEnabled=true",
     "",
     "# Uncomment the line below to build React Native from source.",

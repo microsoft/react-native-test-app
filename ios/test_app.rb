@@ -28,13 +28,11 @@ def target_product_type(target)
 end
 
 def react_native_pods(version)
-  if version.zero? || version >= v(0, 71, 0)
-    'use_react_native-0.71'
-  elsif version >= v(0, 70, 0)
-    'use_react_native-0.70'
-  else
+  unless version.zero? || version >= v(0, 71, 0)
     raise "Unsupported React Native version: #{version}"
   end
+
+  'use_react_native-0.71'
 end
 
 def validate_resources(resources, app_dir)
@@ -139,7 +137,6 @@ def make_project!(project_root, target_platform, options)
     :react_native_path => project['reactNativePath'],
     :react_native_version => project['reactNativeVersion'],
     :react_native_host_path => project['reactNativeHostPath'],
-    :community_autolinking_script_path => project['communityAutolinkingScriptPath'],
     :use_hermes => project['useHermes'],
     :use_new_arch => project['useNewArch'],
     :use_bridgeless => project['useBridgeless'],
@@ -159,14 +156,7 @@ def use_test_app_internal!(target_platform, options)
   project_target = make_project!(project_root, target_platform, options)
   xcodeproj_dst, platforms = project_target.values_at(:xcodeproj_path, :platforms)
 
-  if project_target[:use_new_arch] || project_target[:react_native_version] >= v(0, 73, 0)
-    install! 'cocoapods', :deterministic_uuids => false
-  end
-
-  # As of 0.75, we should use `use_native_modules!` from `react-native` instead
-  if project_target[:community_autolinking_script_path].is_a? String
-    require_relative(project_target[:community_autolinking_script_path])
-  end
+  install! 'cocoapods', :deterministic_uuids => false if project_target[:use_new_arch]
 
   begin
     platform :ios, platforms[:ios] if target_platform == :ios
@@ -212,11 +202,6 @@ def use_test_app_internal!(target_platform, options)
       case target.name
       when /\AReact/, 'RCT-Folly', 'SocketRocket', 'Yoga', 'fmt', 'glog', 'libevent'
         target.build_configurations.each do |config|
-          # TODO: Drop `_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION` when
-          #       we no longer support 0.72
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] ||= ['$(inherited)']
-          config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] <<
-            '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION=1'
           config.build_settings[WARNING_CFLAGS] ||= []
           config.build_settings[WARNING_CFLAGS] << '-w'
         end

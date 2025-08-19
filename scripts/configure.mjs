@@ -24,7 +24,6 @@ import {
   readJSONFile,
   readTextFile,
   toVersionNumber,
-  v,
 } from "./helpers.js";
 import {
   appManifest,
@@ -77,11 +76,6 @@ export function error(message) {
  * @returns {Promise<string | undefined>}
  */
 async function findTemplateDir(targetVersion) {
-  if (toVersionNumber(targetVersion) < v(0, 75, 0)) {
-    // Let `getConfig` try to find the template inside `react-native`
-    return undefined;
-  }
-
   const [major, minor = 0] = targetVersion.split(".");
   const output = await downloadPackage(
     "@react-native-community/template",
@@ -296,17 +290,8 @@ export const getConfig = (() => {
             ...(!init
               ? undefined
               : {
-                  // TODO: We will no longer need to consider `App.js` when we
-                  // drop support for 0.70
-                  ...(fs.existsSync(path.join(templateDir, "App.tsx"))
-                    ? {
-                        "App.tsx": copyFrom(templateDir, "App.tsx"),
-                        "tsconfig.json": copyFrom(templateDir, "tsconfig.json"),
-                      }
-                    : {
-                        "App.js": copyFrom(templateDir, "App.js"),
-                      }),
                   ".bundle/config": bundleConfig(),
+                  "App.tsx": copyFrom(templateDir, "App.tsx"),
                   Gemfile: copyFrom(templateDir, "Gemfile"),
                   "app.json": appManifest(name),
                   "index.js": copyFrom(templateDir, "index.js"),
@@ -314,13 +299,11 @@ export const getConfig = (() => {
                     path.join(templateDir, "package.json"),
                     fs
                   ).replaceAll("HelloWorld", name),
+                  "tsconfig.json": copyFrom(templateDir, "tsconfig.json"),
                 }),
           },
           oldFiles: [],
           scripts: {
-            // TODO: Remove this script when we drop support for 0.72
-            // https://github.com/react-native-community/cli/commit/48d4c29bba4e8b16cbc8307bd1b4c5349f3651d8
-            mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
             start: "react-native start",
           },
           dependencies: {},
@@ -336,24 +319,14 @@ export const getConfig = (() => {
               "wrapper",
               "gradle-wrapper.jar"
             ),
-            "gradle/wrapper/gradle-wrapper.properties": (() => {
-              const gradleWrapperProperties = path.join(
-                testAppPath,
-                "example",
-                "android",
-                "gradle",
-                "wrapper",
-                "gradle-wrapper.properties"
-              );
-              const props = readTextFile(gradleWrapperProperties);
-              if (targetVersionNum < v(0, 73, 0)) {
-                return props.replace(
-                  /gradle-[.0-9]*-bin\.zip/,
-                  "gradle-7.6.4-bin.zip"
-                );
-              }
-              return props;
-            })(),
+            "gradle/wrapper/gradle-wrapper.properties": copyFrom(
+              testAppPath,
+              "example",
+              "android",
+              "gradle",
+              "wrapper",
+              "gradle-wrapper.properties"
+            ),
             "gradle.properties": gradleProperties(targetVersionNum),
             gradlew: copyFrom(testAppPath, "example", "android", "gradlew"),
             "gradlew.bat": copyFrom(
@@ -368,7 +341,7 @@ export const getConfig = (() => {
           scripts: {
             android: "react-native run-android",
             "build:android":
-              "npm run mkdist && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+              "react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
           },
           dependencies: {},
         },
@@ -384,7 +357,7 @@ export const getConfig = (() => {
           ],
           scripts: {
             "build:ios":
-              "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+              "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
             ios: "react-native run-ios",
           },
           dependencies: {},
@@ -401,7 +374,7 @@ export const getConfig = (() => {
           ],
           scripts: {
             "build:macos":
-              "npm run mkdist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
+              "react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
             macos: `react-native run-macos --scheme ${name}`,
           },
           dependencies: {},
@@ -418,7 +391,7 @@ export const getConfig = (() => {
           ],
           scripts: {
             "build:visionos":
-              "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.visionos.jsbundle --assets-dest dist",
+              "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.visionos.jsbundle --assets-dest dist",
             visionos: "react-native run-visionos",
           },
           dependencies: {},
@@ -439,7 +412,7 @@ export const getConfig = (() => {
           ],
           scripts: {
             "build:windows":
-              "npm run mkdist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
+              "react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
             windows: "react-native run-windows",
           },
           dependencies: {},

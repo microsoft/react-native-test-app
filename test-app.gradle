@@ -14,11 +14,6 @@ applyConfigPlugins(rootDir, testAppDir)
 
 def reactNativeDir = file(findNodeModulesPath("react-native", rootDir))
 
-def importLegacyAutolinkingModule = { File startDir ->
-    def cliAndroidDir = findNodeModulesPath("@react-native-community/cli-platform-android", startDir)
-    apply(from: "${cliAndroidDir}/native_modules.gradle")
-}
-
 ext.applyTestAppSettings = { DefaultSettings settings ->
     settings.include(":app")
     settings.include(":support")
@@ -28,28 +23,18 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
     settings.project(":support")
         .projectDir = file("${testAppDir}/android/support")
 
-    def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
-
-    def reactNativeGradlePlugin =
-        reactNativeVersion >= v(0, 72, 0)
-            ? findNodeModulesPath("@react-native/gradle-plugin", reactNativeDir)
-            : findNodeModulesPath("react-native-gradle-plugin", reactNativeDir)
+    def reactNativeGradlePlugin = findNodeModulesPath("@react-native/gradle-plugin", reactNativeDir)
     if (reactNativeGradlePlugin != null) {
         settings.includeBuild(reactNativeGradlePlugin)
     }
 
-    if (reactNativeVersion == 0 || reactNativeVersion >= v(0, 75, 0)) {
-        // https://github.com/facebook/react-native/blob/b0c0bb45911434ea654ba7e2feff4686061eba7a/packages/react-native-gradle-plugin/settings-plugin/src/main/kotlin/com/facebook/react/ReactSettingsExtension.kt#L39
-        def output = file("${rootDir}/app/build/generated/rnta/autolinking.json")
-        def projectRoot = file(findFile("package.json").getParent())
-        def dependencies = autolinkModules(projectRoot, output, testAppDir)
-        dependencies.each { path, info ->
-            settings.include(path)
-            settings.project(path).projectDir = file(info.projectDir)
-        }
-    } else {
-        importLegacyAutolinkingModule(reactNativeDir)
-        applyNativeModulesSettingsGradle(settings)
+    // https://github.com/facebook/react-native/blob/b0c0bb45911434ea654ba7e2feff4686061eba7a/packages/react-native-gradle-plugin/settings-plugin/src/main/kotlin/com/facebook/react/ReactSettingsExtension.kt#L39
+    def output = file("${rootDir}/app/build/generated/rnta/autolinking.json")
+    def projectRoot = file(findFile("package.json").getParent())
+    def dependencies = autolinkModules(projectRoot, output, testAppDir)
+    dependencies.each { path, info ->
+        settings.include(path)
+        settings.project(path).projectDir = file(info.projectDir)
     }
 
     if (settings.hasProperty("react.buildFromSource") && settings["react.buildFromSource"] == "true") {
@@ -67,10 +52,7 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
 
 ext.applyTestAppModule = { Project project ->
     def reactNativeVersion = getPackageVersionNumber("react-native", rootDir)
-    if (reactNativeVersion >= 0 && reactNativeVersion < v(0, 75, 0)) {
-        importLegacyAutolinkingModule(reactNativeDir)
-        applyNativeModulesAppBuildGradle(project)
-    } else if (reactNativeVersion >= v(0, 82, 0)) {
+    if (reactNativeVersion >= v(0, 82, 0)) {
         // Ensure community modules can continue using `isNewArchEnabled()` to
         // determine whether New Architecture is enabled when it is enabled by
         // default in React Native 0.82 and later.

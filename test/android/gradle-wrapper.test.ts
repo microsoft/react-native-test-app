@@ -140,16 +140,6 @@ describe("configureGradleWrapper()", () => {
       ["8.12", "0.79.0", "gradle-8.13-bin.zip"],
       ["8.11.1", "0.78.0", "gradle-8.12-bin.zip"],
       ["8.9", "0.76.0", "gradle-8.11.1-bin.zip"],
-      ["8.9", "0.75.0", "gradle-8.8-bin.zip"],
-      ["8.7", "0.75.0", "gradle-8.8-bin.zip"],
-      ["8.9", "0.74.0", "gradle-8.8-bin.zip"],
-      ["8.5", "0.74.0", "gradle-8.6-bin.zip"],
-      ["8.9", "0.73.0", "gradle-8.8-bin.zip"],
-      ["8.2.1", "0.73.0", "gradle-8.3-bin.zip"],
-      ["8.3", "0.72.0", "gradle-8.2.1-bin.zip"],
-      ["8.1", "0.72.0", "gradle-8.1.1-bin.zip"],
-      ["8.0", "0.71.0", "gradle-7.6.4-bin.zip"],
-      ["7.5", "0.71.0", "gradle-7.6.4-bin.zip"],
     ];
     for (const [gradleVersion, rnVersion, expected] of cases) {
       written = "";
@@ -200,15 +190,6 @@ describe("configureGradleWrapper()", () => {
       ["8.13", "0.79.0"],
       ["8.12", "0.78.0"],
       ["8.11.1", "0.76.0"],
-      ["8.8", "0.75.0"],
-      ["8.8", "0.74.0"],
-      ["8.8", "0.73.0"],
-      ["8.2", "0.72.0"],
-      ["8.6", "0.74.0"],
-      ["8.3", "0.73.0"],
-      ["8.1.1", "0.72.0"],
-      ["7.6.4", "0.71.0"],
-      ["7.5.1", "0.71.0"],
     ];
     for (const [gradleVersion, rnVersion] of cases) {
       const fs = mockfs(gradleVersion, rnVersion);

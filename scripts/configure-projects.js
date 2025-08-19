@@ -11,14 +11,7 @@ const nodefs = require("node:fs");
 const path = require("node:path");
 const { generateAndroidManifest } = require("../android/android-manifest");
 const { configureGradleWrapper } = require("../android/gradle-wrapper");
-const {
-  findFile,
-  findNearest,
-  getPackageVersion,
-  readTextFile,
-  toVersionNumber,
-  v,
-} = require("./helpers");
+const { findFile, findNearest, readTextFile } = require("./helpers");
 
 /**
  * Finds `react-native.config.[ts,mjs,cjs,js]`.
@@ -77,51 +70,9 @@ function findReactNativeConfig(fs = nodefs) {
 }
 
 /**
- * Returns the version number of a React Native dependency.
- * @param {string} packageName
- * @returns {number}
- */
-const getRNPackageVersion = (() => {
-  const isTesting = "NODE_TEST_CONTEXT" in process.env;
-
-  /** @type {Record<string, number>} */
-  let versions = {};
-
-  /** @type {(packageName: string) => number} */
-  return (packageName, fs = nodefs) => {
-    if (isTesting || !versions[packageName]) {
-      const rnDir = path.dirname(require.resolve("react-native/package.json"));
-      const versionString = getPackageVersion(packageName, rnDir, fs);
-      versions[packageName] = toVersionNumber(versionString);
-    }
-    return versions[packageName];
-  };
-})();
-
-/**
  * @returns {string | undefined}
  */
-function getAndroidPackageName(fs = nodefs) {
-  try {
-    const rncliAndroidVersion = getRNPackageVersion(
-      "@react-native-community/cli-platform-android",
-      fs
-    );
-    if (rncliAndroidVersion < v(12, 3, 7)) {
-      // TODO: This block can be removed when we drop support for 0.72
-      return undefined;
-    }
-    if (
-      rncliAndroidVersion >= v(13, 0, 0) &&
-      rncliAndroidVersion < v(13, 6, 9)
-    ) {
-      // TODO: This block can be removed when we drop support for 0.73
-      return undefined;
-    }
-  } catch (_) {
-    // We're on 0.76 or later
-  }
-
+function getAndroidPackageName() {
   return "com.microsoft.reacttestapp";
 }
 
@@ -171,7 +122,7 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
     config.android = {
       sourceDir,
       manifestPath,
-      packageName: packageName || getAndroidPackageName(fs),
+      packageName: packageName || getAndroidPackageName(),
     };
 
     configureGradleWrapper(sourceDir, fs);

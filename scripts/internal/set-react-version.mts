@@ -5,13 +5,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as util from "node:util";
-import {
-  isMain,
-  readJSONFile,
-  readTextFile,
-  toVersionNumber,
-  v,
-} from "../helpers.js";
+import { isMain, readJSONFile } from "../helpers.js";
 import type { Manifest } from "../types.js";
 import { writeJSONFile } from "../utils/filesystem.mjs";
 import { fetchPackageMetadata, npmRegistryBaseURL } from "../utils/npm.mjs";
@@ -30,41 +24,6 @@ function isValidVersion(v: string): boolean {
  */
 function keys<T extends Record<string, unknown>>(obj: T): (keyof T)[] {
   return Object.keys(obj) as (keyof T)[];
-}
-
-function searchReplaceInFile(
-  filename: string,
-  searchValue: string | RegExp,
-  replaceValue: string
-): void {
-  const current = readTextFile(filename);
-  const updated = current.replace(searchValue, replaceValue);
-  if (updated !== current) {
-    fs.writeFileSync(filename, updated);
-  }
-}
-
-/**
- * Disables [Jetifier](https://developer.android.com/tools/jetifier).
- *
- * Jetifier is only necessary when you depend on code that has not yet migrated
- * to AndroidX. If we only deal with modern code, disabling it makes builds
- * slightly faster.
- */
-function disableJetifier() {
-  return searchReplaceInFile(
-    "example/android/gradle.properties",
-    "android.enableJetifier=true",
-    "android.enableJetifier=false"
-  );
-}
-
-function disableWebStorage() {
-  return searchReplaceInFile(
-    "example/package.json",
-    /\s+"@react-native-webapis\/web-storage":.*/,
-    ""
-  );
 }
 
 /**
@@ -123,6 +82,22 @@ function fetchPackageInfo(pkg: string, version: string): Promise<Manifest> {
 }
 
 /**
+ * Fetches the template manifest for the specified React Native version.
+ */
+function fetchTemplateManifest(version: string): Promise<Manifest> {
+  const url = `https://raw.githubusercontent.com/react-native-community/template/refs/heads/${version}-stable/template/package.json`;
+  console.log(`Fetching template manifest from ${url}`);
+  return fetch(url, {
+    headers: {
+      Accept:
+        "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*",
+    },
+  })
+    .then((res) => res.text())
+    .then((text) => JSON.parse(text));
+}
+
+/**
  * Fetches the latest react-native-windows@canary information via NuGet.
  */
 function fetchReactNativeWindowsCanaryInfoViaNuGet(): Promise<Manifest> {
@@ -175,61 +150,35 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet(): Promise<Manifest> {
  */
 async function resolveCommonDependencies(
   v: string,
-  { dependencies = {}, peerDependencies = {} }: Manifest
+  { peerDependencies = {} }: Manifest
 ): Promise<Record<string, string | undefined>> {
-  const [rnBabelPresetVersion, rnMetroConfigVersion, metroBabelPresetVersion] =
+  const [devDependencies, rnBabelPresetVersion, rnMetroConfigVersion] =
     await (async () => {
       if (["^", "canary", "nightly"].some((tag) => v.includes(tag))) {
-        return [v, v, undefined];
+        return [{}, v, v];
       }
 
       const [
+        { devDependencies },
         { version: rnBabelPresetVersion },
         { version: rnMetroConfigVersion },
-        { version: metroBabelPresetVersion },
       ] = await Promise.all([
+        fetchTemplateManifest(v),
         fetchPackageInfo("@react-native/babel-preset", v),
         fetchPackageInfo("@react-native/metro-config", v),
-        (async () => {
-          // Metro bumps and publishes all packages together, meaning we can use
-          // `metro-react-native-babel-transformer` to determine the version of
-          // `metro-react-native-babel-preset` that should be used.
-          const version = dependencies["metro-react-native-babel-transformer"];
-          if (version) {
-            return { version };
-          }
-
-          // `metro-react-native-babel-transformer` is no longer a direct
-          // dependency of `react-native`. As of 0.72, we should go through
-          // `@react-native-community/cli-plugin-metro` instead.
-          const cliVersion = dependencies["@react-native-community/cli"];
-          if (!cliVersion) {
-            // `@react-native-community/cli` is no longer a direct dependency in
-            // 0.73. We should be using `@react-native/babel-preset` instead.
-            return {};
-          }
-
-          const metroPluginInfo = await fetchPackageInfo(
-            "@react-native-community/cli-plugin-metro",
-            cliVersion.replace("^", "").split(".").slice(0, 2).join(".")
-          );
-          return { version: metroPluginInfo.dependencies?.["metro"] };
-        })(),
       ]);
       return [
+        devDependencies ?? {},
         rnBabelPresetVersion,
         rnMetroConfigVersion,
-        metroBabelPresetVersion,
       ];
     })();
 
-  // Starting with 0.76, `react-native` no longer depends on
-  // `@react-native-community/cli`
-  const rncli = dependencies["@react-native-community/cli"] ?? "latest";
+  const rncli = devDependencies["@react-native-community/cli"] ?? "latest";
   const rncliAndroid =
-    dependencies["@react-native-community/cli-platform-android"] ?? rncli;
+    devDependencies["@react-native-community/cli-platform-android"] ?? rncli;
   const rncliIOS =
-    dependencies["@react-native-community/cli-platform-ios"] ?? rncli;
+    devDependencies["@react-native-community/cli-platform-ios"] ?? rncli;
 
   return {
     "@react-native-community/cli": rncli,
@@ -237,7 +186,6 @@ async function resolveCommonDependencies(
     "@react-native-community/cli-platform-ios": rncliIOS,
     "@react-native/babel-preset": rnBabelPresetVersion,
     "@react-native/metro-config": rnMetroConfigVersion,
-    "metro-react-native-babel-preset": metroBabelPresetVersion,
     // Replace range to avoid React version mismatch
     react: peerDependencies["react"].replace(/^\^/, ""),
   };
@@ -398,18 +346,6 @@ if (isMain(import.meta.url)) {
     process.exitCode = 1;
   } else {
     const { "core-only": coreOnly, overrides } = values;
-    setReactVersion(version, coreOnly, JSON.parse(overrides)).then(() => {
-      const numVersion = VALID_TAGS.includes(version)
-        ? Number.MAX_SAFE_INTEGER
-        : toVersionNumber(version);
-      if (numVersion >= v(0, 74, 0)) {
-        disableJetifier();
-      }
-
-      // `@react-native-webapis/web-storage` is not compatible with codegen 0.71
-      if (numVersion < v(0, 72, 0)) {
-        disableWebStorage();
-      }
-    });
+    setReactVersion(version, coreOnly, JSON.parse(overrides));
   }
 }

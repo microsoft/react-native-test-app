@@ -53,24 +53,13 @@ export function isBridgeless() {
   return "RN$Bridgeless" in global && global.RN$Bridgeless === true;
 }
 
-export function isConcurrentReactEnabled(
-  props: { concurrentRoot?: boolean },
-  isFabric: boolean
-): boolean {
-  const { major, minor } = ReactNativeVersion;
-  const version = major * 10000 + minor;
-  // As of 0.74, it won't be possible to opt-out:
-  // https://github.com/facebook/react-native/commit/30d186c3683228d4fb7a42f804eb2fdfa7c8ac03
-  return isFabric && (version >= 74 || props.concurrentRoot !== false);
-}
-
 export function isFabricInstance<T>(
   ref: NativeSyntheticEvent<T>["currentTarget"]
 ): boolean {
   return Boolean(
-    // @ts-expect-error — https://github.com/facebook/react-native/blob/0.72-stable/packages/react-native/Libraries/Renderer/public/ReactFabricPublicInstanceUtils.js
+    // @ts-expect-error — https://github.com/facebook/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
     ref["__nativeTag"] ||
-      // @ts-expect-error — https://github.com/facebook/react-native/blob/0.72-stable/packages/react-native/Libraries/Renderer/public/ReactFabricPublicInstanceUtils.js
+      // @ts-expect-error — https://github.com/facebook/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
       ref["_internalInstanceHandle"]?.stateNode?.canonical
   );
 }

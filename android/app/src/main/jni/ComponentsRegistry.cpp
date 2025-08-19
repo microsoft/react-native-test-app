@@ -2,16 +2,13 @@
 
 #if !__has_include(<DefaultTurboModuleManagerDelegate.h>)
 
+// clang-format off
 #include "AutolinkingCompat.h"
-
-#if __has_include(<react/fabric/CoreComponentsRegistry.h>)  // >= 0.71
-#include <react/fabric/CoreComponentsRegistry.h>
-#else  // < 0.71
-#include <CoreComponentsRegistry.h>
-#endif  // __has_include(<react/fabric/CoreComponentsRegistry.h>)
+// clang-format on
 
 #include <DefaultComponentsRegistry.h>
 
+#include <react/fabric/CoreComponentsRegistry.h>
 #include <react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
 #include <react/renderer/componentregistry/ComponentDescriptorRegistry.h>
 #include <react/renderer/components/rncore/ComponentDescriptors.h>

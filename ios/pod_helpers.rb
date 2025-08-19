@@ -33,16 +33,8 @@ def use_hermes?(options)
   use_hermes != false
 end
 
-def use_new_architecture!(options, react_native_version)
+def use_new_architecture!(options, _react_native_version)
   return unless options[:use_new_arch]
-
-  if react_native_version < v(0, 76, 0)
-    Pod::UI.warn(
-      'As of writing, New Architecture (Fabric) is still experimental and ' \
-      'subject to change. For more information, please see ' \
-      'https://reactnative.dev/docs/next/new-architecture-intro.'
-    )
-  end
 
   options[:fabric_enabled] = true
   options[:new_arch_enabled] = true

@@ -10,7 +10,7 @@
     <UseFabric>false</UseFabric>
 
     <!--
-      Use Hermes instead of Chakra as the JS engine (enabled by default on 0.73+).
+      Use Hermes instead of Chakra as the JS engine (enabled by default).
 
       See https://microsoft.github.io/react-native-windows/docs/hermes
     -->

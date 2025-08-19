@@ -11,30 +11,13 @@ ext.isBridgelessEnabled = { Project project, boolean isNewArchEnabled ->
 
         def version = getPackageVersionNumber("react-native", project.rootDir)
         if (version >= v(0, 82, 0)) {
-            if (bridgelessEnabled != null) {
+            if (bridgelessEnabled == "false") {
                 logger.warn("WARNING: As of 0.82, bridgeless can no longer be disabled")
             }
             return true
         }
 
-        if (bridgelessEnabled != "false") {
-            def isSupported = version == 0 || version >= v(0, 73, 0)
-
-            if (bridgelessEnabled == "true") {
-                if (!isSupported) {
-                    logger.warn([
-                        "WARNING: react-native 0.73 or greater is required for",
-                        "Bridgeless Mode — disable `bridgelessEnabled` in your",
-                        "`gradle.properties` or upgrade `react-native`"
-                    ].join(" "))
-                }
-                return isSupported
-            }
-
-            // https://github.com/facebook/react-native/commit/fe337f25be65b67dc3d8d99d26a61ffd26985dd8
-            def isEnabledByDefault = version == 0 || version >= v(0, 74, 0)
-            return isSupported && isEnabledByDefault
-        }
+        return bridgelessEnabled != "false"
     }
     return false
 }
@@ -49,23 +32,11 @@ ext.isNewArchitectureEnabled = { Project project ->
 
     def version = getPackageVersionNumber("react-native", project.rootDir)
     if (version >= v(0, 82, 0)) {
-        if (newArchEnabled != null) {
+        if (newArchEnabled == "false") {
             logger.warn("WARNING: As of 0.82, New Architecture can no longer be disabled")
         }
         return true
     }
 
-    if (newArchEnabled == "true") {
-        def isSupported = version == 0 || version >= v(0, 71, 0)
-        if (!isSupported) {
-            throw new GradleException([
-                "react-native 0.71 or greater is required for New Architecture",
-                "— disable `newArchEnabled` in your `gradle.properties` or",
-                "upgrade `react-native`"
-            ].join(" "))
-        }
-        return isSupported
-    }
-
-    return false
+    return newArchEnabled == "true"
 }

@@ -9,7 +9,6 @@ import {
   isMain,
   readTextFile,
   requireTransitive,
-  v,
   writeTextFile,
 } from "../scripts/helpers.js";
 import * as colors from "../scripts/utils/colors.mjs";
@@ -256,7 +255,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
     console.log(colors.cyan(colors.bold("info")), `'${props}' already exists`);
   } else {
     const { msbuildprops, useHermes } = options;
-    const { useExperimentalNuGet, useFabric, versionNumber } = info;
+    const { useExperimentalNuGet, useFabric } = info;
     const url = new URL(experimentalFeaturesPropsFilename, import.meta.url);
     await copyAndReplaceAsync(
       fileURLToPath(url),
@@ -264,7 +263,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
       {
         "<RnwNewArch>false</RnwNewArch>": `<RnwNewArch>${useFabric}</RnwNewArch>`,
         "<UseFabric>false</UseFabric>": `<UseFabric>${useFabric}</UseFabric>`,
-        "<UseHermes>true</UseHermes>": `<UseHermes>${useHermes == null ? versionNumber >= v(0, 73, 0) : useHermes}</UseHermes>`,
+        "<UseHermes>true</UseHermes>": `<UseHermes>${useHermes !== false}</UseHermes>`,
         "<UseWinUI3>false</UseWinUI3>": `<UseWinUI3>${useFabric}</UseWinUI3>`,
         "<UseExperimentalNuget>false</UseExperimentalNuget>": `<UseExperimentalNuget>${useExperimentalNuGet}</UseExperimentalNuget>`,
         "<!-- AdditionalMSBuildProperties -->": msbuildprops ?? "",
@@ -355,12 +354,12 @@ if (isMain(import.meta.url)) {
         type: "string",
       },
       "use-fabric": {
-        description: "Use New Architecture [experimental] (supported on 0.73+)",
+        description: "Use New Architecture [experimental]",
         type: "boolean",
       },
       "use-hermes": {
         description:
-          "Use Hermes instead of Chakra as the JS engine (enabled by default on 0.73+)",
+          "Use Hermes instead of Chakra as the JS engine (enabled by default)",
         type: "boolean",
       },
       "use-nuget": {

@@ -12,7 +12,6 @@ import {
   readJSONFile,
   readTextFile,
   toVersionNumber,
-  v,
 } from "../scripts/helpers.js";
 import * as colors from "../scripts/utils/colors.mjs";
 
@@ -414,12 +413,7 @@ export async function projectInfo(
 ) {
   const version = getPackageVersion("react-native-windows", rnWindowsPath, fs);
   const versionNumber = toVersionNumber(version);
-
-  const newArch =
-    Boolean(useFabric) && (versionNumber === 0 || versionNumber >= v(0, 74, 0));
-  if (useFabric && !newArch) {
-    warn("New Architecture requires `react-native-windows` 0.74+");
-  }
+  const newArch = Boolean(useFabric);
 
   return {
     version,

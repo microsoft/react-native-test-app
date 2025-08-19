@@ -31,7 +31,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
       - name: Lint commit message
         run: |
-          npm run lint:commit
+          node --run lint:commit
   review:
     permissions:
       issues: write # comment on PRs (suggestion-bot)

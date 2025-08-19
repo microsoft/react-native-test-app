@@ -1,4 +1,5 @@
-import { deepEqual, equal, fail, ok, throws } from "node:assert/strict";
+import { XMLParser } from "fast-xml-parser";
+import { deepEqual, equal, ok, throws } from "node:assert/strict";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
@@ -7,9 +8,24 @@ import {
   internalForTestingPurposesOnly,
 } from "../scripts/configure-projects.js";
 
-// This value needs to be the same as `package` in
-// `android/app/src/main/AndroidManifest.xml`
-const packageName = "com.microsoft.reacttestapp";
+const getAndroidPackageNameFromManifest = (() => {
+  let packageName = "";
+  return () => {
+    if (!packageName) {
+      const androidManifestXml = nodefs.readFileSync(
+        "android/app/src/main/AndroidManifest.xml",
+        { encoding: "utf-8" }
+      );
+
+      const xml = new XMLParser({ ignoreAttributes: false });
+      const { manifest } = xml.parse(androidManifestXml);
+
+      packageName = manifest["@_package"];
+    }
+
+    return packageName;
+  };
+})();
 
 describe("configureProjects()", () => {
   const manifestPath = path.join(
@@ -33,7 +49,7 @@ describe("configureProjects()", () => {
       android: {
         sourceDir,
         manifestPath,
-        packageName,
+        packageName: getAndroidPackageNameFromManifest(),
       },
     });
   });
@@ -117,49 +133,7 @@ describe("findReactNativeConfig()", () => {
 describe("getAndroidPackageName()", () => {
   const { getAndroidPackageName } = internalForTestingPurposesOnly;
 
-  function mockfs(cliPlatformAndroidVersion: string): typeof nodefs {
-    const appManifest = "app.json";
-    const cliPlatformAndroidPackageManifest =
-      /@react-native-community[/\\]cli-platform-android[/\\]package.json$/;
-    return {
-      ...nodefs,
-      existsSync: (p) => p === appManifest,
-      // @ts-expect-error Type 'string' is not assignable to type 'Buffer'
-      readFileSync: (p) => {
-        if (p === appManifest) {
-          return JSON.stringify({ android: { package: "com.testapp" } });
-        } else if (
-          typeof p === "string" &&
-          cliPlatformAndroidPackageManifest.test(p)
-        ) {
-          return JSON.stringify({
-            name: "@react-native-community/cli-platform-android",
-            version: cliPlatformAndroidVersion,
-          });
-        }
-
-        fail(`Unexpected file read: ${p}`);
-      },
-    };
-  }
-
-  it("returns early if `@react-native-community/cli-platform-android` <12.3.7", () => {
-    equal(getAndroidPackageName(mockfs("11.4.1")), undefined);
-    equal(getAndroidPackageName(mockfs("12.3.6")), undefined);
-  });
-
-  it("returns package name if `@react-native-community/cli-platform-android` >=12.3.7 <13.0.0", () => {
-    equal(getAndroidPackageName(mockfs("12.3.7")), packageName);
-    equal(getAndroidPackageName(mockfs("12.999.999")), packageName);
-  });
-
-  it("returns early if `@react-native-community/cli-platform-android` <13.6.9", () => {
-    equal(getAndroidPackageName(mockfs("13.0.0")), undefined);
-    equal(getAndroidPackageName(mockfs("13.6.8")), undefined);
-  });
-
-  it("returns package name `@react-native-community/cli-platform-android` >=13.6.9", () => {
-    equal(getAndroidPackageName(mockfs("13.6.9")), packageName);
-    equal(getAndroidPackageName(mockfs("14.0.0")), packageName);
+  it("returns package name set in 'AndroidManifest.xml'", () => {
+    equal(getAndroidPackageNameFromManifest(), getAndroidPackageName());
   });
 });

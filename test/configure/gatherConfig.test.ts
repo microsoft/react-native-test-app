@@ -1,7 +1,6 @@
 import { deepEqual } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { gatherConfig as gatherConfigActual } from "../../scripts/configure.mjs";
-import { readTextFile } from "../../scripts/helpers.js";
 import { join } from "../../scripts/template.mjs";
 import type { Configuration, ConfigureParams } from "../../scripts/types.ts";
 import { templatePath } from "../template.ts";
@@ -34,10 +33,6 @@ describe("gatherConfig()", () => {
     config.oldFiles = config.oldFiles.map(normalize);
     return config;
   }
-
-  const gradleWrapper = readTextFile(
-    "example/android/gradle/wrapper/gradle-wrapper.properties"
-  ).replaceAll("\r", "");
 
   it("returns configuration for all platforms", () => {
     deepEqual(gatherConfig(mockParams()), {
@@ -74,26 +69,6 @@ describe("gatherConfig()", () => {
           "        getReactNativeDependencies().each { dependency ->",
           "            classpath(dependency)",
           "        }",
-          "    }",
-          "}",
-          "",
-          "allprojects {",
-          "    repositories {",
-          "        {",
-          "            def searchDir = rootDir.toPath()",
-          "            do {",
-          '                def p = searchDir.resolve("node_modules/react-native/android")',
-          "                if (p.toFile().exists()) {",
-          "                    maven {",
-          "                        url = p.toRealPath().toString()",
-          "                    }",
-          "                    break",
-          "                }",
-          "            } while (searchDir = searchDir.getParent())",
-          "            // As of 0.80, React Native is no longer installed from npm",
-          "        }()",
-          "        mavenCentral()",
-          "        google()",
           "    }",
           "}",
           ""
@@ -156,7 +131,9 @@ describe("gatherConfig()", () => {
         "android/gradle/wrapper/gradle-wrapper.jar": {
           source: "example/android/gradle/wrapper/gradle-wrapper.jar",
         },
-        "android/gradle/wrapper/gradle-wrapper.properties": gradleWrapper,
+        "android/gradle/wrapper/gradle-wrapper.properties": {
+          source: "example/android/gradle/wrapper/gradle-wrapper.properties",
+        },
         "android/gradlew": {
           source: "example/android/gradlew",
         },
@@ -263,16 +240,15 @@ describe("gatherConfig()", () => {
       scripts: {
         android: "react-native run-android",
         "build:android":
-          "npm run mkdist && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+          "react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
         "build:ios":
-          "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+          "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         "build:macos":
-          "npm run mkdist && react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
+          "react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
         "build:windows":
-          "npm run mkdist && react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
+          "react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
         ios: "react-native run-ios",
         macos: "react-native run-macos --scheme Test",
-        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
         windows: "react-native run-windows",
       },
@@ -363,7 +339,6 @@ describe("gatherConfig()", () => {
       },
       oldFiles: [],
       scripts: {
-        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
       },
     });
@@ -433,9 +408,8 @@ describe("gatherConfig()", () => {
       ],
       scripts: {
         "build:ios":
-          "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+          "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
-        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
       },
     });
@@ -474,26 +448,6 @@ describe("gatherConfig()", () => {
           "        getReactNativeDependencies().each { dependency ->",
           "            classpath(dependency)",
           "        }",
-          "    }",
-          "}",
-          "",
-          "allprojects {",
-          "    repositories {",
-          "        {",
-          "            def searchDir = rootDir.toPath()",
-          "            do {",
-          '                def p = searchDir.resolve("node_modules/react-native/android")',
-          "                if (p.toFile().exists()) {",
-          "                    maven {",
-          "                        url = p.toRealPath().toString()",
-          "                    }",
-          "                    break",
-          "                }",
-          "            } while (searchDir = searchDir.getParent())",
-          "            // As of 0.80, React Native is no longer installed from npm",
-          "        }()",
-          "        mavenCentral()",
-          "        google()",
           "    }",
           "}",
           ""
@@ -556,7 +510,9 @@ describe("gatherConfig()", () => {
         "android/gradle/wrapper/gradle-wrapper.jar": {
           source: "example/android/gradle/wrapper/gradle-wrapper.jar",
         },
-        "android/gradle/wrapper/gradle-wrapper.properties": gradleWrapper,
+        "android/gradle/wrapper/gradle-wrapper.properties": {
+          source: "example/android/gradle/wrapper/gradle-wrapper.properties",
+        },
         "android/gradlew": {
           source: "example/android/gradlew",
         },
@@ -641,11 +597,10 @@ describe("gatherConfig()", () => {
       scripts: {
         android: "react-native run-android",
         "build:android":
-          "npm run mkdist && react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
+          "react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
         "build:ios":
-          "npm run mkdist && react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
+          "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
         ios: "react-native run-ios",
-        mkdist: `node -e "require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })"`,
         start: "react-native start",
       },
     });

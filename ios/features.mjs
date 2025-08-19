@@ -1,5 +1,5 @@
 // @ts-check
-/** @import { ApplePlatform, JSONObject } from "../scripts/types.ts"; */
+/** @import { JSONObject } from "../scripts/types.ts"; */
 import { v } from "../scripts/helpers.js";
 
 /**
@@ -11,23 +11,12 @@ function isNewArchExclusive(reactNativeVersion) {
 
 /**
  * @param {number} reactNativeVersion
- */
-function supportsNewArch(reactNativeVersion) {
-  return reactNativeVersion === 0 || reactNativeVersion >= v(0, 71, 0);
-}
-
-/**
- * @param {number} reactNativeVersion
  * @param {JSONObject} options
  * @returns {boolean}
  */
 export function isNewArchEnabled(reactNativeVersion, options) {
   if (isNewArchExclusive(reactNativeVersion)) {
     return true;
-  }
-
-  if (!supportsNewArch(reactNativeVersion)) {
-    return false;
   }
 
   const newArchEnabled = process.env["RCT_NEW_ARCH_ENABLED"];
@@ -69,29 +58,16 @@ export function isBridgelessEnabled(reactNativeVersion, options) {
 }
 
 /**
- * @param {ApplePlatform} platform
  * @param {number} reactNativeVersion
  * @param {JSONObject} options
  * @returns {boolean | "from-source"}
  */
-export function isHermesEnabled(platform, reactNativeVersion, options) {
+export function isHermesEnabled(reactNativeVersion, options) {
   if (reactNativeVersion < v(0, 80, 0)) {
     const useHermes = process.env["USE_HERMES"];
-    const enabled =
-      typeof useHermes === "string"
-        ? useHermes === "1"
-        : options["hermesEnabled"] === true;
-
-    // Hermes prebuilds for visionOS was introduced in 0.76
-    if (
-      enabled &&
-      platform === "visionos" &&
-      reactNativeVersion < v(0, 76, 0)
-    ) {
-      return "from-source";
-    }
-
-    return enabled;
+    return typeof useHermes === "string"
+      ? useHermes === "1"
+      : options["hermesEnabled"] === true;
   }
 
   return true;
