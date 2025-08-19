@@ -1211,7 +1211,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-safe-area-context (5.5.2):
+  - react-native-safe-area-context (5.6.0):
     - React-Core
   - React-NativeModulesApple (0.78.2):
     - glog
@@ -1510,7 +1510,7 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
-  - RNWWebStorage (0.4.2):
+  - RNWWebStorage (0.4.3):
     - DoubleConversion
     - glog
     - RCT-Folly (= 2024.11.18.00)
@@ -1792,7 +1792,7 @@ SPEC CHECKSUMS:
   React-logger: 763728cf4eebc9c5dc9bfc3649e22295784f69f3
   React-Mapbuffer: 63278529b5cf531a7eaf8fc71244fabb062ca90c
   React-microtasksnativemodule: 8eac9377da54b41703abb23e3781b9c413acfdc8
-  react-native-safe-area-context: 0f7bf11598f9a61b7ceac8dc3f59ef98697e99e1
+  react-native-safe-area-context: 12c7daa0ea4fa4eeb513fc273fac6b47aa332bd6
   React-NativeModulesApple: 83ea61c133a66d967bbd8abbb5bf3c2cdcd5ff25
   React-perflogger: 5f8fa36a8e168fb355efe72099efe77213bc2ac6
   React-performancetimeline: 8c0ecfa1ae459cc5678a65f95ac3bf85644d6feb
@@ -1823,7 +1823,7 @@ SPEC CHECKSUMS:
   ReactNativeHost: 771c74c764b7bf1fa0ec613a4b5ee96db304ca0f
   ReactTestApp-DevSupport: 2386e7c22084f8a550cfadcc0bde140c7dc328a1
   ReactTestApp-Resources: 1bd9ff10e4c24f2ad87101a32023721ae923bccf
-  RNWWebStorage: cf4c36a41d7d31734b1a3424c70cb555e86801be
+  RNWWebStorage: bdcb34fd704e16261e11eca7453555541988a40b
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: e14bad835e12b6c7e2260fc320bd00e0f4b45add
 
