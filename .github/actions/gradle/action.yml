@@ -15,6 +15,12 @@ runs:
         node --eval "require('./android/gradle-wrapper.js').configureGradleWrapper('${{ inputs.project-root }}/android')"
       shell: bash
     - name: Build
+      if: ${{ github.event_name != 'schedule' }}
       run: ./gradlew ${{ inputs.arguments }}
+      shell: bash
+      working-directory: ${{ inputs.project-root }}/android
+    - name: Build nightly
+      if: ${{ github.event_name == 'schedule' }}
+      run: ./gradlew -PnewArchEnabled=true ${{ inputs.arguments }}
       shell: bash
       working-directory: ${{ inputs.project-root }}/android
