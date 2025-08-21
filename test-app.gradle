@@ -70,6 +70,19 @@ ext.applyTestAppModule = { Project project ->
     if (reactNativeVersion >= 0 && reactNativeVersion < v(0, 75, 0)) {
         importLegacyAutolinkingModule(reactNativeDir)
         applyNativeModulesAppBuildGradle(project)
+    } else if (reactNativeVersion >= v(0, 82, 0)) {
+        // Ensure community modules can continue using `isNewArchEnabled()` to
+        // determine whether New Architecture is enabled when it is enabled by
+        // default in React Native 0.82 and later.
+        def newArchProps = ["react.newArchEnabled", "newArchEnabled"]
+        project.gradle.beforeProject { subproject ->
+            newArchProps.each { prop ->
+                if (subproject.hasProperty(prop)) {
+                    subproject.setProperty(prop, "true")
+                }
+                subproject.ext.set(prop, "true")
+            }
+        }
     }
 
     def isRntaProject =
@@ -207,6 +220,23 @@ ext.applyTestAppModule = { Project project ->
                     res.srcDirs += "${testAppDir}/android/app/src/main/res-launcher"
                 }
                 manifest.srcFile generatedManifestFile
+            }
+        }
+    }
+
+    // Make `:app:preBuild` depend on all subproject `preBuild` tasks to ensure
+    // all code has been generated before the CMake configuration step.
+    project.gradle.projectsEvaluated {
+        def app = project.rootProject.subprojects.find { it.path == ":app" }
+        def preBuild = app?.tasks?.findByName("preBuild")
+        if (preBuild != null) {
+            project.rootProject.subprojects { subproject ->
+                if (subproject.path != ":app" && subproject.path != ":support") {
+                    def subPreBuild = subproject.tasks.findByName("preBuild")
+                    if (subPreBuild != null) {
+                        preBuild.dependsOn(subPreBuild)
+                    }
+                }
             }
         }
     }
