@@ -11,8 +11,8 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.manifest.Manifest
 import com.microsoft.reacttestapp.manifest.ManifestProvider
+import com.microsoft.reacttestapp.react.MainReactNativeHost
 import com.microsoft.reacttestapp.react.ReactBundleNameProvider
-import com.microsoft.reacttestapp.react.TestAppReactNativeHost
 import com.microsoft.reacttestapp.support.ReactTestAppLifecycleEvents
 
 class TestApp :
@@ -30,11 +30,11 @@ class TestApp :
         get() = getDefaultReactHost(this.applicationContext, reactNativeHost)
 
     @Suppress("OVERRIDE_DEPRECATION")
-    override val reactNativeHost: TestAppReactNativeHost
+    override val reactNativeHost: MainReactNativeHost
         get() = reactNativeHostInternal
 
     private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
-    private lateinit var reactNativeHostInternal: TestAppReactNativeHost
+    private lateinit var reactNativeHostInternal: MainReactNativeHost
 
     fun reloadJSFromServer(activity: Activity, bundleURL: String) {
         reactNativeHostInternal.reloadJSFromServer(activity, bundleURL)
@@ -46,8 +46,7 @@ class TestApp :
         SoLoader.init(this, OpenSourceMergedSoMapping)
 
         reactNativeBundleNameProvider = ReactBundleNameProvider(this, manifest.bundleRoot)
-        reactNativeHostInternal =
-            TestAppReactNativeHost(this, reactNativeBundleNameProvider)
+        reactNativeHostInternal = MainReactNativeHost(this, reactNativeBundleNameProvider)
 
         val eventConsumers = PackageList(this).packages
             .filter { it is ReactTestAppLifecycleEvents }

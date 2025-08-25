@@ -238,6 +238,12 @@ android {
                 : reactNativeVersion < v(0, 73, 0)
                     ? "src/reactapplication-pre-0.73/java"
                     : "src/reactapplication-0.73/java",
+
+            // TODO: Remove this block when we drop support for 0.75
+            // https://github.com/react-native-community/template/commit/f738a366b194dd21d4d2bc14c9215b630714dd70
+            reactNativeVersion >= v(0, 76, 0)
+                ? "src/reacthost-0.76/java"
+                : "src/reacthost-legacy/java",
         ]
     }
 

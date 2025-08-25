@@ -9,6 +9,7 @@ import com.facebook.react.ReactRootView
 import com.facebook.react.interfaces.fabric.ReactSurface
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.microsoft.reacttestapp.BuildConfig
+import com.microsoft.reacttestapp.TestApp
 
 class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -39,8 +40,10 @@ class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         val activity = requireActivity() as ReactActivity
+        val application = activity.application as TestApp
         if (BuildConfig.REACTAPP_USE_BRIDGELESS) {
-            val surface = activity.reactActivityDelegate.reactHost?.createSurface(
+            @Suppress("UNNECESSARY_SAFE_CALL")
+            val surface = application.reactHost?.createSurface(
                 activity,
                 requireNotNull(requireArguments().getString(NAME)),
                 requireArguments().getBundle(INITIAL_PROPERTIES)
@@ -53,7 +56,7 @@ class ComponentBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 setIsFabric(BuildConfig.REACTAPP_USE_FABRIC)
                 @Suppress("DEPRECATION")
                 startReactApplication(
-                    activity.reactActivityDelegate.reactInstanceManager,
+                    application.reactNativeHost.reactInstanceManager,
                     requireArguments().getString(NAME),
                     requireArguments().getBundle(INITIAL_PROPERTIES)
                 )

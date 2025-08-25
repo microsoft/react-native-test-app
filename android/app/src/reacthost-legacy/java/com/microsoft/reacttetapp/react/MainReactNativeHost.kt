@@ -2,10 +2,8 @@ package com.microsoft.reacttestapp.react
 
 import android.app.Activity
 import android.app.Application
-import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import androidx.core.net.toUri
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory
 import com.facebook.react.PackageList
@@ -19,32 +17,11 @@ import com.facebook.react.packagerconnection.PackagerConnectionSettings
 import com.microsoft.reacttestapp.BuildConfig
 import com.microsoft.reacttestapp.MainActivity
 import com.microsoft.reacttestapp.R
-import java.lang.ref.WeakReference
 import java.util.Collections.synchronizedList
 import java.util.concurrent.CountDownLatch
 
-sealed class BundleSource {
-    enum class Action {
-        RESTART,
-        RELOAD
-    }
-
-    abstract fun moveTo(to: BundleSource): Action
-
-    object Disk : BundleSource() {
-        override fun moveTo(to: BundleSource) = Action.RESTART
-    }
-
-    object Server : BundleSource() {
-        override fun moveTo(to: BundleSource): Action = when (to) {
-            Disk -> Action.RESTART
-            Server -> Action.RELOAD
-        }
-    }
-}
-
 @Suppress("TYPEALIAS_EXPANSION_DEPRECATION")
-class TestAppReactNativeHost(
+class MainReactNativeHost(
     application: Application,
     private val reactBundleNameProvider: ReactBundleNameProvider
 ) : com.microsoft.reacttestapp.compat.ReactNativeHostCompat(application) {
@@ -60,39 +37,7 @@ class TestAppReactNativeHost(
 
     var onBundleSourceChanged: ((newSource: BundleSource) -> Unit)? = null
 
-    private var currentActivity: WeakReference<Activity> = WeakReference(null)
-
-    private val activityLifeCycleCallbacks = object : ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            // ignore
-        }
-
-        override fun onActivityStarted(activity: Activity) {
-            // ignore
-        }
-
-        override fun onActivityResumed(activity: Activity) {
-            currentActivity = WeakReference(activity)
-        }
-
-        override fun onActivityPaused(activity: Activity) {
-            // ignore
-        }
-
-        override fun onActivityStopped(activity: Activity) {
-            if (activity == currentActivity.get()) {
-                currentActivity.clear()
-            }
-        }
-
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-            // ignore
-        }
-
-        override fun onActivityDestroyed(activity: Activity) {
-            // ignore
-        }
-    }
+    private var currentActivityTracker = CurrentActivityTracker()
 
     private val reactInstanceEventListeners =
         synchronizedList<ReactInstanceEventListener>(arrayListOf())
@@ -102,7 +47,7 @@ class TestAppReactNativeHost(
             error("init() can only be called once on startup")
         }
 
-        application.registerActivityLifecycleCallbacks(activityLifeCycleCallbacks)
+        application.registerActivityLifecycleCallbacks(currentActivityTracker)
 
         // When we reference `reactInstanceManager` below, `ReactNativeHost` will start creating a
         // `ReactInstanceManager` instance.
@@ -192,7 +137,7 @@ class TestAppReactNativeHost(
             }
         )
         devSupportManager.addCustomDevOption(bundleOption) {
-            currentActivity.get()?.let {
+            currentActivityTracker.get()?.let {
                 when (source) {
                     BundleSource.Disk -> reload(it, BundleSource.Server)
                     BundleSource.Server -> reload(it, BundleSource.Disk)

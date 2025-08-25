@@ -217,7 +217,12 @@ class MainActivity : ReactActivity() {
                     true
                 }
                 R.id.show_dev_options -> {
-                    reactInstanceManager.devSupportManager.showDevOptionsDialog()
+                    val devSupportManager = if (BuildConfig.REACTAPP_USE_BRIDGELESS) {
+                        (application as TestApp).reactHost.devSupportManager
+                    } else {
+                        reactInstanceManager.devSupportManager
+                    }
+                    devSupportManager?.showDevOptionsDialog()
                     true
                 }
                 else -> false

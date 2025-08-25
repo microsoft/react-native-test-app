@@ -8,8 +8,8 @@ import com.facebook.react.ReactApplication
 import com.facebook.soloader.SoLoader
 import com.microsoft.reacttestapp.manifest.Manifest
 import com.microsoft.reacttestapp.manifest.ManifestProvider
+import com.microsoft.reacttestapp.react.MainReactNativeHost
 import com.microsoft.reacttestapp.react.ReactBundleNameProvider
-import com.microsoft.reacttestapp.react.TestAppReactNativeHost
 import com.microsoft.reacttestapp.support.ReactTestAppLifecycleEvents
 
 class TestApp :
@@ -24,7 +24,7 @@ class TestApp :
     }
 
     private lateinit var reactNativeBundleNameProvider: ReactBundleNameProvider
-    private lateinit var reactNativeHostInternal: TestAppReactNativeHost
+    private lateinit var reactNativeHostInternal: MainReactNativeHost
 
     fun reloadJSFromServer(activity: Activity, bundleURL: String) {
         reactNativeHostInternal.reloadJSFromServer(activity, bundleURL)
@@ -37,8 +37,7 @@ class TestApp :
         SoLoader.init(this, false)
 
         reactNativeBundleNameProvider = ReactBundleNameProvider(this, manifest.bundleRoot)
-        reactNativeHostInternal =
-            TestAppReactNativeHost(this, reactNativeBundleNameProvider)
+        reactNativeHostInternal = MainReactNativeHost(this, reactNativeBundleNameProvider)
 
         val eventConsumers = PackageList(this).packages
             .filter { it is ReactTestAppLifecycleEvents }
