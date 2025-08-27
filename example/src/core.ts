@@ -12,15 +12,15 @@ export type ReactNativeVersion = {
 export const ReactNativeVersion: ReactNativeVersion = (() => {
   // https://github.com/facebook/react-native/commit/ec5638abd0e872be62b6ea5d8df9bed6335c2191
   const { ReactNativeVersion } = require("react-native");
-  if (ReactNativeVersion) {
-    return ReactNativeVersion;
-  }
-
-  const { version } = require("react-native/Libraries/Core/ReactNativeVersion");
+  const { major, minor, patch, prerelease } =
+    ReactNativeVersion ??
+    require("react-native/Libraries/Core/ReactNativeVersion").version;
   return {
-    ...version,
+    major,
+    minor,
+    patch,
+    prerelease,
     getVersionString: () => {
-      const { major, minor, patch, prerelease } = version;
       const v = `${major}.${minor}.${patch}`;
       return prerelease ? `${v}-${prerelease.replace("-", "\n")}` : v;
     },
@@ -38,11 +38,19 @@ export function getHermesVersion(): string | undefined {
     return undefined;
   }
 
-  return `Hermes ${version}`;
+  const [core, prerelease, ...build] = version.split("-");
+  const parts = [core];
+  if (prerelease) {
+    parts.push("-", prerelease);
+    if (build.length > 0) {
+      parts.push("\n", build.join("-"));
+    }
+  }
+  return `Hermes ${parts.join("")}`;
 }
 
 export function isBridgeless() {
-  return "RN$Bridgeless" in global && RN$Bridgeless === true;
+  return "RN$Bridgeless" in global && global.RN$Bridgeless === true;
 }
 
 export function isConcurrentReactEnabled(
