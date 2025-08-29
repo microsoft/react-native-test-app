@@ -29,7 +29,7 @@ export function assertDefinition(props: unknown): asserts props is Definition {
 
 export async function readDocumentation(): Promise<Partial<Docs>> {
   const docs: Partial<Docs> = {};
-  const docsDir = fileURLToPath(new URL("../../docs", import.meta.url));
+  const docsDir = fileURLToPath(new URL("../../../../docs", import.meta.url));
 
   const keys: (keyof Docs)[] = [
     "introduction",

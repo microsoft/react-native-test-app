@@ -1,0 +1,166 @@
+{
+  "name": "react-native-test-app",
+  "version": "0.0.1-dev",
+  "description": "react-native-test-app provides a test app for all supported platforms as a package",
+  "keywords": [
+    "android",
+    "app",
+    "ios",
+    "macos",
+    "react",
+    "react-native",
+    "test",
+    "test-app",
+    "testing",
+    "windows"
+  ],
+  "homepage": "https://github.com/microsoft/react-native-test-app",
+  "license": "MIT",
+  "author": {
+    "name": "Microsoft Open Source",
+    "email": "microsoftopensource@users.noreply.github.com"
+  },
+  "files": [
+    "*.md",
+    "ReactTestApp-DevSupport.podspec",
+    "android/**/*.gradle",
+    "android/android-manifest.js",
+    "android/app/lint.xml",
+    "android/app/src",
+    "!android/app/src/test",
+    "android/autolink.mjs",
+    "android/gradle-wrapper.js",
+    "android/support/src",
+    "common",
+    "example/_gitignore",
+    "example/android/gradle",
+    "example/android/gradle.properties",
+    "example/android/gradlew*",
+    "example/windows/_gitignore",
+    "example/{metro,react-native}.config.js",
+    "ios",
+    "macos",
+    "plugins",
+    "react-native.config.js",
+    "schema.json",
+    "scripts/*.js",
+    "scripts/*.mjs",
+    "scripts/config-plugins",
+    "scripts/embed-manifest",
+    "scripts/utils",
+    "test-app.gradle",
+    "test_app.rb",
+    "visionos",
+    "windows",
+    "!.clang-format"
+  ],
+  "main": "scripts/configure-projects.js",
+  "bin": {
+    "init": "scripts/init.mjs",
+    "init-test-app": "scripts/init.mjs",
+    "configure-test-app": "scripts/configure.mjs",
+    "install-windows-test-app": "windows/app.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/react-native-test-app.git",
+    "directory": "packages/app"
+  },
+  "scripts": {
+    "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
+    "format:js": "prettier --write --log-level error $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' '*.yml' 'README.md' 'test/**/*.json')",
+    "format:swift": "swiftformat $(git ls-files '*.swift')",
+    "generate:code": "node scripts/internal/generate-manifest.mts",
+    "generate:docs": "node scripts/internal/generate-manifest-docs.mts",
+    "generate:schema": "node scripts/internal/generate-schema.mts",
+    "lint:js": "eslint $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' ':!:*.config.js' ':!:.yarn/releases') && tsc && tsc --project tsconfig.cjs.json",
+    "lint:kt": "ktlint --relative 'android/app/src/**/*.kt'",
+    "lint:rb": "bundle exec rubocop",
+    "lint:swift": "swiftlint",
+    "prepack": "node scripts/internal/pack.mts pre",
+    "postpack": "node scripts/internal/pack.mts post",
+    "release-notes": "node scripts/internal/release-notes.mts",
+    "set-react-version": "node scripts/internal/set-react-version.mts",
+    "test": "node scripts/internal/test.mts",
+    "test:js": "node --no-warnings --test $(git ls-files '*.test.ts')",
+    "test:matrix": "node scripts/testing/test-matrix.mts",
+    "test:rb": "bundle exec ruby -Ilib:test -e \"Dir.glob('./test/test_*.rb').each { |file| require(file) }\""
+  },
+  "dependencies": {
+    "@rnx-kit/react-native-host": "^0.5.11",
+    "@rnx-kit/tools-react-native": "^2.1.0",
+    "ajv": "^8.0.0",
+    "cliui": "^8.0.0",
+    "fast-xml-parser": "^4.0.0",
+    "prompts": "^2.4.0",
+    "semver": "^7.3.5",
+    "uuid": "^11.0.0"
+  },
+  "peerDependencies": {
+    "@callstack/react-native-visionos": "0.76 - 0.79",
+    "@expo/config-plugins": ">=5.0",
+    "react": "18.2 - 19.1",
+    "react-native": "0.76 - 0.83 || >=0.83.0-0 <0.84.0",
+    "react-native-macos": "^0.0.0-0 || 0.76 - 0.79",
+    "react-native-windows": "^0.0.0-0 || 0.76 - 0.80"
+  },
+  "peerDependenciesMeta": {
+    "@callstack/react-native-visionos": {
+      "optional": true
+    },
+    "@expo/config-plugins": {
+      "optional": true
+    },
+    "react-native-macos": {
+      "optional": true
+    },
+    "react-native-windows": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
+    "@expo/config-plugins": "^10.0.0",
+    "@expo/json-file": "~9.1.5",
+    "@microsoft/eslint-plugin-sdl": "^1.0.0",
+    "@react-native-community/cli": "^18.0.0",
+    "@react-native-community/cli-types": "^18.0.0",
+    "@react-native-community/template": "^0.79.0",
+    "@rnx-kit/eslint-plugin": "^0.9.0",
+    "@rnx-kit/lint-lockfile": "^0.1.0",
+    "@rnx-kit/tsconfig": "^2.0.0",
+    "@swc-node/register": "^1.10.0",
+    "@swc/core": "^1.11.0",
+    "@types/js-yaml": "^4.0.5",
+    "@types/mustache": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/prompts": "~2.4.0",
+    "@types/react": "~19.0.0",
+    "@types/semver": "^7.3.6",
+    "eslint": "^9.12.0",
+    "eslint-plugin-wdio": "^9.0.0",
+    "js-yaml": "^4.1.0",
+    "memfs": "^4.0.0",
+    "minimatch": "^9.0.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "react": "19.0.0",
+    "react-native": "^0.79.0",
+    "react-native-macos": "^0.79.0",
+    "react-native-windows": "^0.79.0",
+    "suggestion-bot": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.12"
+  },
+  "defaultPlatformPackages": {
+    "android": "react-native",
+    "ios": "react-native",
+    "macos": "react-native-macos",
+    "visionos": "@callstack/react-native-visionos",
+    "windows": "react-native-windows"
+  },
+  "prettier": "../../.github/prettierrc.json"
+}

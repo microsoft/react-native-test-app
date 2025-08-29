@@ -137,8 +137,8 @@ function showBanner(message: string) {
  */
 function startAppiumServer(logPath = "appium.log") {
   if (!process.env["APPIUM_HOME"]) {
-    const appium = fileURLToPath(import.meta.resolve("../../package.json"));
-    process.env["APPIUM_HOME"] = path.dirname(appium);
+    const appium = import.meta.resolve("../../example/package.json");
+    process.env["APPIUM_HOME"] = path.dirname(fileURLToPath(appium));
   }
   log(`Appium log path: ${logPath}`);
   return run("appium", logPath);

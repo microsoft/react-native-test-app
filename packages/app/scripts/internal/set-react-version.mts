@@ -283,29 +283,37 @@ export async function setReactVersion(
     const profile = { ...(await getProfile(version, coreOnly)), ...overrides };
     console.dir(profile, { depth: null });
 
-    const manifests = ["package.json", "example/package.json"];
+    const manifests = [
+      "package.json",
+      "example/package.json",
+      "../../package.json",
+    ];
     for (const manifestPath of manifests) {
       const manifest = readJSONFile<Manifest>(manifestPath);
-      const { dependencies, devDependencies, resolutions = {} } = manifest;
+      const { dependencies, devDependencies, resolutions } = manifest;
       if (!devDependencies) {
         throw new Error("Expected 'devDependencies' to be declared");
       }
 
-      for (const packageName of keys(profile)) {
-        const deps = dependencies?.[packageName]
-          ? dependencies
-          : devDependencies;
-        deps[packageName] = profile[packageName];
-
+      if (resolutions) {
         // Reset resolutions so we don't get old packages
-        resolutions[packageName] = undefined;
-      }
+        for (const packageName of keys(profile)) {
+          resolutions[packageName] = undefined;
+        }
 
-      // Reset resolutions of the nested type e.g.,
-      // `@react-native/community-cli-plugin/@react-native-community/cli-server-api`
-      for (const pkg of Object.keys(resolutions)) {
-        if (pkg.startsWith("@react-native")) {
-          resolutions[pkg] = undefined;
+        // Reset resolutions of the nested type e.g.,
+        // `@react-native/community-cli-plugin/@react-native-community/cli-server-api`
+        for (const pkg of Object.keys(resolutions)) {
+          if (pkg.startsWith("@react-native")) {
+            resolutions[pkg] = undefined;
+          }
+        }
+      } else {
+        for (const packageName of keys(profile)) {
+          const deps = dependencies?.[packageName]
+            ? dependencies
+            : devDependencies;
+          deps[packageName] = profile[packageName];
         }
       }
 

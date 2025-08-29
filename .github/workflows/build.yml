@@ -72,6 +72,7 @@ jobs:
           fi
           git diff --exit-code
         shell: bash
+        working-directory: packages/app
       - name: ClangFormat
         if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         env:
@@ -80,7 +81,7 @@ jobs:
           # TODO: GITHUB_TOKEN is not set if a PR comes from a forked repo.
           #       Ignore errors until we can create a GitHub PAT from a system
           #       account.
-          scripts/build/clang-format-diff.sh || true
+          scripts/clang-format-diff.sh || true
       - name: CocoaPods
         if: ${{ runner.os == 'macOS' }}
         run: |
@@ -90,13 +91,12 @@ jobs:
           echo "::add-matcher::.github/minitest.json"
           yarn test:rb
           echo "::remove-matcher owner=minitest::"
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
+        working-directory: packages/app
       - name: Populate Gradle cache
         uses: ./.github/actions/gradle
         with:
           arguments: clean
-          project-root: example
+          project-root: packages/app/example
       - name: JavaScript
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -119,6 +119,7 @@ jobs:
           yarn tsc
           yarn test:js
         shell: bash
+        working-directory: packages/app
       - name: ktlint
         if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         run: |
@@ -126,12 +127,14 @@ jobs:
           echo "::add-matcher::.github/ktlint.json"
           yarn lint:kt
           echo "::remove-matcher owner=ktlint::"
+        working-directory: packages/app
       - name: SwiftFormat
         if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         run: |
           echo "::add-matcher::.github/swiftformat.json"
           yarn format:swift --lint
           echo "::remove-matcher owner=swiftformat::"
+        working-directory: packages/app
       - name: SwiftLint
         if: ${{ runner.os == 'macOS' }}
         run: |
@@ -139,9 +142,10 @@ jobs:
           echo "::add-matcher::.github/swiftlint.json"
           swiftlint
           echo "::remove-matcher owner=swiftlint::"
+        working-directory: packages/app
       - name: Smoke test `npx --package react-native-test-app@latest init`
         run: |
-          node ./react-native-test-app/scripts/init.mjs --destination app --name App -p android -p ios -p macos -p windows
+          node ./react-native-test-app/packages/app/scripts/init.mjs --destination app --name App -p android -p ios -p macos -p windows
         working-directory: ..
       - name: Smoke test `setup-react-native` action
         uses: ./.github/actions/setup-react-native
@@ -162,7 +166,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: ios
-          project-root: example
+          project-root: packages/app/example
           cache-key-prefix: example
           xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Set up react-native@nightly
@@ -176,8 +180,8 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Bundle JavaScript
         run: |
-          yarn build:ios || yarn build:ios
-        working-directory: example
+          yarn build:ios
+        working-directory: packages/app/example
       - name: Determine whether the iOS app needs to be built
         id: affected
         uses: ./.github/actions/affected
@@ -186,22 +190,22 @@ jobs:
         uses: ./.github/actions/cocoapods
         with:
           project-directory: ios
-          working-directory: example
+          working-directory: packages/app/example
       - name: Build
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh ios/Example.xcworkspace build-for-testing
-        working-directory: example
+          ../../../scripts/xcodebuild.sh ios/Example.xcworkspace build-for-testing
+        working-directory: packages/app/example
       - name: Test `react-native config`
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
           node --test test/config.test.mjs
-        working-directory: example
+        working-directory: packages/app/example
       - name: Test
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh ios/Example.xcworkspace test-without-building
-        working-directory: example
+          ../../../scripts/xcodebuild.sh ios/Example.xcworkspace test-without-building
+        working-directory: packages/app/example
     timeout-minutes: 60
   ios-template:
     name: "iOS [template]"
@@ -221,7 +225,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: ios
-          project-root: example
+          project-root: packages/app/example
           cache-key-prefix: template-${{ matrix.template }}
           xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Initialize test app
@@ -230,7 +234,7 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          yarn build:ios || yarn build:ios
+          yarn build:ios
         working-directory: template-example
       - name: Determine whether the iOS app needs to be built
         id: affected
@@ -243,12 +247,12 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh ios/TemplateExample.xcworkspace build
+          ../scripts/xcodebuild.sh ios/TemplateExample.xcworkspace build
         working-directory: template-example
       - name: react-native run-ios
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/testing/react-native.mts run-ios
+          ../scripts/react-native.mts run-ios
         working-directory: template-example
     timeout-minutes: 60
   android:
@@ -279,15 +283,15 @@ jobs:
       - name: Test `react-native config`
         run: |
           node --test test/config.test.mjs
-        working-directory: example
+        working-directory: packages/app/example
       - name: Bundle JavaScript
         # Metro on nightlies currently fails with "SHA-1 for file index.js is
         # not computed" so we'll skip this step for now.
         if: ${{ github.event_name != 'schedule' || runner.os != 'Windows' }}
         run: |
-          yarn build:android || yarn build:android
+          yarn build:android
         shell: bash
-        working-directory: example
+        working-directory: packages/app/example
       - name: Determine whether the Android app needs to be built
         id: affected
         # Nightlies currently fail on Windows because of wrong path separators.
@@ -297,7 +301,7 @@ jobs:
         if: ${{ steps.affected.outputs.android != '' }}
         uses: ./.github/actions/gradle
         with:
-          project-root: example
+          project-root: packages/app/example
     timeout-minutes: 60
   android-template:
     name: "Android [template]"
@@ -323,7 +327,7 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          yarn build:android || yarn build:android
+          yarn build:android
         shell: bash
         working-directory: template-example
       - name: Determine whether the Android app needs to be built
@@ -337,7 +341,7 @@ jobs:
       - name: react-native run-android
         if: ${{ steps.affected.outputs.android != '' }}
         run: |
-          ../scripts/testing/react-native.mts run-android
+          ../scripts/react-native.mts run-android
         working-directory: template-example
     timeout-minutes: 60
   macos:
@@ -355,7 +359,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: macos
-          project-root: example
+          project-root: packages/app/example
           cache-key-prefix: example
           xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Set up react-native@canary
@@ -369,8 +373,8 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Bundle JavaScript
         run: |
-          yarn build:macos || yarn build:macos
-        working-directory: example
+          yarn build:macos
+        working-directory: packages/app/example
       - name: Determine whether the macOS app needs to be built
         id: affected
         uses: ./.github/actions/affected
@@ -379,22 +383,22 @@ jobs:
         uses: ./.github/actions/cocoapods
         with:
           project-directory: macos
-          working-directory: example
+          working-directory: packages/app/example
       - name: Build
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh macos/Example.xcworkspace build-for-testing
-        working-directory: example
+          ../../../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
+        working-directory: packages/app/example
       - name: Test `react-native config`
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           node --test test/config.test.mjs
-        working-directory: example
+        working-directory: packages/app/example
       - name: Test
         if: ${{ steps.affected.outputs.macos != '' && github.event_name != 'schedule' }}
         run: |
-          ../scripts/build/xcodebuild.sh macos/Example.xcworkspace test-without-building
-        working-directory: example
+          ../../../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
+        working-directory: packages/app/example
     timeout-minutes: 60
   macos-template:
     name: "macOS [template]"
@@ -414,7 +418,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: macos
-          project-root: example
+          project-root: packages/app/example
           cache-key-prefix: template-${{ matrix.template }}
           xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Initialize test app
@@ -423,7 +427,7 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          yarn build:macos || yarn build:macos
+          yarn build:macos
         working-directory: template-example
       - name: Determine whether the macOS app needs to be built
         id: affected
@@ -439,7 +443,7 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh macos/TemplateExample.xcworkspace build
+          ../scripts/xcodebuild.sh macos/TemplateExample.xcworkspace build
         working-directory: template-example
     timeout-minutes: 60
   visionos:
@@ -457,7 +461,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: visionos
-          project-root: example
+          project-root: packages/app/example
           cache-key-prefix: example
           xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Set up react-native@nightly
@@ -471,8 +475,8 @@ jobs:
           immutable: ${{ github.event_name != 'schedule' }}
       - name: Bundle JavaScript
         run: |
-          yarn build:visionos || yarn build:visionos
-        working-directory: example
+          yarn build:visionos
+        working-directory: packages/app/example
       - name: Determine whether the visionOS app needs to be built
         id: affected
         uses: ./.github/actions/affected
@@ -481,17 +485,17 @@ jobs:
         uses: ./.github/actions/cocoapods
         with:
           project-directory: visionos
-          working-directory: example
+          working-directory: packages/app/example
       - name: Build
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh visionos/Example.xcworkspace build-for-testing
-        working-directory: example
+          ../../../scripts/xcodebuild.sh visionos/Example.xcworkspace build-for-testing
+        working-directory: packages/app/example
       - name: Test `react-native config`
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
           node --test test/config.test.mjs
-        working-directory: example
+        working-directory: packages/app/example
     timeout-minutes: 60
   visionos-template:
     name: "visionOS [template]"
@@ -511,7 +515,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: visionos
-          project-root: example
+          project-root: packages/app/example
           cache-key-prefix: template-${{ matrix.template }}
           xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Initialize test app
@@ -520,7 +524,7 @@ jobs:
           platform: ${{ matrix.template }}
       - name: Bundle JavaScript
         run: |
-          yarn build:visionos || yarn build:visionos
+          yarn build:visionos
         working-directory: template-example
       - name: Determine whether the visionOS app needs to be built
         id: affected
@@ -533,7 +537,7 @@ jobs:
       - name: Build
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
-          ../scripts/build/xcodebuild.sh visionos/TemplateExample.xcworkspace build
+          ../scripts/xcodebuild.sh visionos/TemplateExample.xcworkspace build
         working-directory: template-example
     timeout-minutes: 60
   windows:
@@ -568,12 +572,12 @@ jobs:
           yarn build:windows
       - name: Generate Visual Studio solution
         run: |
-          yarn install-windows-test-app --use-nuget --msbuildprops WindowsTargetPlatformVersion=10.0.26100.0
-        working-directory: example
+          node ../windows/app.mjs --use-nuget --msbuildprops WindowsTargetPlatformVersion=10.0.26100.0
+        working-directory: packages/app/example
       - name: Test `react-native config`
         run: |
           node --test test/config.test.mjs
-        working-directory: example
+        working-directory: packages/app/example
       - name: Determine whether the Windows app needs to be built
         id: affected
         uses: ./.github/actions/affected
@@ -585,13 +589,13 @@ jobs:
           } else {
             yarn ci:windows --arch ${{ matrix.platform }}
           }
-        working-directory: example/windows
+        working-directory: packages/app/example/windows
       - name: Test
         if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' }}
         run: |
           ../../../scripts/build/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactAppTests.vcxproj
           ../../../scripts/build/VSTest.ps1 ${{ matrix.platform }}\${{ matrix.configuration }}\ReactAppTests.dll
-        working-directory: example/windows/ReactAppTests
+        working-directory: packages/app/example/windows/ReactAppTests
     timeout-minutes: 60
   windows-template:
     name: "Windows [template]"
@@ -618,6 +622,7 @@ jobs:
       - name: Bundle JavaScript
         run: |
           yarn build:windows
+        working-directory: template-example
       - name: Generate Visual Studio solution
         run: |
           yarn install-windows-test-app --use-nuget --msbuildprops WindowsTargetPlatformVersion=10.0.26100.0
@@ -660,6 +665,7 @@ jobs:
       - name: Verify tarball content
         run: |
           yarn test test/pack.test.ts
+        working-directory: packages/app
       - name: Release (dry run)
         if: ${{ github.ref != 'refs/heads/trunk' }}
         run: |

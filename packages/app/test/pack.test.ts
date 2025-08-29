@@ -29,7 +29,6 @@ describe("npm pack", () => {
       "LICENSE",
       "README.md",
       "ReactTestApp-DevSupport.podspec",
-      "SECURITY.md",
       "android/android-manifest.js",
       "android/app/build.gradle",
       "android/app/lint.xml",

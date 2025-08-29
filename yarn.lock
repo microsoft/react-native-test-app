@@ -53,9 +53,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appium/docutils@link:./example::locator=react-native-test-app%40workspace%3A.":
+"@appium/docutils@link:./packages/null::locator=%40microsoft%2Froot%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "@appium/docutils@link:./example::locator=react-native-test-app%40workspace%3A."
+  resolution: "@appium/docutils@link:./packages/null::locator=%40microsoft%2Froot%40workspace%3A."
   languageName: node
   linkType: soft
 
@@ -2703,6 +2703,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@microsoft/root@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@microsoft/root@workspace:."
+  dependencies:
+    "@nx/js": "npm:^21.0.0"
+    "@rnx-kit/lint-lockfile": "npm:^0.1.0"
+    "@types/js-yaml": "npm:^4.0.5"
+    "@types/node": "npm:^22.0.0"
+    js-yaml: "npm:^4.1.0"
+    minimatch: "npm:^9.0.0"
+    nx: "npm:^21.0.0"
+    prettier: "npm:^3.0.0"
+    prettier-plugin-organize-imports: "npm:^4.1.0"
+    typescript: "npm:^5.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@napi-rs/wasm-runtime@npm:0.2.4":
   version: 0.2.4
   resolution: "@napi-rs/wasm-runtime@npm:0.2.4"
@@ -3300,7 +3317,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/cli-types@npm:18.0.1":
+"@react-native-community/cli-types@npm:18.0.1, @react-native-community/cli-types@npm:^18.0.0":
   version: 18.0.1
   resolution: "@react-native-community/cli-types@npm:18.0.1"
   dependencies:
@@ -5139,6 +5156,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"appium-ios-simulator@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "appium-ios-simulator@npm:8.0.0"
+  dependencies:
+    "@appium/support": "npm:^7.0.0-rc.1"
+    "@xmldom/xmldom": "npm:^0.x"
+    appium-xcode: "npm:^6.0.0"
+    async-lock: "npm:^1.0.0"
+    asyncbox: "npm:^3.0.0"
+    bluebird: "npm:^3.5.1"
+    lodash: "npm:^4.2.1"
+    node-simctl: "npm:^8.0.0"
+    semver: "npm:^7.0.0"
+    source-map-support: "npm:^0.x"
+    teen_process: "npm:^3.0.0"
+  checksum: 10c0/6f9c1acedd122b0a8e2dc7a0e93e1d2223543b349def08671705ed190a6308cde45235c7af397e9ef5ca98830fe00b678b303f5d4a484833ea045c665a8eedf3
+  languageName: node
+  linkType: hard
+
 "appium-ios-tuntap@npm:^0.x":
   version: 0.1.2
   resolution: "appium-ios-tuntap@npm:0.1.2"
@@ -5235,15 +5271,15 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^10.0.0":
-  version: 10.5.1
-  resolution: "appium-xcuitest-driver@npm:10.5.1"
+  version: 10.8.0
+  resolution: "appium-xcuitest-driver@npm:10.8.0"
   dependencies:
     "@appium/strongbox": "npm:^1.0.0-rc.1"
     "@colors/colors": "npm:^1.6.0"
     appium-idb: "npm:^2.0.0"
     appium-ios-device: "npm:^3.0.0"
     appium-ios-remotexpc: "npm:^0.x"
-    appium-ios-simulator: "npm:^7.0.0"
+    appium-ios-simulator: "npm:^8.0.0"
     appium-remote-debugger: "npm:^15.2.0"
     appium-webdriveragent: "npm:^10.2.1"
     appium-xcode: "npm:^6.0.2"
@@ -5270,7 +5306,7 @@ __metadata:
   dependenciesMeta:
     appium-ios-remotexpc:
       optional: true
-  checksum: 10c0/c95aa0c2027495ed30028e3beb9a8eeaf8cc3f907e1325a3875f62c75f04fd1c4239c08bc5f694b8976b88184283dd5bfb3a74c10e2239bd9a542f7844e5d9c2
+  checksum: 10c0/021ec90b4ba5f4ffadbc647ceaed8421a9499d2b277512132eb41ad963266cad5c1be2a8c518f1ff683ded4fe82e24ce06d11fdba625c5bac3693d140219c5f5
   languageName: node
   linkType: hard
 
@@ -7799,9 +7835,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"example@workspace:example":
+"example@workspace:packages/app/example":
   version: 0.0.0-use.local
-  resolution: "example@workspace:example"
+  resolution: "example@workspace:packages/app/example"
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
@@ -7827,7 +7863,7 @@ __metadata:
     react-native-safe-area-context: "npm:^5.5.2"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.79.0"
-    webdriverio: "npm:^9.0.0"
+    webdriverio: "patch:webdriverio@npm%3A9.20.0#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
   languageName: unknown
   linkType: soft
 
@@ -12302,16 +12338,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-test-app@workspace:*, react-native-test-app@workspace:.":
+"react-native-test-app@workspace:*, react-native-test-app@workspace:packages/app":
   version: 0.0.0-use.local
-  resolution: "react-native-test-app@workspace:."
+  resolution: "react-native-test-app@workspace:packages/app"
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
     "@expo/config-plugins": "npm:^10.0.0"
+    "@expo/json-file": "npm:~9.1.5"
     "@microsoft/eslint-plugin-sdl": "npm:^1.0.0"
-    "@nx/js": "npm:^21.0.0"
     "@react-native-community/cli": "npm:^18.0.0"
+    "@react-native-community/cli-types": "npm:^18.0.0"
     "@react-native-community/template": "npm:^0.79.0"
     "@rnx-kit/eslint-plugin": "npm:^0.9.0"
     "@rnx-kit/lint-lockfile": "npm:^0.1.0"
@@ -12324,6 +12361,7 @@ __metadata:
     "@types/mustache": "npm:^4.0.0"
     "@types/node": "npm:^22.0.0"
     "@types/prompts": "npm:~2.4.0"
+    "@types/react": "npm:~19.0.0"
     "@types/semver": "npm:^7.3.6"
     ajv: "npm:^8.0.0"
     cliui: "npm:^8.0.0"
@@ -12333,7 +12371,6 @@ __metadata:
     js-yaml: "npm:^4.1.0"
     memfs: "npm:^4.0.0"
     minimatch: "npm:^9.0.0"
-    nx: "npm:^21.0.0"
     prettier: "npm:^3.0.0"
     prettier-plugin-organize-imports: "npm:^4.1.0"
     prompts: "npm:^2.4.0"
@@ -14664,7 +14701,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webdriverio@npm:^9.0.0":
+"webdriverio@npm:9.20.0":
   version: 9.20.0
   resolution: "webdriverio@npm:9.20.0"
   dependencies:
@@ -14699,6 +14736,44 @@ __metadata:
     puppeteer-core:
       optional: true
   checksum: 10c0/03ef30abc1aa3626af22e53d6fab39dad577ce54fb7340ea8177ba73c2c454d138cc875cbc5ec77657aaeeb3d30087a95b8171af54e11b45b4f014a53d449f57
+  languageName: node
+  linkType: hard
+
+"webdriverio@patch:webdriverio@npm%3A9.20.0#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch":
+  version: 9.20.0
+  resolution: "webdriverio@patch:webdriverio@npm%3A9.20.0#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch::version=9.20.0&hash=5199b0"
+  dependencies:
+    "@types/node": "npm:^20.11.30"
+    "@types/sinonjs__fake-timers": "npm:^8.1.5"
+    "@wdio/config": "npm:9.20.0"
+    "@wdio/logger": "npm:9.18.0"
+    "@wdio/protocols": "npm:9.16.2"
+    "@wdio/repl": "npm:9.16.2"
+    "@wdio/types": "npm:9.20.0"
+    "@wdio/utils": "npm:9.20.0"
+    archiver: "npm:^7.0.1"
+    aria-query: "npm:^5.3.0"
+    cheerio: "npm:^1.0.0-rc.12"
+    css-shorthand-properties: "npm:^1.1.1"
+    css-value: "npm:^0.0.1"
+    grapheme-splitter: "npm:^1.0.4"
+    htmlfy: "npm:^0.8.1"
+    is-plain-obj: "npm:^4.1.0"
+    jszip: "npm:^3.10.1"
+    lodash.clonedeep: "npm:^4.5.0"
+    lodash.zip: "npm:^4.2.0"
+    query-selector-shadow-dom: "npm:^1.0.1"
+    resq: "npm:^1.11.0"
+    rgb2hex: "npm:0.2.5"
+    serialize-error: "npm:^12.0.0"
+    urlpattern-polyfill: "npm:^10.0.0"
+    webdriver: "npm:9.20.0"
+  peerDependencies:
+    puppeteer-core: ">=22.x || <=24.x"
+  peerDependenciesMeta:
+    puppeteer-core:
+      optional: true
+  checksum: 10c0/b708ca60244533453bc47a1254a5904d2fca8f7dd107763a248d4448b65ca1d26b1b00b28166a25e55b35d3f664d278df532edb0f289a04198c6146ecd6cab75
   languageName: node
   linkType: hard
 
