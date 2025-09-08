@@ -12502,7 +12502,7 @@ __metadata:
     "@callstack/react-native-visionos": 0.73 - 0.79
     "@expo/config-plugins": ">=5.0"
     react: 18.1 - 19.1
-    react-native: 0.70 - 0.81 || >=0.82.0-0 <0.82.0
+    react-native: 0.70 - 0.82 || >=0.83.0-0 <0.83.0
     react-native-macos: ^0.0.0-0 || 0.71 - 0.79
     react-native-windows: ^0.0.0-0 || 0.70 - 0.79
   peerDependenciesMeta:

@@ -49,14 +49,13 @@ body:
     id: checklist
     attributes:
       label: End-to-end tests
-      description: Leave these unchecked. Combinations of configurations that have been tested.
+      description: Leave these unchecked. Platforms that have been tested.
       options:
-        - label: "Android"
-        - label: "iOS"
-        - label: "macOS"
-        - label: "visionOS"
-        - label: "Windows - NuGet: disabled"
-        - label: "Windows - NuGet: **enabled**"
+        - label: Android
+        - label: iOS
+        - label: macOS
+        - label: visionOS
+        - label: Windows
   - type: checkboxes
     id: terms
     attributes:
