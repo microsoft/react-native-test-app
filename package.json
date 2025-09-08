@@ -98,7 +98,7 @@
     "uuid": "^11.0.0"
   },
   "peerDependencies": {
-    "@callstack/react-native-visionos": "0.73 - 0.78",
+    "@callstack/react-native-visionos": "0.73 - 0.79",
     "@expo/config-plugins": ">=5.0",
     "react": "18.1 - 19.1",
     "react-native": "0.70 - 0.81 || >=0.82.0-0 <0.82.0",
