@@ -155,7 +155,7 @@
   "engines": {
     "node": ">=16.17"
   },
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "yarn@4.9.4",
   "resolutions": {
     "@appium/base-driver/axios": "^1.8.3",
     "@appium/docutils": "link:./example",
