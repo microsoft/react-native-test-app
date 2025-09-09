@@ -10,7 +10,10 @@ import { isMain } from "../helpers.js";
  * Invokes a shell command with optional arguments.
  */
 export function $(command: string, ...args: string[]) {
-  const { status } = spawnSync(command, args, { stdio: "inherit" });
+  const { status } = spawnSync(command, args, {
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
   if (status !== 0) {
     throw new Error(
       `An error occurred while executing: ${command} ${args.join(" ")}`
@@ -25,6 +28,7 @@ export function $(command: string, ...args: string[]) {
 export function $$(command: string, ...args: string[]): string {
   const { status, stderr, stdout } = spawnSync(command, args, {
     stdio: ["ignore", "pipe", "pipe"],
+    shell: process.platform === "win32",
     encoding: "utf-8",
   });
   if (status !== 0) {

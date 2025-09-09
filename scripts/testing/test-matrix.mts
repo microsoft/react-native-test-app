@@ -10,6 +10,7 @@ import { readTextFile, toVersionNumber, v } from "../helpers.js";
 import { setReactVersion } from "../internal/set-react-version.mts";
 import type { BuildConfig, TargetPlatform } from "../types.js";
 import { green, red, yellow } from "../utils/colors.mjs";
+import { rm_r } from "../utils/filesystem.mjs";
 import { getIOSSimulatorName, installPods } from "./test-apple.mts";
 import { $, $$, test } from "./test-e2e.mts";
 
@@ -18,16 +19,37 @@ type PlatformConfig = {
   engines: ReadonlyArray<"hermes" | "jsc">;
   isAvailable: (config: Required<BuildConfig>) => boolean;
   prebuild: (config: Required<BuildConfig>) => Promise<void>;
+  additionalBuildArgs?: () => string[];
+  requiresManualTesting?: boolean;
 };
 
 const DEFAULT_PLATFORMS = ["android", "ios"];
+const PACKAGE_MANAGER = "yarn";
+const TAG = "┃";
 const TEST_VARIANTS = ["paper", "fabric"] as const;
+
+function isVariantSupported({ version, variant }: Required<BuildConfig>) {
+  return variant === "fabric" || toVersionNumber(version) < v(0, 82, 0);
+}
+
+function isAppleVariantSupported(config: Required<BuildConfig>) {
+  if (process.platform !== "darwin") {
+    return false;
+  }
+
+  const { version, engine } = config;
+  if (engine === "jsc" && toVersionNumber(version) >= v(0, 80, 0)) {
+    return false;
+  }
+
+  return isVariantSupported(config);
+}
 
 const PLATFORM_CONFIG: Record<TargetPlatform, PlatformConfig> = {
   android: {
     name: "Android",
     engines: ["hermes"],
-    isAvailable: ({ engine }) => engine === "hermes",
+    isAvailable: isVariantSupported,
     prebuild: ({ variant }) => {
       if (variant === "fabric") {
         const properties = "android/gradle.properties";
@@ -43,41 +65,41 @@ const PLATFORM_CONFIG: Record<TargetPlatform, PlatformConfig> = {
   ios: {
     name: "iOS",
     engines: ["jsc", "hermes"],
-    isAvailable: ({ version, engine }) => {
-      if (process.platform !== "darwin") {
-        return false;
-      }
-
-      if (engine === "jsc" && toVersionNumber(version) >= v(0, 80, 0)) {
-        return false;
-      }
-
-      return true;
-    },
+    isAvailable: isAppleVariantSupported,
     prebuild: installPods,
+    additionalBuildArgs: () => ["--device", getIOSSimulatorName()],
   },
   macos: {
     name: "macOS",
     engines: ["jsc", "hermes"],
-    isAvailable: () => false,
+    isAvailable: isAppleVariantSupported,
     prebuild: installPods,
+    requiresManualTesting: true,
   },
   visionos: {
     name: "visionOS",
     engines: ["jsc", "hermes"],
-    isAvailable: () => false,
+    isAvailable: isAppleVariantSupported,
     prebuild: installPods,
+    requiresManualTesting: true,
   },
   windows: {
     name: "Windows",
     engines: ["hermes"],
-    isAvailable: () => false,
-    prebuild: () => Promise.resolve(),
+    isAvailable: () => process.platform === "win32",
+    prebuild: () => {
+      rm_r("windows/ExperimentalFeatures.props");
+      $(
+        PACKAGE_MANAGER,
+        "install-windows-test-app",
+        "--msbuildprops",
+        "WindowsTargetPlatformVersion=10.0.26100.0"
+      );
+      return Promise.resolve();
+    },
+    requiresManualTesting: true,
   },
 };
-
-const PACKAGE_MANAGER = "yarn";
-const TAG = "┃";
 
 const rootDir = fileURLToPath(new URL("../..", import.meta.url));
 
@@ -92,6 +114,7 @@ function run(script: string, logPath: string) {
   const fd = fs.openSync(logPath, "a", 0o644);
   const proc = spawn(PACKAGE_MANAGER, ["run", script], {
     stdio: ["ignore", fd, fd],
+    shell: process.platform === "win32",
   });
   return proc;
 }
@@ -124,13 +147,10 @@ function validatePlatforms(platforms: string[]): TargetPlatform[] {
     switch (platform) {
       case "android":
       case "ios":
-        filtered.push(platform);
-        break;
-
       case "macos":
       case "visionos":
       case "windows":
-        log(yellow(`⚠ Unsupported platform: ${platform}`));
+        filtered.push(platform);
         break;
 
       default:
@@ -153,6 +173,18 @@ function parseArgs(args: string[]) {
         description: "Test iOS",
         type: "boolean",
       },
+      macos: {
+        description: "Test macOS",
+        type: "boolean",
+      },
+      visionos: {
+        description: "Test visionOS",
+        type: "boolean",
+      },
+      windows: {
+        description: "Test Windows",
+        type: "boolean",
+      },
     },
     strict: true,
     allowPositionals: true,
@@ -168,10 +200,10 @@ function parseArgs(args: string[]) {
   };
 }
 
-function prestart() {
+function waitForUserInput(message: string): Promise<void> {
   return !process.stdin.isTTY
     ? Promise.resolve()
-    : new Promise((resolve) => {
+    : new Promise((resolve, reject) => {
         const stdin = process.stdin;
         const rawMode = stdin.isRaw;
         const encoding = stdin.readableEncoding || undefined;
@@ -185,31 +217,24 @@ function prestart() {
           stdin.setRawMode(rawMode);
           if (typeof key === "string" && key === "\u0003") {
             showBanner("❌ Canceled");
-            // eslint-disable-next-line local/no-process-exit
-            process.exit(1);
+            reject(1);
+          } else {
+            resolve();
           }
-          resolve(true);
         });
-        process.stdout.write(
-          `${TAG} Before continuing, make sure all emulators/simulators and Appium/Metro instances are closed.\n${TAG}\n${TAG} Press any key to continue...`
-        );
+        process.stdout.write(message);
       });
 }
 
 /**
- * Invokes `react-native run-<platform>`.
+ * Invokes `rnx-cli run --platform <platform>`.
  */
 function buildAndRun(platform: TargetPlatform) {
-  switch (platform) {
-    case "ios": {
-      const simulator = getIOSSimulatorName();
-      $(PACKAGE_MANAGER, platform, "--device", simulator);
-      break;
-    }
-    default: {
-      $(PACKAGE_MANAGER, platform);
-      break;
-    }
+  const { additionalBuildArgs } = PLATFORM_CONFIG[platform];
+  if (additionalBuildArgs) {
+    $(PACKAGE_MANAGER, platform, ...additionalBuildArgs());
+  } else {
+    $(PACKAGE_MANAGER, platform);
   }
 }
 
@@ -229,7 +254,13 @@ async function buildRunTest({ version, platform, variant }: BuildConfig) {
     showBanner(`Build ${setup.name} [${variant}, ${engine}]`);
     await setup.prebuild(configWithEngine);
     buildAndRun(platform);
-    await test(platform, [variant, engine]);
+    if (setup.requiresManualTesting) {
+      await waitForUserInput(
+        `${TAG}\n${TAG} ${yellow("⚠")} ${setup.name} requires manual testing. When you're done, press any key to continue...`
+      );
+    } else {
+      await test(platform, [variant, engine]);
+    }
   }
 }
 
@@ -265,7 +296,7 @@ async function withReactNativeVersion(
   reset(rootDir);
 
   if (version) {
-    await setReactVersion(version, true);
+    await setReactVersion(version, false);
   } else {
     log();
   }
@@ -291,15 +322,20 @@ if (platforms.length === 0) {
   process.exitCode = 1;
   showBanner(red("No valid platforms were specified"));
 } else {
-  TEST_VARIANTS.reduce((job, variant) => {
-    return job.then(() =>
-      withReactNativeVersion(version, async () => {
-        for (const platform of platforms) {
-          await buildRunTest({ version, platform, variant });
-        }
-      })
-    );
-  }, prestart())
+  TEST_VARIANTS.reduce(
+    (job, variant) => {
+      return job.then(() =>
+        withReactNativeVersion(version, async () => {
+          for (const platform of platforms) {
+            await buildRunTest({ version, platform, variant });
+          }
+        })
+      );
+    },
+    waitForUserInput(
+      `${TAG} Before continuing, make sure all emulators/simulators and Appium/Metro instances are closed.\n${TAG}\n${TAG} Press any key to continue...`
+    )
+  )
     .then(() => {
       showBanner("Initialize new app");
       $(
@@ -330,12 +366,23 @@ if (platforms.length === 0) {
         "-p",
         "windows",
       ];
-      const { status } = spawnSync(PACKAGE_MANAGER, args, { stdio: "inherit" });
+      const { status } = spawnSync(PACKAGE_MANAGER, args, {
+        stdio: "inherit",
+        shell: process.platform === "win32",
+      });
       if (status !== 1) {
         throw new Error("Expected an error");
       }
     })
     .then(() => {
       showBanner(green("✔ Pass"));
+    })
+    .catch((e) => {
+      if (typeof e === "number") {
+        process.exitCode = e;
+      } else {
+        process.exitCode = 1;
+        showBanner(`❌ ${e}`);
+      }
     });
 }
