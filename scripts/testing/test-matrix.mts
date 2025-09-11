@@ -87,14 +87,17 @@ const PLATFORM_CONFIG: Record<TargetPlatform, PlatformConfig> = {
     name: "Windows",
     engines: ["hermes"],
     isAvailable: () => process.platform === "win32",
-    prebuild: () => {
+    prebuild: ({ variant }) => {
       rm_r("windows/ExperimentalFeatures.props");
-      $(
-        PACKAGE_MANAGER,
-        "install-windows-test-app",
+      const args = [
         "--msbuildprops",
-        "WindowsTargetPlatformVersion=10.0.26100.0"
-      );
+        "WindowsTargetPlatformVersion=10.0.26100.0",
+        "--use-nuget",
+      ];
+      if (variant === "fabric") {
+        args.push("--use-fabric");
+      }
+      $(PACKAGE_MANAGER, "install-windows-test-app", ...args);
       return Promise.resolve();
     },
     requiresManualTesting: true,
@@ -277,6 +280,11 @@ function reset(rootDir: string) {
   }
 
   $("git", "checkout", "--quiet", ".");
+  // We currently use circular symlinks for testing purposes
+  // (e.g. `example/node_modules/react-native-test-app` points to `../..`).
+  // On Windows, `git clean` will be significantly slower if we don't remove
+  // this symlink first as it will try to crawl recursively into it.
+  rm_r("example/node_modules/react-native-test-app");
   $(
     "git",
     "clean",
