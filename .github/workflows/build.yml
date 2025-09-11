@@ -670,9 +670,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
         run: |
-          git config user.email 'github-actions[bot]'
-          git config user.name 'github-actions[bot]@users.noreply.github.com'
-          yarn nx release --yes
+          git fetch origin trunk
+          if git merge-base --is-ancestor origin/trunk HEAD; then
+            git config user.email 'github-actions[bot]'
+            git config user.name 'github-actions[bot]@users.noreply.github.com'
+            yarn nx release --yes
+          fi
   autobot:
     name: "Autobot"
     permissions:
