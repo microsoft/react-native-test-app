@@ -24,7 +24,7 @@ GEM
     racc (1.8.1)
     rainbow (3.1.1)
     regexp_parser (2.10.0)
-    rexml (3.4.0)
+    rexml (3.4.2)
     rubocop (1.79.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
