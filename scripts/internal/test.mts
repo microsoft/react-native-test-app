@@ -24,10 +24,10 @@ switch (getTarget(input)) {
     break;
   case "typescript":
     testWith(process.argv0, [
-      "--experimental-strip-types",
       "--no-warnings",
       "--test",
       "--experimental-test-coverage",
+      "--test-coverage-exclude=test/**/*.ts",
       ...input,
     ]);
     break;
