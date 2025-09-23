@@ -633,7 +633,7 @@ jobs:
   release:
     permissions:
       contents: write # create releases (Nx Release)
-      id-token: write # enable use of OIDC for npm provenance (Nx Release)
+      id-token: write # enable use of OIDC for trusted publishing
     needs:
       - review
       - ios
@@ -663,12 +663,16 @@ jobs:
         if: ${{ github.ref != 'refs/heads/trunk' }}
         run: |
           yarn nx release --dry-run
+      - name: Update npm if <11.5.1
+        run: |
+          if [[ "$(echo -e "11.5.1\n$(npm --version)" | sort --version-sort | head -n 1)" != "11.5.1" ]]; then
+            npm install -g npm@11.5.2
+          fi
+          echo "npm version: $(npm --version)"
       - name: Release
         if: ${{ github.ref == 'refs/heads/trunk' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
         run: |
           git fetch origin trunk
           if git merge-base --is-ancestor origin/trunk HEAD; then
