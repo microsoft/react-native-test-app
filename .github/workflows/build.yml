@@ -664,6 +664,7 @@ jobs:
         run: |
           yarn nx release --dry-run
       - name: Update npm if <11.5.1
+        if: ${{ github.ref == 'refs/heads/trunk' }}
         run: |
           if [[ "$(echo -e "11.5.1\n$(npm --version)" | sort --version-sort | head -n 1)" != "11.5.1" ]]; then
             npm install -g npm@11.5.2
