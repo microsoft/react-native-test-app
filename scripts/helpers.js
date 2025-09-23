@@ -95,11 +95,15 @@ function readJSONFile(path, fs = nodefs) {
  * @param {string=} startDir
  * @returns {T}
  */
-function requireTransitive(dependencyChain, startDir = process.cwd()) {
+function requireTransitive(
+  dependencyChain,
+  startDir = process.cwd(),
+  fs = nodefs
+) {
   const p = dependencyChain.reduce((curr, next) => {
     const p = require.resolve(next + "/package.json", { paths: [curr] });
     return path.dirname(p);
-  }, startDir);
+  }, fs.realpathSync(startDir));
   return require(p);
 }
 
