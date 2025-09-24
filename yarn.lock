@@ -3708,11 +3708,11 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/align-deps@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@rnx-kit/align-deps@npm:3.1.0"
+  version: 3.2.2
+  resolution: "@rnx-kit/align-deps@npm:3.2.2"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/0fc17e7561bda184e5dcc0340285a085d5eea6b9ae3b89e781355d01064314eebc64a343a633a5771007d0ef5211150da42616d5c30af5c2d74beac9a7ba5d69
+  checksum: 10c0/3280702f5ccaa2462c968817321bf5e952e442eb53e0dab034cdcbb054aa7a29f43c4c5b025ac0c2b94a6afec4c8597baef43578859d9d05181f18265ec3d0ca
   languageName: node
   linkType: hard
 
@@ -3820,68 +3820,68 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:2.0.1"
+  version: 2.0.2
+  resolution: "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:2.0.2"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
-  checksum: 10c0/31bb0d0ff87ea4f8d6b8eb14ca63625c30e24644a3d65c2953a3afae346d8f04ef35545f19ba0c1ca231da62fff1b00e3f63825cf9f30bea76c8f7307af1e2a1
+  checksum: 10c0/1edc058478fa1840d156bfab2349daef71a2ec28ae67e6514ed3bfc96659a0113ca25991aa8799c126f30b3114a536a9061bcfac5c5bd24d1a2ebf578531756b
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-plugin-duplicates-checker@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@rnx-kit/metro-plugin-duplicates-checker@npm:3.0.0"
+  version: 3.0.2
+  resolution: "@rnx-kit/metro-plugin-duplicates-checker@npm:3.0.2"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
   bin:
     check-duplicates: lib/index.js
-  checksum: 10c0/6ea966f1bfb1f92817c679c2c7e2f067126b9467fc71e1ed9b58abef4d801323e486082fb300a5532c3f1dd4630f41f83d9691d71ad9ae5bea297759b50c0bd2
+  checksum: 10c0/df9828190314b79a7675d80f328a6657d57f16240c274d4972bfb59ccfb41ce1abf31ebc8cdd90ab1c1792b6dafa66274c3c04447be5cff18530b6f8f350e3fa
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-plugin-typescript@npm:^0.5.0":
-  version: 0.5.1
-  resolution: "@rnx-kit/metro-plugin-typescript@npm:0.5.1"
+  version: 0.5.2
+  resolution: "@rnx-kit/metro-plugin-typescript@npm:0.5.2"
   dependencies:
     "@rnx-kit/config": "npm:^0.7.0"
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
     "@rnx-kit/tools-react-native": "npm:^2.0.0"
-    "@rnx-kit/typescript-service": "npm:^2.0.0"
+    "@rnx-kit/typescript-service": "npm:^2.0.2"
     typescript: "npm:>=4.7.0"
-  checksum: 10c0/ef18ad41815115a47428e5cbbbfbf5fe2ef52ac8fef7c8ccf3a48706ec51b8735a91d7c924ef1314fc1ea7f8eb98f76adaf1907940c5c4be9a1ccc4c3f5dbdd0
+  checksum: 10c0/688391397bf410f35aad3745245c70b11ba4ff34f434e923026efa239e1cabc4f97d86fc04e4a71752141140860c0d4dfe48e112f88df1ecc6532aa11573e446
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-serializer-esbuild@npm:^0.2.1":
-  version: 0.2.3
-  resolution: "@rnx-kit/metro-serializer-esbuild@npm:0.2.3"
+  version: 0.2.5
+  resolution: "@rnx-kit/metro-serializer-esbuild@npm:0.2.5"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.2"
-    "@rnx-kit/tools-react-native": "npm:^2.2.0"
+    "@rnx-kit/tools-react-native": "npm:^2.3.0"
     esbuild: "npm:^0.25.0"
     esbuild-plugin-lodash: "npm:^1.2.0"
     fast-glob: "npm:^3.2.7"
-  checksum: 10c0/236ad2e80855d33a4140fe7c9fd9ef5eade3b95d1ebbf40f15296a488d415da6d00b1399dc768ed55589dcf49d21fe4f2cf2fd66b87ed8f44eb6009adae75c9f
+  checksum: 10c0/a2ef7876cdd5b2988bb8c345da07d3c0fb4303703cc3fe53757ee7967a9bf1e441ba5dbcda37d5a38c9e6d3086b01509f1b426feb8e7233a71209c8b0772d528
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-serializer@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@rnx-kit/metro-serializer@npm:2.0.0"
+  version: 2.0.2
+  resolution: "@rnx-kit/metro-serializer@npm:2.0.2"
   dependencies:
-    "@rnx-kit/tools-react-native": "npm:^2.0.0"
+    "@rnx-kit/tools-react-native": "npm:^2.3.0"
     semver: "npm:^7.0.0"
-  checksum: 10c0/1539a646e482bf556b6240023a13e797319a2adb8d107d2781414d294c1cf2d9e992c4a11ee523c9d2ed84eb5737adace39482355175fb66b366267790a0ef95
+  checksum: 10c0/abcc361db0224037cafffeb368595801bd0166606b2432182c131fa7d29da0456b793b4fd02b16f844f31df6d8d917e65eaef43317b82d2ac15ec63beb52d059
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-service@npm:^4.0.2":
-  version: 4.1.1
-  resolution: "@rnx-kit/metro-service@npm:4.1.1"
+  version: 4.1.2
+  resolution: "@rnx-kit/metro-service@npm:4.1.2"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
@@ -3898,7 +3898,7 @@ __metadata:
       optional: true
     metro-react-native-babel-transformer:
       optional: true
-  checksum: 10c0/a557e98ebc9de5b7c7bbcfbace70146d0e6891fa6ae4d039acbb953d550c1c20e094363851db59420089f84331f2b8b27c59a6bfcd040b9bf7167ac6f002c203
+  checksum: 10c0/d23933383868b6eb5f2fc9191347bc27c840d1a4ff262f9b63295347d4767d06a7ac00579ffcf0f7b1aa97efcdfb60869bfcdeaf2b4ada80b7cb5f3077d0d680
   languageName: node
   linkType: hard
 
@@ -3921,17 +3921,17 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/react-native-host@npm:^0.5.11":
-  version: 0.5.11
-  resolution: "@rnx-kit/react-native-host@npm:0.5.11"
+  version: 0.5.13
+  resolution: "@rnx-kit/react-native-host@npm:0.5.13"
   peerDependencies:
     react-native: ">=0.66"
-  checksum: 10c0/1d9d01a9ec9cc3de701415d3ebcb507ef497f0566364d004d236725a40796aa21ae70e58722ccbf79d1ac4163ce34d8ee0f10eb76cfc67818bbf689a10d8d296
+  checksum: 10c0/8965ad27b54c4e2fbedd0ca35c10c1ca9c31ae63ffd20389c13026a0b610aca2a06ed0e383b81bb5854156d95a60a8c5cb638a85cab428c97cb757edb7d87174
   languageName: node
   linkType: hard
 
 "@rnx-kit/third-party-notices@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "@rnx-kit/third-party-notices@npm:2.0.1"
+  version: 2.0.2
+  resolution: "@rnx-kit/third-party-notices@npm:2.0.2"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.0"
@@ -3939,7 +3939,7 @@ __metadata:
     yargs: "npm:^16.0.0"
   bin:
     build-tpn: lib/build-tpn.js
-  checksum: 10c0/d75272101084e023cd19c6d07fd8721ba273594490a6e5ed49757a8c274ebd2b3f9e2d8fb99d2bba1538d3af7696d8e3a7d730abe8927aeb85bff4fd6ddbda8e
+  checksum: 10c0/8b86a45f3ab3576fd4eae5521bdf547e11f59d6f75806c8962fb476d333e0f03b9904970356d00ba727ce66bb6e77ae5df4a1ed0c616515fb36285fb26a5faa4
   languageName: node
   linkType: hard
 
@@ -3993,12 +3993,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-react-native@npm:^2.0.0, @rnx-kit/tools-react-native@npm:^2.0.3, @rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@rnx-kit/tools-react-native@npm:2.2.0"
+"@rnx-kit/tools-react-native@npm:^2.0.0, @rnx-kit/tools-react-native@npm:^2.0.3, @rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.2.0, @rnx-kit/tools-react-native@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@rnx-kit/tools-react-native@npm:2.3.0"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
-  checksum: 10c0/631eecefda6b2b53eccdd18656f24a5426625522b80e956504d2b37acbcdc1e98eddc692aec0833536e6fd1b285c4a5d75e27f23a16fdcb099fabae46013740d
+  checksum: 10c0/97cbdaf2c657ebf0231739a07a8a26f9b16f8cef0294bf15bcd7c6b6e8f1186f46e040362e5ce7b921a158cc37a1be4f5d9757bb5c1c254a00072f913a518a84
   languageName: node
   linkType: hard
 
@@ -4029,14 +4029,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/typescript-service@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "@rnx-kit/typescript-service@npm:2.0.1"
+"@rnx-kit/typescript-service@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@rnx-kit/typescript-service@npm:2.0.2"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
   peerDependencies:
     typescript: ">=4.0"
-  checksum: 10c0/651fd80a6c248639f903bb2074ad64f3586eec4e227c2b7787970db55c2309acc240f7f32225971f027988999c5d530d1ec9644d9b1760572074f2ecde06e862
+  checksum: 10c0/253bdee64737a4f493dbfa56ab8264a24947d11b7ff46302b4ae12d36545af10d53278b5d8806979e5f949948c001b96ba146cef3c6c9a07bf749249426a7d82
   languageName: node
   linkType: hard
 

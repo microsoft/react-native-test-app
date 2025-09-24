@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 
-// https://github.com/facebook/react-native/blob/0abd5d63e1c0c4708f81bd698e6d011fa75f01e5/packages/new-app-screen/src/Theme.js#L16-L33
+// https://github.com/facebook/react-native/blob/0.82-stable/packages/new-app-screen/src/Theme.js#L16-L33
 const COLORS = {
   light: {
     background: "#f3f3f3",
@@ -24,7 +24,7 @@ const COLORS = {
 export function useStyles() {
   const colorScheme = useColorScheme();
   return useMemo(() => {
-    const colors = COLORS[colorScheme ?? "light"];
+    const colors = COLORS[colorScheme === "dark" ? "dark" : "light"];
 
     const fontSize = 18;
     const groupBorderRadius = 8;
@@ -62,11 +62,11 @@ export function useStyles() {
         marginStart: margin,
       },
       title: {
-        fontSize: 40,
-        fontWeight: "700",
+        fontSize: 24,
+        fontWeight: "600",
         paddingTop: 64,
         paddingHorizontal: 32,
-        paddingBottom: 40,
+        paddingBottom: 24,
         textAlign: "center",
       },
     });
