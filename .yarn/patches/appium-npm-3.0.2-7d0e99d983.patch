@@ -1,13 +1,13 @@
 diff --git a/build/lib/extension/manifest.js b/build/lib/extension/manifest.js
-index 5b650a6ff4dbe737ffdf8821e255e9e4e3d89da3..6179965231285c3ae1d3cddee0c45c57ab3fba03 100644
+index af59df0ff07d6294bbc373cbcc273cc06300482f..6ad054e11bc7ece77e80e08c0d265e538ebe7c53 100644
 --- a/build/lib/extension/manifest.js
 +++ b/build/lib/extension/manifest.js
-@@ -195,12 +195,14 @@ class Manifest {
-             onMatch(path_1.default.join(__classPrivateFieldGet(this, _Manifest_appiumHome, "f"), 'package.json'), true),
+@@ -180,12 +180,14 @@ class Manifest {
+             onMatch(path_1.default.join(this.#appiumHome, 'package.json'), true),
          ];
          // add dependencies to the queue
 -        const filepaths = await support_1.fs.glob('node_modules/{*,@*/*}/package.json', {
--            cwd: __classPrivateFieldGet(this, _Manifest_appiumHome, "f"),
+-            cwd: this.#appiumHome,
 -            absolute: true,
 -        });
 -        for (const filepath of filepaths) {

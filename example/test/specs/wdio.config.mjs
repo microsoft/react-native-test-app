@@ -101,7 +101,7 @@ const findLatestIPhoneSimulator = (() => {
       const sims = devices[latestRuntime];
       const simulator = sims.find(({ name }) => name.includes("Pro"));
       result = [
-        simulator?.name ?? "iPhone 15 Pro",
+        simulator?.name ?? "iPhone 16 Pro",
         latestRuntime
           .substring("com.apple.CoreSimulator.SimRuntime.iOS-".length)
           .replaceAll("-", "."),

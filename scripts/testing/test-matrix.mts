@@ -29,7 +29,10 @@ const TAG = "┃";
 const TEST_VARIANTS = ["paper", "fabric"] as const;
 
 function isVariantSupported({ version, variant }: Required<BuildConfig>) {
-  return variant === "fabric" || toVersionNumber(version) < v(0, 82, 0);
+  return (
+    variant === "fabric" ||
+    Boolean(version && toVersionNumber(version) < v(0, 82, 0))
+  );
 }
 
 function isAppleVariantSupported(config: Required<BuildConfig>) {
@@ -38,7 +41,7 @@ function isAppleVariantSupported(config: Required<BuildConfig>) {
   }
 
   const { version, engine } = config;
-  if (engine === "jsc" && toVersionNumber(version) >= v(0, 80, 0)) {
+  if (engine === "jsc" && version && toVersionNumber(version) >= v(0, 80, 0)) {
     return false;
   }
 
@@ -390,7 +393,7 @@ if (platforms.length === 0) {
         process.exitCode = e;
       } else {
         process.exitCode = 1;
-        showBanner(`❌ ${e}`);
+        showBanner(`❌ ${(e instanceof Error && e.stack) || e}`);
       }
     });
 }

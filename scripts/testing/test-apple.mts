@@ -64,6 +64,8 @@ export function installPods({
   rm_r(`${platform}/Podfile.lock`);
   rm_r(`${platform}/Pods`);
   rm_r(`${platform}/build`);
+
+  process.env["RCT_USE_PREBUILT_RNCORE"] = "1";
   $("pod", "install", `--project-directory=${platform}`);
 
   return Promise.resolve();
