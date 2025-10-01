@@ -21,8 +21,9 @@
     "email": "microsoftopensource@users.noreply.github.com"
   },
   "files": [
-    "*.md",
+    "README.md",
     "ReactTestApp-DevSupport.podspec",
+    "SECURITY.md",
     "android/**/*.gradle",
     "android/android-manifest.js",
     "android/app/lint.xml",

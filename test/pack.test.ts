@@ -26,8 +26,6 @@ describe("npm pack", () => {
       .sort();
 
     deepEqual(content, [
-      "CODE_OF_CONDUCT.md",
-      "CONTRIBUTING.md",
       "LICENSE",
       "README.md",
       "ReactTestApp-DevSupport.podspec",
