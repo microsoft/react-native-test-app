@@ -174,7 +174,7 @@ function generateType(
   const result = [outer + lang.structBegin(name)];
 
   const { properties, required = [] } = definition;
-  Object.entries(properties).forEach(([name, prop]) => {
+  for (const [name, prop] of Object.entries(properties)) {
     assertDefinition(prop);
 
     const isRequired = required.includes(name);
@@ -191,7 +191,7 @@ function generateType(
         result.push(inner + lang.stringProperty(name, isRequired));
         break;
     }
-  });
+  }
 
   result.push(outer + lang.structEnd);
   return result;
@@ -212,13 +212,12 @@ function generate(schema: SchemaObject, output: string) {
     lines.push(lang.options.header);
   }
 
-  Object.entries(schema.$defs).forEach(([key, definition]) => {
+  for (const [key, definition] of Object.entries(schema.$defs)) {
     assertDefinition(definition);
     if (!("exclude-from-codegen" in definition)) {
       lines.push(...generateType(typename(key), definition, lang), "");
     }
-    return lines;
-  });
+  }
 
   if (lang.options.footer) {
     lines.push(lang.options.footer);
