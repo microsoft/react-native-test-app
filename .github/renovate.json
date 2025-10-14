@@ -5,17 +5,17 @@
     {
       "groupName": "@react-native-community/cli",
       "allowedVersions": "^18.0.0",
-      "matchPackageNames": ["@react-native-community/cli{/,}**"]
+      "matchPackageNames": ["@react-native-community/cli**"]
     },
     {
       "groupName": "Android CameraX",
       "matchDatasources": ["maven"],
-      "matchPackageNames": ["androidx.camera{/,}**"]
+      "matchPackageNames": ["androidx.camera:**"]
     },
     {
       "groupName": "Kotlin",
       "matchDatasources": ["maven"],
-      "matchPackageNames": ["org.jetbrains.kotlin{/,}**"]
+      "matchPackageNames": ["org.jetbrains.kotlin:**"]
     },
     {
       "groupName": "ESLint",
@@ -29,7 +29,7 @@
     {
       "groupName": "TypeScript type definitions",
       "matchDatasources": ["npm"],
-      "matchPackageNames": ["@types/{/,}**"]
+      "matchPackageNames": ["@types/**"]
     },
     {
       "groupName": "WebdriverIO",
@@ -48,20 +48,8 @@
       "matchPackageNames": [
         "@callstack/react-native-visionos",
         "@react-native-community/template",
-        "@react-native-mac/virtualized-lists",
-        "@react-native/assets-registry",
-        "@react-native/babel-plugin-codegen",
-        "@react-native/babel-preset",
-        "@react-native/codegen",
-        "@react-native/community-cli-plugin",
-        "@react-native/debugger-frontend",
-        "@react-native/dev-middleware",
-        "@react-native/gradle-plugin",
-        "@react-native/js-polyfills",
-        "@react-native/metro-babel-transformer",
-        "@react-native/metro-config",
-        "@react-native/normalize-colors",
-        "@react-native/virtualized-lists",
+        "@react-native-mac/**",
+        "@react-native/**",
         "react-native",
         "react-native-macos",
         "react-native-windows"
