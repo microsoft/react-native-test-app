@@ -49,6 +49,7 @@
         "@callstack/react-native-visionos",
         "@react-native-community/template",
         "@react-native-mac/**",
+        "@react-native-macos/**",
         "@react-native/**",
         "react-native",
         "react-native-macos",
