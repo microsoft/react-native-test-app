@@ -5207,8 +5207,8 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^10.0.0":
-  version: 10.2.1
-  resolution: "appium-xcuitest-driver@npm:10.2.1"
+  version: 10.2.2
+  resolution: "appium-xcuitest-driver@npm:10.2.2"
   dependencies:
     "@appium/strongbox": "npm:^1.0.0-rc.1"
     "@colors/colors": "npm:^1.6.0"
@@ -5241,7 +5241,7 @@ __metadata:
   dependenciesMeta:
     appium-ios-remotexpc:
       optional: true
-  checksum: 10c0/62fcbecdf1320c756b48175cb623cb0d6a838855cb090673447b6c46e09ab590d60a9fa36a9778be90e4a277af347d9b7a0cd86fa69e556eb4c6df822238d49a
+  checksum: 10c0/897fb0baca039da8329f19322aae9dfd20612435fe33d6c19f07cdbfc0b251c41db1606a255be5a8464889d92774524dcb3843da9596c48698bda49c40b4cf15
   languageName: node
   linkType: hard
 
