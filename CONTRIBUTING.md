@@ -359,8 +359,9 @@ the template we currently use:
 > - Fix #2
 
 Make sure you're on latest `trunk`, then run
-`yarn release-notes <last version> <this version>` to get a list of user-facing
-changes. You will likely need to prune and rewrite some of these entries.
+`node --run release-notes -- <last version> <this version>` to get a list of
+user-facing changes. You will likely need to prune and rewrite some of these
+entries.
 
 <!-- References -->
 

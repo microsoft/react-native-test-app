@@ -19,7 +19,7 @@ type Group =
   | "visionos"
   | "windows";
 
-type Changes = Record<string, Record<Group, string[]>>;
+type Changes = Record<string, Partial<Record<Group, string[]>>>;
 
 function assertCategory(category: string): asserts category is "feat" | "fix" {
   if (category !== "feat" && category !== "fix") {
@@ -85,33 +85,16 @@ function sanitizeGroup(group: string): Group {
 }
 
 function parseCommits(commits: Commit[]): Changes {
-  const changes: Changes = {
-    feat: {
-      general: [],
-      android: [],
-      apple: [],
-      ios: [],
-      macos: [],
-      visionos: [],
-      windows: [],
-    },
-    fix: {
-      general: [],
-      android: [],
-      apple: [],
-      ios: [],
-      macos: [],
-      visionos: [],
-      windows: [],
-    },
-  };
+  const changes: Changes = { feat: {}, fix: {} };
 
   for (const { message } of commits) {
     const m = message.match(/^(feat|fix)(?:\((.*?)\))?: (.*)$/);
     if (m) {
       const [, cat, group, message] = m;
       assertCategory(cat);
-      changes[cat][sanitizeGroup(group)].push(message);
+      const g = sanitizeGroup(group);
+      changes[cat][g] ||= [];
+      changes[cat][g].push(message);
     }
   }
 
