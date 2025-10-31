@@ -1,7 +1,6 @@
 *.iml
 *.log
 *.tgz
-*.wrn
 *.xcworkspace/
 .DS_Store
 .android-test-*
