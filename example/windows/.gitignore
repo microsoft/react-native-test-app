@@ -24,8 +24,10 @@ packages/
 
 **/Generated Files/**
 *.binlog
+*.err
 *.hprof
 *.sln
+*.wrn
 ExperimentalFeatures.props
 NuGet.Config
 dist/

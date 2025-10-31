@@ -1,6 +1,5 @@
 *.binlog
 *.hprof
-*.wrn
 *.xcworkspace/
 *.zip
 .DS_Store
