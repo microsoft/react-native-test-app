@@ -30,7 +30,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
-    "@react-native-community/cli": "^18.0.0",
+    "@react-native-community/cli": "^20.0.0",
     "@react-native/babel-preset": "^0.79.0",
     "@react-native/metro-config": "^0.79.0",
     "@rnx-kit/cli": "^0.18.11",
