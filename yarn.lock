@@ -3673,8 +3673,8 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/cli@npm:^0.18.11":
-  version: 0.18.13
-  resolution: "@rnx-kit/cli@npm:0.18.13"
+  version: 0.18.14
+  resolution: "@rnx-kit/cli@npm:0.18.14"
   dependencies:
     "@rnx-kit/align-deps": "npm:^3.1.0"
     "@rnx-kit/config": "npm:^0.7.0"
@@ -3683,7 +3683,7 @@ __metadata:
     "@rnx-kit/metro-plugin-duplicates-checker": "npm:^3.0.0"
     "@rnx-kit/metro-plugin-typescript": "npm:^0.5.0"
     "@rnx-kit/metro-serializer": "npm:^2.0.0"
-    "@rnx-kit/metro-serializer-esbuild": "npm:^0.2.1"
+    "@rnx-kit/metro-serializer-esbuild": "npm:^0.2.6"
     "@rnx-kit/metro-service": "npm:^4.0.2"
     "@rnx-kit/third-party-notices": "npm:^2.0.0"
     "@rnx-kit/tools-android": "npm:^0.2.1"
@@ -3705,7 +3705,7 @@ __metadata:
       optional: true
   bin:
     rnx-cli: bin/rnx-cli.cjs
-  checksum: 10c0/f4a9988fe13c4d7cbaff3aa64e3a7ab8bad37c63c39741f3191d3bdf8d27400c231eb3f440e20b9b5b0d5566b40e067ba78b32c737b7d640522a984a2fc835b8
+  checksum: 10c0/1ab81f8d397ab40cdb1a97e60290ffd5772bc32df96e76648164d73ced9de5b25088c6abc9bb172679a0993ad873826788e8c1315ca2388e72d97743707c507a
   languageName: node
   linkType: hard
 
@@ -3811,9 +3811,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/metro-serializer-esbuild@npm:^0.2.1":
-  version: 0.2.5
-  resolution: "@rnx-kit/metro-serializer-esbuild@npm:0.2.5"
+"@rnx-kit/metro-serializer-esbuild@npm:^0.2.6":
+  version: 0.2.6
+  resolution: "@rnx-kit/metro-serializer-esbuild@npm:0.2.6"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.2"
@@ -3821,7 +3821,7 @@ __metadata:
     esbuild: "npm:^0.25.0"
     esbuild-plugin-lodash: "npm:^1.2.0"
     fast-glob: "npm:^3.2.7"
-  checksum: 10c0/a2ef7876cdd5b2988bb8c345da07d3c0fb4303703cc3fe53757ee7967a9bf1e441ba5dbcda37d5a38c9e6d3086b01509f1b426feb8e7233a71209c8b0772d528
+  checksum: 10c0/be4644d01912e86d2647cd781c3d612144a1054d11434951c8d8eee2cbaba1168435709924756773cf08811103514dfe5aeec804ad4385238ef2d990510f628e
   languageName: node
   linkType: hard
 
