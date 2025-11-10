@@ -12,6 +12,7 @@ import {
   readJSONFile,
   readTextFile,
   toVersionNumber,
+  v,
 } from "../scripts/helpers.js";
 import * as colors from "../scripts/utils/colors.mjs";
 
@@ -413,7 +414,7 @@ export async function projectInfo(
 ) {
   const version = getPackageVersion("react-native-windows", rnWindowsPath, fs);
   const versionNumber = toVersionNumber(version);
-  const newArch = Boolean(useFabric);
+  const newArch = useFabric ?? versionNumber >= v(0, 80, 0);
 
   return {
     version,
