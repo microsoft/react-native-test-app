@@ -12339,7 +12339,6 @@ __metadata:
     eslint: "npm:^9.12.0"
     eslint-plugin-wdio: "npm:^9.0.0"
     fast-xml-parser: "npm:^4.0.0"
-    js-yaml: "npm:^4.1.0"
     memfs: "npm:^4.0.0"
     minimatch: "npm:^9.0.0"
     nx: "npm:^21.0.0"
