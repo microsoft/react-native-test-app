@@ -15,7 +15,7 @@ inputs:
     default: "17"
   node-version:
     description: Desired Node version
-    default: "22"
+    default: "24"
   xcode-developer-dir:
     description: Set the path for the active Xcode developer directory
 runs:
