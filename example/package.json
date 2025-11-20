@@ -38,7 +38,7 @@
     "@rnx-kit/polyfills": "^0.2.0",
     "@rnx-kit/tsconfig": "^2.0.0",
     "@types/react": "~19.0.0",
-    "appium": "patch:appium@npm%3A3.0.2#~/.yarn/patches/appium-npm-3.0.2-7d0e99d983.patch",
+    "appium": "patch:appium@npm%3A3.1.1#~/.yarn/patches/appium-npm-3.0.2-7d0e99d983.patch",
     "appium-uiautomator2-driver": "^5.0.0",
     "appium-xcuitest-driver": "^10.0.0",
     "react-native-test-app": "workspace:*",
