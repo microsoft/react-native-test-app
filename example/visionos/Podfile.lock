@@ -1298,7 +1298,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-safe-area-context (5.6.0):
+  - react-native-safe-area-context (5.6.2):
     - React-Core
   - React-NativeModulesApple (0.79.6):
     - glog
@@ -1950,7 +1950,7 @@ SPEC CHECKSUMS:
   React-logger: f0428a8bff0cb6062bb05899b996b26462d96044
   React-Mapbuffer: 7ceaa4b99fd93acfa0c7cc9e1e10ba8ce8a000c7
   React-microtasksnativemodule: 84df18c97906f5f8edc32a8fcdb4ae58cb9faee8
-  react-native-safe-area-context: 12c7daa0ea4fa4eeb513fc273fac6b47aa332bd6
+  react-native-safe-area-context: 6c8805194166a9d6b3e53ba69ca76756c9bfb052
   React-NativeModulesApple: fd450c72ccc494fe26d75a91ca9c423ce845661f
   React-oscompat: ce07a01294cc0f2837a90dcbf5763de71e1e9863
   React-perflogger: 4341f38bdee9658ee7ed5ffa08b61edb5c1aaa62
