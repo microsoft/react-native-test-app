@@ -196,7 +196,7 @@
     "appium/ws": "~8.18.3",
     "appium/yaml": "~2.8.1",
     "argparse/sprintf-js": "^1.0.2",
-    "body-parser": "~1.20.3",
+    "body-parser": "~2.2.0",
     "body-parser/qs": "^6.13.0",
     "bplist-creator": "~0.1.1",
     "bplist-parser": "~0.3.2",
