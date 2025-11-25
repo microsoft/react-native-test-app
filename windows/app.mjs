@@ -203,7 +203,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
   /** @type {typeof import("mustache")} */
   const mustache = requireTransitive(
     ["@react-native-windows/cli", "mustache"],
-    rnWindowsPath
+    fs.realpathSync(rnWindowsPath)
   );
   const slnPath = path.join(destPath, `${info.bundle.appName}.sln`);
   const vcxprojPath = path.join(projectFilesDestPath, projectFileName);
