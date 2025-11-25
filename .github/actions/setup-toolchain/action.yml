@@ -21,6 +21,11 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Enable long paths (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      run: |
+        New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+      shell: powershell
     - name: Set up Ccache
       id: setup-ccache
       if: ${{ inputs.platform == 'ios' || inputs.platform == 'macos' || inputs.platform == 'visionos' }}
