@@ -1,4 +1,5 @@
 import { equal, fail, notEqual } from "node:assert/strict";
+import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { URL, fileURLToPath } from "node:url";
@@ -72,7 +73,7 @@ describe("requireTransitive()", () => {
 
     const mustache = requireTransitive<typeof import("mustache")>(
       ["@react-native-windows/cli", "mustache"],
-      rnwDir
+      fs.realpathSync(rnwDir)
     );
     notEqual(mustache, null);
     equal(typeof mustache.parse, "function");
