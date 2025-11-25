@@ -4,6 +4,7 @@
  */
 import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
+import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import * as util from "node:util";
 import { readTextFile, toVersionNumber, v } from "../helpers.js";
@@ -135,6 +136,10 @@ function showBanner(message: string) {
  * Starts Appium server.
  */
 function startAppiumServer(logPath = "appium.log") {
+  if (!process.env["APPIUM_HOME"]) {
+    const appium = fileURLToPath(import.meta.resolve("../../package.json"));
+    process.env["APPIUM_HOME"] = path.dirname(appium);
+  }
   log(`Appium log path: ${logPath}`);
   return run("appium", logPath);
 }
