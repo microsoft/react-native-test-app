@@ -16,13 +16,19 @@ function main(src, dst) {
   });
 
   const yml = fs.readFileSync(src, { encoding: "utf-8" });
-  const rc = /** @type {Record<string, string | undefined>} */ (yaml.load(yml));
+  const rc = /** @type {Record<string, string | string[] | undefined>} */ (
+    yaml.load(yml)
+  );
 
   rc["nmHoistingLimits"] = undefined;
-  rc["plugins"] = undefined;
+  rc["plugins"] = [];
 
+  if (rc.globalFolder) {
+    const globalFolder = rc.globalFolder.toString();
+    rc["globalFolder"] = path.join(path.dirname(src), globalFolder);
+  }
   if (rc.yarnPath) {
-    rc["yarnPath"] = path.join(path.dirname(src), rc.yarnPath);
+    rc["yarnPath"] = path.join(path.dirname(src), rc.yarnPath.toString());
   }
 
   fs.writeFileSync(dst, yaml.dump(rc));
