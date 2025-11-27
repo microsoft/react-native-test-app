@@ -31,6 +31,8 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@react-native-community/cli": "^18.0.0",
+    "@react-native-community/cli-platform-android": "^18.0.0",
+    "@react-native-community/cli-platform-ios": "^18.0.0",
     "@react-native/babel-preset": "^0.79.0",
     "@react-native/metro-config": "^0.79.0",
     "@rnx-kit/cli": "^0.18.11",
@@ -38,6 +40,7 @@
     "@rnx-kit/polyfills": "^0.2.0",
     "@rnx-kit/tsconfig": "^2.0.0",
     "@types/react": "~19.0.0",
+    "@wdio/types": "^9.20.0",
     "appium": "^3.1.1",
     "appium-uiautomator2-driver": "^6.0.0",
     "appium-xcuitest-driver": "^10.0.0",
@@ -45,7 +48,7 @@
     "webdriverio": "^9.0.0"
   },
   "eslintConfig": {
-    "extends": "../.github/eslint.config.js"
+    "extends": "../eslint.config.js"
   },
   "rnx-kit": {
     "kitType": "app",

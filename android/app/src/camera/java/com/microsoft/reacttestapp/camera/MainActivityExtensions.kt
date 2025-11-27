@@ -33,6 +33,7 @@ fun MainActivity.scanForQrCode() {
             }
             fragment.show(supportFragmentManager, QRCodeScannerFragment.TAG)
         }
+
         shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
             Snackbar
                 .make(
@@ -49,6 +50,7 @@ fun MainActivity.scanForQrCode() {
                 }
                 .show()
         }
+
         else -> {
             ActivityCompat.requestPermissions(
                 this,
