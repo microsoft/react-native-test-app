@@ -20,7 +20,7 @@ function main(src, dst) {
     yaml.load(yml)
   );
 
-  rc["nmHoistingLimits"] = undefined;
+  rc["nodeLinker"] = "node-modules";
   rc["plugins"] = [];
 
   if (rc.globalFolder) {

@@ -1,6 +1,14 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "defaultBase": "trunk",
+  "targetDefaults": {
+    "format:js": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    }
+  },
   "release": {
     "projects": ["react-native-test-app"],
     "changelog": {
@@ -23,6 +31,14 @@
     "releaseTagPattern": "{version}",
     "git": {
       "commit": false
+    }
+  },
+  "tui": {
+    "enabled": false
+  },
+  "pluginsConfig": {
+    "@nx/js": {
+      "analyzeSourceFiles": false
     }
   }
 }
