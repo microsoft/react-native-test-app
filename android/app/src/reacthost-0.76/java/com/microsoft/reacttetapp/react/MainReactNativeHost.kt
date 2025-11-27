@@ -108,6 +108,7 @@ class MainReactNativeHost(
             BundleSource.Action.RELOAD -> {
                 reactInstanceManager.devSupportManager.handleReloadJS()
             }
+
             BundleSource.Action.RESTART -> {
                 if (activity !is MainActivity) {
                     activity.navigateUpTo(Intent(application, MainActivity.Companion::class.java))

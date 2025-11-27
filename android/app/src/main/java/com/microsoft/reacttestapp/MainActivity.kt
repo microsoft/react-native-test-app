@@ -201,21 +201,25 @@ class MainActivity : ReactActivity() {
                     reload(BundleSource.Disk)
                     true
                 }
+
                 R.id.load_from_dev_server -> {
                     PackagerConnectionSettings(this).debugServerHost = ""
                     reload(BundleSource.Server)
                     true
                 }
+
                 R.id.remember_last_component -> {
                     val enable = !menuItem.isChecked
                     menuItem.isChecked = enable
                     session.shouldRememberLastComponent = enable
                     true
                 }
+
                 R.id.scan_qr_code -> {
                     scanForQrCode()
                     true
                 }
+
                 R.id.show_dev_options -> {
                     val devSupportManager = if (BuildConfig.REACTAPP_USE_BRIDGELESS) {
                         (application as TestApp).reactHost.devSupportManager
@@ -225,6 +229,7 @@ class MainActivity : ReactActivity() {
                     devSupportManager?.showDevOptionsDialog()
                     true
                 }
+
                 else -> false
             }
         }
@@ -254,6 +259,7 @@ class MainActivity : ReactActivity() {
                     .newInstance(component)
                     .show(supportFragmentManager, ComponentBottomSheetDialogFragment.TAG)
             }
+
             else -> {
                 findActivityClass(component.name)?.let {
                     startActivity(Intent(this, it))
