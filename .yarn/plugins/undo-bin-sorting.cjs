@@ -1,7 +1,7 @@
 // @ts-check
 /**
  * @typedef {{ values: Map<string, unknown>; }} Configuration
- * @typedef {{ cwd: string; }} Workspace
+ * @typedef {{ cwd: string; manifest: { name: { scope?: string; name: string; } } }} Workspace
  * @typedef {{ configuration: Configuration; cwd: string; workspaces: Workspace[]; }} Project
  * @typedef {{ mode?: "skip-build" | "update-lockfile"; }} InstallOptions
  */
@@ -21,9 +21,9 @@
 module.exports = {
   name: "plugin-undo-bin-sorting",
   factory: (require) => {
+    // @ts-expect-error Yarn internal package
     const { npath } = require("@yarnpkg/fslib");
     const fs = require("node:fs");
-    const path = require("node:path");
 
     const asText = /** @type {const} */ ({ encoding: "utf-8" });
 
@@ -33,12 +33,21 @@ module.exports = {
       hooks: {
         /** @type {(project: Project) => void} */
         validateProject(project) {
-          const projectRoot = npath.fromPortablePath(project.cwd);
-          manifestPath = path.join(projectRoot, "package.json");
-          orig_rawManifest = fs.readFileSync(manifestPath, asText);
+          for (const ws of project.workspaces) {
+            if (ws.manifest.name.name === "react-native-test-app") {
+              const packagePath = npath.fromPortablePath(ws.cwd);
+              manifestPath = npath.join(packagePath, "package.json");
+              orig_rawManifest = fs.readFileSync(manifestPath, asText);
+              break;
+            }
+          }
         },
         /** @type {(project: Project, options: InstallOptions) => void} */
         afterAllInstalled() {
+          if (!manifestPath) {
+            return;
+          }
+
           const rawManifest = fs.readFileSync(manifestPath, asText);
           if (rawManifest === orig_rawManifest) {
             return;
