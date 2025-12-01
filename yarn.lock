@@ -3784,11 +3784,11 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-config@npm:^2.1.0":
-  version: 2.1.2
-  resolution: "@rnx-kit/metro-config@npm:2.1.2"
+  version: 2.2.1
+  resolution: "@rnx-kit/metro-config@npm:2.2.1"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
-    "@rnx-kit/tools-react-native": "npm:^2.0.0"
+    "@rnx-kit/tools-react-native": "npm:^2.3.1"
     "@rnx-kit/tools-workspaces": "npm:^0.2.0"
   peerDependencies:
     "@react-native/metro-config": "*"
@@ -3797,7 +3797,7 @@ __metadata:
   peerDependenciesMeta:
     "@react-native/metro-config":
       optional: true
-  checksum: 10c0/3a6b488ee58ad5f34990d51628c0556e1913d94870fd2fad4169e55fc8609abab3b7710eba68e584ecac675553b116c65c544a0f0595293fe41fbc56957d1016
+  checksum: 10c0/878fcb7d6bff1f016c235a606aed144ef8e18b6d04ebf69e1e8fb0676a2f7cb30a607f2c44d2bb15462bba718de3b7a5d57acd3ee8e44062a3a6e5cfbec36f8a
   languageName: node
   linkType: hard
 
@@ -3975,7 +3975,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-react-native@npm:^2.0.0, @rnx-kit/tools-react-native@npm:^2.0.3, @rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.2.0, @rnx-kit/tools-react-native@npm:^2.3.0":
+"@rnx-kit/tools-react-native@npm:^2.0.0, @rnx-kit/tools-react-native@npm:^2.0.3, @rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.2.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1":
   version: 2.3.1
   resolution: "@rnx-kit/tools-react-native@npm:2.3.1"
   dependencies:
