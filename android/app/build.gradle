@@ -100,12 +100,21 @@ android {
         resValue("string", "app_name", project.ext.react.appName)
 
         def cppStd = "-std=c++20"
+        def cmakeMakeProgram = System.getenv("CMAKE_MAKE_PROGRAM")
+
         if (enableNewArchitecture) {
+            def cmakeArgs = [
+                "-DANDROID_STL=c++_shared",
+                "-DPROJECT_BUILD_DIR=${buildDir}",
+                "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid",
+            ]
+            if (cmakeMakeProgram != null) {
+                cmakeArgs.add("-DCMAKE_MAKE_PROGRAM=${cmakeMakeProgram}")
+            }
+
             externalNativeBuild {
                 cmake {
-                    arguments("-DANDROID_STL=c++_shared",
-                              "-DPROJECT_BUILD_DIR=${buildDir}",
-                              "-DREACT_ANDROID_DIR=${reactNativePath}/ReactAndroid")
+                    arguments(*cmakeArgs)
                     cppFlags(cppStd, "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1")
                 }
             }
@@ -115,11 +124,18 @@ android {
                 }
             }
         } else {
+            def cmakeArgs = [
+                "-DANDROID_STL=c++_shared",
+                "-DREACT_COMMON_DIR=${reactNativePath}/ReactCommon",
+                "-DREACT_JNILIBS_DIR=${buildDir}/outputs/jniLibs",
+            ]
+            if (cmakeMakeProgram != null) {
+                cmakeArgs.add("-DCMAKE_MAKE_PROGRAM=${cmakeMakeProgram}")
+            }
+
             externalNativeBuild {
                 cmake {
-                    arguments("-DANDROID_STL=c++_shared",
-                              "-DREACT_COMMON_DIR=${reactNativePath}/ReactCommon",
-                              "-DREACT_JNILIBS_DIR=${buildDir}/outputs/jniLibs")
+                    arguments(*cmakeArgs)
                     cppFlags(cppStd, "-Wall", "-Werror", "-frtti", "-fexceptions", "-DWITH_INSPECTOR=1")
                 }
             }
