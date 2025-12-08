@@ -3689,27 +3689,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/align-deps@npm:^3.1.0":
-  version: 3.2.3
-  resolution: "@rnx-kit/align-deps@npm:3.2.3"
+"@rnx-kit/align-deps@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "@rnx-kit/align-deps@npm:3.3.3"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/a948c6f80301f9a5e5d2652ef99b76e30624fbb2303ed790f21d828e3ab9224513ee877b014d40ccfea48bfba9bf5bceb8a849ed290cee4da2274048001e4cb1
+  checksum: 10c0/5791d9fccc19fadd0974e5c2b0226eec59c747d094659e4c4a817468d3016cdc5e5120ce29f393de74c857447dabfd45627b238bd92d5875e4c47ebe2e260670
   languageName: node
   linkType: hard
 
 "@rnx-kit/cli@npm:^0.18.11":
-  version: 0.18.14
-  resolution: "@rnx-kit/cli@npm:0.18.14"
+  version: 0.18.16
+  resolution: "@rnx-kit/cli@npm:0.18.16"
   dependencies:
-    "@rnx-kit/align-deps": "npm:^3.1.0"
+    "@rnx-kit/align-deps": "npm:^3.3.3"
     "@rnx-kit/config": "npm:^0.7.0"
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/metro-plugin-cyclic-dependencies-detector": "npm:^2.0.0"
     "@rnx-kit/metro-plugin-duplicates-checker": "npm:^3.0.0"
     "@rnx-kit/metro-plugin-typescript": "npm:^0.5.0"
     "@rnx-kit/metro-serializer": "npm:^2.0.0"
-    "@rnx-kit/metro-serializer-esbuild": "npm:^0.2.6"
+    "@rnx-kit/metro-serializer-esbuild": "npm:^0.2.7"
     "@rnx-kit/metro-service": "npm:^4.0.2"
     "@rnx-kit/third-party-notices": "npm:^2.0.0"
     "@rnx-kit/tools-android": "npm:^0.2.1"
@@ -3731,7 +3731,7 @@ __metadata:
       optional: true
   bin:
     rnx-cli: bin/rnx-cli.cjs
-  checksum: 10c0/1ab81f8d397ab40cdb1a97e60290ffd5772bc32df96e76648164d73ced9de5b25088c6abc9bb172679a0993ad873826788e8c1315ca2388e72d97743707c507a
+  checksum: 10c0/2b7ce78217b0145fc9e5583aa9625212ffe471449b007bf24eb279cfca6cef0e4061af04d8b2066cbf20cf92f4dfb2c88869f58359436f87f3cdbe3d71690747
   languageName: node
   linkType: hard
 
@@ -3837,9 +3837,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/metro-serializer-esbuild@npm:^0.2.6":
-  version: 0.2.6
-  resolution: "@rnx-kit/metro-serializer-esbuild@npm:0.2.6"
+"@rnx-kit/metro-serializer-esbuild@npm:^0.2.7":
+  version: 0.2.7
+  resolution: "@rnx-kit/metro-serializer-esbuild@npm:0.2.7"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.2"
@@ -3847,7 +3847,7 @@ __metadata:
     esbuild: "npm:^0.25.0"
     esbuild-plugin-lodash: "npm:^1.2.0"
     fast-glob: "npm:^3.2.7"
-  checksum: 10c0/be4644d01912e86d2647cd781c3d612144a1054d11434951c8d8eee2cbaba1168435709924756773cf08811103514dfe5aeec804ad4385238ef2d990510f628e
+  checksum: 10c0/adef2357f1c4b7132eb60f90f9628568e285cca2c3ce7add302a10ffe62880309306606ab90d1d7f5e96d98416c8b968edb05d17bf79b9e9166f5e3f864918c4
   languageName: node
   linkType: hard
 
