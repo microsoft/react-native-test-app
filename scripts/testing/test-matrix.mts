@@ -338,20 +338,29 @@ if (platforms.length === 0) {
   process.exitCode = 1;
   showBanner(red("No valid platforms were specified"));
 } else {
-  TEST_VARIANTS.reduce(
-    (job, variant) => {
-      return job.then(() =>
-        withReactNativeVersion(version, async () => {
-          for (const platform of platforms) {
-            await buildRunTest({ version, platform, variant });
-          }
-        })
-      );
-    },
-    waitForUserInput(
-      `${TAG} Before continuing, make sure all emulators/simulators and Appium/Metro instances are closed.\n${TAG}\n${TAG} Press any key to continue...`
+  TEST_VARIANTS.filter((variant) =>
+    platforms.some((platform) =>
+      PLATFORM_CONFIG[platform].isAvailable({
+        version,
+        platform,
+        variant,
+        engine: "hermes",
+      })
     )
   )
+    .reduce(
+      (job, variant) =>
+        job.then(() =>
+          withReactNativeVersion(version, async () => {
+            for (const platform of platforms) {
+              await buildRunTest({ version, platform, variant });
+            }
+          })
+        ),
+      waitForUserInput(
+        `${TAG} Before continuing, make sure all emulators/simulators and Appium/Metro instances are closed.\n${TAG}\n${TAG} Press any key to continue...`
+      )
+    )
     .then(() => {
       showBanner("Initialize new app");
       $(

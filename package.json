@@ -102,7 +102,7 @@
     "@callstack/react-native-visionos": "0.76 - 0.79",
     "@expo/config-plugins": ">=5.0",
     "react": "18.2 - 19.1",
-    "react-native": "0.76 - 0.82 || >=0.83.0-0 <0.83.0",
+    "react-native": "0.76 - 0.83 || >=0.83.0-0 <0.84.0",
     "react-native-macos": "^0.0.0-0 || 0.76 - 0.79",
     "react-native-windows": "^0.0.0-0 || 0.76 - 0.80"
   },
