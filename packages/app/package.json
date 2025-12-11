@@ -79,7 +79,6 @@
     "lint:swift": "swiftlint",
     "prepack": "node scripts/internal/pack.mts pre",
     "postpack": "node scripts/internal/pack.mts post",
-    "release-notes": "node scripts/internal/release-notes.mts",
     "set-react-version": "node scripts/internal/set-react-version.mts",
     "test": "node scripts/internal/test.mts",
     "test:js": "node --no-warnings --test $(git ls-files '*.test.ts')",

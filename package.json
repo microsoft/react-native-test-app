@@ -17,6 +17,7 @@
     "lint": "nx run-many --target lint:js,lint:kt,lint:rb,lint:swift",
     "format:js": "prettier --write --log-level error $(git ls-files '.github/*.json' '.github/*.yml' '.yarn/plugins/*' '.yarnrc.yml' 'CONTRIBUTING.md' 'README.md' 'nx.json')",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
+    "release-notes": "node scripts/release-notes.mts",
     "show-affected": "node scripts/affected.mts"
   },
   "devDependencies": {
