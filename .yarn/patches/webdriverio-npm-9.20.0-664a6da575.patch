@@ -1,0 +1,14 @@
+diff --git a/package.json b/package.json
+index e374e4b8465146781b05257c3816adceffbfa6ee..1e3a6e6a6e081d005f848dfdf245b8ee3c14adcb 100644
+--- a/package.json
++++ b/package.json
+@@ -61,6 +61,9 @@
+     "./protocol-stub": {
+       "source": "./src/protocol-stub.ts",
+       "import": "./build/protocol-stub.js"
++    },
++    "./package.json": {
++      "default": "./package.json"
+     }
+   },
+   "types": "./build/index.d.ts",

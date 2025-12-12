@@ -45,7 +45,7 @@
     "appium-uiautomator2-driver": "^6.0.0",
     "appium-xcuitest-driver": "^10.0.0",
     "react-native-test-app": "workspace:*",
-    "webdriverio": "^9.0.0"
+    "webdriverio": "patch:webdriverio@npm%3A9.20.0#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
   },
   "eslintConfig": {
     "extends": "../eslint.config.js"

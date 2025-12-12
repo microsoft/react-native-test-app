@@ -12,9 +12,18 @@ runs:
   steps:
     - name: Configure Gradle wrapper
       run: |
-        node --eval "require('./android/gradle-wrapper.js').configureGradleWrapper('${{ inputs.project-root }}/android')"
+        node --eval "require('./packages/app/android/gradle-wrapper.js').configureGradleWrapper('${{ inputs.project-root }}/android')"
       shell: bash
     - name: Build
+      if: ${{ runner.os != 'Windows' }}
+      run: ./gradlew ${{ inputs.arguments }}
+      shell: bash
+      working-directory: ${{ inputs.project-root }}/android
+    - name: Build (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      env:
+        # https://github.com/ninja-build/ninja/issues/1900
+        CMAKE_MAKE_PROGRAM: "C:\\ProgramData\\Chocolatey\\bin\\ninja.exe"
       run: ./gradlew ${{ inputs.arguments }}
       shell: bash
       working-directory: ${{ inputs.project-root }}/android

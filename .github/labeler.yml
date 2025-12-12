@@ -5,17 +5,17 @@
           - .github/actions/init-test-app/*
           - .github/actions/setup-toolchain/*
           - .github/workflows/build.yml
-          - android/**/*
-          - common/**/*
-          - example/android/**/*
-          - scripts/*.js
-          - scripts/configure.mjs
-          - scripts/embed-manifest/kotlin.mjs
-          - scripts/embed-manifest/main.mjs
-          - scripts/embed-manifest/validate.mjs
-          - scripts/init.mjs
-          - scripts/template.mjs
-          - test-app.gradle
+          - packages/app/android/**/*
+          - packages/app/common/**/*
+          - packages/app/example/android/**/*
+          - packages/app/scripts/*.js
+          - packages/app/scripts/configure.mjs
+          - packages/app/scripts/embed-manifest/kotlin.mjs
+          - packages/app/scripts/embed-manifest/main.mjs
+          - packages/app/scripts/embed-manifest/validate.mjs
+          - packages/app/scripts/init.mjs
+          - packages/app/scripts/template.mjs
+          - packages/app/test-app.gradle
 "platform: iOS":
   - changed-files:
       - any-glob-to-any-file:
@@ -24,19 +24,19 @@
           - .github/actions/setup-toolchain/*
           - .github/workflows/build.yml
           - Gemfile*
-          - ReactTestApp-DevSupport.podspec
-          - common/**/*
-          - example/ios/**/*
-          - ios/**/*
-          - scripts/*.js
-          - scripts/configure.mjs
-          - scripts/embed-manifest/main.mjs
-          - scripts/embed-manifest/swift.mjs
-          - scripts/embed-manifest/validate.mjs
-          - scripts/init.mjs
-          - scripts/template.mjs
-          - scripts/build/xcodebuild.sh
-          - test_app.rb
+          - packages/app/ReactTestApp-DevSupport.podspec
+          - packages/app/common/**/*
+          - packages/app/example/ios/**/*
+          - packages/app/ios/**/*
+          - packages/app/scripts/*.js
+          - packages/app/scripts/configure.mjs
+          - packages/app/scripts/embed-manifest/main.mjs
+          - packages/app/scripts/embed-manifest/swift.mjs
+          - packages/app/scripts/embed-manifest/validate.mjs
+          - packages/app/scripts/init.mjs
+          - packages/app/scripts/template.mjs
+          - packages/app/scripts/build/xcodebuild.sh
+          - packages/app/test_app.rb
 "platform: macOS":
   - changed-files:
       - any-glob-to-any-file:
@@ -45,25 +45,25 @@
           - .github/actions/setup-toolchain/*
           - .github/workflows/build.yml
           - Gemfile*
-          - ReactTestApp-DevSupport.podspec
-          - common/**/*
-          - example/macos/**/*
-          - ios/*.rb
-          - ios/ReactTestApp/Manifest.swift
-          - ios/ReactTestApp/React+Compatibility.{h,m}
-          - ios/ReactTestApp/ReactInstance.swift
-          - ios/ReactTestApp/ReactTestApp-Bridging-Header.h
-          - ios/ReactTestApp/Session.swift
-          - ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
-          - macos/**/*
-          - scripts/*.js
-          - scripts/configure.mjs
-          - scripts/embed-manifest/main.mjs
-          - scripts/embed-manifest/swift.mjs
-          - scripts/embed-manifest/validate.mjs
-          - scripts/init.mjs
-          - scripts/template.mjs
-          - scripts/build/xcodebuild.sh
+          - packages/app/ReactTestApp-DevSupport.podspec
+          - packages/app/common/**/*
+          - packages/app/example/macos/**/*
+          - packages/app/ios/*.rb
+          - packages/app/ios/ReactTestApp/Manifest.swift
+          - packages/app/ios/ReactTestApp/React+Compatibility.{h,m}
+          - packages/app/ios/ReactTestApp/ReactInstance.swift
+          - packages/app/ios/ReactTestApp/ReactTestApp-Bridging-Header.h
+          - packages/app/ios/ReactTestApp/Session.swift
+          - packages/app/ios/ReactTestApp/UIViewController+ReactTestApp.{h,m}
+          - packages/app/macos/**/*
+          - packages/app/scripts/*.js
+          - packages/app/scripts/configure.mjs
+          - packages/app/scripts/embed-manifest/main.mjs
+          - packages/app/scripts/embed-manifest/swift.mjs
+          - packages/app/scripts/embed-manifest/validate.mjs
+          - packages/app/scripts/init.mjs
+          - packages/app/scripts/template.mjs
+          - packages/app/scripts/build/xcodebuild.sh
 "platform: visionOS":
   - changed-files:
       - any-glob-to-any-file:
@@ -72,34 +72,34 @@
           - .github/actions/setup-toolchain/*
           - .github/workflows/build.yml
           - Gemfile*
-          - ReactTestApp-DevSupport.podspec
-          - common/**/*
-          - example/visionos/**/*
-          - ios/*.rb
-          - ios/ReactTestApp/*.{h,m,mm,swift}
-          - scripts/*.js
-          - scripts/configure.mjs
-          - scripts/embed-manifest/main.mjs
-          - scripts/embed-manifest/swift.mjs
-          - scripts/embed-manifest/validate.mjs
-          - scripts/init.mjs
-          - scripts/template.mjs
-          - scripts/build/xcodebuild.sh
-          - visionos/**/*
+          - packages/app/ReactTestApp-DevSupport.podspec
+          - packages/app/common/**/*
+          - packages/app/example/visionos/**/*
+          - packages/app/ios/*.rb
+          - packages/app/ios/ReactTestApp/*.{h,m,mm,swift}
+          - packages/app/scripts/*.js
+          - packages/app/scripts/configure.mjs
+          - packages/app/scripts/embed-manifest/main.mjs
+          - packages/app/scripts/embed-manifest/swift.mjs
+          - packages/app/scripts/embed-manifest/validate.mjs
+          - packages/app/scripts/init.mjs
+          - packages/app/scripts/template.mjs
+          - packages/app/scripts/build/xcodebuild.sh
+          - packages/app/visionos/**/*
 "platform: Windows":
   - changed-files:
       - any-glob-to-any-file:
           - .github/actions/init-test-app/*
           - .github/actions/setup-toolchain/*
           - .github/workflows/build.yml
-          - common/**/*
-          - example/windows/**/*
-          - scripts/*.ps1
-          - scripts/*.js
-          - scripts/configure.mjs
-          - scripts/embed-manifest/cpp.mjs
-          - scripts/embed-manifest/main.mjs
-          - scripts/embed-manifest/validate.mjs
-          - scripts/init.mjs
-          - scripts/template.mjs
-          - windows/**/*
+          - packages/app/common/**/*
+          - packages/app/example/windows/**/*
+          - packages/app/scripts/*.ps1
+          - packages/app/scripts/*.js
+          - packages/app/scripts/configure.mjs
+          - packages/app/scripts/embed-manifest/cpp.mjs
+          - packages/app/scripts/embed-manifest/main.mjs
+          - packages/app/scripts/embed-manifest/validate.mjs
+          - packages/app/scripts/init.mjs
+          - packages/app/scripts/template.mjs
+          - packages/app/windows/**/*

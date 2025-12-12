@@ -1615,223 +1615,223 @@ PODS:
   - Yoga (0.0.0)
 
 DEPENDENCIES:
-  - boost (from `../../node_modules/react-native-macos/third-party-podspecs/boost.podspec`)
-  - DoubleConversion (from `../../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec`)
+  - boost (from `../node_modules/react-native-macos/third-party-podspecs/boost.podspec`)
+  - DoubleConversion (from `../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec`)
   - Example-Tests (from `..`)
-  - fast_float (from `../../node_modules/react-native-macos/third-party-podspecs/fast_float.podspec`)
-  - FBLazyVector (from `../../node_modules/react-native-macos/Libraries/FBLazyVector`)
-  - fmt (from `../../node_modules/react-native-macos/third-party-podspecs/fmt.podspec`)
-  - glog (from `../../node_modules/react-native-macos/third-party-podspecs/glog.podspec`)
-  - RCT-Folly (from `../../node_modules/react-native-macos/third-party-podspecs/RCT-Folly.podspec`)
-  - RCT-Folly/Fabric (from `../../node_modules/react-native-macos/third-party-podspecs/RCT-Folly.podspec`)
-  - RCTDeprecation (from `../../node_modules/react-native-macos/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
-  - RCTRequired (from `../../node_modules/react-native-macos/Libraries/Required`)
-  - RCTTypeSafety (from `../../node_modules/react-native-macos/Libraries/TypeSafety`)
-  - React (from `../../node_modules/react-native-macos/`)
-  - React-callinvoker (from `../../node_modules/react-native-macos/ReactCommon/callinvoker`)
-  - React-Core (from `../../node_modules/react-native-macos/`)
-  - React-Core/RCTWebSocket (from `../../node_modules/react-native-macos/`)
-  - React-CoreModules (from `../../node_modules/react-native-macos/React/CoreModules`)
-  - React-cxxreact (from `../../node_modules/react-native-macos/ReactCommon/cxxreact`)
-  - React-debug (from `../../node_modules/react-native-macos/ReactCommon/react/debug`)
-  - React-defaultsnativemodule (from `../../node_modules/react-native-macos/ReactCommon/react/nativemodule/defaults`)
-  - React-domnativemodule (from `../../node_modules/react-native-macos/ReactCommon/react/nativemodule/dom`)
-  - React-Fabric (from `../../node_modules/react-native-macos/ReactCommon`)
-  - React-FabricComponents (from `../../node_modules/react-native-macos/ReactCommon`)
-  - React-FabricImage (from `../../node_modules/react-native-macos/ReactCommon`)
-  - React-featureflags (from `../../node_modules/react-native-macos/ReactCommon/react/featureflags`)
-  - React-featureflagsnativemodule (from `../../node_modules/react-native-macos/ReactCommon/react/nativemodule/featureflags`)
-  - React-graphics (from `../../node_modules/react-native-macos/ReactCommon/react/renderer/graphics`)
-  - React-idlecallbacksnativemodule (from `../../node_modules/react-native-macos/ReactCommon/react/nativemodule/idlecallbacks`)
-  - React-ImageManager (from `../../node_modules/react-native-macos/ReactCommon/react/renderer/imagemanager/platform/ios`)
-  - React-jsc (from `../../node_modules/react-native-macos/ReactCommon/jsc`)
-  - React-jserrorhandler (from `../../node_modules/react-native-macos/ReactCommon/jserrorhandler`)
-  - React-jsi (from `../../node_modules/react-native-macos/ReactCommon/jsi`)
-  - React-jsiexecutor (from `../../node_modules/react-native-macos/ReactCommon/jsiexecutor`)
-  - React-jsinspector (from `../../node_modules/react-native-macos/ReactCommon/jsinspector-modern`)
-  - React-jsinspectortracing (from `../../node_modules/react-native-macos/ReactCommon/jsinspector-modern/tracing`)
-  - React-jsitooling (from `../../node_modules/react-native-macos/ReactCommon/jsitooling`)
-  - React-jsitracing (from `../../node_modules/react-native-macos/ReactCommon/hermes/executor/`)
-  - React-logger (from `../../node_modules/react-native-macos/ReactCommon/logger`)
-  - React-Mapbuffer (from `../../node_modules/react-native-macos/ReactCommon`)
-  - React-microtasksnativemodule (from `../../node_modules/react-native-macos/ReactCommon/react/nativemodule/microtasks`)
-  - react-native-safe-area-context (from `../../node_modules/react-native-safe-area-context`)
-  - React-NativeModulesApple (from `../../node_modules/react-native-macos/ReactCommon/react/nativemodule/core/platform/ios`)
-  - React-oscompat (from `../../node_modules/react-native-macos/ReactCommon/oscompat`)
-  - React-perflogger (from `../../node_modules/react-native-macos/ReactCommon/reactperflogger`)
-  - React-performancetimeline (from `../../node_modules/react-native-macos/ReactCommon/react/performance/timeline`)
-  - React-RCTActionSheet (from `../../node_modules/react-native-macos/Libraries/ActionSheetIOS`)
-  - React-RCTAnimation (from `../../node_modules/react-native-macos/Libraries/NativeAnimation`)
-  - React-RCTAppDelegate (from `../../node_modules/react-native-macos/Libraries/AppDelegate`)
-  - React-RCTBlob (from `../../node_modules/react-native-macos/Libraries/Blob`)
-  - React-RCTFabric (from `../../node_modules/react-native-macos/React`)
-  - React-RCTFBReactNativeSpec (from `../../node_modules/react-native-macos/React`)
-  - React-RCTImage (from `../../node_modules/react-native-macos/Libraries/Image`)
-  - React-RCTLinking (from `../../node_modules/react-native-macos/Libraries/LinkingIOS`)
-  - React-RCTNetwork (from `../../node_modules/react-native-macos/Libraries/Network`)
-  - React-RCTRuntime (from `../../node_modules/react-native-macos/React/Runtime`)
-  - React-RCTSettings (from `../../node_modules/react-native-macos/Libraries/Settings`)
-  - React-RCTText (from `../../node_modules/react-native-macos/Libraries/Text`)
-  - React-RCTVibration (from `../../node_modules/react-native-macos/Libraries/Vibration`)
-  - React-rendererconsistency (from `../../node_modules/react-native-macos/ReactCommon/react/renderer/consistency`)
-  - React-renderercss (from `../../node_modules/react-native-macos/ReactCommon/react/renderer/css`)
-  - React-rendererdebug (from `../../node_modules/react-native-macos/ReactCommon/react/renderer/debug`)
-  - React-rncore (from `../../node_modules/react-native-macos/ReactCommon`)
-  - React-RuntimeApple (from `../../node_modules/react-native-macos/ReactCommon/react/runtime/platform/ios`)
-  - React-RuntimeCore (from `../../node_modules/react-native-macos/ReactCommon/react/runtime`)
-  - React-runtimeexecutor (from `../../node_modules/react-native-macos/ReactCommon/runtimeexecutor`)
-  - React-runtimescheduler (from `../../node_modules/react-native-macos/ReactCommon/react/renderer/runtimescheduler`)
-  - React-timing (from `../../node_modules/react-native-macos/ReactCommon/react/timing`)
-  - React-utils (from `../../node_modules/react-native-macos/ReactCommon/react/utils`)
+  - fast_float (from `../node_modules/react-native-macos/third-party-podspecs/fast_float.podspec`)
+  - FBLazyVector (from `../node_modules/react-native-macos/Libraries/FBLazyVector`)
+  - fmt (from `../node_modules/react-native-macos/third-party-podspecs/fmt.podspec`)
+  - glog (from `../node_modules/react-native-macos/third-party-podspecs/glog.podspec`)
+  - RCT-Folly (from `../node_modules/react-native-macos/third-party-podspecs/RCT-Folly.podspec`)
+  - RCT-Folly/Fabric (from `../node_modules/react-native-macos/third-party-podspecs/RCT-Folly.podspec`)
+  - RCTDeprecation (from `../node_modules/react-native-macos/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
+  - RCTRequired (from `../node_modules/react-native-macos/Libraries/Required`)
+  - RCTTypeSafety (from `../node_modules/react-native-macos/Libraries/TypeSafety`)
+  - React (from `../node_modules/react-native-macos/`)
+  - React-callinvoker (from `../node_modules/react-native-macos/ReactCommon/callinvoker`)
+  - React-Core (from `../node_modules/react-native-macos/`)
+  - React-Core/RCTWebSocket (from `../node_modules/react-native-macos/`)
+  - React-CoreModules (from `../node_modules/react-native-macos/React/CoreModules`)
+  - React-cxxreact (from `../node_modules/react-native-macos/ReactCommon/cxxreact`)
+  - React-debug (from `../node_modules/react-native-macos/ReactCommon/react/debug`)
+  - React-defaultsnativemodule (from `../node_modules/react-native-macos/ReactCommon/react/nativemodule/defaults`)
+  - React-domnativemodule (from `../node_modules/react-native-macos/ReactCommon/react/nativemodule/dom`)
+  - React-Fabric (from `../node_modules/react-native-macos/ReactCommon`)
+  - React-FabricComponents (from `../node_modules/react-native-macos/ReactCommon`)
+  - React-FabricImage (from `../node_modules/react-native-macos/ReactCommon`)
+  - React-featureflags (from `../node_modules/react-native-macos/ReactCommon/react/featureflags`)
+  - React-featureflagsnativemodule (from `../node_modules/react-native-macos/ReactCommon/react/nativemodule/featureflags`)
+  - React-graphics (from `../node_modules/react-native-macos/ReactCommon/react/renderer/graphics`)
+  - React-idlecallbacksnativemodule (from `../node_modules/react-native-macos/ReactCommon/react/nativemodule/idlecallbacks`)
+  - React-ImageManager (from `../node_modules/react-native-macos/ReactCommon/react/renderer/imagemanager/platform/ios`)
+  - React-jsc (from `../node_modules/react-native-macos/ReactCommon/jsc`)
+  - React-jserrorhandler (from `../node_modules/react-native-macos/ReactCommon/jserrorhandler`)
+  - React-jsi (from `../node_modules/react-native-macos/ReactCommon/jsi`)
+  - React-jsiexecutor (from `../node_modules/react-native-macos/ReactCommon/jsiexecutor`)
+  - React-jsinspector (from `../node_modules/react-native-macos/ReactCommon/jsinspector-modern`)
+  - React-jsinspectortracing (from `../node_modules/react-native-macos/ReactCommon/jsinspector-modern/tracing`)
+  - React-jsitooling (from `../node_modules/react-native-macos/ReactCommon/jsitooling`)
+  - React-jsitracing (from `../node_modules/react-native-macos/ReactCommon/hermes/executor/`)
+  - React-logger (from `../node_modules/react-native-macos/ReactCommon/logger`)
+  - React-Mapbuffer (from `../node_modules/react-native-macos/ReactCommon`)
+  - React-microtasksnativemodule (from `../node_modules/react-native-macos/ReactCommon/react/nativemodule/microtasks`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - React-NativeModulesApple (from `../node_modules/react-native-macos/ReactCommon/react/nativemodule/core/platform/ios`)
+  - React-oscompat (from `../node_modules/react-native-macos/ReactCommon/oscompat`)
+  - React-perflogger (from `../node_modules/react-native-macos/ReactCommon/reactperflogger`)
+  - React-performancetimeline (from `../node_modules/react-native-macos/ReactCommon/react/performance/timeline`)
+  - React-RCTActionSheet (from `../node_modules/react-native-macos/Libraries/ActionSheetIOS`)
+  - React-RCTAnimation (from `../node_modules/react-native-macos/Libraries/NativeAnimation`)
+  - React-RCTAppDelegate (from `../node_modules/react-native-macos/Libraries/AppDelegate`)
+  - React-RCTBlob (from `../node_modules/react-native-macos/Libraries/Blob`)
+  - React-RCTFabric (from `../node_modules/react-native-macos/React`)
+  - React-RCTFBReactNativeSpec (from `../node_modules/react-native-macos/React`)
+  - React-RCTImage (from `../node_modules/react-native-macos/Libraries/Image`)
+  - React-RCTLinking (from `../node_modules/react-native-macos/Libraries/LinkingIOS`)
+  - React-RCTNetwork (from `../node_modules/react-native-macos/Libraries/Network`)
+  - React-RCTRuntime (from `../node_modules/react-native-macos/React/Runtime`)
+  - React-RCTSettings (from `../node_modules/react-native-macos/Libraries/Settings`)
+  - React-RCTText (from `../node_modules/react-native-macos/Libraries/Text`)
+  - React-RCTVibration (from `../node_modules/react-native-macos/Libraries/Vibration`)
+  - React-rendererconsistency (from `../node_modules/react-native-macos/ReactCommon/react/renderer/consistency`)
+  - React-renderercss (from `../node_modules/react-native-macos/ReactCommon/react/renderer/css`)
+  - React-rendererdebug (from `../node_modules/react-native-macos/ReactCommon/react/renderer/debug`)
+  - React-rncore (from `../node_modules/react-native-macos/ReactCommon`)
+  - React-RuntimeApple (from `../node_modules/react-native-macos/ReactCommon/react/runtime/platform/ios`)
+  - React-RuntimeCore (from `../node_modules/react-native-macos/ReactCommon/react/runtime`)
+  - React-runtimeexecutor (from `../node_modules/react-native-macos/ReactCommon/runtimeexecutor`)
+  - React-runtimescheduler (from `../node_modules/react-native-macos/ReactCommon/react/renderer/runtimescheduler`)
+  - React-timing (from `../node_modules/react-native-macos/ReactCommon/react/timing`)
+  - React-utils (from `../node_modules/react-native-macos/ReactCommon/react/utils`)
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
-  - ReactCommon/turbomodule/core (from `../../node_modules/react-native-macos/ReactCommon`)
+  - ReactCommon/turbomodule/core (from `../node_modules/react-native-macos/ReactCommon`)
   - "ReactNativeHost (from `../../node_modules/@rnx-kit/react-native-host`)"
   - ReactTestApp-DevSupport (from `../node_modules/react-native-test-app`)
   - ReactTestApp-Resources (from `..`)
   - "RNWWebStorage (from `../node_modules/@react-native-webapis/web-storage`)"
-  - SocketRocket (from `../../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec`)
-  - Yoga (from `../../node_modules/react-native-macos/ReactCommon/yoga`)
+  - SocketRocket (from `../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec`)
+  - Yoga (from `../node_modules/react-native-macos/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
   boost:
-    :podspec: "../../node_modules/react-native-macos/third-party-podspecs/boost.podspec"
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/boost.podspec"
   DoubleConversion:
-    :podspec: "../../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec"
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec"
   Example-Tests:
     :path: ".."
   fast_float:
-    :podspec: "../../node_modules/react-native-macos/third-party-podspecs/fast_float.podspec"
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/fast_float.podspec"
   FBLazyVector:
-    :path: "../../node_modules/react-native-macos/Libraries/FBLazyVector"
+    :path: "../node_modules/react-native-macos/Libraries/FBLazyVector"
   fmt:
-    :podspec: "../../node_modules/react-native-macos/third-party-podspecs/fmt.podspec"
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/fmt.podspec"
   glog:
-    :podspec: "../../node_modules/react-native-macos/third-party-podspecs/glog.podspec"
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/glog.podspec"
   RCT-Folly:
-    :podspec: "../../node_modules/react-native-macos/third-party-podspecs/RCT-Folly.podspec"
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
-    :path: "../../node_modules/react-native-macos/ReactApple/Libraries/RCTFoundation/RCTDeprecation"
+    :path: "../node_modules/react-native-macos/ReactApple/Libraries/RCTFoundation/RCTDeprecation"
   RCTRequired:
-    :path: "../../node_modules/react-native-macos/Libraries/Required"
+    :path: "../node_modules/react-native-macos/Libraries/Required"
   RCTTypeSafety:
-    :path: "../../node_modules/react-native-macos/Libraries/TypeSafety"
+    :path: "../node_modules/react-native-macos/Libraries/TypeSafety"
   React:
-    :path: "../../node_modules/react-native-macos/"
+    :path: "../node_modules/react-native-macos/"
   React-callinvoker:
-    :path: "../../node_modules/react-native-macos/ReactCommon/callinvoker"
+    :path: "../node_modules/react-native-macos/ReactCommon/callinvoker"
   React-Core:
-    :path: "../../node_modules/react-native-macos/"
+    :path: "../node_modules/react-native-macos/"
   React-CoreModules:
-    :path: "../../node_modules/react-native-macos/React/CoreModules"
+    :path: "../node_modules/react-native-macos/React/CoreModules"
   React-cxxreact:
-    :path: "../../node_modules/react-native-macos/ReactCommon/cxxreact"
+    :path: "../node_modules/react-native-macos/ReactCommon/cxxreact"
   React-debug:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/debug"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/debug"
   React-defaultsnativemodule:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/nativemodule/defaults"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/nativemodule/defaults"
   React-domnativemodule:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/nativemodule/dom"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/nativemodule/dom"
   React-Fabric:
-    :path: "../../node_modules/react-native-macos/ReactCommon"
+    :path: "../node_modules/react-native-macos/ReactCommon"
   React-FabricComponents:
-    :path: "../../node_modules/react-native-macos/ReactCommon"
+    :path: "../node_modules/react-native-macos/ReactCommon"
   React-FabricImage:
-    :path: "../../node_modules/react-native-macos/ReactCommon"
+    :path: "../node_modules/react-native-macos/ReactCommon"
   React-featureflags:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/featureflags"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/featureflags"
   React-featureflagsnativemodule:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/nativemodule/featureflags"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/nativemodule/featureflags"
   React-graphics:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/renderer/graphics"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/renderer/graphics"
   React-idlecallbacksnativemodule:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/nativemodule/idlecallbacks"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/nativemodule/idlecallbacks"
   React-ImageManager:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/renderer/imagemanager/platform/ios"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/renderer/imagemanager/platform/ios"
   React-jsc:
-    :path: "../../node_modules/react-native-macos/ReactCommon/jsc"
+    :path: "../node_modules/react-native-macos/ReactCommon/jsc"
   React-jserrorhandler:
-    :path: "../../node_modules/react-native-macos/ReactCommon/jserrorhandler"
+    :path: "../node_modules/react-native-macos/ReactCommon/jserrorhandler"
   React-jsi:
-    :path: "../../node_modules/react-native-macos/ReactCommon/jsi"
+    :path: "../node_modules/react-native-macos/ReactCommon/jsi"
   React-jsiexecutor:
-    :path: "../../node_modules/react-native-macos/ReactCommon/jsiexecutor"
+    :path: "../node_modules/react-native-macos/ReactCommon/jsiexecutor"
   React-jsinspector:
-    :path: "../../node_modules/react-native-macos/ReactCommon/jsinspector-modern"
+    :path: "../node_modules/react-native-macos/ReactCommon/jsinspector-modern"
   React-jsinspectortracing:
-    :path: "../../node_modules/react-native-macos/ReactCommon/jsinspector-modern/tracing"
+    :path: "../node_modules/react-native-macos/ReactCommon/jsinspector-modern/tracing"
   React-jsitooling:
-    :path: "../../node_modules/react-native-macos/ReactCommon/jsitooling"
+    :path: "../node_modules/react-native-macos/ReactCommon/jsitooling"
   React-jsitracing:
-    :path: "../../node_modules/react-native-macos/ReactCommon/hermes/executor/"
+    :path: "../node_modules/react-native-macos/ReactCommon/hermes/executor/"
   React-logger:
-    :path: "../../node_modules/react-native-macos/ReactCommon/logger"
+    :path: "../node_modules/react-native-macos/ReactCommon/logger"
   React-Mapbuffer:
-    :path: "../../node_modules/react-native-macos/ReactCommon"
+    :path: "../node_modules/react-native-macos/ReactCommon"
   React-microtasksnativemodule:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/nativemodule/microtasks"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/nativemodule/microtasks"
   react-native-safe-area-context:
-    :path: "../../node_modules/react-native-safe-area-context"
+    :path: "../node_modules/react-native-safe-area-context"
   React-NativeModulesApple:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/nativemodule/core/platform/ios"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/nativemodule/core/platform/ios"
   React-oscompat:
-    :path: "../../node_modules/react-native-macos/ReactCommon/oscompat"
+    :path: "../node_modules/react-native-macos/ReactCommon/oscompat"
   React-perflogger:
-    :path: "../../node_modules/react-native-macos/ReactCommon/reactperflogger"
+    :path: "../node_modules/react-native-macos/ReactCommon/reactperflogger"
   React-performancetimeline:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/performance/timeline"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/performance/timeline"
   React-RCTActionSheet:
-    :path: "../../node_modules/react-native-macos/Libraries/ActionSheetIOS"
+    :path: "../node_modules/react-native-macos/Libraries/ActionSheetIOS"
   React-RCTAnimation:
-    :path: "../../node_modules/react-native-macos/Libraries/NativeAnimation"
+    :path: "../node_modules/react-native-macos/Libraries/NativeAnimation"
   React-RCTAppDelegate:
-    :path: "../../node_modules/react-native-macos/Libraries/AppDelegate"
+    :path: "../node_modules/react-native-macos/Libraries/AppDelegate"
   React-RCTBlob:
-    :path: "../../node_modules/react-native-macos/Libraries/Blob"
+    :path: "../node_modules/react-native-macos/Libraries/Blob"
   React-RCTFabric:
-    :path: "../../node_modules/react-native-macos/React"
+    :path: "../node_modules/react-native-macos/React"
   React-RCTFBReactNativeSpec:
-    :path: "../../node_modules/react-native-macos/React"
+    :path: "../node_modules/react-native-macos/React"
   React-RCTImage:
-    :path: "../../node_modules/react-native-macos/Libraries/Image"
+    :path: "../node_modules/react-native-macos/Libraries/Image"
   React-RCTLinking:
-    :path: "../../node_modules/react-native-macos/Libraries/LinkingIOS"
+    :path: "../node_modules/react-native-macos/Libraries/LinkingIOS"
   React-RCTNetwork:
-    :path: "../../node_modules/react-native-macos/Libraries/Network"
+    :path: "../node_modules/react-native-macos/Libraries/Network"
   React-RCTRuntime:
-    :path: "../../node_modules/react-native-macos/React/Runtime"
+    :path: "../node_modules/react-native-macos/React/Runtime"
   React-RCTSettings:
-    :path: "../../node_modules/react-native-macos/Libraries/Settings"
+    :path: "../node_modules/react-native-macos/Libraries/Settings"
   React-RCTText:
-    :path: "../../node_modules/react-native-macos/Libraries/Text"
+    :path: "../node_modules/react-native-macos/Libraries/Text"
   React-RCTVibration:
-    :path: "../../node_modules/react-native-macos/Libraries/Vibration"
+    :path: "../node_modules/react-native-macos/Libraries/Vibration"
   React-rendererconsistency:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/renderer/consistency"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/renderer/consistency"
   React-renderercss:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/renderer/css"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/renderer/css"
   React-rendererdebug:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/renderer/debug"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/renderer/debug"
   React-rncore:
-    :path: "../../node_modules/react-native-macos/ReactCommon"
+    :path: "../node_modules/react-native-macos/ReactCommon"
   React-RuntimeApple:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/runtime/platform/ios"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/runtime/platform/ios"
   React-RuntimeCore:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/runtime"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/runtime"
   React-runtimeexecutor:
-    :path: "../../node_modules/react-native-macos/ReactCommon/runtimeexecutor"
+    :path: "../node_modules/react-native-macos/ReactCommon/runtimeexecutor"
   React-runtimescheduler:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/renderer/runtimescheduler"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/renderer/runtimescheduler"
   React-timing:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/timing"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/timing"
   React-utils:
-    :path: "../../node_modules/react-native-macos/ReactCommon/react/utils"
+    :path: "../node_modules/react-native-macos/ReactCommon/react/utils"
   ReactAppDependencyProvider:
     :path: build/generated/ios
   ReactCodegen:
     :path: build/generated/ios
   ReactCommon:
-    :path: "../../node_modules/react-native-macos/ReactCommon"
+    :path: "../node_modules/react-native-macos/ReactCommon"
   ReactNativeHost:
     :path: "../../node_modules/@rnx-kit/react-native-host"
   ReactTestApp-DevSupport:
@@ -1841,9 +1841,9 @@ EXTERNAL SOURCES:
   RNWWebStorage:
     :path: "../node_modules/@react-native-webapis/web-storage"
   SocketRocket:
-    :podspec: "../../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec"
+    :podspec: "../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec"
   Yoga:
-    :path: "../../node_modules/react-native-macos/ReactCommon/yoga"
+    :path: "../node_modules/react-native-macos/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   boost: 7d49a506d1ac47358fea28558d184dd6431170ca
@@ -1913,7 +1913,7 @@ SPEC CHECKSUMS:
   React-timing: a0ba2e023e08380a52e1cb5803d435634e1cbf4c
   React-utils: 066efc7529b479e3a4443295f6b5da0a15b9e6da
   ReactAppDependencyProvider: 9ba59388a1fbd7c6dddd5940fdea7df2c494f5e4
-  ReactCodegen: 346ab5cbde968865652618ebf8159a8e52c0c515
+  ReactCodegen: 75521c13b7ba1677fc747ffc241b2e78f16c6535
   ReactCommon: 774c29bb23c735a3edc4def4c2c1823849bc7a4e
   ReactNativeHost: c6afba65873d1b0131f7c32ff22f43c7fdc01954
   ReactTestApp-DevSupport: 2386e7c22084f8a550cfadcc0bde140c7dc328a1

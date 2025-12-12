@@ -33,10 +33,10 @@ test("react-native config", async (t) => {
   const loadConfig = await getLoadConfig();
 
   const currentDir = process.cwd();
-  const projectRoot = path.sep + "react-native-test-app";
+  const projectRoot = path.sep + path.join("packages", "app");
   const exampleRoot = path.join(projectRoot, "example");
   const reactNativePath = path.join(
-    projectRoot,
+    exampleRoot,
     "node_modules",
     "react-native"
   );

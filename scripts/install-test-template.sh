@@ -6,6 +6,7 @@ platforms=(all android ios macos visionos windows)
 version=$(node --print 'require("./package.json").version')
 tarball=react-native-test-app-$version.$(git rev-parse --short HEAD).tgz
 
+current_dir="$(pwd)"
 script_dir="$(cd -P "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" >/dev/null 2>&1 && pwd)"
 
 function print_usage {
@@ -35,24 +36,30 @@ while true; do
 done
 
 # Use tarballs to ensure that published packages are consumable
+pushd "$script_dir/../packages/app" 1> /dev/null
 npm pack
 mv react-native-test-app-$version.tgz $tarball
+popd 1> /dev/null
 
 yarn
+
+v=$(cat packages/app/example/package.json | jq '.dependencies["react-native"]' | grep -o -E '[0-9]+\.[0-9]+')
 if [[ "$platform" == "all" ]]; then
-  yarn init-test-app                \
-    --destination template-example  \
-    --name TemplateExample          \
-    --platform android              \
-    --platform ios                  \
-    --platform macos                \
-    --platform visionos             \
-    --platform windows
+  node packages/app/scripts/init.mjs \
+    --destination template-example   \
+    --name TemplateExample           \
+    --platform android               \
+    --platform ios                   \
+    --platform macos                 \
+    --platform visionos              \
+    --platform windows               \
+    --version $v
 else
-  yarn init-test-app                \
-    --destination template-example  \
-    --name TemplateExample          \
-    --platform "$platform"
+  node packages/app/scripts/init.mjs \
+    --destination template-example   \
+    --name TemplateExample           \
+    --platform "$platform"           \
+    --version $v
 fi
 
 pushd template-example 1> /dev/null
@@ -65,7 +72,7 @@ else
   touch yarn.lock
 fi
 
-script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/$tarball\"/"
+script="s/\"react-native-test-app\": \".*\"/\"react-native-test-app\": \"..\/packages\/app\/$tarball\"/"
 if sed --version &> /dev/null; then
   sed -i'' "$script" package.json
 else
