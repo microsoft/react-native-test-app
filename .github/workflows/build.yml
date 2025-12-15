@@ -544,6 +544,7 @@ jobs:
     name: "Windows"
     permissions: {}
     runs-on: windows-2025
+    if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
         platform: [ARM64, x64]
