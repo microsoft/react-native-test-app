@@ -226,7 +226,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1640;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					19ECD0D1232ED425003D8557 = {
@@ -443,7 +443,6 @@
 		19ECD100232ED428003D8557 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ReactTestAppTests/Info.plist;
@@ -464,7 +463,6 @@
 		19ECD101232ED428003D8557 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ReactTestAppTests/Info.plist;
@@ -485,7 +483,6 @@
 		19ECD103232ED428003D8557 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ReactTestAppUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -504,7 +501,6 @@
 		19ECD104232ED428003D8557 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ReactTestAppUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
