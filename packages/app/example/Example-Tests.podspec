@@ -18,8 +18,7 @@ Pod::Spec.new do |s|
   s.dependency 'React'
   s.dependency 'ReactTestApp-DevSupport'
 
-  s.framework             = 'XCTest'
-  s.user_target_xcconfig  = { 'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => '$(inherited)' }
+  s.framework = 'XCTest'
 
   s.source_files = 'ios/ExampleTests/**/*.{m,swift}'
 end
