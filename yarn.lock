@@ -3788,15 +3788,15 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/lint-lockfile@npm:^0.1.0":
-  version: 0.1.1
-  resolution: "@rnx-kit/lint-lockfile@npm:0.1.1"
+  version: 0.1.2
+  resolution: "@rnx-kit/lint-lockfile@npm:0.1.2"
   dependencies:
     "@rnx-kit/config": "npm:^0.7.4"
     "@rnx-kit/tools-workspaces": "npm:^0.2.3"
     js-yaml: "npm:^4.1.1"
   bin:
     lint-lockfile: lib/cli.js
-  checksum: 10c0/0f8c9b61ef716089a387e43d0ecf875668f5f26f06897776a330d425f4bf62545912b4cb59cc0864e1c4ed7adb9b1f4070ccd05aa5a1cec3ec41fadd4d20c416
+  checksum: 10c0/778d5f320601ad6d3d4ec40730f4babc6d77c30dd0efa7dc0b5c1dec44306b431c6d16a58f2cb4b9376c33e7575caaf723aaf62758b440abd7949dcc5383b121
   languageName: node
   linkType: hard
 
