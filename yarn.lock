@@ -3773,17 +3773,17 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/eslint-plugin@npm:^0.9.0":
-  version: 0.9.3
-  resolution: "@rnx-kit/eslint-plugin@npm:0.9.3"
+  version: 0.9.5
+  resolution: "@rnx-kit/eslint-plugin@npm:0.9.5"
   dependencies:
     "@react-native/eslint-plugin": "npm:^0.76.0"
     enhanced-resolve: "npm:^5.8.3"
     eslint-plugin-react: "npm:^7.35.2"
-    eslint-plugin-react-hooks: "npm:^5.0.0"
+    eslint-plugin-react-hooks: "npm:^5.2.0"
     typescript-eslint: "npm:^8.0.0"
   peerDependencies:
     eslint: ">=8.57.0"
-  checksum: 10c0/a461e52dcb10d9d583b2df3c47fb440435e6d14b08a8ca1adc11eb31740c08142b7334fc75e4ff68aea5ad8db37aeb40fb2e45663185b78334c9330906a436b1
+  checksum: 10c0/6b81c331a9ec8690a0f421af72171b1bc1c38f9a7586a0dee86db5bdc752c9adbc19745c4d2fa370b014a4cd15f60a14132e1601a28b1407c65e2ea16c694a76
   languageName: node
   linkType: hard
 
@@ -7635,7 +7635,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-hooks@npm:^5.0.0":
+"eslint-plugin-react-hooks@npm:^5.2.0":
   version: 5.2.0
   resolution: "eslint-plugin-react-hooks@npm:5.2.0"
   peerDependencies:
