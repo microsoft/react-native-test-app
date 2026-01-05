@@ -3909,20 +3909,20 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/polyfills@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@rnx-kit/polyfills@npm:0.2.0"
+  version: 0.2.1
+  resolution: "@rnx-kit/polyfills@npm:0.2.1"
   dependencies:
     "@babel/core": "npm:^7.0.0"
     "@babel/helper-plugin-utils": "npm:^7.0.0"
     "@babel/template": "npm:^7.0.0"
     "@rnx-kit/console": "npm:^2.0.0"
-    "@rnx-kit/tools-node": "npm:^3.0.0"
+    "@rnx-kit/tools-node": "npm:^3.0.3"
   peerDependencies:
     "@react-native/js-polyfills": "*"
   peerDependenciesMeta:
     "@react-native/js-polyfills":
       optional: true
-  checksum: 10c0/549d0d2766351fd2b2aeedc293becd9287b30cfb4eff1ed5aa885d5ba7419ec2cf3e51c70259a9afa52aef7eb4b3947686615145d22406c9d8178d547f9b0643
+  checksum: 10c0/780aaa763d3963f50d99cc96462bdfc3ebc8883997bece2f2a87908917ffa5727bb59cf0571f78b918a5ea179601c80e461f0afc1d45bf9574b8c6726b98328c
   languageName: node
   linkType: hard
 
