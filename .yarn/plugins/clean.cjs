@@ -34,7 +34,7 @@ module.exports = {
           );
           const stats = fs.lstatSync(rntaPath, { throwIfNoEntry: false });
           if (stats?.isSymbolicLink()) {
-            fs.rmSync(rntaPath);
+            fs.rmSync(rntaPath, { force: true, recursive: true });
           }
         }
 
