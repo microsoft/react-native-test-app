@@ -32,7 +32,7 @@ export const getIOSSimulatorName = memo(() => {
       "An error occurred while trying to evaluate 'wdio.config.mjs'"
     );
   }
-  return stdout.trim();
+  return `'${stdout.trim()}'`;
 });
 
 /**
