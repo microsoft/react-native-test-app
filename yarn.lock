@@ -2717,7 +2717,7 @@ __metadata:
     "@nx/js": "npm:^21.0.0"
     "@rnx-kit/lint-lockfile": "npm:^0.1.0"
     "@types/js-yaml": "npm:^4.0.5"
-    "@types/node": "npm:^22.0.0"
+    "@types/node": "npm:^24.0.0"
     js-yaml: "npm:^4.1.0"
     minimatch: "npm:^9.0.0"
     nx: "npm:^21.0.0"
@@ -4418,12 +4418,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 25.0.6
-  resolution: "@types/node@npm:25.0.6"
+"@types/node@npm:*, @types/node@npm:^24.0.0, @types/node@npm:^24.0.10":
+  version: 24.10.7
+  resolution: "@types/node@npm:24.10.7"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/4ee3b6b606bc28f6840c04d58769e1e75dd8085149908956c874c85f8f8c890990701bcbe783fc2d14017817861dc07fcf23de6fc2805fe491f84eae717b5705
+  checksum: 10c0/dcc1b8caf16c7b54dfccbe5c23cf4156e924cebcd9ab0a00147c841279f8151a10888c76fd82dda76e0a849aaf5a57097ee2b156308a355959900c1e647d7e61
   languageName: node
   linkType: hard
 
@@ -4433,24 +4433,6 @@ __metadata:
   dependencies:
     undici-types: "npm:~6.21.0"
   checksum: 10c0/aaa2de8570bfafdb9c160c1dbe3ecd7d9b2ccdc496ab6b0f24ccd5023aabe6f8c7fd02d7090185c2912052174f7cffef4ace80edd7d2a433200429c7a0a4869d
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^22.0.0":
-  version: 22.19.5
-  resolution: "@types/node@npm:22.19.5"
-  dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10c0/753c86850d2e3d9a7ccaa2569d565ab20d9a69389871e45283f71035c62fed649511aee7e05da8209b41e15438085c43b533d01e9ed3bb2e9dbd570aef732354
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^24.0.10":
-  version: 24.10.7
-  resolution: "@types/node@npm:24.10.7"
-  dependencies:
-    undici-types: "npm:~7.16.0"
-  checksum: 10c0/dcc1b8caf16c7b54dfccbe5c23cf4156e924cebcd9ab0a00147c841279f8151a10888c76fd82dda76e0a849aaf5a57097ee2b156308a355959900c1e647d7e61
   languageName: node
   linkType: hard
 
@@ -12378,7 +12360,7 @@ __metadata:
     "@swc/core": "npm:^1.11.0"
     "@types/js-yaml": "npm:^4.0.5"
     "@types/mustache": "npm:^4.0.0"
-    "@types/node": "npm:^22.0.0"
+    "@types/node": "npm:^24.0.0"
     "@types/prompts": "npm:~2.4.0"
     "@types/react": "npm:~19.0.0"
     "@types/semver": "npm:^7.3.6"
