@@ -1,7 +1,7 @@
 import { deepEqual, equal, fail, ok, throws } from "node:assert/strict";
 import * as fs from "node:fs";
 import { afterEach, before, describe, it } from "node:test";
-import { fileURLToPath } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { generateProject as generateProjectActual } from "../../ios/app.mjs";
 import { USER_HEADER_SEARCH_PATHS } from "../../ios/xcode.mjs";
 import { readTextFile } from "../../scripts/helpers.js";
