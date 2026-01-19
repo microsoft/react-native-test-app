@@ -4,7 +4,7 @@
   "packageRules": [
     {
       "groupName": "@react-native-community/cli",
-      "allowedVersions": "^18.0.0",
+      "allowedVersions": "^20.0.0",
       "matchPackageNames": ["@react-native-community/cli**"]
     },
     {
@@ -41,7 +41,7 @@
     {
       "groupName": "react",
       "matchPackageNames": ["@types/react", "react"],
-      "allowedVersions": "~19.0.0"
+      "allowedVersions": "~19.1.0"
     },
     {
       "groupName": "react-native",
@@ -55,7 +55,7 @@
         "react-native-macos",
         "react-native-windows"
       ],
-      "allowedVersions": "^0.79.0"
+      "allowedVersions": "^0.81.0"
     }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
