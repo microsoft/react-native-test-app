@@ -41,7 +41,7 @@
     {
       "groupName": "react",
       "matchPackageNames": ["@types/react", "react"],
-      "allowedVersions": "~19.1.4"
+      "allowedVersions": "~19.1.0"
     },
     {
       "groupName": "react-native",
