@@ -4463,12 +4463,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:~19.0.0":
-  version: 19.0.14
-  resolution: "@types/react@npm:19.0.14"
+"@types/react@npm:~19.1.0":
+  version: 19.1.17
+  resolution: "@types/react@npm:19.1.17"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/e5d9ac42fc6d66c21b7020c8ae1a8190c486e63e5daf2f67b67694dd39c6264cc92a57f90b84525bf73774b90f91bd3b1d907022bcc9b36d6d4ffbcf001f8feb
+  checksum: 10c0/8a8369ea00fc961f0884be4d1da4a039b2b6445de9c8b690ed0ebe15acfb0b1f27005278fef1fe39a1722a30f4415778b790d0089e2b30019371c61355ea316f
   languageName: node
   linkType: hard
 
@@ -7814,12 +7814,12 @@ __metadata:
     "@rnx-kit/metro-config": "npm:^2.1.0"
     "@rnx-kit/polyfills": "npm:^0.2.0"
     "@rnx-kit/tsconfig": "npm:^2.0.0"
-    "@types/react": "npm:~19.0.0"
+    "@types/react": "npm:~19.1.0"
     "@wdio/types": "npm:^9.20.0"
     appium: "npm:^3.1.1"
     appium-uiautomator2-driver: "npm:^6.0.0"
     appium-xcuitest-driver: "npm:^10.0.0"
-    react: "npm:19.1.4"
+    react: "npm:19.1.0"
     react-native: "npm:^0.81.0"
     react-native-macos: "npm:^0.81.0"
     react-native-safe-area-context: "npm:^5.5.2"
@@ -12359,7 +12359,7 @@ __metadata:
     "@types/mustache": "npm:^4.0.0"
     "@types/node": "npm:^24.0.0"
     "@types/prompts": "npm:~2.4.0"
-    "@types/react": "npm:~19.0.0"
+    "@types/react": "npm:~19.1.0"
     "@types/semver": "npm:^7.3.6"
     ajv: "npm:^8.0.0"
     cliui: "npm:^8.0.0"
@@ -12372,7 +12372,7 @@ __metadata:
     prettier: "npm:^3.0.0"
     prettier-plugin-organize-imports: "npm:^4.1.0"
     prompts: "npm:^2.4.0"
-    react: "npm:19.1.4"
+    react: "npm:19.1.0"
     react-native: "npm:^0.81.0"
     react-native-macos: "npm:^0.81.0"
     react-native-windows: "npm:^0.81.0"
@@ -12381,7 +12381,7 @@ __metadata:
     typescript: "npm:^5.0.0"
     uuid: "npm:^11.0.0"
   peerDependencies:
-    "@callstack/react-native-visionos": 0.76 - 0.81
+    "@callstack/react-native-visionos": 0.76 - 0.79
     "@expo/config-plugins": ">=5.0"
     react: 18.2 - 19.2
     react-native: 0.76 - 0.83 || >=0.83.0-0 <0.84.0
@@ -12518,10 +12518,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:19.1.4":
-  version: 19.1.4
-  resolution: "react@npm:19.1.4"
-  checksum: 10c0/159257dbaf168facecc0a34825114e2b00624d315b7dca8468afcc790eadf5a49f90c0234be7492c7207239292e789e443ca419a83121898b82b0824454900f2
+"react@npm:19.1.0":
+  version: 19.1.0
+  resolution: "react@npm:19.1.0"
+  checksum: 10c0/530fb9a62237d54137a13d2cfb67a7db6a2156faed43eecc423f4713d9b20c6f2728b026b45e28fcd72e8eadb9e9ed4b089e99f5e295d2f0ad3134251bdd3698
   languageName: node
   linkType: hard
 
