@@ -450,7 +450,7 @@ jobs:
     name: "visionOS"
     permissions: {}
     runs-on: macos-15
-    if: false # Disabled - visionOS support removed
+    if: false # Disabled - CI testing for visionOS temporarily disabled
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -504,7 +504,7 @@ jobs:
       matrix:
         template: [all, visionos]
     runs-on: macos-15
-    if: false # Disabled - visionOS support removed
+    if: false # Disabled - CI testing for visionOS temporarily disabled
     steps:
       - name: Checkout
         uses: actions/checkout@v5

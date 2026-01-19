@@ -10416,25 +10416,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-source-map@npm:0.82.5, metro-source-map@npm:^0.82.2":
-  version: 0.82.5
-  resolution: "metro-source-map@npm:0.82.5"
-  dependencies:
-    "@babel/traverse": "npm:^7.25.3"
-    "@babel/traverse--for-generate-function-map": "npm:@babel/traverse@^7.25.3"
-    "@babel/types": "npm:^7.25.2"
-    flow-enums-runtime: "npm:^0.0.6"
-    invariant: "npm:^2.2.4"
-    metro-symbolicate: "npm:0.82.5"
-    nullthrows: "npm:^1.1.1"
-    ob1: "npm:0.82.5"
-    source-map: "npm:^0.5.6"
-    vlq: "npm:^1.0.0"
-  checksum: 10c0/cf04c8f5430eaf2aa8aa97034382d2cb1b0906a4c7cf3c4faaf0203eb00dd683b8d108e74694700a10085796beb292383cfcea50b388cc03062640bd95d3f84a
-  languageName: node
-  linkType: hard
-
-"metro-source-map@npm:0.83.3, metro-source-map@npm:^0.83.1":
+"metro-source-map@npm:^0.83.0":
   version: 0.83.3
   resolution: "metro-source-map@npm:0.83.3"
   dependencies:
@@ -10452,23 +10434,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-symbolicate@npm:0.82.5":
-  version: 0.82.5
-  resolution: "metro-symbolicate@npm:0.82.5"
-  dependencies:
-    flow-enums-runtime: "npm:^0.0.6"
-    invariant: "npm:^2.2.4"
-    metro-source-map: "npm:0.82.5"
-    nullthrows: "npm:^1.1.1"
-    source-map: "npm:^0.5.6"
-    vlq: "npm:^1.0.0"
-  bin:
-    metro-symbolicate: src/index.js
-  checksum: 10c0/39c53b878ae9392586e23ff3a8071eceb1feed2d226e3ac9a170eb6bcd46fe6b69b8204851ee8eb231fdc3eac9012af3c6940ad48f6d1c04810ea9c4a75e1c7c
-  languageName: node
-  linkType: hard
-
-"metro-symbolicate@npm:0.83.3":
+"metro-symbolicate@npm:^0.83.0":
   version: 0.83.3
   resolution: "metro-symbolicate@npm:0.83.3"
   dependencies:
@@ -11218,15 +11184,6 @@ __metadata:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
   checksum: 10c0/aac5b7eea53329f92dc0c83d90c982aae3a9ee04045bbd14607e115b4de0f29f28278e2c911c3cff2421f14f8ae68ecab289571b63009ece66f9ac5223ca8e51
-  languageName: node
-  linkType: hard
-
-"ob1@npm:0.82.5":
-  version: 0.82.5
-  resolution: "ob1@npm:0.82.5"
-  dependencies:
-    flow-enums-runtime: "npm:^0.0.6"
-  checksum: 10c0/4d65e82fde0612a5c411f3c926de6bc722bdb4751c4fb08f5a5ef91bdaf860e7f9c4f08dcb7acfdfc05340fc4929efb00ea9e973570c1d61adfc4353657abf55
   languageName: node
   linkType: hard
 
@@ -12293,12 +12250,15 @@ __metadata:
     typescript: "npm:^5.0.0"
     uuid: "npm:^11.0.0"
   peerDependencies:
+    "@callstack/react-native-visionos": 0.76 - 0.79
     "@expo/config-plugins": ">=5.0"
     react: 18.2 - 19.2
     react-native: 0.76 - 0.83 || >=0.83.0-0 <0.84.0
     react-native-macos: ^0.0.0-0 || 0.76 - 0.81
     react-native-windows: ^0.0.0-0 || 0.76 - 0.81
   peerDependenciesMeta:
+    "@callstack/react-native-visionos":
+      optional: true
     "@expo/config-plugins":
       optional: true
     react-native-macos:
