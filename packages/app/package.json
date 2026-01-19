@@ -144,7 +144,7 @@
     "minimatch": "^9.0.0",
     "prettier": "^3.0.0",
     "prettier-plugin-organize-imports": "^4.1.0",
-    "react": "19.0.0",
+    "react": "19.0.3",
     "react-native": "^0.79.0",
     "react-native-macos": "^0.79.0",
     "react-native-windows": "^0.79.0",

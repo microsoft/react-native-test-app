@@ -7844,7 +7844,7 @@ __metadata:
     appium: "npm:^3.1.1"
     appium-uiautomator2-driver: "npm:^6.0.0"
     appium-xcuitest-driver: "npm:^10.0.0"
-    react: "npm:19.0.0"
+    react: "npm:19.0.3"
     react-native: "npm:^0.79.0"
     react-native-macos: "npm:^0.79.0"
     react-native-safe-area-context: "npm:^5.5.2"
@@ -12351,7 +12351,7 @@ __metadata:
     prettier: "npm:^3.0.0"
     prettier-plugin-organize-imports: "npm:^4.1.0"
     prompts: "npm:^2.4.0"
-    react: "npm:19.0.0"
+    react: "npm:19.0.3"
     react-native: "npm:^0.79.0"
     react-native-macos: "npm:^0.79.0"
     react-native-windows: "npm:^0.79.0"
@@ -12498,10 +12498,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:19.0.0":
-  version: 19.0.0
-  resolution: "react@npm:19.0.0"
-  checksum: 10c0/9cad8f103e8e3a16d15cb18a0d8115d8bd9f9e1ce3420310aea381eb42aa0a4f812cf047bb5441349257a05fba8a291515691e3cb51267279b2d2c3253f38471
+"react@npm:19.0.3":
+  version: 19.0.3
+  resolution: "react@npm:19.0.3"
+  checksum: 10c0/39c41b46e719650d0b10763d66d606a6251049e81dd805935f5ed5bfb19eca85a0786a6864767f4d4e4ae721608ae24a0c655c526a8d018e56bc262b34886a36
   languageName: node
   linkType: hard
 
