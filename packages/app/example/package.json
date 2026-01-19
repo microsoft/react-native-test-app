@@ -19,7 +19,6 @@
     "windows": "rnx-cli run-windows --no-packager"
   },
   "dependencies": {
-    "@callstack/react-native-visionos": "^0.79.6",
     "@react-native-webapis/web-storage": "^0.4.1",
     "react": "19.1.0",
     "react-native": "^0.81.0",

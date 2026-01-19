@@ -450,7 +450,7 @@ jobs:
     name: "visionOS"
     permissions: {}
     runs-on: macos-15
-    if: ${{ github.event_name != 'schedule' }}
+    if: false # Disabled - visionOS support removed
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -504,7 +504,7 @@ jobs:
       matrix:
         template: [all, visionos]
     runs-on: macos-15
-    if: ${{ github.event_name != 'schedule' }}
+    if: false # Disabled - visionOS support removed
     steps:
       - name: Checkout
         uses: actions/checkout@v5
