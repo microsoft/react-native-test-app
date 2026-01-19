@@ -19,9 +19,9 @@
     "windows": "rnx-cli run-windows --no-packager"
   },
   "dependencies": {
-    "@callstack/react-native-visionos": "^0.81.0",
+    "@callstack/react-native-visionos": "^0.79.6",
     "@react-native-webapis/web-storage": "^0.4.1",
-    "react": "19.1.0",
+    "react": "19.1.4",
     "react-native": "^0.81.0",
     "react-native-macos": "^0.81.0",
     "react-native-safe-area-context": "^5.5.2",
@@ -39,7 +39,7 @@
     "@rnx-kit/metro-config": "^2.1.0",
     "@rnx-kit/polyfills": "^0.2.0",
     "@rnx-kit/tsconfig": "^2.0.0",
-    "@types/react": "~19.0.0",
+    "@types/react": "~19.1.4",
     "@wdio/types": "^9.20.0",
     "appium": "^3.1.1",
     "appium-uiautomator2-driver": "^6.0.0",
