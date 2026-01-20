@@ -81,8 +81,7 @@
     "bplist-parser": "~0.3.2",
     "compression/bytes": "^3.0.0",
     "express/qs": "^6.13.0",
-    "metro-source-map": "^0.83.0",
-    "metro-symbolicate": "^0.83.0",
+    "react-native-windows/metro-source-map": "^0.83.1",
     "safe-buffer": "~5.2.1"
   },
   "workspaces": [
