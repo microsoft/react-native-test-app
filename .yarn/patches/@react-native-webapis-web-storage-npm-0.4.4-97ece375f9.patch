@@ -1,0 +1,12 @@
+diff --git a/windows/ReactNativeWebStorage.vcxproj b/windows/ReactNativeWebStorage.vcxproj
+index 3fac389a549366a5bf1816ab14e65edbb9463a0c..08ecacd677a05d710395ddac0f582ec8a9f60045 100644
+--- a/windows/ReactNativeWebStorage.vcxproj
++++ b/windows/ReactNativeWebStorage.vcxproj
+@@ -8,7 +8,6 @@
+     <ProjectGuid>{e9b31ce3-6931-442e-bb6b-0ccf2943b6bd}</ProjectGuid>
+     <ProjectName>ReactNativeWebStorage</ProjectName>
+     <RootNamespace>ReactNativeWebStorage</RootNamespace>
+-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+     <DefaultLanguage>en-US</DefaultLanguage>
+     <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
+     <AppContainerApplication>true</AppContainerApplication>

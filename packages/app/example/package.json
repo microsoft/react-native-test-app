@@ -19,7 +19,7 @@
     "windows": "rnx-cli run-windows --no-packager"
   },
   "dependencies": {
-    "@react-native-webapis/web-storage": "^0.4.1",
+    "@react-native-webapis/web-storage": "patch:@react-native-webapis/web-storage@npm%3A0.4.4#~/.yarn/patches/@react-native-webapis-web-storage-npm-0.4.4-97ece375f9.patch",
     "react": "19.1.0",
     "react-native": "^0.81.0",
     "react-native-macos": "^0.81.0",

@@ -3,6 +3,7 @@
   <Import Project="$(SolutionDir)\ExperimentalFeatures.props" Condition="Exists('$(SolutionDir)\ExperimentalFeatures.props')" />
   <PropertyGroup>
     <ProjectGuid>{b44cead7-fbff-4a17-95eb-ff5434bbd79d}</ProjectGuid>
+    <TargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)'!=''">$(WindowsTargetPlatformVersion)</TargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <EntryPointProjectUniqueName>ReactApp.vcxproj</EntryPointProjectUniqueName>
     <DebuggerType>NativeOnly</DebuggerType>

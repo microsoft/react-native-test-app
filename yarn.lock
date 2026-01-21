@@ -3317,7 +3317,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-webapis/web-storage@npm:^0.4.1":
+"@react-native-webapis/web-storage@npm:0.4.4":
   version: 0.4.4
   resolution: "@react-native-webapis/web-storage@npm:0.4.4"
   peerDependencies:
@@ -3334,6 +3334,26 @@ __metadata:
     react-native-windows:
       optional: true
   checksum: 10c0/683249f1ea564247789fbd3bd255125b624984462a28d393907fc0283fb52ae32b2c8ca4f4594948a882d635bf21e01813e3fc366bbef10261ed6f8347887e43
+  languageName: node
+  linkType: hard
+
+"@react-native-webapis/web-storage@patch:@react-native-webapis/web-storage@npm%3A0.4.4#~/.yarn/patches/@react-native-webapis-web-storage-npm-0.4.4-97ece375f9.patch":
+  version: 0.4.4
+  resolution: "@react-native-webapis/web-storage@patch:@react-native-webapis/web-storage@npm%3A0.4.4#~/.yarn/patches/@react-native-webapis-web-storage-npm-0.4.4-97ece375f9.patch::version=0.4.4&hash=ea73d5"
+  peerDependencies:
+    "@callstack/react-native-visionos": ">=0.74"
+    react: ">=18.2.0"
+    react-native: ">=0.74"
+    react-native-macos: ">=0.74"
+    react-native-windows: ">=0.74"
+  peerDependenciesMeta:
+    "@callstack/react-native-visionos":
+      optional: true
+    react-native-macos:
+      optional: true
+    react-native-windows:
+      optional: true
+  checksum: 10c0/c1a6e104651b95f284e635bd16f15e1e676f4cae8eb8a9e616f3032d56bcdb6e2b0528ef673e90a8979385cf4eabf9fd9d4b92e40e3edcec68f4629f56c44c9c
   languageName: node
   linkType: hard
 
@@ -7745,7 +7765,7 @@ __metadata:
     "@react-native-community/cli": "npm:^20.0.0"
     "@react-native-community/cli-platform-android": "npm:^20.0.0"
     "@react-native-community/cli-platform-ios": "npm:^20.0.0"
-    "@react-native-webapis/web-storage": "npm:^0.4.1"
+    "@react-native-webapis/web-storage": "patch:@react-native-webapis/web-storage@npm%3A0.4.4#~/.yarn/patches/@react-native-webapis-web-storage-npm-0.4.4-97ece375f9.patch"
     "@react-native/babel-preset": "npm:^0.81.0"
     "@react-native/metro-config": "npm:^0.81.0"
     "@rnx-kit/cli": "npm:^0.18.11"
