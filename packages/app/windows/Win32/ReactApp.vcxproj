@@ -13,6 +13,7 @@
     <AppxPackage>false</AppxPackage>
   </PropertyGroup>
   <PropertyGroup Label="ReactNativeWindowsProps">
+    <ProjectRootDir Condition="'$(ProjectRootDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ProjectRootDir>
     <ReactAppWinDir Condition="'$(ReactAppWinDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows</ReactAppWinDir>
     <ReactAppSharedDir Condition="'$(ReactAppSharedDir)'==''">$(ReactAppWinDir)\Shared</ReactAppSharedDir>
     <ReactAppWin32Dir Condition="'$(ReactAppWin32Dir)'==''">$(ReactAppWinDir)\Win32</ReactAppWin32Dir>
