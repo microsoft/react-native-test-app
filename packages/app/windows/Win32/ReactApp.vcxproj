@@ -13,6 +13,7 @@
     <AppxPackage>false</AppxPackage>
   </PropertyGroup>
   <PropertyGroup Label="ReactNativeWindowsProps">
+    <ProjectRootDir Condition="'$(ProjectRootDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ProjectRootDir>
     <ReactAppWinDir Condition="'$(ReactAppWinDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-test-app\package.json'))\node_modules\react-native-test-app\windows</ReactAppWinDir>
     <ReactAppSharedDir Condition="'$(ReactAppSharedDir)'==''">$(ReactAppWinDir)\Shared</ReactAppSharedDir>
     <ReactAppWin32Dir Condition="'$(ReactAppWin32Dir)'==''">$(ReactAppWinDir)\Win32</ReactAppWin32Dir>
@@ -78,6 +79,14 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
       <DisableSpecificWarnings></DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>
+        $(ReactAppWin32Dir);
+        $(ReactAppSharedDir);
+        $(ReactAppGeneratedDir);
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ENABLE_SINGLE_APP_MODE=0;REACT_NATIVE_VERSION=1000000000;USE_FABRIC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>shell32.lib;user32.lib;windowsapp.lib;%(AdditionalDependenices)</AdditionalDependencies>
@@ -93,13 +102,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <PreprocessorDefinitions>ENABLE_SINGLE_APP_MODE=0;REACT_NATIVE_VERSION=1000000000;USE_FABRIC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ReactAppWin32Dir);$(ReactAppSharedDir);$(ReactAppGeneratedDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <PropertyGroup Label="UserMacros" />

@@ -216,6 +216,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
           ...templateView,
           name: path.basename(projectFileName, path.extname(projectFileName)),
           useExperimentalNuget: info.useExperimentalNuGet,
+          useNuGets: info.useExperimentalNuGet,
           rnwPathFromProjectRoot: path.relative(
             path.dirname(projectManifest),
             rnWindowsPath
@@ -228,7 +229,6 @@ export async function generateSolution(destPath, options, fs = nodefs) {
           /"\.\.\\node_modules\\react-native-windows\\/g,
           `"${path.relative(destPath, rnWindowsPath)}\\`
         )
-        .replace("ReactApp\\ReactApp.vcxproj", vcxprojLocalPath) // Win32
         .replace(
           "ReactApp.Package\\ReactApp.Package.wapproj", // Win32
           vcxprojLocalPath.replace(
@@ -236,6 +236,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
             "ReactApp.Package.wapproj"
           )
         )
+        .replace("ReactApp\\ReactApp.vcxproj", vcxprojLocalPath) // Win32
         .replace("ReactTestApp\\ReactTestApp.vcxproj", vcxprojLocalPath) // UWP
         .replace(
           /EndProject\r?\nGlobal/,
