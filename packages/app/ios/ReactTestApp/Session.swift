@@ -1,10 +1,10 @@
 import Foundation
 
-/// `UserDefaults` can be misused for fingerprinting and developers are now
-/// required to provide a reason for using it. This was announced at WWDC 2023
-/// (see https://developer.apple.com/videos/play/wwdc2023/10060/?time=457). By
-/// excluding unused modules when in single app mode, we also conveniently
-/// remove all uses of it.
+// `UserDefaults` can be misused for fingerprinting and developers are now
+// required to provide a reason for using it. This was announced at WWDC 2023
+// (see https://developer.apple.com/videos/play/wwdc2023/10060/?time=457). By
+// excluding unused modules when in single app mode, we also conveniently
+// remove all uses of it.
 #if !ENABLE_SINGLE_APP_MODE
 
 enum Session {
