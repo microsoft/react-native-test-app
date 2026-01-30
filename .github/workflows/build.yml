@@ -590,7 +590,15 @@ jobs:
           } else {
             yarn ci:windows --arch ${{ matrix.platform }}
           }
-        working-directory: packages/app/example/windows
+        working-directory: packages/app/example
+      - name: Upload build logs
+        if: ${{ steps.affected.outputs.windows != '' && failure() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-msbuild.binlog
+          path: packages/app/example/windows/*.binlog
+          if-no-files-found: error
+          retention-days: 14
       - name: Test
         if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' }}
         run: |
@@ -636,6 +644,14 @@ jobs:
         run: |
           yarn windows --logging --no-packager --no-launch --no-deploy
         working-directory: template-example
+      - name: Upload build logs
+        if: ${{ steps.affected.outputs.windows != '' && failure() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-template-msbuild.binlog
+          path: template-example/windows/*.binlog
+          if-no-files-found: error
+          retention-days: 14
     timeout-minutes: 60
   release:
     permissions:
