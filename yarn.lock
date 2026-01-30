@@ -8056,6 +8056,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-xml-parser@npm:^5.3.4":
+  version: 5.3.4
+  resolution: "fast-xml-parser@npm:5.3.4"
+  dependencies:
+    strnum: "npm:^2.1.0"
+  bin:
+    fxparser: src/cli/cli.js
+  checksum: 10c0/d77866ca860ad185153e12f6ba12274d32026319ad8064e4681342b8a8e1ffad3f1f98daf04d77239fb12eb1d906ee7185fd328deda74529680e8dae0f3e9327
+  languageName: node
+  linkType: hard
+
 "fastest-levenshtein@npm:1.0.16":
   version: 1.0.16
   resolution: "fastest-levenshtein@npm:1.0.16"
@@ -12353,7 +12364,7 @@ __metadata:
     cliui: "npm:^8.0.0"
     eslint: "npm:^9.12.0"
     eslint-plugin-wdio: "npm:^9.0.0"
-    fast-xml-parser: "npm:^4.0.0"
+    fast-xml-parser: "npm:^5.3.4"
     js-yaml: "npm:^4.1.0"
     memfs: "npm:^4.0.0"
     minimatch: "npm:^9.0.0"
