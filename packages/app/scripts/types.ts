@@ -1,5 +1,3 @@
-import type { XmlBuilderOptions } from "fast-xml-parser";
-
 export type JSONValue =
   | string
   | number
@@ -147,10 +145,12 @@ export type ProjectConfiguration = {
   resources?: string[];
 };
 
-export type XmlOptions = Pick<
-  Required<XmlBuilderOptions>,
-  "attributeNamePrefix" | "ignoreAttributes" | "format" | "indentBy"
->;
+export type XmlOptions = {
+  attributeNamePrefix: string;
+  ignoreAttributes: boolean;
+  format: boolean;
+  indentBy: string;
+};
 
 /*****************
  * parseargs.mjs *
