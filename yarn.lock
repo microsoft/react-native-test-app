@@ -3807,9 +3807,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/metro-config@npm:^2.1.0":
-  version: 2.2.2
-  resolution: "@rnx-kit/metro-config@npm:2.2.2"
+"@rnx-kit/metro-config@npm:^2.2.3":
+  version: 2.2.3
+  resolution: "@rnx-kit/metro-config@npm:2.2.3"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
     "@rnx-kit/tools-react-native": "npm:^2.3.1"
@@ -3821,7 +3821,7 @@ __metadata:
   peerDependenciesMeta:
     "@react-native/metro-config":
       optional: true
-  checksum: 10c0/0209a089ed9e4a8ed41454d508d48ccb6bed42dcb4679dcc1d99d007676195c1a758a1207842f605ead909a15e50de45933f894140e54e5ea76661651c9f17c3
+  checksum: 10c0/82e2bfaa0af95764de4ed9aaede77179f99c33ca675aba68129bc7d619f201b3eadd3ffd39844a6f33cbbb619460e403f0488da4b40f11eaadd5538fd1c3707c
   languageName: node
   linkType: hard
 
@@ -7845,7 +7845,7 @@ __metadata:
     "@react-native/babel-preset": "npm:^0.79.0"
     "@react-native/metro-config": "npm:^0.79.0"
     "@rnx-kit/cli": "npm:^0.18.11"
-    "@rnx-kit/metro-config": "npm:^2.1.0"
+    "@rnx-kit/metro-config": "npm:^2.2.3"
     "@rnx-kit/polyfills": "npm:^0.2.0"
     "@rnx-kit/tsconfig": "npm:^2.0.0"
     "@types/react": "npm:~19.0.0"
