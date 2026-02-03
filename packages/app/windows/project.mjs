@@ -421,7 +421,7 @@ export async function projectInfo(
     versionNumber,
     bundle: getBundleResources(findNearest("app.json", destPath, fs), fs),
     nugetDependencies: await getNuGetDependencies(rnWindowsPath),
-    useExperimentalNuGet: useNuGet,
+    useExperimentalNuGet: newArch || useNuGet,
     useFabric: newArch,
   };
 }
