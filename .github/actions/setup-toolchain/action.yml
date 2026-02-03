@@ -9,7 +9,7 @@ inputs:
     description: Prefix to add to the cache key
   cache-npm-dependencies:
     description: Caches npm dependencies (supports npm, yarn, pnpm v6.10+)
-    default: yarn
+    default: ""
   java-version:
     description: Desired Java version
     default: "17"
@@ -54,13 +54,13 @@ runs:
       shell: bash
     - name: Set up JDK
       if: ${{ inputs.platform == 'android' || inputs.platform == 'node' }}
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         distribution: temurin
         java-version: ${{ inputs.java-version }}
     - name: Set up Gradle
       if: ${{ inputs.platform == 'android' || inputs.platform == 'node' }}
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v5
       with:
         gradle-version: wrapper
         gradle-home-cache-excludes: |
@@ -77,7 +77,7 @@ runs:
         bundler: Gemfile.lock
         bundler-cache: true
     - name: Set up Node.js
-      uses: actions/setup-node@v4.4.0
+      uses: actions/setup-node@v6.2.0
       with:
         node-version: ${{ inputs.node-version }}
         cache: ${{ inputs.cache-npm-dependencies }}
@@ -98,7 +98,7 @@ runs:
       shell: bash
     - name: Cache /.ccache
       if: ${{ steps.setup-ccache.outputs.cache-key }}
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: .ccache
         key: ${{ runner.os }}-${{ inputs.cache-key-prefix }}-ccache-${{ steps.setup-ccache.outputs.cache-key }}-1
