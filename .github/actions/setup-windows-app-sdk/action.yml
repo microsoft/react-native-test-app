@@ -1,0 +1,17 @@
+name: Install Windows App SDK
+description: Installs the Windows App SDK and restores NuGet packages for the Windows app
+inputs:
+  solution:
+    description: Path to the solution file for the Windows app
+  working-directory:
+    description: Path to the working directory for this action
+runs:
+  using: composite
+  steps:
+    - name: Install Windows App SDK
+      run: |
+        $script = node --print "require.resolve('react-native-windows/Scripts/rnw-dependencies.ps1')"
+        & $script -Install -NoPrompt -Enterprise
+        nuget restore ${{ inputs.solution }}
+      shell: powershell
+      working-directory: ${{ inputs.working-directory }}

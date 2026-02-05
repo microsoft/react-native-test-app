@@ -585,10 +585,10 @@ jobs:
         uses: ./.github/actions/affected
       - name: Install Windows App SDK
         if: ${{ steps.affected.outputs.windows != '' }}
-        run: |
-          ../node_modules/react-native-windows/Scripts/rnw-dependencies.ps1 -Install -NoPrompt -Enterprise
-          nuget restore Example.sln
-        working-directory: packages/app/example/windows
+        uses: ./.github/actions/setup-windows-app-sdk
+        with:
+          solution: Example.sln
+          working-directory: packages/app/example/windows
       - name: Build
         id: build
         if: ${{ steps.affected.outputs.windows != '' }}
@@ -660,10 +660,10 @@ jobs:
         uses: ./.github/actions/affected
       - name: Install Windows App SDK
         if: ${{ steps.affected.outputs.windows != '' }}
-        run: |
-          ../node_modules/react-native-windows/Scripts/rnw-dependencies.ps1 -Install -NoPrompt -Enterprise
-          nuget restore TemplateExample.sln
-        working-directory: template-example/windows
+        uses: ./.github/actions/setup-windows-app-sdk
+        with:
+          solution: TemplateExample.sln
+          working-directory: template-example/windows
       - name: Build
         id: build
         if: ${{ steps.affected.outputs.windows != '' }}
