@@ -22,7 +22,7 @@ export function $(command: string, ...args: string[]) {
 }
 
 /**
- * Invokes a shell command with optional arguments. Similar {@link $}, but
+ * Invokes a shell command with optional arguments. Similar to {@link $}, but
  * captures and returns stdout/stderr.
  */
 export function $$(command: string, ...args: string[]): string {

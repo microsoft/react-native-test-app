@@ -12,6 +12,7 @@ env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
   NODE_OPTIONS: "--disable-proto=delete"
   VisualStudioVersion: "17.0"
+  WindowsTargetPlatformVersion: "10.0.26100.0"
 concurrency:
   # Ensure single build of a pull request. `trunk` should not be affected.
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.run_id }}
@@ -574,7 +575,7 @@ jobs:
           yarn build:windows
       - name: Generate Visual Studio solution
         run: |
-          node ../windows/app.mjs --msbuildprops WindowsTargetPlatformVersion=10.0.26100.0
+          node ../windows/app.mjs --msbuildprops WindowsTargetPlatformVersion=$env:WindowsTargetPlatformVersion
         working-directory: packages/app/example
       - name: Test `react-native config`
         run: |
@@ -585,10 +586,10 @@ jobs:
         uses: ./.github/actions/affected
       - name: Install Windows App SDK
         if: ${{ steps.affected.outputs.windows != '' }}
-        run: |
-          ../node_modules/react-native-windows/Scripts/rnw-dependencies.ps1 -Install -NoPrompt -Enterprise
-          nuget restore Example.sln
-        working-directory: packages/app/example/windows
+        uses: ./.github/actions/setup-windows-app-sdk
+        with:
+          solution: Example.sln
+          working-directory: packages/app/example/windows
       - name: Build
         id: build
         if: ${{ steps.affected.outputs.windows != '' }}
@@ -653,17 +654,17 @@ jobs:
         working-directory: template-example
       - name: Generate Visual Studio solution
         run: |
-          yarn install-windows-test-app --msbuildprops WindowsTargetPlatformVersion=10.0.26100.0
+          yarn install-windows-test-app --msbuildprops WindowsTargetPlatformVersion=$env:WindowsTargetPlatformVersion
         working-directory: template-example
       - name: Determine whether the Windows app needs to be built
         id: affected
         uses: ./.github/actions/affected
       - name: Install Windows App SDK
         if: ${{ steps.affected.outputs.windows != '' }}
-        run: |
-          ../node_modules/react-native-windows/Scripts/rnw-dependencies.ps1 -Install -NoPrompt -Enterprise
-          nuget restore TemplateExample.sln
-        working-directory: template-example/windows
+        uses: ./.github/actions/setup-windows-app-sdk
+        with:
+          solution: TemplateExample.sln
+          working-directory: template-example/windows
       - name: Build
         id: build
         if: ${{ steps.affected.outputs.windows != '' }}
