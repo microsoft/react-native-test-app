@@ -13,7 +13,7 @@ import type { BuildConfig, TargetPlatform } from "../types.js";
 import { green, red, yellow } from "../utils/colors.mjs";
 import { rm_r } from "../utils/filesystem.mjs";
 import { getIOSSimulatorName, installPods } from "./test-apple.mts";
-import { $, $$, test } from "./test-e2e.mts";
+import { $, $$, DEFAULT_SPAWN_OPTIONS, test } from "./test-e2e.mts";
 
 type PlatformConfig = {
   name: string;
@@ -364,8 +364,8 @@ if (platforms.length === 0) {
     .then(() => {
       showBanner("Initialize new app");
       $(
-        PACKAGE_MANAGER,
-        "init-test-app",
+        process.argv0,
+        "../scripts/init.mjs",
         "--destination",
         "template-example",
         "--name",
@@ -379,7 +379,7 @@ if (platforms.length === 0) {
     .then(() => {
       showBanner("Reconfigure existing app");
       const args = [
-        "configure-test-app",
+        "../scripts/configure.mjs",
         "-p",
         "android",
         "-p",
@@ -391,10 +391,7 @@ if (platforms.length === 0) {
         "-p",
         "windows",
       ];
-      const { status } = spawnSync(PACKAGE_MANAGER, args, {
-        stdio: "inherit",
-        shell: process.platform === "win32",
-      });
+      const { status } = spawnSync(process.argv0, args, DEFAULT_SPAWN_OPTIONS);
       if (status !== 1) {
         throw new Error("Expected an error");
       }

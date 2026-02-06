@@ -6,14 +6,16 @@ import { spawnSync } from "node:child_process";
 import { Socket } from "node:net";
 import { isMain } from "../helpers.js";
 
+export const DEFAULT_SPAWN_OPTIONS = {
+  stdio: "inherit",
+  shell: true, // Yarn won't be able to find commands otherwise
+} as const;
+
 /**
  * Invokes a shell command with optional arguments.
  */
 export function $(command: string, ...args: string[]) {
-  const { status } = spawnSync(command, args, {
-    stdio: "inherit",
-    shell: process.platform === "win32",
-  });
+  const { status } = spawnSync(command, args, DEFAULT_SPAWN_OPTIONS);
   if (status !== 0) {
     throw new Error(
       `An error occurred while executing: ${command} ${args.join(" ")}`
