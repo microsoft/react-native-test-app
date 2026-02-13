@@ -155,7 +155,7 @@ final class ReactInstance: NSObject, RNXHostConfig {
         #if swift(>=5.9)
 
         #if os(visionOS)
-        /// Fallback to iOS extensions if visionOS is not present
+        // Fallback to iOS extensions if visionOS is not present
         let extensions = [".visionos", ".ios", ".mobile", ".native", ""]
         #elseif os(iOS)
         let extensions = [".ios", ".mobile", ".native", ""]
