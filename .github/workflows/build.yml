@@ -117,7 +117,7 @@ jobs:
             yarn lint:js
             echo "::remove-matcher owner=eslint-stylish::"
           fi
-          yarn tsc
+          yarn tsgo
           yarn test:js
         shell: bash
         working-directory: packages/app

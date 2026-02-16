@@ -1945,32 +1945,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-plugins@npm:^10.0.0":
-  version: 10.1.2
-  resolution: "@expo/config-plugins@npm:10.1.2"
+"@expo/config-plugins@npm:^54.0.0":
+  version: 54.0.4
+  resolution: "@expo/config-plugins@npm:54.0.4"
   dependencies:
-    "@expo/config-types": "npm:^53.0.5"
-    "@expo/json-file": "npm:~9.1.5"
-    "@expo/plist": "npm:^0.3.5"
+    "@expo/config-types": "npm:^54.0.10"
+    "@expo/json-file": "npm:~10.0.8"
+    "@expo/plist": "npm:^0.4.8"
     "@expo/sdk-runtime-versions": "npm:^1.0.0"
     chalk: "npm:^4.1.2"
     debug: "npm:^4.3.5"
     getenv: "npm:^2.0.0"
-    glob: "npm:^10.4.2"
+    glob: "npm:^13.0.0"
     resolve-from: "npm:^5.0.0"
     semver: "npm:^7.5.4"
     slash: "npm:^3.0.0"
     slugify: "npm:^1.6.6"
     xcode: "npm:^3.0.1"
     xml2js: "npm:0.6.0"
-  checksum: 10c0/d5ef0f002db40cb182058b2fe9df6f5f77ff09e18aa0bc8109047d75cd912487bace59bcff7104c6f68f6b49f89d0b387ab6f90f8069c63c9f3fccb9fb9b99de
+  checksum: 10c0/c7537485a0e883d8a98f1fb93335a1f56d4be2c2a4b5676ba09a8e9253190996241022f841c437e64578fa63b20b6ecf843d88b52930b890fa199d7aa188253f
   languageName: node
   linkType: hard
 
-"@expo/config-types@npm:^53.0.5":
-  version: 53.0.5
-  resolution: "@expo/config-types@npm:53.0.5"
-  checksum: 10c0/a7c96f65327de5608aedaf0669bc95b721323113064bdad3473d6faa07b619100ef1df5811f3fdb5dc50d05610842aec8d6bc1902dd0345d51ba2d520884487d
+"@expo/config-types@npm:^54.0.10":
+  version: 54.0.10
+  resolution: "@expo/config-types@npm:54.0.10"
+  checksum: 10c0/a304e18314937cbe3a146fe7daf23d5b78049676dabc14b1e181330f9e74ab2f4ada288f23999f254b59ee7c59380f895ffcb536f537e9039cd10336b1c1d7bc
+  languageName: node
+  linkType: hard
+
+"@expo/json-file@npm:~10.0.8":
+  version: 10.0.12
+  resolution: "@expo/json-file@npm:10.0.12"
+  dependencies:
+    "@babel/code-frame": "npm:^7.20.0"
+    json5: "npm:^2.2.3"
+  checksum: 10c0/52131a6426e96208ff1b295d580fc70eebb8e292b29fde1db016b2f21a0942a7521feec96b3f58efe5b32dcc1642d569b4211d651146fcdb9bf7e5f08b635878
   languageName: node
   linkType: hard
 
@@ -1984,14 +1994,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/plist@npm:^0.3.5":
-  version: 0.3.5
-  resolution: "@expo/plist@npm:0.3.5"
+"@expo/plist@npm:^0.4.8":
+  version: 0.4.8
+  resolution: "@expo/plist@npm:0.4.8"
   dependencies:
     "@xmldom/xmldom": "npm:^0.8.8"
     base64-js: "npm:^1.2.3"
     xmlbuilder: "npm:^15.1.1"
-  checksum: 10c0/d0cde0024b6363f3c96ac186a59795d7c7655986407623324083261ea7e8dcaa7014f385baa1a70422765299eb6d828515ebf0d40590caf34f81997288b74cc1
+  checksum: 10c0/5bacdb6f8c5e0e56da07f4504290036e3a5433164a29bea7857e72234137d8eaa04adb319221fcc1ec7f931d40d7f9f6fc9528fa601ed18c308a4cf8179f7783
   languageName: node
   linkType: hard
 
@@ -2283,22 +2293,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@isaacs/balanced-match@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@isaacs/balanced-match@npm:4.0.1"
-  checksum: 10c0/7da011805b259ec5c955f01cee903da72ad97c5e6f01ca96197267d3f33103d5b2f8a1af192140f3aa64526c593c8d098ae366c2b11f7f17645d12387c2fd420
-  languageName: node
-  linkType: hard
-
-"@isaacs/brace-expansion@npm:^5.0.0":
-  version: 5.0.1
-  resolution: "@isaacs/brace-expansion@npm:5.0.1"
-  dependencies:
-    "@isaacs/balanced-match": "npm:^4.0.1"
-  checksum: 10c0/e5d67c7bbf1f17b88132a35bc638af306d48acbb72810d48fa6e6edd8ab375854773108e8bf70f021f7ef6a8273455a6d1f0c3b5aa2aff06ce7894049ab77fb8
-  languageName: node
-  linkType: hard
-
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -2310,6 +2304,13 @@ __metadata:
     wrap-ansi: "npm:^8.1.0"
     wrap-ansi-cjs: "npm:wrap-ansi@^7.0.0"
   checksum: 10c0/b1bf42535d49f11dc137f18d5e4e63a28c5569de438a221c369483731e9dac9fb797af554e8bf02b6192d1e5eba6e6402cf93900c3d0ac86391d00d04876789e
+  languageName: node
+  linkType: hard
+
+"@isaacs/cliui@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@isaacs/cliui@npm:9.0.0"
+  checksum: 10c0/971063b7296419f85053dacd0a0285dcadaa3dfc139228b23e016c1a9848121ad4aa5e7fcca7522062014e1eb6239a7424188b9f2cba893a79c90aae5710319c
   languageName: node
   linkType: hard
 
@@ -3980,10 +3981,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tsconfig@npm:^2.0.0":
-  version: 2.1.1
-  resolution: "@rnx-kit/tsconfig@npm:2.1.1"
-  checksum: 10c0/53aed185abd644250d95c732e44ecb66bcdf3005cc6eb854ba217346fa29cf0ea892bbd391e15050a5b553fe7dc983130add30c9aa30b1f66a0ca498d3409d94
+"@rnx-kit/tsconfig@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@rnx-kit/tsconfig@npm:3.0.0"
+  checksum: 10c0/87725a8b4bff64e998f1babfde4982aab3ec22538d0bde67f4980c019199741a91e796ba047d8cfafb538af3c6c07c1ae07239c9b3d73fe7ba30ab36cfbfe984
   languageName: node
   linkType: hard
 
@@ -4633,6 +4634,87 @@ __metadata:
     "@typescript-eslint/types": "npm:8.45.0"
     eslint-visitor-keys: "npm:^4.2.1"
   checksum: 10c0/119adcf50c902dad7f7757bcdd88fad0a23a171d309d9b7cefe78af12e451cf84c04ae611f4c31f7e23f16c2b47665ad92e6e5648fc77d542ef306f465bf1f29
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-darwin-arm64@npm:7.0.0-dev.20260216.1":
+  version: 7.0.0-dev.20260216.1
+  resolution: "@typescript/native-preview-darwin-arm64@npm:7.0.0-dev.20260216.1"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-darwin-x64@npm:7.0.0-dev.20260216.1":
+  version: 7.0.0-dev.20260216.1
+  resolution: "@typescript/native-preview-darwin-x64@npm:7.0.0-dev.20260216.1"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-linux-arm64@npm:7.0.0-dev.20260216.1":
+  version: 7.0.0-dev.20260216.1
+  resolution: "@typescript/native-preview-linux-arm64@npm:7.0.0-dev.20260216.1"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-linux-arm@npm:7.0.0-dev.20260216.1":
+  version: 7.0.0-dev.20260216.1
+  resolution: "@typescript/native-preview-linux-arm@npm:7.0.0-dev.20260216.1"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-linux-x64@npm:7.0.0-dev.20260216.1":
+  version: 7.0.0-dev.20260216.1
+  resolution: "@typescript/native-preview-linux-x64@npm:7.0.0-dev.20260216.1"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-win32-arm64@npm:7.0.0-dev.20260216.1":
+  version: 7.0.0-dev.20260216.1
+  resolution: "@typescript/native-preview-win32-arm64@npm:7.0.0-dev.20260216.1"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-win32-x64@npm:7.0.0-dev.20260216.1":
+  version: 7.0.0-dev.20260216.1
+  resolution: "@typescript/native-preview-win32-x64@npm:7.0.0-dev.20260216.1"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview@npm:^7.0.0-0":
+  version: 7.0.0-dev.20260216.1
+  resolution: "@typescript/native-preview@npm:7.0.0-dev.20260216.1"
+  dependencies:
+    "@typescript/native-preview-darwin-arm64": "npm:7.0.0-dev.20260216.1"
+    "@typescript/native-preview-darwin-x64": "npm:7.0.0-dev.20260216.1"
+    "@typescript/native-preview-linux-arm": "npm:7.0.0-dev.20260216.1"
+    "@typescript/native-preview-linux-arm64": "npm:7.0.0-dev.20260216.1"
+    "@typescript/native-preview-linux-x64": "npm:7.0.0-dev.20260216.1"
+    "@typescript/native-preview-win32-arm64": "npm:7.0.0-dev.20260216.1"
+    "@typescript/native-preview-win32-x64": "npm:7.0.0-dev.20260216.1"
+  dependenciesMeta:
+    "@typescript/native-preview-darwin-arm64":
+      optional: true
+    "@typescript/native-preview-darwin-x64":
+      optional: true
+    "@typescript/native-preview-linux-arm":
+      optional: true
+    "@typescript/native-preview-linux-arm64":
+      optional: true
+    "@typescript/native-preview-linux-x64":
+      optional: true
+    "@typescript/native-preview-win32-arm64":
+      optional: true
+    "@typescript/native-preview-win32-x64":
+      optional: true
+  bin:
+    tsgo: bin/tsgo.js
+  checksum: 10c0/db461ea3c92cf34f865e37418498aa6af38375af71d747550121468e310f8a1cc3e74467a61c240ad55b33d5c4728dc2be8eb3a1b2ee718d8c783af710df3c68
   languageName: node
   linkType: hard
 
@@ -5743,6 +5825,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"balanced-match@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "balanced-match@npm:4.0.2"
+  dependencies:
+    jackspeak: "npm:^4.2.3"
+  checksum: 10c0/493eee4bece3f8b270cea8d3d6d1122ce008dd6b0d5aca8a3f1e623be6897be18c926018eadc454bd719bb7cc46d939c39fa2a05fff86b30f65382f020f6926d
+  languageName: node
+  linkType: hard
+
 "bare-events@npm:^2.2.0, bare-events@npm:^2.5.4":
   version: 2.5.4
   resolution: "bare-events@npm:2.5.4"
@@ -5922,6 +6013,15 @@ __metadata:
   dependencies:
     balanced-match: "npm:^1.0.0"
   checksum: 10c0/b358f2fe060e2d7a87aa015979ecea07f3c37d4018f8d6deb5bd4c229ad3a0384fe6029bb76cd8be63c81e516ee52d1a0673edbe2023d53a5191732ae3c3e49f
+  languageName: node
+  linkType: hard
+
+"brace-expansion@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "brace-expansion@npm:5.0.2"
+  dependencies:
+    balanced-match: "npm:^4.0.2"
+  checksum: 10c0/60c765e5df6fc0ceca3d5703202ae6779db61f28ea3bf93a04dbf0d50c22ef8e4644e09d0459c827077cd2d09ba8f199a04d92c36419fcf874601a5565013174
   languageName: node
   linkType: hard
 
@@ -7761,7 +7861,7 @@ __metadata:
     "@rnx-kit/cli": "npm:^0.18.11"
     "@rnx-kit/metro-config": "npm:^2.2.3"
     "@rnx-kit/polyfills": "npm:^0.2.0"
-    "@rnx-kit/tsconfig": "npm:^2.0.0"
+    "@rnx-kit/tsconfig": "npm:^3.0.0"
     "@types/react": "npm:~19.1.0"
     "@wdio/types": "npm:^9.20.0"
     appium: "npm:^3.1.1"
@@ -8496,7 +8596,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.0.0, glob@npm:^10.2.2, glob@npm:^10.3.10, glob@npm:^10.4.2":
+"glob@npm:^10.0.0, glob@npm:^10.2.2, glob@npm:^10.3.10":
   version: 10.5.0
   resolution: "glob@npm:10.5.0"
   dependencies:
@@ -8541,6 +8641,17 @@ __metadata:
   bin:
     glob: dist/esm/bin.mjs
   checksum: 10c0/923fbb7e30913496dc1c30191edb7ebb610a26edac81710a5f697c718b08694bce7fb0245baceba5383472778a8431ff7c36571703507cc6563602d3c139c993
+  languageName: node
+  linkType: hard
+
+"glob@npm:^13.0.0":
+  version: 13.0.3
+  resolution: "glob@npm:13.0.3"
+  dependencies:
+    minimatch: "npm:^10.2.0"
+    minipass: "npm:^7.1.2"
+    path-scurry: "npm:^2.0.0"
+  checksum: 10c0/333dc5c40ca0e50400465d8f5c45aa7cdd32580c4d1a4c502dfb4fb9c469a936b8e0c6bbd09cd6353fd05982e48d7f79e819159a36fb3e0a41ee722607bc11a9
   languageName: node
   linkType: hard
 
@@ -9468,12 +9579,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jackspeak@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "jackspeak@npm:4.1.1"
+"jackspeak@npm:^4.1.1, jackspeak@npm:^4.2.3":
+  version: 4.2.3
+  resolution: "jackspeak@npm:4.2.3"
   dependencies:
-    "@isaacs/cliui": "npm:^8.0.2"
-  checksum: 10c0/84ec4f8e21d6514db24737d9caf65361511f75e5e424980eebca4199f400874f45e562ac20fa8aeb1dd20ca2f3f81f0788b6e9c3e64d216a5794fd6f30e0e042
+    "@isaacs/cliui": "npm:^9.0.0"
+  checksum: 10c0/b5c0c414f1607c2aa0597f4bf2c03b8443897fccd5fd3c2b3e4f77d556b2bc7c3d3413828ba91e0789f6fb40ad90242f7f89fb20aee9e9d705bc1681f7564f67
   languageName: node
   linkType: hard
 
@@ -10635,12 +10746,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.1.1":
-  version: 10.1.1
-  resolution: "minimatch@npm:10.1.1"
+"minimatch@npm:^10.1.1, minimatch@npm:^10.2.0":
+  version: 10.2.0
+  resolution: "minimatch@npm:10.2.0"
   dependencies:
-    "@isaacs/brace-expansion": "npm:^5.0.0"
-  checksum: 10c0/c85d44821c71973d636091fddbfbffe62370f5ee3caf0241c5b60c18cd289e916200acb2361b7e987558cd06896d153e25d505db9fc1e43e6b4b6752e2702902
+    brace-expansion: "npm:^5.0.2"
+  checksum: 10c0/256e72812bb99a86cdc788bf46a4da3f6e139db9123e20ed85a6795b93fdc0b76468ac511eb5535a023adb02a53fd598f971e990d0ca3bd6de6d41ea0199def1
   languageName: node
   linkType: hard
 
@@ -12221,7 +12332,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
-    "@expo/config-plugins": "npm:^10.0.0"
+    "@expo/config-plugins": "npm:^54.0.0"
     "@expo/json-file": "npm:~9.1.5"
     "@microsoft/eslint-plugin-sdl": "npm:^1.0.0"
     "@react-native-community/cli": "npm:^20.0.0"
@@ -12231,7 +12342,7 @@ __metadata:
     "@rnx-kit/lint-lockfile": "npm:^0.1.0"
     "@rnx-kit/react-native-host": "npm:^0.5.15"
     "@rnx-kit/tools-react-native": "npm:^2.1.0"
-    "@rnx-kit/tsconfig": "npm:^2.0.0"
+    "@rnx-kit/tsconfig": "npm:^3.0.0"
     "@swc-node/register": "npm:^1.10.0"
     "@swc/core": "npm:^1.11.0"
     "@types/js-yaml": "npm:^4.0.5"
@@ -12240,6 +12351,7 @@ __metadata:
     "@types/prompts": "npm:~2.4.0"
     "@types/react": "npm:~19.1.0"
     "@types/semver": "npm:^7.3.6"
+    "@typescript/native-preview": "npm:^7.0.0-0"
     ajv: "npm:^8.0.0"
     cliui: "npm:^8.0.0"
     eslint: "npm:^9.12.0"
@@ -12257,7 +12369,6 @@ __metadata:
     react-native-windows: "npm:^0.81.0"
     semver: "npm:^7.3.5"
     suggestion-bot: "npm:^4.0.0"
-    typescript: "npm:^5.0.0"
     uuid: "npm:^11.0.0"
   peerDependencies:
     "@callstack/react-native-visionos": 0.76 - 0.79

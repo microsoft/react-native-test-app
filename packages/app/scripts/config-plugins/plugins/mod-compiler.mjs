@@ -1,10 +1,11 @@
 // @ts-check
+/** @import { ExportedConfig } from "@expo/config-plugins"; */
 import { BaseMods, evalModsAsync } from "../ExpoConfigPlugins.mjs";
 import { getAndroidModFileProviders } from "./withAndroidBaseMods.mjs";
 import { getIosModFileProviders } from "./withIosBaseMods.mjs";
 import { getMacOsModFileProviders } from "./withMacOsBaseMods.mjs";
 
-/** @type {import("@expo/config-plugins").withDefaultBaseMods} */
+/** @type {(config: ExportedConfig, props?: Record<string, unknown>) => ExportedConfig} */
 export const withDefaultBaseMods = (config, props) => {
   config = BaseMods.withIosBaseMods(config, {
     ...props,
@@ -23,7 +24,7 @@ export const withDefaultBaseMods = (config, props) => {
   return config;
 };
 
-/** @type {import("@expo/config-plugins").compileModsAsync} */
+/** @type {typeof evalModsAsync} */
 export const compileModsAsync = (config, props) => {
   if (props.introspect === true) {
     console.warn("`introspect` is not supported by react-native-test-app");

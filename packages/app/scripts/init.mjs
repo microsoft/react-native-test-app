@@ -164,6 +164,9 @@ function instructionsFor(platform) {
   throw new Error(`Unknown platform: ${platform}`);
 }
 
+/**
+ * @returns {Promise<number>}
+ */
 function main() {
   return new Promise((resolve) => {
     parseArgs(
