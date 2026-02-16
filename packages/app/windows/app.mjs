@@ -200,7 +200,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
     .map((project) => toProjectEntry(project, destPath))
     .join(os.EOL);
 
-  /** @type {typeof import("mustache")} */
+  /** @type {typeof import("mustache").default} */
   const mustache = requireTransitive(
     ["@react-native-windows/cli", "mustache"],
     fs.realpathSync(rnWindowsPath)

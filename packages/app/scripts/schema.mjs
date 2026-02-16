@@ -2,7 +2,7 @@
 import { URL, fileURLToPath } from "node:url";
 import { readJSONFile } from "./helpers.js";
 
-/** @typedef {import("./types.js").Docs} Docs */
+/** @import { Docs } from "./types.ts"; */
 
 /**
  * @param {string} content
@@ -16,7 +16,9 @@ function extractBrief(content = "") {
 
 function readManifest() {
   const manifest = fileURLToPath(new URL("../package.json", import.meta.url));
-  return /** @type {import("../package.json")} */ (readJSONFile(manifest));
+  return /** @type {typeof import("../package.json")} */ (
+    readJSONFile(manifest)
+  );
 }
 
 /**

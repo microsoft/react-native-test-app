@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "react-native",
     "noEmit": true,
-    "lib": ["ES2021", "DOM"]
+    "lib": ["ES2022", "DOM"]
   },
   "include": [
     "index.ts",

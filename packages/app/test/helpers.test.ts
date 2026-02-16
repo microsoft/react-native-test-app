@@ -1,3 +1,4 @@
+import type Mustache from "mustache";
 import { equal, fail, notEqual } from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -56,7 +57,7 @@ describe("getPackageVersion()", () => {
 
 describe("requireTransitive()", () => {
   it("imports transitive dependencies", () => {
-    const mustache = requireTransitive<typeof import("mustache")>([
+    const mustache = requireTransitive<typeof Mustache>([
       "react-native-windows",
       "@react-native-windows/cli",
       "mustache",
@@ -71,7 +72,7 @@ describe("requireTransitive()", () => {
       fail("Failed to resolve 'react-native-windows'");
     }
 
-    const mustache = requireTransitive<typeof import("mustache")>(
+    const mustache = requireTransitive<typeof Mustache>(
       ["@react-native-windows/cli", "mustache"],
       fs.realpathSync(rnwDir)
     );

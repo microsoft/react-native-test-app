@@ -2,9 +2,6 @@
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 
-/** @typedef {import("@wdio/types").Capabilities.WebdriverIOConfig["logLevel"]} LogLevel */
-/** @typedef {import("@wdio/types").Options.Testrunner["runner"]} Runner */
-
 function getAvailableSimulators(search = "iPhone") {
   const { error, status, stderr, stdout } = spawnSync(
     "xcrun",
@@ -112,7 +109,7 @@ const findLatestIPhoneSimulator = (() => {
 })();
 
 export const config = {
-  runner: /** @type {Runner} */ ("local"),
+  runner: /** @type {const} */ ("local"),
   port: 4723,
   specs: ["**/*.spec.js"],
   capabilities: (() => {
@@ -150,7 +147,7 @@ export const config = {
         throw new Error(`Unknown platform: ${targetPlatform}`);
     }
   })(),
-  logLevel: /** @type {LogLevel} */ ("info"),
+  logLevel: /** @type {const} */ ("info"),
   waitforTimeout: 60000,
   specFileRetries: 3,
 };
