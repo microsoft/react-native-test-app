@@ -70,7 +70,7 @@
     "@react-native/js-polyfills": "^0.81.0",
     "@react-native/normalize-colors": "^0.81.0",
     "@react-native/virtualized-lists": "^0.81.0",
-    "appium/ajv": "~8.17.1",
+    "appium/ajv": "~8.18.0",
     "appium/axios": "^1.11.0",
     "appium/lodash": "^4.17.21",
     "appium/lru-cache": "^11.2.1",
