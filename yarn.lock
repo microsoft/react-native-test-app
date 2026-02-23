@@ -3434,9 +3434,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-macos/virtualized-lists@npm:0.81.1":
-  version: 0.81.1
-  resolution: "@react-native-macos/virtualized-lists@npm:0.81.1"
+"@react-native-macos/virtualized-lists@npm:0.81.2":
+  version: 0.81.2
+  resolution: "@react-native-macos/virtualized-lists@npm:0.81.2"
   dependencies:
     invariant: "npm:^2.2.4"
     nullthrows: "npm:^1.1.1"
@@ -3447,7 +3447,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10c0/7048802e8a51ce74e60e01b17fcd6f5dae0b98547572335e240242d95e91cf3223938caa7fc8aac5c26c91184096ac4bec3818502b18274edd73c18fa47d3c79
+  checksum: 10c0/3d1d33241b3261b4e79f07fbc4cb4e9b87aacccc101544390947811e8beed6973bc5736cba4bad59080996010a277b13332fc48906e9e6f23a495937b315333a
   languageName: node
   linkType: hard
 
@@ -12443,11 +12443,11 @@ __metadata:
   linkType: hard
 
 "react-native-macos@npm:^0.81.1":
-  version: 0.81.1
-  resolution: "react-native-macos@npm:0.81.1"
+  version: 0.81.2
+  resolution: "react-native-macos@npm:0.81.2"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.7.0"
-    "@react-native-macos/virtualized-lists": "npm:0.81.1"
+    "@react-native-macos/virtualized-lists": "npm:0.81.2"
     "@react-native/assets-registry": "npm:0.81.5"
     "@react-native/codegen": "npm:0.81.5"
     "@react-native/community-cli-plugin": "npm:0.81.5"
@@ -12490,7 +12490,7 @@ __metadata:
   bin:
     react-native: cli.js
     react-native-macos: cli.js
-  checksum: 10c0/9b43b95e7abaca64ce1f72d2daec9c51276ad5ac64f0d94b72af5c29ece8ae3cb14aab83933616e76a3c7807a5df26b9ee9697107a63c247688e8fe78af24583
+  checksum: 10c0/0d6486c1eb84eb901e387081fd4ff98177bae23dc21780411454c3d855bd8a7708d76b3e553cc95b02b236ec6f075e54726789acd71c1fb6376ea608a9780bfa
   languageName: node
   linkType: hard
 
