@@ -142,7 +142,7 @@
     "eslint-plugin-wdio": "^9.0.0",
     "js-yaml": "^4.1.0",
     "memfs": "^4.0.0",
-    "minimatch": "^9.0.0",
+    "minimatch": "^10.2.1",
     "prettier": "^3.0.0",
     "prettier-plugin-organize-imports": "^4.1.0",
     "react": "19.1.0",
