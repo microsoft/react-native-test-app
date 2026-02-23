@@ -3761,8 +3761,8 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-config@npm:^2.2.3":
-  version: 2.2.3
-  resolution: "@rnx-kit/metro-config@npm:2.2.3"
+  version: 2.2.4
+  resolution: "@rnx-kit/metro-config@npm:2.2.4"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
     "@rnx-kit/tools-react-native": "npm:^2.3.1"
@@ -3774,7 +3774,7 @@ __metadata:
   peerDependenciesMeta:
     "@react-native/metro-config":
       optional: true
-  checksum: 10c0/82e2bfaa0af95764de4ed9aaede77179f99c33ca675aba68129bc7d619f201b3eadd3ffd39844a6f33cbbb619460e403f0488da4b40f11eaadd5538fd1c3707c
+  checksum: 10c0/e07553e1fa1dfaea7586e0aeb9f2af10157f7d8fdcb7e1a07d75a5ebb83a02117e44c7899491f8ccc46b2a49b45c55459adfa44378d8070a60b18b55311f5e2c
   languageName: node
   linkType: hard
 
