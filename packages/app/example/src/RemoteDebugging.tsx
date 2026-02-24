@@ -1,7 +1,7 @@
 import React from "react";
 import { NativeModules, View } from "react-native";
-import { Feature } from "./Feature";
 import { getHermesVersion, isBridgeless } from "./core";
+import { Feature } from "./Feature";
 import { useStyles } from "./styles";
 
 function isRemoteDebuggingAvailable(): boolean {
