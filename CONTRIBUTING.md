@@ -365,33 +365,20 @@ entries.
 
 <!-- References -->
 
-[Dependency Dashboard]:
-  https://github.com/microsoft/react-native-test-app/issues/492
+[Dependency Dashboard]: https://github.com/microsoft/react-native-test-app/issues/492
 [Patches page]: https://github.com/microsoft/react-native-test-app/wiki/Patches
 [Renovate]: https://docs.renovatebot.com
-[`@rnx-kit/align-deps`]:
-  https://github.com/microsoft/rnx-kit/tree/main/packages/align-deps#contribution
-[`@rnx-kit/react-native-host`]:
-  https://github.com/microsoft/rnx-kit/tree/main/packages/react-native-host#readme
-[`dependencies.gradle`]:
-  https://github.com/microsoft/react-native-test-app/blob/trunk/android/dependencies.gradle
-[`generate-schema.mjs`]:
-  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/internal/generate-schema.mjs
-[`package.json`]:
-  https://github.com/microsoft/react-native-test-app/blob/trunk/package.json
-[`react-native-releases`]:
-  https://github.com/reactwg/react-native-releases/discussions
-[`scripts/docs/`]:
-  https://github.com/microsoft/react-native-test-app/tree/trunk/scripts/docs
-[`test:matrix`]:
-  https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/testing/test-matrix.mjs
+[`@rnx-kit/align-deps`]: https://github.com/microsoft/rnx-kit/tree/main/packages/align-deps#contribution
+[`@rnx-kit/react-native-host`]: https://github.com/microsoft/rnx-kit/tree/main/packages/react-native-host#readme
+[`dependencies.gradle`]: https://github.com/microsoft/react-native-test-app/blob/trunk/android/dependencies.gradle
+[`generate-schema.mjs`]: https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/internal/generate-schema.mjs
+[`package.json`]: https://github.com/microsoft/react-native-test-app/blob/trunk/package.json
+[`react-native-releases`]: https://github.com/reactwg/react-native-releases/discussions
+[`scripts/docs/`]: https://github.com/microsoft/react-native-test-app/tree/trunk/scripts/docs
+[`test:matrix`]: https://github.com/microsoft/react-native-test-app/blob/trunk/scripts/testing/test-matrix.mjs
 [`uuid`]: https://github.com/uuidjs/uuid
-[commitlint-lite]:
-  https://github.com/microsoft/rnx-kit/tree/main/incubator/commitlint-lite#readme
+[commitlint-lite]: https://github.com/microsoft/rnx-kit/tree/main/incubator/commitlint-lite#readme
 [conventional commit format]: https://conventionalcommits.org
-[every Monday morning]:
-  https://github.com/microsoft/react-native-test-app/blob/trunk/.github/renovate.json
-[link to the issue]:
-  https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue
-[supported versions table]:
-  https://github.com/microsoft/react-native-test-app/wiki#react-native-versions
+[every Monday morning]: https://github.com/microsoft/react-native-test-app/blob/trunk/.github/renovate.json
+[link to the issue]: https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue
+[supported versions table]: https://github.com/microsoft/react-native-test-app/wiki#react-native-versions

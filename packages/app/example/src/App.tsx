@@ -7,17 +7,17 @@ import {
   useColorScheme,
   View,
 } from "react-native";
-import { Feature } from "./Feature";
-import { LocalStorageStatus } from "./LocalStorage";
-import { RemoteDebugging } from "./RemoteDebugging";
-import { SafeAreaView } from "./SafeAreaView";
-import { Separator } from "./Separator";
 import {
   getHermesVersion,
   isBridgeless,
   isFabricInstance,
   ReactNativeVersion,
 } from "./core";
+import { Feature } from "./Feature";
+import { LocalStorageStatus } from "./LocalStorage";
+import { RemoteDebugging } from "./RemoteDebugging";
+import { SafeAreaView } from "./SafeAreaView";
+import { Separator } from "./Separator";
 import { useStyles } from "./styles";
 
 declare global {

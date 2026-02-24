@@ -68,7 +68,7 @@
   },
   "scripts": {
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
-    "format:js": "prettier --write --log-level error $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' '*.yml' 'README.md' 'test/**/*.json')",
+    "format:js": "oxfmt $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' '*.yml' 'README.md' 'test/**/*.json')",
     "format:swift": "swiftformat $(git ls-files '*.swift')",
     "generate:code": "node scripts/internal/generate-manifest.mts",
     "generate:docs": "node scripts/internal/generate-manifest-docs.mts",
@@ -143,8 +143,7 @@
     "js-yaml": "^4.1.0",
     "memfs": "^4.0.0",
     "minimatch": "^10.0.0",
-    "prettier": "^3.0.0",
-    "prettier-plugin-organize-imports": "^4.1.0",
+    "oxfmt": "^0.35.0",
     "react": "19.1.0",
     "react-native": "^0.81.0",
     "react-native-macos": "^0.81.1",
@@ -160,6 +159,5 @@
     "macos": "react-native-macos",
     "visionos": "@callstack/react-native-visionos",
     "windows": "react-native-windows"
-  },
-  "prettier": "../../.github/prettierrc.json"
+  }
 }

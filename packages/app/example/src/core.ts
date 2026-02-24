@@ -59,8 +59,8 @@ export function isFabricInstance<T>(
   return Boolean(
     // @ts-expect-error — https://github.com/facebook/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
     ref["__nativeTag"] ||
-      // @ts-expect-error — https://github.com/facebook/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
-      ref["_internalInstanceHandle"]?.stateNode?.canonical
+    // @ts-expect-error — https://github.com/facebook/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
+    ref["_internalInstanceHandle"]?.stateNode?.canonical
   );
 }
 

@@ -15,7 +15,7 @@
   "scripts": {
     "format": "nx run-many --target format:c,format:js,format:swift",
     "lint": "nx run-many --target lint:js,lint:kt,lint:rb,lint:swift",
-    "format:js": "prettier --write --log-level error $(git ls-files '.github/*.json' '.github/*.yml' '.yarn/plugins/*' '.yarnrc.yml' 'CONTRIBUTING.md' 'README.md' 'nx.json')",
+    "format:js": "oxfmt $(git ls-files '.github/*.json' '.github/*.yml' '.yarn/plugins/*' '.yarnrc.yml' 'CONTRIBUTING.md' 'README.md' 'nx.json')",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
     "release-notes": "node scripts/release-notes.mts",
     "show-affected": "node scripts/affected.mts"
@@ -28,8 +28,7 @@
     "js-yaml": "^4.1.0",
     "minimatch": "^10.0.0",
     "nx": "^21.0.0",
-    "prettier": "^3.0.0",
-    "prettier-plugin-organize-imports": "^4.1.0",
+    "oxfmt": "^0.35.0",
     "typescript": "^5.0.0"
   },
   "engines": {
@@ -93,7 +92,6 @@
     "packages/app",
     "packages/app/example"
   ],
-  "prettier": "./.github/prettierrc.json",
   "rnx-kit": {
     "lint": {
       "lockfile": {
