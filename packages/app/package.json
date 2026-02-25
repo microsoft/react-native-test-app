@@ -121,7 +121,7 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@expo/config-plugins": "^54.0.0",
-    "@expo/json-file": "~9.1.5",
+    "@expo/json-file": "~10.0.8",
     "@microsoft/eslint-plugin-sdl": "^1.0.0",
     "@react-native-community/cli": "^20.0.0",
     "@react-native-community/cli-types": "^20.0.0",
