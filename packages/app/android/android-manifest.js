@@ -102,7 +102,7 @@ function generateAndroidManifest(appManifestPath, manifestOutput, fs = nodefs) {
   const metaData = android.metaData;
   if (Array.isArray(metaData)) {
     const names = ["android:name"];
-    const attributes = ["android:value"];
+    const attributes = ["android:value", "android:resource"];
     const entries = toXML(metaData, names, attributes, attributeNamePrefix);
     if (entries.length > 0) {
       manifest.application["meta-data"] = entries;
