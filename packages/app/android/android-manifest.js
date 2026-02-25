@@ -109,6 +109,31 @@ function generateAndroidManifest(appManifestPath, manifestOutput, fs = nodefs) {
     }
   }
 
+  // https://developer.android.com/guide/topics/manifest/service-element
+  const services = android.services;
+  if (Array.isArray(services)) {
+    const names = ["android:name"];
+    const attributes = [
+      "android:description",
+      "android:directBootAware",
+      "android:enabled",
+      "android:exported",
+      "android:foregroundServiceType",
+      "android:icon",
+      "android:isolatedProcess",
+      "android:label",
+      "android:name",
+      "android:permission",
+      "android:process",
+      "android:stopWithTask",
+    ];
+    const entries = toXML(services, names, attributes, attributeNamePrefix);
+
+    if (entries.length > 0) {
+      manifest.application["service"] = entries;
+    }
+  }
+
   const builder = new XMLBuilder(xmlOptions);
   fs.mkdirSync(path.dirname(manifestOutput), { recursive: true, mode: 0o755 });
   fs.writeFileSync(manifestOutput, builder.build(xml));

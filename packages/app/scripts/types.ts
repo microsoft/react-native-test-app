@@ -29,6 +29,33 @@ export type AndroidConfig = {
       "android:name": string;
       "android:value": string;
     }[];
+    services?: {
+      "android:name": string;
+      "android:description": string;
+      "android:directBootAware": "true" | "false";
+      "android:enabled": "true" | "false";
+      "android:exported": "true" | "false";
+      "android:foregroundServiceType":
+        | "camera"
+        | "connectedDevice"
+        | "dataSync"
+        | "health"
+        | "location"
+        | "mediaPlayback"
+        | "mediaProjection"
+        | "microphone"
+        | "phoneCall"
+        | "remoteMessaging"
+        | "shortService"
+        | "specialUse"
+        | "systemExempted";
+      "android:icon": string;
+      "android:isolatedProcess": "true" | "false";
+      "android:label": string;
+      "android:permission": string;
+      "android:process": string;
+      "android:stopWithTask": "true" | "false";
+    }[];
   };
 };
 
@@ -37,6 +64,7 @@ export type AndroidManifest = {
   "uses-permission": Record<string, string>[];
   application: {
     "meta-data": Record<string, string>[];
+    service: Record<string, string>[];
   };
 };
 
