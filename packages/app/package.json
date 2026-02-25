@@ -20,6 +20,17 @@
     "name": "Microsoft Open Source",
     "email": "microsoftopensource@users.noreply.github.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/react-native-test-app.git",
+    "directory": "packages/app"
+  },
+  "bin": {
+    "init": "scripts/init.mjs",
+    "init-test-app": "scripts/init.mjs",
+    "configure-test-app": "scripts/configure.mjs",
+    "install-windows-test-app": "windows/app.mjs"
+  },
   "files": [
     "*.md",
     "ReactTestApp-DevSupport.podspec",
@@ -55,20 +66,8 @@
     "!.clang-format"
   ],
   "main": "scripts/configure-projects.js",
-  "bin": {
-    "init": "scripts/init.mjs",
-    "init-test-app": "scripts/init.mjs",
-    "configure-test-app": "scripts/configure.mjs",
-    "install-windows-test-app": "windows/app.mjs"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/microsoft/react-native-test-app.git",
-    "directory": "packages/app"
-  },
   "scripts": {
     "format:c": "clang-format -i $(git ls-files '*.cpp' '*.h' '*.m' '*.mm')",
-    "format:js": "oxfmt $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' '*.yml' 'README.md' 'test/**/*.json')",
     "format:swift": "swiftformat $(git ls-files '*.swift')",
     "generate:code": "node scripts/internal/generate-manifest.mts",
     "generate:docs": "node scripts/internal/generate-manifest-docs.mts",
@@ -94,28 +93,6 @@
     "prompts": "^2.4.0",
     "semver": "^7.3.5",
     "uuid": "^11.0.0"
-  },
-  "peerDependencies": {
-    "@callstack/react-native-visionos": "0.76 - 0.79",
-    "@expo/config-plugins": ">=5.0",
-    "react": "18.2 - 19.2",
-    "react-native": "0.76 - 0.84 || >=0.84.0-0 <0.85.0",
-    "react-native-macos": "^0.0.0-0 || 0.76 - 0.81",
-    "react-native-windows": "^0.0.0-0 || 0.76 - 0.81"
-  },
-  "peerDependenciesMeta": {
-    "@callstack/react-native-visionos": {
-      "optional": true
-    },
-    "@expo/config-plugins": {
-      "optional": true
-    },
-    "react-native-macos": {
-      "optional": true
-    },
-    "react-native-windows": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -149,6 +126,28 @@
     "react-native-macos": "^0.81.1",
     "react-native-windows": "^0.81.0",
     "suggestion-bot": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@callstack/react-native-visionos": "0.76 - 0.79",
+    "@expo/config-plugins": ">=5.0",
+    "react": "18.2 - 19.2",
+    "react-native": "0.76 - 0.84 || >=0.84.0-0 <0.85.0",
+    "react-native-macos": "^0.0.0-0 || 0.76 - 0.81",
+    "react-native-windows": "^0.0.0-0 || 0.76 - 0.81"
+  },
+  "peerDependenciesMeta": {
+    "@callstack/react-native-visionos": {
+      "optional": true
+    },
+    "@expo/config-plugins": {
+      "optional": true
+    },
+    "react-native-macos": {
+      "optional": true
+    },
+    "react-native-windows": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=18.12"

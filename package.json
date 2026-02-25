@@ -1,7 +1,7 @@
 {
-  "private": true,
   "name": "@microsoft/root",
   "version": "0.0.1-dev",
+  "private": true,
   "homepage": "https://github.com/microsoft/react-native-test-app",
   "license": "MIT",
   "author": {
@@ -12,10 +12,15 @@
     "type": "git",
     "url": "https://github.com/microsoft/react-native-test-app.git"
   },
+  "workspaces": [
+    ".",
+    "packages/app",
+    "packages/app/example"
+  ],
   "scripts": {
     "format": "nx run-many --target format:c,format:js,format:swift",
     "lint": "nx run-many --target lint:js,lint:kt,lint:rb,lint:swift",
-    "format:js": "oxfmt $(git ls-files '.github/*.json' '.github/*.yml' '.yarn/plugins/*' '.yarnrc.yml' 'CONTRIBUTING.md' 'README.md' 'nx.json')",
+    "format:js": "oxfmt '**/README.md' '**/package.json' '*.{cjs,cts,js,mjs,mts,ts,tsx,yml}' '.github/**/*.json' 'CONTRIBUTING.md' 'nx.json' '!packages/app/package.json'",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
     "release-notes": "node scripts/release-notes.mts",
     "show-affected": "node scripts/affected.mts"
@@ -31,10 +36,6 @@
     "oxfmt": "^0.35.0",
     "typescript": "^5.0.0"
   },
-  "engines": {
-    "node": ">=22.18"
-  },
-  "packageManager": "yarn@4.10.3",
   "resolutions": {
     "@appium/base-driver/axios": "^1.13.3",
     "@appium/base-driver/lodash": "^4.17.23",
@@ -87,11 +88,10 @@
     "simple-plist/bplist-creator": "~0.1.0",
     "simple-plist/bplist-parser": "~0.3.1"
   },
-  "workspaces": [
-    ".",
-    "packages/app",
-    "packages/app/example"
-  ],
+  "engines": {
+    "node": ">=22.18"
+  },
+  "packageManager": "yarn@4.10.3",
   "rnx-kit": {
     "lint": {
       "lockfile": {
