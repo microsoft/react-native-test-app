@@ -28,6 +28,7 @@ export type AndroidConfig = {
     metaData?: {
       "android:name": string;
       "android:value": string;
+      "android:resource": string;
     }[];
   };
 };
