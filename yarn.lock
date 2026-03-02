@@ -3655,16 +3655,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/config@npm:^0.7.0, @rnx-kit/config@npm:^0.7.4":
-  version: 0.7.4
-  resolution: "@rnx-kit/config@npm:0.7.4"
+"@rnx-kit/config@npm:^0.7.0, @rnx-kit/config@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "@rnx-kit/config@npm:0.7.5"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
-    "@rnx-kit/tools-node": "npm:^3.0.0"
-    "@rnx-kit/tools-packages": "npm:^0.1.0"
+    "@rnx-kit/tools-node": "npm:^3.0.4"
+    "@rnx-kit/tools-packages": "npm:^0.1.2"
+    "@rnx-kit/types-bundle-config": "npm:^1.0.0"
+    "@rnx-kit/types-kit-config": "npm:^1.0.0"
+    "@rnx-kit/types-node": "npm:^1.0.0"
     lodash.merge: "npm:^4.6.2"
     semver: "npm:^7.0.0"
-  checksum: 10c0/f237eacf8082eb5068d88a4b8302c115014edc0131475e756e52052426421f0799caa82208e7691b2e1673b859422bd9f5f8a9a192841f0e19c16ab7de090dd5
+  checksum: 10c0/daa00e7b591662bd4b5d2fdee99cc03a113776895680777d7e7d7ffc71ae37c1e8f3ad0badd51c55a9015c7cc2b2b7785a5ae684092f42817a359cdcb6b97313
   languageName: node
   linkType: hard
 
@@ -3691,15 +3694,16 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/lint-lockfile@npm:^0.1.0":
-  version: 0.1.2
-  resolution: "@rnx-kit/lint-lockfile@npm:0.1.2"
+  version: 0.1.3
+  resolution: "@rnx-kit/lint-lockfile@npm:0.1.3"
   dependencies:
-    "@rnx-kit/config": "npm:^0.7.4"
+    "@rnx-kit/config": "npm:^0.7.5"
     "@rnx-kit/tools-workspaces": "npm:^0.2.3"
+    "@rnx-kit/types-kit-config": "npm:^1.0.0"
     js-yaml: "npm:^4.1.1"
   bin:
     lint-lockfile: lib/cli.js
-  checksum: 10c0/778d5f320601ad6d3d4ec40730f4babc6d77c30dd0efa7dc0b5c1dec44306b431c6d16a58f2cb4b9376c33e7575caaf723aaf62758b440abd7949dcc5383b121
+  checksum: 10c0/823da6b029a5392d9d3265879d989b8d3e6f4896796e7eeb9328c1db915e54fafbcb7b06394163f3df49caf7243c4bf0094b9302ae4b3bbf19591d523529c0be
   languageName: node
   linkType: hard
 
@@ -3878,20 +3882,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-node@npm:^3.0.0, @rnx-kit/tools-node@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "@rnx-kit/tools-node@npm:3.0.3"
-  checksum: 10c0/5fa2123cb156fc6d268c95b2fa094b3ccf5f264ff5dcfd08f024454f45972093144e5745d4bcbe84e8f731faf01b7bfb6d3bca3e7c97ec89da3fc2e3e1121959
+"@rnx-kit/tools-node@npm:^3.0.0, @rnx-kit/tools-node@npm:^3.0.3, @rnx-kit/tools-node@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@rnx-kit/tools-node@npm:3.0.4"
+  dependencies:
+    "@rnx-kit/types-node": "npm:^1.0.0"
+  checksum: 10c0/f5fb8c5e09cee58648add26bcba03685df64f11f96c3785e259a7bcf683064a975e1cb62f783bcbaaf80190271c1bd80a83364f82a74bd5ff59af42a1166ad02
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-packages@npm:^0.1.0":
-  version: 0.1.1
-  resolution: "@rnx-kit/tools-packages@npm:0.1.1"
+"@rnx-kit/tools-packages@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "@rnx-kit/tools-packages@npm:0.1.2"
   dependencies:
-    "@rnx-kit/tools-node": "npm:^3.0.0"
+    "@rnx-kit/tools-node": "npm:^3.0.4"
     "@rnx-kit/tools-workspaces": "npm:^0.2.1"
-  checksum: 10c0/88b2af4198c572b5079fb436904d50cb211b7ee026d89b4430ad5305200cd6f38a0849b52ba1b099d19b50837318e230e9904dbaeb24a6271aa65db9d30bd5d7
+    "@rnx-kit/types-node": "npm:^1.0.0"
+  checksum: 10c0/c223858bf84bc8aef1776f3990cfecf3325da6df3b138552f41a5bf45f27055144fe0dd2d5baddb7f915e70e57287da3b6a6b73bf78ed40ab9733668325206e2
   languageName: node
   linkType: hard
 
@@ -3928,6 +3935,69 @@ __metadata:
   version: 3.0.0
   resolution: "@rnx-kit/tsconfig@npm:3.0.0"
   checksum: 10c0/87725a8b4bff64e998f1babfde4982aab3ec22538d0bde67f4980c019199741a91e796ba047d8cfafb538af3c6c07c1ae07239c9b3d73fe7ba30ab36cfbfe984
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/types-bundle-config@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@rnx-kit/types-bundle-config@npm:1.0.0"
+  dependencies:
+    "@rnx-kit/types-metro-serializer-esbuild": "npm:^1.0.0"
+    "@rnx-kit/types-plugin-cyclic-dependencies": "npm:^1.0.0"
+    "@rnx-kit/types-plugin-duplicates-checker": "npm:^1.0.0"
+    "@rnx-kit/types-plugin-typescript": "npm:^1.0.0"
+  peerDependencies:
+    metro: ">=0.83.0"
+  peerDependenciesMeta:
+    metro:
+      optional: true
+  checksum: 10c0/854000d0609a140c4719ea2099c5843ac420fc3fdf7274a3ff5be52f1deebd17669025576cc32413279f9df1ffebbb4e128e676839479d76cb5d7c85d8c4640f
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/types-kit-config@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@rnx-kit/types-kit-config@npm:1.0.0"
+  dependencies:
+    "@rnx-kit/types-bundle-config": "npm:^1.0.0"
+  checksum: 10c0/164809621b7889af879463ba0f89b05ebc6113df5b78615cd2dcc289c4480b15b35a4f9a8f593068c0be352472a8410bc7acdc1e39aa165940e88fccb58a82e2
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/types-metro-serializer-esbuild@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "@rnx-kit/types-metro-serializer-esbuild@npm:1.0.1"
+  checksum: 10c0/1907fb5e747d327be004b9479ca40cdd328c10a322b51cbb423df6e0d488a32cfea3bea2f52894f9c3a7f54ee810516362861166b3a513de7b123eeb49aca6bf
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/types-node@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@rnx-kit/types-node@npm:1.0.0"
+  dependencies:
+    "@rnx-kit/types-kit-config": "npm:^1.0.0"
+  checksum: 10c0/601608822853b7a875adc4945f150a00ee25db9c701922c0e0c09197a6c0ff15c328995fa22b6c39f9081ce4e965898af04e7c3bfb3a68fdb9e7a6e4c780e162
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/types-plugin-cyclic-dependencies@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@rnx-kit/types-plugin-cyclic-dependencies@npm:1.0.0"
+  checksum: 10c0/75d2ad3a17943e01472cb3385287749168d0535b6ab65a9ffc14117c25737c564ef7c06e8ac69645f40fc5d602ead7c4a9219256b8a47c786dc465d982aa845c
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/types-plugin-duplicates-checker@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@rnx-kit/types-plugin-duplicates-checker@npm:1.0.0"
+  checksum: 10c0/1d1cb8ef1f7ce28eafc486131f212f836df656bbc6fb6261934e76ca6cd26123b71d9eaec9c0ec86dc3ea803be5fb3487bd1bc0ca940fe5bfbe8a90fb0b1fedf
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/types-plugin-typescript@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@rnx-kit/types-plugin-typescript@npm:1.0.0"
+  checksum: 10c0/c792f81a3cbb8e15acbe66d0d23afa8b2e2090e725281bef90dd315bff03c01409601bf910d4d79137009e4246e4d60497fb50690477c96128c1184780ea852d
   languageName: node
   linkType: hard
 
