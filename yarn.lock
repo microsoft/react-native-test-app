@@ -3676,8 +3676,8 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/eslint-plugin@npm:^0.9.0":
-  version: 0.9.5
-  resolution: "@rnx-kit/eslint-plugin@npm:0.9.5"
+  version: 0.9.6
+  resolution: "@rnx-kit/eslint-plugin@npm:0.9.6"
   dependencies:
     "@react-native/eslint-plugin": "npm:^0.76.0"
     enhanced-resolve: "npm:^5.8.3"
@@ -3686,7 +3686,7 @@ __metadata:
     typescript-eslint: "npm:^8.0.0"
   peerDependencies:
     eslint: ">=8.57.0"
-  checksum: 10c0/6b81c331a9ec8690a0f421af72171b1bc1c38f9a7586a0dee86db5bdc752c9adbc19745c4d2fa370b014a4cd15f60a14132e1601a28b1407c65e2ea16c694a76
+  checksum: 10c0/d899a7a682ea02229e19eb146c27be4d3e183216b365faa6f46e1f6f11c0e486885d8be49aba908495ec6928c5bce7713be92ddf391fe38e8c1dfaa0e09748f2
   languageName: node
   linkType: hard
 
