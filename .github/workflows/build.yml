@@ -113,9 +113,7 @@ jobs:
               git diff
             fi
             git diff --exit-code
-            echo "::add-matcher::.github/eslint-stylish.json"
             yarn lint:js
-            echo "::remove-matcher owner=eslint-stylish::"
           fi
           yarn tsgo
           yarn test:js

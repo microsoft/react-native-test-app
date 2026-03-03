@@ -19,21 +19,26 @@
   ],
   "scripts": {
     "format": "nx run-many --target format:c,format:js,format:swift",
-    "lint": "nx run-many --target lint:js,lint:kt,lint:rb,lint:swift",
     "format:js": "oxfmt '**/README.md' '**/package.json' '*.{cjs,cts,js,mjs,mts,ts,tsx,yml}' '.github/**/*.json' 'CONTRIBUTING.md' 'nx.json' '!packages/app/package.json'",
+    "lint": "nx run-many --target lint:js,lint:kt,lint:rb,lint:swift",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
+    "lint:js": "oxlint $(git ls-files 'scripts/*.[cm][jt]s' 'scripts/*.[jt]s')",
     "release-notes": "node scripts/release-notes.mts",
     "show-affected": "node scripts/affected.mts"
   },
   "devDependencies": {
     "@nx/js": "^21.0.0",
     "@rnx-kit/lint-lockfile": "^0.1.0",
+    "@rnx-kit/oxlint-config": "^1.0.1",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^24.0.0",
+    "eslint": "^9.12.0",
+    "eslint-plugin-wdio": "^9.0.0",
     "js-yaml": "^4.1.0",
     "minimatch": "^10.0.0",
     "nx": "^21.0.0",
     "oxfmt": "^0.35.0",
+    "oxlint": "patch:oxlint@npm%3A1.51.0#~/.yarn/patches/oxlint-npm-1.51.0-b8c8e3b5d8.patch",
     "typescript": "^5.0.0"
   },
   "resolutions": {
