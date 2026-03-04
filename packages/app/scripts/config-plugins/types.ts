@@ -15,7 +15,7 @@ export type CustomModProvider = <
 export type IosModFileProviders = ReturnType<
   typeof BaseMods.getIosModFileProviders
 > &
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   Record<string, BaseModProviderMethods<any, any>>;
 
 export type ProjectInfo = {

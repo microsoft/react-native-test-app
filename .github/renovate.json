@@ -18,10 +18,6 @@
       "matchPackageNames": ["org.jetbrains.kotlin:**"]
     },
     {
-      "groupName": "ESLint",
-      "matchSourceUrls": ["https://github.com/eslint/eslint{/,}**"]
-    },
-    {
       "groupName": "Metro",
       "allowedVersions": "^0.82.0",
       "matchSourceUrls": ["https://github.com/facebook/metro{/,}**"]

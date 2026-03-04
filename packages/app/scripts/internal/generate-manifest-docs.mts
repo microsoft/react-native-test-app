@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-restricted-imports
+// oxlint-disable-next-line no-restricted-imports
 import type { SchemaObject } from "ajv";
 import * as path from "node:path";
 import { generateSchema } from "../schema.mjs";
