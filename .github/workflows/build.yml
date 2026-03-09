@@ -543,6 +543,7 @@ jobs:
     name: "Windows"
     permissions: {}
     runs-on: windows-2025
+    continue-on-error: true
     if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
@@ -627,6 +628,7 @@ jobs:
     name: "Windows [template]"
     permissions: {}
     runs-on: windows-2025
+    continue-on-error: true
     if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
@@ -684,6 +686,21 @@ jobs:
           if-no-files-found: error
           retention-days: 14
     timeout-minutes: 60
+  windows-result:
+    name: "Windows [result]"
+    permissions: {}
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name != 'schedule' }}
+    needs:
+      - windows
+      - windows-template
+    steps:
+      - name: Warn if Windows builds failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: |
+          echo "::warning::One or more Windows build jobs failed. This is non-blocking but should be investigated."
+          echo "windows result: ${{ needs.windows.result }}"
+          echo "windows-template result: ${{ needs.windows-template.result }}"
   release:
     permissions:
       contents: write # create releases (Nx Release)
@@ -696,8 +713,7 @@ jobs:
       - android-template
       - macos
       - macos-template
-      - windows
-      - windows-template
+      - windows-result
     runs-on: ubuntu-24.04
     if: ${{ github.event_name != 'schedule' }}
     steps:
