@@ -543,7 +543,6 @@ jobs:
     name: "Windows"
     permissions: {}
     runs-on: windows-2025
-    continue-on-error: true
     if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
@@ -583,12 +582,6 @@ jobs:
       - name: Determine whether the Windows app needs to be built
         id: affected
         uses: ./.github/actions/affected
-      - name: Install Windows App SDK
-        if: ${{ steps.affected.outputs.windows != '' }}
-        uses: ./.github/actions/setup-windows-app-sdk
-        with:
-          solution: Example.sln
-          working-directory: packages/app/example/windows
       - name: Build
         id: build
         if: ${{ steps.affected.outputs.windows != '' }}
@@ -600,25 +593,35 @@ jobs:
           }
         working-directory: packages/app/example
         continue-on-error: true
-      - name: Build (2nd attempt)
-        if: ${{ steps.affected.outputs.windows != '' && steps.build.outcome != 'success' }}
+      # GitHub Actions currently does not support outputs from jobs with matrices
+      # The workaround is to upload artifacts to communicate between jobs
+      - name: Set build result
+        id: build_result
+        if: ${{ steps.affected.outputs.windows != '' }}
         run: |
-          if ("${{ matrix.configuration }}" -eq "Release") {
-            yarn ci:windows --release --arch ${{ matrix.platform }}
-          } else {
-            yarn ci:windows --arch ${{ matrix.platform }}
-          }
-        working-directory: packages/app/example
+          path=${{ format('windows-build.{0}.{1}.result', matrix.platform, matrix.configuration) }}
+          echo "${{ steps.build.outcome }}" >> $path
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+        shell: bash
+      - name: Upload build result
+        if: ${{ steps.affected.outputs.windows != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.build_result.outputs.path }}
+          path: ${{ steps.build_result.outputs.path }}
+          retention-days: 1
+          archive: false
+          overwrite: true
       - name: Upload build logs
-        if: ${{ steps.affected.outputs.windows != '' && failure() }}
-        uses: actions/upload-artifact@v6
+        if: ${{ steps.affected.outputs.windows != '' && steps.build.outcome != 'success' }}
+        uses: actions/upload-artifact@v7
         with:
           name: windows-msbuild.binlog
           path: packages/app/example/windows/*.binlog
-          if-no-files-found: error
           retention-days: 14
+          overwrite: true
       - name: Test
-        if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' }}
+        if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' && steps.build.outcome == 'success' }}
         run: |
           ../../../scripts/build/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactAppTests.vcxproj
           ../../../scripts/build/VSTest.ps1 ${{ matrix.platform }}\${{ matrix.configuration }}\ReactAppTests.dll
@@ -628,7 +631,6 @@ jobs:
     name: "Windows [template]"
     permissions: {}
     runs-on: windows-2025
-    continue-on-error: true
     if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
@@ -659,12 +661,6 @@ jobs:
       - name: Determine whether the Windows app needs to be built
         id: affected
         uses: ./.github/actions/affected
-      - name: Install Windows App SDK
-        if: ${{ steps.affected.outputs.windows != '' }}
-        uses: ./.github/actions/setup-windows-app-sdk
-        with:
-          solution: TemplateExample.sln
-          working-directory: template-example/windows
       - name: Build
         id: build
         if: ${{ steps.affected.outputs.windows != '' }}
@@ -672,19 +668,33 @@ jobs:
           yarn windows --logging --no-packager --no-launch --no-deploy
         working-directory: template-example
         continue-on-error: true
-      - name: Build (2nd attempt)
-        if: ${{ steps.affected.outputs.windows != '' && steps.build.outcome != 'success' }}
+      # GitHub Actions currently does not support outputs from jobs with matrices
+      # The workaround is to upload artifacts to communicate between jobs
+      - name: Set build result
+        id: build_result
+        if: ${{ steps.affected.outputs.windows != '' }}
         run: |
-          yarn windows --logging --no-packager --no-launch --no-deploy
-        working-directory: packages/app/example
+          path=${{ format('windows-template-build.{0}.result', matrix.template) }}
+          echo "${{ steps.build.outcome }}" >> $path
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+        shell: bash
+      - name: Upload build result
+        if: ${{ steps.affected.outputs.windows != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.build_result.outputs.path }}
+          path: ${{ steps.build_result.outputs.path }}
+          retention-days: 1
+          archive: false
+          overwrite: true
       - name: Upload build logs
-        if: ${{ steps.affected.outputs.windows != '' && failure() }}
-        uses: actions/upload-artifact@v6
+        if: ${{ steps.affected.outputs.windows != '' && steps.build.outcome != 'success' }}
+        uses: actions/upload-artifact@v7
         with:
           name: windows-template-msbuild.binlog
           path: template-example/windows/*.binlog
-          if-no-files-found: error
           retention-days: 14
+          overwrite: true
     timeout-minutes: 60
   windows-result:
     name: "Windows [result]"
@@ -695,12 +705,19 @@ jobs:
       - windows
       - windows-template
     steps:
+      - name: Download build results
+        uses: actions/download-artifact@v8
+        with:
+          path: results
+          pattern: "windows-*.result"
+          merge-multiple: true
       - name: Warn if Windows builds failed
-        if: ${{ contains(needs.*.result, 'failure') }}
         run: |
-          echo "::warning::One or more Windows build jobs failed. This is non-blocking but should be investigated."
-          echo "windows result: ${{ needs.windows.result }}"
-          echo "windows-template result: ${{ needs.windows-template.result }}"
+          for file in results/*; do
+            if grep -q fail "$file"; then
+              echo "::warning::$(basename $file .result): $(cat $file) (this is non-blocking but should be investigated)"
+            fi
+          done
   release:
     permissions:
       contents: write # create releases (Nx Release)
