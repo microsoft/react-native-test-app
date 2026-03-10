@@ -3913,6 +3913,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rnx-kit/tools-filesystem@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@rnx-kit/tools-filesystem@npm:0.2.0"
+  peerDependencies:
+    memfs: ">=4.0.0"
+  peerDependenciesMeta:
+    memfs:
+      optional: true
+  checksum: 10c0/397f3e521b581da733aba81b59f2a084766904f52c063e4f1d153f9972861d6061eae3ddab3b340ffa2ce8971df9a8483e9a8e3cc9d50d7e33ab64f212fe91ac
+  languageName: node
+  linkType: hard
+
 "@rnx-kit/tools-language@npm:^3.0.1":
   version: 3.0.1
   resolution: "@rnx-kit/tools-language@npm:3.0.1"
@@ -3941,11 +3953,13 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.2":
-  version: 2.3.2
-  resolution: "@rnx-kit/tools-react-native@npm:2.3.2"
+  version: 2.3.4
+  resolution: "@rnx-kit/tools-react-native@npm:2.3.4"
   dependencies:
-    "@rnx-kit/tools-node": "npm:^3.0.3"
-  checksum: 10c0/eb12603e0a036d953689e2fb1db4995830cb74eb28847bf1f7d0600ab771b7c5b12388c0b93277690ae8d9bce03a13c56bbff099e867a957659bb1b14d888c2b
+    "@rnx-kit/tools-filesystem": "npm:^0.2.0"
+    "@rnx-kit/tools-node": "npm:^3.0.4"
+    "@rnx-kit/types-bundle-config": "npm:^1.0.0"
+  checksum: 10c0/14e1a9862a85d5ae4666ff3bc5184a266b743a305d223f2c79bd57aae7be59a0708d8c83d21fb6f018c296eb68fe010dbb829ca49517a7d50b4aef17bcfc8ce4
   languageName: node
   linkType: hard
 
