@@ -8,6 +8,10 @@
       "matchPackageNames": ["@react-native-community/cli**"]
     },
     {
+      "groupName": "@rnx-kit",
+      "sourceUrl": ["https://github.com/microsoft/rnx-kit"]
+    },
+    {
       "groupName": "Android CameraX",
       "matchDatasources": ["maven"],
       "matchPackageNames": ["androidx.camera:**"]

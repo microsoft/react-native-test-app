@@ -3631,11 +3631,14 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/align-deps@npm:^3.3.3":
-  version: 3.3.3
-  resolution: "@rnx-kit/align-deps@npm:3.3.3"
+  version: 3.4.2
+  resolution: "@rnx-kit/align-deps@npm:3.4.2"
+  dependencies:
+    "@rnx-kit/types-kit-config": "npm:^1.0.0"
+    "@rnx-kit/types-node": "npm:^1.0.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/5791d9fccc19fadd0974e5c2b0226eec59c747d094659e4c4a817468d3016cdc5e5120ce29f393de74c857447dabfd45627b238bd92d5875e4c47ebe2e260670
+  checksum: 10c0/d9d1859c622a9100ebea8c5a0417fc307bd1a78b96a3c32af3017b66ec5f955ee766de3ab65099de7b259661adf0fb3b358a161ef74e4bb456ddbfcc6f34432c
   languageName: node
   linkType: hard
 
@@ -3747,38 +3750,41 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:^2.0.0":
-  version: 2.0.2
-  resolution: "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:2.0.2"
+  version: 2.0.3
+  resolution: "@rnx-kit/metro-plugin-cyclic-dependencies-detector@npm:2.0.3"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
-    "@rnx-kit/tools-node": "npm:^3.0.0"
-  checksum: 10c0/1edc058478fa1840d156bfab2349daef71a2ec28ae67e6514ed3bfc96659a0113ca25991aa8799c126f30b3114a536a9061bcfac5c5bd24d1a2ebf578531756b
+    "@rnx-kit/tools-node": "npm:^3.0.4"
+    "@rnx-kit/types-plugin-cyclic-dependencies": "npm:^1.0.0"
+  checksum: 10c0/c5dc8dc8dd29c22799bf11bef14afe8ef674b943cf8a18b2c6bb2fa1c1b53e89a1b16ba0afce19976ff8e250bcb214daf3b883079db81d8591930d6aff057646
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-plugin-duplicates-checker@npm:^3.0.0":
-  version: 3.0.2
-  resolution: "@rnx-kit/metro-plugin-duplicates-checker@npm:3.0.2"
+  version: 3.0.3
+  resolution: "@rnx-kit/metro-plugin-duplicates-checker@npm:3.0.3"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
-    "@rnx-kit/tools-node": "npm:^3.0.0"
+    "@rnx-kit/tools-node": "npm:^3.0.4"
+    "@rnx-kit/types-plugin-duplicates-checker": "npm:^1.0.0"
   bin:
     check-duplicates: lib/index.js
-  checksum: 10c0/df9828190314b79a7675d80f328a6657d57f16240c274d4972bfb59ccfb41ce1abf31ebc8cdd90ab1c1792b6dafa66274c3c04447be5cff18530b6f8f350e3fa
+  checksum: 10c0/97929c043eda8843e57401688b6c78a83c680fd70bd4bcfae9a9bca6652cf5ad98b828ab50c603fd4022b094aba76396a819a99ecbffdee73c60852997eeb00a
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-plugin-typescript@npm:^0.5.3":
-  version: 0.5.3
-  resolution: "@rnx-kit/metro-plugin-typescript@npm:0.5.3"
+  version: 0.5.4
+  resolution: "@rnx-kit/metro-plugin-typescript@npm:0.5.4"
   dependencies:
-    "@rnx-kit/config": "npm:^0.7.0"
     "@rnx-kit/console": "npm:^2.0.0"
-    "@rnx-kit/tools-node": "npm:^3.0.3"
-    "@rnx-kit/tools-react-native": "npm:^2.3.2"
+    "@rnx-kit/tools-node": "npm:^3.0.4"
+    "@rnx-kit/tools-react-native": "npm:^2.3.3"
+    "@rnx-kit/types-bundle-config": "npm:^1.0.0"
+    "@rnx-kit/types-plugin-typescript": "npm:^1.0.0"
     "@rnx-kit/typescript-service": "npm:^2.0.2"
     typescript: "npm:>=4.7.0"
-  checksum: 10c0/90925be96ec23acb35ac42e2a3460d7bda79aa64c907f67f016075ec0e44b3ecd9decc7741f673dc41af19d5087d6b271efcf453d9e571bc99be64678c3e5c49
+  checksum: 10c0/81949a06b30dd3cd0ad9d655a63030cec060e258fe8a776c58c749e6167378898a3107d84666d96dcda435f9bebb33b7358c03e0f3ea42e17281e199f4d0fed1
   languageName: node
   linkType: hard
 
@@ -3797,18 +3803,17 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-serializer@npm:^2.0.0":
-  version: 2.0.2
-  resolution: "@rnx-kit/metro-serializer@npm:2.0.2"
+  version: 2.0.3
+  resolution: "@rnx-kit/metro-serializer@npm:2.0.3"
   dependencies:
     "@rnx-kit/tools-react-native": "npm:^2.3.0"
-    semver: "npm:^7.0.0"
-  checksum: 10c0/abcc361db0224037cafffeb368595801bd0166606b2432182c131fa7d29da0456b793b4fd02b16f844f31df6d8d917e65eaef43317b82d2ac15ec63beb52d059
+  checksum: 10c0/4e34791a69298a24bfb65d5c91ecc675b2110a45381ebf25228d1c0155750c5a06484c6a32d868bd76bd105b4609fb166bb0119830c0f8570d46098c716b861a
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-service@npm:^4.1.3":
-  version: 4.1.3
-  resolution: "@rnx-kit/metro-service@npm:4.1.3"
+  version: 4.1.4
+  resolution: "@rnx-kit/metro-service@npm:4.1.4"
   dependencies:
     "@rnx-kit/console": "npm:^2.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.3"
@@ -3825,7 +3830,7 @@ __metadata:
       optional: true
     metro-react-native-babel-transformer:
       optional: true
-  checksum: 10c0/789dddee2dc7a5ba50fe60c910651a953d74f31225e5a56b8acc56b15407286ed194e08c9f7df3fc4acf391a78de6313bbdc39e0b75af959b6d981ac2203e410
+  checksum: 10c0/61ba3d1552740b4ca4a4a7f4b5e1d68c45759229d280f604cb383a275f7ffe3b40a9ed04538205ae6b78679e3d4bfcf2a3e6e30ca463e65a9c65451ef73a5542
   languageName: node
   linkType: hard
 
@@ -3897,12 +3902,12 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/tools-apple@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "@rnx-kit/tools-apple@npm:0.2.2"
+  version: 0.2.3
+  resolution: "@rnx-kit/tools-apple@npm:0.2.3"
   dependencies:
     "@rnx-kit/tools-shell": "npm:^0.2.2"
-    fast-xml-parser: "npm:^4.0.0"
-  checksum: 10c0/fee9b00ed8483d2a19ff3bfe7d150bab9a1c028f75941ca4197b033fdd3a50a2ebbe501bd1886dcb18e633508e67f4ca071ed34fdeeef573783ca8ffabeccc07
+    fast-xml-parser: "npm:^5.3.4"
+  checksum: 10c0/ccfc7513b1a1b7a0aa2117dcf28ef11b89d115d0a64d67037e1348d81dc7f31d136c0436e462eb8ae774e519ef6363b95d466a77112148d3b23c2c045ea0dfa6
   languageName: node
   linkType: hard
 
@@ -3952,7 +3957,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.2":
+"@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.2, @rnx-kit/tools-react-native@npm:^2.3.3":
   version: 2.3.4
   resolution: "@rnx-kit/tools-react-native@npm:2.3.4"
   dependencies:
@@ -7860,17 +7865,6 @@ __metadata:
   version: 1.0.0
   resolution: "fast-xml-builder@npm:1.0.0"
   checksum: 10c0/2631fda265c81e8008884d08944eeed4e284430116faa5b8b7a43a3602af367223b7bf01c933215c9ad2358b8666e45041bc038d64877156a2f88821841b3014
-  languageName: node
-  linkType: hard
-
-"fast-xml-parser@npm:^4.0.0":
-  version: 4.5.4
-  resolution: "fast-xml-parser@npm:4.5.4"
-  dependencies:
-    strnum: "npm:^1.0.5"
-  bin:
-    fxparser: src/cli/cli.js
-  checksum: 10c0/7989148650fc1fce988798b62467f7dee0fd5a7ad049373e00e65fbc68f689c119975d03da32c427f0a1f5aad01de2efbd783a48dcdaf3ca41817a8b161ad3e8
   languageName: node
   linkType: hard
 
@@ -13765,13 +13759,6 @@ __metadata:
   version: 3.1.1
   resolution: "strip-json-comments@npm:3.1.1"
   checksum: 10c0/9681a6257b925a7fa0f285851c0e613cc934a50661fa7bb41ca9cbbff89686bb4a0ee366e6ecedc4daafd01e83eee0720111ab294366fe7c185e935475ebcecd
-  languageName: node
-  linkType: hard
-
-"strnum@npm:^1.0.5":
-  version: 1.1.2
-  resolution: "strnum@npm:1.1.2"
-  checksum: 10c0/a0fce2498fa3c64ce64a40dada41beb91cabe3caefa910e467dc0518ef2ebd7e4d10f8c2202a6104f1410254cae245066c0e94e2521fb4061a5cb41831952392
   languageName: node
   linkType: hard
 
