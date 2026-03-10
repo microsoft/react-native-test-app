@@ -9,7 +9,7 @@
     },
     {
       "groupName": "@rnx-kit",
-      "sourceUrl": ["https://github.com/microsoft/rnx-kit"]
+      "matchSourceUrls": ["https://github.com/microsoft/rnx-kit"]
     },
     {
       "groupName": "Android CameraX",
