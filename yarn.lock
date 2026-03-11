@@ -63,12 +63,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@appium/logger@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "@appium/logger@npm:2.0.5"
+  dependencies:
+    console-control-strings: "npm:1.1.0"
+    lodash: "npm:4.17.23"
+    lru-cache: "npm:11.2.6"
+    set-blocking: "npm:2.0.0"
+  checksum: 10c0/6319d13226a690800972b63bdf58e7f86d445f4a8f001f689603dd26d480d0426a75198869b652b73847ad0807c6ce25367e0e2c11c83b186f51aa551493ea14
+  languageName: node
+  linkType: hard
+
 "@appium/schema@npm:^1.0.1":
   version: 1.0.1
   resolution: "@appium/schema@npm:1.0.1"
   dependencies:
     json-schema: "npm:0.4.0"
   checksum: 10c0/06a8e9ee827410ef361e37d97a32064b3cc44542a6e336d3e0b557432806e6fa3415ba49032a9ec39e16f4ac26163892938f14655eec8b8ab56e82a541454ed3
+  languageName: node
+  linkType: hard
+
+"@appium/schema@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@appium/schema@npm:1.1.0"
+  dependencies:
+    json-schema: "npm:0.4.0"
+  checksum: 10c0/514d1456761702c93d78dbb2fd97d4300b4feb40a1d7b4634a4cd449e622ce73db19d5c5c091f87ae0848ea25810c65fd0010504a428d65274bf6faac2bad9e1
   languageName: node
   linkType: hard
 
@@ -83,48 +104,48 @@ __metadata:
   linkType: hard
 
 "@appium/support@npm:^7.0.0-rc.1, @appium/support@npm:^7.0.5":
-  version: 7.0.5
-  resolution: "@appium/support@npm:7.0.5"
+  version: 7.0.6
+  resolution: "@appium/support@npm:7.0.6"
   dependencies:
-    "@appium/logger": "npm:^2.0.4"
-    "@appium/tsconfig": "npm:^1.1.1"
-    "@appium/types": "npm:^1.2.0"
+    "@appium/logger": "npm:^2.0.5"
+    "@appium/tsconfig": "npm:^1.1.2"
+    "@appium/types": "npm:^1.2.1"
     "@colors/colors": "npm:1.6.0"
     archiver: "npm:7.0.1"
-    axios: "npm:1.13.3"
+    asyncbox: "npm:6.1.0"
+    axios: "npm:1.13.6"
     base64-stream: "npm:1.0.0"
     bluebird: "npm:3.7.2"
     bplist-creator: "npm:0.1.1"
     bplist-parser: "npm:0.3.2"
     form-data: "npm:4.0.5"
     get-stream: "npm:9.0.1"
-    glob: "npm:13.0.0"
+    glob: "npm:13.0.6"
     jsftp: "npm:2.1.3"
     klaw: "npm:4.1.0"
     lockfile: "npm:1.0.4"
     lodash: "npm:4.17.23"
     log-symbols: "npm:7.0.1"
-    moment: "npm:2.30.1"
     ncp: "npm:2.0.0"
-    package-directory: "npm:8.1.0"
+    package-directory: "npm:8.2.0"
     plist: "npm:3.1.0"
     pluralize: "npm:8.0.0"
-    read-pkg: "npm:10.0.0"
+    read-pkg: "npm:10.1.0"
     resolve-from: "npm:5.0.0"
     sanitize-filename: "npm:1.6.3"
-    semver: "npm:7.7.3"
+    semver: "npm:7.7.4"
     sharp: "npm:0.34.5"
     shell-quote: "npm:1.8.3"
     supports-color: "npm:10.2.2"
-    teen_process: "npm:4.0.8"
-    type-fest: "npm:5.4.1"
+    teen_process: "npm:4.0.10"
+    type-fest: "npm:5.4.4"
     uuid: "npm:13.0.0"
-    which: "npm:6.0.0"
+    which: "npm:6.0.1"
     yauzl: "npm:3.2.0"
   dependenciesMeta:
     sharp:
       optional: true
-  checksum: 10c0/d63b84883dfd7abd5b6eec7cc63d7777bace384e6090db80d77db76ecfeedb18a887b86afd5712a6be519db881764576c7c6f814a74ce16d34f85307d0789464
+  checksum: 10c0/468a6b63ad576c4826977ff3eb3a5679f4fba449c8f2ffe93e35f65b0fe162e7490a826e73426b3b934d72357fbc1a35e179278f4fc39f7fbedcaa378cad1f04
   languageName: node
   linkType: hard
 
@@ -137,6 +158,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@appium/tsconfig@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@appium/tsconfig@npm:1.1.2"
+  dependencies:
+    "@tsconfig/node20": "npm:20.1.9"
+  checksum: 10c0/e847d004189694d84254be37ac505d85b4cdb5dbc35eadbbea996a3e706419b868a2d23df4210830f744eea9e6000236ef852715458130f32459ffef55ed0f8a
+  languageName: node
+  linkType: hard
+
 "@appium/types@npm:^1.2.0":
   version: 1.2.0
   resolution: "@appium/types@npm:1.2.0"
@@ -146,6 +176,18 @@ __metadata:
     "@appium/tsconfig": "npm:^1.1.1"
     type-fest: "npm:5.4.1"
   checksum: 10c0/e156763ad643c1664bac63b2f8e3cd9776b4950bba121100c667389e9c04ddaf93bacf04d2b0e84b6a0a6a39674cf076a07513454d17314056e6d574bfea36ab
+  languageName: node
+  linkType: hard
+
+"@appium/types@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@appium/types@npm:1.2.1"
+  dependencies:
+    "@appium/logger": "npm:^2.0.5"
+    "@appium/schema": "npm:^1.1.0"
+    "@appium/tsconfig": "npm:^1.1.2"
+    type-fest: "npm:5.4.4"
+  checksum: 10c0/eaa4d856638480b7fa550eec1ddf2bf8a206e9c44cd2ac9c3b2f138ca0e3c8029b2f1281f06d09b87988f8a3f2c2f67146ed92b8e8df187475775100a865d80b
   languageName: node
   linkType: hard
 
@@ -4336,6 +4378,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tsconfig/node20@npm:20.1.9":
+  version: 20.1.9
+  resolution: "@tsconfig/node20@npm:20.1.9"
+  checksum: 10c0/04e4e515dc6ce9386af74accb565884c3771b355208acc3d3dee32f0ce4c1d12e59319e05200fb2b87a8655ed4d8eb9910e36667a91e4683879feea9938d90d1
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.9.0":
   version: 0.9.0
   resolution: "@tybys/wasm-util@npm:0.9.0"
@@ -5573,7 +5622,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"asyncbox@npm:^6.0.1, asyncbox@npm:^6.1.0":
+"asyncbox@npm:6.1.0, asyncbox@npm:^6.0.1, asyncbox@npm:^6.1.0":
   version: 6.1.0
   resolution: "asyncbox@npm:6.1.0"
   dependencies:
@@ -9323,6 +9372,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isexe@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "isexe@npm:4.0.0"
+  checksum: 10c0/5884815115bceac452877659a9c7726382531592f43dc29e5d48b7c4100661aed54018cb90bd36cb2eaeba521092570769167acbb95c18d39afdccbcca06c5ce
+  languageName: node
+  linkType: hard
+
 "iterator.prototype@npm:^1.1.5":
   version: 1.1.5
   resolution: "iterator.prototype@npm:1.1.5"
@@ -10605,7 +10661,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:2.30.1, moment@npm:^2.24.0, moment@npm:^2.29.4":
+"moment@npm:^2.24.0, moment@npm:^2.29.4":
   version: 2.30.1
   resolution: "moment@npm:2.30.1"
   checksum: 10c0/865e4279418c6de666fca7786607705fd0189d8a7b7624e2e56be99290ac846f90878a6f602e34b4e0455c549b85385b1baf9966845962b313699e7cb847543a
@@ -11650,12 +11706,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"package-directory@npm:8.1.0":
-  version: 8.1.0
-  resolution: "package-directory@npm:8.1.0"
+"package-directory@npm:8.2.0":
+  version: 8.2.0
+  resolution: "package-directory@npm:8.2.0"
   dependencies:
     find-up-simple: "npm:^1.0.0"
-  checksum: 10c0/29eee99ac9979dc852bbaab64968123ba44abaa8f2d49add065101612db81f3d4ac1eb27df3b1893878cd67dd8b5c36186876a139ec4fdd6a755abc810ce2749
+  checksum: 10c0/a2426d4ec22098ba8f35e9d0fa0935e0040ddd276d91330c790a68e36c01a41985ddd81ab1878e5ce9d395d98ca04aab99d107cb68431ff77a087c15e14d40a2
   languageName: node
   linkType: hard
 
@@ -12427,16 +12483,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"read-pkg@npm:10.0.0":
-  version: 10.0.0
-  resolution: "read-pkg@npm:10.0.0"
+"read-pkg@npm:10.1.0":
+  version: 10.1.0
+  resolution: "read-pkg@npm:10.1.0"
   dependencies:
     "@types/normalize-package-data": "npm:^2.4.4"
     normalize-package-data: "npm:^8.0.0"
     parse-json: "npm:^8.3.0"
-    type-fest: "npm:^5.2.0"
-    unicorn-magic: "npm:^0.3.0"
-  checksum: 10c0/d1f0a0db671a408f0ee03998e42217370e221b916903b36750470793c9a9db085b2da79bba85c7a51556003972fd770f838480ac80763ea7ab3d6db1faad8011
+    type-fest: "npm:^5.4.4"
+    unicorn-magic: "npm:^0.4.0"
+  checksum: 10c0/6a284bd00945239f715b8a0e986ad0faf29e184f5f26890734991c2696e48b4fa330939f937faac85bc4a2f6be17f8fce288ecd795b337bb4e37a5b75c464569
   languageName: node
   linkType: hard
 
@@ -14123,6 +14179,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"type-fest@npm:5.4.4, type-fest@npm:^5.4.4":
+  version: 5.4.4
+  resolution: "type-fest@npm:5.4.4"
+  dependencies:
+    tagged-tag: "npm:^1.0.0"
+  checksum: 10c0/bf9c6d7df5383fd720aac71da8ce8690ff1c554459d19cf3c72d61eac98255dba57abe20c628f91f4116f66211791462fdafa90b2be2d7405a5a4c295e4d849d
+  languageName: node
+  linkType: hard
+
 "type-fest@npm:^0.7.1":
   version: 0.7.1
   resolution: "type-fest@npm:0.7.1"
@@ -14134,15 +14199,6 @@ __metadata:
   version: 4.41.0
   resolution: "type-fest@npm:4.41.0"
   checksum: 10c0/f5ca697797ed5e88d33ac8f1fec21921839871f808dc59345c9cf67345bfb958ce41bd821165dbf3ae591cedec2bf6fe8882098dfdd8dc54320b859711a2c1e4
-  languageName: node
-  linkType: hard
-
-"type-fest@npm:^5.2.0":
-  version: 5.4.4
-  resolution: "type-fest@npm:5.4.4"
-  dependencies:
-    tagged-tag: "npm:^1.0.0"
-  checksum: 10c0/bf9c6d7df5383fd720aac71da8ce8690ff1c554459d19cf3c72d61eac98255dba57abe20c628f91f4116f66211791462fdafa90b2be2d7405a5a4c295e4d849d
   languageName: node
   linkType: hard
 
@@ -14336,10 +14392,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unicorn-magic@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "unicorn-magic@npm:0.3.0"
-  checksum: 10c0/0a32a997d6c15f1c2a077a15b1c4ca6f268d574cf5b8975e778bb98e6f8db4ef4e86dfcae4e158cd4c7e38fb4dd383b93b13eefddc7f178dea13d3ac8a603271
+"unicorn-magic@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "unicorn-magic@npm:0.4.0"
+  checksum: 10c0/cd6eff90967a5528dfa2016bdb5b38b0cd64c8558f9ba04fb5c2c23f3a232a67dfe2bfa4c45af3685d5f1a40dbac6a36d48e053f80f97ae4da1e0f6a55431685
   languageName: node
   linkType: hard
 
@@ -14763,14 +14819,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"which@npm:6.0.0, which@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "which@npm:6.0.0"
+"which@npm:6.0.1":
+  version: 6.0.1
+  resolution: "which@npm:6.0.1"
   dependencies:
-    isexe: "npm:^3.1.1"
+    isexe: "npm:^4.0.0"
   bin:
     node-which: bin/which.js
-  checksum: 10c0/fe9d6463fe44a76232bb6e3b3181922c87510a5b250a98f1e43a69c99c079b3f42ddeca7e03d3e5f2241bf2d334f5a7657cfa868b97c109f3870625842f4cc15
+  checksum: 10c0/7e710e54ea36d2d6183bee2f9caa27a3b47b9baf8dee55a199b736fcf85eab3b9df7556fca3d02b50af7f3dfba5ea3a45644189836df06267df457e354da66d5
   languageName: node
   linkType: hard
 
@@ -14804,6 +14860,17 @@ __metadata:
   bin:
     node-which: bin/which.js
   checksum: 10c0/e556e4cd8b7dbf5df52408c9a9dd5ac6518c8c5267c8953f5b0564073c66ed5bf9503b14d876d0e9c7844d4db9725fb0dcf45d6e911e17e26ab363dc3965ae7b
+  languageName: node
+  linkType: hard
+
+"which@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "which@npm:6.0.0"
+  dependencies:
+    isexe: "npm:^3.1.1"
+  bin:
+    node-which: bin/which.js
+  checksum: 10c0/fe9d6463fe44a76232bb6e3b3181922c87510a5b250a98f1e43a69c99c079b3f42ddeca7e03d3e5f2241bf2d334f5a7657cfa868b97c109f3870625842f4cc15
   languageName: node
   linkType: hard
 
