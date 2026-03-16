@@ -117,7 +117,7 @@
     "memfs": "^4.0.0",
     "minimatch": "^10.0.0",
     "oxfmt": "^0.35.0",
-    "oxlint": "patch:oxlint@npm%3A1.51.0#~/.yarn/patches/oxlint-npm-1.51.0-b8c8e3b5d8.patch",
+    "oxlint": "^1.51.0",
     "react": "19.1.0",
     "react-native": "^0.81.0",
     "react-native-macos": "^0.81.1",

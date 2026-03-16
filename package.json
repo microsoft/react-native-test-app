@@ -32,12 +32,13 @@
     "@rnx-kit/oxlint-config": "^1.0.3",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^24.0.0",
-    "eslint-plugin-wdio": "^9.0.0",
+    "eslint-plugin-wdio": "^9.26.0",
+    "globals": "^16.5.0",
     "js-yaml": "^4.1.0",
     "minimatch": "^10.0.0",
     "nx": "^21.0.0",
     "oxfmt": "^0.35.0",
-    "oxlint": "patch:oxlint@npm%3A1.51.0#~/.yarn/patches/oxlint-npm-1.51.0-b8c8e3b5d8.patch",
+    "oxlint": "^1.51.0",
     "typescript": "^5.0.0"
   },
   "resolutions": {
