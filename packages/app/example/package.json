@@ -37,7 +37,7 @@
     "@rnx-kit/cli": "^0.18.11",
     "@rnx-kit/metro-config": "^2.2.3",
     "@rnx-kit/polyfills": "^0.2.0",
-    "@rnx-kit/tsconfig": "^3.0.0",
+    "@rnx-kit/tsconfig": "^3.0.1",
     "@types/react": "~19.1.0",
     "@wdio/types": "^9.20.0",
     "appium": "^3.1.1",

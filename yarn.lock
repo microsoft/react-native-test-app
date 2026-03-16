@@ -3989,10 +3989,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tsconfig@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@rnx-kit/tsconfig@npm:3.0.0"
-  checksum: 10c0/87725a8b4bff64e998f1babfde4982aab3ec22538d0bde67f4980c019199741a91e796ba047d8cfafb538af3c6c07c1ae07239c9b3d73fe7ba30ab36cfbfe984
+"@rnx-kit/tsconfig@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@rnx-kit/tsconfig@npm:3.0.1"
+  checksum: 10c0/5932e971a1e674250f1876e9140a11320fe88da401df0cd15a152034332397897d5106d4e3fd481abe4d7d806af232c9398b594552867fde2b046e8527333e61
   languageName: node
   linkType: hard
 
@@ -4649,66 +4649,66 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript/native-preview-darwin-arm64@npm:7.0.0-dev.20260216.1":
-  version: 7.0.0-dev.20260216.1
-  resolution: "@typescript/native-preview-darwin-arm64@npm:7.0.0-dev.20260216.1"
+"@typescript/native-preview-darwin-arm64@npm:7.0.0-dev.20260316.1":
+  version: 7.0.0-dev.20260316.1
+  resolution: "@typescript/native-preview-darwin-arm64@npm:7.0.0-dev.20260316.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@typescript/native-preview-darwin-x64@npm:7.0.0-dev.20260216.1":
-  version: 7.0.0-dev.20260216.1
-  resolution: "@typescript/native-preview-darwin-x64@npm:7.0.0-dev.20260216.1"
+"@typescript/native-preview-darwin-x64@npm:7.0.0-dev.20260316.1":
+  version: 7.0.0-dev.20260316.1
+  resolution: "@typescript/native-preview-darwin-x64@npm:7.0.0-dev.20260316.1"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@typescript/native-preview-linux-arm64@npm:7.0.0-dev.20260216.1":
-  version: 7.0.0-dev.20260216.1
-  resolution: "@typescript/native-preview-linux-arm64@npm:7.0.0-dev.20260216.1"
+"@typescript/native-preview-linux-arm64@npm:7.0.0-dev.20260316.1":
+  version: 7.0.0-dev.20260316.1
+  resolution: "@typescript/native-preview-linux-arm64@npm:7.0.0-dev.20260316.1"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"@typescript/native-preview-linux-arm@npm:7.0.0-dev.20260216.1":
-  version: 7.0.0-dev.20260216.1
-  resolution: "@typescript/native-preview-linux-arm@npm:7.0.0-dev.20260216.1"
+"@typescript/native-preview-linux-arm@npm:7.0.0-dev.20260316.1":
+  version: 7.0.0-dev.20260316.1
+  resolution: "@typescript/native-preview-linux-arm@npm:7.0.0-dev.20260316.1"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@typescript/native-preview-linux-x64@npm:7.0.0-dev.20260216.1":
-  version: 7.0.0-dev.20260216.1
-  resolution: "@typescript/native-preview-linux-x64@npm:7.0.0-dev.20260216.1"
+"@typescript/native-preview-linux-x64@npm:7.0.0-dev.20260316.1":
+  version: 7.0.0-dev.20260316.1
+  resolution: "@typescript/native-preview-linux-x64@npm:7.0.0-dev.20260316.1"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"@typescript/native-preview-win32-arm64@npm:7.0.0-dev.20260216.1":
-  version: 7.0.0-dev.20260216.1
-  resolution: "@typescript/native-preview-win32-arm64@npm:7.0.0-dev.20260216.1"
+"@typescript/native-preview-win32-arm64@npm:7.0.0-dev.20260316.1":
+  version: 7.0.0-dev.20260316.1
+  resolution: "@typescript/native-preview-win32-arm64@npm:7.0.0-dev.20260316.1"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@typescript/native-preview-win32-x64@npm:7.0.0-dev.20260216.1":
-  version: 7.0.0-dev.20260216.1
-  resolution: "@typescript/native-preview-win32-x64@npm:7.0.0-dev.20260216.1"
+"@typescript/native-preview-win32-x64@npm:7.0.0-dev.20260316.1":
+  version: 7.0.0-dev.20260316.1
+  resolution: "@typescript/native-preview-win32-x64@npm:7.0.0-dev.20260316.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
 "@typescript/native-preview@npm:^7.0.0-0":
-  version: 7.0.0-dev.20260216.1
-  resolution: "@typescript/native-preview@npm:7.0.0-dev.20260216.1"
+  version: 7.0.0-dev.20260316.1
+  resolution: "@typescript/native-preview@npm:7.0.0-dev.20260316.1"
   dependencies:
-    "@typescript/native-preview-darwin-arm64": "npm:7.0.0-dev.20260216.1"
-    "@typescript/native-preview-darwin-x64": "npm:7.0.0-dev.20260216.1"
-    "@typescript/native-preview-linux-arm": "npm:7.0.0-dev.20260216.1"
-    "@typescript/native-preview-linux-arm64": "npm:7.0.0-dev.20260216.1"
-    "@typescript/native-preview-linux-x64": "npm:7.0.0-dev.20260216.1"
-    "@typescript/native-preview-win32-arm64": "npm:7.0.0-dev.20260216.1"
-    "@typescript/native-preview-win32-x64": "npm:7.0.0-dev.20260216.1"
+    "@typescript/native-preview-darwin-arm64": "npm:7.0.0-dev.20260316.1"
+    "@typescript/native-preview-darwin-x64": "npm:7.0.0-dev.20260316.1"
+    "@typescript/native-preview-linux-arm": "npm:7.0.0-dev.20260316.1"
+    "@typescript/native-preview-linux-arm64": "npm:7.0.0-dev.20260316.1"
+    "@typescript/native-preview-linux-x64": "npm:7.0.0-dev.20260316.1"
+    "@typescript/native-preview-win32-arm64": "npm:7.0.0-dev.20260316.1"
+    "@typescript/native-preview-win32-x64": "npm:7.0.0-dev.20260316.1"
   dependenciesMeta:
     "@typescript/native-preview-darwin-arm64":
       optional: true
@@ -4726,7 +4726,7 @@ __metadata:
       optional: true
   bin:
     tsgo: bin/tsgo.js
-  checksum: 10c0/db461ea3c92cf34f865e37418498aa6af38375af71d747550121468e310f8a1cc3e74467a61c240ad55b33d5c4728dc2be8eb3a1b2ee718d8c783af710df3c68
+  checksum: 10c0/7d880d350e2b66c4cc9496e458d25519e4165e0531c81f44c08081bb2f7bc617c9d28816920750a999d0228a0253a27a4f8de8a24779501589f6beaf78d3aaf0
   languageName: node
   linkType: hard
 
@@ -7686,7 +7686,7 @@ __metadata:
     "@rnx-kit/cli": "npm:^0.18.11"
     "@rnx-kit/metro-config": "npm:^2.2.3"
     "@rnx-kit/polyfills": "npm:^0.2.0"
-    "@rnx-kit/tsconfig": "npm:^3.0.0"
+    "@rnx-kit/tsconfig": "npm:^3.0.1"
     "@types/react": "npm:~19.1.0"
     "@wdio/types": "npm:^9.20.0"
     appium: "npm:^3.1.1"
@@ -12242,7 +12242,7 @@ __metadata:
     "@rnx-kit/lint-lockfile": "npm:^0.1.0"
     "@rnx-kit/react-native-host": "npm:^0.5.15"
     "@rnx-kit/tools-react-native": "npm:^2.1.0"
-    "@rnx-kit/tsconfig": "npm:^3.0.0"
+    "@rnx-kit/tsconfig": "npm:^3.0.1"
     "@swc-node/register": "npm:^1.10.0"
     "@swc/core": "npm:^1.11.0"
     "@types/js-yaml": "npm:^4.0.5"
