@@ -44,7 +44,7 @@
     "appium-uiautomator2-driver": "^7.0.0",
     "appium-xcuitest-driver": "^10.0.0",
     "react-native-test-app": "workspace:*",
-    "webdriverio": "patch:webdriverio@npm%3A9.24.0#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
+    "webdriverio": "patch:webdriverio@npm%3A9.26.1#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
   },
   "rnx-kit": {
     "kitType": "app",
