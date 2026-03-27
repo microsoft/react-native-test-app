@@ -4,7 +4,7 @@ import { URL } from "node:url";
 import { updatePackageManifest as updatePackageManifestActual } from "../../scripts/configure.mjs";
 import { readJSONFile } from "../../scripts/helpers.js";
 import type { Manifest } from "../../scripts/types.ts";
-import { fs, setMockFiles } from "../fs.mock.ts";
+import { fs, setMockFiles } from "../fs.mock.mts";
 
 function getExampleManifest() {
   const p = new URL("../../example/package.json", import.meta.url);

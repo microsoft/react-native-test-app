@@ -6,8 +6,8 @@ import {
   getPlatformPackage,
 } from "../../scripts/configure.mjs";
 import type { ConfigureParams, Platform } from "../../scripts/types.ts";
-import { templatePath } from "../template.ts";
-import { mockParams } from "./mockParams.ts";
+import { templatePath } from "../template.mts";
+import { mockParams } from "./mockParams.mts";
 
 describe("getConfig()", () => {
   const getConfig: typeof getConfigActual = (params, platform) =>

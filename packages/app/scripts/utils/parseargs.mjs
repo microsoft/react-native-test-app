@@ -1,5 +1,5 @@
 // @ts-check
-import cliui from "cliui";
+import { cliui } from "@isaacs/cliui";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
@@ -14,7 +14,7 @@ import * as util from "node:util";
  * @returns {values is Args<O>}
  */
 function coerce(values, _options) {
-  return Boolean(typeof values === "object" && "help" in values);
+  return typeof values === "object" && Object.hasOwn(values, "help");
 }
 
 /**

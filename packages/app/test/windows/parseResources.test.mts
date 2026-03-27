@@ -1,7 +1,7 @@
 import { deepEqual, equal, match } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { parseResources as parseResourcesActual } from "../../windows/project.mjs";
-import { fs, setMockFiles } from "../fs.mock.ts";
+import { fs, setMockFiles } from "../fs.mock.mts";
 
 describe("parseResources()", () => {
   const parseResources: typeof parseResourcesActual = (r, p) =>

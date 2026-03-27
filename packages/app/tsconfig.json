@@ -1,10 +1,8 @@
 {
-  "extends": "@rnx-kit/tsconfig/tsconfig.esm.node.json",
+  "extends": "@rnx-kit/tsconfig/tsconfig.node.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "esnext",
     "allowImportingTsExtensions": true,
-    "moduleResolution": "Node",
     "noEmit": true,
     "lib": ["ES2022", "DOM"]
   },

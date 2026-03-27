@@ -8,7 +8,7 @@ import { gatherConfig, writeAllFiles } from "../../scripts/configure.mjs";
 import { findNearest, readJSONFile } from "../../scripts/helpers.js";
 import type { ConfigureParams } from "../../scripts/types.ts";
 import { rm_r } from "../../scripts/utils/filesystem.mjs";
-import { templatePath } from "../template.ts";
+import { templatePath } from "../template.mts";
 
 const GRADLE_TEST_TASK = "nodeTest";
 const MKDIR_OPTIONS = { recursive: true, mode: 0o755 };

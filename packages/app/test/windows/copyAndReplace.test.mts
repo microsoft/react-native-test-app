@@ -2,7 +2,7 @@ import { equal, fail, match, rejects } from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { readTextFile as readTextFileActual } from "../../scripts/helpers.js";
 import { copyAndReplace as copyAndReplaceActual } from "../../windows/app.mjs";
-import { fs, setMockFiles } from "../fs.mock.ts";
+import { fs, setMockFiles } from "../fs.mock.mts";
 
 describe("copyAndReplace()", () => {
   const copyAndReplace: typeof copyAndReplaceActual = (src, dst, r) =>
