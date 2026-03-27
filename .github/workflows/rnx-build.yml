@@ -44,7 +44,7 @@ jobs:
       - name: Install npm dependencies
         run: ${{ github.event.inputs.packageManager }} install
       - name: Build Android app
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
         with:
           gradle-version: wrapper
           arguments: --no-daemon clean assembleDebug
