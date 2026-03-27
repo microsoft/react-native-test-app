@@ -771,7 +771,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Label
-        uses: actions/labeler@v5.0.0
+        uses: actions/labeler@v6.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           sync-labels: true
