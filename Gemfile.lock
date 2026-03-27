@@ -13,7 +13,7 @@ GEM
     json (2.13.2)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
-    minitest (5.25.5)
+    minitest (5.27.0)
     nanaimo (0.4.0)
     nkf (0.2.0)
     parallel (1.27.0)
