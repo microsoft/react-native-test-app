@@ -3,8 +3,8 @@ import { describe, it } from "node:test";
 import { gatherConfig as gatherConfigActual } from "../../scripts/configure.mjs";
 import { join } from "../../scripts/template.mjs";
 import type { Configuration, ConfigureParams } from "../../scripts/types.ts";
-import { templatePath } from "../template.ts";
-import { mockParams } from "./mockParams.ts";
+import { templatePath } from "../template.mts";
+import { mockParams } from "./mockParams.mts";
 
 describe("gatherConfig()", () => {
   const templateDir = templatePath.substring(

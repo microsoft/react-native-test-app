@@ -34,7 +34,7 @@ import type {
   JSONValue,
   ProjectConfiguration,
 } from "../../scripts/types.ts";
-import { fs, setMockFiles, toJSON } from "../fs.mock.ts";
+import { fs, setMockFiles, toJSON } from "../fs.mock.mts";
 
 const macosOnly = { skip: process.platform === "win32" };
 

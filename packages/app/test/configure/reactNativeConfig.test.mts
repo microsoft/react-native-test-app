@@ -2,7 +2,7 @@ import { equal, ok } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { reactNativeConfig as reactNativeConfigActual } from "../../scripts/configure.mjs";
 import type { ConfigureParams } from "../../scripts/types.ts";
-import { mockParams } from "./mockParams.ts";
+import { mockParams } from "./mockParams.mts";
 
 describe("reactNativeConfig()", () => {
   const reactNativeConfig = (params: ConfigureParams): string => {

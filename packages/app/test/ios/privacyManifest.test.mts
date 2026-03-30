@@ -4,7 +4,7 @@ import { generatePrivacyManifest as generatePrivacyManifestActual } from "../../
 import { readTextFile } from "../../scripts/helpers.js";
 import type { JSONObject } from "../../scripts/types.ts";
 import { mkdir_p } from "../../scripts/utils/filesystem.mjs";
-import { fs, setMockFiles } from "../fs.mock.ts";
+import { fs, setMockFiles } from "../fs.mock.mts";
 
 const macosOnly = { skip: process.platform === "win32" };
 

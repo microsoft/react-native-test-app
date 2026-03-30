@@ -1,7 +1,7 @@
 import { equal } from "node:assert/strict";
 import { describe, it } from "node:test";
 import { generate as generateActual } from "../../scripts/embed-manifest/swift.mjs";
-import * as fixtures from "./fixtures.ts";
+import * as fixtures from "./fixtures.mts";
 
 describe("embed manifest (Swift)", () => {
   const generate = (json: Record<string, unknown>) => generateActual(json, "0");

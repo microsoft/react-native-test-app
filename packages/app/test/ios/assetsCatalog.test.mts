@@ -4,7 +4,7 @@ import { afterEach, describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
 import { generateAssetsCatalogs as generateAssetsCatalogsActual } from "../../ios/assetsCatalog.mjs";
 import { readTextFile } from "../../scripts/helpers.js";
-import { fs as fsMock, setMockFiles, toJSON } from "../fs.mock.ts";
+import { fs as fsMock, setMockFiles, toJSON } from "../fs.mock.mts";
 
 const macosOnly = { skip: process.platform === "win32" };
 

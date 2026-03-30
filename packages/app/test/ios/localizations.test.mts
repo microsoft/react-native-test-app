@@ -8,7 +8,7 @@ import {
 import { projectPath } from "../../ios/utils.mjs";
 import { readTextFile } from "../../scripts/helpers.js";
 import type { ApplePlatform, JSONObject } from "../../scripts/types.ts";
-import { fs, setMockFiles, toJSON } from "../fs.mock.ts";
+import { fs, setMockFiles, toJSON } from "../fs.mock.mts";
 
 const macosOnly = { skip: process.platform === "win32" };
 

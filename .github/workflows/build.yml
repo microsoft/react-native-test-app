@@ -745,7 +745,7 @@ jobs:
         uses: ./.github/actions/yarn
       - name: Verify tarball content
         run: |
-          yarn test test/pack.test.ts
+          node --test test/pack.test.mts
         working-directory: packages/app
       - name: Release (dry run)
         if: ${{ github.ref != 'refs/heads/trunk' }}

@@ -1,5 +1,5 @@
 // @ts-check
-import Ajv from "ajv";
+import { Ajv } from "ajv";
 import * as nodefs from "node:fs";
 import { readJSONFile } from "../helpers.js";
 import { generateSchema } from "../schema.mjs";
