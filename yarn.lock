@@ -3480,11 +3480,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-windows/cli@npm:0.81.4":
-  version: 0.81.4
-  resolution: "@react-native-windows/cli@npm:0.81.4"
+"@react-native-windows/cli@npm:0.81.5":
+  version: 0.81.5
+  resolution: "@react-native-windows/cli@npm:0.81.5"
   dependencies:
-    "@react-native-windows/codegen": "npm:0.81.4"
+    "@react-native-windows/codegen": "npm:0.81.5"
     "@react-native-windows/fs": "npm:0.81.1"
     "@react-native-windows/package-utils": "npm:0.81.1"
     "@react-native-windows/telemetry": "npm:0.81.2"
@@ -3507,13 +3507,13 @@ __metadata:
     xpath: "npm:^0.0.27"
   peerDependencies:
     react-native: ^0.81.0
-  checksum: 10c0/5e3e109947adfeeffbade961c8fc5bf623f9a7651477c05f7782793c6e2d22295c70ab56e3b309129340abc5be4d9568943f3e605e4e09e85ec08c9cee975872
+  checksum: 10c0/80a2e0f09849a76415474fb9eeaf8b4fd99594e19e4060f1ed896addf97ed9004b73fd176f2a9fa842b2c7bb413a5c4e531f2e48d2bd390d2dd7713930682d6d
   languageName: node
   linkType: hard
 
-"@react-native-windows/codegen@npm:0.81.4":
-  version: 0.81.4
-  resolution: "@react-native-windows/codegen@npm:0.81.4"
+"@react-native-windows/codegen@npm:0.81.5":
+  version: 0.81.5
+  resolution: "@react-native-windows/codegen@npm:0.81.5"
   dependencies:
     "@react-native-windows/fs": "npm:0.81.1"
     chalk: "npm:^4.1.0"
@@ -3525,7 +3525,7 @@ __metadata:
     react-native: ^0.81.0
   bin:
     react-native-windows-codegen: bin.js
-  checksum: 10c0/842e14473807f9d65ea90e9bb849f1b2040b91f906504a2b9c266035a95575d0e9f5082728a23bc4d542d999254b58fb07874b9fbe9d13b72ee22e1cd61321f0
+  checksum: 10c0/5037ac79be5665c1e15e4494c68bf28af971dfdeba908c5c74c9026c34cec2264a79971edafaa3986965fb6a5cc2ba2b8b38b25aece1a2ca5bf502a88fb9d1fd
   languageName: node
   linkType: hard
 
@@ -12403,15 +12403,15 @@ __metadata:
   linkType: soft
 
 "react-native-windows@npm:^0.81.0":
-  version: 0.81.7
-  resolution: "react-native-windows@npm:0.81.7"
+  version: 0.81.9
+  resolution: "react-native-windows@npm:0.81.9"
   dependencies:
     "@babel/runtime": "npm:^7.0.0"
     "@jest/create-cache-key-function": "npm:^29.7.0"
     "@react-native-community/cli": "npm:17.0.0"
     "@react-native-community/cli-platform-android": "npm:17.0.0"
     "@react-native-community/cli-platform-ios": "npm:17.0.0"
-    "@react-native-windows/cli": "npm:0.81.4"
+    "@react-native-windows/cli": "npm:0.81.5"
     "@react-native/assets": "npm:1.0.0"
     "@react-native/assets-registry": "npm:0.81.6"
     "@react-native/codegen": "npm:0.81.6"
@@ -12455,7 +12455,7 @@ __metadata:
     "@types/react": ^19.1.4
     react: ^19.1.4
     react-native: ^0.81.0
-  checksum: 10c0/34460bf5781f2726198ae40e0a350e86637ca2a5485feb1690a0ae57f6398a35f411c08344fa3641ebdc27de6cfb4cc3eb975048ea350577eb6cfc2b431abd45
+  checksum: 10c0/2c86d541697dd8006e36e7952fdd7395fe2b95e14e27260d4b524eddce0f7956741402f56942d449424e0df630ac9f35bccfa87087b4282bb168bcca39bc5530
   languageName: node
   linkType: hard
 
