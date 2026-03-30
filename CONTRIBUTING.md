@@ -183,7 +183,7 @@ If your files are missing, you can modify the `files` section in `package.json`.
 Also make sure that you update the test to include the new files:
 
 ```sh
-node --test test/pack.test.mjs
+node --test test/pack.test.mts
 ```
 
 ## Testing Specific React Native Versions

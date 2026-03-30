@@ -2,10 +2,14 @@ import { spawnSync } from "node:child_process";
 
 type Language = "ruby" | "typescript";
 
+function isTypeScript(file: string): boolean {
+  return file.endsWith(".mts") || file.endsWith(".ts");
+}
+
 function getTarget(files: string[]): Language | undefined {
   if (files.some((file) => file.endsWith(".rb"))) {
     return "ruby";
-  } else if (files.some((file) => file.endsWith(".ts"))) {
+  } else if (files.some(isTypeScript)) {
     return "typescript";
   } else {
     return undefined;
