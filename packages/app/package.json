@@ -104,8 +104,6 @@
     "@react-native-community/template": "^0.81.0",
     "@rnx-kit/lint-lockfile": "^0.1.0",
     "@rnx-kit/tsconfig": "^3.0.1",
-    "@swc-node/register": "^1.10.0",
-    "@swc/core": "^1.11.0",
     "@types/js-yaml": "^4.0.5",
     "@types/mustache": "^4.0.0",
     "@types/node": "^24.0.0",
