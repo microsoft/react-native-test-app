@@ -60,6 +60,11 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: true
 
+Style/OneClassPerFile:
+  Exclude:
+    - ios/test_app.rb
+    - test/test_test_app.rb
+
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
 
