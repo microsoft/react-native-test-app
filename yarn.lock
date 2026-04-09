@@ -46,9 +46,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appium/docutils@link:./packages/null::locator=%40microsoft%2Froot%40workspace%3A.":
+"@appium/docutils@ignore:":
   version: 0.0.0-use.local
-  resolution: "@appium/docutils@link:./packages/null::locator=%40microsoft%2Froot%40workspace%3A."
+  resolution: "@appium/docutils@ignore:"
   languageName: node
   linkType: soft
 
@@ -5877,9 +5877,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-jest@link:./packages/null::locator=%40microsoft%2Froot%40workspace%3A.":
+"babel-jest@ignore:":
   version: 0.0.0-use.local
-  resolution: "babel-jest@link:./packages/null::locator=%40microsoft%2Froot%40workspace%3A."
+  resolution: "babel-jest@ignore:"
   languageName: node
   linkType: soft
 

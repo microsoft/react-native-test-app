@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "extends": "nx/presets/npm.json",
   "defaultBase": "trunk",
   "targetDefaults": {
     "format:js": {
@@ -36,9 +37,5 @@
   "tui": {
     "enabled": false
   },
-  "pluginsConfig": {
-    "@nx/js": {
-      "analyzeSourceFiles": false
-    }
-  }
+  "analytics": false
 }
