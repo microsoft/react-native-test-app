@@ -358,7 +358,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: macos
-          project-root: packages/app/example
+          project-root: packages/example-macos
           cache-key-prefix: example
           xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Set up react-native@canary
@@ -373,7 +373,7 @@ jobs:
       - name: Bundle JavaScript
         run: |
           yarn build:macos
-        working-directory: packages/app/example
+        working-directory: packages/example-macos
       - name: Determine whether the macOS app needs to be built
         id: affected
         uses: ./.github/actions/affected
@@ -382,22 +382,22 @@ jobs:
         uses: ./.github/actions/cocoapods
         with:
           project-directory: macos
-          working-directory: packages/app/example
+          working-directory: packages/example-macos
       - name: Build
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
-          ../../../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
-        working-directory: packages/app/example
+          ../../scripts/xcodebuild.sh macos/Example.xcworkspace build-for-testing
+        working-directory: packages/example-macos
       - name: Test `react-native config`
         if: ${{ steps.affected.outputs.macos != '' }}
         run: |
           node --test test/config.test.mjs
-        working-directory: packages/app/example
+        working-directory: packages/example-macos
       - name: Test
         if: ${{ steps.affected.outputs.macos != '' && github.event_name != 'schedule' }}
         run: |
-          ../../../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
-        working-directory: packages/app/example
+          ../../scripts/xcodebuild.sh macos/Example.xcworkspace test-without-building
+        working-directory: packages/example-macos
     timeout-minutes: 60
   macos-template:
     name: "macOS [template]"
@@ -571,14 +571,15 @@ jobs:
       - name: Bundle JavaScript
         run: |
           yarn build:windows
+        working-directory: packages/example-windows
       - name: Generate Visual Studio solution
         run: |
-          node ../windows/app.mjs --msbuildprops WindowsTargetPlatformVersion=$env:WindowsTargetPlatformVersion
-        working-directory: packages/app/example
+          node ../app/windows/app.mjs --msbuildprops WindowsTargetPlatformVersion=$env:WindowsTargetPlatformVersion
+        working-directory: packages/example-windows
       - name: Test `react-native config`
         run: |
           node --test test/config.test.mjs
-        working-directory: packages/app/example
+        working-directory: packages/example-windows
       - name: Determine whether the Windows app needs to be built
         id: affected
         uses: ./.github/actions/affected
@@ -591,7 +592,7 @@ jobs:
           } else {
             yarn ci:windows --arch ${{ matrix.platform }}
           }
-        working-directory: packages/app/example
+        working-directory: packages/example-windows
         continue-on-error: true
       # GitHub Actions currently does not support outputs from jobs with matrices
       # The workaround is to upload artifacts to communicate between jobs
@@ -617,15 +618,15 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: windows-msbuild.binlog
-          path: packages/app/example/windows/*.binlog
+          path: packages/example-windows/windows/*.binlog
           retention-days: 14
           overwrite: true
       - name: Test
         if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' && steps.build.outcome == 'success' }}
         run: |
-          ../../../scripts/build/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactAppTests.vcxproj
-          ../../../scripts/build/VSTest.ps1 ${{ matrix.platform }}\${{ matrix.configuration }}\ReactAppTests.dll
-        working-directory: packages/app/example/windows/ReactAppTests
+          ../../../app/scripts/build/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactAppTests.vcxproj
+          ../../../app/scripts/build/VSTest.ps1 ${{ matrix.platform }}\${{ matrix.configuration }}\ReactAppTests.dll
+        working-directory: packages/example-windows/windows/ReactAppTests
     timeout-minutes: 60
   windows-template:
     name: "Windows [template]"

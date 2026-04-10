@@ -5,17 +5,23 @@ import * as path from "node:path";
 import { after, before, test } from "node:test";
 import { URL, fileURLToPath } from "node:url";
 
-async function getLoadConfig() {
+/**
+ * @param {string} cwd
+ */
+async function getLoadConfig(cwd) {
   try {
-    // @ts-expect-error `loadConfig` was not exported until 7.0.
-    return await import("@react-native-community/cli/build/tools/config");
+    const config = import.meta.resolve(
+      "@react-native-community/cli/build/tools/config",
+      cwd
+    );
+    return await import(config);
   } catch (_) {
     // `loadConfig` was made public in 7.0:
     // https://github.com/react-native-community/cli/pull/1464
-    const { default: cli } = await import("@react-native-community/cli");
+    const rncCli = import.meta.resolve("@react-native-community/cli", cwd);
+    const { default: cli } = await import(rncCli);
     return cli.loadConfig.length === 1
-      ? // @ts-ignore The signature change of `loadConfig` was introduced in 14.0
-        () => cli.loadConfig({}) // >=14.0
+      ? () => cli.loadConfig({}) // >=14.0
       : cli.loadConfig; // <14.0
   }
 }
@@ -29,9 +35,9 @@ function regexp(p) {
 }
 
 test("react-native config", async (t) => {
-  const loadConfig = await getLoadConfig();
-
   const currentDir = process.cwd();
+  const loadConfig = await getLoadConfig(currentDir);
+
   const projectRoot = path.sep + path.join("packages", "app");
   const exampleRoot = path.join(projectRoot, "example");
   const reactNativePath = path.join(
@@ -86,6 +92,32 @@ test("react-native config", async (t) => {
         ok(config.project.ios.xcodeProject.isWorkspace);
       } else {
         equal(config.project.ios.xcodeProject, null);
+      }
+    }
+  );
+
+  await t.test(
+    "contains macOS config",
+    { skip: process.platform === "win32" },
+    () => {
+      const sourceDir = path.join(exampleRoot, "macos");
+      const config = loadConfig();
+
+      equal(typeof config, "object");
+      match(config.root, regexp(exampleRoot));
+      match(config.reactNativePath, regexp(reactNativePath));
+      equal(
+        config.dependencies["react-native-test-app"].name,
+        "react-native-test-app"
+      );
+      notEqual(config.platforms.macos, undefined);
+      match(config.project.macos.sourceDir, regexp(sourceDir));
+
+      if (fs.existsSync("macos/Pods")) {
+        equal(config.project.macos.xcodeProject.name, "Example.xcworkspace");
+        ok(config.project.macos.xcodeProject.isWorkspace);
+      } else {
+        equal(config.project.macos.xcodeProject, null);
       }
     }
   );

@@ -116,9 +116,9 @@
     "minimatch": "^10.0.0",
     "oxfmt": "^0.41.0",
     "oxlint": "^1.51.0",
-    "react": "19.1.0",
-    "react-native": "^0.81.0",
-    "react-native-macos": "^0.81.1",
+    "react": "19.1.4",
+    "react-native": "^0.81.6",
+    "react-native-macos": "^0.81.0",
     "react-native-windows": "^0.81.0",
     "suggestion-bot": "^4.0.0"
   },

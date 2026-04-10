@@ -14,8 +14,6 @@ runs:
     - name: Set up react-native@${{ inputs.version }}
       run: |
         rm example/ios/Podfile.lock
-        rm example/macos/Podfile.lock
-        rm example/visionos/Podfile.lock
         node --run set-react-version -- ${{ inputs.version }}
       shell: bash
       working-directory: packages/app
