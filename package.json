@@ -47,6 +47,7 @@
     "@appium/base-driver/axios": "^1.13.6",
     "@appium/base-driver/lodash": "^4.17.23",
     "@appium/base-driver/lru-cache": "^11.2.6",
+    "@appium/base-driver/path-to-regexp": "^8.3.0",
     "@appium/docutils": "ignore:",
     "@appium/logger/lodash": "^4.17.23",
     "@appium/logger/lru-cache": "^11.2.6",
