@@ -7,6 +7,10 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Disable minimum age gate
+      run: |
+        yarn config unset npmMinimalAgeGate
+      shell: bash
     - name: Set up react-native@${{ inputs.version }}
       run: |
         rm example/ios/Podfile.lock
