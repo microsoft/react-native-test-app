@@ -58,6 +58,9 @@ jobs:
           yarn dedupe --check
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
+      - name: Lint dependencies
+        run: |
+          yarn rnx-align-deps
       - name: Lint lockfile
         run: |
           yarn lint-lockfile
