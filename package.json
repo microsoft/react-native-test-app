@@ -15,7 +15,8 @@
   "workspaces": [
     ".",
     "packages/app",
-    "packages/app/example"
+    "packages/app/example",
+    "packages/example-*"
   ],
   "scripts": {
     "format": "nx run-many --target format:c,format:js,format:swift",
@@ -24,10 +25,12 @@
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
     "lint:js": "oxlint $(git ls-files 'scripts/*.[cm][jt]s' 'scripts/*.[jt]s')",
     "release-notes": "node scripts/release-notes.mts",
+    "rnx-align-deps": "rnx-align-deps --exclude-packages @microsoft/root,react-native-test-app",
     "show-affected": "node scripts/affected.mts"
   },
   "devDependencies": {
     "@nx/js": "^22.0.0",
+    "@rnx-kit/align-deps": "^3.4.5",
     "@rnx-kit/lint-lockfile": "^0.1.0",
     "@rnx-kit/oxlint-config": "^1.0.3",
     "@swc-node/register": "^1.11.1",

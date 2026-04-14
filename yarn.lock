@@ -2527,6 +2527,7 @@ __metadata:
   resolution: "@microsoft/root@workspace:."
   dependencies:
     "@nx/js": "npm:^22.0.0"
+    "@rnx-kit/align-deps": "npm:^3.4.5"
     "@rnx-kit/lint-lockfile": "npm:^0.1.0"
     "@rnx-kit/oxlint-config": "npm:^1.0.3"
     "@swc-node/register": "npm:^1.11.1"
@@ -3858,15 +3859,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/align-deps@npm:^3.4.2":
-  version: 3.4.2
-  resolution: "@rnx-kit/align-deps@npm:3.4.2"
+"@rnx-kit/align-deps@npm:^3.4.2, @rnx-kit/align-deps@npm:^3.4.5":
+  version: 3.4.5
+  resolution: "@rnx-kit/align-deps@npm:3.4.5"
   dependencies:
     "@rnx-kit/types-kit-config": "npm:^1.0.0"
     "@rnx-kit/types-node": "npm:^1.0.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/d9d1859c622a9100ebea8c5a0417fc307bd1a78b96a3c32af3017b66ec5f955ee766de3ab65099de7b259661adf0fb3b358a161ef74e4bb456ddbfcc6f34432c
+  checksum: 10c0/491c55368d99761e904373c30158f88d9b82551e09ec55c0d3f5e1214ae617853b8a932e3442da78339e5e8d9ad840ee1e95b56de0454f1e203ff3099d136d62
   languageName: node
   linkType: hard
 
@@ -7930,6 +7931,56 @@ __metadata:
   languageName: node
   linkType: hard
 
+"example-macos@workspace:packages/example-macos":
+  version: 0.0.0-use.local
+  resolution: "example-macos@workspace:packages/example-macos"
+  dependencies:
+    "@babel/core": "catalog:"
+    "@babel/preset-env": "catalog:"
+    "@react-native-community/cli": "npm:^20.0.0"
+    "@react-native-community/cli-platform-android": "npm:^20.0.0"
+    "@react-native-community/cli-platform-ios": "npm:^20.0.0"
+    "@react-native-webapis/web-storage": "npm:^0.4.5"
+    "@react-native/babel-preset": "npm:^0.81.0"
+    "@react-native/metro-config": "npm:^0.81.0"
+    "@rnx-kit/cli": "catalog:"
+    "@rnx-kit/metro-config": "catalog:"
+    "@rnx-kit/polyfills": "catalog:"
+    "@rnx-kit/tsconfig": "catalog:"
+    "@types/react": "npm:~19.1.0"
+    react: "npm:19.1.4"
+    react-native: "npm:^0.81.6"
+    react-native-macos: "npm:^0.81.0"
+    react-native-safe-area-context: "npm:^5.6.0"
+    react-native-test-app: "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"example-windows@workspace:packages/example-windows":
+  version: 0.0.0-use.local
+  resolution: "example-windows@workspace:packages/example-windows"
+  dependencies:
+    "@babel/core": "catalog:"
+    "@babel/preset-env": "catalog:"
+    "@react-native-community/cli": "npm:^20.0.0"
+    "@react-native-community/cli-platform-android": "npm:^20.0.0"
+    "@react-native-community/cli-platform-ios": "npm:^20.0.0"
+    "@react-native-webapis/web-storage": "npm:^0.4.5"
+    "@react-native/babel-preset": "npm:^0.81.0"
+    "@react-native/metro-config": "npm:^0.81.0"
+    "@rnx-kit/cli": "catalog:"
+    "@rnx-kit/metro-config": "catalog:"
+    "@rnx-kit/polyfills": "catalog:"
+    "@rnx-kit/tsconfig": "catalog:"
+    "@types/react": "npm:~19.1.0"
+    react: "npm:19.1.4"
+    react-native: "npm:^0.81.6"
+    react-native-safe-area-context: "npm:^5.6.0"
+    react-native-test-app: "workspace:*"
+    react-native-windows: "npm:^0.81.0"
+  languageName: unknown
+  linkType: soft
+
 "example@workspace:packages/app/example":
   version: 0.0.0-use.local
   resolution: "example@workspace:packages/app/example"
@@ -7951,10 +8002,10 @@ __metadata:
     appium: "npm:^3.1.1"
     appium-uiautomator2-driver: "npm:^7.0.0"
     appium-xcuitest-driver: "npm:^10.0.0"
-    react: "npm:19.1.0"
-    react-native: "npm:^0.81.0"
-    react-native-macos: "npm:^0.81.1"
-    react-native-safe-area-context: "npm:^5.5.2"
+    react: "npm:19.1.4"
+    react-native: "npm:^0.81.6"
+    react-native-macos: "npm:^0.81.0"
+    react-native-safe-area-context: "npm:^5.6.0"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.81.0"
     webdriverio: "patch:webdriverio@npm%3A9.26.1#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
@@ -12384,7 +12435,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-macos@npm:^0.81.1":
+"react-native-macos@npm:^0.81.0":
   version: 0.81.5
   resolution: "react-native-macos@npm:0.81.5"
   dependencies:
@@ -12436,7 +12487,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^5.5.2":
+"react-native-safe-area-context@npm:^5.6.0":
   version: 5.6.2
   resolution: "react-native-safe-area-context@npm:5.6.2"
   peerDependencies:
@@ -12477,9 +12528,9 @@ __metadata:
     oxfmt: "npm:^0.41.0"
     oxlint: "npm:^1.51.0"
     prompts: "npm:^2.4.0"
-    react: "npm:19.1.0"
-    react-native: "npm:^0.81.0"
-    react-native-macos: "npm:^0.81.1"
+    react: "npm:19.1.4"
+    react-native: "npm:^0.81.6"
+    react-native-macos: "npm:^0.81.0"
     react-native-windows: "npm:^0.81.0"
     semver: "npm:^7.3.5"
     suggestion-bot: "npm:^4.0.0"
@@ -12565,7 +12616,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:^0.81.0":
+"react-native@npm:^0.81.6":
   version: 0.81.6
   resolution: "react-native@npm:0.81.6"
   dependencies:
@@ -12622,10 +12673,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:19.1.0":
-  version: 19.1.0
-  resolution: "react@npm:19.1.0"
-  checksum: 10c0/530fb9a62237d54137a13d2cfb67a7db6a2156faed43eecc423f4713d9b20c6f2728b026b45e28fcd72e8eadb9e9ed4b089e99f5e295d2f0ad3134251bdd3698
+"react@npm:19.1.4":
+  version: 19.1.4
+  resolution: "react@npm:19.1.4"
+  checksum: 10c0/159257dbaf168facecc0a34825114e2b00624d315b7dca8468afcc790eadf5a49f90c0234be7492c7207239292e789e443ca419a83121898b82b0824454900f2
   languageName: node
   linkType: hard
 

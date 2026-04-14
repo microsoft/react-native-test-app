@@ -2326,7 +2326,7 @@ PODS:
 DEPENDENCIES:
   - boost (from `../node_modules/react-native-macos/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec`)
-  - Example-Tests (from `..`)
+  - Example-Tests (from `../../app/example`)
   - fast_float (from `../node_modules/react-native-macos/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native-macos/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native-macos/third-party-podspecs/fmt.podspec`)
@@ -2397,7 +2397,7 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native-macos/ReactCommon`)
-  - "ReactNativeHost (from `../../node_modules/@rnx-kit/react-native-host`)"
+  - "ReactNativeHost (from `../../app/node_modules/@rnx-kit/react-native-host`)"
   - ReactTestApp-DevSupport (from `../node_modules/react-native-test-app`)
   - ReactTestApp-Resources (from `..`)
   - "RNWWebStorage (from `../node_modules/@react-native-webapis/web-storage`)"
@@ -2414,7 +2414,7 @@ EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec"
   Example-Tests:
-    :path: ".."
+    :path: "../../app/example"
   fast_float:
     :podspec: "../node_modules/react-native-macos/third-party-podspecs/fast_float.podspec"
   FBLazyVector:
@@ -2555,7 +2555,7 @@ EXTERNAL SOURCES:
   ReactCommon:
     :path: "../node_modules/react-native-macos/ReactCommon"
   ReactNativeHost:
-    :path: "../../node_modules/@rnx-kit/react-native-host"
+    :path: "../../app/node_modules/@rnx-kit/react-native-host"
   ReactTestApp-DevSupport:
     :path: "../node_modules/react-native-test-app"
   ReactTestApp-Resources:
@@ -2636,7 +2636,7 @@ SPEC CHECKSUMS:
   React-timing: 6fa0e6755deb2a960c61e4589c28475e654d2c35
   React-utils: 88c9727bb85bc5a1a0630370a1ff9ba0b4da21ae
   ReactAppDependencyProvider: dddd83e92ff2e76331e033a983785f1f242e0485
-  ReactCodegen: 98420ae488c701b0a6876ac22abc791d3d3b5664
+  ReactCodegen: 6ad42e680f38b7c2b12fc083db2a709e8e8c4643
   ReactCommon: 2024e8fc1841d1e289c5bc5b26aaf0e6ced45142
   ReactNativeHost: ba9bdd449af5c793d28ff2610c1bec3015d014cc
   ReactTestApp-DevSupport: 356dd447fab548be5afb29613df2a18a1dfe7ec7
@@ -2645,6 +2645,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 4b294bfee404e4118b81839ebf3fb44c586ec0e8
 
-PODFILE CHECKSUM: b11fdefe18a805a2039a19de11f4c79edd2682d8
+PODFILE CHECKSUM: 1bbe1c112a99af9746e5ca07f8bc40c7aa7a6eb5
 
 COCOAPODS: 1.16.2

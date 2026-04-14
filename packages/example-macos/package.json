@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "example-macos",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,43 +8,34 @@
     "build:ios": "rnx-cli bundle --platform ios",
     "build:macos": "rnx-cli bundle --platform macos",
     "build:visionos": "rnx-cli bundle --platform ios",
-    "build:windows": "rnx-cli bundle --platform windows",
-    "ci:windows": "rnx-cli run-windows --logging --no-packager --no-launch --no-deploy --msbuildprops UseBundle=false --no-telemetry",
     "clean": "yarn workspace react-native-test-app clean",
     "ios": "rnx-cli run --platform ios",
     "macos": "rnx-cli run --platform macos",
     "set-react-version": "yarn workspace react-native-test-app set-react-version",
     "start": "rnx-cli start",
-    "visionos": "rnx-cli run --platform visionos",
-    "windows": "rnx-cli run-windows --no-packager"
+    "visionos": "rnx-cli run --platform visionos"
   },
   "dependencies": {
     "@react-native-webapis/web-storage": "^0.4.5",
     "react": "19.1.4",
     "react-native": "^0.81.6",
     "react-native-macos": "^0.81.0",
-    "react-native-safe-area-context": "^5.6.0",
-    "react-native-windows": "^0.81.0"
+    "react-native-safe-area-context": "^5.6.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.3",
+    "@babel/core": "catalog:",
+    "@babel/preset-env": "catalog:",
     "@react-native-community/cli": "^20.0.0",
     "@react-native-community/cli-platform-android": "^20.0.0",
     "@react-native-community/cli-platform-ios": "^20.0.0",
     "@react-native/babel-preset": "^0.81.0",
     "@react-native/metro-config": "^0.81.0",
-    "@rnx-kit/cli": "^1.0.0",
-    "@rnx-kit/metro-config": "^2.2.3",
-    "@rnx-kit/polyfills": "^0.2.0",
-    "@rnx-kit/tsconfig": "^3.0.1",
+    "@rnx-kit/cli": "catalog:",
+    "@rnx-kit/metro-config": "catalog:",
+    "@rnx-kit/polyfills": "catalog:",
+    "@rnx-kit/tsconfig": "catalog:",
     "@types/react": "~19.1.0",
-    "@wdio/types": "^9.20.0",
-    "appium": "^3.1.1",
-    "appium-uiautomator2-driver": "^7.0.0",
-    "appium-xcuitest-driver": "^10.0.0",
-    "react-native-test-app": "workspace:*",
-    "webdriverio": "patch:webdriverio@npm%3A9.26.1#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
+    "react-native-test-app": "workspace:*"
   },
   "rnx-kit": {
     "kitType": "app",
@@ -57,8 +48,7 @@
           "android",
           "ios",
           "macos",
-          "visionos",
-          "windows"
+          "visionos"
         ],
         "platforms": {
           "android": {
@@ -77,10 +67,6 @@
           "visionos": {
             "bundleOutput": "dist/main.visionos.jsbundle",
             "sourcemapOutput": "dist/main.visionos.jsbundle.map"
-          },
-          "windows": {
-            "bundleOutput": "dist/main.windows.bundle",
-            "sourcemapOutput": "dist/main.windows.bundle.map"
           }
         }
       }
@@ -90,10 +76,7 @@
         "react-native@0.81"
       ],
       "capabilities": [
-        "core-android",
-        "core-ios",
         "core-macos",
-        "core-windows",
         "babel-preset-react-native",
         "safe-area"
       ]

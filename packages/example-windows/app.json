@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/react-native-test-app/trunk/schema.json",
+  "name": "Example",
+  "displayName": "Example",
+  "components": [
+    {
+      "appKey": "Example",
+      "displayName": "App"
+    },
+    {
+      "appKey": "Example",
+      "displayName": "App (modal)",
+      "presentationStyle": "modal"
+    }
+  ],
+  "resources": {
+    "android": ["dist/res", "dist/main.android.jsbundle"],
+    "ios": ["dist/assets", "dist/main.ios.jsbundle"],
+    "windows": ["dist/assets", "dist/main.windows.bundle"]
+  }
+}
