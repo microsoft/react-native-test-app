@@ -17,6 +17,8 @@
 #endif  // __has_include("AppRegistry.h")
 #include "AutolinkedNativeModules.g.h"
 
+#define USE_WEB_DEBUGGER RNW_VERSION_LESS_THAN(0, 82, 0)
+
 using facebook::jsi::Runtime;
 using ReactTestApp::ReactInstance;
 
@@ -40,7 +42,9 @@ namespace
     winrt::hstring const kBundlerPort = L"bundlerPort";
     winrt::hstring const kUseDirectDebugger = L"useDirectDebugger";
     winrt::hstring const kUseFastRefresh = L"useFastRefresh";
+#if USE_WEB_DEBUGGER
     winrt::hstring const kUseWebDebugger = L"useWebDebugger";
+#endif  // USE_WEB_DEBUGGER
 
     std::optional<winrt::hstring> GetBundleName(std::optional<winrt::hstring> const &bundleRoot)
     {
@@ -171,7 +175,9 @@ void ReactInstance::Reload()
 {
     auto instanceSettings = reactNativeHost_.InstanceSettings();
 
+#if USE_WEB_DEBUGGER
     instanceSettings.UseWebDebugger(UseWebDebugger());
+#endif  // USE_WEB_DEBUGGER
     instanceSettings.UseDirectDebugger(UseDirectDebugger());
 
     auto useFastRefresh = UseFastRefresh();
@@ -249,10 +255,12 @@ bool ReactInstance::UseDirectDebugger() const
 
 void ReactInstance::UseDirectDebugger(bool useDirectDebugger)
 {
+#if USE_WEB_DEBUGGER
     if (useDirectDebugger) {
         // Remote debugging is incompatible with direct debugging
         StoreLocalSetting(kUseWebDebugger, false);
     }
+#endif  // USE_WEB_DEBUGGER
     StoreLocalSetting(kUseDirectDebugger, useDirectDebugger);
     Reload();
 }
@@ -270,17 +278,23 @@ void ReactInstance::UseFastRefresh(bool useFastRefresh)
 
 bool ReactInstance::UseWebDebugger() const
 {
+#if USE_WEB_DEBUGGER
     return IsWebDebuggerAvailable() && RetrieveLocalSetting(kUseWebDebugger, false);
+#else
+    return false;
+#endif  // USE_WEB_DEBUGGER
 }
 
 void ReactInstance::UseWebDebugger(bool useWebDebugger)
 {
+#if USE_WEB_DEBUGGER
     if (useWebDebugger) {
         // Remote debugging is incompatible with direct debugging
         StoreLocalSetting(kUseDirectDebugger, false);
     }
     StoreLocalSetting(kUseWebDebugger, useWebDebugger);
     Reload();
+#endif  // USE_WEB_DEBUGGER
 }
 
 winrt::IAsyncOperation<bool> ReactTestApp::IsDevServerRunning()

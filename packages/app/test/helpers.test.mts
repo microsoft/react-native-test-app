@@ -1,5 +1,4 @@
-import type Mustache from "mustache";
-import { equal, fail, notEqual } from "node:assert/strict";
+import { equal, fail, ok } from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
@@ -57,27 +56,24 @@ describe("getPackageVersion()", () => {
 
 describe("requireTransitive()", () => {
   it("imports transitive dependencies", () => {
-    const mustache = requireTransitive<typeof Mustache>([
-      "react-native-windows",
-      "@react-native-windows/cli",
-      "mustache",
-    ]);
-    notEqual(mustache, null);
-    equal(typeof mustache.parse, "function");
+    const chain = [
+      "react-native",
+      "@react-native/community-cli-plugin",
+      "metro",
+    ];
+
+    ok(requireTransitive(chain));
   });
 
   it("imports transitive dependencies given a start path", () => {
-    const rnwDir = findNearest("node_modules/react-native-windows");
-    if (!rnwDir) {
-      fail("Failed to resolve 'react-native-windows'");
+    const rnDir = findNearest("node_modules/react-native");
+    if (!rnDir) {
+      fail("Failed to resolve 'react-native'");
     }
 
-    const mustache = requireTransitive<typeof Mustache>(
-      ["@react-native-windows/cli", "mustache"],
-      fs.realpathSync(rnwDir)
-    );
-    notEqual(mustache, null);
-    equal(typeof mustache.parse, "function");
+    const chain = ["@react-native/community-cli-plugin", "metro"];
+
+    ok(requireTransitive(chain, fs.realpathSync(rnDir)));
   });
 });
 

@@ -18,6 +18,7 @@
 // clang-format on
 
 #include <CppWinRTIncludes.h>
+#include <VersionMacros.h>
 
 #include <winrt/Microsoft.ReactNative.Composition.h>
 #include <winrt/Microsoft.ReactNative.h>

@@ -109,7 +109,6 @@
       "lockfile": {
         "noDuplicates": {
           "packages": [
-            "#react-native",
             "@babel/core"
           ]
         }
