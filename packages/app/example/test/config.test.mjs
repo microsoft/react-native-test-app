@@ -2,8 +2,8 @@
 import { equal, match, notEqual, ok } from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { after, before, test } from "node:test";
-import { URL, fileURLToPath } from "node:url";
+import { test } from "node:test";
+import { readJSONFile } from "../../scripts/helpers.js";
 
 /**
  * @param {string} cwd
@@ -34,28 +34,29 @@ function regexp(p) {
   return new RegExp(p.replaceAll("\\", "\\\\"));
 }
 
+/**
+ * @param {string} spec
+ * @param {string} projectRoot
+ * @returns {boolean}
+ */
+function requiresDependency(spec, projectRoot) {
+  /** @type {{ dependencies: Record<string, string> }} */
+  const { dependencies } = readJSONFile(path.join(projectRoot, "package.json"));
+  return Object.hasOwn(dependencies, spec);
+}
+
 test("react-native config", async (t) => {
   const currentDir = process.cwd();
   const loadConfig = await getLoadConfig(currentDir);
 
-  const projectRoot = path.sep + path.join("packages", "app");
-  const exampleRoot = path.join(projectRoot, "example");
-  const reactNativePath = path.join(
-    exampleRoot,
-    "node_modules",
-    "react-native"
-  );
-
-  before(() => process.chdir(fileURLToPath(new URL("..", import.meta.url))));
-
-  after(() => process.chdir(currentDir));
+  const reactNativePath = path.join(currentDir, "node_modules", "react-native");
 
   await t.test("contains Android config", () => {
-    const sourceDir = path.join(exampleRoot, "android");
+    const sourceDir = path.join(currentDir, "android");
     const config = loadConfig();
 
     equal(typeof config, "object");
-    match(config.root, regexp(exampleRoot));
+    match(config.root, regexp(currentDir));
     match(config.reactNativePath, regexp(reactNativePath));
     equal(
       config.dependencies["react-native-test-app"].name,
@@ -74,11 +75,11 @@ test("react-native config", async (t) => {
     "contains iOS config",
     { skip: process.platform === "win32" },
     () => {
-      const sourceDir = path.join(exampleRoot, "ios");
+      const sourceDir = path.join(currentDir, "ios");
       const config = loadConfig();
 
       equal(typeof config, "object");
-      match(config.root, regexp(exampleRoot));
+      match(config.root, regexp(currentDir));
       match(config.reactNativePath, regexp(reactNativePath));
       equal(
         config.dependencies["react-native-test-app"].name,
@@ -98,13 +99,17 @@ test("react-native config", async (t) => {
 
   await t.test(
     "contains macOS config",
-    { skip: process.platform === "win32" },
+    {
+      skip:
+        process.platform === "win32" ||
+        !requiresDependency("react-native-macos", currentDir),
+    },
     () => {
-      const sourceDir = path.join(exampleRoot, "macos");
+      const sourceDir = path.join(currentDir, "macos");
       const config = loadConfig();
 
       equal(typeof config, "object");
-      match(config.root, regexp(exampleRoot));
+      match(config.root, regexp(currentDir));
       match(config.reactNativePath, regexp(reactNativePath));
       equal(
         config.dependencies["react-native-test-app"].name,
@@ -124,7 +129,11 @@ test("react-native config", async (t) => {
 
   await t.test(
     "contains Windows config",
-    { skip: process.platform !== "win32" },
+    {
+      skip:
+        process.platform !== "win32" ||
+        !requiresDependency("react-native-windows", currentDir),
+    },
     () => {
       const projectFile = path.join(
         "node_modules",
@@ -142,14 +151,14 @@ test("react-native config", async (t) => {
       const config = loadConfig();
 
       equal(typeof config, "object");
-      match(config.root, regexp(exampleRoot));
+      match(config.root, regexp(currentDir));
       match(config.reactNativePath, regexp(reactNativePath));
       equal(
         config.dependencies["react-native-test-app"].name,
         "react-native-test-app"
       );
       equal(config.platforms.windows.npmPackageName, "react-native-windows");
-      match(config.project.windows.folder, regexp(exampleRoot));
+      match(config.project.windows.folder, regexp(currentDir));
       match(config.project.windows.sourceDir, /windows/);
       match(config.project.windows.solutionFile, /Example.sln/);
       match(config.project.windows.project.projectFile, regexp(projectFile));
