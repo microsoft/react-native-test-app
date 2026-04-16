@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@react-native-webapis/web-storage": "^0.4.5",
-    "react": "19.1.4",
+    "react": "19.1.6",
     "react-native": "^0.81.6",
     "react-native-macos": "^0.81.0",
     "react-native-safe-area-context": "^5.6.0"

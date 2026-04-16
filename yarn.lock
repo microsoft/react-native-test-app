@@ -8053,7 +8053,7 @@ __metadata:
     "@rnx-kit/polyfills": "catalog:"
     "@rnx-kit/tsconfig": "catalog:"
     "@types/react": "npm:~19.1.0"
-    react: "npm:19.1.4"
+    react: "npm:19.1.6"
     react-native: "npm:^0.81.6"
     react-native-macos: "npm:^0.81.0"
     react-native-safe-area-context: "npm:^5.6.0"
@@ -8078,7 +8078,7 @@ __metadata:
     "@rnx-kit/polyfills": "catalog:"
     "@rnx-kit/tsconfig": "catalog:"
     "@types/react": "npm:~19.1.0"
-    react: "npm:19.1.1"
+    react: "npm:19.1.6"
     react-native: "npm:^0.82.0"
     react-native-safe-area-context: "npm:^5.6.0"
     react-native-test-app: "workspace:*"
@@ -8107,7 +8107,7 @@ __metadata:
     appium: "npm:^3.1.1"
     appium-uiautomator2-driver: "npm:^7.0.0"
     appium-xcuitest-driver: "npm:^10.0.0"
-    react: "npm:19.1.4"
+    react: "npm:19.1.6"
     react-native: "npm:^0.81.6"
     react-native-macos: "npm:^0.81.0"
     react-native-safe-area-context: "npm:^5.6.0"
@@ -12639,7 +12639,7 @@ __metadata:
     oxfmt: "npm:^0.41.0"
     oxlint: "npm:^1.51.0"
     prompts: "npm:^2.4.0"
-    react: "npm:19.1.4"
+    react: "npm:19.1.6"
     react-native: "npm:^0.81.6"
     react-native-macos: "npm:^0.81.0"
     semver: "npm:^7.3.5"
@@ -12835,17 +12835,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:19.1.1":
-  version: 19.1.1
-  resolution: "react@npm:19.1.1"
-  checksum: 10c0/8c9769a2dfd02e603af6445058325e6c8a24b47b185d0e461f66a6454765ddcaecb3f0a90184836c68bb509f3c38248359edbc42f0d07c23eb500a5c30c87b4e
-  languageName: node
-  linkType: hard
-
-"react@npm:19.1.4":
-  version: 19.1.4
-  resolution: "react@npm:19.1.4"
-  checksum: 10c0/159257dbaf168facecc0a34825114e2b00624d315b7dca8468afcc790eadf5a49f90c0234be7492c7207239292e789e443ca419a83121898b82b0824454900f2
+"react@npm:19.1.6":
+  version: 19.1.6
+  resolution: "react@npm:19.1.6"
+  checksum: 10c0/f80daf8661da5bd0e7984eaefafeb01ccd030e7531f4f484552cf5d397edc273b6741484bd39796e50c6a901852d0e42c6fa8f632234afe82c5d56c3937d3a38
   languageName: node
   linkType: hard
 
