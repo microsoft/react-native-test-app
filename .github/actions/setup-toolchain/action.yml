@@ -68,16 +68,16 @@ runs:
           jdks
     - name: Set up MSBuild
       if: ${{ inputs.platform == 'windows' }}
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     - name: Set up Ruby
       if: ${{ runner.os != 'Windows' }}
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: "3.2.3"
+        ruby-version: "3.3.11"
         bundler: Gemfile.lock
         bundler-cache: true
     - name: Set up Node.js
-      uses: actions/setup-node@v6.3.0
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ inputs.node-version }}
         cache: ${{ inputs.cache-npm-dependencies }}

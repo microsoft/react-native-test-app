@@ -45,46 +45,10 @@ const getInstalledVersion = memo(() => {
 });
 
 /**
- * Returns the desired `react-native` version.
- *
- * Checks the following in order:
- *
- *   - Command line flag, e.g. `--version 0.81`
- *   - Currently installed `react-native` version
- *   - Latest version from npm
- *
  * @param {import("./types.js").Platform[]} platforms
  * @returns {Promise<string>}
  */
-async function getVersion(platforms) {
-  const index = process.argv.lastIndexOf("--version");
-  if (index >= 0) {
-    const m = process.argv[index + 1].match(/(\d+\.\d+[-.0-9a-z]*)/);
-    if (!m) {
-      throw new Error(
-        "Expected version number of the form <major>.<minor>.<patch>-<prerelease> (where patch and prerelease are optional)"
-      );
-    }
-    return m[1];
-  }
-
-  /** @type {(version: string, reason: string) => void} */
-  const logVersion = (version, reason) => {
-    const bVersionFlag = colors.bold("--version");
-    const bTarget = colors.bold(version);
-    console.log(
-      `Using ${bTarget} because ${reason} (use ${bVersionFlag} to specify another version)`
-    );
-  };
-
-  const version = getInstalledVersion();
-  if (version) {
-    logVersion(version, "the current project uses it");
-    return version;
-  }
-
-  console.log("No version was specified; fetching available versions...");
-
+async function getLatestCommonVersion(platforms) {
   let maxSupportedVersion = Number.MAX_VALUE;
   for (const p of platforms) {
     const pkgName = getDefaultPlatformPackageName(p);
@@ -103,7 +67,58 @@ async function getVersion(platforms) {
   const major = Math.trunc(maxSupportedVersion / 1000);
   const minor = maxSupportedVersion % 1000;
 
-  const target = major + "." + minor;
+  return major + "." + minor;
+}
+
+/**
+ * @param {string} version
+ * @param {string} reason
+ * @returns {void}
+ */
+function logVersion(version, reason) {
+  const bVersionFlag = colors.bold("--version");
+  const bTarget = colors.bold(version);
+  console.log(
+    `Using ${bTarget} because ${reason} (use ${bVersionFlag} to specify another version)`
+  );
+}
+
+/**
+ * Returns the desired `react-native` version.
+ *
+ * Checks the following in order:
+ *
+ *   - Command line flag, e.g. `--version 0.81`
+ *   - Currently installed `react-native` version
+ *   - Latest version from npm
+ *
+ * @param {import("./types.js").Platform[]} platforms
+ * @returns {Promise<string>}
+ */
+async function getVersion(platforms) {
+  const index = process.argv.lastIndexOf("--version");
+  const input = index >= 0 && process.argv[index + 1];
+  if (input !== "highest") {
+    if (input) {
+      const m = input.match(/(\d+\.\d+[-.0-9a-z]*)/);
+      if (!m) {
+        throw new Error(
+          "Expected version number of the form <major>.<minor>.<patch>-<prerelease> (where patch and prerelease are optional)"
+        );
+      }
+      return m[1];
+    } else {
+      const installedVersion = getInstalledVersion();
+      if (installedVersion) {
+        logVersion(installedVersion, "the current project uses it");
+        return installedVersion;
+      }
+    }
+
+    console.log("No version was specified; fetching available versions...");
+  }
+
+  const target = await getLatestCommonVersion(platforms);
   logVersion(target, "it supports all specified platforms");
 
   return target;

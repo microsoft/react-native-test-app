@@ -212,9 +212,6 @@ jobs:
   ios-template:
     name: "iOS [template]"
     permissions: {}
-    strategy:
-      matrix:
-        template: [all, ios]
     runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -233,7 +230,7 @@ jobs:
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
-          platform: ${{ matrix.template }}
+          arguments: -p android -p ios
       - name: Bundle JavaScript
         run: |
           yarn build:ios
@@ -310,7 +307,6 @@ jobs:
     permissions: {}
     strategy:
       matrix:
-        template: [all, android]
         runner: [ubuntu-24.04, windows-2025]
     runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
@@ -326,7 +322,7 @@ jobs:
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
-          platform: ${{ matrix.template }}
+          arguments: -p android -p ios
       - name: Bundle JavaScript
         run: |
           yarn build:android
@@ -405,9 +401,6 @@ jobs:
   macos-template:
     name: "macOS [template]"
     permissions: {}
-    strategy:
-      matrix:
-        template: [all, macos]
     runs-on: macos-15
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -426,7 +419,7 @@ jobs:
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
-          platform: ${{ matrix.template }}
+          arguments: -p macos
       - name: Bundle JavaScript
         run: |
           yarn build:macos
@@ -502,9 +495,6 @@ jobs:
   visionos-template:
     name: "visionOS [template]"
     permissions: {}
-    strategy:
-      matrix:
-        template: [all, visionos]
     runs-on: macos-15
     if: false # visionOS temporarily disabled until releases are resumed
     steps:
@@ -523,7 +513,7 @@ jobs:
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
-          platform: ${{ matrix.template }}
+          arguments: -p visionos
       - name: Bundle JavaScript
         run: |
           yarn build:visionos
@@ -636,9 +626,6 @@ jobs:
     permissions: {}
     runs-on: windows-2025
     if: ${{ github.event_name != 'schedule' }}
-    strategy:
-      matrix:
-        template: [all, windows]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -653,7 +640,7 @@ jobs:
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
-          platform: ${{ matrix.template }}
+          arguments: -p windows --version 0.82.1
       - name: Bundle JavaScript
         run: |
           yarn build:windows
@@ -775,7 +762,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Label
-        uses: actions/labeler@v6.0.1
+        uses: actions/labeler@v6
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           sync-labels: true
