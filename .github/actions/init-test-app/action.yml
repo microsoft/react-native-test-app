@@ -1,22 +1,21 @@
 name: Create React Native Test App
 description: Initializes a new test app
 inputs:
-  platform:
-    description: The platform to create a test app for
+  arguments:
     required: true
 runs:
   using: composite
   steps:
+    - name: Disable minimum age gate
+      run: |
+        yarn config unset npmMinimalAgeGate
+      shell: bash
     - name: Install
       run: |
-        scripts/install-test-template.sh ${{ inputs.platform }}
+        scripts/install-test-template.sh --version highest ${{ inputs.arguments }}
       shell: bash
     - name: Initialize a new app
       run: |
-        if [[ ${{ inputs.platform }} == "all" ]]; then
-          yarn init-test-app --destination test-app --name TestApp -p android -p ios -p macos -p visionos -p windows
-        else
-          yarn init-test-app --destination test-app --name TestApp --platform ${{ inputs.platform }}
-        fi
+        yarn init-test-app --destination test-app --name TestApp ${{ inputs.arguments }}
       shell: bash
       working-directory: template-example

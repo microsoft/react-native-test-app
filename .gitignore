@@ -24,6 +24,7 @@ local.properties
 node_modules/
 !test/__fixtures__/**/node_modules/
 package-lock.json
+packages/app/android/support/build/
 packages/app/example/Screenshot-*.png
 packages/example-*/*/.xcode.env
 packages/example-*/*/DerivedData/

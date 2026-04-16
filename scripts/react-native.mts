@@ -26,7 +26,7 @@ function runIOS() {
   // If `@react-native-community/cli` reaches the point where it is looking for
   // a device, we can assume that it has successfully created a config and
   // determined that there is an iOS project that can be built and launched.
-  const success = new RegExp(`Could not find .*: "${DEVICE_ID}"`);
+  const success = new RegExp(`Could not find .*${DEVICE_ID}`);
   run(success, "ios", "--device", DEVICE_ID);
 }
 
