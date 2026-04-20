@@ -69,6 +69,8 @@
     "@nx/devkit/minimatch": "^10.2.4",
     "@nx/js/picomatch": "^4.0.2",
     "@nx/workspace/picomatch": "^4.0.2",
+    "@react-native-windows/cli/@xmldom/xmldom": "^0.8.12",
+    "@react-native-windows/telemetry/@xmldom/xmldom": "^0.8.12",
     "appium/ajv": "~8.18.0",
     "appium/axios": "^1.13.6",
     "appium/lodash": "^4.17.23",
