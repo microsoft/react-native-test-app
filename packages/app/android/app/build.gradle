@@ -188,6 +188,10 @@ android {
             "src/reactactivitydelegate-0.75/java",
             "src/reactapplication-0.76/java",
             "src/reacthost-0.76/java",
+
+            reactNativeVersion >= v(0, 82, 0)
+                ? "src/reactsurface-0.82/java"
+                : "src/reactsurface-old/java"
         ]
     }
 
