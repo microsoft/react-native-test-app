@@ -1,10 +1,10 @@
 // @ts-check
 import { resolveCommunityCLI } from "@rnx-kit/tools-react-native/context";
 import { XMLParser } from "fast-xml-parser";
+import { randomUUID } from "node:crypto";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
-import { v5 as uuidv5 } from "uuid";
 import {
   findNearest,
   getPackageVersion,
@@ -27,8 +27,6 @@ import * as colors from "../scripts/utils/colors.mjs";
  *   ProjectInfo,
  * } from "../scripts/types.js";
  */
-
-const uniqueFilterIdentifier = "e48dc53e-40b1-40cb-970a-f89935452892";
 
 /**
  * Returns whether specified object is Error-like.
@@ -152,10 +150,9 @@ function generateContentItems(
         normalizePath(
           source ? path.relative(source, resource) : path.basename(resource)
         );
-      const id = uuidv5(filter, uniqueFilterIdentifier);
       assetFilters.push(
         `<Filter Include="${filter}">`,
-        `  <UniqueIdentifier>{${id}}</UniqueIdentifier>`,
+        `  <UniqueIdentifier>{${randomUUID()}}</UniqueIdentifier>`,
         `</Filter>`
       );
 
