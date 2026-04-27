@@ -61,7 +61,7 @@
     "@appium/support/lodash": "^4.17.23",
     "@appium/support/semver": "~7.7.4",
     "@appium/support/teen_process": "~4.0.10",
-    "@appium/support/uuid": "~13.0.0",
+    "@appium/support/uuid": "~14.0.0",
     "@appium/support/yauzl": "~3.2.0",
     "@colors/colors": "^1.6.0",
     "@microsoft/eslint-plugin-sdl/eslint-plugin-n": "^17.10.3",
