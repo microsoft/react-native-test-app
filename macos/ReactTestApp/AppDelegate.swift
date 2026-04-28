@@ -214,7 +214,7 @@ extension AppDelegate {
                 return viewController
             }
 
-            let viewController = NSViewController(nibName: nil, bundle: nil)
+            let viewController = HostingViewController(nibName: nil, bundle: nil)
             viewController.title = title
             viewController.view = host.view(
                 moduleName: component.appKey,

@@ -33,6 +33,8 @@ final class ViewController: NSViewController {
         )
     }
 
+    #endif // !ENABLE_SINGLE_APP_MODE
+
     override func mouseDown(with event: NSEvent) {
         NSMenu.popUpReactMenu(with: event, for: view)
     }
@@ -40,11 +42,20 @@ final class ViewController: NSViewController {
     override func rightMouseDown(with event: NSEvent) {
         NSMenu.popUpReactMenu(with: event, for: view)
     }
-
-    #endif // !ENABLE_SINGLE_APP_MODE
 }
 
-#if !ENABLE_SINGLE_APP_MODE
+// Hosts a React Native root view. The Fabric root view does not implement
+// `menuForEvent:`, so right-click events propagate up the responder chain to
+// this controller, which presents the React menu as a context menu.
+final class HostingViewController: NSViewController {
+    override func mouseDown(with event: NSEvent) {
+        NSMenu.popUpReactMenu(with: event, for: view)
+    }
+
+    override func rightMouseDown(with event: NSEvent) {
+        NSMenu.popUpReactMenu(with: event, for: view)
+    }
+}
 
 extension NSMenu {
     static func popUpReactMenu(with event: NSEvent, for view: NSView) {
@@ -55,6 +66,8 @@ extension NSMenu {
         popUpContextMenu(reactMenu, with: event, for: view)
     }
 }
+
+#if !ENABLE_SINGLE_APP_MODE
 
 final class Label: NSTextView {
     init(text: String) {
