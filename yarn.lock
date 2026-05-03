@@ -4286,14 +4286,14 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/align-deps@npm:^3.4.5, @rnx-kit/align-deps@npm:^3.4.7":
-  version: 3.4.7
-  resolution: "@rnx-kit/align-deps@npm:3.4.7"
+  version: 3.4.8
+  resolution: "@rnx-kit/align-deps@npm:3.4.8"
   dependencies:
     "@rnx-kit/types-kit-config": "npm:^1.0.0"
     "@rnx-kit/types-node": "npm:^1.0.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/1a1e030c200ad31d67a124e6f7964ce8e18f2a6854ac7bfd027cbcd01712ada4beb9d5f639070839881e7c02d389347eaacea14d93bd89390599b7fa0d087bd1
+  checksum: 10c0/cbc8f6d28472a1a0b7342f156c81c94c91ced24ec47a815a34eb4f59d00cac12a2cd7dc64ea698af369a0091a60101498f2f1b9d6e626f000b87060ccd81ae4b
   languageName: node
   linkType: hard
 
