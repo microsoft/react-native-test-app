@@ -86,7 +86,7 @@ ext {
         return [
           "com.android.tools.build:gradle",
           "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
-          "de.undercouch:gradle-download-task:5.6.0",
+          "de.undercouch:gradle-download-task:5.7.0",
           "com.facebook.react:react-native-gradle-plugin",
         ]
     }
