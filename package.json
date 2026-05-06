@@ -44,7 +44,7 @@
     "nx": "^22.0.0",
     "oxfmt": "^0.41.0",
     "oxlint": "^1.51.0",
-    "typescript": "^5.0.0"
+    "typescript": "^6.0.0"
   },
   "resolutions": {
     "@appium/base-driver/axios": "^1.15.0",
@@ -82,6 +82,8 @@
     "argparse/sprintf-js": "^1.0.2",
     "babel-jest": "ignore:",
     "compression/bytes": "^3.1.2",
+    "node-gyp": "ignore:",
+    "node-gyp-build": "ignore:",
     "nx/minimatch": "^10.2.4",
     "react-native-windows/@react-native-community/cli": "^20.0.0",
     "react-native-windows/@react-native-community/cli-platform-android": "^20.0.0",
