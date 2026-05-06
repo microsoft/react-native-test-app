@@ -170,10 +170,11 @@ export function generateProject(
   configureBuildSchemes(appConfig, targetPlatform, xcodeprojDst, fs);
 
   // Link source files
+  const opts = { throwIfNoEntry: false };
   const srcDirs = ["ReactTestApp", "ReactTestAppTests", "ReactTestAppUITests"];
   for (const file of srcDirs) {
     const symlink = path.join(destination, file);
-    if (fs.existsSync(symlink)) {
+    if (fs.lstatSync(symlink, opts)) {
       rm_r(symlink, fs);
     }
     fs.symlinkSync(projectPath(file, targetPlatform), symlink);
@@ -182,7 +183,7 @@ export function generateProject(
   // Shared code lives in `ios/ReactTestApp/`
   if (targetPlatform !== "ios") {
     const shared = path.join(destination, "Shared");
-    if (!fs.existsSync(shared)) {
+    if (!fs.lstatSync(shared, opts)) {
       const source = new URL("ReactTestApp", import.meta.url);
       fs.symlinkSync(fileURLToPath(source), shared);
     }
