@@ -1763,12 +1763,12 @@ __metadata:
   linkType: hard
 
 "@expo/json-file@npm:~10.0.13":
-  version: 10.0.13
-  resolution: "@expo/json-file@npm:10.0.13"
+  version: 10.0.14
+  resolution: "@expo/json-file@npm:10.0.14"
   dependencies:
     "@babel/code-frame": "npm:^7.20.0"
     json5: "npm:^2.2.3"
-  checksum: 10c0/81f2073aea613264c0c802b13cfe6b5fdda2469ceabdff105a69e2ba3bc72c1b82f8b3c1c7eb6c9e5a7c4322239e6adcbb37cd3ddb305ed2de3e18e962d57887
+  checksum: 10c0/d4ca1d3afbf25e642d9774c03743c6d20a0ea4a4934cd13cc69ed9fbfc2856ea1716687ed0cc02d9f15cbd838052f59471825e7a0fcc83475114a814f97b8155
   languageName: node
   linkType: hard
 
