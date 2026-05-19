@@ -2,17 +2,21 @@
 
 #import <jsi/jsi.h>
 
+#if !USE_BRIDGELESS
 #import <React/RCTBridge.h>
+#endif  // !USE_BRIDGELESS
 
 #import "AppRegistry.h"
 #import "ReactTestApp-DevSupport.h"
 
 using facebook::jsi::Runtime;
 
+#if !USE_BRIDGELESS
 @interface RCTCxxBridge : RCTBridge
 @property (nonatomic, readonly) void *runtime;
 - (void)invokeAsync:(std::function<void()> &&)func;
 @end
+#endif  // !USE_BRIDGELESS
 
 void RTAPostDidRegisterAppsNotification(NSValue *value)
 {
@@ -32,6 +36,7 @@ void RTAPostDidRegisterAppsNotification(NSValue *value)
                                                     userInfo:@{@"appKeys": [array copy]}];
 }
 
+#if !USE_BRIDGELESS
 void RTAPostDidRegisterAppsNotificationWithBridge(id bridge)
 {
     if (![bridge isKindOfClass:[RCTCxxBridge class]] ||
@@ -50,3 +55,4 @@ void RTAPostDidRegisterAppsNotificationWithBridge(id bridge)
         RTAPostDidRegisterAppsNotification([NSValue valueWithPointer:runtime]);
     }];
 }
+#endif  // !USE_BRIDGELESS
