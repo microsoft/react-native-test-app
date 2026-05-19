@@ -26,6 +26,9 @@ OBJC_EXTERN NSNotificationName const ReactTestAppSceneDidOpenURLNotification
 OBJC_EXTERN NSNotificationName const ReactInstanceDidLoadBundle;
 
 OBJC_EXTERN void RTAPostDidRegisterAppsNotification(NSValue *runtime);
+
+#if !USE_BRIDGELESS
 OBJC_EXTERN void RTAPostDidRegisterAppsNotificationWithBridge(id bridge);
+#endif  // !USE_BRIDGELESS
 
 NS_ASSUME_NONNULL_END

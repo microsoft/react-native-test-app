@@ -17,6 +17,7 @@ end
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 version = package['version']
+preprocessor_definitions = ENV['USE_BRIDGELESS'] == '1' ? ['USE_BRIDGELESS=1'] : []
 
 Pod::Spec.new do |s|
   s.name      = File.basename(__FILE__, '.podspec')
@@ -37,6 +38,8 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++20',
     'DEFINES_MODULE' => 'YES',
+    'GCC_PREPROCESSOR_DEFINITIONS' => preprocessor_definitions,
+    'CPP_PREPROCESSOR_DEFINITIONS' => preprocessor_definitions,
     'SWIFT_OBJC_BRIDGING_HEADER' =>
       'ios/ReactTestApp/Public/ReactTestApp-DevSupport-Bridging-Header.h',
   }
