@@ -1819,7 +1819,7 @@ PODS:
     - React-utils (= 0.85.1)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.85.1)
-  - ReactNativeHost (0.5.16):
+  - ReactNativeHost (0.5.17):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2189,8 +2189,8 @@ SPEC CHECKSUMS:
   ReactCodegen: 1663f3db0221878329f993847de1c422d6af5e3c
   ReactCommon: 66763e5bd1b778828ff6cb82d771b7162a5215c2
   ReactNativeDependencies: 8cbd0fbc0255c3949672a00a81fc8d60a29dcfd9
-  ReactNativeHost: 60fee0812001bb7fe6b917c3bd75744c05034950
-  ReactTestApp-DevSupport: 356dd447fab548be5afb29613df2a18a1dfe7ec7
+  ReactNativeHost: bfc03f71af9ea8533b3f77493ca49d6c40093397
+  ReactTestApp-DevSupport: aeb3fe7bc1b2916413ac41309a70a0df7475f8a5
   ReactTestApp-Resources: 1bd9ff10e4c24f2ad87101a32023721ae923bccf
   RNWWebStorage: e01ec77abc9866d80b0c1b0d57914cce11ab747b
   Yoga: b1085f68c014785350a2afdc95eaef0d49f23ccb

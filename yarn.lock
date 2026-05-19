@@ -4496,12 +4496,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.5.15":
-  version: 0.5.16
-  resolution: "@rnx-kit/react-native-host@npm:0.5.16"
+"@rnx-kit/react-native-host@npm:^0.5.17":
+  version: 0.5.17
+  resolution: "@rnx-kit/react-native-host@npm:0.5.17"
   peerDependencies:
     react-native: ">=0.66"
-  checksum: 10c0/346aa558a9fbe1e36c544ddcd2e85b1f111dec1250700e3a2326d3c171f33fed1e7f4f7291bbc6bc0dcbb81c648261cb872ff334d7d970684ae05d92e84ba0d3
+  checksum: 10c0/e9ab5c489758274def1d910c1f6855aeb04b8b8c4e17d71ea195f252dc1416f7dc29e743797532f80ab65dd6f4c8c596fbccc29df820c093c658b104b8d52a1c
   languageName: node
   linkType: hard
 
@@ -12992,7 +12992,7 @@ __metadata:
     "@react-native-community/cli-types": "npm:^20.1.0"
     "@react-native-community/template": "npm:^0.85.0"
     "@rnx-kit/lint-lockfile": "npm:^0.1.0"
-    "@rnx-kit/react-native-host": "npm:^0.5.15"
+    "@rnx-kit/react-native-host": "npm:^0.5.17"
     "@rnx-kit/tools-react-native": "npm:^2.1.0"
     "@rnx-kit/tsconfig": "npm:^3.0.1"
     "@types/js-yaml": "npm:^4.0.5"
