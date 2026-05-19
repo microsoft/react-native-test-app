@@ -105,6 +105,11 @@ def use_react_native!(project_root, project, options)
 
   react_native_path = Pathname.new(project[:react_native_path])
 
+  # A significant number of community modules use this environment variable to
+  # find React Native:
+  # https://github.com/search?q=NOT+is%3Afork+language%3ARuby+REACT_NATIVE_NODE_MODULES_DIR&type=code
+  ENV['REACT_NATIVE_NODE_MODULES_DIR'] = react_native_path.parent.to_s
+
   include_react_native!(**options,
                         app_path: find_file('package.json', project_root).parent.to_s,
                         path: react_native_path.relative_path_from(project_root).to_s,
