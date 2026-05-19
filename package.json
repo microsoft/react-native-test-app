@@ -77,7 +77,7 @@
     "appium/lru-cache": "^11.3.5",
     "appium/semver": "~7.7.4",
     "appium/teen_process": "~4.1.1",
-    "appium/ws": "~8.19.0",
+    "appium/ws": "~8.20.0",
     "appium/yaml": "~2.8.2",
     "argparse/sprintf-js": "^1.0.2",
     "babel-jest": "ignore:",
