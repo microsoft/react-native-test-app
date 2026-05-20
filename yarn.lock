@@ -2520,6 +2520,7 @@ __metadata:
     "@rnx-kit/align-deps": "npm:^3.4.5"
     "@rnx-kit/lint-lockfile": "npm:^0.1.0"
     "@rnx-kit/oxlint-config": "npm:^1.0.3"
+    "@rnx-kit/tools-git": "npm:^0.1.1"
     "@swc-node/register": "npm:^1.11.1"
     "@swc/core": "npm:^1.15.8"
     "@types/js-yaml": "npm:^4.0.5"
@@ -4547,6 +4548,13 @@ __metadata:
     memfs:
       optional: true
   checksum: 10c0/397f3e521b581da733aba81b59f2a084766904f52c063e4f1d153f9972861d6061eae3ddab3b340ffa2ce8971df9a8483e9a8e3cc9d50d7e33ab64f212fe91ac
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/tools-git@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@rnx-kit/tools-git@npm:0.1.1"
+  checksum: 10c0/d672aa911d212a200cd593cf680fa316adc9cd221a26feac5f5fb055d5a4857d6c1f9356d8b027ea2a124eb7d24ba53416ccd373b0707a14f96f6586056658d7
   languageName: node
   linkType: hard
 
