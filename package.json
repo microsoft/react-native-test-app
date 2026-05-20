@@ -33,6 +33,7 @@
     "@rnx-kit/align-deps": "^3.4.5",
     "@rnx-kit/lint-lockfile": "^0.1.0",
     "@rnx-kit/oxlint-config": "^1.0.3",
+    "@rnx-kit/tools-git": "^0.1.1",
     "@swc-node/register": "^1.11.1",
     "@swc/core": "^1.15.8",
     "@types/js-yaml": "^4.0.5",

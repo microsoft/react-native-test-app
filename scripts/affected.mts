@@ -1,6 +1,6 @@
+import { getBaseCommit, getChangedFiles, git } from "@rnx-kit/tools-git";
 import yaml from "js-yaml";
 import { Minimatch } from "minimatch";
-import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 
 type MatchChangedFiles = { "any-glob-to-any-file": string[] };
@@ -11,63 +11,6 @@ type Match = { "changed-files": MatchChangedFiles[] };
  */
 function clean(platforms: string[]): string[] {
   return platforms.map((p) => p.toLowerCase()).sort();
-}
-
-/**
- * Executes a Git command.
- */
-function git(...args: string[]): string {
-  const { stderr, stdout } = spawnSync("git", args);
-  const message = stderr.toString().trim();
-  if (message) {
-    console.error(message);
-  }
-  return stdout.toString().trim();
-}
-
-/**
- * Returns the default Git branch.
- */
-function getDefaultBranch(): string {
-  if (process.env["CI"]) {
-    // CIs don't clone the repo, but use a different way to checkout a branch.
-    // This means that `origin/HEAD` is never created, which in turn means that
-    // we don't have a reliable way to get the default branch. For now, just
-    // return a hard-coded value.
-    return "origin/trunk";
-  }
-
-  const defaultBranch = git("rev-parse", "--abbrev-ref", "origin/HEAD");
-  if (!defaultBranch) {
-    throw new Error("Failed to determine default branch");
-  }
-  return defaultBranch;
-}
-
-/**
- * Returns the commit from which this branch was forked.
- */
-function getBaseCommit(targetBranch: string | undefined): string {
-  targetBranch =
-    !targetBranch || targetBranch.endsWith("/")
-      ? getDefaultBranch()
-      : targetBranch;
-  const base = git("merge-base", "--fork-point", targetBranch);
-  if (!base) {
-    console.error("❌", "Failed to determine base commit");
-  }
-  return base;
-}
-
-/**
- * Returns changed files since fork point.
- */
-function getChangedFiles(since: string): string[] {
-  const changedFiles = git("diff", "--name-only", since);
-  if (!changedFiles) {
-    return [];
-  }
-  return changedFiles.split("\n");
 }
 
 /**
@@ -105,7 +48,7 @@ function makeMatchers(): Record<string, Minimatch[]> {
 function getAffectedPlatforms(targetBranch: string | undefined): string[] {
   const platformMatchers = makeMatchers();
 
-  const baseCommit = getBaseCommit(targetBranch);
+  const baseCommit = getBaseCommit(targetBranch, "origin/trunk");
   if (!baseCommit) {
     // Match all platforms if we cannot find base commit
     return clean(Object.keys(platformMatchers));
