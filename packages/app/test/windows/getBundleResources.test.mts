@@ -35,10 +35,10 @@ describe("getBundleResources()", () => {
     equal(
       assetItems,
       `<CopyFileToFolders Include="$(ProjectRootDir)\\dist\\assets\\app.json">
-      <DestinationFolders>$(OutDir)\\Bundle\\assets</DestinationFolders>
+      <DestinationFolders>$(BundleDir)\\assets</DestinationFolders>
     </CopyFileToFolders>
     <CopyFileToFolders Include="$(ProjectRootDir)\\dist\\main.bundle">
-      <DestinationFolders>$(OutDir)\\Bundle</DestinationFolders>
+      <DestinationFolders>$(BundleDir)</DestinationFolders>
     </CopyFileToFolders>`
     );
     equal(

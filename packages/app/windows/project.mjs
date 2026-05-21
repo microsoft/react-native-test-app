@@ -174,18 +174,16 @@ function generateContentItems(
        * structure within the folder must be maintained. For example, given
        * `dist/assets`, we must output:
        *
-       *     `<DestinationFolders>$(OutDir)\\Bundle\\assets\\...</DestinationFolders>`
-       *     `<DestinationFolders>$(OutDir)\\Bundle\\assets\\node_modules\\...</DestinationFolders>`
+       *     `<DestinationFolders>$(BundleDir)\\assets\\...</DestinationFolders>`
+       *     `<DestinationFolders>$(BundleDir)\\assets\\node_modules\\...</DestinationFolders>`
        *     ...
-       *
-       * Resource paths are always prefixed with `$(OutDir)\\Bundle`.
        */
       const destination =
         source &&
         `\\${normalizePath(path.relative(source, path.dirname(resource)))}`;
       assetItems.push(
         `<CopyFileToFolders Include="$(ProjectRootDir)\\${assetPath}">`,
-        `  <DestinationFolders>$(OutDir)\\Bundle${destination}</DestinationFolders>`,
+        `  <DestinationFolders>$(BundleDir)${destination}</DestinationFolders>`,
         "</CopyFileToFolders>"
       );
       assetItemFilters.push(

@@ -32,19 +32,24 @@ namespace ReactTestApp
     public:
         static constexpr uint32_t Version = REACT_NATIVE_VERSION;
 
-        ReactInstance();
+        ReactInstance()
+        {
+            InitializeHost(reactNativeHost_);
+        }
 
-#if __has_include(<winrt/Microsoft.UI.Composition.h>)
-        ReactInstance(HWND hwnd, winrt::Microsoft::UI::Composition::Compositor const &);
-#endif  // __has_include(<winrt/Microsoft.UI.Composition.h>)
+        ReactInstance(winrt::Microsoft::ReactNative::ReactNativeHost reactNativeHost)
+            : reactNativeHost_(reactNativeHost)
+        {
+            InitializeHost(reactNativeHost);
+        }
 
         auto const &ReactHost() const
         {
             return reactNativeHost_;
         }
 
-        bool LoadJSBundleFrom(JSBundleSource);
-        void Reload();
+        bool LoadJSBundleFrom(JSBundleSource, bool reloadHost = true);
+        void Reload(bool reloadHost = true);
 
         bool BreakOnFirstLine() const;
         void BreakOnFirstLine(bool);
@@ -100,6 +105,8 @@ namespace ReactTestApp
         std::optional<winrt::hstring> bundleRoot_;
         JSBundleSource source_ = JSBundleSource::DevServer;
         OnComponentsRegistered onComponentsRegistered_;
+
+        void InitializeHost(winrt::Microsoft::ReactNative::ReactNativeHost);
     };
 
     winrt::Windows::Foundation::IAsyncOperation<bool> IsDevServerRunning();
