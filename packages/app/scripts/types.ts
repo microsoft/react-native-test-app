@@ -221,6 +221,7 @@ export type Assets = {
   assetItems: string;
   assetItemFilters: string;
   assetFilters: string;
+  contentItems: string;
 };
 
 export type AppManifest = {
@@ -245,6 +246,7 @@ export type AppxBundle = {
   assetItems: string;
   assetItemFilters: string;
   assetFilters: string;
+  contentItems: string;
   packageCertificate: string;
   singleApp?: string;
 };

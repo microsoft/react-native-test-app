@@ -48,9 +48,14 @@ namespace
 
     std::filesystem::path GetBundleRootPath()
     {
+#if USE_FABRIC
         WCHAR modulePath[MAX_PATH];
-        GetModuleFileNameW(NULL, modulePath, MAX_PATH);
+        GetModuleFileNameW(nullptr, modulePath, MAX_PATH);
+        PathCchRemoveFileSpec(modulePath, MAX_PATH);
         return std::filesystem::path{modulePath}.replace_filename(L"Bundle") / L"";
+#else   // USE_FABRIC
+        return std::filesystem::path{L"Bundle\\"};
+#endif  // USE_FABRIC
     }
 
     std::optional<winrt::hstring> GetBundleName(std::filesystem::path bundlePath,
@@ -122,7 +127,9 @@ bool ReactInstance::LoadJSBundleFrom(JSBundleSource source, bool reloadHost)
             break;
         case JSBundleSource::Embedded:
             auto const bundleRootPath = GetBundleRootPath();
+#if USE_FABRIC
             instanceSettings.BundleRootPath(L"file://" + bundleRootPath.wstring());
+#endif  // USE_FABRIC
             auto const &bundleName = GetBundleName(bundleRootPath, bundleRoot_);
             if (!bundleName.has_value()) {
                 return false;

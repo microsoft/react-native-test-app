@@ -126,7 +126,7 @@ function warn(message) {
  * @param {string} source
  * @returns {AssetItems}
  */
-function generateContentItems(
+function generateAssetItems(
   resources,
   projectPath,
   assets = { assetFilters: [], assetItemFilters: [], assetItems: [] },
@@ -159,7 +159,7 @@ function generateContentItems(
       const files = fs
         .readdirSync(resourcePath)
         .map((file) => path.join(resource, file));
-      generateContentItems(
+      generateAssetItems(
         files,
         projectPath,
         assets,
@@ -168,22 +168,24 @@ function generateContentItems(
         fs
       );
     } else {
-      const assetPath = normalizePath(path.relative(projectPath, resourcePath));
+      const assetPath = normalizePath(resourcePath);
       /**
        * When a resources folder is included in the manifest, the directory
        * structure within the folder must be maintained. For example, given
        * `dist/assets`, we must output:
        *
-       *     `<DestinationFolders>$(BundleDir)\\assets\\...</DestinationFolders>`
-       *     `<DestinationFolders>$(BundleDir)\\assets\\node_modules\\...</DestinationFolders>`
+       *     `<DestinationFolders>$(OutDir)\\Bundle\\assets\\...</DestinationFolders>`
+       *     `<DestinationFolders>$(OutDir)\\Bundle\\assets\\node_modules\\...</DestinationFolders>`
        *     ...
+       *
+       * Resource paths are always prefixed with `$(OutDir)\\Bundle`.
        */
       const destination =
         source &&
         `\\${normalizePath(path.relative(source, path.dirname(resource)))}`;
       assetItems.push(
         `<CopyFileToFolders Include="$(ProjectRootDir)\\${assetPath}">`,
-        `  <DestinationFolders>$(BundleDir)${destination}</DestinationFolders>`,
+        `  <DestinationFolders>$(OutDir)\\Bundle${destination}</DestinationFolders>`,
         "</CopyFileToFolders>"
       );
       assetItemFilters.push(
@@ -195,6 +197,53 @@ function generateContentItems(
   }
 
   return assets;
+}
+
+/**
+ * @param {string[]} resources
+ * @param {string} projectPath
+ * @param {string=} currentDir
+ * @param {string=} destination
+ * @param {string[]=} result
+ * @returns {string[]}
+ */
+function generateContentItems(
+  resources,
+  projectPath,
+  currentDir = ".",
+  destination = "Bundle",
+  result = [],
+  fs = nodefs
+) {
+  for (const res of resources) {
+    const assetPath = path.isAbsolute(res)
+      ? path.relative(projectPath, res)
+      : path.join(currentDir, res);
+    if (!fs.existsSync(assetPath)) {
+      warn(`Resource not found: ${res}`);
+      continue;
+    }
+
+    const link = `${destination}\\${path.basename(assetPath)}`;
+    if (fs.statSync(assetPath).isDirectory()) {
+      generateContentItems(
+        fs.readdirSync(assetPath),
+        projectPath,
+        assetPath,
+        link,
+        result,
+        fs
+      );
+    } else {
+      result.push(
+        `<Content Include="$(ProjectRootDir)\\${normalizePath(assetPath)}">`,
+        `  <Link>${link}</Link>`,
+        `  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>`,
+        `</Content>`
+      );
+    }
+  }
+  return result;
 }
 
 /**
@@ -316,38 +365,60 @@ export function importTargets(refs) {
 /**
  * @param {string[] | { windows?: string[] } | undefined} resources
  * @param {string} projectPath
+ * @param {Pick<ProjectInfo, "useFabric">} options
  * @returns {Assets}
  */
-export function parseResources(resources, projectPath, fs = nodefs) {
+export function parseResources(resources, projectPath, options, fs = nodefs) {
   if (!Array.isArray(resources)) {
     if (resources?.windows) {
-      return parseResources(resources.windows, projectPath, fs);
+      return parseResources(resources.windows, projectPath, options, fs);
     }
-    return { assetItems: "", assetItemFilters: "", assetFilters: "" };
+    return {
+      assetItems: "",
+      assetItemFilters: "",
+      assetFilters: "",
+      contentItems: "",
+    };
+  } else if (!options.useFabric) {
+    const { assetItems, assetItemFilters, assetFilters } = generateAssetItems(
+      resources,
+      projectPath,
+      /* assets */ undefined,
+      /* currentFilter */ undefined,
+      /* source */ undefined,
+      fs
+    );
+
+    return {
+      assetItems: assetItems.join("\n    "),
+      assetItemFilters: assetItemFilters.join("\n    "),
+      assetFilters: assetFilters.join("\n    "),
+      contentItems: "",
+    };
   }
 
-  const { assetItems, assetItemFilters, assetFilters } = generateContentItems(
-    resources,
-    projectPath,
-    /* assets */ undefined,
-    /* currentFilter */ undefined,
-    /* source */ undefined,
-    fs
-  );
-
   return {
-    assetItems: assetItems.join("\n    "),
-    assetItemFilters: assetItemFilters.join("\n    "),
-    assetFilters: assetFilters.join("\n    "),
+    assetItems: "",
+    assetItemFilters: "",
+    assetFilters: "",
+    contentItems: generateContentItems(
+      resources,
+      projectPath,
+      /** currentDir */ undefined,
+      /** destination */ undefined,
+      /** result */ undefined,
+      fs
+    ).join("\n    "),
   };
 }
 
 /**
  * Reads manifest file and and resolves paths to bundle resources.
  * @param {string | null} manifestFilePath Path to the closest manifest file.
+ * @param {Pick<ProjectInfo, "useFabric">} options
  * @returns {AppxBundle} Application name, and paths to directories and files to include.
  */
-export function getBundleResources(manifestFilePath, fs = nodefs) {
+export function getBundleResources(manifestFilePath, options, fs = nodefs) {
   // Default value if manifest or 'name' field don't exist.
   const defaultName = "ReactTestApp";
 
@@ -372,7 +443,7 @@ export function getBundleResources(manifestFilePath, fs = nodefs) {
           windows || {},
           projectPath
         ),
-        ...parseResources(resources, projectPath, fs),
+        ...parseResources(resources, projectPath, options, fs),
       };
     } catch (e) {
       if (isErrorLike(e)) {
@@ -391,6 +462,7 @@ export function getBundleResources(manifestFilePath, fs = nodefs) {
     assetItems: "",
     assetItemFilters: "",
     assetFilters: "",
+    contentItems: "",
     packageCertificate: "",
   };
 }
@@ -402,21 +474,22 @@ export function getBundleResources(manifestFilePath, fs = nodefs) {
  * @returns {Promise<ProjectInfo>}
  */
 export async function projectInfo(
-  { useFabric, useNuGet },
+  options,
   rnWindowsPath,
   destPath,
   fs = nodefs
 ) {
   const version = getPackageVersion("react-native-windows", rnWindowsPath, fs);
   const versionNumber = toVersionNumber(version);
-  const newArch = useFabric ?? versionNumber >= v(0, 80, 0);
+  const manifestFilePath = findNearest("app.json", destPath, fs);
+  const useFabric = options.useFabric ?? versionNumber >= v(0, 80, 0);
 
   return {
     version,
     versionNumber,
-    bundle: getBundleResources(findNearest("app.json", destPath, fs), fs),
+    bundle: getBundleResources(manifestFilePath, { useFabric }, fs),
     nugetDependencies: await getNuGetDependencies(rnWindowsPath),
-    useExperimentalNuGet: newArch || useNuGet,
-    useFabric: newArch,
+    useExperimentalNuGet: useFabric || options.useNuGet,
+    useFabric,
   };
 }

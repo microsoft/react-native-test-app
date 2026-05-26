@@ -18,12 +18,16 @@ export function configureForWin32({
       ["Main.rc"],
       ["Main.small.ico"],
       ["Package.appxmanifest"],
-      ["ReactApp.Package.wapproj"],
+      [
+        "ReactApp.Package.wapproj",
+        {
+          "<!-- ReactApp content items -->": bundle.contentItems,
+        },
+      ],
       [
         "ReactApp.vcxproj",
         {
           "REACT_NATIVE_VERSION=1000000000;": `REACT_NATIVE_VERSION=${versionNumber};`,
-          "<!-- ReactTestApp asset items -->": bundle.assetItems,
           "<!-- ReactTestApp additional targets -->":
             importTargets(nugetDependencies),
           ...(typeof bundle.singleApp === "string"
@@ -31,13 +35,7 @@ export function configureForWin32({
             : undefined),
         },
       ],
-      [
-        "ReactApp.vcxproj.filters",
-        {
-          "<!-- ReactTestApp asset item filters -->": bundle.assetItemFilters,
-          "<!-- ReactTestApp asset filters -->": bundle.assetFilters,
-        },
-      ],
+      ["ReactApp.vcxproj.filters"],
       ["resource.h"],
     ],
     solutionTemplatePath: path.join(
