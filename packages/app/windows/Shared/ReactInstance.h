@@ -94,7 +94,7 @@ namespace ReactTestApp
         void UseDirectDebugger(bool);
 
         bool UseFastRefresh() const;
-        void UseFastRefresh(bool);
+        void UseFastRefresh(bool, bool reloadHost = true);
 
         bool UseWebDebugger() const;
         void UseWebDebugger(bool);

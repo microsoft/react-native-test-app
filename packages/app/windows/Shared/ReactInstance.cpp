@@ -120,31 +120,35 @@ bool ReactInstance::LoadJSBundleFrom(JSBundleSource source, bool reloadHost)
 {
     source_ = source;
 
-    auto instanceSettings = reactNativeHost_.InstanceSettings();
     switch (source) {
         case JSBundleSource::DevServer:
-            instanceSettings.DebugBundlePath(L"index");
+            // "Fast Refresh" determines whether the bundle is loaded from the
+            // dev server (since at least 0.76)
+            // https://github.com/microsoft/react-native-windows/blob/react-native-windows_v0.76.17/vnext/Microsoft.ReactNative/ReactHost/ReactInstanceWin.cpp#L641
+            UseFastRefresh(true, reloadHost);
             break;
         case JSBundleSource::Embedded:
-            auto const bundleRootPath = GetBundleRootPath();
-#if USE_FABRIC
-            instanceSettings.BundleRootPath(L"file://" + bundleRootPath.wstring());
-#endif  // USE_FABRIC
-            auto const &bundleName = GetBundleName(bundleRootPath, bundleRoot_);
-            if (!bundleName.has_value()) {
-                return false;
-            }
-            instanceSettings.JavaScriptBundleFile(bundleName.value());
+            UseFastRefresh(false, reloadHost);
             break;
     }
 
-    Reload(reloadHost);
     return true;
 }
 
 void ReactInstance::Reload(bool reloadHost)
 {
     auto instanceSettings = reactNativeHost_.InstanceSettings();
+
+    instanceSettings.DebugBundlePath(L"index");
+
+    auto const bundleRootPath = GetBundleRootPath();
+#if USE_FABRIC
+    instanceSettings.BundleRootPath(L"file://" + bundleRootPath.wstring());
+#endif  // USE_FABRIC
+    auto const &bundleName = GetBundleName(bundleRootPath, bundleRoot_);
+    if (bundleName.has_value()) {
+        instanceSettings.JavaScriptBundleFile(bundleName.value());
+    }
 
 #if USE_WEB_DEBUGGER
     instanceSettings.UseWebDebugger(UseWebDebugger());
@@ -243,10 +247,10 @@ bool ReactInstance::UseFastRefresh() const
     return IsFastRefreshAvailable() && RetrieveLocalSetting(kUseFastRefresh, true);
 }
 
-void ReactInstance::UseFastRefresh(bool useFastRefresh)
+void ReactInstance::UseFastRefresh(bool useFastRefresh, bool reloadHost)
 {
     StoreLocalSetting(kUseFastRefresh, useFastRefresh);
-    Reload();
+    Reload(reloadHost);
 }
 
 bool ReactInstance::UseWebDebugger() const
