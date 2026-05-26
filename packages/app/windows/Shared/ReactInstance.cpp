@@ -46,11 +46,23 @@ namespace
     winrt::hstring const kUseWebDebugger = L"useWebDebugger";
 #endif  // USE_WEB_DEBUGGER
 
-    std::optional<winrt::hstring> GetBundleName(std::optional<winrt::hstring> const &bundleRoot)
+    std::filesystem::path GetBundleRootPath()
+    {
+#if USE_FABRIC
+        WCHAR modulePath[MAX_PATH];
+        GetModuleFileNameW(nullptr, modulePath, MAX_PATH);
+        PathCchRemoveFileSpec(modulePath, MAX_PATH);
+        return std::filesystem::path{modulePath}.replace_filename(L"Bundle") / L"";
+#else   // USE_FABRIC
+        return std::filesystem::path{L"Bundle\\"};
+#endif  // USE_FABRIC
+    }
+
+    std::optional<winrt::hstring> GetBundleName(std::filesystem::path bundlePath,
+                                                std::optional<winrt::hstring> const &bundleRoot)
     {
         constexpr std::wstring_view const bundleExtension = L".bundle";
 
-        std::filesystem::path bundlePath{L"Bundle\\"};
         if (bundleRoot.has_value()) {
             std::wstring_view root = bundleRoot.value();
             for (auto &&ext : {L".windows", L".native", L""}) {
@@ -104,76 +116,39 @@ std::vector<std::wstring_view> const ReactTestApp::JSBundleNames = {
     L"main",
 };
 
-ReactInstance::ReactInstance()
-{
-    reactNativeHost_.PackageProviders().Append(winrt::make<ReactPackageProvider>());
-    winrt::Microsoft::ReactNative::RegisterAutolinkedNativeModulePackages(
-        reactNativeHost_.PackageProviders());
-
-    reactNativeHost_.InstanceSettings().InstanceLoaded(
-        [this](winrt::IInspectable const & /*sender*/, winrt::InstanceLoadedEventArgs const &args) {
-            context_ = args.Context();
-
-#if __has_include("AppRegistry.h") && __has_include(<JSI/JsiApiContext.h>)
-            if (!onComponentsRegistered_) {
-                return;
-            }
-
-            winrt::Microsoft::ReactNative::ExecuteJsi(context_, [this](Runtime &runtime) noexcept {
-                try {
-                    onComponentsRegistered_(ReactTestApp::GetAppKeys(runtime));
-                } catch ([[maybe_unused]] std::exception const &e) {
-#if defined(_DEBUG) && !defined(DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION)
-                    if (IsDebuggerPresent()) {
-                        __debugbreak();
-                    }
-#endif  // defined(_DEBUG) && !defined(DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION)
-                }
-            });
-#endif  // __has_include("AppRegistry.h") && __has_include(<JSI/JsiApiContext.h>)
-        });
-}
-
-#if __has_include(<winrt/Microsoft.UI.Composition.h>)
-ReactInstance::ReactInstance(HWND hwnd,
-                             winrt::Microsoft::UI::Composition::Compositor const &compositor)
-    : ReactInstance()
-{
-    winrt::Microsoft::ReactNative::ReactCoreInjection::SetTopLevelWindowId(
-        reactNativeHost_.InstanceSettings().Properties(), reinterpret_cast<uint64_t>(hwnd));
-
-    // By using the MicrosoftCompositionContextHelper here, React Native Windows
-    // will use Lifted Visuals for its tree.
-    winrt::Microsoft::ReactNative::Composition::CompositionUIService::SetCompositor(
-        reactNativeHost_.InstanceSettings(), compositor);
-}
-#endif  // __has_include(<winrt/Microsoft.UI.Composition.h>)
-
-bool ReactInstance::LoadJSBundleFrom(JSBundleSource source)
+bool ReactInstance::LoadJSBundleFrom(JSBundleSource source, bool reloadHost)
 {
     source_ = source;
 
-    auto instanceSettings = reactNativeHost_.InstanceSettings();
     switch (source) {
         case JSBundleSource::DevServer:
-            instanceSettings.JavaScriptBundleFile(L"index");
+            // "Fast Refresh" determines whether the bundle is loaded from the
+            // dev server (since at least 0.76)
+            // https://github.com/microsoft/react-native-windows/blob/react-native-windows_v0.76.17/vnext/Microsoft.ReactNative/ReactHost/ReactInstanceWin.cpp#L641
+            UseFastRefresh(true, reloadHost);
             break;
         case JSBundleSource::Embedded:
-            auto const &bundleName = GetBundleName(bundleRoot_);
-            if (!bundleName.has_value()) {
-                return false;
-            }
-            instanceSettings.JavaScriptBundleFile(bundleName.value());
+            UseFastRefresh(false, reloadHost);
             break;
     }
 
-    Reload();
     return true;
 }
 
-void ReactInstance::Reload()
+void ReactInstance::Reload(bool reloadHost)
 {
     auto instanceSettings = reactNativeHost_.InstanceSettings();
+
+    instanceSettings.DebugBundlePath(L"index");
+
+    auto const bundleRootPath = GetBundleRootPath();
+#if USE_FABRIC
+    instanceSettings.BundleRootPath(L"file://" + bundleRootPath.wstring());
+#endif  // USE_FABRIC
+    auto const &bundleName = GetBundleName(bundleRootPath, bundleRoot_);
+    if (bundleName.has_value()) {
+        instanceSettings.JavaScriptBundleFile(bundleName.value());
+    }
 
 #if USE_WEB_DEBUGGER
     instanceSettings.UseWebDebugger(UseWebDebugger());
@@ -196,7 +171,9 @@ void ReactInstance::Reload()
     instanceSettings.SourceBundleHost(host);
     instanceSettings.SourceBundlePort(static_cast<uint16_t>(port));
 
-    reactNativeHost_.ReloadInstance();
+    if (reloadHost) {
+        reactNativeHost_.ReloadInstance();
+    }
 }
 
 bool ReactInstance::BreakOnFirstLine() const
@@ -270,10 +247,10 @@ bool ReactInstance::UseFastRefresh() const
     return IsFastRefreshAvailable() && RetrieveLocalSetting(kUseFastRefresh, true);
 }
 
-void ReactInstance::UseFastRefresh(bool useFastRefresh)
+void ReactInstance::UseFastRefresh(bool useFastRefresh, bool reloadHost)
 {
     StoreLocalSetting(kUseFastRefresh, useFastRefresh);
-    Reload();
+    Reload(reloadHost);
 }
 
 bool ReactInstance::UseWebDebugger() const
@@ -295,6 +272,35 @@ void ReactInstance::UseWebDebugger(bool useWebDebugger)
     StoreLocalSetting(kUseWebDebugger, useWebDebugger);
     Reload();
 #endif  // USE_WEB_DEBUGGER
+}
+
+void ReactInstance::InitializeHost(winrt::Microsoft::ReactNative::ReactNativeHost host)
+{
+    host.PackageProviders().Append(winrt::make<ReactPackageProvider>());
+    winrt::Microsoft::ReactNative::RegisterAutolinkedNativeModulePackages(host.PackageProviders());
+
+    host.InstanceSettings().InstanceLoaded(
+        [this](winrt::IInspectable const & /*sender*/, winrt::InstanceLoadedEventArgs const &args) {
+            context_ = args.Context();
+
+#if __has_include("AppRegistry.h") && __has_include(<JSI/JsiApiContext.h>)
+            if (!onComponentsRegistered_) {
+                return;
+            }
+
+            winrt::Microsoft::ReactNative::ExecuteJsi(context_, [this](Runtime &runtime) noexcept {
+                try {
+                    onComponentsRegistered_(ReactTestApp::GetAppKeys(runtime));
+                } catch ([[maybe_unused]] std::exception const &e) {
+#if defined(_DEBUG) && !defined(DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION)
+                    if (IsDebuggerPresent()) {
+                        __debugbreak();
+                    }
+#endif  // defined(_DEBUG) && !defined(DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION)
+                }
+            });
+#endif  // __has_include("AppRegistry.h") && __has_include(<JSI/JsiApiContext.h>)
+        });
 }
 
 winrt::IAsyncOperation<bool> ReactTestApp::IsDevServerRunning()

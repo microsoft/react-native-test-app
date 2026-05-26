@@ -9,20 +9,7 @@
 namespace winrt
 {
     using winrt::Microsoft::ReactNative::IJSValueWriter;
-    using winrt::Microsoft::ReactNative::LayoutDirection;
-    using winrt::Microsoft::ReactNative::ReactCoreInjection;
-    using winrt::Microsoft::ReactNative::ReactNativeIsland;
     using winrt::Microsoft::ReactNative::ReactViewOptions;
-    using winrt::Microsoft::UI::Composition::Compositor;
-    using winrt::Microsoft::UI::Content::ContentSizePolicy;
-    using winrt::Microsoft::UI::Content::DesktopChildSiteBridge;
-    using winrt::Microsoft::UI::Dispatching::DispatcherQueueController;
-    using winrt::Microsoft::UI::Windowing::AppWindow;
-    using winrt::Microsoft::UI::Windowing::AppWindowChangedEventArgs;
-    using winrt::Microsoft::UI::Windowing::OverlappedPresenter;
-    using winrt::Microsoft::UI::Windowing::OverlappedPresenterState;
-    using winrt::Windows::Foundation::AsyncStatus;
-    using winrt::Windows::Foundation::Size;
 }  // namespace winrt
 
 namespace
@@ -34,30 +21,9 @@ namespace
 #endif
     constexpr bool kSingleAppMode = static_cast<bool>(ENABLE_SINGLE_APP_MODE);
 
-    float ScaleFactor(HWND hwnd) noexcept
+    void ConfigureReactViewOptions(winrt::ReactViewOptions viewOptions,
+                                   ReactApp::Component const &component)
     {
-        return GetDpiForWindow(hwnd) / static_cast<float>(USER_DEFAULT_SCREEN_DPI);
-    }
-
-    void UpdateRootViewSizeToAppWindow(winrt::ReactNativeIsland const &rootView,
-                                       winrt::AppWindow const &window)
-    {
-        // Do not relayout when minimized
-        auto windowState = window.Presenter().as<winrt::OverlappedPresenter>().State();
-        if (windowState == winrt::OverlappedPresenterState::Minimized) {
-            return;
-        }
-
-        auto hwnd = winrt::Microsoft::UI::GetWindowFromWindowId(window.Id());
-        auto scaleFactor = ScaleFactor(hwnd);
-        winrt::Size size{window.ClientSize().Width / scaleFactor,
-                         window.ClientSize().Height / scaleFactor};
-        rootView.Arrange({size, size, winrt::LayoutDirection::Undefined}, {0, 0});
-    }
-
-    winrt::ReactViewOptions MakeReactViewOptions(ReactApp::Component const &component)
-    {
-        winrt::ReactViewOptions viewOptions;
         viewOptions.ComponentName(winrt::to_hstring(component.appKey));
 
         auto initialProps = component.initialProperties.value_or<ReactApp::JSONObject>({});
@@ -71,8 +37,6 @@ namespace
                 }
                 writer.WriteObjectEnd();
             });
-
-        return viewOptions;
     }
 }  // namespace
 
@@ -91,22 +55,8 @@ _Use_decl_annotations_ int CALLBACK WinMain(HINSTANCE /* instance */,
     // Enable per monitor DPI scaling
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
-    // Create a DispatcherQueue for this thread.  This is needed for Composition, Content, and
-    // Input APIs.
-    auto dispatcherQueueController = winrt::DispatcherQueueController::CreateOnCurrentThread();
-
-    // Create a Compositor for all Content on this thread.
-    auto compositor = winrt::Compositor{};
-
-    // Create a top-level window.
-    auto window = winrt::AppWindow::Create();
-    window.Title(winrt::to_hstring(manifest.displayName));
-    window.Resize({600, 800});
-    window.Show();
-    auto hwnd = winrt::Microsoft::UI::GetWindowFromWindowId(window.Id());
-    auto scaleFactor = ScaleFactor(hwnd);
-
-    auto instance = ReactTestApp::ReactInstance{hwnd, compositor};
+    auto app = winrt::Microsoft::ReactNative::ReactNativeAppBuilder().Build();
+    auto instance = ReactTestApp::ReactInstance{app.ReactNativeHost()};
     if (manifest.bundleRoot.has_value()) {
         auto &bundleRoot = *manifest.bundleRoot;
         instance.BundleRoot(std::make_optional(winrt::to_hstring(bundleRoot)));
@@ -115,81 +65,31 @@ _Use_decl_annotations_ int CALLBACK WinMain(HINSTANCE /* instance */,
     // Start the react-native instance, which will create a JavaScript runtime and load the
     // applications bundle
     if constexpr (kDebug) {
-        instance.LoadJSBundleFrom(ReactTestApp::JSBundleSource::DevServer);
+        instance.LoadJSBundleFrom(ReactTestApp::JSBundleSource::DevServer, false);
     } else {
-        instance.LoadJSBundleFrom(ReactTestApp::JSBundleSource::Embedded);
+        instance.LoadJSBundleFrom(ReactTestApp::JSBundleSource::Embedded, false);
     }
 
-    // Create a RootView which will present a react-native component
-    winrt::ReactViewOptions viewOptions;
+    // Configure ReactViewOptions to load the initial component
     if constexpr (kSingleAppMode) {
         assert(manifest.singleApp.has_value() ||
                !"`ENABLE_SINGLE_APP_MODE` shouldn't have been true");
 
         for (auto &component : *manifest.components) {
             if (component.slug == *manifest.singleApp) {
-                viewOptions = MakeReactViewOptions(component);
+                ConfigureReactViewOptions(app.ReactViewOptions(), component);
                 break;
             }
         }
     } else {
         // TODO: Implement session restoration
         auto &component = (*manifest.components)[0];
-        viewOptions = MakeReactViewOptions(component);
+        ConfigureReactViewOptions(app.ReactViewOptions(), component);
     }
 
-    auto rootView = winrt::ReactNativeIsland{compositor};
-    rootView.ReactViewHost(
-        winrt::ReactCoreInjection::MakeViewHost(instance.ReactHost(), viewOptions));
+    auto window = app.AppWindow();
+    window.Title(winrt::to_hstring(manifest.displayName));
+    window.Resize({600, 800});
 
-    // Update the size of the RootView when the AppWindow changes size
-    window.Changed(
-        [wkRootView = winrt::make_weak(rootView)](winrt::AppWindow const &window,
-                                                  winrt::AppWindowChangedEventArgs const &args) {
-            if (args.DidSizeChange() || args.DidVisibilityChange()) {
-                if (auto rootView = wkRootView.get()) {
-                    UpdateRootViewSizeToAppWindow(rootView, window);
-                }
-            }
-        });
-
-    // Quit application when main window is closed
-    window.Destroying([&host = instance.ReactHost()](winrt::AppWindow const & /* window */,
-                                                     winrt::IInspectable const & /* args */) {
-        // Before we shutdown the application - unload the ReactNativeHost to give the javascript a
-        // chance to save any state
-        auto async = host.UnloadInstance();
-        async.Completed([host](auto asyncInfo, winrt::AsyncStatus asyncStatus) {
-            assert(asyncStatus == winrt::AsyncStatus::Completed);
-            host.InstanceSettings().UIDispatcher().Post([]() { PostQuitMessage(0); });
-        });
-    });
-
-    // DesktopChildSiteBridge create a ContentSite that can host the RootView ContentIsland
-    auto bridge = winrt::DesktopChildSiteBridge::Create(compositor, window.Id());
-    bridge.Connect(rootView.Island());
-    bridge.ResizePolicy(winrt::ContentSizePolicy::ResizeContentToParentWindow);
-
-    auto invScale = 1.0f / scaleFactor;
-    rootView.RootVisual().Scale({invScale, invScale, invScale});
-    rootView.ScaleFactor(scaleFactor);
-
-    // Set the intialSize of the root view
-    UpdateRootViewSizeToAppWindow(rootView, window);
-
-    bridge.Show();
-
-    // Run the main application event loop
-    dispatcherQueueController.DispatcherQueue().RunEventLoop();
-
-    // Rundown the DispatcherQueue. This drains the queue and raises events to let components
-    // know the message loop has finished.
-    dispatcherQueueController.ShutdownQueue();
-
-    bridge.Close();
-    bridge = nullptr;
-
-    // Destroy all Composition objects
-    compositor.Close();
-    compositor = nullptr;
+    app.Start();
 }

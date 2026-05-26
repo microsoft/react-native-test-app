@@ -25,6 +25,7 @@
     -->
     <BaseOutputPath>$([MSBuild]::MakeRelative($(MSBuildThisFileDirectory), $(SolutionDir)))\$(MSBuildProjectName)\bin\</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)\$(Platform)\$(Configuration)\</OutputPath>
+    <ProjectRootDir Condition="'$(ProjectRootDir)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'app.json'))</ProjectRootDir>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
   </PropertyGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
@@ -83,6 +84,7 @@
     <Content Include="Images\StoreLogo.scale-200.png" />
     <Content Include="Images\StoreLogo.scale-400.png" />
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
+    <!-- ReactApp content items -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ReactApp.vcxproj">

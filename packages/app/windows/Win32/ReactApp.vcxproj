@@ -135,7 +135,6 @@
   <ItemGroup>
     <Image Include="Main.ico" />
     <Image Include="Main.small.ico" />
-    <!-- ReactTestApp asset items -->
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ReactNativeWindowsTargets">
