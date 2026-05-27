@@ -2,6 +2,9 @@
 
 #include "Main.h"
 
+#include <commctrl.h>
+
+#include "DevMenu.h"
 #include "JSValueWriterHelper.h"
 #include "Manifest.g.cpp"
 #include "ReactInstance.h"
@@ -40,12 +43,15 @@ namespace
     }
 }  // namespace
 
-_Use_decl_annotations_ int CALLBACK WinMain(HINSTANCE /* instance */,
-                                            HINSTANCE,
-                                            PSTR /* commandLine */,
-                                            int /* showCmd */)
+LRESULT APIENTRY SubclassProc(
+    HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
+
+_Use_decl_annotations_ int CALLBACK WinMain(HINSTANCE /* hInstance */,
+                                            HINSTANCE /* hPrevInstance */,
+                                            PSTR /* lpCmdLine */,
+                                            int /* nShowCmd */)
 {
-    auto manifest = ::ReactApp::GetManifest();
+    auto manifest = ReactApp::GetManifest();
     assert(manifest.components.has_value() && (*manifest.components).size() > 0 &&
            "At least one component must be declared");
 
@@ -91,5 +97,33 @@ _Use_decl_annotations_ int CALLBACK WinMain(HINSTANCE /* instance */,
     window.Title(winrt::to_hstring(manifest.displayName));
     window.Resize({600, 800});
 
+#if _DEBUG
+    ReactApp::DevMenu devMenu{instance, manifest.components.value_or({})};
+    auto hWnd = GetWindowFromWindowId(window.Id());
+    SetMenu(hWnd, devMenu.Handle());
+    SetWindowSubclass(hWnd,
+                      SubclassProc,
+                      reinterpret_cast<UINT_PTR>(&devMenu),
+                      reinterpret_cast<DWORD_PTR>(&devMenu));
+#endif  // _DEBUG
+
     app.Start();
+    return 0;
+}
+
+LRESULT APIENTRY SubclassProc(
+    HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+{
+    switch (uMsg) {
+        case WM_COMMAND: {
+            auto const &devMenu = *reinterpret_cast<ReactApp::DevMenu *>(dwRefData);
+            devMenu.OnCommand(static_cast<ReactApp::DevMenuCommand>(LOWORD(wParam)));
+            return TRUE;
+        }
+        case WM_NCDESTROY: {
+            RemoveWindowSubclass(hWnd, SubclassProc, uIdSubclass);
+            break;
+        }
+    }
+    return DefSubclassProc(hWnd, uMsg, wParam, lParam);
 }

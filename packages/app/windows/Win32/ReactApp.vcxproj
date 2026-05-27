@@ -89,7 +89,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>shell32.lib;user32.lib;windowsapp.lib;%(AdditionalDependenices)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;shell32.lib;user32.lib;windowsapp.lib;%(AdditionalDependenices)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
@@ -106,6 +106,7 @@
   </ItemDefinitionGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClInclude Include="$(ReactAppWin32Dir)\DevMenu.h" />
     <ClInclude Include="$(ReactAppSharedDir)\JSValueWriterHelper.h" />
     <ClInclude Include="$(ReactAppWin32Dir)\Main.h" />
     <ClInclude Include="$(ReactAppSharedDir)\Manifest.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="$(ReactAppWin32Dir)\targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(ReactAppWin32Dir)\DevMenu.cpp" />
     <ClCompile Include="$(ReactAppWin32Dir)\Main.cpp" />
     <ClCompile Include="$(ReactAppSharedDir)\ReactInstance.cpp" />
     <ClCompile Include="AutolinkedNativeModules.g.cpp" />
