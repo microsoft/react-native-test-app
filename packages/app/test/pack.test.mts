@@ -278,6 +278,8 @@ describe("npm pack", () => {
       "windows/UWP/pch.h",
       "windows/Win32/AutolinkedNativeModules.g.cpp",
       "windows/Win32/AutolinkedNativeModules.g.h",
+      "windows/Win32/DevMenu.cpp",
+      "windows/Win32/DevMenu.h",
       "windows/Win32/Images/SplashScreen.scale-100.png",
       "windows/Win32/Images/SplashScreen.scale-200.png",
       "windows/Win32/Images/SplashScreen.scale-400.png",
