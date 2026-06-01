@@ -49,24 +49,29 @@ namespace
                     ItemID(DevMenuCommand::LoadFromDevServer),
                     kLabelLoadFromDevServer);
 
-        auto rememberLastComponent =
-            Session::ShouldRememberLastComponent() ? MF_CHECKED : MF_UNCHECKED;
-        AppendMenuW(hReactMenu,
-                    MF_DISABLED | MF_STRING | rememberLastComponent,
-                    ItemID(DevMenuCommand::RememberLastComponent),
-                    kLabelRememberLastComponent);
+        // TODO: We can't easily change components without `ReactNativeWindow`
+        // https://github.com/microsoft/react-native-windows/commit/1d80287100b4ebc559cd4d6bce62b7cd03c3cf04
+        if constexpr (REACT_NATIVE_VERSION >= 84000) {
+            auto rememberLastComponent =
+                Session::ShouldRememberLastComponent() ? MF_CHECKED : MF_UNCHECKED;
+            AppendMenuW(hReactMenu,
+                        MF_DISABLED | MF_STRING | rememberLastComponent,
+                        ItemID(DevMenuCommand::RememberLastComponent),
+                        kLabelRememberLastComponent);
 
-        if (!components.empty()) {
-            AppendMenuW(hReactMenu, MF_SEPARATOR, 0, nullptr);
-            constexpr auto offset = ItemID(DevMenuCommand::ComponentsStart);
-            std::remove_const_t<decltype(offset)> index = 0;
-            for (auto const &component : components) {
-                auto const &title = component.displayName.value_or(component.appKey);
-                // Add keyboard accelerator for the first nine (1-9) components
-                auto label = index < 8 ? winrt::to_hstring(title) + L"\tCtrl+Shift+" +
-                                             std::to_wstring(index + 1)
-                                       : winrt::to_hstring(title);
-                AppendMenuW(hReactMenu, MF_DISABLED | MF_STRING, offset + (++index), label.c_str());
+            if (!components.empty()) {
+                AppendMenuW(hReactMenu, MF_SEPARATOR, 0, nullptr);
+                constexpr auto offset = ItemID(DevMenuCommand::ComponentsStart);
+                std::remove_const_t<decltype(offset)> index = 0;
+                for (auto const &component : components) {
+                    auto const &title = component.displayName.value_or(component.appKey);
+                    // Add keyboard accelerator for the first nine (1-9) components
+                    auto label = index < 8 ? winrt::to_hstring(title) + L"\tCtrl+Shift+" +
+                                                 std::to_wstring(index + 1)
+                                           : winrt::to_hstring(title);
+                    AppendMenuW(
+                        hReactMenu, MF_DISABLED | MF_STRING, offset + (++index), label.c_str());
+                }
             }
         }
 
