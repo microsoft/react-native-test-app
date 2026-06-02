@@ -29,7 +29,6 @@
     "show-affected": "node scripts/affected.mts"
   },
   "devDependencies": {
-    "@nx/js": "^22.0.0",
     "@rnx-kit/align-deps": "^4.0.1",
     "@rnx-kit/lint-lockfile": "^0.2.0",
     "@rnx-kit/oxlint-config": "^1.0.3",
@@ -79,7 +78,7 @@
     "appium/semver": "~7.7.4",
     "appium/teen_process": "~4.1.1",
     "appium/ws": "~8.20.0",
-    "appium/yaml": "~2.8.2",
+    "appium/yaml": "^2.8.2",
     "argparse/sprintf-js": "^1.0.2",
     "babel-jest": "ignore:",
     "compression/bytes": "^3.1.2",
