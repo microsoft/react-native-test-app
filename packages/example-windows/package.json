@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "@react-native-webapis/web-storage": "catalog:",
-    "react": "19.1.1",
-    "react-native": "^0.82.0",
+    "react": "19.2.0",
+    "react-native": "^0.83.0",
     "react-native-safe-area-context": "^5.6.0",
-    "react-native-windows": "^0.82.0"
+    "react-native-windows": "^0.83.0"
   },
   "devDependencies": {
     "@babel/core": "catalog:",
@@ -27,8 +27,8 @@
     "@react-native-community/cli": "^20.0.0",
     "@react-native-community/cli-platform-android": "^20.0.0",
     "@react-native-community/cli-platform-ios": "^20.0.0",
-    "@react-native/babel-preset": "^0.82.0",
-    "@react-native/metro-config": "^0.82.0",
+    "@react-native/babel-preset": "^0.83.0",
+    "@react-native/metro-config": "^0.83.0",
     "@rnx-kit/cli": "catalog:",
     "@rnx-kit/metro-config": "catalog:",
     "@rnx-kit/polyfills": "catalog:",
@@ -67,7 +67,7 @@
     ],
     "alignDeps": {
       "requirements": [
-        "react-native@0.82"
+        "react-native@0.83"
       ],
       "capabilities": [
         "core-windows",

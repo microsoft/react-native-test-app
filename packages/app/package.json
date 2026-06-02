@@ -124,7 +124,7 @@
     "react": "18.2 - 19.2",
     "react-native": "0.76 - 0.85 || >=0.85.0-0 <0.86.0",
     "react-native-macos": "^0.0.0-0 || 0.76 - 0.81",
-    "react-native-windows": "^0.0.0-0 || 0.76 - 0.82"
+    "react-native-windows": "^0.0.0-0 || 0.76 - 0.83"
   },
   "peerDependenciesMeta": {
     "@callstack/react-native-visionos": {
