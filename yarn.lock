@@ -8282,7 +8282,7 @@ __metadata:
     "@react-native-community/cli": "npm:^20.0.0"
     "@react-native-community/cli-platform-android": "npm:^20.0.0"
     "@react-native-community/cli-platform-ios": "npm:^20.0.0"
-    "@react-native-webapis/web-storage": "npm:^0.4.5"
+    "@react-native-webapis/web-storage": "catalog:"
     "@react-native/babel-preset": "npm:^0.81.0"
     "@react-native/metro-config": "npm:^0.81.0"
     "@rnx-kit/cli": "catalog:"
@@ -8293,7 +8293,7 @@ __metadata:
     react: "npm:19.1.4"
     react-native: "npm:^0.81.6"
     react-native-macos: "npm:^0.81.0"
-    react-native-safe-area-context: "npm:^5.6.0"
+    react-native-safe-area-context: "catalog:"
     react-native-test-app: "workspace:*"
   languageName: unknown
   linkType: soft
@@ -8307,7 +8307,7 @@ __metadata:
     "@react-native-community/cli": "npm:^20.0.0"
     "@react-native-community/cli-platform-android": "npm:^20.0.0"
     "@react-native-community/cli-platform-ios": "npm:^20.0.0"
-    "@react-native-webapis/web-storage": "npm:^0.4.5"
+    "@react-native-webapis/web-storage": "catalog:"
     "@react-native/babel-preset": "npm:^0.82.0"
     "@react-native/metro-config": "npm:^0.82.0"
     "@rnx-kit/cli": "catalog:"
@@ -8317,7 +8317,7 @@ __metadata:
     "@types/react": "npm:~19.1.0"
     react: "npm:19.1.1"
     react-native: "npm:^0.82.0"
-    react-native-safe-area-context: "npm:^5.6.0"
+    react-native-safe-area-context: "catalog:"
     react-native-test-app: "workspace:*"
     react-native-windows: "npm:^0.82.0"
   languageName: unknown
@@ -8332,7 +8332,7 @@ __metadata:
     "@react-native-community/cli": "npm:^20.1.0"
     "@react-native-community/cli-platform-android": "npm:^20.1.0"
     "@react-native-community/cli-platform-ios": "npm:^20.1.0"
-    "@react-native-webapis/web-storage": "npm:^0.4.5"
+    "@react-native-webapis/web-storage": "catalog:"
     "@react-native/babel-preset": "npm:^0.85.0"
     "@react-native/metro-config": "npm:^0.85.0"
     "@rnx-kit/cli": "npm:^1.0.0"
@@ -8346,7 +8346,7 @@ __metadata:
     appium-xcuitest-driver: "npm:^11.0.0"
     react: "npm:19.2.3"
     react-native: "npm:^0.85.0"
-    react-native-safe-area-context: "npm:^5.6.0"
+    react-native-safe-area-context: "catalog:"
     react-native-test-app: "workspace:*"
     webdriverio: "patch:webdriverio@npm%3A9.26.1#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
   languageName: unknown
@@ -12949,13 +12949,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^5.6.0":
-  version: 5.6.2
-  resolution: "react-native-safe-area-context@npm:5.6.2"
+"react-native-safe-area-context@npm:^5.8.0":
+  version: 5.8.0
+  resolution: "react-native-safe-area-context@npm:5.8.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/3c8df21a1dbac83116b9c9bd5d20b7c1bb7649ecef44a111af6fb6b237241f5f4d692189eec30a69f5701b857249257da3621b9e17165460a2bb71faac7b92ae
+  checksum: 10c0/86d1375ce17d549b541d157148d9d093f9e918de47d3b0a5cbc4cb6afe619aa52e99f07dc62ee0878eaa70e8da3411193b24cfee1b7b271ffd295d0fce83d128
   languageName: node
   linkType: hard
 
