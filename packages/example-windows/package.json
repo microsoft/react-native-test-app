@@ -15,7 +15,7 @@
     "windows": "rnx-cli run-windows --no-packager"
   },
   "dependencies": {
-    "@react-native-webapis/web-storage": "^0.4.5",
+    "@react-native-webapis/web-storage": "catalog:",
     "react": "19.1.1",
     "react-native": "^0.82.0",
     "react-native-safe-area-context": "^5.6.0",

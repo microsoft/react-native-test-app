@@ -101,7 +101,6 @@
     "@react-native-community/cli": "^20.1.0",
     "@react-native-community/cli-types": "^20.1.0",
     "@react-native-community/template": "^0.85.0",
-    "@rnx-kit/lint-lockfile": "^0.1.0",
     "@rnx-kit/tsconfig": "^3.0.1",
     "@types/js-yaml": "^4.0.5",
     "@types/mustache": "^4.0.0",

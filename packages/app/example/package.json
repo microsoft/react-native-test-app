@@ -19,7 +19,7 @@
     "windows": "rnx-cli run-windows --no-packager"
   },
   "dependencies": {
-    "@react-native-webapis/web-storage": "^0.4.5",
+    "@react-native-webapis/web-storage": "catalog:",
     "react": "19.2.3",
     "react-native": "^0.85.0",
     "react-native-safe-area-context": "^5.6.0"
@@ -32,10 +32,10 @@
     "@react-native-community/cli-platform-ios": "^20.1.0",
     "@react-native/babel-preset": "^0.85.0",
     "@react-native/metro-config": "^0.85.0",
-    "@rnx-kit/cli": "^1.0.0",
-    "@rnx-kit/metro-config": "^2.2.3",
-    "@rnx-kit/polyfills": "^0.2.0",
-    "@rnx-kit/tsconfig": "^3.0.1",
+    "@rnx-kit/cli": "catalog:",
+    "@rnx-kit/metro-config": "catalog:",
+    "@rnx-kit/polyfills": "catalog:",
+    "@rnx-kit/tsconfig": "catalog:",
     "@types/react": "~19.2.0",
     "@wdio/types": "^9.20.0",
     "appium": "^3.1.1",

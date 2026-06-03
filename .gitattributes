@@ -3,3 +3,9 @@
 *.pbxproj          -text
 *.sh               text eol=lf
 /.yarn/releases/*  binary
+
+# Generated files
+packages/app/android/app/src/main/java/com/microsoft/reacttestapp/manifest/Manifest.kt  text eol=lf
+packages/app/ios/ReactTestApp/Manifest.swift                                            text eol=lf
+packages/app/schema.json                                                                text eol=lf
+packages/app/windows/Shared/Manifest.h                                                  text eol=lf

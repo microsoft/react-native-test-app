@@ -1,25 +1,23 @@
 import { deepEqual } from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { afterEach, describe, it } from "node:test";
-import { URL } from "node:url";
 import { updatePackageManifest as updatePackageManifestActual } from "../../scripts/configure.mjs";
-import { readJSONFile } from "../../scripts/helpers.js";
-import type { Manifest } from "../../scripts/types.ts";
 import { fs, setMockFiles } from "../fs.mock.mts";
 
-function getExampleManifest() {
-  const p = new URL("../../example/package.json", import.meta.url);
-  const manifest = readJSONFile<Manifest>(p);
-  return manifest;
+function getCatalog(): Record<string, string> {
+  const { stdout } = spawnSync("yarn", ["config", "get", "catalog", "--json"], {
+    shell: process.platform === "win32",
+  });
+  return JSON.parse(stdout.toString().trim());
 }
 
 describe("updatePackageManifest()", () => {
   const updatePackageManifest: typeof updatePackageManifestActual = (p, cfg) =>
     updatePackageManifestActual(p, cfg, fs);
 
-  const exampleManifest = getExampleManifest();
+  const catalog = getCatalog();
   const devDependencies = {
-    "@rnx-kit/metro-config":
-      exampleManifest["devDependencies"]?.["@rnx-kit/metro-config"],
+    "@rnx-kit/metro-config": catalog["@rnx-kit/metro-config"],
     "react-native-test-app": "^0.0.1-dev",
   };
 
