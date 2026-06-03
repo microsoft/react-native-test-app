@@ -1,6 +1,5 @@
 export const simple = {
-  $schema:
-    "https://raw.githubusercontent.com/microsoft/react-native-test-app/trunk/schema.json",
+  $schema: "./node_modules/react-native-test-app/schema.json",
   name: "Example",
   displayName: "Template",
   version: "1.0",
