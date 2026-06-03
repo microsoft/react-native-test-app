@@ -40,7 +40,7 @@ jobs:
       pull-requests: write # create code reviews (suggestion-bot)
     strategy:
       matrix:
-        runner: [macos-15, windows-2025]
+        runner: [macos-26, windows-2025]
     runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -157,7 +157,7 @@ jobs:
   ios:
     name: "iOS"
     permissions: {}
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -170,7 +170,6 @@ jobs:
           platform: ios
           project-root: packages/app/example
           cache-key-prefix: example
-          xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         uses: ./.github/actions/setup-react-native
@@ -212,7 +211,7 @@ jobs:
   ios-template:
     name: "iOS [template]"
     permissions: {}
-    runs-on: macos-15
+    runs-on: macos-26
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -226,7 +225,6 @@ jobs:
           platform: ios
           project-root: packages/app/example
           cache-key-prefix: template-${{ matrix.template }}
-          xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
@@ -359,7 +357,6 @@ jobs:
           platform: macos
           project-root: packages/example-macos
           cache-key-prefix: example
-          xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         uses: ./.github/actions/setup-react-native
@@ -415,7 +412,6 @@ jobs:
           platform: macos
           project-root: packages/app/example
           cache-key-prefix: template-${{ matrix.template }}
-          xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
@@ -458,7 +454,6 @@ jobs:
           platform: visionos
           project-root: packages/app/example
           cache-key-prefix: example
-          xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
         uses: ./.github/actions/setup-react-native
@@ -509,7 +504,6 @@ jobs:
           platform: visionos
           project-root: packages/app/example
           cache-key-prefix: template-${{ matrix.template }}
-          xcode-developer-dir: /Applications/Xcode_16.4.app/Contents/Developer
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
