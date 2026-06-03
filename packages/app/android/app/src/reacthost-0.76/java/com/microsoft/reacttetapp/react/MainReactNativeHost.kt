@@ -26,7 +26,7 @@ class MainReactNativeHost(
     private val reactBundleNameProvider: ReactBundleNameProvider
 ) : com.microsoft.reacttestapp.compat.ReactNativeHostCompat(application) {
     val jsExecutorName: String
-        get() = javaScriptExecutorFactory.toString()
+        get() = getJavaScriptExecutorFactory().toString()
 
     var source: BundleSource =
         if (reactBundleNameProvider.bundleName == null || isPackagerRunning(application)) {
@@ -36,6 +36,9 @@ class MainReactNativeHost(
         }
 
     var onBundleSourceChanged: ((newSource: BundleSource) -> Unit)? = null
+
+    private val application
+        get() = getApplication() as TestApp
 
     private var currentActivityTracker = CurrentActivityTracker()
 
@@ -54,7 +57,7 @@ class MainReactNativeHost(
         beforeReactNativeInit()
 
         if (BuildConfig.REACTAPP_USE_BRIDGELESS) {
-            val reactHost = (application as TestApp).reactHost
+            val reactHost = application.reactHost
             reactHost.addReactInstanceEventListener(object : ReactInstanceEventListener {
                 override fun onReactContextInitialized(context: ReactContext) {
                     // proactively removing the listener to avoid leaking memory
