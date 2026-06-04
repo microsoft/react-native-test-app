@@ -2259,7 +2259,7 @@ PODS:
     - React-perflogger (= 0.81.5)
     - React-utils (= 0.81.5)
     - SocketRocket
-  - ReactNativeHost (0.5.17):
+  - ReactNativeHost (0.5.19):
     - boost
     - DoubleConversion
     - fast_float
@@ -2638,7 +2638,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: dddd83e92ff2e76331e033a983785f1f242e0485
   ReactCodegen: b71171467ffb01846451b0fa0ac5b207741f1a96
   ReactCommon: 2024e8fc1841d1e289c5bc5b26aaf0e6ced45142
-  ReactNativeHost: 66a23d7106b451f1a1087f565a45c839abef1e73
+  ReactNativeHost: 8680b5bbc3afdbfeccc206ed0f3230d7c3df691b
   ReactTestApp-DevSupport: 4d0b86847c5f7fffa0f09479443be7a2420d19a4
   ReactTestApp-Resources: 71a3155bca10819738469de1f161410f43528209
   RNWWebStorage: 8ec03f8288c1e212518f662f44ec223603bbe74c
