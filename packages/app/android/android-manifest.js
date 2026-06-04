@@ -51,7 +51,8 @@ function generateAndroidManifest(appManifestPath, manifestOutput, fs = nodefs) {
     }
   }
 
-  const { XMLBuilder, XMLParser } = require("fast-xml-parser");
+  const { default: XMLBuilder } = require("fast-xml-builder");
+  const { XMLParser } = require("fast-xml-parser");
 
   /** @type {import("../scripts/types.js").AndroidConfig} */
   const appManifest = readJSONFile(appManifestPath, fs);
