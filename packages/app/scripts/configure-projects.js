@@ -9,9 +9,15 @@
  */
 const nodefs = require("node:fs");
 const path = require("node:path");
-const { generateAndroidManifest } = require("../android/android-manifest");
-const { configureGradleWrapper } = require("../android/gradle-wrapper");
-const { findFile, findNearest, readTextFile } = require("./helpers");
+const {
+  configure: configureAndroid,
+  getAndroidPackageName,
+} = require("../android/template.config.mjs");
+const { configure: configureIOS } = require("../ios/template.config.mjs");
+const {
+  configure: configureWindows,
+} = require("../windows/template.config.mjs");
+const { findNearest } = require("./helpers");
 
 /**
  * Finds `react-native.config.[ts,mjs,cjs,js]`.
@@ -70,25 +76,6 @@ function findReactNativeConfig(fs = nodefs) {
 }
 
 /**
- * @returns {string | undefined}
- */
-function getAndroidPackageName() {
-  return "com.microsoft.reacttestapp";
-}
-
-/**
- * @param {string} solutionFile
- * @returns {ProjectParams["windows"]["project"]}
- */
-function windowsProjectPath(solutionFile, fs = nodefs) {
-  const sln = readTextFile(solutionFile, fs);
-  const m = sln.match(
-    /([^"]*?node_modules[/\\].generated[/\\]windows[/\\].*?\.vcxproj)/
-  );
-  return { projectFile: m ? m[1] : `(Failed to parse '${solutionFile}')` };
-}
-
-/**
  * @param {ProjectConfig} configuration
  * @returns {Partial<ProjectParams>}
  */
@@ -98,47 +85,15 @@ function configureProjects({ android, ios, windows }, fs = nodefs) {
   /** @type {Partial<ProjectParams>} */
   const config = {};
 
+  const projectRoot = path.dirname(reactNativeConfig);
   if (android) {
-    const { packageName, sourceDir } = android;
-    const manifestPath = path.join(
-      "app",
-      "build",
-      "generated",
-      "rnta",
-      "src",
-      "main",
-      "AndroidManifest.xml"
-    );
-    const projectRoot = path.dirname(reactNativeConfig);
-    const appManifestPath = findFile("app.json", projectRoot, fs);
-    if (appManifestPath) {
-      generateAndroidManifest(
-        appManifestPath,
-        path.resolve(projectRoot, sourceDir, manifestPath),
-        fs
-      );
-    }
-
-    config.android = {
-      sourceDir,
-      manifestPath,
-      packageName: packageName || getAndroidPackageName(),
-    };
-
-    configureGradleWrapper(sourceDir, fs);
+    config.android = configureAndroid(projectRoot, android, fs);
   }
-
   if (ios) {
-    config.ios = ios;
+    config.ios = configureIOS(projectRoot, ios, fs);
   }
-
-  if (windows && fs.existsSync(windows.solutionFile)) {
-    const { sourceDir, solutionFile } = windows;
-    config.windows = {
-      sourceDir,
-      solutionFile: path.relative(sourceDir, solutionFile),
-      project: windowsProjectPath(solutionFile, fs),
-    };
+  if (windows) {
+    config.windows = configureWindows(projectRoot, windows, fs);
   }
 
   return config;

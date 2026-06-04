@@ -102,6 +102,7 @@ describe("npm pack", () => {
       "android/support/build.gradle",
       "android/support/src/main/AndroidManifest.xml",
       "android/support/src/main/java/com/microsoft/reacttestapp/support/ReactTestAppLifecycleEvents.java",
+      "android/template.config.mjs",
       "android/utils.gradle",
       "common/AppRegistry.cpp",
       "common/AppRegistry.h",
@@ -151,6 +152,7 @@ describe("npm pack", () => {
       "ios/localizations.mjs",
       "ios/pod_helpers.rb",
       "ios/privacyManifest.mjs",
+      "ios/template.config.mjs",
       "ios/test_app.rb",
       "ios/use_react_native-0.71.rb",
       "ios/utils.mjs",
@@ -317,6 +319,7 @@ describe("npm pack", () => {
       "windows/Win32/targetver.h",
       "windows/app.mjs",
       "windows/project.mjs",
+      "windows/template.config.mjs",
       "windows/uwp.mjs",
       "windows/win32.mjs",
     ]);
