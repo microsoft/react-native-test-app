@@ -1752,7 +1752,7 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
     - SocketRocket
-  - react-native-safe-area-context (5.6.2):
+  - react-native-safe-area-context (5.8.0):
     - React-Core
   - React-NativeModulesApple (0.81.5):
     - boost
@@ -2607,7 +2607,7 @@ SPEC CHECKSUMS:
   React-logger: 9442588f7670879b2230ab687eb84a65fabdf3ad
   React-Mapbuffer: 269c4f1441f8504198d0539481040213b54d18bc
   React-microtasksnativemodule: 6edd5d6c59121753a066cc0de179088ac07ba453
-  react-native-safe-area-context: 6c8805194166a9d6b3e53ba69ca76756c9bfb052
+  react-native-safe-area-context: 700f3e707470d3cef056231541c77df29a5f0d9e
   React-NativeModulesApple: c458b7ad1d4bd52fec401d4f571a765441a19adf
   React-oscompat: fae6f20685a2116163b0086b28191f8df2d1e5b8
   React-perflogger: 93c7f304c7243e276bcb165ec143a659ac41b7bc
