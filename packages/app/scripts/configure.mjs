@@ -17,34 +17,28 @@ import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import semverCoerce from "semver/functions/coerce.js";
 import semverSatisfies from "semver/functions/satisfies.js";
+import { getTemplate as getAndroidTemplate } from "../android/template.config.mjs";
+import { getTemplate as getIOSTemplate } from "../ios/template.config.mjs";
+import { getTemplate as getMacOSTemplate } from "../macos/template.config.mjs";
+import { getTemplate as getVisionOSTemplate } from "../visionos/template.config.mjs";
+import { getTemplate as getWindowsTemplate } from "../windows/template.config.mjs";
 import {
   getPackageVersion,
   isMain,
   memo,
   readJSONFile,
   readTextFile,
-  toVersionNumber,
 } from "./helpers.js";
 import {
   appManifest,
-  buildGradle,
   bundleConfig,
-  gradleProperties,
-  podfile,
+  copyFrom,
+  findGitIgnore,
   serialize,
-  settingsGradle,
 } from "./template.mjs";
 import * as colors from "./utils/colors.mjs";
 import { downloadPackage } from "./utils/npm.mjs";
 import { parseArgs } from "./utils/parseargs.mjs";
-
-/**
- * @param {...string} paths
- * @returns {{ source: string; }}
- */
-function copyFrom(...paths) {
-  return { source: path.join(...paths) };
-}
 
 /**
  * Merges two objects.
@@ -255,15 +249,7 @@ export const getConfig = (() => {
     fs = nodefs
   ) => {
     if (disableCache || typeof configuration === "undefined") {
-      const { name, templatePath, testAppPath, targetVersion, init } = params;
-
-      // `.gitignore` files are only renamed when published.
-      const gitignore = ["_gitignore", ".gitignore"].find((filename) => {
-        return fs.existsSync(path.join(testAppPath, "example", filename));
-      });
-      if (!gitignore) {
-        throw new Error("Failed to find `.gitignore`");
-      }
+      const { name, templatePath, testAppPath, init } = params;
 
       const require = createRequire(import.meta.url);
       const templateDir =
@@ -273,12 +259,10 @@ export const getConfig = (() => {
           path.dirname(require.resolve("react-native/template/package.json"))
         );
 
-      const targetVersionNum = toVersionNumber(targetVersion);
-
       configuration = {
         common: {
           files: {
-            ".gitignore": copyFrom(testAppPath, "example", gitignore),
+            ".gitignore": findGitIgnore(path.join(testAppPath, "example"), fs),
             ".watchmanconfig": copyFrom(templateDir, "_watchmanconfig"),
             "babel.config.js": copyFrom(templateDir, "babel.config.js"),
             "metro.config.js": copyFrom(
@@ -308,115 +292,11 @@ export const getConfig = (() => {
           },
           dependencies: {},
         },
-        android: {
-          files: {
-            "build.gradle": buildGradle(),
-            "gradle/wrapper/gradle-wrapper.jar": copyFrom(
-              testAppPath,
-              "example",
-              "android",
-              "gradle",
-              "wrapper",
-              "gradle-wrapper.jar"
-            ),
-            "gradle/wrapper/gradle-wrapper.properties": copyFrom(
-              testAppPath,
-              "example",
-              "android",
-              "gradle",
-              "wrapper",
-              "gradle-wrapper.properties"
-            ),
-            "gradle.properties": gradleProperties(targetVersionNum),
-            gradlew: copyFrom(testAppPath, "example", "android", "gradlew"),
-            "gradlew.bat": copyFrom(
-              testAppPath,
-              "example",
-              "android",
-              "gradlew.bat"
-            ),
-            "settings.gradle": settingsGradle(name),
-          },
-          oldFiles: [],
-          scripts: {
-            android: "react-native run-android",
-            "build:android":
-              "react-native bundle --entry-file index.js --platform android --dev true --bundle-output dist/main.android.jsbundle --assets-dest dist/res",
-          },
-          dependencies: {},
-        },
-        ios: {
-          files: {
-            Podfile: podfile(name, "", targetVersionNum),
-          },
-          oldFiles: [
-            "Podfile.lock",
-            "Pods",
-            `${name}.xcodeproj`,
-            `${name}.xcworkspace`,
-          ],
-          scripts: {
-            "build:ios":
-              "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.ios.jsbundle --assets-dest dist",
-            ios: "react-native run-ios",
-          },
-          dependencies: {},
-        },
-        macos: {
-          files: {
-            Podfile: podfile(name, "macos/", targetVersionNum),
-          },
-          oldFiles: [
-            "Podfile.lock",
-            "Pods",
-            `${name}.xcodeproj`,
-            `${name}.xcworkspace`,
-          ],
-          scripts: {
-            "build:macos":
-              "react-native bundle --entry-file index.js --platform macos --dev true --bundle-output dist/main.macos.jsbundle --assets-dest dist",
-            macos: `react-native run-macos --scheme ${name}`,
-          },
-          dependencies: {},
-        },
-        visionos: {
-          files: {
-            Podfile: podfile(name, "visionos/", targetVersionNum),
-          },
-          oldFiles: [
-            "Podfile.lock",
-            "Pods",
-            `${name}.xcodeproj`,
-            `${name}.xcworkspace`,
-          ],
-          scripts: {
-            "build:visionos":
-              "react-native bundle --entry-file index.js --platform ios --dev true --bundle-output dist/main.visionos.jsbundle --assets-dest dist",
-            visionos: "react-native run-visionos",
-          },
-          dependencies: {},
-        },
-        windows: {
-          files: {
-            ".gitignore": copyFrom(
-              testAppPath,
-              "example",
-              "windows",
-              gitignore
-            ),
-          },
-          oldFiles: [
-            `${name}.sln`,
-            `${name}.vcxproj`,
-            path.join(name, `${name}.vcxproj`),
-          ],
-          scripts: {
-            "build:windows":
-              "react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
-            windows: "react-native run-windows",
-          },
-          dependencies: {},
-        },
+        android: getAndroidTemplate(params),
+        ios: getIOSTemplate(params),
+        macos: getMacOSTemplate(params),
+        visionos: getVisionOSTemplate(params),
+        windows: getWindowsTemplate(params, fs),
       };
     }
     return configuration[platform];

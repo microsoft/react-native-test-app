@@ -2,8 +2,16 @@
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { readTextFile } from "../scripts/helpers.js";
+import { findGitIgnore } from "../scripts/template.mjs";
 
-/** @import { ProjectConfig, ProjectParams } from "../scripts/types.js"; */
+/**
+ * @import {
+ *   Configuration,
+ *   ConfigureParams,
+ *   ProjectConfig,
+ *   ProjectParams,
+ * } from "../scripts/types.js";
+ */
 
 /**
  * @param {string} solutionFile
@@ -34,4 +42,28 @@ export function configure(
         project: windowsProjectPath(solutionFile, fs),
       }
     : undefined;
+}
+
+/**
+ * @param {ConfigureParams}  params
+ * @returns {Configuration}
+ */
+export function getTemplate({ name, testAppPath }, fs = nodefs) {
+  const windowsDir = path.join(testAppPath, "example", "windows");
+  return {
+    files: {
+      ".gitignore": findGitIgnore(windowsDir, fs),
+    },
+    oldFiles: [
+      `${name}.sln`,
+      `${name}.vcxproj`,
+      path.join(name, `${name}.vcxproj`),
+    ],
+    scripts: {
+      "build:windows":
+        "react-native bundle --entry-file index.js --platform windows --dev true --bundle-output dist/main.windows.bundle --assets-dest dist",
+      windows: "react-native run-windows",
+    },
+    dependencies: {},
+  };
 }
