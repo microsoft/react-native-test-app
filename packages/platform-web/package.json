@@ -1,0 +1,39 @@
+{
+  "name": "@rnx-kit/react-native-template-web",
+  "version": "0.0.1-dev",
+  "private": true,
+  "description": "Dummy package \"providing\" web support (used only for testing purposes)",
+  "keywords": [
+    "app",
+    "react",
+    "react-native",
+    "template",
+    "test-app",
+    "web"
+  ],
+  "homepage": "https://github.com/microsoft/react-native-test-app",
+  "license": "MIT",
+  "author": {
+    "name": "Microsoft Open Source",
+    "email": "microsoftopensource@users.noreply.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/react-native-test-app.git",
+    "directory": "packages/platform-web"
+  },
+  "files": [
+    "template.config.js",
+    "web"
+  ],
+  "type": "module",
+  "main": "template.config.js",
+  "engines": {
+    "node": ">=20.19.4"
+  },
+  "reactNativeTemplateConfig": {
+    "web": {
+      "template": "./template.config.js"
+    }
+  }
+}

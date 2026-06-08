@@ -95,11 +95,7 @@ export type Configuration = {
 
 export type PlatformConfiguration = {
   common: Configuration;
-  android: Configuration;
-  ios: Configuration;
-  macos: Configuration;
-  visionos: Configuration;
-  windows: Configuration;
+  [platform: string]: Configuration;
 };
 
 export type PlatformPackage =
@@ -108,7 +104,13 @@ export type PlatformPackage =
   | "react-native-windows"
   | "@callstack/react-native-visionos";
 
-export type Platform = keyof PlatformConfiguration;
+export type Platform =
+  | "common"
+  | "android"
+  | "ios"
+  | "macos"
+  | "visionos"
+  | "windows";
 
 export type ConfigureParams = {
   name: string;
@@ -330,7 +332,10 @@ export type Manifest = Partial<{
   peerDependencies: Record<string, string>;
   devDependencies: Record<string, string | undefined>;
   resolutions: Record<string, string | undefined>;
-  defaultPlatformPackages: Record<string, PlatformPackage | undefined>;
+  defaultPlatformPackages: Record<
+    string,
+    { id: PlatformPackage; template: string }
+  >;
 }>;
 
 /***************************

@@ -4477,6 +4477,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rnx-kit/react-native-template-web@workspace:*, @rnx-kit/react-native-template-web@workspace:packages/platform-web":
+  version: 0.0.0-use.local
+  resolution: "@rnx-kit/react-native-template-web@workspace:packages/platform-web"
+  languageName: unknown
+  linkType: soft
+
 "@rnx-kit/third-party-notices@npm:^3.0.0":
   version: 3.0.0
   resolution: "@rnx-kit/third-party-notices@npm:3.0.0"
@@ -8323,6 +8329,7 @@ __metadata:
     "@rnx-kit/cli": "catalog:"
     "@rnx-kit/metro-config": "catalog:"
     "@rnx-kit/polyfills": "catalog:"
+    "@rnx-kit/react-native-template-web": "workspace:*"
     "@rnx-kit/tsconfig": "catalog:"
     "@types/react": "npm:~19.2.0"
     "@wdio/types": "npm:^9.20.0"

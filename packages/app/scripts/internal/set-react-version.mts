@@ -214,7 +214,7 @@ async function getProfile(
         "react-native": coreVersion,
         "react-native-macos": "canary",
         "react-native-windows": undefined,
-        [visionos]: undefined,
+        [visionos.id]: undefined,
       };
     }
 
@@ -227,7 +227,7 @@ async function getProfile(
         "react-native": coreVersion,
         "react-native-macos": undefined,
         "react-native-windows": info.version,
-        [visionos]: undefined,
+        [visionos.id]: undefined,
       };
     }
 
@@ -239,7 +239,7 @@ async function getProfile(
         "react-native": "nightly",
         "react-native-macos": undefined,
         "react-native-windows": undefined,
-        [visionos]: undefined,
+        [visionos.id]: undefined,
       };
     }
 
@@ -251,7 +251,7 @@ async function getProfile(
           : fetchPackageInfo("react-native-macos", v),
         visionos: coreOnly
           ? Promise.resolve({ version: undefined })
-          : fetchPackageInfo(visionos, v),
+          : fetchPackageInfo(visionos.id, v),
         windows: coreOnly
           ? Promise.resolve({ version: undefined })
           : fetchPackageInfo("react-native-windows", v),
@@ -265,7 +265,7 @@ async function getProfile(
         "react-native": reactNative.version,
         "react-native-macos": await versions.macos.then(getVersion),
         "react-native-windows": await versions.windows.then(getVersion),
-        [visionos]: await versions.visionos.then(getVersion),
+        [visionos.id]: await versions.visionos.then(getVersion),
       };
     }
   }

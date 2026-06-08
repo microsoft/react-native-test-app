@@ -321,7 +321,7 @@ export function generateSchema(docs = {}) {
         type: "object",
         properties: {
           reactNativePath: {
-            description: `Sets a custom path to React Native. Useful for when \`require("${defaultPlatformPackages.ios}")\` does not return the desired path.`,
+            description: `Sets a custom path to React Native. Useful for when \`require("${defaultPlatformPackages.ios.id}")\` does not return the desired path.`,
             type: "string",
           },
         },
@@ -342,7 +342,7 @@ export function generateSchema(docs = {}) {
             type: "string",
           },
           reactNativePath: {
-            description: `Sets a custom path to React Native for macOS. Useful for when \`require("${defaultPlatformPackages.macos}")\` does not return the desired path.`,
+            description: `Sets a custom path to React Native for macOS. Useful for when \`require("${defaultPlatformPackages.macos.id}")\` does not return the desired path.`,
             type: "string",
           },
         },
@@ -353,7 +353,7 @@ export function generateSchema(docs = {}) {
         type: "object",
         properties: {
           reactNativePath: {
-            description: `Sets a custom path to React Native for visionOS. Useful for when \`require("${defaultPlatformPackages.visionos}")\` does not return the desired path.`,
+            description: `Sets a custom path to React Native for visionOS. Useful for when \`require("${defaultPlatformPackages.visionos.id}")\` does not return the desired path.`,
             type: "string",
           },
         },
