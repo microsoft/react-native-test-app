@@ -24,6 +24,7 @@ module.exports = {
     // @ts-expect-error Yarn internal package
     const { npath } = require("@yarnpkg/fslib");
     const fs = require("node:fs");
+    const { EOL } = require("node:os");
 
     const asText = /** @type {const} */ ({ encoding: "utf-8" });
 
@@ -67,10 +68,9 @@ module.exports = {
           for (let i = 0; i < length; ++i) {
             if (bin[i] !== orig_bin[i]) {
               manifest.bin = orig_manifest.bin;
-              const fd = fs.openSync(manifestPath, "w", 0o644);
-              fs.writeSync(fd, JSON.stringify(manifest, undefined, 2));
-              fs.writeSync(fd, "\n");
-              fs.closeSync(fd);
+              const serialized = JSON.stringify(manifest, undefined, 2);
+              const reverted = serialized.replace(/\r?\n/g, EOL) + EOL;
+              fs.writeFileSync(manifestPath, reverted, asText);
               break;
             }
           }

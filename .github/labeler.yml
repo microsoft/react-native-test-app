@@ -64,6 +64,7 @@
           - packages/app/scripts/init.mjs
           - packages/app/scripts/template.mjs
           - packages/app/scripts/build/xcodebuild.sh
+          - packages/example-macos/**/*
 "platform: visionOS":
   - changed-files:
       - any-glob-to-any-file:
@@ -103,3 +104,4 @@
           - packages/app/scripts/init.mjs
           - packages/app/scripts/template.mjs
           - packages/app/windows/**/*
+          - packages/example-windows/**/*
