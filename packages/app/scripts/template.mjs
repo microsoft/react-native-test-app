@@ -1,13 +1,29 @@
 // @ts-check
-import { v } from "./helpers.js";
+import * as nodefs from "node:fs";
+import * as path from "node:path";
 
 /**
- * Joins all specified lines into a single string.
- * @param {...string} lines
- * @returns {string}
+ * @param {...string} paths
+ * @returns {{ source: string; }}
  */
-export function join(...lines) {
-  return lines.join("\n");
+export function copyFrom(...paths) {
+  return { source: path.join(...paths) };
+}
+
+/**
+ * @param {string} dir
+ * @returns {import("./types.ts").Configuration["files"][string]}
+ */
+export function findGitIgnore(dir, fs = nodefs) {
+  // `.gitignore` files are only renamed when published.
+  for (const filename of ["_gitignore", ".gitignore"]) {
+    const gitignore = path.join(dir, filename);
+    if (fs.existsSync(gitignore)) {
+      return { source: gitignore };
+    }
+  }
+
+  return "";
 }
 
 /**
@@ -44,38 +60,6 @@ export function appManifest(name) {
 }
 
 /**
- * @returns {string}
- */
-export function buildGradle() {
-  return join(
-    "buildscript {",
-    "    apply(from: {",
-    "        def searchDir = rootDir.toPath()",
-    "        do {",
-    '            def p = searchDir.resolve("node_modules/react-native-test-app/android/dependencies.gradle")',
-    "            if (p.toFile().exists()) {",
-    "                return p.toRealPath().toString()",
-    "            }",
-    "        } while (searchDir = searchDir.getParent())",
-    '        throw new GradleException("Could not find `react-native-test-app`");',
-    "    }())",
-    "",
-    "    repositories {",
-    "        mavenCentral()",
-    "        google()",
-    "    }",
-    "",
-    "    dependencies {",
-    "        getReactNativeDependencies().each { dependency ->",
-    "            classpath(dependency)",
-    "        }",
-    "    }",
-    "}",
-    ""
-  );
-}
-
-/**
  * Returns `.bundle/config`.
  *
  * @note We don't use a checked in file because of
@@ -84,127 +68,7 @@ export function buildGradle() {
  * @returns {string}
  */
 export function bundleConfig() {
-  return join('BUNDLE_PATH: ".bundle"', "BUNDLE_FORCE_RUBY_PLATFORM: 1");
-}
-
-/**
- * @param {number} _targetVersion Target React Native version
- * @returns {string}
- */
-export function gradleProperties(_targetVersion) {
-  return join(
-    "# Project-wide Gradle settings.",
-    "",
-    "# IDE (e.g. Android Studio) users:",
-    "# Gradle settings configured through the IDE *will override*",
-    "# any settings specified in this file.",
-    "",
-    "# For more details on how to configure your build environment visit",
-    "# http://www.gradle.org/docs/current/userguide/build_environment.html",
-    "",
-    "# Specifies the JVM arguments used for the Gradle Daemon. The setting is",
-    "# particularly useful for configuring JVM memory settings for build performance.",
-    "# This does not affect the JVM settings for the Gradle client VM.",
-    "# The default is `-Xmx512m -XX:MaxMetaspaceSize=256m`.",
-    "org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
-    "",
-    "# When configured, Gradle will fork up to org.gradle.workers.max JVMs to execute",
-    "# projects in parallel. To learn more about parallel task execution, see the",
-    "# section on Gradle build performance:",
-    "# https://docs.gradle.org/current/userguide/performance.html#parallel_execution.",
-    "# Default is `false`.",
-    "#org.gradle.parallel=true",
-    "",
-    "# AndroidX package structure to make it clearer which packages are bundled with the",
-    "# Android operating system, and which are packaged with your app's APK",
-    "# https://developer.android.com/topic/libraries/support-library/androidx-rn",
-    "android.useAndroidX=true",
-    "# Automatically convert third-party libraries to use AndroidX",
-    `#android.enableJetifier=true`,
-    "# Jetifier randomly fails on these libraries",
-    `#android.jetifier.ignorelist=hermes-android,react-android`,
-    "",
-    "# Use this property to specify which architecture you want to build.",
-    "# You can also override it from the CLI using",
-    "# ./gradlew <task> -PreactNativeArchitectures=x86_64",
-    "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64",
-    "",
-    "# Use this property to enable support to the new architecture.",
-    "# This will allow you to use TurboModules and the Fabric render in",
-    "# your application. You should enable this flag either if you want",
-    "# to write custom TurboModules/Fabric components OR use libraries that",
-    "# are providing them.",
-    "# Note that this is incompatible with web debugging.",
-    `newArchEnabled=true`,
-    "#bridgelessEnabled=true",
-    "",
-    "# Uncomment the line below to build React Native from source.",
-    "#react.buildFromSource=true",
-    "",
-    "# Version of Android NDK to build against.",
-    "#ANDROID_NDK_VERSION=26.1.10909125",
-    "",
-    "# Version of Kotlin to build against.",
-    "#KOTLIN_VERSION=1.8.22"
-  );
-}
-
-/**
- * @param {string} name Root project name
- * @param {"" | "macos/" | "visionos/"} prefix Platform prefix
- * @param {number} targetVersion Target React Native version
- * @returns {string}
- */
-export function podfile(name, prefix, targetVersion) {
-  // https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
-  /** @type {Record<typeof prefix, number>} */
-  const newArchMatrix = {
-    "": v(0, 76, 0),
-    "macos/": v(1000, 0, 0),
-    "visionos/": v(0, 76, 0),
-  };
-  const newArchEnabled = targetVersion >= newArchMatrix[prefix];
-  return join(
-    "ws_dir = Pathname.new(__dir__)",
-    "ws_dir = ws_dir.parent until",
-    `  File.exist?("#{ws_dir}/node_modules/react-native-test-app/${prefix}test_app.rb") ||`,
-    "  ws_dir.expand_path.to_s == '/'",
-    `require "#{ws_dir}/node_modules/react-native-test-app/${prefix}test_app.rb"`,
-    "",
-    `workspace '${name}.xcworkspace'`,
-    "",
-    `use_test_app! :hermes_enabled => true, :fabric_enabled => ${newArchEnabled}`,
-    ""
-  );
-}
-
-/**
- * @param {string} name Root project name
- * @returns {string}
- */
-export function settingsGradle(name) {
-  return join(
-    "pluginManagement {",
-    "    repositories {",
-    "        gradlePluginPortal()",
-    "        mavenCentral()",
-    "        google()",
-    "    }",
-    "}",
-    "",
-    `rootProject.name = "${name}"`,
-    "",
-    "apply(from: {",
-    "    def searchDir = rootDir.toPath()",
-    "    do {",
-    '        def p = searchDir.resolve("node_modules/react-native-test-app/test-app.gradle")',
-    "        if (p.toFile().exists()) {",
-    "            return p.toRealPath().toString()",
-    "        }",
-    "    } while (searchDir = searchDir.getParent())",
-    '    throw new GradleException("Could not find `react-native-test-app`");',
-    "}())",
-    "applyTestAppSettings(settings)",
-    ""
-  );
+  return `BUNDLE_PATH: ".bundle"
+BUNDLE_FORCE_RUBY_PLATFORM: 1
+`;
 }
