@@ -3510,6 +3510,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-windows/cli@patch:@react-native-windows/cli@npm%3A0.83.0#~/.yarn/patches/@react-native-windows-cli-npm-0.83.0-2d6aa101ac.patch":
+  version: 0.83.0
+  resolution: "@react-native-windows/cli@patch:@react-native-windows/cli@npm%3A0.83.0#~/.yarn/patches/@react-native-windows-cli-npm-0.83.0-2d6aa101ac.patch::version=0.83.0&hash=1cfcc6"
+  dependencies:
+    "@react-native-windows/codegen": "npm:0.83.0"
+    "@react-native-windows/fs": "npm:0.83.0"
+    "@react-native-windows/package-utils": "npm:0.83.0"
+    "@react-native-windows/telemetry": "npm:0.83.0"
+    "@xmldom/xmldom": "npm:^0.7.7"
+    chalk: "npm:^4.1.0"
+    cli-spinners: "npm:^2.2.0"
+    envinfo: "npm:^7.5.0"
+    execa: "npm:^5.0.0"
+    find-up: "npm:^4.1.0"
+    glob: "npm:^7.1.1"
+    lodash: "npm:^4.17.15"
+    mustache: "npm:^4.0.1"
+    ora: "npm:^3.4.0"
+    prompts: "npm:^2.4.1"
+    semver: "npm:^7.3.2"
+    shelljs: "npm:^0.8.4"
+    username: "npm:^5.1.0"
+    xml-formatter: "npm:^2.4.0"
+    xml-parser: "npm:^1.2.1"
+    xpath: "npm:^0.0.27"
+  peerDependencies:
+    react-native: "*"
+  checksum: 10c0/ce53b656464c47a18e04b06b6eeb3075da3d960f548787e8a44528c96ff334fa17ecc3ccd25160ea7b765aa4c82573f5de4a37ddefe36b709effe0ed43bf8210
+  languageName: node
+  linkType: hard
+
 "@react-native-windows/codegen@npm:0.83.0":
   version: 0.83.0
   resolution: "@react-native-windows/codegen@npm:0.83.0"

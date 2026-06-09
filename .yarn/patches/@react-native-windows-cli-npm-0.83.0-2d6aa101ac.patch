@@ -1,0 +1,16 @@
+diff --git a/lib-commonjs/utils/msbuildtools.js b/lib-commonjs/utils/msbuildtools.js
+index a9304027f047b9e737a1de6e534aea1812704bd4..9f4ad135b6548506dde09e285afaa33852ee0988 100644
+--- a/lib-commonjs/utils/msbuildtools.js
++++ b/lib-commonjs/utils/msbuildtools.js
+@@ -105,10 +105,7 @@ class MSBuildTools {
+         if (enableParallelBuilds) {
+             args.push('/maxCpuCount');
+         }
+-        if (target === 'build') {
+-            args.push('/restore', '/p:RestorePackagesConfig=true');
+-        }
+-        else {
++        if (target !== 'build') {
+             args.push(`/t:Deploy`);
+         }
+         Object.keys(msBuildProps).forEach(key => {

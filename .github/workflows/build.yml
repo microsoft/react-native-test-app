@@ -570,6 +570,11 @@ jobs:
       - name: Determine whether the Windows app needs to be built
         id: affected
         uses: ./.github/actions/affected
+      - name: Restore NuGet packages
+        if: ${{ steps.affected.outputs.windows != '' }}
+        run: |
+          MSBuild -property:Configuration=${{ matrix.configuration }} -property:Platform=${{ matrix.platform }} -target:Restore
+        working-directory: packages/example-windows/windows
       - name: Build
         id: build
         if: ${{ steps.affected.outputs.windows != '' }}
