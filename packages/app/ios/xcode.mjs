@@ -1,5 +1,6 @@
 // @ts-check
-import { XMLBuilder, XMLParser } from "fast-xml-parser";
+import XMLBuilder from "fast-xml-builder";
+import { XMLParser } from "fast-xml-parser";
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { findFile, readTextFile } from "../scripts/helpers.js";
