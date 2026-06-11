@@ -5,7 +5,7 @@
     <ProjectGuid>{b44cead7-fbff-4a17-95eb-ff5434bbd79d}</ProjectGuid>
     <TargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)'!=''">$(WindowsTargetPlatformVersion)</TargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <EntryPointProjectUniqueName>ReactApp.vcxproj</EntryPointProjectUniqueName>
+    <EntryPointProjectUniqueName>..\ReactApp.vcxproj</EntryPointProjectUniqueName>
     <DebuggerType>NativeOnly</DebuggerType>
     <BackgroundTaskDebugEngines>NativeOnly</BackgroundTaskDebugEngines>
   </PropertyGroup>
@@ -87,7 +87,7 @@
     <!-- ReactApp content items -->
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="ReactApp.vcxproj">
+    <ProjectReference Include="..\ReactApp.vcxproj">
       <SkipGetTargetFrameworkProperties>True</SkipGetTargetFrameworkProperties>
     </ProjectReference>
   </ItemGroup>

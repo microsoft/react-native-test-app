@@ -126,15 +126,19 @@ export async function copyAndReplace(
   srcPath,
   destPath,
   replacements,
-  fs = nodefs.promises
+  fs = nodefs
 ) {
+  mkdir_p(path.dirname(destPath), fs);
+
   if (!replacements) {
-    return cp_r(srcPath, destPath, nodefs);
+    return cp_r(srcPath, destPath, fs);
   }
 
+  const fsp = fs.promises;
+
   // Treat as text file
-  const data = await fs.readFile(srcPath, { encoding: "utf-8" });
-  return writeTextFile(destPath, replaceContent(data, replacements), fs);
+  const data = await fsp.readFile(srcPath, { encoding: "utf-8" });
+  return writeTextFile(destPath, replaceContent(data, replacements), fsp);
 }
 
 /**
@@ -185,8 +189,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
   mkdir_p(destPath, fs);
 
   /** @type {typeof copyAndReplace} */
-  const copyAndReplaceAsync = (src, dst, r) =>
-    copyAndReplace(src, dst, r, fs.promises);
+  const copyAndReplaceAsync = (src, dst, r) => copyAndReplace(src, dst, r, fs);
 
   const copyTasks = projectFiles.map(([file, replacements]) =>
     copyAndReplaceAsync(
@@ -208,6 +211,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
   const slnPath = path.join(destPath, `${info.bundle.appName}.sln`);
   const vcxprojPath = path.join(projectFilesDestPath, projectFileName);
   const vcxprojLocalPath = path.relative(destPath, vcxprojPath);
+  const wapprojPath = "ReactApp.Package\\ReactApp.Package.wapproj";
   copyTasks.push(
     writeTextFile(
       slnPath,
@@ -230,11 +234,8 @@ export async function generateSolution(destPath, options, fs = nodefs) {
           `"${path.relative(destPath, rnWindowsPath)}\\`
         )
         .replace(
-          "ReactApp.Package\\ReactApp.Package.wapproj", // Win32
-          vcxprojLocalPath.replace(
-            "ReactApp.vcxproj",
-            "ReactApp.Package.wapproj"
-          )
+          wapprojPath, // Win32
+          vcxprojLocalPath.replace("ReactApp.vcxproj", wapprojPath)
         )
         .replace("ReactApp\\ReactApp.vcxproj", vcxprojLocalPath) // Win32
         .replace("ReactTestApp\\ReactTestApp.vcxproj", vcxprojLocalPath) // UWP

@@ -13,13 +13,13 @@ export function configureForWin32({
     projectFileName: "ReactApp.vcxproj",
     projectFiles: [
       ["AutolinkedNativeModules.g.cpp"],
-      ["Images"],
       ["Main.ico"],
       ["Main.rc"],
       ["Main.small.ico"],
-      ["Package.appxmanifest"],
+      ["ReactApp.Package/Images"],
+      ["ReactApp.Package/Package.appxmanifest"],
       [
-        "ReactApp.Package.wapproj",
+        "ReactApp.Package/ReactApp.Package.wapproj",
         {
           "<!-- ReactApp content items -->": bundle.contentItems,
         },

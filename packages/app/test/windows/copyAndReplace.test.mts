@@ -6,7 +6,7 @@ import { fs, setMockFiles } from "../fs.mock.mts";
 
 describe("copyAndReplace()", () => {
   const copyAndReplace: typeof copyAndReplaceActual = (src, dst, r) =>
-    copyAndReplaceActual(src, dst, r, fs.promises);
+    copyAndReplaceActual(src, dst, r, fs);
 
   const readTextFile: typeof readTextFileActual = (p) =>
     readTextFileActual(p, fs);
