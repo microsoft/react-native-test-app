@@ -126,17 +126,19 @@ export async function copyAndReplace(
   srcPath,
   destPath,
   replacements,
-  fs = nodefs.promises
+  fs = nodefs
 ) {
-  mkdir_p(path.dirname(destPath));
+  mkdir_p(path.dirname(destPath), fs);
 
   if (!replacements) {
-    return cp_r(srcPath, destPath, nodefs);
+    return cp_r(srcPath, destPath, fs);
   }
 
+  const fsp = fs.promises;
+
   // Treat as text file
-  const data = await fs.readFile(srcPath, { encoding: "utf-8" });
-  return writeTextFile(destPath, replaceContent(data, replacements), fs);
+  const data = await fsp.readFile(srcPath, { encoding: "utf-8" });
+  return writeTextFile(destPath, replaceContent(data, replacements), fsp);
 }
 
 /**
@@ -187,8 +189,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
   mkdir_p(destPath, fs);
 
   /** @type {typeof copyAndReplace} */
-  const copyAndReplaceAsync = (src, dst, r) =>
-    copyAndReplace(src, dst, r, fs.promises);
+  const copyAndReplaceAsync = (src, dst, r) => copyAndReplace(src, dst, r, fs);
 
   const copyTasks = projectFiles.map(([file, replacements]) =>
     copyAndReplaceAsync(
