@@ -128,6 +128,8 @@ export async function copyAndReplace(
   replacements,
   fs = nodefs.promises
 ) {
+  mkdir_p(path.dirname(destPath));
+
   if (!replacements) {
     return cp_r(srcPath, destPath, nodefs);
   }
@@ -208,6 +210,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
   const slnPath = path.join(destPath, `${info.bundle.appName}.sln`);
   const vcxprojPath = path.join(projectFilesDestPath, projectFileName);
   const vcxprojLocalPath = path.relative(destPath, vcxprojPath);
+  const wapprojPath = "ReactApp.Package\\ReactApp.Package.wapproj";
   copyTasks.push(
     writeTextFile(
       slnPath,
@@ -230,11 +233,8 @@ export async function generateSolution(destPath, options, fs = nodefs) {
           `"${path.relative(destPath, rnWindowsPath)}\\`
         )
         .replace(
-          "ReactApp.Package\\ReactApp.Package.wapproj", // Win32
-          vcxprojLocalPath.replace(
-            "ReactApp.vcxproj",
-            "ReactApp.Package.wapproj"
-          )
+          wapprojPath, // Win32
+          vcxprojLocalPath.replace("ReactApp.vcxproj", wapprojPath)
         )
         .replace("ReactApp\\ReactApp.vcxproj", vcxprojLocalPath) // Win32
         .replace("ReactTestApp\\ReactTestApp.vcxproj", vcxprojLocalPath) // UWP
