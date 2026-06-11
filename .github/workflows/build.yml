@@ -580,28 +580,8 @@ jobs:
             yarn ci:windows --arch ${{ matrix.platform }}
           }
         working-directory: packages/example-windows
-        continue-on-error: true
-      # GitHub Actions currently does not support outputs from jobs with matrices
-      # The workaround is to upload artifacts to communicate between jobs
-      - name: Set build result
-        id: build_result
-        if: ${{ steps.affected.outputs.windows != '' }}
-        run: |
-          path=${{ format('windows-build.{0}.{1}.result', matrix.platform, matrix.configuration) }}
-          echo "${{ steps.build.outcome }}" >> $path
-          echo "path=$path" >> "$GITHUB_OUTPUT"
-        shell: bash
-      - name: Upload build result
-        if: ${{ steps.affected.outputs.windows != '' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: ${{ steps.build_result.outputs.path }}
-          path: ${{ steps.build_result.outputs.path }}
-          retention-days: 1
-          archive: false
-          overwrite: true
       - name: Upload build logs
-        if: ${{ steps.affected.outputs.windows != '' && steps.build.outcome != 'success' }}
+        if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: windows-msbuild.binlog
@@ -609,7 +589,7 @@ jobs:
           retention-days: 14
           overwrite: true
       - name: Test
-        if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' && steps.build.outcome == 'success' }}
+        if: ${{ steps.affected.outputs.windows != '' && matrix.platform == 'x64' }}
         run: |
           ../../../app/scripts/build/MSBuild.ps1 -Configuration ${{ matrix.configuration }} -Platform ${{ matrix.platform }} -Target Build ReactAppTests.vcxproj
           ../../../app/scripts/build/VSTest.ps1 ${{ matrix.platform }}\${{ matrix.configuration }}\ReactAppTests.dll
@@ -634,7 +614,7 @@ jobs:
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
-          arguments: -p windows --version 0.82.1
+          arguments: -p windows --version 0.83.0
       - name: Bundle JavaScript
         run: |
           yarn build:windows
@@ -652,28 +632,8 @@ jobs:
         run: |
           yarn windows --logging --no-packager --no-launch --no-deploy
         working-directory: template-example
-        continue-on-error: true
-      # GitHub Actions currently does not support outputs from jobs with matrices
-      # The workaround is to upload artifacts to communicate between jobs
-      - name: Set build result
-        id: build_result
-        if: ${{ steps.affected.outputs.windows != '' }}
-        run: |
-          path=${{ format('windows-template-build.{0}.result', matrix.template) }}
-          echo "${{ steps.build.outcome }}" >> $path
-          echo "path=$path" >> "$GITHUB_OUTPUT"
-        shell: bash
-      - name: Upload build result
-        if: ${{ steps.affected.outputs.windows != '' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: ${{ steps.build_result.outputs.path }}
-          path: ${{ steps.build_result.outputs.path }}
-          retention-days: 1
-          archive: false
-          overwrite: true
       - name: Upload build logs
-        if: ${{ steps.affected.outputs.windows != '' && steps.build.outcome != 'success' }}
+        if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: windows-template-msbuild.binlog
@@ -681,28 +641,6 @@ jobs:
           retention-days: 14
           overwrite: true
     timeout-minutes: 60
-  windows-result:
-    name: "Windows [result]"
-    permissions: {}
-    runs-on: ubuntu-24.04
-    if: ${{ github.event_name != 'schedule' }}
-    needs:
-      - windows
-      - windows-template
-    steps:
-      - name: Download build results
-        uses: actions/download-artifact@v8
-        with:
-          path: results
-          pattern: "windows-*.result"
-          merge-multiple: true
-      - name: Warn if Windows builds failed
-        run: |
-          for file in results/*; do
-            if grep -q fail "$file"; then
-              echo "::warning::$(basename $file .result): $(cat $file) (this is non-blocking but should be investigated)"
-            fi
-          done
   release:
     permissions:
       contents: write # create releases (Nx Release)
@@ -715,7 +653,8 @@ jobs:
       - android-template
       - macos
       - macos-template
-      - windows-result
+      - windows
+      - windows-template
     runs-on: ubuntu-24.04
     if: ${{ github.event_name != 'schedule' }}
     steps:
