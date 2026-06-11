@@ -129,7 +129,7 @@ extension AppDelegate {
 
         let bundleRoot = manifest.bundleRoot
         // As of 0.74, we can no longer instantiate on a background thread:
-        // https://github.com/facebook/react-native/commit/b7025fe1569349d90d26821b2b8de64a8ec9f352
+        // https://github.com/react/react-native/commit/b7025fe1569349d90d26821b2b8de64a8ec9f352
         DispatchQueue.main.async { [weak self] in
             self?.reactInstance.initReact(bundleRoot: bundleRoot) {
                 DispatchQueue.main.async { [weak self] in

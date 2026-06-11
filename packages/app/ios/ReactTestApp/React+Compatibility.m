@@ -38,7 +38,7 @@ IMP RTASwizzleSelector(Class class, SEL originalSelector, SEL swizzledSelector)
 }
 
 // MARK: - [0.79.0] `isDebuggingRemotely` was removed
-// See https://github.com/facebook/react-native/commit/9aae84a688b5af87faf4b68676b6357de26f797f
+// See https://github.com/react/react-native/commit/9aae84a688b5af87faf4b68676b6357de26f797f
 
 void RTADisableRemoteDebugging()
 {

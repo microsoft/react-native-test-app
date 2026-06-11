@@ -28,7 +28,7 @@ ext.applyTestAppSettings = { DefaultSettings settings ->
         settings.includeBuild(reactNativeGradlePlugin)
     }
 
-    // https://github.com/facebook/react-native/blob/b0c0bb45911434ea654ba7e2feff4686061eba7a/packages/react-native-gradle-plugin/settings-plugin/src/main/kotlin/com/facebook/react/ReactSettingsExtension.kt#L39
+    // https://github.com/react/react-native/blob/b0c0bb45911434ea654ba7e2feff4686061eba7a/packages/react-native-gradle-plugin/settings-plugin/src/main/kotlin/com/facebook/react/ReactSettingsExtension.kt#L39
     def output = file("${rootDir}/app/build/generated/rnta/autolinking.json")
     def projectRoot = file(findFile("package.json").getParent())
     def dependencies = autolinkModules(projectRoot, output, testAppDir)
@@ -117,7 +117,7 @@ ext.applyTestAppModule = { Project project ->
     def generatedSrcDir = file("${generatedMainDir}/java")
     generatedSrcDir.mkdirs()
 
-    // https://github.com/facebook/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L25
+    // https://github.com/react/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L25
     def generatedFontsDir = file("${generatedAssetsDir}/fonts")
     generatedFontsDir.mkdirs()
 

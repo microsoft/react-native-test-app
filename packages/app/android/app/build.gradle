@@ -27,7 +27,7 @@ react {
 // We don't want the React plugin to bundle.
 tasks.whenTaskAdded { task ->
     // The task name can be found in `react-native-gradle-plugin`:
-    // https://github.com/facebook/react-native/blob/0.71-stable/packages/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/TaskConfiguration.kt#L54
+    // https://github.com/react/react-native/blob/0.71-stable/packages/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/TaskConfiguration.kt#L54
     if (task.name.startsWith("createBundle") && task.name.endsWith("JsAndAssets")) {
         task.enabled = false
     }
@@ -222,7 +222,7 @@ dependencies {
         implementation(libraries.mlKitBarcodeScanning)
     }
 
-    // https://github.com/facebook/react-native/blob/b0c0bb45911434ea654ba7e2feff4686061eba7a/packages/react-native-gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/ReactExtension.kt#L162
+    // https://github.com/react/react-native/blob/b0c0bb45911434ea654ba7e2feff4686061eba7a/packages/react-native-gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/ReactExtension.kt#L162
     autolinkingInfo(buildDir).each { path, info ->
         info.configurations.each { configuration ->
             add(configuration, project(path))

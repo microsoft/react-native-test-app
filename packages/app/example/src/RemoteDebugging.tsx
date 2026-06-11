@@ -27,7 +27,7 @@ export function RemoteDebugging(): React.ReactElement | null {
   }
 
   // Remote debugging was removed in 0.79:
-  // https://github.com/facebook/react-native/commit/9aae84a688b5af87faf4b68676b6357de26f797f
+  // https://github.com/react/react-native/commit/9aae84a688b5af87faf4b68676b6357de26f797f
   try {
     const {
       isAsyncDebugging,

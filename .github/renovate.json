@@ -24,7 +24,7 @@
     {
       "groupName": "Metro",
       "allowedVersions": "^0.84.0",
-      "matchSourceUrls": ["https://github.com/facebook/metro{/,}**"]
+      "matchSourceUrls": ["https://github.com/react/metro{/,}**"]
     },
     {
       "groupName": "TypeScript type definitions",

@@ -10,7 +10,7 @@ export type ReactNativeVersion = {
 };
 
 export const ReactNativeVersion: ReactNativeVersion = (() => {
-  // https://github.com/facebook/react-native/commit/ec5638abd0e872be62b6ea5d8df9bed6335c2191
+  // https://github.com/react/react-native/commit/ec5638abd0e872be62b6ea5d8df9bed6335c2191
   const { ReactNativeVersion } = require("react-native");
   const { major, minor, patch, prerelease } =
     ReactNativeVersion ??
@@ -57,9 +57,9 @@ export function isFabricInstance<T>(
   ref: NativeSyntheticEvent<T>["currentTarget"]
 ): boolean {
   return Boolean(
-    // @ts-expect-error — https://github.com/facebook/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
+    // @ts-expect-error — https://github.com/react/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
     ref["__nativeTag"] ||
-    // @ts-expect-error — https://github.com/facebook/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
+    // @ts-expect-error — https://github.com/react/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
     ref["_internalInstanceHandle"]?.stateNode?.canonical
   );
 }

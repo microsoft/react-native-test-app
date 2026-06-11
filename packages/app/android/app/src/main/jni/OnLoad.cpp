@@ -1,4 +1,4 @@
-// https://github.com/facebook/react-native/blob/main/packages/react-native/ReactAndroid/cmake-utils/default-app-setup/OnLoad.cpp
+// https://github.com/react/react-native/blob/main/packages/react-native/ReactAndroid/cmake-utils/default-app-setup/OnLoad.cpp
 #if __has_include(<DefaultTurboModuleManagerDelegate.h>)
 
 #include <DefaultComponentsRegistry.h>

@@ -17,7 +17,7 @@ import { mkdir_p, writeJSONFile } from "../scripts/utils/filesystem.mjs";
  */
 
 /**
- * @see {@link https://github.com/facebook/react-native/blob/924fb3de9bc9328c3315316fbb796b933be5bcbe/packages/react-native-gradle-plugin/shared/src/main/kotlin/com/facebook/react/model/ModelAutolinkingDependenciesJson.kt#L17}
+ * @see {@link https://github.com/react/react-native/blob/924fb3de9bc9328c3315316fbb796b933be5bcbe/packages/react-native-gradle-plugin/shared/src/main/kotlin/com/facebook/react/model/ModelAutolinkingDependenciesJson.kt#L17}
  * @param {string} name
  * @returns {string}
  */

@@ -56,7 +56,7 @@ ext {
     if (rootProject.hasProperty("ANDROID_NDK_VERSION")) {
         ndkVersion = rootProject.properties["ANDROID_NDK_VERSION"]
     } else {
-        // https://github.com/facebook/react-native/commit/9ce7b564131c5b2075489c09ff05325ddc28014a
+        // https://github.com/react/react-native/commit/9ce7b564131c5b2075489c09ff05325ddc28014a
         ndkVersion = getDependencyVersionFromCatalog(versionCatalog, "ndkVersion", "26.1.10909125")
     }
 
