@@ -147,7 +147,7 @@ export function validatePlatforms(input) {
   }
 
   // Autolinking currently assumes that `ios` is always present:
-  // https://github.com/facebook/react-native/blob/0.76-stable/packages/react-native/scripts/cocoapods/autolinking.rb#L41
+  // https://github.com/react/react-native/blob/0.76-stable/packages/react-native/scripts/cocoapods/autolinking.rb#L41
   // We need to include iOS if we want to target other Apple platforms.
   if (includesApplePlatforms && !includesIOS) {
     platforms.push("ios");
