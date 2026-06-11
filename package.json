@@ -61,6 +61,7 @@
     "@appium/support/glob": "^13.0.6",
     "@appium/support/lodash": "^4.18.1",
     "@appium/support/semver": "~7.7.4",
+    "@appium/support/shell-quote": "^1.8.3",
     "@appium/support/teen_process": "~4.1.1",
     "@appium/support/uuid": "~14.0.0",
     "@appium/support/yauzl": "~3.3.0",
