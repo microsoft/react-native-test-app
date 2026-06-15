@@ -529,7 +529,7 @@ jobs:
   windows:
     name: "Windows"
     permissions: {}
-    runs-on: windows-2025
+    runs-on: windows-2022
     if: ${{ github.event_name != 'schedule' }}
     strategy:
       matrix:
@@ -598,7 +598,7 @@ jobs:
   windows-template:
     name: "Windows [template]"
     permissions: {}
-    runs-on: windows-2025
+    runs-on: windows-2022
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
