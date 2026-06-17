@@ -573,6 +573,10 @@ jobs:
       - name: Build
         id: build
         if: ${{ steps.affected.outputs.windows != '' }}
+        env:
+          # Enable this when debugging Windows builds:
+          # https://github.com/dotnet/msbuild/blob/main/documentation/Property-tracking-capabilities.md
+          MSBuildLogPropertyTracking: 0
         run: |
           if ("${{ matrix.configuration }}" -eq "Release") {
             yarn ci:windows --release --arch ${{ matrix.platform }}
