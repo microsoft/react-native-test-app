@@ -352,13 +352,13 @@ export function gatherConfig(params, disableCache = false) {
   const config = (() => {
     return platforms.reduce(
       (config, platform) => {
-        const platformConfig = getConfig(params, platform, disableCache);
         const dependencies = getPlatformPackage(platform, targetVersion);
         if (!dependencies) {
           /* node:coverage ignore next */
           return config;
         }
 
+        const platformConfig = getConfig(params, platform, disableCache);
         return mergeConfig(config, {
           ...platformConfig,
           files: Object.fromEntries(
