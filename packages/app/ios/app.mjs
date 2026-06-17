@@ -115,7 +115,7 @@ function findReactNativePath(
 
   const manifestURL = new URL("../package.json", import.meta.url);
   const manifest = JSON.parse(readTextFile(fileURLToPath(manifestURL), fs));
-  const npmPackageName = manifest.defaultPlatformPackages[targetPlatform];
+  const npmPackageName = manifest.defaultPlatformPackages[targetPlatform]?.id;
   if (!npmPackageName) {
     throw new Error(`Unsupported target platform: ${targetPlatform}`);
   }

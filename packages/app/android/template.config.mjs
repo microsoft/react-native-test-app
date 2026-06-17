@@ -177,7 +177,7 @@ export function configure(
 }
 
 /**
- * @param {ConfigureParams}  params
+ * @param {ConfigureParams} params
  * @returns {Configuration}
  */
 export function getTemplate({ name, testAppPath, targetVersion }) {

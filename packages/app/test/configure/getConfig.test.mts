@@ -1,4 +1,4 @@
-import { deepEqual } from "node:assert/strict";
+import { deepEqual, ok } from "node:assert/strict";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import {
@@ -123,5 +123,16 @@ describe("getConfig()", () => {
       "Test.vcxproj",
       path.join("Test", "Test.vcxproj"),
     ]);
+  });
+
+  it("returns external platform specific scripts and additional files", () => {
+    const params = mockParams({ packagePath: "example" });
+    // @ts-expect-error unsupported platform
+    const config = getConfig(params, "web");
+
+    ok(config.files["index.html"]);
+    deepEqual(config.oldFiles, ["webpack.config.js"]);
+    ok(config.scripts["build:web"]);
+    ok(config.dependencies["react-native-web"]);
   });
 });

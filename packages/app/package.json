@@ -146,10 +146,25 @@
     "node": ">=20.19.4"
   },
   "defaultPlatformPackages": {
-    "android": "react-native",
-    "ios": "react-native",
-    "macos": "react-native-macos",
-    "visionos": "@callstack/react-native-visionos",
-    "windows": "react-native-windows"
+    "android": {
+      "id": "react-native",
+      "template": "./android/template.config.mjs"
+    },
+    "ios": {
+      "id": "react-native",
+      "template": "./ios/template.config.mjs"
+    },
+    "macos": {
+      "id": "react-native-macos",
+      "template": "./macos/template.config.mjs"
+    },
+    "visionos": {
+      "id": "@callstack/react-native-visionos",
+      "template": "./visionos/template.config.mjs"
+    },
+    "windows": {
+      "id": "react-native-windows",
+      "template": "./windows/template.config.mjs"
+    }
   }
 }

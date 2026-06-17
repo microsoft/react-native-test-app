@@ -16,7 +16,8 @@
     ".",
     "packages/app",
     "packages/app/example",
-    "packages/example-*"
+    "packages/example-*",
+    "packages/platform-*"
   ],
   "scripts": {
     "format": "nx run-many --target format:c,format:js,format:swift",
@@ -25,7 +26,7 @@
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
     "lint:js": "oxlint $(git ls-files 'scripts/*.[cm][jt]s' 'scripts/*.[jt]s')",
     "release-notes": "node scripts/release-notes.mts",
-    "rnx-align-deps": "rnx-align-deps --exclude-packages @microsoft/root,react-native-test-app",
+    "rnx-align-deps": "rnx-align-deps --exclude-packages @microsoft/root,@rnx-kit/react-native-template-web,react-native-test-app",
     "show-affected": "node scripts/affected.mts"
   },
   "devDependencies": {

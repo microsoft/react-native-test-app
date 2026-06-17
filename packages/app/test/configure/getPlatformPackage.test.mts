@@ -56,7 +56,19 @@ describe("getPlatformPackage()", () => {
   });
 
   it("throws if target version is invalid", () => {
-    // @ts-expect-error intentional use of empty string to elicit an exception
-    throws(() => getPlatformPackage("", "version"));
+    throws(() => getPlatformPackage("macos", "version"));
+  });
+
+  it("returns an empty record for Android and iOS", () => {
+    for (const platform of ["common", "android", "ios"] as const) {
+      deepEqual(getPlatformPackage(platform, "version"), {});
+    }
+  });
+
+  it("returns an empty record for unsupported platforms", () => {
+    for (const platform of ["linux", "win32"] as const) {
+      // @ts-expect-error intentional use of unsupported platforms
+      deepEqual(getPlatformPackage(platform, "version"), {});
+    }
   });
 });

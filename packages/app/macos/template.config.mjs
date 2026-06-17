@@ -15,7 +15,7 @@ export function configure(_projectRoot, _config, _fs = nodefs) {
 }
 
 /**
- * @param {ConfigureParams}  params
+ * @param {ConfigureParams} params
  * @returns {Configuration}
  */
 export function getTemplate({ name, targetVersion }) {

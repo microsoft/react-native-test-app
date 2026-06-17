@@ -35,6 +35,7 @@
     "@rnx-kit/cli": "catalog:",
     "@rnx-kit/metro-config": "catalog:",
     "@rnx-kit/polyfills": "catalog:",
+    "@rnx-kit/react-native-template-web": "workspace:*",
     "@rnx-kit/tsconfig": "catalog:",
     "@types/react": "~19.2.0",
     "@wdio/types": "^9.20.0",

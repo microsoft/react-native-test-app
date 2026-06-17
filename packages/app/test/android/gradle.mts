@@ -79,6 +79,8 @@ async function makeProject(
   try {
     const target = new URL("../../example/node_modules", import.meta.url);
     const nodeModulesDir = path.join(packagePath, "node_modules");
+    // `gatherConfig` writes to cache so we need to remove it first
+    rm_r(nodeModulesDir);
     fs.symlinkSync(fileURLToPath(target), nodeModulesDir, "dir");
   } catch (e) {
     if (e && typeof e === "object" && "code" in e && e.code !== "EEXIST") {

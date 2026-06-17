@@ -11,17 +11,13 @@
  *   PlatformPackage,
  * } from "./types.js";
  */
+import { loadContext } from "@rnx-kit/tools-react-native/context";
 import * as nodefs from "node:fs";
 import { createRequire } from "node:module";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import semverCoerce from "semver/functions/coerce.js";
 import semverSatisfies from "semver/functions/satisfies.js";
-import { getTemplate as getAndroidTemplate } from "../android/template.config.mjs";
-import { getTemplate as getIOSTemplate } from "../ios/template.config.mjs";
-import { getTemplate as getMacOSTemplate } from "../macos/template.config.mjs";
-import { getTemplate as getVisionOSTemplate } from "../visionos/template.config.mjs";
-import { getTemplate as getWindowsTemplate } from "../windows/template.config.mjs";
 import {
   getPackageVersion,
   isMain,
@@ -104,6 +100,17 @@ export function mergeConfig(lhs, rhs) {
 }
 
 /**
+ * @param {string} root
+ * @param {string} subpath
+ * @returns {string | false}
+ */
+function resolvePath(root, subpath) {
+  const resolved = path.resolve(root, subpath);
+  const rel = path.relative(root, resolved);
+  return !path.isAbsolute(rel) && !rel.startsWith("..") && resolved;
+}
+
+/**
  * Sort the keys in specified object.
  * @param {Record<string, unknown>} obj
  */
@@ -140,9 +147,6 @@ export function validatePlatforms(input) {
       case "android":
       case "windows":
         break;
-
-      default:
-        throw new Error(`Unknown platform: ${p}`);
     }
   }
 
@@ -176,12 +180,8 @@ export function getDefaultPlatformPackageName(platform) {
   }
 
   const { defaultPlatformPackages } = readManifest();
-  const pkgName = defaultPlatformPackages[platform];
-  if (!pkgName) {
-    throw new Error(`Unsupported platform: ${platform}`);
-  }
-
-  return pkgName;
+  const pkg = defaultPlatformPackages[platform];
+  return pkg?.id;
 }
 
 /**
@@ -192,7 +192,7 @@ export function getDefaultPlatformPackageName(platform) {
  */
 export function getPlatformPackage(platform, targetVersion) {
   const packageName = getDefaultPlatformPackageName(platform);
-  if (packageName === "react-native") {
+  if (!packageName || packageName === "react-native") {
     return {};
   }
 
@@ -221,6 +221,50 @@ export function getPlatformPackage(platform, targetVersion) {
 export function reactNativeConfig({ name, testAppPath }, fs = nodefs) {
   const config = path.join(testAppPath, "example", "react-native.config.js");
   return readTextFile(config, fs).replaceAll("Example", name);
+}
+
+/**
+ * @param {ConfigureParams} params
+ * @param {NodeJS.Require} require
+ * @param {PlatformConfiguration} configuration
+ * @returns {PlatformConfiguration}
+ */
+function loadPlatformTemplates(params, require, configuration, fs = nodefs) {
+  const { packagePath, testAppPath } = params;
+  const { defaultPlatformPackages } = readManifest();
+  const platformPackages = { ...defaultPlatformPackages };
+
+  try {
+    const config = loadContext(packagePath);
+    for (const [, { root }] of Object.entries(config.dependencies)) {
+      const manifest = readJSONFile(path.join(root, "package.json"), fs);
+      const { reactNativeTemplateConfig: config } = manifest;
+      if (config && typeof config === "object" && !Array.isArray(config)) {
+        console.log(
+          "Loading template config:",
+          path.relative(packagePath, root)
+        );
+        for (const [key, { template, ...rest }] of Object.entries(config)) {
+          const resolved = resolvePath(root, template);
+          if (resolved) {
+            platformPackages[key] = { ...rest, template: resolved };
+          }
+        }
+      }
+    }
+  } catch (_) {
+    // If this was executed outside any projects, `@react-native-community/cli`
+    // will not be available and error here.
+  }
+
+  for (const [platform, { template }] of Object.entries(platformPackages)) {
+    const { getTemplate } = require(
+      template.startsWith(".") ? path.join(testAppPath + template) : template
+    );
+    configuration[platform] = getTemplate(params, fs);
+  }
+
+  return configuration;
 }
 
 /**
@@ -259,7 +303,7 @@ export const getConfig = (() => {
           path.dirname(require.resolve("react-native/template/package.json"))
         );
 
-      configuration = {
+      configuration = loadPlatformTemplates(params, require, {
         common: {
           files: {
             ".gitignore": findGitIgnore(path.join(testAppPath, "example"), fs),
@@ -292,12 +336,7 @@ export const getConfig = (() => {
           },
           dependencies: {},
         },
-        android: getAndroidTemplate(params),
-        ios: getIOSTemplate(params),
-        macos: getMacOSTemplate(params),
-        visionos: getVisionOSTemplate(params),
-        windows: getWindowsTemplate(params, fs),
-      };
+      });
     }
     return configuration[platform];
   };
@@ -322,7 +361,6 @@ export function gatherConfig(params, disableCache = false) {
 
         return mergeConfig(config, {
           ...platformConfig,
-          dependencies,
           files: Object.fromEntries(
             // Map each file into its platform specific folder, e.g.
             // `Podfile` -> `ios/Podfile`
@@ -334,13 +372,17 @@ export function gatherConfig(params, disableCache = false) {
           oldFiles: platformConfig.oldFiles.map((file) => {
             return path.join(platform, file);
           }),
+          dependencies: {
+            ...dependencies,
+            ...platformConfig.dependencies,
+          },
         });
       },
       /** @type {Configuration} */ ({
-        scripts: {},
-        dependencies: {},
         files: {},
         oldFiles: [],
+        scripts: {},
+        dependencies: {},
       })
     );
   })();
