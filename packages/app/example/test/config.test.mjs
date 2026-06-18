@@ -1,8 +1,9 @@
 // @ts-check
-import { equal, match, notEqual, ok } from "node:assert/strict";
+import { deepEqual, equal, match, notEqual, ok } from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { test } from "node:test";
+import { describe, it } from "node:test";
+import { configureProjects } from "../../scripts/configure-projects.js";
 import { readJSONFile } from "../../scripts/helpers.js";
 
 /**
@@ -45,13 +46,20 @@ function requiresDependency(spec, projectRoot) {
   return Object.hasOwn(dependencies, spec);
 }
 
-test("react-native config", async (t) => {
+describe("react-native config", async () => {
   const currentDir = process.cwd();
   const loadConfig = await getLoadConfig(currentDir);
 
   const reactNativePath = path.join(currentDir, "node_modules", "react-native");
 
-  await t.test("contains Android config", () => {
+  const shouldSkipIOS = process.platform === "win32";
+  const shouldSkipMacOS =
+    shouldSkipIOS || !requiresDependency("react-native-macos", currentDir);
+  const shouldSkipWindows =
+    process.platform !== "win32" ||
+    !requiresDependency("react-native-windows", currentDir);
+
+  it("contains Android config", () => {
     const sourceDir = path.join(currentDir, "android");
     const config = loadConfig();
 
@@ -71,97 +79,90 @@ test("react-native config", async (t) => {
     equal(config.project.android.packageName, "com.microsoft.reacttestapp");
   });
 
-  await t.test(
-    "contains iOS config",
-    { skip: process.platform === "win32" },
-    () => {
-      const sourceDir = path.join(currentDir, "ios");
-      const config = loadConfig();
+  it("contains iOS config", { skip: shouldSkipIOS }, () => {
+    const sourceDir = path.join(currentDir, "ios");
+    const config = loadConfig();
 
-      equal(typeof config, "object");
-      match(config.root, regexp(currentDir));
-      match(config.reactNativePath, regexp(reactNativePath));
-      equal(
-        config.dependencies["react-native-test-app"].name,
-        "react-native-test-app"
-      );
-      notEqual(config.platforms.ios, undefined);
-      match(config.project.ios.sourceDir, regexp(sourceDir));
+    equal(typeof config, "object");
+    match(config.root, regexp(currentDir));
+    match(config.reactNativePath, regexp(reactNativePath));
+    equal(
+      config.dependencies["react-native-test-app"].name,
+      "react-native-test-app"
+    );
+    notEqual(config.platforms.ios, undefined);
+    match(config.project.ios.sourceDir, regexp(sourceDir));
 
-      if (fs.existsSync("ios/Pods")) {
-        equal(config.project.ios.xcodeProject.name, "Example.xcworkspace");
-        ok(config.project.ios.xcodeProject.isWorkspace);
-      } else {
-        equal(config.project.ios.xcodeProject, null);
-      }
+    if (fs.existsSync("ios/Pods")) {
+      equal(config.project.ios.xcodeProject.name, "Example.xcworkspace");
+      ok(config.project.ios.xcodeProject.isWorkspace);
+    } else {
+      equal(config.project.ios.xcodeProject, null);
     }
-  );
+  });
 
-  await t.test(
-    "contains macOS config",
-    {
-      skip:
-        process.platform === "win32" ||
-        !requiresDependency("react-native-macos", currentDir),
-    },
-    () => {
-      const sourceDir = path.join(currentDir, "macos");
-      const config = loadConfig();
+  it("contains macOS config", { skip: shouldSkipMacOS }, () => {
+    const sourceDir = path.join(currentDir, "macos");
+    const config = loadConfig();
 
-      equal(typeof config, "object");
-      match(config.root, regexp(currentDir));
-      match(config.reactNativePath, regexp(reactNativePath));
-      equal(
-        config.dependencies["react-native-test-app"].name,
-        "react-native-test-app"
-      );
-      notEqual(config.platforms.macos, undefined);
-      match(config.project.macos.sourceDir, regexp(sourceDir));
+    equal(typeof config, "object");
+    match(config.root, regexp(currentDir));
+    match(config.reactNativePath, regexp(reactNativePath));
+    equal(
+      config.dependencies["react-native-test-app"].name,
+      "react-native-test-app"
+    );
+    notEqual(config.platforms.macos, undefined);
+    match(config.project.macos.sourceDir, regexp(sourceDir));
 
-      if (fs.existsSync("macos/Pods")) {
-        equal(config.project.macos.xcodeProject.name, "Example.xcworkspace");
-        ok(config.project.macos.xcodeProject.isWorkspace);
-      } else {
-        equal(config.project.macos.xcodeProject, null);
-      }
+    if (fs.existsSync("macos/Pods")) {
+      equal(config.project.macos.xcodeProject.name, "Example.xcworkspace");
+      ok(config.project.macos.xcodeProject.isWorkspace);
+    } else {
+      equal(config.project.macos.xcodeProject, null);
     }
-  );
+  });
 
-  await t.test(
-    "contains Windows config",
-    {
-      skip:
-        process.platform !== "win32" ||
-        !requiresDependency("react-native-windows", currentDir),
-    },
-    () => {
-      const projectFile = path.join(
-        "node_modules",
-        ".generated",
-        "windows",
-        "ReactTestApp",
-        "ReactTestApp.vcxproj"
-      );
+  it("contains Windows config", { skip: shouldSkipWindows }, () => {
+    const projectFile = path.join(
+      "node_modules",
+      ".generated",
+      "windows",
+      "ReactTestApp",
+      "ReactTestApp.vcxproj"
+    );
 
-      if (!fs.existsSync(projectFile)) {
-        console.warn(`No such file: ${projectFile}`);
-        return;
-      }
-
-      const config = loadConfig();
-
-      equal(typeof config, "object");
-      match(config.root, regexp(currentDir));
-      match(config.reactNativePath, regexp(reactNativePath));
-      equal(
-        config.dependencies["react-native-test-app"].name,
-        "react-native-test-app"
-      );
-      equal(config.platforms.windows.npmPackageName, "react-native-windows");
-      match(config.project.windows.folder, regexp(currentDir));
-      match(config.project.windows.sourceDir, /windows/);
-      match(config.project.windows.solutionFile, /Example.sln/);
-      match(config.project.windows.project.projectFile, regexp(projectFile));
+    if (!fs.existsSync(projectFile)) {
+      console.warn(`No such file: ${projectFile}`);
+      return;
     }
-  );
+
+    const config = loadConfig();
+
+    equal(typeof config, "object");
+    match(config.root, regexp(currentDir));
+    match(config.reactNativePath, regexp(reactNativePath));
+    equal(
+      config.dependencies["react-native-test-app"].name,
+      "react-native-test-app"
+    );
+    equal(config.platforms.windows.npmPackageName, "react-native-windows");
+    match(config.project.windows.folder, regexp(currentDir));
+    match(config.project.windows.sourceDir, /windows/);
+    match(config.project.windows.solutionFile, /Example.sln/);
+    match(config.project.windows.project.projectFile, regexp(projectFile));
+  });
+});
+
+describe("configureProjects()", () => {
+  const isMain = path.basename(process.cwd()) === "example";
+
+  // Only the main example app includes web
+  it("returns externally provided platform config", { skip: !isMain }, () => {
+    deepEqual(configureProjects({ web: true }), {
+      web: {
+        "@rnx-kit/react-native-template-web": true,
+      },
+    });
+  });
 });

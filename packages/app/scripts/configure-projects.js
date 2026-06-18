@@ -9,15 +9,9 @@
  */
 const nodefs = require("node:fs");
 const path = require("node:path");
-const {
-  configure: configureAndroid,
-  getAndroidPackageName,
-} = require("../android/template.config.mjs");
-const { configure: configureIOS } = require("../ios/template.config.mjs");
-const {
-  configure: configureWindows,
-} = require("../windows/template.config.mjs");
-const { findNearest } = require("./helpers");
+const { getAndroidPackageName } = require("../android/template.config.mjs");
+const { findNearest } = require("./helpers.js");
+const { loadPlatformTemplates } = require("./template.mjs");
 
 /**
  * Finds `react-native.config.[ts,mjs,cjs,js]`.
@@ -76,24 +70,26 @@ function findReactNativeConfig(fs = nodefs) {
 }
 
 /**
- * @param {ProjectConfig} configuration
+ * @param {ProjectConfig} projectConfig
  * @returns {Partial<ProjectParams>}
  */
-function configureProjects({ android, ios, windows }, fs = nodefs) {
+function configureProjects(projectConfig, fs = nodefs) {
   const reactNativeConfig = findReactNativeConfig(fs);
 
   /** @type {Partial<ProjectParams>} */
   const config = {};
 
   const projectRoot = path.dirname(reactNativeConfig);
-  if (android) {
-    config.android = configureAndroid(projectRoot, android, fs);
-  }
-  if (ios) {
-    config.ios = configureIOS(projectRoot, ios, fs);
-  }
-  if (windows) {
-    config.windows = configureWindows(projectRoot, windows, fs);
+  const params = {
+    packagePath: projectRoot,
+    testAppPath: path.dirname(__dirname),
+  };
+  const templates = loadPlatformTemplates(params, fs);
+  for (const [platform, { configure }] of Object.entries(templates)) {
+    const platformConfig = projectConfig[platform];
+    if (platformConfig) {
+      config[platform] = configure(projectRoot, platformConfig, fs);
+    }
   }
 
   return config;

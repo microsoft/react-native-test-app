@@ -1,6 +1,11 @@
 // @ts-check
 import * as nodefs from "node:fs";
+import { createRequire } from "node:module";
 import * as path from "node:path";
+import { URL } from "node:url";
+import { memo, readJSONFile } from "./helpers.js";
+
+/** @import { ConfigureParams, Manifest, Plugin } from "./types.js"; */
 
 /**
  * @param {...string} paths
@@ -24,6 +29,22 @@ export function findGitIgnore(dir, fs = nodefs) {
   }
 
   return "";
+}
+
+/** @type {() => Required<Manifest>} */
+export const readManifest = memo(() =>
+  readJSONFile(new URL("../package.json", import.meta.url))
+);
+
+/**
+ * @param {string} root
+ * @param {string} subpath
+ * @returns {string | false}
+ */
+function resolvePath(root, subpath) {
+  const resolved = path.resolve(root, subpath);
+  const rel = path.relative(root, resolved);
+  return !path.isAbsolute(rel) && !rel.startsWith("..") && resolved;
 }
 
 /**
@@ -71,4 +92,84 @@ export function bundleConfig() {
   return `BUNDLE_PATH: ".bundle"
 BUNDLE_FORCE_RUBY_PLATFORM: 1
 `;
+}
+
+/**
+ * @param {string} packagePath
+ * @returns {string[]}
+ */
+function getDependencies(packagePath, fs = nodefs) {
+  const manifest = path.join(packagePath, "package.json");
+  if (!fs.existsSync(manifest)) {
+    return [];
+  }
+
+  const { dependencies, peerDependencies, devDependencies } = readJSONFile(
+    manifest,
+    fs
+  );
+
+  /** @type {Set<string>} */
+  const set = new Set();
+  for (const section of [dependencies, peerDependencies, devDependencies]) {
+    if (section) {
+      for (const key of Object.keys(section)) {
+        set.add(key);
+      }
+    }
+  }
+  return Array.from(set);
+}
+
+/**
+ * @param {Pick<ConfigureParams, "packagePath" | "testAppPath">} params
+ * @returns {Record<string, Plugin>}
+ */
+export function loadPlatformTemplates(
+  { packagePath, testAppPath },
+  fs = nodefs
+) {
+  const require = createRequire(import.meta.url);
+  const verbose = process.env["VERBOSE"];
+
+  const { defaultPlatformPackages } = readManifest();
+  const platformPackages = { ...defaultPlatformPackages };
+
+  // We have to manually load project dependencies to avoid recursive calls
+  const opts = { paths: [packagePath] };
+  for (const dependency of getDependencies(packagePath)) {
+    try {
+      const pkg = require.resolve(dependency + "/package.json", opts);
+      const { reactNativeTemplateConfig: config } = readJSONFile(pkg, fs);
+      if (config && typeof config === "object" && !Array.isArray(config)) {
+        const root = path.dirname(pkg);
+        if (verbose) {
+          const pkgPath = path.relative(packagePath, root);
+          console.log("Loading template config:", pkgPath);
+        }
+        for (const [key, { template, ...rest }] of Object.entries(config)) {
+          const resolved = resolvePath(root, template);
+          if (resolved && fs.existsSync(resolved)) {
+            platformPackages[key] = { ...rest, template: resolved };
+          }
+        }
+      }
+    } catch (_) {
+      // `./package.json` may not always be defined by `exports`
+    }
+  }
+
+  /** @type {Record<string, Plugin>} */
+  const templates = {};
+  for (const [platform, { template }] of Object.entries(platformPackages)) {
+    const templatePath = template.startsWith(".")
+      ? path.resolve(testAppPath, template)
+      : template;
+    templates[platform] = {
+      configure: (...args) => require(templatePath).configure(...args),
+      getTemplate: (...args) => require(templatePath).getTemplate(...args),
+    };
+  }
+
+  return templates;
 }

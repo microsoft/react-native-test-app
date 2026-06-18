@@ -138,12 +138,17 @@ export type ProjectParams = {
     solutionFile: string;
     project: { projectFile: string };
   };
+  [platform: string]: {
+    sourceDir?: string;
+    [key: string]: unknown;
+  };
 };
 
 export type ProjectConfig = {
   android?: Pick<ProjectParams["android"], "sourceDir" | "packageName">;
   ios?: Pick<ProjectParams["ios"], "sourceDir">;
   windows?: Pick<ProjectParams["windows"], "sourceDir" | "solutionFile">;
+  [platform: string]: unknown;
 };
 
 /***************************
@@ -350,4 +355,20 @@ export type BuildConfig = {
   platform: TargetPlatform;
   variant: "fabric" | "paper";
   engine?: "hermes" | "jsc";
+};
+
+/***********
+ * Plugins *
+ ***********/
+
+export type Plugin = {
+  configure<C = ProjectParams[string], R = ProjectParams[string]>(
+    projectRoot: string,
+    config: C,
+    fs?: typeof import("node:fs")
+  ): R;
+  getTemplate(
+    params: ConfigureParams,
+    fs?: typeof import("node:fs")
+  ): Configuration;
 };
