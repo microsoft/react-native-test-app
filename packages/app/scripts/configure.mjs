@@ -258,9 +258,10 @@ function loadPlatformTemplates(params, require, configuration, fs = nodefs) {
   }
 
   for (const [platform, { template }] of Object.entries(platformPackages)) {
-    const { getTemplate } = require(
-      template.startsWith(".") ? path.join(testAppPath + template) : template
-    );
+    const templatePath = template.startsWith(".")
+      ? path.resolve(testAppPath, template)
+      : template;
+    const { getTemplate } = require(templatePath);
     configuration[platform] = getTemplate(params, fs);
   }
 
