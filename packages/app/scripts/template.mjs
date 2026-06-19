@@ -1,8 +1,9 @@
 // @ts-check
 import * as nodefs from "node:fs";
-import { createRequire } from "node:module";
+import { Module, createRequire } from "node:module";
 import * as path from "node:path";
 import { URL } from "node:url";
+import * as vm from "node:vm";
 import { memo, readJSONFile } from "./helpers.js";
 
 /** @import { ConfigureParams, Manifest, Plugin } from "./types.js"; */
@@ -122,6 +123,26 @@ function getDependencies(packagePath, fs = nodefs) {
 }
 
 /**
+ * @template {unknown} T
+ * @param {string} script
+ * @param {string} spec
+ * @param {Record<string, unknown>} context
+ * @returns {T}
+ */
+function loadAndRun(spec, script, context) {
+  const code = `require(${JSON.stringify(spec)}).${script};`;
+  const module = new Module(spec);
+  const result = vm.runInNewContext(code, {
+    ...context,
+    module,
+    exports: module.exports,
+    require: module.require,
+    process,
+  });
+  return /** @type {T} */ (result);
+}
+
+/**
  * @param {Pick<ConfigureParams, "packagePath" | "testAppPath">} params
  * @returns {Record<string, Plugin>}
  */
@@ -166,8 +187,15 @@ export function loadPlatformTemplates(
       ? path.resolve(testAppPath, template)
       : template;
     templates[platform] = {
-      configure: (...args) => require(templatePath).configure(...args),
-      getTemplate: (...args) => require(templatePath).getTemplate(...args),
+      configure: (projectRoot, config, fs) => {
+        const context = { projectRoot, config, fs };
+        const script = "configure(projectRoot, config, fs)";
+        return loadAndRun(templatePath, script, context);
+      },
+      getTemplate: (params, fs) => {
+        const context = { params, fs };
+        return loadAndRun(templatePath, "getTemplate(params, fs)", context);
+      },
     };
   }
 
