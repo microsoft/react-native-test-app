@@ -73,7 +73,7 @@
     "generate:code": "node scripts/internal/generate-manifest.mts",
     "generate:docs": "node scripts/internal/generate-manifest-docs.mts",
     "generate:schema": "node scripts/internal/generate-schema.mts",
-    "lint:js": "oxlint -c ../../oxlint.config.ts $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' ':!:*.config.js') && tsgo && tsgo --project tsconfig.cjs.json",
+    "lint:js": "oxlint -c ../../oxlint.config.ts $(git ls-files '*.[cm][jt]s' '*.[jt]s' '*.tsx' ':!:*.config.js') && tsc && tsc --project tsconfig.cjs.json",
     "lint:kt": "ktlint --relative 'android/app/src/**/*.kt'",
     "lint:rb": "bundle exec rubocop",
     "lint:swift": "swiftlint",
@@ -110,7 +110,6 @@
     "@types/prompts": "~2.4.0",
     "@types/react": "~19.2.0",
     "@types/semver": "^7.3.6",
-    "@typescript/native-preview": "^7.0.0-0",
     "js-yaml": "^4.1.0",
     "memfs": "^4.0.0",
     "minimatch": "^10.0.0",
@@ -118,7 +117,8 @@
     "oxlint": "^1.51.0",
     "react": "19.2.3",
     "react-native": "^0.85.0",
-    "suggestion-bot": "^4.0.0"
+    "suggestion-bot": "^4.0.0",
+    "typescript": "^7.0.1-0"
   },
   "peerDependencies": {
     "@callstack/react-native-visionos": "0.76 - 0.79",

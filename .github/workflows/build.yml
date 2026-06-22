@@ -118,7 +118,7 @@ jobs:
             git diff --exit-code
             yarn lint:js
           fi
-          yarn tsgo
+          yarn tsc
           yarn test:js
         shell: bash
         working-directory: packages/app
