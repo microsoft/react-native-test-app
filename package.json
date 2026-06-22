@@ -46,7 +46,7 @@
     "nx": "^22.0.0",
     "oxfmt": "^0.41.0",
     "oxlint": "^1.51.0",
-    "typescript": "^6.0.0"
+    "typescript": "^7.0.1-0"
   },
   "resolutions": {
     "@appium/base-driver/axios": "^1.15.0",
