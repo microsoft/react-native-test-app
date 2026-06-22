@@ -135,6 +135,8 @@ describe("configureGradleWrapper()", () => {
     process.argv.push("run-android");
 
     const cases = [
+      ["9.3.1", "0.87.0", "gradle-9.4.1-bin.zip"],
+      ["9.0", "0.85.0", "gradle-9.3.1-bin.zip"],
       ["8.14", "0.82.0", "gradle-9.0.0-bin.zip"],
       ["8.14", "0.80.0", "gradle-8.14.3-bin.zip"],
       ["8.12", "0.79.0", "gradle-8.13-bin.zip"],
