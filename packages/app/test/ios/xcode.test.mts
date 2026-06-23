@@ -8,7 +8,7 @@ import {
 } from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { isObject } from "../../ios/utils.mjs";
 import {
   applyBuildSettings as applyBuildSettingsActual,

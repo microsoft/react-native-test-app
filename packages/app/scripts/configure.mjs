@@ -5,13 +5,11 @@
  *   Configuration,
  *   ConfigureParams,
  *   FileCopy,
- *   Manifest,
  *   Platform,
  *   PlatformConfiguration,
  *   PlatformPackage,
  * } from "./types.js";
  */
-import { loadContext } from "@rnx-kit/tools-react-native/context";
 import * as nodefs from "node:fs";
 import { createRequire } from "node:module";
 import * as path from "node:path";
@@ -21,7 +19,6 @@ import semverSatisfies from "semver/functions/satisfies.js";
 import {
   getPackageVersion,
   isMain,
-  memo,
   readJSONFile,
   readTextFile,
 } from "./helpers.js";
@@ -30,6 +27,8 @@ import {
   bundleConfig,
   copyFrom,
   findGitIgnore,
+  loadPlatformTemplates,
+  readManifest,
   serialize,
 } from "./template.mjs";
 import * as colors from "./utils/colors.mjs";
@@ -47,11 +46,6 @@ function mergeObjects(lhs, rhs) {
     ? sortByKeys({ ...lhs, ...rhs })
     : sortByKeys(rhs);
 }
-
-/** @type {() => Required<Manifest>} */
-const readManifest = memo(() =>
-  readJSONFile(new URL("../package.json", import.meta.url))
-);
 
 /**
  * Prints an error message to the console.
@@ -97,17 +91,6 @@ export function mergeConfig(lhs, rhs) {
       ...rhs.dependencies,
     },
   };
-}
-
-/**
- * @param {string} root
- * @param {string} subpath
- * @returns {string | false}
- */
-function resolvePath(root, subpath) {
-  const resolved = path.resolve(root, subpath);
-  const rel = path.relative(root, resolved);
-  return !path.isAbsolute(rel) && !rel.startsWith("..") && resolved;
 }
 
 /**
@@ -224,51 +207,6 @@ export function reactNativeConfig({ name, testAppPath }, fs = nodefs) {
 }
 
 /**
- * @param {ConfigureParams} params
- * @param {NodeJS.Require} require
- * @param {PlatformConfiguration} configuration
- * @returns {PlatformConfiguration}
- */
-function loadPlatformTemplates(params, require, configuration, fs = nodefs) {
-  const { packagePath, testAppPath } = params;
-  const { defaultPlatformPackages } = readManifest();
-  const platformPackages = { ...defaultPlatformPackages };
-
-  try {
-    const config = loadContext(packagePath);
-    for (const [, { root }] of Object.entries(config.dependencies)) {
-      const manifest = readJSONFile(path.join(root, "package.json"), fs);
-      const { reactNativeTemplateConfig: config } = manifest;
-      if (config && typeof config === "object" && !Array.isArray(config)) {
-        console.log(
-          "Loading template config:",
-          path.relative(packagePath, root)
-        );
-        for (const [key, { template, ...rest }] of Object.entries(config)) {
-          const resolved = resolvePath(root, template);
-          if (resolved) {
-            platformPackages[key] = { ...rest, template: resolved };
-          }
-        }
-      }
-    }
-  } catch (_) {
-    // If this was executed outside any projects, `@react-native-community/cli`
-    // will not be available and error here.
-  }
-
-  for (const [platform, { template }] of Object.entries(platformPackages)) {
-    const templatePath = template.startsWith(".")
-      ? path.resolve(testAppPath, template)
-      : template;
-    const { getTemplate } = require(templatePath);
-    configuration[platform] = getTemplate(params, fs);
-  }
-
-  return configuration;
-}
-
-/**
  * Returns a {@link Configuration} object for specified platform.
  *
  * A {@link Configuration} object consists of four main parts:
@@ -304,7 +242,7 @@ export const getConfig = (() => {
           path.dirname(require.resolve("react-native/template/package.json"))
         );
 
-      configuration = loadPlatformTemplates(params, require, {
+      configuration = {
         common: {
           files: {
             ".gitignore": findGitIgnore(path.join(testAppPath, "example"), fs),
@@ -337,7 +275,12 @@ export const getConfig = (() => {
           },
           dependencies: {},
         },
-      });
+      };
+
+      const templates = loadPlatformTemplates(params, fs);
+      for (const [platform, { getTemplate }] of Object.entries(templates)) {
+        configuration[platform] = getTemplate(params, fs);
+      }
     }
     return configuration[platform];
   };

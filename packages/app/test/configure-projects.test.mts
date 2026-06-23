@@ -63,8 +63,7 @@ describe("configureProjects()", () => {
   });
 
   it("returns iOS config", () => {
-    const sourceDir = "ios";
-    const config = { ios: { sourceDir } };
+    const config = { ios: { sourceDir: "ios" } };
 
     deepEqual(configureProjects(config), config);
   });
