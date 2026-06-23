@@ -10,6 +10,7 @@
     "ci:windows": "rnx-cli run-windows --logging --no-packager --no-launch --no-deploy --msbuildprops UseBundle=false --no-telemetry",
     "clean": "yarn workspace react-native-test-app clean",
     "ios": "rnx-cli run --platform ios",
+    "prebuild": "node ../app/windows/app.mjs",
     "set-react-version": "yarn workspace react-native-test-app set-react-version",
     "start": "rnx-cli start",
     "windows": "rnx-cli run-windows --no-packager"

@@ -38,7 +38,7 @@
     "@swc-node/register": "^1.11.1",
     "@swc/core": "^1.15.8",
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "^24.0.0",
+    "@types/node": "catalog:",
     "eslint-plugin-wdio": "^9.26.0",
     "globals": "^16.5.0",
     "js-yaml": "^4.1.0",

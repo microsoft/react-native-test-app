@@ -545,7 +545,6 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: windows
-          node-version: 22
       - name: Set up react-native@canary
         if: ${{ github.event_name == 'schedule' }}
         uses: ./.github/actions/setup-react-native
@@ -561,7 +560,7 @@ jobs:
         working-directory: packages/example-windows
       - name: Generate Visual Studio solution
         run: |
-          node ../app/windows/app.mjs --msbuildprops WindowsTargetPlatformVersion=$env:WindowsTargetPlatformVersion
+          node --run prebuild -- --msbuildprops WindowsTargetPlatformVersion=$env:WindowsTargetPlatformVersion
         working-directory: packages/example-windows
       - name: Test `react-native config`
         run: |
@@ -614,7 +613,6 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: windows
-          node-version: 22
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
