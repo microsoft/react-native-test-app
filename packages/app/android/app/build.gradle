@@ -7,7 +7,15 @@ buildscript {
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.android") apply false
+}
+
+// Only apply Kotlin plugin if `android.builtInKotlin=false`
+// https://developer.android.com/build/migrate-to-built-in-kotlin#enable-built-in-kotlin
+def useBuiltInKotlin = toVersionNumber(gradle.gradleVersion) >= v(9, 4, 0) &&
+                       project.findProperty("android.builtInKotlin") != false
+if (!useBuiltInKotlin) {
+    apply(plugin: "org.jetbrains.kotlin.android")
 }
 
 // `react-native run-android` is hard-coded to look for the output APK at a very
@@ -76,8 +84,10 @@ android {
         prefab = true
     }
 
-    kotlinOptions {
-        allWarningsAsErrors = true
+    if (!useBuiltInKotlin) {
+        kotlinOptions {
+            allWarningsAsErrors = true
+        }
     }
 
     defaultConfig {
@@ -201,6 +211,14 @@ android {
             enable = project.ext.react.abiSplit
             universalApk = false
             include(*project.ext.react.architectures)
+        }
+    }
+}
+
+if (useBuiltInKotlin) {
+    kotlin {
+        compilerOptions {
+            allWarningsAsErrors = true
         }
     }
 }
