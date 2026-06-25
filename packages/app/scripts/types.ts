@@ -133,6 +133,10 @@ export type ProjectParams = {
     sourceDir?: string;
     project?: string;
   };
+  macos: {
+    sourceDir?: string;
+    project?: string;
+  };
   windows: {
     sourceDir: string;
     solutionFile: string;
@@ -147,6 +151,7 @@ export type ProjectParams = {
 export type ProjectConfig = {
   android?: Pick<ProjectParams["android"], "sourceDir" | "packageName">;
   ios?: Pick<ProjectParams["ios"], "sourceDir">;
+  macos?: Pick<ProjectParams["macos"], "sourceDir">;
   windows?: Pick<ProjectParams["windows"], "sourceDir" | "solutionFile">;
   [platform: string]: unknown;
 };
