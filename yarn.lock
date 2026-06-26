@@ -4227,20 +4227,20 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/align-deps@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@rnx-kit/align-deps@npm:4.0.1"
+  version: 4.0.2
+  resolution: "@rnx-kit/align-deps@npm:4.0.2"
   dependencies:
     "@rnx-kit/types-kit-config": "npm:^1.0.0"
     "@rnx-kit/types-node": "npm:^1.0.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/346ee06a7fafb23d790c7992b376ce46aeedd8ac00aa999d3ce96623d24d19854cf71a4e2c40eed82053908bf51ceec79c05c5eef1c2c270b267ef36645f97f7
+  checksum: 10c0/9412c9781b6cd85b3fffd64ee31c069e0c952726f5390f9faf771dd0714b16998b4cb06336dc68ca5f0eb6e8d8586792528c05422d35a2a27e7b72ae261cb27a
   languageName: node
   linkType: hard
 
 "@rnx-kit/cli@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@rnx-kit/cli@npm:2.0.1"
+  version: 2.0.2
+  resolution: "@rnx-kit/cli@npm:2.0.2"
   dependencies:
     "@rnx-kit/align-deps": "npm:^4.0.1"
     "@rnx-kit/config": "npm:^0.9.0"
@@ -4274,7 +4274,7 @@ __metadata:
       optional: true
   bin:
     rnx-cli: bin/rnx-cli.cjs
-  checksum: 10c0/79f94db68c5f560175944938c2a0339452c53d62b32bfd22e51a11f1afd5f0e473c13df2386735dec46ca2673b14971493e97407145e4e19e83a8195696d3fc7
+  checksum: 10c0/c62c52d7757ab40c59a6cc2a918963ce096c58b083f85ae62fa540895627010502729a0c902b71d9934c5308d8071a21cc23b4aba9ac816f1f13b680630a0a6b
   languageName: node
   linkType: hard
 
@@ -4302,8 +4302,8 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/eslint-plugin@npm:^0.9.8":
-  version: 0.9.8
-  resolution: "@rnx-kit/eslint-plugin@npm:0.9.8"
+  version: 0.9.9
+  resolution: "@rnx-kit/eslint-plugin@npm:0.9.9"
   dependencies:
     "@react-native/eslint-plugin": "npm:^0.84.0"
     enhanced-resolve: "npm:^5.8.3"
@@ -4312,21 +4312,21 @@ __metadata:
     typescript-eslint: "npm:^8.0.0"
   peerDependencies:
     eslint: ">=8.57.0"
-  checksum: 10c0/5f9abf2b7bae30d289829ce1ba8ef7f34e64e28bb7f62fc4f0ebc1e887117616f6a6728e762430b76b64994078d0843ec728822794e7a1d8a29e22af2abb775c
+  checksum: 10c0/a51047594a9ecfed2b0e58484cb6707b0bfaff8e9a2ed6a1e1d116943852e3782b816a386507940a7b62ba1776809941a41c1ec8e29337ae3bf77e3683b1188d
   languageName: node
   linkType: hard
 
 "@rnx-kit/lint-lockfile@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@rnx-kit/lint-lockfile@npm:0.2.0"
+  version: 0.2.1
+  resolution: "@rnx-kit/lint-lockfile@npm:0.2.1"
   dependencies:
     "@rnx-kit/config": "npm:^0.9.0"
     "@rnx-kit/tools-workspaces": "npm:^0.2.3"
     "@rnx-kit/types-kit-config": "npm:^1.0.0"
-    js-yaml: "npm:^4.1.1"
+    js-yaml: "npm:^4.2.0"
   bin:
     lint-lockfile: lib/cli.js
-  checksum: 10c0/4ba76a0ef450700e10cf31f86d89b90e6744fca0432cf87bfc39d47de7497e6f4f5ef3a6eb91d82580887a4126a8c92541becc359f1d14608a0b4c5051419ce9
+  checksum: 10c0/3d0f8334553072b91e1433a708e9cae696a865c77611a3740b6ec1f9aecd8b7e34097f7fe2cd9973713f696e25a98be00795f7f900e8c75532802eec6b41c861
   languageName: node
   linkType: hard
 
@@ -4373,17 +4373,17 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-plugin-typescript@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@rnx-kit/metro-plugin-typescript@npm:0.6.0"
+  version: 0.6.1
+  resolution: "@rnx-kit/metro-plugin-typescript@npm:0.6.1"
   dependencies:
     "@rnx-kit/console": "npm:^3.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.4"
     "@rnx-kit/tools-react-native": "npm:^2.3.3"
     "@rnx-kit/types-bundle-config": "npm:^1.0.0"
     "@rnx-kit/types-plugin-typescript": "npm:^1.0.0"
-    "@rnx-kit/typescript-service": "npm:^2.0.2"
-    typescript: "npm:>=4.7.0"
-  checksum: 10c0/41f3e87a0eec383f44c244504ce09e3859a93e4d838508d757d6837e54c47432f6547b7854d55d27a920be104a821e0392127446bd452dfdcf6bf9853553a97c
+    "@rnx-kit/typescript-service": "npm:^2.0.3"
+    typescript: "npm:4.7 - 6.0"
+  checksum: 10c0/8ebe73bff7edba3b08494ec1b829c5345ed3122f74b7251a3406f440fd19089166dc483acf92e43d1f282b0b57a1d38b6dc180bb85c5fdf38b3efa32a98d9e99
   languageName: node
   linkType: hard
 
@@ -4529,9 +4529,9 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/tools-git@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@rnx-kit/tools-git@npm:0.1.1"
-  checksum: 10c0/d672aa911d212a200cd593cf680fa316adc9cd221a26feac5f5fb055d5a4857d6c1f9356d8b027ea2a124eb7d24ba53416ccd373b0707a14f96f6586056658d7
+  version: 0.1.2
+  resolution: "@rnx-kit/tools-git@npm:0.1.2"
+  checksum: 10c0/edb1b860082e3de5c3df57788360eeb1b74ef92dd06cb95fa14baf089160a72e64dbce646feb0fc4f6cdc77d217826f578bc935cce14da7fff9ecd6ffeba5510
   languageName: node
   linkType: hard
 
@@ -4542,12 +4542,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-node@npm:^3.0.0, @rnx-kit/tools-node@npm:^3.0.3, @rnx-kit/tools-node@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "@rnx-kit/tools-node@npm:3.0.4"
+"@rnx-kit/tools-node@npm:^3.0.0, @rnx-kit/tools-node@npm:^3.0.3, @rnx-kit/tools-node@npm:^3.0.4, @rnx-kit/tools-node@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@rnx-kit/tools-node@npm:3.0.5"
   dependencies:
     "@rnx-kit/types-node": "npm:^1.0.0"
-  checksum: 10c0/f5fb8c5e09cee58648add26bcba03685df64f11f96c3785e259a7bcf683064a975e1cb62f783bcbaaf80190271c1bd80a83364f82a74bd5ff59af42a1166ad02
+  checksum: 10c0/3ad531069ae14c87869b52cde3f31cf19b58702a28ddb10a4d95f6e1030ba9fbe1040d4ac6c777cb10c845d0644399d4b0546e774259552259b26f2bda9c821f
   languageName: node
   linkType: hard
 
@@ -4563,13 +4563,18 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.3, @rnx-kit/tools-react-native@npm:^2.3.5, @rnx-kit/tools-react-native@npm:^2.3.7":
-  version: 2.3.7
-  resolution: "@rnx-kit/tools-react-native@npm:2.3.7"
+  version: 2.3.8
+  resolution: "@rnx-kit/tools-react-native@npm:2.3.8"
   dependencies:
     "@rnx-kit/tools-filesystem": "npm:^0.2.0"
-    "@rnx-kit/tools-node": "npm:^3.0.4"
+    "@rnx-kit/tools-node": "npm:^3.0.5"
     "@rnx-kit/types-bundle-config": "npm:^1.0.0"
-  checksum: 10c0/4ae1830efabcb10fd24a7970e4200d5fabb52a517f53e76e6c0e9657a1a2fcf90b986c0a4cdb7b39861db615298812c05c6207b62b02901bfaf6682198f1720f
+  peerDependencies:
+    "@react-native-community/cli-types": "*"
+  peerDependenciesMeta:
+    "@react-native-community/cli-types":
+      optional: true
+  checksum: 10c0/2881b698aaea20d4ea92f2bf0b08997255cd574b257c8942bf2a72bd3e692e00fea69cf2af31c3527495d78d8e8ece7c490e2250724c942153d9a904e60dcda8
   languageName: node
   linkType: hard
 
@@ -4627,9 +4632,9 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/types-metro-serializer-esbuild@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "@rnx-kit/types-metro-serializer-esbuild@npm:1.0.1"
-  checksum: 10c0/1907fb5e747d327be004b9479ca40cdd328c10a322b51cbb423df6e0d488a32cfea3bea2f52894f9c3a7f54ee810516362861166b3a513de7b123eeb49aca6bf
+  version: 1.0.2
+  resolution: "@rnx-kit/types-metro-serializer-esbuild@npm:1.0.2"
+  checksum: 10c0/90cebe6c5296654a071ff69934cc8b64475604e0fa2fa67b524faa636e36a6784485ac534c76c8a965649214d2e14b7d38f812477805446f14188c31c376141d
   languageName: node
   linkType: hard
 
@@ -4663,14 +4668,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/typescript-service@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@rnx-kit/typescript-service@npm:2.0.2"
+"@rnx-kit/typescript-service@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@rnx-kit/typescript-service@npm:2.0.3"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
   peerDependencies:
-    typescript: ">=4.0"
-  checksum: 10c0/253bdee64737a4f493dbfa56ab8264a24947d11b7ff46302b4ae12d36545af10d53278b5d8806979e5f949948c001b96ba146cef3c6c9a07bf749249426a7d82
+    typescript: 4.0 - 6.0
+  checksum: 10c0/553916431a307613547f0168069b263b35d94b7262b0561cd29ea426c3e408d95b42ee8e00062693f1d276c66ee972d343b4ae7c8ed58532030d05e1a25cac6b
   languageName: node
   linkType: hard
 
@@ -10217,7 +10222,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0, js-yaml@npm:^4.1.1":
+"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0, js-yaml@npm:^4.2.0":
   version: 4.2.0
   resolution: "js-yaml@npm:4.2.0"
   dependencies:
@@ -15105,7 +15110,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=4.7.0, typescript@npm:^6.0.2":
+"typescript@npm:4.7 - 6.0, typescript@npm:^6.0.2":
   version: 6.0.3
   resolution: "typescript@npm:6.0.3"
   bin:
