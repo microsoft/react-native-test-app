@@ -1,9 +1,8 @@
 // @ts-check
 import { cliui } from "@isaacs/cliui";
-import * as fs from "node:fs";
 import * as path from "node:path";
-import { URL, fileURLToPath } from "node:url";
 import * as util from "node:util";
+import manifest from "../../package.json" with { type: "json" };
 
 /** @import { Args, Options } from "../types.js"; */
 
@@ -94,9 +93,7 @@ export function parseArgs(description, options, callback) {
   if (values.help) {
     console.log(formatHelp(description, mergedOptions));
   } else if (typeof values.version === "boolean" && values.version) {
-    const file = fileURLToPath(new URL("../../package.json", import.meta.url));
-    const manifest = fs.readFileSync(file, { encoding: "utf-8" });
-    const { name, version } = JSON.parse(manifest);
+    const { name, version } = manifest;
     console.log(`${name} ${version}`);
   } else {
     values._ = positionals;

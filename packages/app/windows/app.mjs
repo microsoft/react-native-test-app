@@ -254,7 +254,7 @@ export async function generateSolution(destPath, options, fs = nodefs) {
   );
   if (fs.existsSync(experimentalFeaturesPropsPath)) {
     const props = path.relative(process.cwd(), experimentalFeaturesPropsPath);
-    console.log(colors.cyan(colors.bold("info")), `'${props}' already exists`);
+    console.log(colors.infoTag, `'${props}' already exists`);
   } else {
     const { msbuildprops, useHermes } = options;
     const { useExperimentalNuGet, useFabric } = info;

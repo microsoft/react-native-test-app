@@ -114,8 +114,7 @@ export const loadReactNativeConfig = memo((rnWindowsPath) => {
  * @param {string} message
  */
 function warn(message) {
-  const tag = colors.yellow(colors.bold("warn"));
-  console.warn(tag, message);
+  console.warn(colors.warnTag, message);
 }
 
 /**

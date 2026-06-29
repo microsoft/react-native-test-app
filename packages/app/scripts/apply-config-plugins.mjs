@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 // @ts-check
 
-import * as fs from "node:fs";
 import * as path from "node:path";
 import { parseArgs } from "node:util";
-import { findFile } from "./helpers.js";
+import { findFile, readTextFile } from "./helpers.js";
 
 /**
  * @typedef {import("./config-plugins/types.js").ProjectInfo["platforms"]} Platforms
@@ -17,7 +16,7 @@ async function main(projectRoot = process.cwd(), platforms) {
     throw new Error("Failed to find `package.json`");
   }
 
-  const content = fs.readFileSync(packageJsonPath, { encoding: "utf-8" });
+  const content = readTextFile(packageJsonPath);
   if (!content.includes('"@expo/config-plugins"')) {
     return;
   }

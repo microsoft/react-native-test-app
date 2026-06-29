@@ -5,6 +5,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as util from "node:util";
+import manifest from "../../package.json" with { type: "json" };
 import { isMain, readJSONFile } from "../helpers.js";
 import type { Manifest } from "../types.js";
 import { writeJSONFile } from "../utils/filesystem.mjs";
@@ -198,8 +199,7 @@ async function getProfile(
   v: string,
   coreOnly: boolean
 ): Promise<Record<string, string | undefined>> {
-  const manifest = readJSONFile<Manifest>("package.json");
-  const visionos = manifest.defaultPlatformPackages?.["visionos"];
+  const visionos = manifest.defaultPlatformPackages["visionos"];
   if (!visionos) {
     throw new Error("Missing platform package for visionOS");
   }

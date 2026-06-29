@@ -2,11 +2,11 @@
 import * as nodefs from "node:fs";
 import { Module, createRequire } from "node:module";
 import * as path from "node:path";
-import { URL } from "node:url";
 import * as vm from "node:vm";
-import { memo, readJSONFile } from "./helpers.js";
+import manifest from "../package.json" with { type: "json" };
+import { readJSONFile } from "./helpers.js";
 
-/** @import { ConfigureParams, Manifest, Plugin } from "./types.js"; */
+/** @import { ConfigureParams, Plugin } from "./types.js"; */
 
 /**
  * @param {...string} paths
@@ -31,11 +31,6 @@ export function findGitIgnore(dir, fs = nodefs) {
 
   return "";
 }
-
-/** @type {() => Required<Manifest>} */
-export const readManifest = memo(() =>
-  readJSONFile(new URL("../package.json", import.meta.url))
-);
 
 /**
  * @param {string} root
@@ -153,8 +148,8 @@ export function loadPlatformTemplates(
   const require = createRequire(import.meta.url);
   const verbose = process.env["VERBOSE"];
 
-  const { defaultPlatformPackages } = readManifest();
-  const platformPackages = { ...defaultPlatformPackages };
+  /** @type {Record<string, typeof manifest.defaultPlatformPackages.ios>} */
+  const platformPackages = { ...manifest.defaultPlatformPackages };
 
   // We have to manually load project dependencies to avoid recursive calls
   const opts = { paths: [packagePath] };

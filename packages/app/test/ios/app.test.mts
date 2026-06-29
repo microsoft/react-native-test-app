@@ -1,9 +1,9 @@
 import { deepEqual, equal, fail, ok, throws } from "node:assert/strict";
 import * as fs from "node:fs";
 import { afterEach, before, describe, it } from "node:test";
-import { URL, fileURLToPath } from "node:url";
 import { generateProject as generateProjectActual } from "../../ios/app.mjs";
 import { USER_HEADER_SEARCH_PATHS } from "../../ios/xcode.mjs";
+import manifest from "../../package.json" with { type: "json" };
 import { readTextFile } from "../../scripts/helpers.js";
 import type {
   ApplePlatform,
@@ -27,9 +27,7 @@ describe("generateProject()", macosOnly, () => {
     overrides?: Record<string, unknown>,
     reactNativeVersion = "1000.0.0"
   ) {
-    const manifestURL = new URL("../../package.json", import.meta.url);
-    const manifest = readTextFile(fileURLToPath(manifestURL));
-    const { name, version, defaultPlatformPackages } = JSON.parse(manifest);
+    const { name, version, defaultPlatformPackages } = manifest;
     return {
       "app.json": JSON.stringify({
         name: "ContosoApp",

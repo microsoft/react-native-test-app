@@ -2,12 +2,13 @@
 import { equal, match } from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import { remote } from "webdriverio";
-import { findNearest, readTextFile } from "../../../scripts/helpers.js";
+import { findNearest, readJSONFile } from "../../../scripts/helpers.js";
 import { config } from "./wdio.config.mjs";
 
 /**
  * @typedef {Awaited<ReturnType<typeof import("webdriverio").remote>>} Browser
  * @typedef {keyof typeof config.capabilities} Capability
+ * @typedef {import("../../../scripts/types.ts").Manifest} Manifest
  */
 
 /**
@@ -44,8 +45,8 @@ describe("App", () => {
       throw new Error("Could not find 'react-native'");
     }
 
-    const manifest = readTextFile(rnPath);
-    const { version } = JSON.parse(manifest);
+    /** @type {Required<Pick<Manifest, "version">>} */
+    const { version } = readJSONFile(rnPath);
     return version.replace("-nightly-", "-nightly\n");
   })();
 

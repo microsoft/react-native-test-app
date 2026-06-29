@@ -1,17 +1,21 @@
 // @ts-check
-import { WriteStream } from "node:tty";
+import { styleText } from "node:util";
 
-const hasColors =
-  WriteStream.prototype.hasColors() && process.env["NODE_ENV"] !== "test";
+/** @typedef {(text: string) => string} Color */
 
-/** @type {(start: number, end: number) => (s: string) => string} */
-const color = hasColors
-  ? (start, end) => (s) => "\u001B[" + start + "m" + s + "\u001B[" + end + "m"
-  : () => (s) => s;
+// Force disable colors in test environments
+if (process.env["NODE_TEST_CONTEXT"] || process.env["NODE_ENV"] === "test") {
+  process.env["FORCE_COLOR"] = "0";
+}
 
-export const bold = color(1, 22);
-export const dim = color(2, 22);
-export const red = color(31, 39);
-export const green = color(32, 39);
-export const yellow = color(33, 39);
-export const cyan = color(36, 39);
+export const infoTag = styleText(["cyan", "bold"], "info");
+export const warnTag = styleText(["yellow", "bold"], "warn");
+
+/** @type {Color} */
+export const bold = (text) => styleText("bold", text);
+/** @type {Color} */
+export const red = (text) => styleText("red", text);
+/** @type {Color} */
+export const green = (text) => styleText("green", text);
+/** @type {Color} */
+export const yellow = (text) => styleText("yellow", text);
