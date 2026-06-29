@@ -1,6 +1,5 @@
 // @ts-check
-import { URL, fileURLToPath } from "node:url";
-import { readJSONFile } from "./helpers.js";
+import manifest from "../package.json" with { type: "json" };
 
 /** @import { Docs } from "./types.ts"; */
 
@@ -14,19 +13,12 @@ function extractBrief(content = "") {
   return brief.replace(/\r?\n/g, " ");
 }
 
-function readManifest() {
-  const manifest = fileURLToPath(new URL("../package.json", import.meta.url));
-  return /** @type {typeof import("../package.json")} */ (
-    readJSONFile(manifest)
-  );
-}
-
 /**
  * @param {Partial<Docs>=} docs App manifest documentation
  * @returns {import("ajv").SchemaObject}
  */
 export function generateSchema(docs = {}) {
-  const { defaultPlatformPackages } = readManifest();
+  const { defaultPlatformPackages } = manifest;
   return {
     $defs: {
       appIconSet: {

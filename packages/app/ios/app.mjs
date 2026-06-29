@@ -2,11 +2,12 @@
 import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
+import manifest from "../package.json" with { type: "json" };
 import { loadAppConfig } from "../scripts/appConfig.mjs";
 import {
   findFile,
   isMain,
-  readTextFile,
+  readJSONFile,
   toVersionNumber,
 } from "../scripts/helpers.js";
 import { cp_r, mkdir_p, rm_r } from "../scripts/utils/filesystem.mjs";
@@ -44,6 +45,7 @@ import {
  *   ApplePlatform,
  *   JSONObject,
  *   JSONValue,
+ *   Manifest,
  *   ProjectConfiguration,
  * } from "../scripts/types.ts";
  */
@@ -113,8 +115,6 @@ function findReactNativePath(
     }
   }
 
-  const manifestURL = new URL("../package.json", import.meta.url);
-  const manifest = JSON.parse(readTextFile(fileURLToPath(manifestURL), fs));
   const npmPackageName = manifest.defaultPlatformPackages[targetPlatform]?.id;
   if (!npmPackageName) {
     throw new Error(`Unsupported target platform: ${targetPlatform}`);
@@ -133,7 +133,8 @@ function findReactNativePath(
  * @returns {number}
  */
 function readPackageVersion(p, fs = nodefs) {
-  const manifest = JSON.parse(readTextFile(path.join(p, "package.json"), fs));
+  /** @type {Required<Pick<Manifest, "version">>} */
+  const manifest = readJSONFile(path.join(p, "package.json"), fs);
   return toVersionNumber(manifest["version"]);
 }
 

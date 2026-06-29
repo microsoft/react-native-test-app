@@ -16,6 +16,7 @@ import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import semverCoerce from "semver/functions/coerce.js";
 import semverSatisfies from "semver/functions/satisfies.js";
+import rntaManifest from "../package.json" with { type: "json" };
 import {
   getPackageVersion,
   isMain,
@@ -28,7 +29,6 @@ import {
   copyFrom,
   findGitIgnore,
   loadPlatformTemplates,
-  readManifest,
   serialize,
 } from "./template.mjs";
 import * as colors from "./utils/colors.mjs";
@@ -162,9 +162,9 @@ export function getDefaultPlatformPackageName(platform) {
     return "react-native";
   }
 
-  const { defaultPlatformPackages } = readManifest();
+  const { defaultPlatformPackages } = rntaManifest;
   const pkg = defaultPlatformPackages[platform];
-  return pkg?.id;
+  return /** @type {PlatformPackage} */ (pkg?.id);
 }
 
 /**
@@ -184,7 +184,7 @@ export function getPlatformPackage(platform, targetVersion) {
     throw new Error(`Invalid ${packageName} version: ${targetVersion}`);
   }
 
-  const { peerDependencies } = readManifest();
+  const { peerDependencies } = rntaManifest;
   const versionRange = peerDependencies[packageName];
   if (!semverSatisfies(v.version, versionRange)) {
     warn(
@@ -434,7 +434,7 @@ export function updatePackageManifest(
     dependencies
   );
 
-  const { name: rntaName, version: rntaVersion } = readManifest();
+  const { name: rntaName, version: rntaVersion } = rntaManifest;
   manifest["devDependencies"] = mergeObjects(manifest["devDependencies"], {
     "@rnx-kit/metro-config": "^2.2.4",
     [rntaName]: `^${rntaVersion}`,
