@@ -45,7 +45,7 @@ describe("App", () => {
       throw new Error("Could not find 'react-native'");
     }
 
-    /** @type {Required<Pick<Manifest, "version">>} */
+    /** @type {Manifest} */
     const { version } = readJSONFile(rnPath);
     return version.replace("-nightly-", "-nightly\n");
   })();
