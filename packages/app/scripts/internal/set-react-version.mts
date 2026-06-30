@@ -77,8 +77,8 @@ function fetchPackageInfo(pkg: string, version: string): Promise<Manifest> {
       return fetch(npmRegistryBaseURL + pkg + "/" + foundVersion);
     })
     .then((res) => res?.json() ?? ({} as Manifest))
-    .then(({ version, dependencies = {}, peerDependencies = {} }) => {
-      return { version, dependencies, peerDependencies };
+    .then(({ name, version, dependencies = {}, peerDependencies = {} }) => {
+      return { name, version, dependencies, peerDependencies };
     });
 }
 
@@ -244,22 +244,23 @@ async function getProfile(
     }
 
     default: {
+      const remove = { name: undefined, version: undefined };
       const versions = {
         core: fetchPackageInfo("react-native", v),
         macos: coreOnly
-          ? Promise.resolve({ version: undefined })
+          ? Promise.resolve(remove)
           : fetchPackageInfo("react-native-macos", v),
         visionos: coreOnly
-          ? Promise.resolve({ version: undefined })
+          ? Promise.resolve(remove)
           : fetchPackageInfo(visionos.id, v),
         windows: coreOnly
-          ? Promise.resolve({ version: undefined })
+          ? Promise.resolve(remove)
           : fetchPackageInfo("react-native-windows", v),
       };
       const reactNative = await versions.core;
       const commonDeps = await resolveCommonDependencies(v, reactNative);
 
-      const getVersion = ({ version }: Manifest) => version;
+      const getVersion = ({ version }: Partial<Manifest>) => version;
       return {
         ...commonDeps,
         "react-native": reactNative.version,

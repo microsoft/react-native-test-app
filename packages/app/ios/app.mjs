@@ -133,7 +133,7 @@ function findReactNativePath(
  * @returns {number}
  */
 function readPackageVersion(p, fs = nodefs) {
-  /** @type {Required<Pick<Manifest, "version">>} */
+  /** @type {Manifest} */
   const manifest = readJSONFile(path.join(p, "package.json"), fs);
   return toVersionNumber(manifest["version"]);
 }

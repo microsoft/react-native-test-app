@@ -331,22 +331,25 @@ export type Docs = {
  * set-react-version.mjs *
  *************************/
 
-export type Manifest = Partial<{
+export type Manifest = {
   name: string;
   version: string;
-  repository: {
-    type: "git";
-    url: string;
-  };
-  dependencies: Record<string, string>;
-  peerDependencies: Record<string, string>;
-  devDependencies: Record<string, string | undefined>;
-  resolutions: Record<string, string | undefined>;
-  defaultPlatformPackages: Record<
+  repository?:
+    | string
+    | {
+        type: "git";
+        url: string;
+        directory?: string;
+      };
+  dependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+  devDependencies?: Record<string, string | undefined>;
+  resolutions?: Record<string, string | undefined>;
+  defaultPlatformPackages?: Record<
     string,
     { id: PlatformPackage; template: string }
   >;
-}>;
+};
 
 /***************************
  * testing/test-matrix.mts *
