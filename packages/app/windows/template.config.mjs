@@ -10,7 +10,7 @@ import { findGitIgnore } from "../scripts/template.mjs";
  *   ConfigureParams,
  *   ProjectConfig,
  *   ProjectParams,
- * } from "../scripts/types.js";
+ * } from "../scripts/types.ts";
  */
 
 /**

@@ -1,7 +1,10 @@
 // @ts-check
 import manifest from "../package.json" with { type: "json" };
 
-/** @import { Docs } from "./types.ts"; */
+/**
+ * @import { SchemaObject } from "ajv";
+ * @import { Docs } from "./types.ts";
+ */
 
 /**
  * @param {string} content
@@ -15,7 +18,7 @@ function extractBrief(content = "") {
 
 /**
  * @param {Partial<Docs>=} docs App manifest documentation
- * @returns {import("ajv").SchemaObject}
+ * @returns {SchemaObject}
  */
 export function generateSchema(docs = {}) {
   const { defaultPlatformPackages } = manifest;

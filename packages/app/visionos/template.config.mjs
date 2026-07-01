@@ -3,7 +3,7 @@ import * as nodefs from "node:fs";
 import { podfile } from "../ios/template.config.mjs";
 import { toVersionNumber } from "../scripts/helpers.js";
 
-/** @import { Configuration, ConfigureParams } from "../scripts/types.js"; */
+/** @import { Configuration, ConfigureParams } from "../scripts/types.ts"; */
 
 /**
  * @param {string} _projectRoot

@@ -4,9 +4,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
 /**
- * @typedef {import("../scripts/types.ts").ApplePlatform} ApplePlatform;
- * @typedef {import("../scripts/types.ts").JSONObject} JSONObject;
- * @typedef {import("../scripts/types.ts").JSONValue} JSONValue;
+ * @import { ApplePlatform, JSONObject, JSONValue } from "../scripts/types.ts";
  */
 
 const MAX_BUFFER = 16 * 1024 * 1024; // 16 MB because some plists can get big

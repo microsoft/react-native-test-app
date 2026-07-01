@@ -72,7 +72,7 @@ function memo(fn) {
 
 /**
  * Reads text file at specified path.
- * @param {import("node:fs").PathLike} path
+ * @param {nodefs.PathLike} path
  * @returns {string}
  */
 function readTextFile(path, fs = nodefs) {
@@ -82,7 +82,7 @@ function readTextFile(path, fs = nodefs) {
 /**
  * Reads and parses JSON file at specified path.
  * @template [T = Record<string, unknown>]
- * @param {import("node:fs").PathLike} path
+ * @param {nodefs.PathLike} path
  * @returns {T}
  */
 function readJSONFile(path, fs = nodefs) {

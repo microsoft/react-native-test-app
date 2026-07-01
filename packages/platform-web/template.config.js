@@ -1,7 +1,12 @@
 // @ts-check
 import * as nodefs from "node:fs";
 
-/** @import { Configuration, ConfigureParams } from "../app/scripts/types.js"; */
+/**
+ * @import {
+ *   Configuration,
+ *   ConfigureParams,
+ * } from "../app/scripts/types.ts";
+ */
 
 /**
  * @param {string} _projectRoot

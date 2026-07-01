@@ -2,7 +2,7 @@
 import * as nodefs from "node:fs";
 import { findFile, readJSONFile } from "./helpers.js";
 
-/** @import { JSONObject } from "../scripts/types.js"; */
+/** @import { JSONObject } from "../scripts/types.ts"; */
 
 const SOURCE_KEY = Symbol.for("source");
 

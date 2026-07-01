@@ -23,7 +23,7 @@ function makeValidator() {
 }
 
 /**
- * @param {import("node:fs").PathLike | undefined} manifestPath
+ * @param {nodefs.PathLike | undefined} manifestPath
  * @returns {Record<string, unknown> | number}
  */
 export function validate(manifestPath, fs = nodefs) {

@@ -7,7 +7,7 @@ import * as path from "node:path";
 import * as util from "node:util";
 import manifest from "../../package.json" with { type: "json" };
 import { isMain, readJSONFile } from "../helpers.js";
-import type { Manifest } from "../types.js";
+import type { Manifest } from "../types.ts";
 import { writeJSONFile } from "../utils/filesystem.mjs";
 import { fetchPackageMetadata, npmRegistryBaseURL } from "../utils/npm.mjs";
 

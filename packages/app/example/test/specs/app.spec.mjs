@@ -6,9 +6,10 @@ import { findNearest, readJSONFile } from "../../../scripts/helpers.js";
 import { config } from "./wdio.config.mjs";
 
 /**
- * @typedef {Awaited<ReturnType<typeof import("webdriverio").remote>>} Browser
+ * @import { Manifest } from "../../../scripts/types.ts";
+ *
+ * @typedef {Awaited<ReturnType<typeof remote>>} Browser
  * @typedef {keyof typeof config.capabilities} Capability
- * @typedef {import("../../../scripts/types.ts").Manifest} Manifest
  */
 
 /**

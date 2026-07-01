@@ -64,6 +64,9 @@ jobs:
       - name: Lint lockfile
         run: |
           yarn lint-lockfile
+      - name: Report unused dependencies
+        run: |
+          yarn knip
       - name: Validate generated files
         if: ${{ github.event_name == 'pull_request' }}
         env:
@@ -249,7 +252,7 @@ jobs:
       - name: react-native run-ios
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          ../scripts/react-native.mts run-ios
+          ../scripts/react-native.ts run-ios
         working-directory: template-example
     timeout-minutes: 60
   android:
@@ -337,7 +340,7 @@ jobs:
       - name: react-native run-android
         if: ${{ steps.affected.outputs.android != '' }}
         run: |
-          ../scripts/react-native.mts run-android
+          ../scripts/react-native.ts run-android
         working-directory: template-example
     timeout-minutes: 60
   macos:

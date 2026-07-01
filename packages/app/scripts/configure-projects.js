@@ -1,7 +1,7 @@
 // @ts-check
 "use strict";
 
-/** @import { ProjectConfig, ProjectParams } from "./types.js"; */
+/** @import { ProjectConfig, ProjectParams } from "./types.ts"; */
 
 /**
  * This script (and its dependencies) currently cannot be converted to ESM

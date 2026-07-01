@@ -14,6 +14,8 @@ import * as colors from "./utils/colors.mjs";
 import { downloadPackage, fetchPackageMetadata } from "./utils/npm.mjs";
 import { parseArgs } from "./utils/parseargs.mjs";
 
+/** @import { Platform } from "./types.ts"; */
+
 /**
  * Returns the installed `react-native` manifest, if present.
  * @returns {string | null}
@@ -45,7 +47,7 @@ const getInstalledVersion = memo(() => {
 });
 
 /**
- * @param {import("./types.js").Platform[]} platforms
+ * @param {Platform[]} platforms
  * @returns {Promise<string>}
  */
 async function getLatestCommonVersion(platforms) {
@@ -92,7 +94,7 @@ function logVersion(version, reason) {
  *   - Currently installed `react-native` version
  *   - Latest version from npm
  *
- * @param {import("./types.js").Platform[]} platforms
+ * @param {Platform[]} platforms
  * @returns {Promise<string>}
  */
 async function getVersion(platforms) {
@@ -126,7 +128,7 @@ async function getVersion(platforms) {
 
 /**
  * Returns the React Native version and path to the template.
- * @param {import("./types.js").Platform[]} platforms
+ * @param {Platform[]} platforms
  * @returns {Promise<[string, string]>}
  */
 async function fetchTemplate(platforms) {
@@ -139,7 +141,7 @@ async function fetchTemplate(platforms) {
 }
 
 /**
- * @param {import("./types.js").Platform} platform
+ * @param {Platform} platform
  * @returns {string}
  */
 function instructionsFor(platform) {
@@ -220,7 +222,7 @@ function main() {
          * @type {{
          *   name?: string;
          *   packagePath?: string;
-         *   platforms?: import("./types.js").Platform[];
+         *   platforms?: Platform[];
          * }}
          */
         const { name, packagePath, platforms } = await prompts([

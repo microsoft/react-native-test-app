@@ -12,7 +12,7 @@ import { configureGradleWrapper } from "./gradle-wrapper.js";
  *   ConfigureParams,
  *   ProjectConfig,
  *   ProjectParams,
- * } from "../scripts/types.js";
+ * } from "../scripts/types.ts";
  */
 
 /**

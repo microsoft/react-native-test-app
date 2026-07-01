@@ -2,14 +2,21 @@
 import * as path from "node:path";
 import { importTargets } from "./project.mjs";
 
-/** @type {import("../scripts/types.js").MSBuildProjectConfigurator} */
+/**
+ * @import {
+ *   MSBuildProjectConfigurator,
+ *   MSBuildProjectParams,
+ * } from "../scripts/types.ts";
+ */
+
+/** @type {MSBuildProjectConfigurator} */
 export function configureForUWP({
   bundle,
   nugetDependencies,
   version,
   versionNumber,
 }) {
-  /** @type {import("../scripts/types.js").MSBuildProjectParams["projectFiles"]} */
+  /** @type {MSBuildProjectParams["projectFiles"]} */
   const projectFiles = [
     ["Assets"],
     ["AutolinkedNativeModules.g.cpp"],

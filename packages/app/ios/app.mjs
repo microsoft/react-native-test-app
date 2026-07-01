@@ -256,7 +256,7 @@ export function generateProject(
  * @param {JSONObject} options
  * @returns {ProjectConfiguration}
  */
-export function makeProject(projectRoot, targetPlatform, options, fs = nodefs) {
+function makeProject(projectRoot, targetPlatform, options, fs = nodefs) {
   const project = generateProject(projectRoot, targetPlatform, options, fs);
 
   /** @type {Record<string, Record<string, string | string[]>>} */

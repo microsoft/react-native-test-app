@@ -4,7 +4,7 @@ import * as path from "node:path";
 import * as util from "node:util";
 import manifest from "../../package.json" with { type: "json" };
 
-/** @import { Args, Options } from "../types.js"; */
+/** @import { Args, Options } from "../types.ts"; */
 
 /**
  * @template {Options} O

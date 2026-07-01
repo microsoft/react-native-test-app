@@ -8,24 +8,23 @@ import { isObject, plistFromJSON } from "./utils.mjs";
  *   ApplePlatform,
  *   JSONObject,
  *   PrivacyManifest
- * } from "../scripts/types.js";
+ * } from "../scripts/types.ts";
  */
 
 // https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
-export const PRIVACY_ACCESSED_API_TYPES = "NSPrivacyAccessedAPITypes";
-export const PRIVACY_COLLECTED_DATA_TYPES = "NSPrivacyCollectedDataTypes";
-export const PRIVACY_TRACKING = "NSPrivacyTracking";
-export const PRIVACY_TRACKING_DOMAINS = "NSPrivacyTrackingDomains";
+const PRIVACY_ACCESSED_API_TYPES = "NSPrivacyAccessedAPITypes";
+const PRIVACY_COLLECTED_DATA_TYPES = "NSPrivacyCollectedDataTypes";
+const PRIVACY_TRACKING = "NSPrivacyTracking";
+const PRIVACY_TRACKING_DOMAINS = "NSPrivacyTrackingDomains";
 
 // https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api
-export const PRIVACY_ACCESSED_API_TYPE = "NSPrivacyAccessedAPIType";
-export const PRIVACY_ACCESSED_API_TYPE_REASONS =
-  "NSPrivacyAccessedAPITypeReasons";
-export const PRIVACY_ACCESSED_API_CATEGORY_FILE_TIMESTAMP =
+const PRIVACY_ACCESSED_API_TYPE = "NSPrivacyAccessedAPIType";
+const PRIVACY_ACCESSED_API_TYPE_REASONS = "NSPrivacyAccessedAPITypeReasons";
+const PRIVACY_ACCESSED_API_CATEGORY_FILE_TIMESTAMP =
   "NSPrivacyAccessedAPICategoryFileTimestamp";
-export const PRIVACY_ACCESSED_API_CATEGORY_SYSTEM_BOOT_TIME =
+const PRIVACY_ACCESSED_API_CATEGORY_SYSTEM_BOOT_TIME =
   "NSPrivacyAccessedAPICategorySystemBootTime";
-export const PRIVACY_ACCESSED_API_CATEGORY_USER_DEFAULTS =
+const PRIVACY_ACCESSED_API_CATEGORY_USER_DEFAULTS =
   "NSPrivacyAccessedAPICategoryUserDefaults";
 
 /**

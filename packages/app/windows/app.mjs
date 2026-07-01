@@ -18,7 +18,7 @@ import { loadReactNativeConfig, projectInfo } from "./project.mjs";
 import { configureForUWP } from "./uwp.mjs";
 import { configureForWin32 } from "./win32.mjs";
 
-/** @import { MSBuildProjectOptions } from "../scripts/types.js"; */
+/** @import { MSBuildProjectOptions } from "../scripts/types.ts"; */
 
 const templateView = {
   packageGuidUpper: "{B44CEAD7-FBFF-4A17-95EB-FF5434BBD79D}", // .wapproj
