@@ -9,7 +9,7 @@ import { URL, fileURLToPath } from "node:url";
 import * as util from "node:util";
 import { readTextFile, toVersionNumber, v } from "../helpers.js";
 import { setReactVersion } from "../internal/set-react-version.mts";
-import type { BuildConfig, TargetPlatform } from "../types.js";
+import type { BuildConfig, TargetPlatform } from "../types.ts";
 import { green, red, yellow } from "../utils/colors.mjs";
 import { rm_r } from "../utils/filesystem.mjs";
 import { getIOSSimulatorName, installPods } from "./test-apple.mts";

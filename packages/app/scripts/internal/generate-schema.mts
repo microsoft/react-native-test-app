@@ -6,7 +6,7 @@ import * as path from "node:path";
 import { URL, fileURLToPath } from "node:url";
 import { isMain } from "../helpers.js";
 import { generateSchema } from "../schema.mjs";
-import type { Docs } from "../types.js";
+import type { Docs } from "../types.ts";
 
 type Definition = SchemaObject & {
   type: string;

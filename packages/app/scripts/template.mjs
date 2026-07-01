@@ -6,7 +6,7 @@ import * as vm from "node:vm";
 import manifest from "../package.json" with { type: "json" };
 import { readJSONFile } from "./helpers.js";
 
-/** @import { ConfigureParams, Plugin } from "./types.js"; */
+/** @import { Configuration, ConfigureParams, Plugin } from "./types.ts"; */
 
 /**
  * @param {...string} paths
@@ -18,7 +18,7 @@ export function copyFrom(...paths) {
 
 /**
  * @param {string} dir
- * @returns {import("./types.ts").Configuration["files"][string]}
+ * @returns {Configuration["files"][string]}
  */
 export function findGitIgnore(dir, fs = nodefs) {
   // `.gitignore` files are only renamed when published.

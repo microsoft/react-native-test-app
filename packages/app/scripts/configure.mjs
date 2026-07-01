@@ -8,7 +8,7 @@
  *   Platform,
  *   PlatformConfiguration,
  *   PlatformPackage,
- * } from "./types.js";
+ * } from "./types.ts";
  */
 import * as nodefs from "node:fs";
 import { createRequire } from "node:module";
@@ -416,7 +416,7 @@ export function removeAllFiles(files, destination, fs = nodefs.promises) {
 
 /**
  * Returns the package manifest with additions for react-native-test-app.
- * @param {import("node:fs").PathLike} path
+ * @param {nodefs.PathLike} path
  * @param {Configuration} config
  * @returns {Record<string, unknown>}
  */

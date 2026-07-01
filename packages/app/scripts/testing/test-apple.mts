@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import { URL, fileURLToPath } from "node:url";
 import { memo, readTextFile } from "../helpers.js";
-import type { BuildConfig } from "../types.js";
+import type { BuildConfig } from "../types.ts";
 import { rm_r } from "../utils/filesystem.mjs";
 import { $ } from "./test-e2e.mts";
 

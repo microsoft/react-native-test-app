@@ -1,7 +1,7 @@
 // @ts-check
 /**
  * @import { ConfigPlugin } from "@expo/config-plugins";
- * @import { ProjectInfo } from "../types.js";
+ * @import { ProjectInfo } from "../types.ts";
  * @typedef {Omit<ProjectInfo, "appJsonPath">} Internals
  */
 

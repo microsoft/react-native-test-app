@@ -13,7 +13,7 @@ import {
 import { isObject, projectPath } from "./utils.mjs";
 
 /**
- * @import { ApplePlatform, JSONObject, JSONValue } from "../scripts/types.js";
+ * @import { ApplePlatform, JSONObject, JSONValue } from "../scripts/types.ts";
  *
  * @typedef {{ filename: string; }} Icon;
  */

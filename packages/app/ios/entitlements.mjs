@@ -3,7 +3,7 @@ import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { isObject, plistFromJSON } from "./utils.mjs";
 
-/** @import { ApplePlatform, JSONObject } from "../scripts/types.js"; */
+/** @import { ApplePlatform, JSONObject } from "../scripts/types.ts"; */
 
 const DEFAULT_IOS_ENTITLEMENTS = {
   "keychain-access-groups": ["$(AppIdentifierPrefix)com.microsoft.adalcache"],

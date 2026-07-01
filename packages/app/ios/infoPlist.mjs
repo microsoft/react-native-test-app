@@ -9,7 +9,13 @@ import {
   resolveResources,
 } from "./utils.mjs";
 
-/** @import { ApplePlatform, JSONArray, JSONObject } from "../scripts/types.js"; */
+/**
+ * @import {
+ *   ApplePlatform,
+ *   JSONArray,
+ *   JSONObject,
+ * } from "../scripts/types.ts";
+ */
 
 /**
  * @param {JSONObject} appConfig
@@ -67,7 +73,7 @@ export function generateInfoPlist(
  * @param {ApplePlatform} targetPlatform
  * @param {JSONObject} info
  */
-export function registerFonts(resources, targetPlatform, info) {
+function registerFonts(resources, targetPlatform, info) {
   if (!resources) {
     return;
   }

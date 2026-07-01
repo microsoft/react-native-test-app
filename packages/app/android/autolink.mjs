@@ -12,8 +12,8 @@ import {
 import { mkdir_p, writeJSONFile } from "../scripts/utils/filesystem.mjs";
 
 /**
- * @typedef {import("@react-native-community/cli-types").Config} Config
- * @typedef {import("../scripts/types.js").AndroidDependencies} AndroidDependencies
+ * @import { Config } from "@react-native-community/cli-types";
+ * @import { AndroidDependencies } from "../scripts/types.ts";
  */
 
 /**

@@ -1,5 +1,4 @@
 import type { NativeSyntheticEvent } from "react-native";
-import { NativeModules } from "react-native";
 
 export type ReactNativeVersion = {
   major: number;
@@ -62,18 +61,4 @@ export function isFabricInstance<T>(
     // @ts-expect-error — https://github.com/react/react-native/blob/0.76-stable/packages/react-native/Libraries/ReactNative/ReactFabricPublicInstance/ReactFabricPublicInstanceUtils.js
     ref["_internalInstanceHandle"]?.stateNode?.canonical
   );
-}
-
-export function isRemoteDebuggingAvailable(): boolean {
-  return (
-    !getHermesVersion() &&
-    !isBridgeless() &&
-    typeof NativeModules["DevSettings"]?.setIsDebuggingRemotely === "function"
-  );
-}
-
-export function setRemoteDebugging(value: boolean) {
-  if (isRemoteDebuggingAvailable()) {
-    NativeModules["DevSettings"].setIsDebuggingRemotely(value);
-  }
 }

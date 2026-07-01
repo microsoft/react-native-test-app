@@ -1,6 +1,8 @@
 // @ts-check
 "use strict";
 
+/** @import { AndroidConfig, AndroidManifest } from "../scripts/types.ts" */
+
 /**
  * This script (and its dependencies) currently cannot be converted to ESM
  * because it is consumed in `react-native.config.js`.
@@ -54,7 +56,7 @@ function generateAndroidManifest(appManifestPath, manifestOutput, fs = nodefs) {
   const { default: XMLBuilder } = require("fast-xml-builder");
   const { XMLParser } = require("fast-xml-parser");
 
-  /** @type {import("../scripts/types.js").AndroidConfig} */
+  /** @type {AndroidConfig} */
   const appManifest = readJSONFile(appManifestPath, fs);
   const android = appManifest.android ?? {};
 
@@ -74,7 +76,7 @@ function generateAndroidManifest(appManifestPath, manifestOutput, fs = nodefs) {
   );
   const xml = new XMLParser(xmlOptions).parse(readTextFile(manifestSource, fs));
 
-  /** @type {import("../scripts/types.js").AndroidManifest} */
+  /** @type {AndroidManifest} */
   const manifest = xml["manifest"];
 
   // https://developer.android.com/guide/topics/manifest/uses-feature-element

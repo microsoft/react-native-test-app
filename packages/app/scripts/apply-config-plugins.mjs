@@ -5,8 +5,9 @@ import * as path from "node:path";
 import { parseArgs } from "node:util";
 import { findFile, readTextFile } from "./helpers.js";
 
+/** @import { ProjectInfo } from "./config-plugins/types.ts"; */
+
 /**
- * @typedef {import("./config-plugins/types.js").ProjectInfo["platforms"]} Platforms
  * @param {string} projectRoot
  * @param {string[]} platforms
  */
@@ -29,7 +30,7 @@ async function main(projectRoot = process.cwd(), platforms) {
   const { applyConfigPlugins } = await import("./config-plugins/index.mjs");
   return applyConfigPlugins({
     projectRoot: path.dirname(appJsonPath),
-    platforms: /** @type {Platforms} */ (platforms),
+    platforms: /** @type {ProjectInfo["platforms"]} */ (platforms),
     packageJsonPath,
     appJsonPath,
   });

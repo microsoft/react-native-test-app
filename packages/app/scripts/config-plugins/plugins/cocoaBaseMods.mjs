@@ -4,11 +4,15 @@ import * as path from "node:path";
 import { BaseMods } from "../ExpoConfigPlugins.mjs";
 import { makeFilePathModifier, makeNullProvider } from "../provider.mjs";
 
+/**
+ * @import { CustomModProvider, IosModFileProviders } from "../types.ts";
+ */
+
 const require = createRequire(import.meta.url);
 
 /**
- * @param {import("../types.js").CustomModProvider} modifyFilePath
- * @returns {import("../types.js").IosModFileProviders}
+ * @param {CustomModProvider} modifyFilePath
+ * @returns {IosModFileProviders}
  */
 export function createModFileProviders(modifyFilePath) {
   const modifyReactNativeHostFilePath = makeFilePathModifier(
@@ -20,7 +24,7 @@ export function createModFileProviders(modifyFilePath) {
   // https://github.com/expo/expo/blob/sdk-51/packages/%40expo/config-plugins/src/plugins/withIosBaseMods.ts
   const expoProviders = BaseMods.getIosModFileProviders();
 
-  /** @type {import("../types.js").IosModFileProviders} */
+  /** @type {IosModFileProviders} */
   const defaultProviders = {
     dangerous: expoProviders.dangerous,
     finalized: expoProviders.finalized,

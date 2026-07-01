@@ -6,8 +6,7 @@ import { mkdir_p } from "../scripts/utils/filesystem.mjs";
 import { isString, projectPath } from "./utils.mjs";
 
 /**
- * @typedef {import("../scripts/types.ts").ApplePlatform} ApplePlatform;
- * @typedef {import("../scripts/types.ts").JSONObject} JSONObject;
+ * @import { ApplePlatform, JSONObject } from "../scripts/types.ts";
  */
 
 const DEFAULT_APP_NAME = "ReactTestApp";

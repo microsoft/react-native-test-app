@@ -25,7 +25,7 @@ import * as colors from "../scripts/utils/colors.mjs";
  *   Assets,
  *   MSBuildProjectOptions,
  *   ProjectInfo,
- * } from "../scripts/types.js";
+ * } from "../scripts/types.ts";
  */
 
 /**

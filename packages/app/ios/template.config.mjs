@@ -8,7 +8,7 @@ import { toVersionNumber, v } from "../scripts/helpers.js";
  *   ConfigureParams,
  *   ProjectConfig,
  *   ProjectParams,
- * } from "../scripts/types.js";
+ * } from "../scripts/types.ts";
  */
 
 /**

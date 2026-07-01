@@ -19,15 +19,16 @@
     "packages/example-*",
     "packages/platform-*"
   ],
+  "type": "module",
   "scripts": {
     "format": "nx run-many --target format:c,format:js,format:swift",
     "format:js": "oxfmt '**/README.md' '**/package.json' '*.{cjs,cts,js,mjs,mts,ts,tsx,yml}' '.github/**/*.json' 'CONTRIBUTING.md' 'nx.json' '!packages/app/package.json'",
     "lint": "nx run-many --target lint:js,lint:kt,lint:rb,lint:swift",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
     "lint:js": "oxlint $(git ls-files 'scripts/*.[cm][jt]s' 'scripts/*.[jt]s')",
-    "release-notes": "node scripts/release-notes.mts",
+    "release-notes": "node scripts/release-notes.ts",
     "rnx-align-deps": "rnx-align-deps --exclude-packages @microsoft/root,@rnx-kit/react-native-template-web,react-native-test-app",
-    "show-affected": "node scripts/affected.mts"
+    "show-affected": "node scripts/affected.ts"
   },
   "devDependencies": {
     "@nx/js": "^22.0.0",
@@ -42,6 +43,7 @@
     "eslint-plugin-wdio": "^9.26.0",
     "globals": "^16.5.0",
     "js-yaml": "^4.1.0",
+    "knip": "^6.23.0",
     "minimatch": "^10.0.0",
     "nx": "^22.0.0",
     "oxfmt": "^0.41.0",
