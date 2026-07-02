@@ -3,17 +3,20 @@ import ReactTestApp_DevSupport
 
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    @IBOutlet var reactMenu: NSMenu!
-    @IBOutlet var rememberLastComponentMenuItem: NSMenuItem!
+    static func main() {
+        let delegate = AppDelegate()
+        let app = NSApplication.shared
+        app.delegate = delegate
+        app.run()
+    }
+
+    var reactMenu: NSMenu!
+    var rememberLastComponentMenuItem: NSMenuItem!
 
     private(set) lazy var reactInstance = ReactInstance()
 
-    private lazy var mainWindow: NSWindow? = {
-        // `keyWindow` might be `nil` while loading or when the window is not
-        // active. Use `identifier` to find our main window.
-        let windows = NSApplication.shared.windows
-        return windows.first { $0.identifier?.rawValue == "MainWindow" }
-    }()
+    private lazy var windowController = WindowController()
+    private lazy var mainWindow = windowController.window
 
     private var contentDidAppearToken: NSObjectProtocol?
 
@@ -21,7 +24,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         true
     }
 
+    /// Builds the main menu and main window programmatically. This replaces
+    /// what used to be provided by `Main.storyboard`, and must run before the
+    /// rest of `applicationWillFinishLaunching(_:)` since it relies on
+    /// `reactMenu`/`rememberLastComponentMenuItem` and `mainWindow` being set.
+    private func initWindow() {
+        guard windowController.window != nil else {
+            fatalError("Failed to create window")
+        }
+
+        NSApp.mainMenu = makeMainMenu(title: Manifest.load().displayName)
+    }
+
     func applicationDidFinishLaunching(_: Notification) {
+        windowController.showWindow(nil)
+        NSApp.activate()
+
         NotificationCenter.default.post(
             name: .ReactAppDidFinishLaunching,
             object: nil
@@ -58,17 +76,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: User interaction
 
-    @IBAction
+    @objc
     func onLoadEmbeddedBundleSelected(_: NSMenuItem) {
         reactInstance.remoteBundleURL = nil
     }
 
-    @IBAction
+    @objc
     func onLoadFromDevServerSelected(_: NSMenuItem) {
         reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
     }
 
-    @IBAction
+    @objc
     func onRememberLastComponentSelected(_ menuItem: NSMenuItem) {
         onRememberLastComponentSelectedInternal(menuItem)
     }
@@ -149,6 +167,8 @@ extension AppDelegate {
     }
 
     func applicationWillFinishLaunching(_: Notification) {
+        initWindow()
+
         // applicationWillFinishLaunching(_:) [ENABLE_SINGLE_APP_MODE=0]
 
         if Session.shouldRememberLastComponent {
@@ -280,6 +300,8 @@ extension AppDelegate {
     func initialize() {}
 
     func applicationWillFinishLaunching(_: Notification) {
+        initWindow()
+
         guard let window = mainWindow else {
             assertionFailure("Main window should have been instantiated by now")
             return

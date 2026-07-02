@@ -4,7 +4,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private weak var application: UIApplication?
 
-    @objc var window: UIWindow? {
+    @objc
+    var window: UIWindow? {
         get {
             // Copy the implementation of RCTKeyWindow() as it changes a lot upstream
             if let connectedScenes = application?.connectedScenes {

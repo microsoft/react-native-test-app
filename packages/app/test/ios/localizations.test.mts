@@ -1,4 +1,5 @@
 import { deepEqual, equal } from "node:assert/strict";
+import * as nodefs from "node:fs";
 import * as path from "node:path";
 import { afterEach, describe, it } from "node:test";
 import {
@@ -13,6 +14,10 @@ import { fs, setMockFiles, toJSON } from "../fs.mock.mts";
 const macosOnly = { skip: process.platform === "win32" };
 
 describe("generateLocalizations()", macosOnly, () => {
+  const localizationsDir = projectPath("Localizations", "macos");
+  const enStrings = path.join(localizationsDir, "en.lproj", "Main.strings");
+  const stringsExist = nodefs.existsSync(enStrings);
+
   function generateLocalizations(
     appConfig: JSONObject,
     targetPlatform: ApplePlatform,
@@ -33,17 +38,15 @@ describe("generateLocalizations()", macosOnly, () => {
     });
   }
 
-  it("[macos] generates localization files", () => {
+  it("[macos] generates localization files", { skip: !stringsExist }, () => {
     const name = "ContosoApp";
 
     // Read strings from disk
-    const localizationsDir = projectPath("Localizations", "macos");
-    const english = path.join(localizationsDir, "en.lproj", "Main.strings");
-    const strings = readTextFile(english);
+    const strings = readTextFile(enStrings);
 
     setMockFiles({
       [`${localizationsDir}/.ignoreme`]: "",
-      [english]: strings,
+      [enStrings]: strings,
     });
 
     generateLocalizations({ name }, "macos", ".");
