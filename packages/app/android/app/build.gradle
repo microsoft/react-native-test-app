@@ -13,7 +13,7 @@ plugins {
 // Only apply Kotlin plugin if `android.builtInKotlin=false`
 // https://developer.android.com/build/migrate-to-built-in-kotlin#enable-built-in-kotlin
 def useBuiltInKotlin = toVersionNumber(gradle.gradleVersion) >= v(9, 4, 0) &&
-                       project.findProperty("android.builtInKotlin") != false
+                       project.findProperty("android.builtInKotlin") != "false"
 if (!useBuiltInKotlin) {
     apply(plugin: "org.jetbrains.kotlin.android")
 }

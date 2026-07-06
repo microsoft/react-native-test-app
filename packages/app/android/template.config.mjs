@@ -103,6 +103,16 @@ newArchEnabled=true
 
 # Version of Kotlin to build against.
 #KOTLIN_VERSION=1.8.22
+
+# Use this property to enable edge-to-edge display support.
+# This allows your app to draw behind system bars for an immersive UI.
+# Note: Only works with ReactActivity and should not be used with custom Activity.
+edgeToEdgeEnabled=true
+
+# Opt out of built-in kotlin and new DSL behavior that ships with AGP 9.
+# Starting from AGP 10.x these opt outs will be removed.
+android.builtInKotlin=false
+android.newDsl=false
 `;
 }
 
