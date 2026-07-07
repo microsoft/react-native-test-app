@@ -2292,7 +2292,7 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
-  - RNWWebStorage (0.4.5):
+  - RNWWebStorage (0.4.6):
     - boost
     - DoubleConversion
     - fast_float
@@ -2641,10 +2641,10 @@ SPEC CHECKSUMS:
   ReactNativeHost: 8680b5bbc3afdbfeccc206ed0f3230d7c3df691b
   ReactTestApp-DevSupport: 4d0b86847c5f7fffa0f09479443be7a2420d19a4
   ReactTestApp-Resources: 71a3155bca10819738469de1f161410f43528209
-  RNWWebStorage: 8ec03f8288c1e212518f662f44ec223603bbe74c
+  RNWWebStorage: 8bc155b048a2d1ee1db5f63b1b9c5705434d48db
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 9f9bacf26f441fa32d25c32e5583ff72f6d2806d
 
 PODFILE CHECKSUM: 1bbe1c112a99af9746e5ca07f8bc40c7aa7a6eb5
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

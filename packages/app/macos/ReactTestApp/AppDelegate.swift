@@ -1,51 +1,52 @@
 import Cocoa
 import ReactTestApp_DevSupport
+import SwiftUI
+
+// MARK: - App
 
 @main
-final class AppDelegate: NSObject, NSApplicationDelegate {
-    static func main() {
-        let delegate = AppDelegate()
-        let app = NSApplication.shared
-        app.delegate = delegate
-        app.run()
+struct ReactTestAppMain: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+
+    var body: some Scene {
+        Window("ReactTestApp", id: AppModel.mainWindowID) {
+            RootContentView(model: appDelegate.model)
+        }
+        .defaultSize(width: 640, height: 480)
+        .commands {
+            #if !ENABLE_SINGLE_APP_MODE || DEBUG
+            ReactCommands(model: appDelegate.model)
+            #endif
+        }
     }
+}
 
-    var reactMenu: NSMenu!
-    var rememberLastComponentMenuItem: NSMenuItem!
+// MARK: - App Delegate
 
-    private(set) lazy var reactInstance = ReactInstance()
-
-    private lazy var windowController = WindowController()
-    private lazy var mainWindow = windowController.window
-
-    private var contentDidAppearToken: NSObjectProtocol?
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    let model = AppModel()
 
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
         true
     }
 
-    /// Builds the main menu and main window programmatically. This replaces
-    /// what used to be provided by `Main.storyboard`, and must run before the
-    /// rest of `applicationWillFinishLaunching(_:)` since it relies on
-    /// `reactMenu`/`rememberLastComponentMenuItem` and `mainWindow` being set.
-    private func initWindow() {
-        guard windowController.window != nil else {
-            fatalError("Failed to create window")
-        }
-
-        NSApp.mainMenu = makeMainMenu(title: Manifest.load().displayName)
+    func applicationWillFinishLaunching(_: Notification) {
+        #if ENABLE_SINGLE_APP_MODE
+        // applicationWillFinishLaunching(_:) [ENABLE_SINGLE_APP_MODE=1]
+        #else
+        // applicationWillFinishLaunching(_:) [ENABLE_SINGLE_APP_MODE=0]
+        #endif
     }
 
     func applicationDidFinishLaunching(_: Notification) {
-        windowController.showWindow(nil)
-        NSApp.activate()
-
         NotificationCenter.default.post(
             name: .ReactAppDidFinishLaunching,
             object: nil
         )
 
-        initialize()
+        model.initialize()
+
+        NSApplication.shared.activate(ignoringOtherApps: true)
 
         // applicationDidFinishLaunching(_:)
     }
@@ -73,38 +74,53 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     {
         // application(_:didReceiveRemoteNotification:)
     }
+}
 
-    // MARK: User interaction
+// MARK: - App Model
 
-    @objc
-    func onLoadEmbeddedBundleSelected(_: NSMenuItem) {
-        reactInstance.remoteBundleURL = nil
+final class AppModel: ObservableObject {
+    static let mainWindowID = "MainWindow"
+
+    @Published var windowTitle: String
+    @Published var components: [Component] = []
+    @Published var componentsEnabled = false
+    @Published var contentViewController: NSViewController?
+    @Published var rememberLastComponent: Bool {
+        didSet { Session.shouldRememberLastComponent = rememberLastComponent }
     }
 
-    @objc
-    func onLoadFromDevServerSelected(_: NSMenuItem) {
-        reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
-    }
+    private(set) lazy var reactInstance = ReactInstance()
 
-    @objc
-    func onRememberLastComponentSelected(_ menuItem: NSMenuItem) {
-        onRememberLastComponentSelectedInternal(menuItem)
-    }
-
-    // MARK: Private
+    private var registerAppsToken: NSObjectProtocol?
+    private var contentDidAppearToken: NSObjectProtocol?
 
     private enum WindowSize {
-        static let defaultSize = CGSize(width: 640, height: 480)
         static let modalSize = CGSize(width: 586, height: 326)
     }
 
-    private func showReactMenu() {
-        guard let mainMenu = reactMenu.supermenu else {
-            return
-        }
+    init() {
+        rememberLastComponent = Session.shouldRememberLastComponent
 
-        let index = mainMenu.indexOfItem(withSubmenu: reactMenu)
-        mainMenu.item(at: index)?.isHidden = false
+        #if ENABLE_SINGLE_APP_MODE
+        let manifest = Manifest.load()
+        if let slug = manifest.singleApp,
+           let component = manifest.components?.first(where: { $0.slug == slug })
+        {
+            windowTitle = component.displayName ?? component.appKey
+        } else {
+            windowTitle = manifest.displayName
+        }
+        #else
+        windowTitle = Manifest.load().displayName
+        #endif
+    }
+
+    func loadEmbeddedBundle() {
+        reactInstance.remoteBundleURL = nil
+    }
+
+    func loadFromDevServer() {
+        reactInstance.remoteBundleURL = ReactInstance.jsBundleURL()
     }
 }
 
@@ -112,18 +128,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
 #if !ENABLE_SINGLE_APP_MODE
 
-extension AppDelegate {
-    private var isPresenting: Bool {
-        !(mainWindow?.contentViewController is ViewController)
-    }
-
+extension AppModel {
     func initialize() {
         let manifest = Manifest.load()
-        mainWindow?.title = manifest.displayName
+        windowTitle = manifest.displayName
 
-        let components = manifest.components ?? []
-        if components.isEmpty {
-            NotificationCenter.default.addObserver(
+        let appComponents = manifest.components ?? []
+        if appComponents.isEmpty {
+            registerAppsToken = NotificationCenter.default.addObserver(
                 forName: .ReactAppDidRegisterApps,
                 object: nil,
                 queue: .main,
@@ -134,96 +146,49 @@ extension AppDelegate {
                         return
                     }
 
-                    let components = appKeys.map { Component(appKey: $0) }
-                    strongSelf.onComponentsRegistered(components, enable: true)
-                    if components.count == 1, !strongSelf.isPresenting {
-                        strongSelf.present(components[0])
+                    let registered = appKeys.map { Component(appKey: $0) }
+                    strongSelf.setComponents(registered, enable: true)
+                    if registered.count == 1, strongSelf.contentViewController == nil {
+                        strongSelf.present(registered[0])
                     }
                 }
             )
         }
 
-        onComponentsRegistered(components, enable: false)
+        setComponents(appComponents, enable: false)
 
         let bundleRoot = manifest.bundleRoot
         // As of 0.74, we can no longer instantiate on a background thread:
-        // https://github.com/react/react-native/commit/b7025fe1569349d90d26821b2b8de64a8ec9f352
+        // https://github.com/facebook/react-native/commit/b7025fe1569349d90d26821b2b8de64a8ec9f352
         DispatchQueue.main.async { [weak self] in
             self?.reactInstance.initReact(bundleRoot: bundleRoot) {
                 DispatchQueue.main.async { [weak self] in
-                    guard let strongSelf = self, !components.isEmpty else {
+                    guard let strongSelf = self, !appComponents.isEmpty else {
                         return
                     }
 
-                    if let index = components.count == 1 ? 0 : Session.lastOpenedComponent(Manifest.checksum()) {
-                        strongSelf.present(components[index])
+                    if let index = appComponents.count == 1 ? 0 : Session.lastOpenedComponent(Manifest.checksum()) {
+                        strongSelf.present(appComponents[index])
                     }
 
-                    strongSelf.reactMenu.items.forEach { $0.isEnabled = true }
-                    strongSelf.rememberLastComponentMenuItem.isEnabled = components.count > 1
+                    strongSelf.componentsEnabled = true
                 }
             }
         }
     }
 
-    func applicationWillFinishLaunching(_: Notification) {
-        initWindow()
-
-        // applicationWillFinishLaunching(_:) [ENABLE_SINGLE_APP_MODE=0]
-
-        if Session.shouldRememberLastComponent {
-            rememberLastComponentMenuItem.state = .on
-        }
-
-        showReactMenu()
-    }
-
-    @objc
-    private func onComponentSelected(menuItem: NSMenuItem) {
-        guard let component = menuItem.representedObject as? Component else {
-            return
-        }
-
+    func selectComponent(_ component: Component, at index: Int) {
         present(component)
-
-        Session.storeComponent(index: menuItem.tag, checksum: Manifest.checksum())
+        Session.storeComponent(index: index, checksum: Manifest.checksum())
     }
 
-    private func onComponentsRegistered(_ components: [Component], enable: Bool) {
-        removeAllComponentsFromMenu()
-        for (index, component) in components.enumerated() {
-            let title = component.displayName ?? component.appKey
-            let item = reactMenu.addItem(
-                withTitle: title,
-                action: #selector(onComponentSelected),
-                keyEquivalent: index < 9 ? String(index + 1) : ""
-            )
-            item.tag = index
-            item.keyEquivalentModifierMask = [.shift, .command]
-            item.isEnabled = enable
-            item.representedObject = component
-        }
-
-        rememberLastComponentMenuItem.isEnabled = components.count > 1
-    }
-
-    private func onRememberLastComponentSelectedInternal(_ menuItem: NSMenuItem) {
-        switch menuItem.state {
-        case .mixed, .on:
-            Session.shouldRememberLastComponent = false
-            menuItem.state = .off
-        case .off:
-            Session.shouldRememberLastComponent = true
-            menuItem.state = .on
-        default:
-            assertionFailure()
-        }
+    private func setComponents(_ newComponents: [Component], enable: Bool) {
+        components = newComponents
+        componentsEnabled = enable
     }
 
     private func present(_ component: Component) {
-        guard let window = mainWindow,
-              let host = reactInstance.host
-        else {
+        guard let host = reactInstance.host else {
             return
         }
 
@@ -245,48 +210,35 @@ extension AppDelegate {
 
         switch component.presentationStyle {
         case "modal":
-            let rootView = viewController.view
-            let modalFrame = NSRect(size: WindowSize.modalSize)
-            rootView.frame = modalFrame
-
-            contentDidAppearToken = NotificationCenter.default.addObserver(
-                forName: .RCTContentDidAppear,
-                object: rootView,
-                queue: nil,
-                using: { [weak self] _ in
-                    #if USE_FABRIC
-                    rootView.frame = modalFrame
-                    #else
-                    (rootView as? RCTRootView)?.contentView.frame = modalFrame
-                    #endif
-                    if let token = self?.contentDidAppearToken {
-                        NotificationCenter.default.removeObserver(token)
-                    }
-                }
-            )
-
-            window.contentViewController?.presentAsModalWindow(viewController)
-
+            presentModal(viewController)
         default:
-            window.title = title
-            let frame = window.contentViewController?.view.frame
-            viewController.view.frame = frame ?? NSRect(size: WindowSize.defaultSize)
-            window.contentViewController = viewController
+            windowTitle = title
+            contentViewController = viewController
         }
     }
 
-    private func removeAllComponentsFromMenu() {
-        let numberOfItems = reactMenu.numberOfItems
-        for reverseIndex in 1 ... numberOfItems {
-            let index = numberOfItems - reverseIndex
-            guard let item = reactMenu.item(at: index) else {
-                preconditionFailure()
+    private func presentModal(_ viewController: NSViewController) {
+        let rootView = viewController.view
+        let modalFrame = NSRect(size: WindowSize.modalSize)
+        rootView.frame = modalFrame
+
+        contentDidAppearToken = NotificationCenter.default.addObserver(
+            forName: .RCTContentDidAppear,
+            object: rootView,
+            queue: nil,
+            using: { [weak self] _ in
+                #if USE_FABRIC
+                rootView.frame = modalFrame
+                #else
+                (rootView as? RCTRootView)?.contentView.frame = modalFrame
+                #endif
+                if let token = self?.contentDidAppearToken {
+                    NotificationCenter.default.removeObserver(token)
+                }
             }
-            if item.isSeparatorItem == true {
-                break
-            }
-            reactMenu.removeItem(at: index)
-        }
+        )
+
+        NSApp.keyWindow?.contentViewController?.presentAsModalWindow(viewController)
     }
 }
 
@@ -296,36 +248,10 @@ extension AppDelegate {
 
 #if ENABLE_SINGLE_APP_MODE
 
-extension AppDelegate {
+extension AppModel {
     func initialize() {}
 
-    func applicationWillFinishLaunching(_: Notification) {
-        initWindow()
-
-        guard let window = mainWindow else {
-            assertionFailure("Main window should have been instantiated by now")
-            return
-        }
-
-        guard let (rootView, title) = createReactRootView(reactInstance) else {
-            assertionFailure()
-            return
-        }
-
-        window.title = title
-
-        let frame = window.contentViewController?.view.frame
-        rootView.frame = frame ?? NSRect(size: WindowSize.defaultSize)
-        window.contentViewController?.view = rootView
-
-        // applicationWillFinishLaunching(_:) [ENABLE_SINGLE_APP_MODE=1]
-
-        #if DEBUG
-        showReactMenu()
-        #endif // DEBUG
-    }
-
-    private func onRememberLastComponentSelectedInternal(_: NSMenuItem) {}
+    func selectComponent(_: Component, at _: Int) {}
 }
 
 #endif // ENABLE_SINGLE_APP_MODE
