@@ -33,16 +33,12 @@ private extension NSMenuItem {
                      action: Selector? = nil,
                      target: AnyObject? = nil,
                      keyEquivalent: String = "",
-                     keyEquivalentModifierMask: NSEvent.ModifierFlags = [.command],
-                     tag: Int? = nil)
+                     keyEquivalentModifierMask: NSEvent.ModifierFlags = [.command])
     {
         self.init(title: title, action: action, keyEquivalent: keyEquivalent)
         self.target = target
         if !keyEquivalent.isEmpty {
             self.keyEquivalentModifierMask = keyEquivalentModifierMask
-        }
-        if let tag {
-            self.tag = tag
         }
     }
 
@@ -61,10 +57,9 @@ extension AppDelegate {
     func makeMainMenu(title: String) -> NSMenu {
         NSMenu(title: "Main Menu", items: [
             makeAppMenuItem(title: title),
-            makeFileMenuItem(),
+            makeReactMenuItem(),
             makeEditMenuItem(),
             makeViewMenuItem(),
-            makeReactMenuItem(),
             makeWindowMenuItem(),
             makeHelpMenuItem(title: title),
         ])
@@ -94,29 +89,6 @@ extension AppDelegate {
         ])
     }
 
-    private func makeFileMenuItem() -> NSMenuItem {
-        NSMenuItem(submenu: "File", items: [
-            NSMenuItem(title: "New", action: #selector(NSDocumentController.newDocument(_:)), keyEquivalent: "n"),
-            NSMenuItem(title: "Open…", action: #selector(NSDocumentController.openDocument(_:)), keyEquivalent: "o"),
-            NSMenuItem(submenu: "Open Recent", items: [
-                NSMenuItem(title: "Clear Menu", action: #selector(NSDocumentController.clearRecentDocuments(_:))),
-            ]),
-            .separator(),
-            NSMenuItem(title: "Close", action: #selector(NSWindow.performClose(_:)), keyEquivalent: "w"),
-            NSMenuItem(title: "Save…", action: #selector(NSDocument.save(_:)), keyEquivalent: "s"),
-            NSMenuItem(title: "Save As…", action: #selector(NSDocument.saveAs(_:)), keyEquivalent: "S"),
-            NSMenuItem(title: "Revert to Saved", action: #selector(NSDocument.revertToSaved(_:)), keyEquivalent: "r"),
-            .separator(),
-            NSMenuItem(
-                title: "Page Setup…",
-                action: #selector(NSDocument.runPageLayout(_:)),
-                keyEquivalent: "P",
-                keyEquivalentModifierMask: [.shift, .command]
-            ),
-            NSMenuItem(title: "Print…", action: #selector(NSView.printView(_:)), keyEquivalent: "p"),
-        ])
-    }
-
     private func makeEditMenuItem() -> NSMenuItem {
         NSMenuItem(submenu: "Edit", items: [
             NSMenuItem(title: "Undo", action: Selector(("undo:")), keyEquivalent: "z"),
@@ -125,147 +97,13 @@ extension AppDelegate {
             NSMenuItem(title: "Cut", action: #selector(NSText.cut(_:)), keyEquivalent: "x"),
             NSMenuItem(title: "Copy", action: #selector(NSText.copy(_:)), keyEquivalent: "c"),
             NSMenuItem(title: "Paste", action: #selector(NSText.paste(_:)), keyEquivalent: "v"),
-            NSMenuItem(
-                title: "Paste and Match Style",
-                action: #selector(NSTextView.pasteAsPlainText(_:)),
-                keyEquivalent: "V",
-                keyEquivalentModifierMask: [.option, .command]
-            ),
             NSMenuItem(title: "Delete", action: #selector(NSText.delete(_:))),
             NSMenuItem(title: "Select All", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a"),
-            .separator(),
-            NSMenuItem(submenu: "Find", items: [
-                NSMenuItem(
-                    title: "Find…",
-                    action: #selector(NSTextView.performFindPanelAction(_:)),
-                    keyEquivalent: "f",
-                    tag: 1
-                ),
-                NSMenuItem(
-                    title: "Find and Replace…",
-                    action: #selector(NSTextView.performFindPanelAction(_:)),
-                    keyEquivalent: "f",
-                    keyEquivalentModifierMask: [.option, .command],
-                    tag: 12
-                ),
-                NSMenuItem(
-                    title: "Find Next",
-                    action: #selector(NSTextView.performFindPanelAction(_:)),
-                    keyEquivalent: "g",
-                    tag: 2
-                ),
-                NSMenuItem(
-                    title: "Find Previous",
-                    action: #selector(NSTextView.performFindPanelAction(_:)),
-                    keyEquivalent: "G",
-                    tag: 3
-                ),
-                NSMenuItem(
-                    title: "Use Selection for Find",
-                    action: #selector(NSTextView.performFindPanelAction(_:)),
-                    keyEquivalent: "e",
-                    tag: 7
-                ),
-                NSMenuItem(
-                    title: "Jump to Selection",
-                    action: #selector(NSTextView.centerSelectionInVisibleArea(_:)),
-                    keyEquivalent: "j"
-                ),
-            ]),
-            NSMenuItem(submenu: "Spelling and Grammar", items: [
-                NSMenuItem(
-                    title: "Show Spelling and Grammar",
-                    action: #selector(NSText.showGuessPanel(_:)),
-                    keyEquivalent: ":"
-                ),
-                NSMenuItem(
-                    title: "Check Document Now",
-                    action: #selector(NSText.checkSpelling(_:)),
-                    keyEquivalent: ";"
-                ),
-                .separator(),
-                NSMenuItem(
-                    title: "Check Spelling While Typing",
-                    action: #selector(NSTextView.toggleContinuousSpellChecking(_:))
-                ),
-                NSMenuItem(
-                    title: "Check Grammar With Spelling",
-                    action: #selector(NSTextView.toggleGrammarChecking(_:))
-                ),
-                NSMenuItem(
-                    title: "Correct Spelling Automatically",
-                    action: #selector(NSTextView.toggleAutomaticSpellingCorrection(_:))
-                ),
-            ]),
-            NSMenuItem(submenu: "Substitutions", items: [
-                NSMenuItem(
-                    title: "Show Substitutions",
-                    action: #selector(NSTextView.orderFrontSubstitutionsPanel(_:))
-                ),
-                .separator(),
-                NSMenuItem(
-                    title: "Smart Copy/Paste",
-                    action: #selector(NSTextView.toggleSmartInsertDelete(_:))
-                ),
-                NSMenuItem(
-                    title: "Smart Quotes",
-                    action: #selector(NSTextView.toggleAutomaticQuoteSubstitution(_:))
-                ),
-                NSMenuItem(
-                    title: "Smart Dashes",
-                    action: #selector(NSTextView.toggleAutomaticDashSubstitution(_:))
-                ),
-                NSMenuItem(
-                    title: "Smart Links",
-                    action: #selector(NSTextView.toggleAutomaticLinkDetection(_:))
-                ),
-                NSMenuItem(
-                    title: "Data Detectors",
-                    action: #selector(NSTextView.toggleAutomaticDataDetection(_:))
-                ),
-                NSMenuItem(
-                    title: "Text Replacement",
-                    action: #selector(NSTextView.toggleAutomaticTextReplacement(_:))
-                ),
-            ]),
-            NSMenuItem(submenu: "Transformations", items: [
-                NSMenuItem(title: "Make Upper Case", action: #selector(NSTextView.uppercaseWord(_:))),
-                NSMenuItem(title: "Make Lower Case", action: #selector(NSTextView.lowercaseWord(_:))),
-                NSMenuItem(title: "Capitalize", action: #selector(NSTextView.capitalizeWord(_:))),
-            ]),
-            NSMenuItem(submenu: "Speech", items: [
-                NSMenuItem(title: "Start Speaking", action: #selector(NSTextView.startSpeaking(_:))),
-                NSMenuItem(title: "Stop Speaking", action: #selector(NSTextView.stopSpeaking(_:))),
-            ]),
         ])
     }
 
     private func makeViewMenuItem() -> NSMenuItem {
-        NSMenuItem(submenu: "View", items: [
-            NSMenuItem(
-                title: "Show Toolbar",
-                action: #selector(NSWindow.toggleToolbarShown(_:)),
-                keyEquivalent: "t",
-                keyEquivalentModifierMask: [.option, .command]
-            ),
-            NSMenuItem(
-                title: "Customize Toolbar…",
-                action: #selector(NSWindow.runToolbarCustomizationPalette(_:))
-            ),
-            .separator(),
-            NSMenuItem(
-                title: "Show Sidebar",
-                action: #selector(NSSplitViewController.toggleSidebar(_:)),
-                keyEquivalent: "s",
-                keyEquivalentModifierMask: [.control, .command]
-            ),
-            NSMenuItem(
-                title: "Enter Full Screen",
-                action: #selector(NSWindow.toggleFullScreen(_:)),
-                keyEquivalent: "f",
-                keyEquivalentModifierMask: [.control, .command]
-            ),
-        ])
+        NSMenuItem(submenu: "View", items: [])
     }
 
     private func makeReactMenuItem() -> NSMenuItem {
