@@ -11,12 +11,12 @@
 		193EF063247A736200BE8C79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF062247A736200BE8C79 /* AppDelegate.swift */; };
 		193EF065247A736200BE8C79 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF064247A736200BE8C79 /* ViewController.swift */; };
 		193EF067247A736300BE8C79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 193EF066247A736300BE8C79 /* Assets.xcassets */; };
-		193EF06A247A736300BE8C79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 193EF068247A736300BE8C79 /* Main.storyboard */; };
 		193EF08F247A799D00BE8C79 /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF08E247A799D00BE8C79 /* Manifest.swift */; };
 		193EF093247A830200BE8C79 /* UIViewController+ReactTestApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */; };
 		193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193EF097247B130700BE8C79 /* ReactInstance.swift */; };
 		1960F339258C97C400AEC7A2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1960F338258C97C400AEC7A2 /* Session.swift */; };
 		196C22652490CBAB00449D3C /* React+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 196C22632490CBAB00449D3C /* React+Compatibility.m */; };
+		199F3E152FF7AA0000270357 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199F3E142FF7A9FB00270357 /* WindowController.swift */; };
 		19C4C89327710D8500157870 /* Manifest+Embedded.g.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C4C89227710D8500157870 /* Manifest+Embedded.g.swift */; };
 		19E791C024B08E1400FA6468 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E791BF24B08E1400FA6468 /* ReactTestAppTests.swift */; };
 		19E791C324B08E4D00FA6468 /* ReactTestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E791C224B08E4D00FA6468 /* ReactTestAppUITests.swift */; };
@@ -45,7 +45,6 @@
 		193EF062247A736200BE8C79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		193EF064247A736200BE8C79 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		193EF066247A736300BE8C79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
-		193EF069247A736300BE8C79 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		193EF06B247A736300BE8C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		193EF06C247A736300BE8C79 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = SOURCE_ROOT; };
 		193EF071247A736300BE8C79 /* ReactTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,11 +59,11 @@
 		1960F338258C97C400AEC7A2 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = ../Shared/Session.swift; sourceTree = "<group>"; };
 		196C22632490CBAB00449D3C /* React+Compatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "React+Compatibility.m"; path = "../Shared/React+Compatibility.m"; sourceTree = "<group>"; };
 		196C22642490CBAB00449D3C /* React+Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "React+Compatibility.h"; path = "../Shared/React+Compatibility.h"; sourceTree = "<group>"; };
+		199F3E142FF7A9FB00270357 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		19B368BC24B12C24002CCEFF /* ReactTestApp.common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.common.xcconfig; sourceTree = "<group>"; };
 		19B368BD24B12C24002CCEFF /* ReactTestApp.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.debug.xcconfig; sourceTree = "<group>"; };
 		19B368BE24B12C24002CCEFF /* ReactTestApp.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.release.xcconfig; sourceTree = "<group>"; };
 		19C4C89227710D8500157870 /* Manifest+Embedded.g.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Manifest+Embedded.g.swift"; sourceTree = SOURCE_ROOT; };
-		19E0B90C27E9F8FD006FD558 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../Localizations/en.lproj/Main.strings; sourceTree = "<group>"; };
 		19E791BF24B08E1400FA6468 /* ReactTestAppTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTestAppTests.swift; sourceTree = "<group>"; };
 		19E791C224B08E4D00FA6468 /* ReactTestAppUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactTestAppUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,6 +122,7 @@
 				193EF097247B130700BE8C79 /* ReactInstance.swift */,
 				1960F338258C97C400AEC7A2 /* Session.swift */,
 				193EF064247A736200BE8C79 /* ViewController.swift */,
+				199F3E142FF7A9FB00270357 /* WindowController.swift */,
 				193EF094247A84DA00BE8C79 /* ReactTestApp-Bridging-Header.h */,
 				196C22642490CBAB00449D3C /* React+Compatibility.h */,
 				196C22632490CBAB00449D3C /* React+Compatibility.m */,
@@ -130,7 +130,6 @@
 				193EF091247A830200BE8C79 /* UIViewController+ReactTestApp.m */,
 				193EF06C247A736300BE8C79 /* App.entitlements */,
 				193EF066247A736300BE8C79 /* Assets.xcassets */,
-				193EF068247A736300BE8C79 /* Main.storyboard */,
 				193EF06B247A736300BE8C79 /* Info.plist */,
 				191A67872BDFD9E90094F246 /* PrivacyInfo.xcprivacy */,
 				19B368BC24B12C24002CCEFF /* ReactTestApp.common.xcconfig */,
@@ -248,7 +247,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
 			mainGroup = 193EF056247A736100BE8C79;
 			productRefGroup = 193EF060247A736200BE8C79 /* Products */;
@@ -269,7 +267,6 @@
 			files = (
 				191A67882BDFD9E90094F246 /* PrivacyInfo.xcprivacy in Resources */,
 				193EF067247A736300BE8C79 /* Assets.xcassets in Resources */,
-				193EF06A247A736300BE8C79 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +318,7 @@
 				193EF08F247A799D00BE8C79 /* Manifest.swift in Sources */,
 				19C4C89327710D8500157870 /* Manifest+Embedded.g.swift in Sources */,
 				196C22652490CBAB00449D3C /* React+Compatibility.m in Sources */,
+				199F3E152FF7AA0000270357 /* WindowController.swift in Sources */,
 				193EF098247B130700BE8C79 /* ReactInstance.swift in Sources */,
 				1960F339258C97C400AEC7A2 /* Session.swift in Sources */,
 				193EF093247A830200BE8C79 /* UIViewController+ReactTestApp.m in Sources */,
@@ -358,18 +356,6 @@
 			targetProxy = 193EF07D247A736300BE8C79 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		193EF068247A736300BE8C79 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				193EF069247A736300BE8C79 /* Base */,
-				19E0B90C27E9F8FD006FD558 /* en */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		193EF083247A736300BE8C79 /* Debug */ = {
