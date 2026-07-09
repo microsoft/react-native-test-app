@@ -341,7 +341,7 @@ export type Manifest = {
         url: string;
         directory?: string;
       };
-  dependencies?: Record<string, string>;
+  dependencies?: Record<string, string | undefined>;
   peerDependencies?: Record<string, string>;
   devDependencies?: Record<string, string | undefined>;
   resolutions?: Record<string, string | undefined>;
