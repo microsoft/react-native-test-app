@@ -290,8 +290,12 @@ export async function setReactVersion(
       "../../package.json",
     ];
     for (const manifestPath of manifests) {
+      if (!fs.existsSync(manifestPath)) {
+        continue;
+      }
+
       const manifest = readJSONFile<Manifest>(manifestPath);
-      const { dependencies, devDependencies, resolutions } = manifest;
+      const { dependencies = {}, devDependencies = {}, resolutions } = manifest;
       if (!devDependencies) {
         throw new Error("Expected 'devDependencies' to be declared");
       }
@@ -311,10 +315,12 @@ export async function setReactVersion(
         }
       } else {
         for (const packageName of keys(profile)) {
-          const deps = dependencies?.[packageName]
-            ? dependencies
-            : devDependencies;
-          deps[packageName] = profile[packageName];
+          if (Object.hasOwn(dependencies, packageName)) {
+            dependencies[packageName] = profile[packageName];
+          }
+          if (Object.hasOwn(devDependencies, packageName)) {
+            devDependencies[packageName] = profile[packageName];
+          }
         }
       }
 

@@ -10,7 +10,6 @@
     "build:visionos": "rnx-cli bundle --platform ios",
     "build:windows": "rnx-cli bundle --platform windows",
     "ci:windows": "rnx-cli run-windows --logging --no-packager --no-launch --no-deploy --msbuildprops UseBundle=false --no-telemetry",
-    "clean": "yarn workspace react-native-test-app clean",
     "ios": "rnx-cli run --platform ios",
     "macos": "rnx-cli run --platform macos",
     "set-react-version": "yarn workspace react-native-test-app set-react-version",
