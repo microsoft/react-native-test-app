@@ -164,6 +164,7 @@ describe("npm pack", () => {
       "macos/ReactTestApp/Assets.xcassets/AppIcon.appiconset/Contents.json",
       "macos/ReactTestApp/Assets.xcassets/Contents.json",
       "macos/ReactTestApp/Info.plist",
+      "macos/ReactTestApp/MacOSComponentPresenter.swift",
       "macos/ReactTestApp/ReactCommands.swift",
       "macos/ReactTestApp/ReactTestApp.common.xcconfig",
       "macos/ReactTestApp/ReactTestApp.debug.xcconfig",

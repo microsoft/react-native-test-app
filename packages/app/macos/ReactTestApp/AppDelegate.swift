@@ -83,20 +83,24 @@ final class AppModel: ObservableObject {
 
     let picker = ComponentPickerModel(checksum: Manifest.checksum())
 
-    @Published var windowTitle: String
-    @Published var contentViewController: NSViewController?
-
     private(set) lazy var reactInstance = ReactInstance()
 
-    private var registerAppsToken: NSObjectProtocol?
-    private var contentDidAppearToken: NSObjectProtocol?
+    #if !ENABLE_SINGLE_APP_MODE
 
-    private enum WindowSize {
-        static let modalSize = CGSize(width: 586, height: 326)
-    }
+    let presenter: MacOSComponentPresenter
+
+    private var registerAppsToken: NSObjectProtocol?
 
     init() {
-        #if ENABLE_SINGLE_APP_MODE
+        presenter = MacOSComponentPresenter(windowTitle: Manifest.load().displayName)
+        presenter.reactInstance = reactInstance
+    }
+
+    #else
+
+    @Published var windowTitle: String
+
+    init() {
         let manifest = Manifest.load()
         if let slug = manifest.singleApp,
            let component = manifest.components?.first(where: { $0.slug == slug })
@@ -105,10 +109,9 @@ final class AppModel: ObservableObject {
         } else {
             windowTitle = manifest.displayName
         }
-        #else
-        windowTitle = Manifest.load().displayName
-        #endif
     }
+
+    #endif
 
     func loadEmbeddedBundle() {
         reactInstance.remoteBundleURL = nil
@@ -126,7 +129,7 @@ final class AppModel: ObservableObject {
 extension AppModel {
     func initialize() {
         let manifest = Manifest.load()
-        windowTitle = manifest.displayName
+        presenter.windowTitle = manifest.displayName
 
         let appComponents = manifest.components ?? []
         if appComponents.isEmpty {
@@ -143,8 +146,8 @@ extension AppModel {
 
                     let registered = appKeys.map { Component(appKey: $0) }
                     strongSelf.picker.replaceComponents(registered, enabled: true)
-                    if registered.count == 1, strongSelf.contentViewController == nil {
-                        strongSelf.present(registered[0])
+                    if registered.count == 1, !strongSelf.presenter.isPresenting {
+                        strongSelf.presenter.present(registered[0])
                     }
                 }
             )
@@ -163,7 +166,7 @@ extension AppModel {
                     }
 
                     if let index = appComponents.count == 1 ? 0 : strongSelf.picker.rememberedComponentIndex() {
-                        strongSelf.present(appComponents[index])
+                        strongSelf.presenter.present(appComponents[index])
                     }
 
                     strongSelf.picker.replaceComponents(appComponents, enabled: true)
@@ -173,62 +176,8 @@ extension AppModel {
     }
 
     func selectComponent(_ component: Component, at index: Int) {
-        present(component)
+        presenter.present(component)
         picker.recordSelection(at: index)
-    }
-
-    private func present(_ component: Component) {
-        guard let host = reactInstance.host else {
-            return
-        }
-
-        let title = component.displayName ?? component.appKey
-
-        let viewController: NSViewController = {
-            if let viewController = RTAViewControllerFromString(component.appKey, host) {
-                return viewController
-            }
-
-            let viewController = NSViewController(nibName: nil, bundle: nil)
-            viewController.title = title
-            viewController.view = host.view(
-                moduleName: component.appKey,
-                initialProperties: component.initialProperties
-            )
-            return viewController
-        }()
-
-        switch component.presentationStyle {
-        case "modal":
-            presentModal(viewController)
-        default:
-            windowTitle = title
-            contentViewController = viewController
-        }
-    }
-
-    private func presentModal(_ viewController: NSViewController) {
-        let rootView = viewController.view
-        let modalFrame = NSRect(size: WindowSize.modalSize)
-        rootView.frame = modalFrame
-
-        contentDidAppearToken = NotificationCenter.default.addObserver(
-            forName: .RCTContentDidAppear,
-            object: rootView,
-            queue: nil,
-            using: { [weak self] _ in
-                #if USE_FABRIC
-                rootView.frame = modalFrame
-                #else
-                (rootView as? RCTRootView)?.contentView.frame = modalFrame
-                #endif
-                if let token = self?.contentDidAppearToken {
-                    NotificationCenter.default.removeObserver(token)
-                }
-            }
-        )
-
-        NSApp.keyWindow?.contentViewController?.presentAsModalWindow(viewController)
     }
 }
 

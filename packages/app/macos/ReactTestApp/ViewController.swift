@@ -4,21 +4,11 @@ struct RootContentView: View {
     @ObservedObject var model: AppModel
 
     var body: some View {
-        content
-            .navigationTitle(model.windowTitle)
-    }
-
-    @ViewBuilder
-    private var content: some View {
         #if ENABLE_SINGLE_APP_MODE
         SingleAppRootView(reactInstance: model.reactInstance)
+            .navigationTitle(model.windowTitle)
         #else
-        if let viewController = model.contentViewController {
-            HostedViewController(viewController: viewController)
-                .id(ObjectIdentifier(viewController))
-        } else {
-            ReactMenuPlaceholderView()
-        }
+        MultiAppRootView(presenter: model.presenter)
         #endif
     }
 }
@@ -26,6 +16,25 @@ struct RootContentView: View {
 // MARK: - Multi-app content
 
 #if !ENABLE_SINGLE_APP_MODE
+
+private struct MultiAppRootView: View {
+    @ObservedObject var presenter: MacOSComponentPresenter
+
+    var body: some View {
+        content
+            .navigationTitle(presenter.windowTitle)
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if let viewController = presenter.contentViewController {
+            HostedViewController(viewController: viewController)
+                .id(ObjectIdentifier(viewController))
+        } else {
+            ReactMenuPlaceholderView()
+        }
+    }
+}
 
 private struct HostedViewController: NSViewControllerRepresentable {
     let viewController: NSViewController
