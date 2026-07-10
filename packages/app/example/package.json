@@ -39,7 +39,7 @@
     "@types/node": "catalog:",
     "@types/react": "~19.2.0",
     "@wdio/types": "^9.20.0",
-    "appium": "^3.5.2",
+    "appium": "^3.6.0",
     "appium-uiautomator2-driver": "^8.1.0",
     "appium-xcuitest-driver": "^11.0.0",
     "react-native-test-app": "workspace:*",
