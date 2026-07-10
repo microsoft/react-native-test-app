@@ -2,6 +2,12 @@ import SwiftUI
 
 struct ReactCommands: Commands {
     @ObservedObject var model: AppModel
+    @ObservedObject var picker: ComponentPickerModel
+
+    init(model: AppModel) {
+        _model = ObservedObject(wrappedValue: model)
+        _picker = ObservedObject(wrappedValue: model.picker)
+    }
 
     var body: some Commands {
         CommandMenu("React") {
@@ -13,17 +19,17 @@ struct ReactCommands: Commands {
                 model.loadFromDevServer()
             }
 
-            Toggle("Remember Last Opened Component", isOn: $model.rememberLastComponent)
-                .disabled(model.components.count <= 1)
+            Toggle("Remember Last Opened Component", isOn: $picker.rememberLastComponent)
+                .disabled(picker.components.count <= 1)
 
             Divider()
 
-            ForEach(Array(model.components.enumerated()), id: \.offset) { index, component in
+            ForEach(Array(picker.components.enumerated()), id: \.offset) { index, component in
                 Button(component.displayName ?? component.appKey) {
                     model.selectComponent(component, at: index)
                 }
                 .keyboardShortcut(shortcut(for: index))
-                .disabled(!model.componentsEnabled)
+                .disabled(!picker.componentsEnabled)
             }
         }
     }

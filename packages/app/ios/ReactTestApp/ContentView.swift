@@ -1,4 +1,5 @@
 import AVFoundation
+import Combine
 import UIKit
 
 #if !ENABLE_SINGLE_APP_MODE
@@ -37,7 +38,10 @@ final class ContentViewController: UITableViewController {
     }
 
     private let reactInstance: ReactInstance
+    private let pickerModel = ComponentPickerModel(checksum: Manifest.checksum())
     private var sections: [SectionData]
+    private var cancellables: Set<AnyCancellable> = []
+    private weak var rememberLastComponentSwitch: UISwitch?
 
     init(reactInstance: ReactInstance) {
         self.reactInstance = reactInstance
@@ -103,44 +107,38 @@ final class ContentViewController: UITableViewController {
                     }
 
                     let components = appKeys.map { Component(appKey: $0) }
-                    strongSelf.onComponentsRegistered(components, checksum: Manifest.checksum())
+                    strongSelf.pickerModel.replaceComponents(components, enabled: true)
                 }
             )
         }
 
-        onComponentsRegistered(components, checksum: Manifest.checksum())
+        pickerModel.replaceComponents(components, enabled: !components.isEmpty)
+        buildInitialSections()
+
+        pickerModel.$components
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] components in
+                self?.onComponentsRegistered(components)
+            }
+            .store(in: &cancellables)
 
         let bundleRoot = manifest.bundleRoot
         // As of 0.74, we can no longer instantiate on a background thread:
         // https://github.com/react/react-native/commit/b7025fe1569349d90d26821b2b8de64a8ec9f352
         DispatchQueue.main.async { [weak self] in
-            self?.reactInstance.initReact(bundleRoot: bundleRoot) {
-                if !components.isEmpty,
-                   let index = components.count == 1 ? 0 : Session.lastOpenedComponent(Manifest.checksum())
-                {
+            self?.reactInstance.initReact(bundleRoot: bundleRoot) { [weak self] in
+                guard let strongSelf = self, !components.isEmpty else {
+                    return
+                }
+
+                if let index = components.count == 1 ? 0 : strongSelf.pickerModel.rememberedComponentIndex() {
                     DispatchQueue.main.async {
-                        self?.navigate(to: components[index])
+                        strongSelf.navigate(to: components[index])
                     }
                 }
             }
         }
-
-        let rememberLastComponentSwitch = UISwitch()
-        rememberLastComponentSwitch.isOn = Session.shouldRememberLastComponent
-        rememberLastComponentSwitch.addTarget(
-            self,
-            action: #selector(rememberLastComponentSwitchDidChangeValue(_:)),
-            for: .valueChanged
-        )
-        sections.append(SectionData(
-            items: [
-                NavigationLink(
-                    title: "Remember Last Opened Component",
-                    accessoryView: rememberLastComponentSwitch
-                ),
-            ],
-            footer: nil
-        ))
 
         #if os(iOS)
         NotificationCenter.default.addObserver(
@@ -230,37 +228,64 @@ final class ContentViewController: UITableViewController {
         }
     }
 
-    private func onComponentsRegistered(_ components: [Component], checksum: String) {
-        let items = components.enumerated().map { index, component in
+    private func componentLinks(for components: [Component]) -> [NavigationLink] {
+        components.enumerated().map { index, component in
             NavigationLink(title: component.displayName ?? component.appKey) { [weak self] in
                 self?.navigate(to: component)
-                Session.storeComponent(index: index, checksum: checksum)
+                self?.pickerModel.recordSelection(at: index)
             }
         }
+    }
 
-        if sections.isEmpty {
-            #if targetEnvironment(simulator)
-            let keyboardShortcut = " (⌃⌘Z)"
-            #else
-            let keyboardShortcut = ""
-            #endif
-            sections.append(SectionData(
-                items: items,
-                footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
-            ))
-        } else {
-            sections[0].items = items
-            tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+    private func buildInitialSections() {
+        #if targetEnvironment(simulator)
+        let keyboardShortcut = " (⌃⌘Z)"
+        #else
+        let keyboardShortcut = ""
+        #endif
+        sections.append(SectionData(
+            items: componentLinks(for: pickerModel.components),
+            footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
+        ))
 
-            if components.count == 1, isVisible {
-                navigate(to: components[0])
+        let rememberLastComponentSwitch = UISwitch()
+        rememberLastComponentSwitch.isOn = pickerModel.rememberLastComponent
+        rememberLastComponentSwitch.addTarget(
+            self,
+            action: #selector(rememberLastComponentSwitchDidChangeValue(_:)),
+            for: .valueChanged
+        )
+        self.rememberLastComponentSwitch = rememberLastComponentSwitch
+        sections.append(SectionData(
+            items: [
+                NavigationLink(
+                    title: "Remember Last Opened Component",
+                    accessoryView: rememberLastComponentSwitch
+                ),
+            ],
+            footer: nil
+        ))
+
+        pickerModel.$rememberLastComponent
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isOn in
+                self?.rememberLastComponentSwitch?.setOn(isOn, animated: false)
             }
+            .store(in: &cancellables)
+    }
+
+    private func onComponentsRegistered(_ components: [Component]) {
+        sections[Section.components].items = componentLinks(for: components)
+        tableView.reloadSections(IndexSet(integer: Section.components), with: .automatic)
+
+        if components.count == 1, isVisible {
+            navigate(to: components[0])
         }
     }
 
     @objc
     private func rememberLastComponentSwitchDidChangeValue(_ sender: UISwitch) {
-        Session.shouldRememberLastComponent = sender.isOn
+        pickerModel.rememberLastComponent = sender.isOn
     }
 
     private func runtimeInfo() -> String {

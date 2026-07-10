@@ -122,6 +122,7 @@ describe("npm pack", () => {
       "ios/ReactTestApp/AppRegistryModule.mm",
       "ios/ReactTestApp/Assets.xcassets/AppIcon.appiconset/Contents.json",
       "ios/ReactTestApp/Assets.xcassets/Contents.json",
+      "ios/ReactTestApp/ComponentPickerModel.swift",
       "ios/ReactTestApp/ContentView.swift",
       "ios/ReactTestApp/Info.plist",
       "ios/ReactTestApp/Manifest.swift",

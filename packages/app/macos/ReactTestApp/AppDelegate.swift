@@ -81,13 +81,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 final class AppModel: ObservableObject {
     static let mainWindowID = "MainWindow"
 
+    let picker = ComponentPickerModel(checksum: Manifest.checksum())
+
     @Published var windowTitle: String
-    @Published var components: [Component] = []
-    @Published var componentsEnabled = false
     @Published var contentViewController: NSViewController?
-    @Published var rememberLastComponent: Bool {
-        didSet { Session.shouldRememberLastComponent = rememberLastComponent }
-    }
 
     private(set) lazy var reactInstance = ReactInstance()
 
@@ -99,8 +96,6 @@ final class AppModel: ObservableObject {
     }
 
     init() {
-        rememberLastComponent = Session.shouldRememberLastComponent
-
         #if ENABLE_SINGLE_APP_MODE
         let manifest = Manifest.load()
         if let slug = manifest.singleApp,
@@ -147,7 +142,7 @@ extension AppModel {
                     }
 
                     let registered = appKeys.map { Component(appKey: $0) }
-                    strongSelf.setComponents(registered, enable: true)
+                    strongSelf.picker.replaceComponents(registered, enabled: true)
                     if registered.count == 1, strongSelf.contentViewController == nil {
                         strongSelf.present(registered[0])
                     }
@@ -155,7 +150,7 @@ extension AppModel {
             )
         }
 
-        setComponents(appComponents, enable: false)
+        picker.replaceComponents(appComponents, enabled: false)
 
         let bundleRoot = manifest.bundleRoot
         // As of 0.74, we can no longer instantiate on a background thread:
@@ -167,11 +162,11 @@ extension AppModel {
                         return
                     }
 
-                    if let index = appComponents.count == 1 ? 0 : Session.lastOpenedComponent(Manifest.checksum()) {
+                    if let index = appComponents.count == 1 ? 0 : strongSelf.picker.rememberedComponentIndex() {
                         strongSelf.present(appComponents[index])
                     }
 
-                    strongSelf.componentsEnabled = true
+                    strongSelf.picker.replaceComponents(appComponents, enabled: true)
                 }
             }
         }
@@ -179,12 +174,7 @@ extension AppModel {
 
     func selectComponent(_ component: Component, at index: Int) {
         present(component)
-        Session.storeComponent(index: index, checksum: Manifest.checksum())
-    }
-
-    private func setComponents(_ newComponents: [Component], enable: Bool) {
-        components = newComponents
-        componentsEnabled = enable
+        picker.recordSelection(at: index)
     }
 
     private func present(_ component: Component) {

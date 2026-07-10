@@ -17,6 +17,7 @@
 		19A624A4258C95F000032776 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A624A3258C95F000032776 /* Session.swift */; };
 		19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D5232ED425003D8557 /* AppDelegate.swift */; };
 		19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D7232ED425003D8557 /* SceneDelegate.swift */; };
+		4EAF65C96CE26B9B507526EC /* ComponentPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039679CF10F5070C9D1D5F8 /* ComponentPickerModel.swift */; };
 		19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D9232ED425003D8557 /* ContentView.swift */; };
 		19ECD0DC232ED427003D8557 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19ECD0DB232ED427003D8557 /* Assets.xcassets */; };
 		19ECD0ED232ED428003D8557 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0EC232ED428003D8557 /* ReactTestAppTests.swift */; };
@@ -59,6 +60,7 @@
 		19ECD0D2232ED425003D8557 /* ReactTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19ECD0D5232ED425003D8557 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		19ECD0D7232ED425003D8557 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		1039679CF10F5070C9D1D5F8 /* ComponentPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentPickerModel.swift; sourceTree = "<group>"; };
 		19ECD0D9232ED425003D8557 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		19ECD0DB232ED427003D8557 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		19ECD0E3232ED427003D8557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
@@ -120,6 +122,7 @@
 			children = (
 				19ECD0D5232ED425003D8557 /* AppDelegate.swift */,
 				19ECD0D7232ED425003D8557 /* SceneDelegate.swift */,
+				1039679CF10F5070C9D1D5F8 /* ComponentPickerModel.swift */,
 				19ECD0D9232ED425003D8557 /* ContentView.swift */,
 				192DD200240FCAF5004E9CEB /* Manifest.swift */,
 				197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */,
@@ -337,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */,
+				4EAF65C96CE26B9B507526EC /* ComponentPickerModel.swift in Sources */,
 				19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */,
 				192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */,
 				197827FA27710D3400AEC655 /* Manifest+Embedded.g.swift in Sources */,
