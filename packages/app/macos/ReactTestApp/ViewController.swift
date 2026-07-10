@@ -1,23 +1,10 @@
 import SwiftUI
 
-struct RootContentView: View {
-    @ObservedObject var model: AppModel
-
-    var body: some View {
-        #if ENABLE_SINGLE_APP_MODE
-        SingleAppRootView(reactInstance: model.reactInstance)
-            .navigationTitle(model.windowTitle)
-        #else
-        MultiAppRootView(presenter: model.presenter)
-        #endif
-    }
-}
-
 // MARK: - Multi-app content
 
 #if !ENABLE_SINGLE_APP_MODE
 
-private struct MultiAppRootView: View {
+struct MultiAppRootView: View {
     @ObservedObject var presenter: MacOSComponentPresenter
 
     var body: some View {
@@ -132,6 +119,25 @@ final class Label: NSTextView {
 // MARK: - Single-app content
 
 #if ENABLE_SINGLE_APP_MODE
+
+struct SingleAppContentView: View {
+    let reactInstance: ReactInstance
+
+    var body: some View {
+        SingleAppRootView(reactInstance: reactInstance)
+            .navigationTitle(Self.windowTitle)
+    }
+
+    private static var windowTitle: String {
+        let manifest = Manifest.load()
+        if let slug = manifest.singleApp,
+           let component = manifest.components?.first(where: { $0.slug == slug })
+        {
+            return component.displayName ?? component.appKey
+        }
+        return manifest.displayName
+    }
+}
 
 private struct SingleAppRootView: NSViewRepresentable {
     let reactInstance: ReactInstance

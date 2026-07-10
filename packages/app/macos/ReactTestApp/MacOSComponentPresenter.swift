@@ -6,7 +6,7 @@ import Cocoa
 /// of the component flow: it builds the view controller for a component and
 /// handles default versus modal presentation, keeping `AppModel` free of
 /// AppKit view-controller construction.
-final class MacOSComponentPresenter: ObservableObject {
+final class MacOSComponentPresenter: ObservableObject, ComponentPresenting {
     @Published var windowTitle: String
     @Published private(set) var contentViewController: NSViewController?
 
@@ -24,6 +24,10 @@ final class MacOSComponentPresenter: ObservableObject {
 
     var isPresenting: Bool {
         contentViewController != nil
+    }
+
+    var shouldAutoPresentRegisteredComponent: Bool {
+        !isPresenting
     }
 
     func present(_ component: Component) {
