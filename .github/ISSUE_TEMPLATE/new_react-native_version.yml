@@ -44,7 +44,6 @@ body:
       options:
         - label: Verify that the Gradle version used is the same or higher ([see context](https://github.com/microsoft/react-native-test-app/pull/1935))
         - label: Ensure React Native Gradle Plugin autolinking code are in sync ([see context](https://github.com/microsoft/react-native-test-app/pull/2075))
-        - label: Ensure feature flags are in sync ([see context](https://github.com/microsoft/rnx-kit/pull/3196))
   - type: checkboxes
     id: checklist
     attributes:

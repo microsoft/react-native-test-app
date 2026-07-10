@@ -2259,7 +2259,7 @@ PODS:
     - React-perflogger (= 0.81.8)
     - React-utils (= 0.81.8)
     - SocketRocket
-  - ReactNativeHost (0.5.19):
+  - ReactNativeHost (0.5.21):
     - boost
     - DoubleConversion
     - fast_float
@@ -2292,7 +2292,7 @@ PODS:
     - React-Core
     - React-jsi
   - ReactTestApp-Resources (1.0.0-dev)
-  - RNWWebStorage (0.4.5):
+  - RNWWebStorage (0.4.6):
     - boost
     - DoubleConversion
     - fast_float
@@ -2638,10 +2638,10 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 3a4b47b0501d4d1068eef3c457c9ebef0b6ae49b
   ReactCodegen: 5a676a29f556095ce9f87f1f39e273ca0ad9586f
   ReactCommon: ef913092a4501cf30c176155312c30abc82dbd34
-  ReactNativeHost: 8680b5bbc3afdbfeccc206ed0f3230d7c3df691b
+  ReactNativeHost: c8a7476a8bed6ba32f07207ee095837c8f7456e9
   ReactTestApp-DevSupport: 4d0b86847c5f7fffa0f09479443be7a2420d19a4
   ReactTestApp-Resources: 71a3155bca10819738469de1f161410f43528209
-  RNWWebStorage: 8ec03f8288c1e212518f662f44ec223603bbe74c
+  RNWWebStorage: 8bc155b048a2d1ee1db5f63b1b9c5705434d48db
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 9f9bacf26f441fa32d25c32e5583ff72f6d2806d
 

@@ -4653,12 +4653,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.5.19":
-  version: 0.5.19
-  resolution: "@rnx-kit/react-native-host@npm:0.5.19"
+"@rnx-kit/react-native-host@npm:^0.5.21":
+  version: 0.5.21
+  resolution: "@rnx-kit/react-native-host@npm:0.5.21"
   peerDependencies:
     react-native: ">=0.66"
-  checksum: 10c0/6dbf12788c7ebff0813288343dcaa4b7c18b4a2fa048a6bdcb65019c92234beabbe8b9a52701dc7cd6845f9c621e93969fe58db3409093c7443053aa8646cc21
+  checksum: 10c0/f48bfe6fa991becee8783909a1668309b994aa8cd1dcdb8294aaf0685810cc8cec708b3e5ba87cb44ac4b9c2d41495dc027d6ebb8720a1d4476d6de477d15a0c
   languageName: node
   linkType: hard
 
@@ -13332,7 +13332,7 @@ __metadata:
     "@react-native-community/cli": "npm:^20.1.0"
     "@react-native-community/cli-types": "npm:^20.1.0"
     "@react-native-community/template": "npm:^0.85.0"
-    "@rnx-kit/react-native-host": "npm:^0.5.19"
+    "@rnx-kit/react-native-host": "npm:^0.5.21"
     "@rnx-kit/tools-react-native": "npm:^2.1.0"
     "@rnx-kit/tsconfig": "npm:^3.0.1"
     "@types/mustache": "npm:^4.0.0"
