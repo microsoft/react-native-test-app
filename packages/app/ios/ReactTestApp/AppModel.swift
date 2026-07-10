@@ -76,7 +76,7 @@ extension AppModel {
                         strongSelf.presenter?.present(appComponents[index])
                     }
 
-                    strongSelf.picker.replaceComponents(appComponents, enabled: true)
+                    strongSelf.picker.setComponentsEnabled(true)
                 }
             }
         }

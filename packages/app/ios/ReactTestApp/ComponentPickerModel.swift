@@ -47,4 +47,8 @@ final class ComponentPickerModel: ObservableObject {
         components = newComponents
         componentsEnabled = enabled
     }
+
+    func setComponentsEnabled(_ enabled: Bool) {
+        componentsEnabled = enabled
+    }
 }
