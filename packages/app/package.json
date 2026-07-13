@@ -87,7 +87,7 @@
   },
   "dependencies": {
     "@isaacs/cliui": "^9.0.0",
-    "@rnx-kit/react-native-host": "^0.5.19",
+    "@rnx-kit/react-native-host": "^0.5.21",
     "@rnx-kit/tools-react-native": "^2.1.0",
     "ajv": "^8.0.0",
     "fast-xml-builder": "^1.2.0",
