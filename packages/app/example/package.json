@@ -39,11 +39,11 @@
     "@types/node": "catalog:",
     "@types/react": "~19.2.0",
     "@wdio/types": "^9.20.0",
-    "appium": "^3.1.1",
-    "appium-uiautomator2-driver": "^7.0.0",
+    "appium": "^3.5.2",
+    "appium-uiautomator2-driver": "^8.1.0",
     "appium-xcuitest-driver": "^11.0.0",
     "react-native-test-app": "workspace:*",
-    "webdriverio": "patch:webdriverio@npm%3A9.26.1#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
+    "webdriverio": "patch:webdriverio@npm%3A9.29.1#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
   },
   "rnx-kit": {
     "kitType": "app",
