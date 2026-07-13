@@ -25,12 +25,24 @@ struct ReactCommands: Commands {
             Divider()
 
             ForEach(Array(picker.components.enumerated()), id: \.offset) { index, component in
-                Button(component.displayName ?? component.appKey) {
-                    model.selectComponent(component, at: index)
-                }
-                .keyboardShortcut(shortcut(for: index))
-                .disabled(!picker.componentsEnabled)
+                componentButton(component, at: index)
             }
+        }
+    }
+
+    @ViewBuilder
+    private func componentButton(_ component: Component, at index: Int) -> some View {
+        let button = Button(component.displayName ?? component.appKey) {
+            model.selectComponent(component, at: index)
+        }
+        .disabled(!picker.componentsEnabled)
+
+        // The `KeyboardShortcut?` overload of `keyboardShortcut(_:)` is only
+        // available in iOS 15.4+, so only attach a shortcut when there is one.
+        if let shortcut = shortcut(for: index) {
+            button.keyboardShortcut(shortcut)
+        } else {
+            button
         }
     }
 

@@ -66,7 +66,7 @@
 		1960F338258C97C400AEC7A2 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = ../Shared/Session.swift; sourceTree = "<group>"; };
 		196C22632490CBAB00449D3C /* React+Compatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "React+Compatibility.m"; path = "../Shared/React+Compatibility.m"; sourceTree = "<group>"; };
 		196C22642490CBAB00449D3C /* React+Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "React+Compatibility.h"; path = "../Shared/React+Compatibility.h"; sourceTree = "<group>"; };
-		1900C0DE2FF9AA0000000001 /* ReactCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactCommands.swift; sourceTree = "<group>"; };
+		1900C0DE2FF9AA0000000001 /* ReactCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReactCommands.swift; path = ../Shared/ReactCommands.swift; sourceTree = "<group>"; };
 		1900C0DE2FF9AA0000000003 /* MacOSComponentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacOSComponentPresenter.swift; sourceTree = "<group>"; };
 		19B368BC24B12C24002CCEFF /* ReactTestApp.common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.common.xcconfig; sourceTree = "<group>"; };
 		19B368BD24B12C24002CCEFF /* ReactTestApp.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReactTestApp.debug.xcconfig; sourceTree = "<group>"; };

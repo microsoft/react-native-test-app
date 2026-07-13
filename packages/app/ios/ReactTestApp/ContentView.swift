@@ -42,8 +42,8 @@ final class ContentViewController: UITableViewController {
     private var cancellables: Set<AnyCancellable> = []
     private weak var rememberLastComponentSwitch: UISwitch?
 
-    init(reactInstance: ReactInstance) {
-        appModel = AppModel(reactInstance: reactInstance)
+    init(appModel: AppModel) {
+        self.appModel = appModel
         sections = []
 
         super.init(style: .grouped)
