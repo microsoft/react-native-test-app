@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/react-native-test-app/schema.json",
+  "name": "Example",
+  "displayName": "Example",
+  "components": [
+    {
+      "appKey": "Example",
+      "displayName": "App"
+    },
+    {
+      "appKey": "Example",
+      "displayName": "App (modal)",
+      "presentationStyle": "modal"
+    }
+  ],
+  "resources": {
+    "android": [
+      "dist/res",
+      "dist/main.android.jsbundle"
+    ],
+    "ios": [
+      "dist/assets",
+      "dist/main.ios.jsbundle"
+    ],
+    "visionos": [
+      "dist/assets",
+      "dist/main.visionos.jsbundle"
+    ]
+  },
+  "visionos": {
+    "reactNativePath": "node_modules/react-native-macos"
+  }
+}

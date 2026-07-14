@@ -346,7 +346,7 @@ jobs:
   macos:
     name: "macOS"
     permissions: {}
-    runs-on: macos-15
+    runs-on: macos-26
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -401,7 +401,7 @@ jobs:
   macos-template:
     name: "macOS [template]"
     permissions: {}
-    runs-on: macos-15
+    runs-on: macos-26
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -443,8 +443,8 @@ jobs:
   visionos:
     name: "visionOS"
     permissions: {}
-    runs-on: macos-15
-    if: false # visionOS temporarily disabled until releases are resumed
+    runs-on: macos-26
+    if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -455,7 +455,7 @@ jobs:
         uses: ./.github/actions/setup-toolchain
         with:
           platform: visionos
-          project-root: packages/app/example
+          project-root: packages/example-visionos
           cache-key-prefix: example
       - name: Set up react-native@nightly
         if: ${{ github.event_name == 'schedule' }}
@@ -469,7 +469,7 @@ jobs:
       - name: Bundle JavaScript
         run: |
           yarn build:visionos
-        working-directory: packages/app/example
+        working-directory: packages/example-visionos
       - name: Determine whether the visionOS app needs to be built
         id: affected
         uses: ./.github/actions/affected
@@ -478,17 +478,17 @@ jobs:
         uses: ./.github/actions/cocoapods
         with:
           project-directory: visionos
-          working-directory: packages/app/example
+          working-directory: packages/example-visionos
       - name: Build
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
-          ../../../scripts/xcodebuild.sh visionos/Example.xcworkspace build-for-testing
-        working-directory: packages/app/example
+          ../../scripts/xcodebuild.sh visionos/Example.xcworkspace build-for-testing
+        working-directory: packages/example-visionos
       - name: Test `react-native config`
         if: ${{ steps.affected.outputs.visionos != '' }}
         run: |
           node --test test/config.test.mjs
-        working-directory: packages/app/example
+        working-directory: packages/example-visionos
     timeout-minutes: 60
   visionos-template:
     name: "visionOS [template]"

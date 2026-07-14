@@ -8512,6 +8512,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"example-visionos@workspace:packages/example-visionos":
+  version: 0.0.0-use.local
+  resolution: "example-visionos@workspace:packages/example-visionos"
+  dependencies:
+    "@babel/core": "catalog:"
+    "@babel/preset-env": "catalog:"
+    "@react-native-community/cli": "npm:^20.0.0"
+    "@react-native-community/cli-platform-android": "npm:^20.0.0"
+    "@react-native-community/cli-platform-ios": "npm:^20.0.0"
+    "@react-native-webapis/web-storage": "catalog:"
+    "@react-native/babel-preset": "npm:^0.81.0"
+    "@react-native/metro-config": "npm:^0.81.0"
+    "@rnx-kit/cli": "catalog:"
+    "@rnx-kit/metro-config": "catalog:"
+    "@rnx-kit/polyfills": "catalog:"
+    "@types/react": "npm:~19.1.0"
+    react: "npm:19.1.4"
+    react-native: "npm:^0.81.6"
+    react-native-macos: "npm:^0.81.0"
+    react-native-safe-area-context: "npm:^5.6.0"
+    react-native-test-app: "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "example-windows@workspace:packages/example-windows":
   version: 0.0.0-use.local
   resolution: "example-windows@workspace:packages/example-windows"

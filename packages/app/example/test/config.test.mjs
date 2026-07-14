@@ -54,7 +54,9 @@ describe("react-native config", async () => {
 
   const shouldSkipIOS = process.platform === "win32";
   const shouldSkipMacOS =
-    shouldSkipIOS || !requiresDependency("react-native-macos", currentDir);
+    shouldSkipIOS ||
+    !requiresDependency("react-native-macos", currentDir) ||
+    !fs.existsSync(`${currentDir}/macos/Podfile`);
   const shouldSkipWindows =
     process.platform !== "win32" ||
     !requiresDependency("react-native-windows", currentDir);
