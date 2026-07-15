@@ -65,6 +65,9 @@ export default {
       ],
     },
     "packages/example-macos": exampleFor("react-native-macos"),
+    "packages/example-visionos": exampleFor(
+      "@react-native-community/cli-platform-apple"
+    ),
     "packages/example-windows": exampleFor("react-native-windows"),
   },
 };

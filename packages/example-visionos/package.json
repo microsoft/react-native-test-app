@@ -1,16 +1,16 @@
 {
-  "name": "example-macos",
+  "name": "example-visionos",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "android": "rnx-cli run --platform android",
     "build:android": "rnx-cli bundle --platform android",
     "build:ios": "rnx-cli bundle --platform ios",
-    "build:macos": "rnx-cli bundle --platform macos",
+    "build:visionos": "rnx-cli bundle --platform ios",
     "ios": "rnx-cli run --platform ios",
-    "macos": "rnx-cli run --platform macos",
     "set-react-version": "node ../app/scripts/internal/set-react-version.mts",
-    "start": "rnx-cli start"
+    "start": "rnx-cli start",
+    "visionos": "rnx-cli run --platform visionos"
   },
   "dependencies": {
     "@react-native-webapis/web-storage": "catalog:",
@@ -43,7 +43,7 @@
         "targets": [
           "android",
           "ios",
-          "macos"
+          "visionos"
         ],
         "platforms": {
           "android": {
@@ -55,9 +55,9 @@
             "bundleOutput": "dist/main.ios.jsbundle",
             "sourcemapOutput": "dist/main.ios.jsbundle.map"
           },
-          "macos": {
-            "bundleOutput": "dist/main.macos.jsbundle",
-            "sourcemapOutput": "dist/main.macos.jsbundle.map"
+          "visionos": {
+            "bundleOutput": "dist/main.visionos.jsbundle",
+            "sourcemapOutput": "dist/main.visionos.jsbundle.map"
           }
         }
       }

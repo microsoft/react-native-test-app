@@ -87,6 +87,7 @@
           - packages/app/scripts/template.mjs
           - packages/app/scripts/build/xcodebuild.sh
           - packages/app/visionos/**/*
+          - packages/example-visionos/**/*
 "platform: Windows":
   - changed-files:
       - any-glob-to-any-file:
