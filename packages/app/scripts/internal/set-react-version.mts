@@ -85,17 +85,23 @@ function fetchPackageInfo(pkg: string, version: string): Promise<Manifest> {
 /**
  * Fetches the template manifest for the specified React Native version.
  */
-function fetchTemplateManifest(version: string): Promise<Manifest> {
+async function fetchTemplateManifest(version: string): Promise<Manifest> {
   const url = `https://raw.githubusercontent.com/react-native-community/template/refs/heads/${version}-stable/template/package.json`;
   console.log(`Fetching template manifest from ${url}`);
-  return fetch(url, {
+  const res = await fetch(url, {
     headers: {
       Accept:
         "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*",
     },
-  })
-    .then((res) => res.text())
-    .then((text) => JSON.parse(text));
+  });
+
+  const body = await res.text();
+  if (res.status !== 200) {
+    console.error(`Failed to fetch template: ${body}`);
+    return { name: "", version: "" };
+  }
+
+  return JSON.parse(body);
 }
 
 /**

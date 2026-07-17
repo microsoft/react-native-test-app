@@ -2639,7 +2639,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 5a676a29f556095ce9f87f1f39e273ca0ad9586f
   ReactCommon: ef913092a4501cf30c176155312c30abc82dbd34
   ReactNativeHost: c8a7476a8bed6ba32f07207ee095837c8f7456e9
-  ReactTestApp-DevSupport: 4d0b86847c5f7fffa0f09479443be7a2420d19a4
+  ReactTestApp-DevSupport: 46ca013ea7a3bd8380244e305593fb54874a86d0
   ReactTestApp-Resources: 71a3155bca10819738469de1f161410f43528209
   RNWWebStorage: 8bc155b048a2d1ee1db5f63b1b9c5705434d48db
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748

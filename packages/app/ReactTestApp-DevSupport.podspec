@@ -37,11 +37,13 @@ Pod::Spec.new do |s|
 
   s.pod_target_xcconfig = {
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++20',
+    'CPP_PREPROCESSOR_DEFINITIONS' => preprocessor_definitions,
     'DEFINES_MODULE' => 'YES',
     'GCC_PREPROCESSOR_DEFINITIONS' => preprocessor_definitions,
-    'CPP_PREPROCESSOR_DEFINITIONS' => preprocessor_definitions,
+    'GCC_TREAT_WARNINGS_AS_ERRORS' => 'YES',
     'SWIFT_OBJC_BRIDGING_HEADER' =>
       'ios/ReactTestApp/Public/ReactTestApp-DevSupport-Bridging-Header.h',
+    'SWIFT_TREAT_WARNINGS_AS_ERRORS' => 'YES',
   }
 
   s.source_files         = 'common/AppRegistry.{cpp,h}',

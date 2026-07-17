@@ -205,11 +205,10 @@ def use_test_app_internal!(target_platform, options)
 
     installer.pods_project.targets.each do |target|
       case target.name
-      when /\AReact/, 'RCT-Folly', 'SocketRocket', 'Yoga', 'fmt', 'glog', 'libevent'
-        target.build_configurations.each do |config|
-          config.build_settings[WARNING_CFLAGS] ||= []
-          config.build_settings[WARNING_CFLAGS] << '-w'
-        end
+      when /\AReactTestApp/
+        # We had to remove `*_TREAT_WARNINGS_AS_ERRORS` from our `.xcconfig`
+        # files because Xcode treats imported XCFrameworks as part of the main
+        # target. We need to revisit this when we've migrated to SPM.
       when 'RNReanimated'
         # Reanimated tries to automatically install itself by swizzling a method
         # in `RCTAppDelegate`. We don't use it since it doesn't exist on older
@@ -221,6 +220,10 @@ def use_test_app_internal!(target_platform, options)
           config.build_settings[GCC_PREPROCESSOR_DEFINITIONS] << 'DONT_AUTOINSTALL_REANIMATED'
         end
       else
+        target.build_configurations.each do |config|
+          config.build_settings[WARNING_CFLAGS] ||= []
+          config.build_settings[WARNING_CFLAGS] << '-w'
+        end
         # Ensure `ENABLE_TESTING_SEARCH_PATHS` is always set otherwise Xcode may
         # fail to properly import XCTest
         unless test_dependencies.assoc(target.name).nil?
