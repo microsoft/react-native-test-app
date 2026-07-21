@@ -89,6 +89,7 @@
     "node-gyp": "ignore:",
     "node-gyp-build": "ignore:",
     "nx/axios": "^1.16.0",
+    "nx/brace-expansion": "~5.0.6",
     "nx/form-data": "~4.0.6",
     "nx/hasown": "~2.0.4",
     "nx/minimatch": "^10.2.5",
