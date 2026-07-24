@@ -23,6 +23,7 @@ describe("cleanDependencyName()", () => {
     );
     equal(cleanDependencyName("@!'()*/~"), "_");
     equal(cleanDependencyName("@!'(x)*/~y"), "_x_y");
+    equal(cleanDependencyName("@!'(x)*/~y/z"), "_x_y_z");
   });
 });
 

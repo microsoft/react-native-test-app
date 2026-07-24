@@ -17,6 +17,8 @@ import { mkdir_p, writeJSONFile } from "../scripts/utils/filesystem.mjs";
  */
 
 /**
+ * Converts a dependency's name to a Gradle-valid target name.
+ * @note This function varies slightly from upstream because it handles more edge cases.
  * @see {@link https://github.com/react/react-native/blob/924fb3de9bc9328c3315316fbb796b933be5bcbe/packages/react-native-gradle-plugin/shared/src/main/kotlin/com/facebook/react/model/ModelAutolinkingDependenciesJson.kt#L17}
  * @param {string} name
  * @returns {string}
@@ -90,7 +92,11 @@ async function loadConfig(json, projectRoot) {
   const state = getCurrentState(projectRoot);
   const stateFile = json.substring(0, json.length - "json".length) + "sha256";
   if (fs.existsSync(stateFile) && readTextFile(stateFile) === state) {
-    return readJSONFile(json);
+    try {
+      return readJSONFile(json);
+    } catch (_) {
+      // Ignore; regenerate cache
+    }
   }
 
   const config = await loadContextAsync(projectRoot);
@@ -108,13 +114,15 @@ async function loadConfig(json, projectRoot) {
  * @returns {Promise<void>}
  */
 async function main(projectRoot, output) {
-  const config = await loadConfig(
-    output.replace(
-      /[/\\]app[/\\]build[/\\]generated[/\\]rnta[/\\]/,
-      "/build/generated/autolinking/"
-    ),
-    projectRoot
-  );
+  const config = output
+    ? await loadConfig(
+        output.replace(
+          /[/\\]app[/\\]build[/\\]generated[/\\]rnta[/\\]/,
+          "/build/generated/autolinking/"
+        ),
+        projectRoot
+      )
+    : pruneDependencies(await loadContextAsync(projectRoot));
   const dependencies = pickAndroidDependencies(config);
 
   if (!output) {
