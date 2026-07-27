@@ -3,7 +3,6 @@ const appEntry = ["index.ts", "metro.config.js", "test/**/*.mjs"];
 function exampleFor(platformPackage: string) {
   return {
     entry: appEntry,
-    ignore: ["babel.config.js"], // Knip doesn't understand pnpm layout?
     ignoreDependencies: [
       "@babel/preset-env",
       "@react-native-webapis/web-storage",
@@ -30,7 +29,6 @@ export default {
   workspaces: {
     ".": {
       entry: ["scripts/*.js", "scripts/*.ts"],
-      ignore: ["oxlint.config.ts"], // Knip doesn't understand pnpm layout?
       ignoreDependencies: ["@nx/js", "@yarnpkg/*"],
     },
     "packages/app": {
@@ -53,7 +51,6 @@ export default {
     },
     "packages/app/example": {
       entry: appEntry,
-      ignore: ["babel.config.js"], // Knip doesn't understand pnpm layout?
       ignoreDependencies: [
         "@babel/preset-env",
         "@react-native-webapis/web-storage",
