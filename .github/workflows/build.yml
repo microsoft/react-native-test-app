@@ -65,6 +65,7 @@ jobs:
         run: |
           yarn lint-lockfile
       - name: Report unused dependencies
+        if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         run: |
           yarn knip
       - name: Validate generated files
