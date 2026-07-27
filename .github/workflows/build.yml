@@ -25,7 +25,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -45,7 +45,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -163,7 +163,7 @@ jobs:
     runs-on: macos-26
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -218,7 +218,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -264,7 +264,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up toolchain
@@ -313,7 +313,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up toolchain
@@ -350,7 +350,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -405,7 +405,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -447,7 +447,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -497,7 +497,7 @@ jobs:
     if: false # visionOS temporarily disabled until releases are resumed
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -540,7 +540,7 @@ jobs:
         configuration: [Debug, Release]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -608,7 +608,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
@@ -664,7 +664,7 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           filter: blob:none
           fetch-depth: 0
