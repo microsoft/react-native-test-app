@@ -58,7 +58,7 @@
     "babel-jest": "ignore:",
     "node-gyp": "ignore:",
     "node-gyp-build": "ignore:",
-    "oxc-parser": "^0.138.0",
+    "oxc-parser": "^0.140.0",
     "oxc-resolver": "^11.23.0",
     "safe-buffer": "~5.2.1",
     "xcode/uuid": "~14.0.0"
