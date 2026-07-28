@@ -6175,9 +6175,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"appium-webdriveragent@npm:^15.0.0":
-  version: 15.1.3
-  resolution: "appium-webdriveragent@npm:15.1.3"
+"appium-webdriveragent@npm:^15.1.6":
+  version: 15.1.6
+  resolution: "appium-webdriveragent@npm:15.1.6"
   dependencies:
     "@appium/base-driver": "npm:^10.3.0"
     "@appium/strongbox": "npm:^1.0.0-rc.1"
@@ -6187,7 +6187,7 @@ __metadata:
     asyncbox: "npm:^6.1.0"
     axios: "npm:^1.16.0"
     teen_process: "npm:^4.0.7"
-  checksum: 10c0/7521b7528ca6a151ffe0c6d67cd253420894c20610e2d91b57632fcf1801cd20a6bcf1bf54094b4cc2a03c9615f4c7cab962e4a6251bdc62f3402218c3dd96ee
+  checksum: 10c0/3b47f30543e73bf543680e169c4f3b9218fdd7f241e789eaf54fd138d890bd4df19d9ad7887aa44297d860be22bde28d101bcb6f2d190b1b3d9bfd02ac3e0960
   languageName: node
   linkType: hard
 
@@ -6204,8 +6204,8 @@ __metadata:
   linkType: hard
 
 "appium-xcuitest-driver@npm:^11.0.0":
-  version: 11.17.1
-  resolution: "appium-xcuitest-driver@npm:11.17.1"
+  version: 11.17.7
+  resolution: "appium-xcuitest-driver@npm:11.17.7"
   dependencies:
     "@appium/css-locator-to-native": "npm:^1.0.1"
     "@appium/strongbox": "npm:^1.0.0-rc.1"
@@ -6214,16 +6214,15 @@ __metadata:
     appium-ios-remotexpc: "npm:^5.6.1"
     appium-ios-simulator: "npm:^8.2.0"
     appium-remote-debugger: "npm:^15.7.3"
-    appium-webdriveragent: "npm:^15.0.0"
+    appium-webdriveragent: "npm:^15.1.6"
     appium-xcode: "npm:^6.0.2"
     async-lock: "npm:^1.4.0"
     asyncbox: "npm:^6.3.0"
     axios: "npm:^1.4.0"
     commander: "npm:^14.0.1"
+    dayjs: "npm:^1.11.21"
     js2xmlparser2: "npm:^0.x"
     lru-cache: "npm:^11.1.0"
-    moment: "npm:^2.29.4"
-    moment-timezone: "npm:^0.x"
     node-devicectl: "npm:^1.1.0"
     node-simctl: "npm:^8.1.1"
     portscanner: "npm:^2.2.0"
@@ -6236,7 +6235,7 @@ __metadata:
   dependenciesMeta:
     appium-ios-remotexpc:
       optional: true
-  checksum: 10c0/8860e235aa85f959c7e13e37901d03fe3b8f445abedbcc6f744935669b4201f508989341f35c5734409c51548d9ca01b3ac9a6bfa2496a6ebec5b7529627042f
+  checksum: 10c0/1cee93306e709db99c210cc86123ba6ad1b6cd720dca78420e6dcbab8da3951396f6ba8cbe191344bf893857b671b60a4e8cedb7e98d8ae60cd1679d47422a43
   languageName: node
   linkType: hard
 
@@ -7666,10 +7665,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.8.15":
-  version: 1.10.7
-  resolution: "dayjs@npm:1.10.7"
-  checksum: 10c0/2ce908776ea5b383dba2c01c72290ff12ad97cafa81b9c72a9cc4f801d736d592f20bd992ea1dff083ab80e807080b5af21f634bb09e67f89f66582a9059053a
+"dayjs@npm:^1.11.21, dayjs@npm:^1.8.15":
+  version: 1.11.21
+  resolution: "dayjs@npm:1.11.21"
+  checksum: 10c0/bd97dfdc4bfea3c66268635690313828b386faa040fbc1f829ff42a2bd748b72c9d9b3c8f9616ce9e61fcb78923f1461a462c969c54b1084458ae1b715898fb0
   languageName: node
   linkType: hard
 
@@ -8541,8 +8540,8 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-wdio@npm:^9.26.0":
-  version: 9.26.1
-  resolution: "eslint-plugin-wdio@npm:9.26.1"
+  version: 9.29.1
+  resolution: "eslint-plugin-wdio@npm:9.29.1"
   peerDependencies:
     eslint: ^9.39.2
     globals: ^16.5.0
@@ -8550,7 +8549,7 @@ __metadata:
   peerDependenciesMeta:
     typescript-eslint:
       optional: true
-  checksum: 10c0/85bd9ce483e46840583b6d3c97f46c1eebb20a9e335f12b68f7d08ef996801f6113d90210b49449075bc8fbe998cda4ef53fd2acb9d11e0794568c85bdb1d688
+  checksum: 10c0/b7500ee5672ef2af27ceeccdd4bc42611a609adf93fa614fad16172080694efc07e9642d451bb173bed0d024847289fd9be6e580cf7f80c7c8f293d3908f1cce
   languageName: node
   linkType: hard
 
