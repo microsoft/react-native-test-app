@@ -1,5 +1,5 @@
 import { getBaseCommit, getChangedFiles, git } from "@rnx-kit/tools-git";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import { Minimatch } from "minimatch";
 import * as fs from "node:fs";
 

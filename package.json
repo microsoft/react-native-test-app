@@ -38,7 +38,6 @@
     "@rnx-kit/tools-git": "^0.1.1",
     "@swc-node/register": "^1.11.1",
     "@swc/core": "^1.15.8",
-    "@types/js-yaml": "^4.0.5",
     "@types/node": "catalog:",
     "eslint-plugin-wdio": "^9.26.0",
     "globals": "^16.5.0",
