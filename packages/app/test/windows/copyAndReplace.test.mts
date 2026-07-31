@@ -48,14 +48,14 @@ describe("copyAndReplace()", () => {
 
   it("throws on error", async () => {
     await rejects(copyAndReplace("ReactTestApp.png", "", {}), (err) => {
-      if (!(err instanceof Error)) {
+      if (!Error.isError(err)) {
         fail("Expected an Error");
       }
       match(err.message, /ENOENT/);
       return true;
     });
     await rejects(copyAndReplace("ReactTestApp.sln", "", {}), (err) => {
-      if (!(err instanceof Error)) {
+      if (!Error.isError(err)) {
         fail("Expected an Error");
       }
       match(err.message, /ENOENT/);
