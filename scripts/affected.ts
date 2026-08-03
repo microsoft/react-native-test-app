@@ -1,7 +1,7 @@
 import { getBaseCommit, getChangedFiles, git } from "@rnx-kit/tools-git";
 import * as yaml from "js-yaml";
-import { Minimatch } from "minimatch";
 import * as fs from "node:fs";
+import * as path from "node:path";
 
 type MatchChangedFiles = { "any-glob-to-any-file": string[] };
 type Match = { "changed-files": MatchChangedFiles[] };
@@ -22,11 +22,23 @@ function loadLabels(): Record<string, Match[] | undefined> {
 }
 
 /**
+ * Makes a glob pattern match dotfiles, emulating minimatch's `{ dot: true }`.
+ *
+ * `path.matchesGlob` does not let `*`/`**` match a path segment that starts
+ * with a dot, so we prefix an optional `.` to every wildcard-leading segment.
+ */
+function dotAware(pattern: string): string {
+  return pattern
+    .split("/")
+    .map((segment) => (segment.startsWith("*") ? `{.,}${segment}` : segment))
+    .join("/");
+}
+
+/**
  * Makes platform specific file path matchers.
  */
-function makeMatchers(): Record<string, Minimatch[]> {
-  const matchers: Record<string, Minimatch[]> = {};
-  const options = { dot: true };
+function makeMatchers(): Record<string, string[]> {
+  const matchers: Record<string, string[]> = {};
   const labels = loadLabels();
 
   for (const [label, match] of Object.entries(labels)) {
@@ -36,7 +48,7 @@ function makeMatchers(): Record<string, Minimatch[]> {
 
     const patterns = match[0]["changed-files"][0]["any-glob-to-any-file"];
     const platform = label.split(": ")[1];
-    matchers[platform] = patterns.map((m) => new Minimatch(m, options));
+    matchers[platform] = patterns.map(dotAware);
   }
 
   return matchers;
@@ -70,8 +82,8 @@ function getAffectedPlatforms(targetBranch: string | undefined): string[] {
   }
 
   const affectedPlatforms = new Set<string>();
-  for (const [platform, matchers] of Object.entries(platformMatchers)) {
-    if (matchers.some((m) => changedFiles.some((f) => m.match(f)))) {
+  for (const [platform, patterns] of Object.entries(platformMatchers)) {
+    if (patterns.some((p) => changedFiles.some((f) => path.matchesGlob(f, p)))) {
       affectedPlatforms.add(platform);
     }
   }
