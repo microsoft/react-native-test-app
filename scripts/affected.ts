@@ -24,14 +24,13 @@ function loadLabels(): Record<string, Match[] | undefined> {
 /**
  * Makes a glob pattern match dotfiles, emulating minimatch's `{ dot: true }`.
  *
- * `path.matchesGlob` does not let `*`/`**` match a path segment that starts
- * with a dot, so we prefix an optional `.` to every wildcard-leading segment.
+ * `path.matchesGlob` won't match a path segment that starts with a dot against
+ * `*`/`**`, so we insert an optional dot before every wildcard segment (a `*`
+ * right after a `/`, or at the very start of the pattern).
  */
 function dotAware(pattern: string): string {
-  return pattern
-    .split("/")
-    .map((segment) => (segment.startsWith("*") ? `{.,}${segment}` : segment))
-    .join("/");
+  const withDot = pattern.replaceAll("/*", "/{.,}*");
+  return withDot.startsWith("*") ? `{.,}${withDot}` : withDot;
 }
 
 /**
