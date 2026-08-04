@@ -4,7 +4,7 @@
     "target": "esnext",
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "lib": ["ES2022", "DOM"]
+    "lib": ["esnext", "dom"]
   },
   "include": [
     "**/*.mjs",

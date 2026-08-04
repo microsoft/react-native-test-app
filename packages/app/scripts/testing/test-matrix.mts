@@ -404,7 +404,7 @@ if (platforms.length === 0) {
         process.exitCode = e;
       } else {
         process.exitCode = 1;
-        showBanner(`❌ ${(e instanceof Error && e.stack) || e}`);
+        showBanner(`❌ ${(Error.isError(e) && e.stack) || e}`);
       }
     });
 }
