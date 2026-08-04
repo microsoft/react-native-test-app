@@ -2508,7 +2508,6 @@ __metadata:
     globals: "npm:^16.5.0"
     js-yaml: "npm:^5.2.2"
     knip: "npm:^6.23.0"
-    minimatch: "npm:^10.0.0"
     nx: "npm:^22.0.0"
     oxfmt: "npm:^0.59.0"
     oxlint: "npm:^1.51.0"
@@ -11675,7 +11674,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.0.0, minimatch@npm:^10.0.3, minimatch@npm:^10.1.1, minimatch@npm:^10.2.2, minimatch@npm:^10.2.5":
+"minimatch@npm:^10.0.3, minimatch@npm:^10.1.1, minimatch@npm:^10.2.2, minimatch@npm:^10.2.5":
   version: 10.2.5
   resolution: "minimatch@npm:10.2.5"
   dependencies:
