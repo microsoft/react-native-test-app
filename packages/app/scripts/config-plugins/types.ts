@@ -18,6 +18,17 @@ export type IosModFileProviders = ReturnType<
   // oxlint-disable-next-line typescript/no-explicit-any
   Record<string, BaseModProviderMethods<any, any>>;
 
+export type JSONValue =
+  | string
+  | number
+  | boolean
+  | JSONArray
+  | JSONObject
+  | null;
+
+export type JSONArray = JSONValue[];
+export type JSONObject = { [key: string]: JSONValue | undefined };
+
 export type ProjectInfo = {
   projectRoot: string;
   platforms: ModPlatform[];
