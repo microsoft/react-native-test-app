@@ -1730,7 +1730,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/json-file@npm:^11.0.0, @expo/json-file@npm:~11.0.1":
+"@expo/json-file@npm:~11.0.1":
   version: 11.0.1
   resolution: "@expo/json-file@npm:11.0.1"
   dependencies:
@@ -13396,7 +13396,6 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
     "@expo/config-plugins": "npm:^57.0.0"
-    "@expo/json-file": "npm:^11.0.0"
     "@isaacs/cliui": "npm:^9.0.0"
     "@react-native-community/cli": "npm:^20.1.0"
     "@react-native-community/cli-types": "npm:^20.1.0"

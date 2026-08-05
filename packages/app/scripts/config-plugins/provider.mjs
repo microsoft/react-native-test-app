@@ -4,8 +4,7 @@ import { findFile } from "../helpers.js";
 import { BaseMods } from "./ExpoConfigPlugins.mjs";
 
 /**
- * @import { JSONObject } from "@expo/json-file";
- * @import { CustomModProvider } from "./types.ts";
+ * @import { CustomModProvider, JSONObject } from "./types.ts";
  */
 
 /**
