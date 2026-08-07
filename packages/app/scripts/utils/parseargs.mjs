@@ -1,5 +1,4 @@
 // @ts-check
-import { cliui } from "@isaacs/cliui";
 import * as path from "node:path";
 import * as util from "node:util";
 import manifest from "../../package.json" with { type: "json" };
@@ -17,28 +16,70 @@ function coerce(values, _options) {
 }
 
 /**
+ * Wraps plain text at the specified width.
+ * @note Words longer than specified width are not broken up and may overflow.
+ * @param {string} text
+ * @param {number} columns
+ * @returns {string[]}
+ */
+export function wordWrap(text, columns) {
+  const lines = [];
+
+  const length = text.length;
+  let lineStart = 0;
+  let wordEnd = 0;
+
+  for (let i = 0; i < length; ++i) {
+    if (wordEnd > lineStart && i - lineStart > columns) {
+      lines.push(text.slice(lineStart, wordEnd));
+      lineStart = wordEnd + 1;
+      wordEnd = lineStart;
+    } else if (text[i] === " ") {
+      wordEnd = i;
+    }
+  }
+
+  lines.push(text.slice(lineStart, length));
+  return lines;
+}
+
+/**
+ * Formats options for help message.
+ * @param {Record<string, { short?: string; description: string; }>} options
+ * @param {number} columns
+ * @returns {string}
+ */
+export function formatOptionsTable(options, columns) {
+  /** @type {string[]} */
+  const lines = [];
+
+  const flags = Object.entries(options);
+  const indent = "  ";
+  const minFlagLength = Math.max(...flags.map(([flag]) => flag.length));
+  // ␣␣-f,␣--flag␣␣␣␣description/usage of flag
+  // ⇤── minCols  ──⇥⇤─── descriptionCols ───⇥
+  const minCols = 8 + minFlagLength + indent.length * 2;
+  const descriptionCols = columns - minCols;
+
+  for (const [flag, config] of flags) {
+    const short = config.short ? `-${config.short}, ` : "    ";
+    const [first, ...rest] = wordWrap(config.description, descriptionCols);
+    lines.push(
+      `${indent}${short}--${flag.padEnd(minFlagLength)}${indent}${indent}${first}`,
+      ...rest.map((line) => line.padStart(minCols + line.length))
+    );
+  }
+
+  return lines.join("\n");
+}
+
+/**
  * Generates help message.
  * @param {string} description
  * @param {Record<string, { short?: string; description: string; }>} options
  * @returns {string}
  */
 function formatHelp(description, options) {
-  const flags = Object.entries(options);
-  const indent = "  ";
-  const minWidth =
-    Math.max(...flags.map(([flag]) => flag.length)) + indent.length * 2;
-  const padding = [0, 0, 0, 0];
-
-  const ui = cliui({ width: process.stdout.columns ?? 80 });
-  for (const [flag, config] of flags) {
-    ui.div(
-      { text: "", width: 2, padding },
-      { text: config.short ? `-${config.short},` : "", width: 4, padding },
-      { text: `--${flag}`, width: minWidth + 2, padding },
-      { text: config.description, padding }
-    );
-  }
-
   const script = path.basename(process.argv[1]);
   return [
     `usage: ${script} [options]`,
@@ -46,7 +87,7 @@ function formatHelp(description, options) {
     description,
     "",
     "Options:",
-    ui.toString(),
+    formatOptionsTable(options, process.stdout.columns ?? 80),
     "",
   ].join("\n");
 }
