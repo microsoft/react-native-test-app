@@ -13396,7 +13396,6 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
     "@expo/config-plugins": "npm:^57.0.0"
-    "@isaacs/cliui": "npm:^9.0.0"
     "@react-native-community/cli": "npm:^20.1.0"
     "@react-native-community/cli-types": "npm:^20.1.0"
     "@react-native-community/template": "npm:^0.85.0"
