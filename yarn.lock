@@ -2498,7 +2498,7 @@ __metadata:
   dependencies:
     "@nx/js": "npm:^22.0.0"
     "@rnx-kit/align-deps": "npm:^4.0.1"
-    "@rnx-kit/lint-lockfile": "npm:^0.2.0"
+    "@rnx-kit/lint-lockfile": "npm:^0.2.2"
     "@rnx-kit/oxlint-config": "npm:^1.0.3"
     "@rnx-kit/tools-git": "npm:^0.1.1"
     "@swc-node/register": "npm:^1.11.1"
@@ -4620,17 +4620,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/lint-lockfile@npm:^0.2.0":
-  version: 0.2.1
-  resolution: "@rnx-kit/lint-lockfile@npm:0.2.1"
+"@rnx-kit/lint-lockfile@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@rnx-kit/lint-lockfile@npm:0.2.2"
   dependencies:
     "@rnx-kit/config": "npm:^0.9.0"
     "@rnx-kit/tools-workspaces": "npm:^0.2.3"
     "@rnx-kit/types-kit-config": "npm:^1.0.0"
-    js-yaml: "npm:^4.2.0"
+    js-yaml: "npm:^5.2.3"
   bin:
     lint-lockfile: lib/cli.js
-  checksum: 10c0/3d0f8334553072b91e1433a708e9cae696a865c77611a3740b6ec1f9aecd8b7e34097f7fe2cd9973713f696e25a98be00795f7f900e8c75532802eec6b41c861
+  checksum: 10c0/756c5d6533f628285e8347e990345d1ceb774715b4cecd0d03fdf32584a64f673df5c7edb0a3ad3fcf302125c2b06f5e9e85a9815fdf0794b599226da6dca2d5
   languageName: node
   linkType: hard
 
@@ -10527,7 +10527,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0, js-yaml@npm:^4.2.0":
+"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0":
   version: 4.3.1
   resolution: "js-yaml@npm:4.3.1"
   dependencies:
@@ -10538,7 +10538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^5.2.2":
+"js-yaml@npm:^5.2.2, js-yaml@npm:^5.2.3":
   version: 5.2.3
   resolution: "js-yaml@npm:5.2.3"
   dependencies:

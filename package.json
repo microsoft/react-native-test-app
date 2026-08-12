@@ -33,7 +33,7 @@
   "devDependencies": {
     "@nx/js": "^22.0.0",
     "@rnx-kit/align-deps": "^4.0.1",
-    "@rnx-kit/lint-lockfile": "^0.2.0",
+    "@rnx-kit/lint-lockfile": "^0.2.2",
     "@rnx-kit/oxlint-config": "^1.0.3",
     "@rnx-kit/tools-git": "^0.1.1",
     "@swc-node/register": "^1.11.1",
