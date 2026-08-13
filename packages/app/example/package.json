@@ -38,12 +38,12 @@
     "@rnx-kit/tsconfig": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "~19.2.0",
-    "@wdio/types": "^9.20.0",
+    "@wdio/types": "^9.30.1",
     "appium": "^3.6.0",
     "appium-uiautomator2-driver": "^8.1.0",
     "appium-xcuitest-driver": "^11.0.0",
     "react-native-test-app": "workspace:*",
-    "webdriverio": "patch:webdriverio@npm%3A9.29.1#~/.yarn/patches/webdriverio-npm-9.20.0-664a6da575.patch"
+    "webdriverio": "^9.30.1"
   },
   "rnx-kit": {
     "kitType": "app",
