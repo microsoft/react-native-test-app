@@ -4531,14 +4531,14 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/align-deps@npm:^4.0.1":
-  version: 4.0.2
-  resolution: "@rnx-kit/align-deps@npm:4.0.2"
+  version: 4.0.3
+  resolution: "@rnx-kit/align-deps@npm:4.0.3"
   dependencies:
     "@rnx-kit/types-kit-config": "npm:^1.0.0"
     "@rnx-kit/types-node": "npm:^1.0.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/9412c9781b6cd85b3fffd64ee31c069e0c952726f5390f9faf771dd0714b16998b4cb06336dc68ca5f0eb6e8d8586792528c05422d35a2a27e7b72ae261cb27a
+  checksum: 10c0/fc085767558643a691a3be12a754372fa6b2e1a5cce28c0b246646ebb60683b75e8ff83004c8e17400288b7b730103b637ca1bcaab033cd2cfabacfc7b4ce3db
   languageName: node
   linkType: hard
 
