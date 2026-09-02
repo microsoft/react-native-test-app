@@ -4530,24 +4530,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/align-deps@npm:^4.0.1, @rnx-kit/align-deps@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "@rnx-kit/align-deps@npm:4.0.5"
+"@rnx-kit/align-deps@npm:^4.0.1, @rnx-kit/align-deps@npm:^4.0.6":
+  version: 4.0.6
+  resolution: "@rnx-kit/align-deps@npm:4.0.6"
   dependencies:
-    "@rnx-kit/types-kit-config": "npm:^1.0.0"
+    "@rnx-kit/types-kit-config": "npm:^1.0.1"
     "@rnx-kit/types-node": "npm:^1.0.0"
     oxc-resolver: "npm:^11.0.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/fdb5ccde7ff0a9037ca10787ddb58e073ec4a4bfe8ff78818702e764d1574795fc115c86ea2b7f37dc7fbd5b9d8d6e2dc3282e17de4ecd4695eab65961a7a392
+  checksum: 10c0/91af4ac1d292a681ab716b80bdd12bb7ce0678f2f8e7049bc9a11ee0c704e4e0abcd9883f0b9aea0e227cdef4c0a233e143d1f7753900056c566a454c329dd1a
   languageName: node
   linkType: hard
 
 "@rnx-kit/cli@npm:^2.0.1":
-  version: 2.0.3
-  resolution: "@rnx-kit/cli@npm:2.0.3"
+  version: 2.0.4
+  resolution: "@rnx-kit/cli@npm:2.0.4"
   dependencies:
-    "@rnx-kit/align-deps": "npm:^4.0.5"
+    "@rnx-kit/align-deps": "npm:^4.0.6"
     "@rnx-kit/config": "npm:^0.9.1"
     "@rnx-kit/console": "npm:^3.0.0"
     "@rnx-kit/metro-plugin-cyclic-dependencies-detector": "npm:^3.0.1"
@@ -4562,9 +4562,9 @@ __metadata:
     "@rnx-kit/tools-filesystem": "npm:^0.2.0"
     "@rnx-kit/tools-language": "npm:^3.0.1"
     "@rnx-kit/tools-node": "npm:^3.0.6"
-    "@rnx-kit/tools-react-native": "npm:^2.3.7"
-    "@rnx-kit/types-bundle-config": "npm:^1.0.0"
-    "@rnx-kit/types-kit-config": "npm:^1.0.0"
+    "@rnx-kit/tools-react-native": "npm:^2.3.9"
+    "@rnx-kit/types-bundle-config": "npm:^1.0.1"
+    "@rnx-kit/types-kit-config": "npm:^1.0.1"
     "@rnx-kit/types-node": "npm:^1.0.0"
     commander: "npm:^11.1.0"
     ora: "npm:^5.4.1"
@@ -4579,7 +4579,7 @@ __metadata:
       optional: true
   bin:
     rnx-cli: bin/rnx-cli.cjs
-  checksum: 10c0/9c76c90902f307c3550cd24ace2bc6f01e65717dd622969385d8ce9892c164c15b33eeee03eb6a90a03e42b52f7981b871b9844f07fde4212363370c74937bcd
+  checksum: 10c0/dbb93e75507f03494b6fe9bfce6d7fa6171606fed3dd46a33b9d2bf1c5a1cae8f9805e3a6c6ce561912cdd2bb967f68bc7b66313e453385058df2cff16c66d3f
   languageName: node
   linkType: hard
 
@@ -4716,13 +4716,12 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-service@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@rnx-kit/metro-service@npm:5.0.0"
+  version: 5.0.2
+  resolution: "@rnx-kit/metro-service@npm:5.0.2"
   dependencies:
     "@rnx-kit/console": "npm:^3.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.3"
     "@rnx-kit/tools-react-native": "npm:^2.3.5"
-    node-fetch: "npm:^2.6.7"
   peerDependencies:
     "@office-iss/react-native-win32": "*"
     "@react-native/metro-config": "*"
@@ -4734,7 +4733,7 @@ __metadata:
       optional: true
     metro-react-native-babel-transformer:
       optional: true
-  checksum: 10c0/68fb6ef888565fbb50a6c6b31e8600f8b95538629af205dc85bc5fa4b50fe5a06e6e443ceaf7de91678949dbb6d31085a9578e955590c6c363a18562ec37954f
+  checksum: 10c0/cbf3bdf0082d61f2c2e72755ac4d7e1b83e31cd17317e89c8e8913499e321922265a1236d31922c39a8cb0cffdc39a2d4f8255e8a47547dae250ad3b39c1bcdd
   languageName: node
   linkType: hard
 
@@ -4867,19 +4866,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.3, @rnx-kit/tools-react-native@npm:^2.3.5, @rnx-kit/tools-react-native@npm:^2.3.7":
-  version: 2.3.8
-  resolution: "@rnx-kit/tools-react-native@npm:2.3.8"
+"@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.3, @rnx-kit/tools-react-native@npm:^2.3.5, @rnx-kit/tools-react-native@npm:^2.3.9":
+  version: 2.3.9
+  resolution: "@rnx-kit/tools-react-native@npm:2.3.9"
   dependencies:
     "@rnx-kit/tools-filesystem": "npm:^0.2.0"
     "@rnx-kit/tools-node": "npm:^3.0.5"
-    "@rnx-kit/types-bundle-config": "npm:^1.0.0"
+    "@rnx-kit/types-bundle-config": "npm:^1.0.1"
   peerDependencies:
     "@react-native-community/cli-types": "*"
   peerDependenciesMeta:
     "@react-native-community/cli-types":
       optional: true
-  checksum: 10c0/2881b698aaea20d4ea92f2bf0b08997255cd574b257c8942bf2a72bd3e692e00fea69cf2af31c3527495d78d8e8ece7c490e2250724c942153d9a904e60dcda8
+  checksum: 10c0/a5eaddc2fa562c7ee388fbb12f7d187641032aa861ebc5b7b1b6f3da768cfc2383939bb0a422109d0e617fa756f12e4db1b11d2bbfa1b384e190a232813a72be
   languageName: node
   linkType: hard
 
@@ -4891,15 +4890,15 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/tools-workspaces@npm:^0.2.0, @rnx-kit/tools-workspaces@npm:^0.2.1, @rnx-kit/tools-workspaces@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "@rnx-kit/tools-workspaces@npm:0.2.3"
+  version: 0.2.4
+  resolution: "@rnx-kit/tools-workspaces@npm:0.2.4"
   dependencies:
     fast-glob: "npm:^3.2.7"
     find-up: "npm:^5.0.0"
+    js-yaml: "npm:^5.2.2"
     micromatch: "npm:^4.0.0"
-    read-yaml-file: "npm:^2.1.0"
     strip-json-comments: "npm:^3.1.1"
-  checksum: 10c0/b9528f560092c8ba8eeafb818cef2363ba99ffd7b3f0e3738cfe0316b35211ab7b6aa08d9eb3ef555c02b6048c591adafdca2934e674066256c06860cb1cf668
+  checksum: 10c0/af7c308ce12792522286c3f4a06e7156feda839e868d5a0dfd307589a8c7556b1bbce11653db5952e63dd72fbe4c03ef9fd05b2177e3a3f68a752c8e231579b7
   languageName: node
   linkType: hard
 
@@ -4910,9 +4909,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/types-bundle-config@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@rnx-kit/types-bundle-config@npm:1.0.0"
+"@rnx-kit/types-bundle-config@npm:^1.0.0, @rnx-kit/types-bundle-config@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@rnx-kit/types-bundle-config@npm:1.0.1"
   dependencies:
     "@rnx-kit/types-metro-serializer-esbuild": "npm:^1.0.0"
     "@rnx-kit/types-plugin-cyclic-dependencies": "npm:^1.0.0"
@@ -4923,16 +4922,16 @@ __metadata:
   peerDependenciesMeta:
     metro:
       optional: true
-  checksum: 10c0/854000d0609a140c4719ea2099c5843ac420fc3fdf7274a3ff5be52f1deebd17669025576cc32413279f9df1ffebbb4e128e676839479d76cb5d7c85d8c4640f
+  checksum: 10c0/0d6b8c3bf43d0ce2fbe509fb7a1de057412352c8384c6e459a2a99caa1ba1c03384cea990e2c04dd50329442401ee5eabf6a39c948d4e84a047c3c2b0ba225a1
   languageName: node
   linkType: hard
 
-"@rnx-kit/types-kit-config@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@rnx-kit/types-kit-config@npm:1.0.0"
+"@rnx-kit/types-kit-config@npm:^1.0.0, @rnx-kit/types-kit-config@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@rnx-kit/types-kit-config@npm:1.0.1"
   dependencies:
-    "@rnx-kit/types-bundle-config": "npm:^1.0.0"
-  checksum: 10c0/164809621b7889af879463ba0f89b05ebc6113df5b78615cd2dcc289c4480b15b35a4f9a8f593068c0be352472a8410bc7acdc1e39aa165940e88fccb58a82e2
+    "@rnx-kit/types-bundle-config": "npm:^1.0.1"
+  checksum: 10c0/ab59610707db767ec36e3579fdd09f82d40fa9a01a420a7f643637e68c6cb02af4ae693525263a21194a1869e4627be75bc04ca1afd861b6441b9bfdb030fcf6
   languageName: node
   linkType: hard
 
@@ -10511,7 +10510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0":
+"js-yaml@npm:^4.1.0":
   version: 4.3.1
   resolution: "js-yaml@npm:4.3.1"
   dependencies:
@@ -11878,20 +11877,6 @@ __metadata:
     object.entries: "npm:^1.1.9"
     semver: "npm:^6.3.1"
   checksum: 10c0/3613f21c60b047e66f168d3499a6be0060d89fb01ddceaa7032c2fb318aff12e4b9b111449c1a9aeb3b848bfdc1d4b6bc8fab327af692319597d21a1e7063692
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^2.6.7":
-  version: 2.7.0
-  resolution: "node-fetch@npm:2.7.0"
-  dependencies:
-    whatwg-url: "npm:^5.0.0"
-  peerDependencies:
-    encoding: ^0.1.0
-  peerDependenciesMeta:
-    encoding:
-      optional: true
-  checksum: 10c0/b55786b6028208e6fbe594ccccc213cab67a72899c9234eb59dba51062a299ea853210fcf526998eaa2867b0963ad72338824450905679ff0fa304b8c5093ae8
   languageName: node
   linkType: hard
 
@@ -13656,16 +13641,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"read-yaml-file@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "read-yaml-file@npm:2.1.0"
-  dependencies:
-    js-yaml: "npm:^4.0.0"
-    strip-bom: "npm:^4.0.0"
-  checksum: 10c0/bad0673abe78a5bde7c53b22ee7cdd0dfe49ab7338a4ad8618be9fcd2fd25ab9ae60d395907fddbfb2e7fbbf494867aeec78295c2396bec2669fd7087d2734c1
-  languageName: node
-  linkType: hard
-
 "readable-stream@npm:^1.0.31":
   version: 1.1.14
   resolution: "readable-stream@npm:1.1.14"
@@ -14932,13 +14907,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-bom@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "strip-bom@npm:4.0.0"
-  checksum: 10c0/26abad1172d6bc48985ab9a5f96c21e440f6e7e476686de49be813b5a59b3566dccb5c525b831ec54fe348283b47f3ffb8e080bc3f965fde12e84df23f6bb7ef
-  languageName: node
-  linkType: hard
-
 "strip-eof@npm:^1.0.0":
   version: 1.0.0
   resolution: "strip-eof@npm:1.0.0"
@@ -15185,13 +15153,6 @@ __metadata:
   version: 1.0.1
   resolution: "toidentifier@npm:1.0.1"
   checksum: 10c0/93937279934bd66cc3270016dd8d0afec14fb7c94a05c72dc57321f8bd1fa97e5bea6d1f7c89e728d077ca31ea125b78320a616a6c6cd0e6b9cb94cb864381c1
-  languageName: node
-  linkType: hard
-
-"tr46@npm:~0.0.3":
-  version: 0.0.3
-  resolution: "tr46@npm:0.0.3"
-  checksum: 10c0/047cb209a6b60c742f05c9d3ace8fa510bff609995c129a37ace03476a9b12db4dbf975e74600830ef0796e18882b2381fb5fb1f6b4f96b832c374de3ab91a11
   languageName: node
   linkType: hard
 
@@ -15800,13 +15761,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webidl-conversions@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "webidl-conversions@npm:3.0.1"
-  checksum: 10c0/5612d5f3e54760a797052eb4927f0ddc01383550f542ccd33d5238cfd65aeed392a45ad38364970d0a0f4fea32e1f4d231b3d8dac4a3bdd385e5cf802ae097db
-  languageName: node
-  linkType: hard
-
 "whatwg-encoding@npm:^3.1.1":
   version: 3.1.1
   resolution: "whatwg-encoding@npm:3.1.1"
@@ -15827,16 +15781,6 @@ __metadata:
   version: 4.0.0
   resolution: "whatwg-mimetype@npm:4.0.0"
   checksum: 10c0/a773cdc8126b514d790bdae7052e8bf242970cebd84af62fb2f35a33411e78e981f6c0ab9ed1fe6ec5071b09d5340ac9178e05b52d35a9c4bcf558ba1b1551df
-  languageName: node
-  linkType: hard
-
-"whatwg-url@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "whatwg-url@npm:5.0.0"
-  dependencies:
-    tr46: "npm:~0.0.3"
-    webidl-conversions: "npm:^3.0.0"
-  checksum: 10c0/1588bed84d10b72d5eec1d0faa0722ba1962f1821e7539c535558fb5398d223b0c50d8acab950b8c488b4ba69043fd833cc2697056b167d8ad46fac3995a55d5
   languageName: node
   linkType: hard
 
