@@ -1,4 +1,5 @@
 import AVFoundation
+import Combine
 import UIKit
 
 #if !ENABLE_SINGLE_APP_MODE
@@ -36,11 +37,13 @@ final class ContentViewController: UITableViewController {
         self == navigationController?.visibleViewController
     }
 
-    private let reactInstance: ReactInstance
+    private let appModel: AppModel
     private var sections: [SectionData]
+    private var cancellables: Set<AnyCancellable> = []
+    private weak var rememberLastComponentSwitch: UISwitch?
 
-    init(reactInstance: ReactInstance) {
-        self.reactInstance = reactInstance
+    init(appModel: AppModel) {
+        self.appModel = appModel
         sections = []
 
         super.init(style: .grouped)
@@ -54,7 +57,7 @@ final class ContentViewController: UITableViewController {
     // MARK: - UIResponder overrides
 
     override func motionEnded(_: UIEvent.EventSubtype, with event: UIEvent?) {
-        guard event?.subtype == .motionShake, let host = reactInstance.host else {
+        guard event?.subtype == .motionShake, let host = appModel.reactInstance.host else {
             return
         }
 
@@ -76,9 +79,7 @@ final class ContentViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let manifest = Manifest.load()
-
-        title = manifest.displayName
+        title = Manifest.load().displayName
 
         #if os(iOS)
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -89,58 +90,17 @@ final class ContentViewController: UITableViewController {
         )
         #endif
 
-        let components = manifest.components ?? []
-        if components.isEmpty {
-            NotificationCenter.default.addObserver(
-                forName: .ReactAppDidRegisterApps,
-                object: nil,
-                queue: .main,
-                using: { [weak self] note in
-                    guard let strongSelf = self,
-                          let appKeys = note.userInfo?["appKeys"] as? [String]
-                    else {
-                        return
-                    }
+        appModel.presenter = self
+        appModel.initialize()
+        buildInitialSections()
 
-                    let components = appKeys.map { Component(appKey: $0) }
-                    strongSelf.onComponentsRegistered(components, checksum: Manifest.checksum())
-                }
-            )
-        }
-
-        onComponentsRegistered(components, checksum: Manifest.checksum())
-
-        let bundleRoot = manifest.bundleRoot
-        // As of 0.74, we can no longer instantiate on a background thread:
-        // https://github.com/react/react-native/commit/b7025fe1569349d90d26821b2b8de64a8ec9f352
-        DispatchQueue.main.async { [weak self] in
-            self?.reactInstance.initReact(bundleRoot: bundleRoot) {
-                if !components.isEmpty,
-                   let index = components.count == 1 ? 0 : Session.lastOpenedComponent(Manifest.checksum())
-                {
-                    DispatchQueue.main.async {
-                        self?.navigate(to: components[index])
-                    }
-                }
+        appModel.picker.$components
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] components in
+                self?.onComponentsRegistered(components)
             }
-        }
-
-        let rememberLastComponentSwitch = UISwitch()
-        rememberLastComponentSwitch.isOn = Session.shouldRememberLastComponent
-        rememberLastComponentSwitch.addTarget(
-            self,
-            action: #selector(rememberLastComponentSwitchDidChangeValue(_:)),
-            for: .valueChanged
-        )
-        sections.append(SectionData(
-            items: [
-                NavigationLink(
-                    title: "Remember Last Opened Component",
-                    accessoryView: rememberLastComponentSwitch
-                ),
-            ],
-            footer: nil
-        ))
+            .store(in: &cancellables)
 
         #if os(iOS)
         NotificationCenter.default.addObserver(
@@ -204,7 +164,7 @@ final class ContentViewController: UITableViewController {
     // MARK: - Private
 
     private func navigate(to component: Component) {
-        guard let host = reactInstance.host, let navigationController else {
+        guard let host = appModel.reactInstance.host, let navigationController else {
             return
         }
 
@@ -230,37 +190,59 @@ final class ContentViewController: UITableViewController {
         }
     }
 
-    private func onComponentsRegistered(_ components: [Component], checksum: String) {
-        let items = components.enumerated().map { index, component in
+    private func componentLinks(for components: [Component]) -> [NavigationLink] {
+        components.enumerated().map { index, component in
             NavigationLink(title: component.displayName ?? component.appKey) { [weak self] in
-                self?.navigate(to: component)
-                Session.storeComponent(index: index, checksum: checksum)
-            }
-        }
-
-        if sections.isEmpty {
-            #if targetEnvironment(simulator)
-            let keyboardShortcut = " (⌃⌘Z)"
-            #else
-            let keyboardShortcut = ""
-            #endif
-            sections.append(SectionData(
-                items: items,
-                footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
-            ))
-        } else {
-            sections[0].items = items
-            tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-
-            if components.count == 1, isVisible {
-                navigate(to: components[0])
+                self?.appModel.selectComponent(component, at: index)
             }
         }
     }
 
+    private func buildInitialSections() {
+        #if targetEnvironment(simulator)
+        let keyboardShortcut = " (⌃⌘Z)"
+        #else
+        let keyboardShortcut = ""
+        #endif
+        sections.append(SectionData(
+            items: componentLinks(for: appModel.picker.components),
+            footer: "\(runtimeInfo())\n\nShake your device\(keyboardShortcut) to open the React Native debug menu."
+        ))
+
+        let rememberLastComponentSwitch = UISwitch()
+        rememberLastComponentSwitch.isOn = appModel.picker.rememberLastComponent
+        rememberLastComponentSwitch.addTarget(
+            self,
+            action: #selector(rememberLastComponentSwitchDidChangeValue(_:)),
+            for: .valueChanged
+        )
+        self.rememberLastComponentSwitch = rememberLastComponentSwitch
+        sections.append(SectionData(
+            items: [
+                NavigationLink(
+                    title: "Remember Last Opened Component",
+                    accessoryView: rememberLastComponentSwitch
+                ),
+            ],
+            footer: nil
+        ))
+
+        appModel.picker.$rememberLastComponent
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isOn in
+                self?.rememberLastComponentSwitch?.setOn(isOn, animated: false)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func onComponentsRegistered(_ components: [Component]) {
+        sections[Section.components].items = componentLinks(for: components)
+        tableView.reloadSections(IndexSet(integer: Section.components), with: .automatic)
+    }
+
     @objc
     private func rememberLastComponentSwitchDidChangeValue(_ sender: UISwitch) {
-        Session.shouldRememberLastComponent = sender.isOn
+        appModel.picker.rememberLastComponent = sender.isOn
     }
 
     private func runtimeInfo() -> String {
@@ -280,6 +262,18 @@ final class ContentViewController: UITableViewController {
         let fabric = ""
         #endif
         return "React Native version: \(version)\(fabric)"
+    }
+}
+
+// MARK: - ComponentPresenting
+
+extension ContentViewController: ComponentPresenting {
+    func present(_ component: Component) {
+        navigate(to: component)
+    }
+
+    var shouldAutoPresentRegisteredComponent: Bool {
+        isVisible
     }
 }
 

@@ -1,8 +1,14 @@
 import UIKit
 
+#if os(visionOS)
 @main
+#endif
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private weak var application: UIApplication?
+
+    #if os(iOS)
+    let model = AppModel(reactInstance: ReactInstance())
+    #endif
 
     @objc
     var window: UIWindow? {

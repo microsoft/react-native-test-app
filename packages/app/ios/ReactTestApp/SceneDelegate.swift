@@ -92,7 +92,7 @@ extension SceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UINavigationController(
-                rootViewController: ContentViewController(reactInstance: reactInstance)
+                rootViewController: ContentViewController(appModel: AppModel(reactInstance: reactInstance))
             )
             self.window = window
             window.makeKeyAndVisible()
