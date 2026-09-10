@@ -243,7 +243,8 @@ jobs:
       - name: Install Pods
         if: ${{ steps.affected.outputs.ios != '' }}
         run: |
-          pod install --project-directory=ios
+          bundle install
+          bundle exec pod install --project-directory=ios --verbose
         working-directory: template-example
       - name: Build
         if: ${{ steps.affected.outputs.ios != '' }}

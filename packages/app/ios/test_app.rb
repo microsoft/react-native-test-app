@@ -92,7 +92,7 @@ def resources_pod(project_root, platforms, resources)
   File.open(podspec_path, 'w') do |f|
     # Under certain conditions, the file doesn't get written to disk before it
     # is read by CocoaPods.
-    f.write(spec.to_json)
+    f.write(JSON.generate(spec))
     f.fsync
     ObjectSpace.define_finalizer(self, Remover.new(f))
   end
@@ -122,7 +122,7 @@ end
 
 def make_project!(project_root, target_platform, options)
   generate_project = File.join(__dir__, 'app.mjs')
-  options_json = JSON.fast_generate(options.transform_keys { |key| key.to_s.camelize(:lower) })
+  options_json = JSON.generate(options.transform_keys { |key| key.to_s.camelize(:lower) })
   result = `node "#{generate_project}" "#{project_root}" #{target_platform} '#{options_json}'`
   project = JSON.parse(result)
 
