@@ -2515,7 +2515,6 @@ __metadata:
     "@types/node": "catalog:"
     eslint-plugin-wdio: "npm:^9.30.1"
     globals: "npm:^16.5.0"
-    js-yaml: "npm:^5.2.2"
     knip: "npm:^6.23.0"
     nx: "npm:^22.0.0"
     oxfmt: "npm:^0.59.0"
@@ -10531,13 +10530,13 @@ __metadata:
   linkType: hard
 
 "js-yaml@npm:^5.2.2, js-yaml@npm:^5.2.3":
-  version: 5.2.3
-  resolution: "js-yaml@npm:5.2.3"
+  version: 5.4.1
+  resolution: "js-yaml@npm:5.4.1"
   dependencies:
     argparse: "npm:^2.0.1"
   bin:
     js-yaml: bin/js-yaml.mjs
-  checksum: 10c0/55cd6310c8eee88d432ae038d451ac9d6aa0eb9e5d38a94df3d6c4a4015d08c9dad7c18669e0e8854e4173a615d6b6b7448bd0aac408773f8a46122ffd863c69
+  checksum: 10c0/efe9dfaf222809694d375ad5ecca825561d2432eb55bc0f628911c0dfa4dbce98a71dcbc3252f630208bbdf5f4e9ac363847e4a7f49845b577ae2548b8fcf147
   languageName: node
   linkType: hard
 
