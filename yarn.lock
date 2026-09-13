@@ -1712,13 +1712,13 @@ __metadata:
   linkType: hard
 
 "@expo/config-plugins@npm:^57.0.0":
-  version: 57.0.8
-  resolution: "@expo/config-plugins@npm:57.0.8"
+  version: 57.0.9
+  resolution: "@expo/config-plugins@npm:57.0.9"
   dependencies:
     "@expo/config-types": "npm:^57.0.2"
     "@expo/json-file": "npm:~11.0.1"
     "@expo/plist": "npm:^0.8.1"
-    "@expo/require-utils": "npm:^57.0.4"
+    "@expo/require-utils": "npm:^57.0.5"
     "@expo/sdk-runtime-versions": "npm:^1.0.0"
     chalk: "npm:^4.1.2"
     debug: "npm:^4.3.5"
@@ -1728,7 +1728,7 @@ __metadata:
     slugify: "npm:^1.6.6"
     xcode: "npm:^3.0.1"
     xml2js: "npm:0.6.0"
-  checksum: 10c0/99329d11e333da6703b9d728f792b7155ca60c9620dda5e25526e70f887e378a08b7832c84eb9e168fdff336fcbd890b020bbb51783e40ae054df76eb77e5bd3
+  checksum: 10c0/a980ceea445860797dd8d5f446b9dd1710b4101a0d9ac362157c9af2f5777ed7365c09c13f2fd42c00252060105e92e44a390841c294d52dbcb0362cac21c5c0
   languageName: node
   linkType: hard
 
@@ -1760,9 +1760,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/require-utils@npm:^57.0.4":
-  version: 57.0.4
-  resolution: "@expo/require-utils@npm:57.0.4"
+"@expo/require-utils@npm:^57.0.5":
+  version: 57.0.5
+  resolution: "@expo/require-utils@npm:57.0.5"
   dependencies:
     "@babel/code-frame": "npm:^7.20.0"
     "@babel/core": "npm:^7.25.2"
@@ -1772,7 +1772,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/63ebc03ff9930af4c1680365b524ebe8aedab430273ad39a64c9afd5842e26fbfd7e38f10d5d2d2c6fc3849065ad1c9288a555596a1fd6fddb97c12e6844694f
+  checksum: 10c0/42841b76d6540098b664bee633e6ef9825ac84041e7c91045bd15a84d6aed4f2ad1f5027da263755a1e2dc2190283e7b7d6c4fb9ec3335c7a87016606b443754
   languageName: node
   linkType: hard
 
