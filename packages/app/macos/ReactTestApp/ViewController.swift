@@ -1,53 +1,79 @@
-import AppKit
+import SwiftUI
 
-final class ViewController: NSViewController {
-    override var representedObject: Any? {
-        didSet {
-            // Update the view, if already loaded.
-        }
-    }
-
-    #if !ENABLE_SINGLE_APP_MODE
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let label = Label(text: "Click anywhere to get started or open the React menu in the menu bar")
-        view.addSubview(label)
-
-        NSLayoutConstraint.activate(
-            NSLayoutConstraint.constraints(
-                withVisualFormat: "V:|-[label]-|",
-                options: [],
-                metrics: nil,
-                views: ["label": label]
-            )
-        )
-        NSLayoutConstraint.activate(
-            NSLayoutConstraint.constraints(
-                withVisualFormat: "H:|-[label]-|",
-                options: [],
-                metrics: nil,
-                views: ["label": label]
-            )
-        )
-    }
-
-    override func mouseDown(with event: NSEvent) {
-        NSMenu.popUpReactMenu(with: event, for: view)
-    }
-
-    override func rightMouseDown(with event: NSEvent) {
-        NSMenu.popUpReactMenu(with: event, for: view)
-    }
-
-    #endif // !ENABLE_SINGLE_APP_MODE
-}
+// MARK: - Multi-app content
 
 #if !ENABLE_SINGLE_APP_MODE
 
+struct MultiAppRootView: View {
+    @ObservedObject var presenter: MacOSComponentPresenter
+
+    var body: some View {
+        content
+            .navigationTitle(presenter.windowTitle)
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if let viewController = presenter.contentViewController {
+            HostedViewController(viewController: viewController)
+                .id(ObjectIdentifier(viewController))
+        } else {
+            ReactMenuPlaceholderView()
+        }
+    }
+}
+
+private struct HostedViewController: NSViewControllerRepresentable {
+    let viewController: NSViewController
+
+    func makeNSViewController(context: Context) -> NSViewController {
+        viewController
+    }
+
+    func updateNSViewController(_: NSViewController, context: Context) {}
+}
+
+private struct ReactMenuPlaceholderView: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView {
+        PlaceholderView(frame: .zero)
+    }
+
+    func updateNSView(_: NSView, context: Context) {}
+}
+
+private final class PlaceholderView: NSView {
+    private let label = Label(
+        text: "Click anywhere to get started or open the React menu in the menu bar"
+    )
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+
+        addSubview(label)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        NSMenu.popUpReactMenu(with: event, for: self)
+    }
+
+    override func rightMouseDown(with event: NSEvent) {
+        NSMenu.popUpReactMenu(with: event, for: self)
+    }
+}
+
 extension NSMenu {
     static func popUpReactMenu(with event: NSEvent, for view: NSView) {
+        // SwiftUI's "React" `CommandMenu` is backed by a real `NSMenu`.
         guard let reactMenu = NSApplication.shared.mainMenu?.item(withTitle: "React")?.submenu else {
             return
         }
@@ -89,3 +115,51 @@ final class Label: NSTextView {
 }
 
 #endif // !ENABLE_SINGLE_APP_MODE
+
+// MARK: - Single-app content
+
+#if ENABLE_SINGLE_APP_MODE
+
+struct SingleAppContentView: View {
+    let reactInstance: ReactInstance
+
+    var body: some View {
+        SingleAppRootView(reactInstance: reactInstance)
+            .navigationTitle(Self.windowTitle)
+    }
+
+    private static var windowTitle: String {
+        let manifest = Manifest.load()
+        if let slug = manifest.singleApp,
+           let component = manifest.components?.first(where: { $0.slug == slug })
+        {
+            return component.displayName ?? component.appKey
+        }
+        return manifest.displayName
+    }
+}
+
+private struct SingleAppRootView: NSViewRepresentable {
+    let reactInstance: ReactInstance
+
+    func makeNSView(context: Context) -> NSView {
+        let container = NSView()
+        guard let (rootView, _) = createReactRootView(reactInstance) else {
+            return container
+        }
+
+        rootView.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(rootView)
+        NSLayoutConstraint.activate([
+            rootView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            rootView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            rootView.topAnchor.constraint(equalTo: container.topAnchor),
+            rootView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+        ])
+        return container
+    }
+
+    func updateNSView(_: NSView, context: Context) {}
+}
+
+#endif // ENABLE_SINGLE_APP_MODE
