@@ -43,20 +43,30 @@ function run(
   }
 }
 
-function files(directory: string): string[] {
+function files(directory: string, pattern = "**/{*,.*}"): string[] {
+  // Include dotfiles and arbitrarily nested hidden directories, as readdir did.
+  // Follow directory links like recursive readdir, but return only regular files.
+  const options = {
+    cwd: directory,
+    withFileTypes: true as const,
+    followSymlinks: true,
+  };
   return fs
-    .readdirSync(directory, { recursive: true, withFileTypes: true })
+    .globSync([pattern, `**/.*/${pattern}`], options)
     .filter((entry) => entry.isFile())
     .map((entry) => path.join(entry.parentPath, entry.name));
 }
 
 function latestInstalled(directory: string): string {
-  assert(
-    fs.existsSync(directory),
-    `Required SDK directory not found: ${directory}`
-  );
-  const versions = fs
-    .readdirSync(directory, { withFileTypes: true })
+  let entries: fs.Dirent[];
+  try {
+    entries = fs.readdirSync(directory, { withFileTypes: true });
+  } catch (cause) {
+    throw new Error(`Cannot read SDK directory ${directory}: ${cause}`, {
+      cause,
+    });
+  }
+  const versions = entries
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
@@ -214,10 +224,13 @@ function validateAndroid() {
     project,
     "android/app/build/outputs/bundle/release/app-release.aab"
   );
-  assert(
-    fs.existsSync(aab) && fs.statSync(aab).size > 0,
-    `Release AAB not found: ${aab}`
-  );
+  let size: number;
+  try {
+    size = fs.statSync(aab).size;
+  } catch (cause) {
+    throw new Error(`Cannot inspect Release AAB ${aab}: ${cause}`, { cause });
+  }
+  assert(size > 0, `Release AAB is empty: ${aab}`);
 
   // Validate bundle structure, then generate the complete split APK set locally.
   // Explicit signing avoids bundletool's implicit debug-keystore fallback.
@@ -240,7 +253,7 @@ function validateAndroid() {
   run("unzip", ["-q", "-o", apkSet, "-d", apkDirectory]);
   run("unzip", ["-q", "-o", aab, "*/lib/*/*.so", "-d", bundleDirectory]);
 
-  const apks = files(apkDirectory).filter((file) => file.endsWith(".apk"));
+  const apks = files(apkDirectory, "**/{*,.*}.apk");
   assert(apks.length > 0, "bundletool generated no APKs");
   for (const apk of apks) {
     console.log(`Checking APK: ${apk}`);
@@ -251,7 +264,7 @@ function validateAndroid() {
 
   // Inspect all packaged 64-bit libraries, including dependencies: a failure
   // identifies an artifact/library, not necessarily RNTA-owned source code.
-  const libraries = files(bundleDirectory).filter((file) =>
+  const libraries = files(bundleDirectory, "**/{*,.*}.so").filter((file) =>
     /\/lib\/(?:arm64-v8a|x86_64)\/.*\.so$/.test(file)
   );
   assert(libraries.length > 0, "No 64-bit native libraries found");
@@ -283,10 +296,17 @@ function validateAndroid() {
 function validateIOS() {
   const archive = path.join(work, "Example.xcarchive");
   const applications = path.join(archive, "Products/Applications");
-  assert(fs.existsSync(applications), `Device archive not found: ${archive}`);
-  const apps = fs
-    .readdirSync(applications, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && entry.name.endsWith(".app"));
+  let entries: fs.Dirent[];
+  try {
+    entries = fs.readdirSync(applications, { withFileTypes: true });
+  } catch (cause) {
+    throw new Error(`Cannot read device archive ${archive}: ${cause}`, {
+      cause,
+    });
+  }
+  const apps = entries.filter(
+    (entry) => entry.isDirectory() && entry.name.endsWith(".app")
+  );
   assert(apps.length === 1, "Expected exactly one archived application");
   const app = path.join(applications, apps[0].name);
   const info = path.join(app, "Info.plist");
@@ -316,19 +336,16 @@ function validateIOS() {
       { capture: true }
     )
   );
-  assert(
-    Array.isArray(platforms) &&
-      platforms.length === 1 &&
-      platforms[0] === "iPhoneOS",
+  assert.deepEqual(
+    platforms,
+    ["iPhoneOS"],
     "Expected iPhoneOS as the packaged application platform"
   );
 
   // Lint every packaged plist and privacy manifest, including nested frameworks.
   // Syntax validation does not audit required-reason APIs or privacy disclosures.
   const packagedFiles = files(app);
-  const plists = packagedFiles.filter((file) =>
-    /\.(?:plist|xcprivacy)$/.test(file)
-  );
+  const plists = files(app, "**/{*,.*}.{plist,xcprivacy}");
   for (const plist of plists) {
     run("plutil", ["-lint", plist]);
   }
