@@ -183,7 +183,7 @@ jobs:
       - name: Install npm dependencies
         uses: ./.github/actions/yarn
       - name: Set up single-app release validation
-        run: bash scripts/validate-release-artifacts.sh "${{ matrix.platform }}" setup
+        run: node scripts/validate-release-artifacts.ts "${{ matrix.platform }}" setup
       - name: Install Pods
         if: ${{ matrix.platform == 'ios' }}
         uses: ./.github/actions/cocoapods
@@ -191,9 +191,9 @@ jobs:
           project-directory: ios
           working-directory: packages/app/example
       - name: Build single-app Release artifact
-        run: bash scripts/validate-release-artifacts.sh "${{ matrix.platform }}" build
+        run: node scripts/validate-release-artifacts.ts "${{ matrix.platform }}" build
       - name: Validate release artifact locally (no submission)
-        run: bash scripts/validate-release-artifacts.sh "${{ matrix.platform }}" validate
+        run: node scripts/validate-release-artifacts.ts "${{ matrix.platform }}" validate
     timeout-minutes: 60
   ios:
     name: "iOS"
