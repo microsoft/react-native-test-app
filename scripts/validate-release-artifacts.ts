@@ -6,6 +6,12 @@ import { randomBytes } from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { parseArgs } from "node:util";
+import { jsonFromPlist } from "../packages/app/ios/utils.mjs";
+import { readJSONFile, readTextFile } from "../packages/app/scripts/helpers.js";
+import {
+  mkdir_p,
+  writeJSONFile,
+} from "../packages/app/scripts/utils/filesystem.mjs";
 
 // Submission-free release artifact validation for the single-app example.
 // Usage: node scripts/validate-release-artifacts.ts android|ios setup|build|validate
@@ -94,15 +100,14 @@ function androidTools() {
 }
 
 function setup() {
-  fs.mkdirSync(work, { recursive: true });
-  run("jq", ["--version"]);
+  // Shared mkdir_p uses 0755 (subject to umask); credential files stay private.
+  mkdir_p(work);
 
   // Set single-app mode before Gradle/Pods generate their native configuration.
   const manifest = path.join(project, "app.json");
-  fs.writeFileSync(
-    manifest,
-    run("jq", ['.singleApp = "Example"', manifest], { capture: true }) + "\n"
-  );
+  const appConfig = readJSONFile(manifest);
+  appConfig.singleApp = "Example";
+  writeJSONFile(manifest, appConfig);
 
   if (platform === "android") {
     // Homebrew owns dependency resolution and checksum verification.
@@ -112,9 +117,7 @@ function setup() {
     run("brew", ["list", "--versions", "bundletool"]);
     run("bundletool", ["version"]);
     for (const directory of [buildTools, ndk]) {
-      console.log(
-        fs.readFileSync(path.join(directory, "source.properties"), "utf8")
-      );
+      console.log(readTextFile(path.join(directory, "source.properties")));
     }
     run(apksigner, ["version"]);
     run(readelf, ["--version"]);
@@ -248,8 +251,8 @@ function validateAndroid() {
     `--key-pass=file:${path.join(work, "signing-password")}`,
     "--overwrite",
   ]);
-  fs.mkdirSync(apkDirectory, { recursive: true });
-  fs.mkdirSync(bundleDirectory, { recursive: true });
+  mkdir_p(apkDirectory);
+  mkdir_p(bundleDirectory);
   run("unzip", ["-q", "-o", apkSet, "-d", apkDirectory]);
   run("unzip", ["-q", "-o", aab, "*/lib/*/*.so", "-d", bundleDirectory]);
 
@@ -315,12 +318,14 @@ function validateIOS() {
     "RNTA privacy manifest is missing"
   );
   run("plutil", ["-lint", path.join(archive, "Info.plist"), info]);
-  const executable = path.join(
-    app,
-    run("plutil", ["-extract", "CFBundleExecutable", "raw", "-o", "-", info], {
-      capture: true,
-    })
+  // Read the packaged plist once using the existing plutil-backed helper.
+  const infoPlist = jsonFromPlist(info);
+  const executableName = infoPlist.CFBundleExecutable;
+  assert(
+    typeof executableName === "string" && executableName.length > 0,
+    "Expected a non-empty CFBundleExecutable string"
   );
+  const executable = path.join(app, executableName);
   assert(
     fs.existsSync(executable),
     "Packaged application executable is missing"
@@ -329,15 +334,8 @@ function validateIOS() {
     run("file", ["-b", executable], { capture: true }).includes("Mach-O"),
     "Application executable is not Mach-O"
   );
-  const platforms: unknown = JSON.parse(
-    run(
-      "plutil",
-      ["-extract", "CFBundleSupportedPlatforms", "json", "-o", "-", info],
-      { capture: true }
-    )
-  );
   assert.deepEqual(
-    platforms,
+    infoPlist.CFBundleSupportedPlatforms,
     ["iPhoneOS"],
     "Expected iPhoneOS as the packaged application platform"
   );
