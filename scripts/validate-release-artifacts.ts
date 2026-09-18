@@ -1,9 +1,11 @@
 #!/usr/bin/env -S node
 
-import { spawnSync } from "node:child_process";
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { parseArgs } from "node:util";
 
 // Submission-free release artifact validation for the single-app example.
 // Usage: node scripts/validate-release-artifacts.ts android|ios setup|build|validate
@@ -14,56 +16,31 @@ import * as path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
 const project = path.join(root, "packages/app/example");
-const [platform, phase] = process.argv.slice(2);
-const runnerTemp = process.env.RUNNER_TEMP;
-const work = path.join(runnerTemp || "", `rnta-release-${platform}`);
-
-function check(condition: unknown, message: string): asserts condition {
-  if (!condition) {
-    throw new Error(message);
-  }
-}
-
-// Resolve executables without a shell, including absolute SDK tool paths.
-function requireTool(tool: string): string {
-  const candidates = path.isAbsolute(tool)
-    ? [tool]
-    : (process.env.PATH || "")
-        .split(path.delimiter)
-        .map((p) => path.join(p, tool));
-  for (const candidate of candidates) {
-    try {
-      fs.accessSync(candidate, fs.constants.X_OK);
-      if (fs.statSync(candidate).isFile()) {
-        return candidate;
-      }
-    } catch {
-      // Continue searching PATH; report one clear error if no executable exists.
-    }
-  }
-  throw new Error(`Required tool not found: ${tool}`);
-}
+let platform: string;
+let work: string;
 
 // Pass arguments directly, never through shell expansion. Stream build logs;
-// capture only small tool outputs needed for validation and check every exit.
+// capture only small tool outputs needed for validation. execFileSync resolves
+// PATH and throws on launch failures, nonzero exits, and signals.
 function run(
   tool: string,
   args: string[],
   { cwd = root, capture = false } = {}
 ): string {
-  const result = spawnSync(requireTool(tool), args, {
-    cwd,
-    encoding: "utf8",
-    stdio: ["ignore", capture ? "pipe" : "inherit", "inherit"],
-  });
-  if (result.error) {
-    throw result.error;
+  try {
+    return (
+      execFileSync(tool, args, {
+        cwd,
+        encoding: "utf8",
+        stdio: ["ignore", capture ? "pipe" : "inherit", "inherit"],
+      })?.trim() || ""
+    );
+  } catch (cause) {
+    // ENOENT can mean a missing executable or working directory. Preserve the
+    // original diagnostic and cwd rather than assuming the tool is missing.
+    const message = cause instanceof Error ? cause.message : String(cause);
+    throw new Error(`${tool} failed in ${cwd}: ${message}`, { cause });
   }
-  check(
-    result.status === 0,
-    `${tool} failed (${result.signal || `exit ${result.status}`})`
-  );
-  return result.stdout?.trim() || "";
 }
 
 function files(directory: string): string[] {
@@ -74,7 +51,7 @@ function files(directory: string): string[] {
 }
 
 function latestInstalled(directory: string): string {
-  check(
+  assert(
     fs.existsSync(directory),
     `Required SDK directory not found: ${directory}`
   );
@@ -84,29 +61,29 @@ function latestInstalled(directory: string): string {
     .map((entry) => entry.name)
     .sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
   const version = versions.at(-1);
-  check(version, `No installed tools found in ${directory}`);
+  assert(version, `No installed tools found in ${directory}`);
   return path.join(directory, version);
 }
 
 function androidTools() {
   // Select installed SDK/NDK tools, never sdkmanager or a downloaded toolchain.
   const sdk = process.env.ANDROID_HOME || process.env.ANDROID_SDK_ROOT;
-  check(sdk, "Android SDK build-tools and NDK are required");
+  assert(sdk, "Android SDK build-tools and NDK are required");
   const buildTools = latestInstalled(path.join(sdk, "build-tools"));
   const ndk = latestInstalled(path.join(sdk, "ndk"));
   return {
     buildTools,
     ndk,
-    apksigner: requireTool(path.join(buildTools, "apksigner")),
-    zipalign: requireTool(path.join(buildTools, "zipalign")),
-    readelf: requireTool(
-      path.join(ndk, "toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf")
+    apksigner: path.join(buildTools, "apksigner"),
+    zipalign: path.join(buildTools, "zipalign"),
+    readelf: path.join(
+      ndk,
+      "toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf"
     ),
   };
 }
 
 function setup() {
-  requireTool("yarn");
   fs.mkdirSync(work, { recursive: true });
   run("jq", ["--version"]);
 
@@ -118,9 +95,6 @@ function setup() {
   );
 
   if (platform === "android") {
-    for (const tool of ["brew", "java", "keytool", "unzip"]) {
-      requireTool(tool);
-    }
     // Homebrew owns dependency resolution and checksum verification.
     run("brew", ["install", "bundletool"]);
     const { buildTools, ndk, apksigner, readelf } = androidTools();
@@ -174,9 +148,6 @@ function setup() {
       "require('./packages/app/android/gradle-wrapper.js').configureGradleWrapper('packages/app/example/android')",
     ]);
   } else {
-    for (const tool of ["xcodebuild", "xcrun", "plutil", "file"]) {
-      requireTool(tool);
-    }
     // Keep the runner-selected Xcode; report the SDK and tools used by it.
     run("xcodebuild", ["-version"]);
     run("xcrun", ["--sdk", "iphoneos", "--show-sdk-version"]);
@@ -238,14 +209,12 @@ function build() {
 }
 
 function validateAndroid() {
-  requireTool("bundletool");
-  requireTool("unzip");
   const { apksigner, zipalign, readelf } = androidTools();
   const aab = path.join(
     project,
     "android/app/build/outputs/bundle/release/app-release.aab"
   );
-  check(
+  assert(
     fs.existsSync(aab) && fs.statSync(aab).size > 0,
     `Release AAB not found: ${aab}`
   );
@@ -272,7 +241,7 @@ function validateAndroid() {
   run("unzip", ["-q", "-o", aab, "*/lib/*/*.so", "-d", bundleDirectory]);
 
   const apks = files(apkDirectory).filter((file) => file.endsWith(".apk"));
-  check(apks.length > 0, "bundletool generated no APKs");
+  assert(apks.length > 0, "bundletool generated no APKs");
   for (const apk of apks) {
     console.log(`Checking APK: ${apk}`);
     run(apksigner, ["verify", "--verbose", "--print-certs", apk]);
@@ -285,7 +254,7 @@ function validateAndroid() {
   const libraries = files(bundleDirectory).filter((file) =>
     /\/lib\/(?:arm64-v8a|x86_64)\/.*\.so$/.test(file)
   );
-  check(libraries.length > 0, "No 64-bit native libraries found");
+  assert(libraries.length > 0, "No 64-bit native libraries found");
   for (const library of libraries) {
     console.log(`Checking 16 KB ELF LOAD alignment: ${library}`);
     const headers = run(readelf, ["--program-headers", "--wide", library], {
@@ -297,10 +266,10 @@ function validateAndroid() {
       .split("\n")
       .map((line) => line.trim().split(/\s+/))
       .filter(([type]) => type === "LOAD");
-    check(segments.length > 0, `No ELF LOAD segments found: ${library}`);
+    assert(segments.length > 0, `No ELF LOAD segments found: ${library}`);
     for (const segment of segments) {
       const alignment = segment.at(-1);
-      check(
+      assert(
         Number(alignment) >= 16384,
         `ELF LOAD alignment below 16 KB: ${library} (${alignment})`
       );
@@ -312,19 +281,16 @@ function validateAndroid() {
 }
 
 function validateIOS() {
-  for (const tool of ["plutil", "xcrun", "file"]) {
-    requireTool(tool);
-  }
   const archive = path.join(work, "Example.xcarchive");
   const applications = path.join(archive, "Products/Applications");
-  check(fs.existsSync(applications), `Device archive not found: ${archive}`);
+  assert(fs.existsSync(applications), `Device archive not found: ${archive}`);
   const apps = fs
     .readdirSync(applications, { withFileTypes: true })
     .filter((entry) => entry.isDirectory() && entry.name.endsWith(".app"));
-  check(apps.length === 1, "Expected exactly one archived application");
+  assert(apps.length === 1, "Expected exactly one archived application");
   const app = path.join(applications, apps[0].name);
   const info = path.join(app, "Info.plist");
-  check(
+  assert(
     fs.existsSync(path.join(app, "PrivacyInfo.xcprivacy")),
     "RNTA privacy manifest is missing"
   );
@@ -335,11 +301,11 @@ function validateIOS() {
       capture: true,
     })
   );
-  check(
+  assert(
     fs.existsSync(executable),
     "Packaged application executable is missing"
   );
-  check(
+  assert(
     run("file", ["-b", executable], { capture: true }).includes("Mach-O"),
     "Application executable is not Mach-O"
   );
@@ -350,7 +316,7 @@ function validateIOS() {
       { capture: true }
     )
   );
-  check(
+  assert(
     Array.isArray(platforms) &&
       platforms.length === 1 &&
       platforms[0] === "iPhoneOS",
@@ -377,7 +343,7 @@ function validateIOS() {
     const architectures = run("xcrun", ["lipo", "-archs", binary], {
       capture: true,
     });
-    check(
+    assert(
       architectures === "arm64",
       `Unexpected device architectures in ${binary}: ${architectures}`
     );
@@ -395,7 +361,7 @@ function validateIOS() {
         }
       }
       if (command === "LC_BUILD_VERSION" && key === "platform") {
-        check(
+        assert(
           value === "2" || value === "IOS",
           `Non-iOS device binary platform: ${binary}`
         );
@@ -403,25 +369,34 @@ function validateIOS() {
         found = true;
       }
     }
-    check(found, `Non-iOS device binary platform: ${binary}`);
+    assert(found, `Non-iOS device binary platform: ${binary}`);
     binaryCount += 1;
   }
-  check(binaryCount > 0, "No packaged Mach-O binaries found");
+  assert(binaryCount > 0, "No packaged Mach-O binaries found");
   console.log(
     `Validated ${plists.length} plists/privacy manifests and ${binaryCount} device binaries.`
   );
 }
 
 function main() {
-  check(
+  const { positionals } = parseArgs({ allowPositionals: true });
+  assert(
+    positionals.length === 2,
+    "Expected two arguments: platform and phase"
+  );
+  const [selectedPlatform, phase] = positionals;
+  platform = selectedPlatform;
+  assert(
     platform === "android" || platform === "ios",
     "Expected platform: android or ios"
   );
-  check(
+  assert(
     phase === "setup" || phase === "build" || phase === "validate",
     "Expected phase: setup, build, or validate"
   );
-  check(runnerTemp, "RUNNER_TEMP must point to a disposable CI directory");
+  const runnerTemp = process.env.RUNNER_TEMP;
+  assert(runnerTemp, "RUNNER_TEMP must point to a disposable CI directory");
+  work = path.join(runnerTemp, `rnta-release-${platform}`);
   console.log(`Node.js ${process.version}`);
   switch (phase) {
     case "setup":
