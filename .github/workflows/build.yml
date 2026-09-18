@@ -648,6 +648,43 @@ jobs:
           retention-days: 14
           overwrite: true
     timeout-minutes: 60
+  validate-artifacts:
+    name: "Validate build artifacts [${{ matrix.platform }}]"
+    permissions: {}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: android
+            runner: macos-26 #ubuntu-24.04
+          - platform: ios
+            runner: macos-26
+    runs-on: ${{ matrix.runner }}
+    if: ${{ github.event_name != 'schedule' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+        with:
+          platform: ${{ matrix.platform }}
+          project-root: packages/app/example
+          cache-key-prefix: validate-artifacts
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
+      - name: Set up single-app release validation
+        run: node scripts/validate-release-artifacts.ts setup ${{ matrix.platform }}
+      - name: Install Pods
+        if: ${{ matrix.platform == 'ios' }}
+        uses: ./.github/actions/cocoapods
+        with:
+          project-directory: ios
+          working-directory: packages/app/example
+      - name: Build single-app release artifact
+        run: node scripts/validate-release-artifacts.ts build ${{ matrix.platform }}
+      - name: Validate release artifact (local, no submission)
+        run: node scripts/validate-release-artifacts.ts validate ${{ matrix.platform }}
+    timeout-minutes: 60
   release:
     permissions:
       contents: write # create releases (Nx Release)
