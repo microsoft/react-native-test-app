@@ -158,6 +158,43 @@ jobs:
         with:
           version: nightly
     timeout-minutes: 60
+  release-artifacts:
+    name: "${{ matrix.platform }} [single-app Release artifact validation]"
+    permissions: {}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: android
+            runner: ubuntu-24.04
+          - platform: ios
+            runner: macos-26
+    runs-on: ${{ matrix.runner }}
+    if: ${{ github.event_name != 'schedule' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up toolchain
+        uses: ./.github/actions/setup-toolchain
+        with:
+          platform: ${{ matrix.platform }}
+          project-root: packages/app/example
+          cache-key-prefix: release-artifacts
+      - name: Install npm dependencies
+        uses: ./.github/actions/yarn
+      - name: Set up single-app release validation
+        run: bash scripts/validate-release-artifacts.sh "${{ matrix.platform }}" setup
+      - name: Install Pods
+        if: ${{ matrix.platform == 'ios' }}
+        uses: ./.github/actions/cocoapods
+        with:
+          project-directory: ios
+          working-directory: packages/app/example
+      - name: Build single-app Release artifact
+        run: bash scripts/validate-release-artifacts.sh "${{ matrix.platform }}" build
+      - name: Validate release artifact locally (no submission)
+        run: bash scripts/validate-release-artifacts.sh "${{ matrix.platform }}" validate
+    timeout-minutes: 60
   ios:
     name: "iOS"
     permissions: {}
