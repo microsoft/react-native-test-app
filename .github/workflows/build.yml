@@ -93,13 +93,8 @@ jobs:
       - name: CocoaPods
         if: ${{ runner.os == 'macOS' }}
         run: |
-          echo "::add-matcher::.github/rubocop.json"
-          yarn lint:rb
-          echo "::remove-matcher owner=rubocop::"
-          echo "::add-matcher::.github/minitest.json"
-          yarn test:rb
-          echo "::remove-matcher owner=minitest::"
-        working-directory: packages/app
+          node --run lint:rb -- --format github
+          yarn workspace react-native-test-app test:rb
       - name: Populate Gradle cache
         uses: ./.github/actions/gradle
         with:
@@ -131,14 +126,13 @@ jobs:
         run: |
           brew install ktlint
           echo "::add-matcher::.github/ktlint.json"
-          yarn lint:kt
+          node --run lint:kt
           echo "::remove-matcher owner=ktlint::"
-        working-directory: packages/app
       - name: SwiftFormat
         if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         run: |
           echo "::add-matcher::.github/swiftformat.json"
-          yarn format:swift --lint
+          node --run format:swift -- --lint
           echo "::remove-matcher owner=swiftformat::"
         working-directory: packages/app
       - name: SwiftLint

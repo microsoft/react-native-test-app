@@ -23,9 +23,11 @@
   "scripts": {
     "format": "nx run-many --target format:c,format:js,format:swift",
     "format:js": "oxfmt '**/README.md' '**/package.json' '*.{cjs,cts,js,mjs,mts,ts,tsx,yml}' '.github/**/*.json' 'CONTRIBUTING.md' 'nx.json' '!packages/app/package.json'",
-    "lint": "nx run-many --target lint:js,lint:kt,lint:rb,lint:swift",
+    "lint": "nx run-many --target lint:js,lint:swift && nx run-many --target lint:kt,lint:rb --projects @microsoft/root",
     "lint:commit": "git log --format='%s' origin/trunk..HEAD | tail -1 | npx @rnx-kit/commitlint-lite@2.0.0",
     "lint:js": "oxlint $(git ls-files 'scripts/*.[cm][jt]s' 'scripts/*.[jt]s')",
+    "lint:kt": "ktlint --relative 'packages/app/android/app/src/**/*.kt'",
+    "lint:rb": "bundle exec rubocop packages/app",
     "release-notes": "node scripts/release-notes.ts",
     "rnx-align-deps": "rnx-align-deps --exclude-packages @microsoft/root,@rnx-kit/react-native-template-web,react-native-test-app",
     "show-affected": "node scripts/affected.ts"
