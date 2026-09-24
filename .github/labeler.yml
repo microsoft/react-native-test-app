@@ -16,6 +16,7 @@
           - packages/app/scripts/init.mjs
           - packages/app/scripts/template.mjs
           - packages/app/test-app.gradle
+          - scripts/install-test-template.sh
 "platform: iOS":
   - changed-files:
       - any-glob-to-any-file:
@@ -37,6 +38,7 @@
           - packages/app/scripts/template.mjs
           - packages/app/scripts/build/xcodebuild.sh
           - packages/app/test_app.rb
+          - scripts/install-test-template.sh
 "platform: macOS":
   - changed-files:
       - any-glob-to-any-file:
@@ -88,6 +90,7 @@
           - packages/app/scripts/build/xcodebuild.sh
           - packages/app/visionos/**/*
           - packages/example-visionos/**/*
+          - scripts/install-test-template.sh
 "platform: Windows":
   - changed-files:
       - any-glob-to-any-file:
@@ -106,3 +109,4 @@
           - packages/app/scripts/template.mjs
           - packages/app/windows/**/*
           - packages/example-windows/**/*
+          - scripts/install-test-template.sh

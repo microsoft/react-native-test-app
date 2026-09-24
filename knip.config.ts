@@ -28,7 +28,7 @@ export default {
   metro: false,
   workspaces: {
     ".": {
-      entry: ["scripts/*.js", "scripts/*.ts"],
+      entry: ["scripts/*.ts"],
       ignoreDependencies: ["@nx/js", "@yarnpkg/*"],
     },
     "packages/app": {

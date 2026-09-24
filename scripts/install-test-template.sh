@@ -40,7 +40,9 @@ v=$(cat packages/app/example/package.json | jq '.dependencies["react-native"]' |
 node packages/app/scripts/init.mjs --destination template-example --name TemplateExample --version $v $@
 
 pushd template-example 1> /dev/null
-node "$script_dir/copy-yarnrc.js" ../.yarnrc.yml
+
+# The rest of the settings are inherited from the root `.yarnrc.yml`
+echo "nodeLinker: node-modules" > .yarnrc.yml
 
 # Workaround for NuGet publishing failures
 cp ../yarn.lock .
