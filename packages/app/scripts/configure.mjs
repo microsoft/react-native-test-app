@@ -436,7 +436,7 @@ export function updatePackageManifest(
 
   const { name: rntaName, version: rntaVersion } = rntaManifest;
   manifest["devDependencies"] = mergeObjects(manifest["devDependencies"], {
-    "@rnx-kit/metro-config": "^2.2.4",
+    "@rnx-kit/metro-config": "^2.2.5",
     [rntaName]: `^${rntaVersion}`,
   });
 
