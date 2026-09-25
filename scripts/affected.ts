@@ -1,7 +1,7 @@
 import { getBaseCommit, getChangedFiles, git } from "@rnx-kit/tools-git";
-import * as yaml from "js-yaml";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import * as yaml from "yaml";
 
 type MatchChangedFiles = { "any-glob-to-any-file": string[] };
 type Match = { "changed-files": MatchChangedFiles[] };
@@ -18,7 +18,7 @@ function clean(platforms: string[]): string[] {
  */
 function loadLabels(): Record<string, Match[] | undefined> {
   const yml = fs.readFileSync(".github/labeler.yml", { encoding: "utf-8" });
-  return yaml.load(yml) as Record<string, Match[] | undefined>;
+  return yaml.parse(yml) as Record<string, Match[] | undefined>;
 }
 
 /**
