@@ -30,7 +30,7 @@
     "@rnx-kit/cli": "catalog:",
     "@rnx-kit/metro-config": "catalog:",
     "@rnx-kit/polyfills": "catalog:",
-    "@types/react": "~19.1.0",
+    "@types/react": "~19.3.0",
     "react-native-test-app": "workspace:*"
   },
   "rnx-kit": {
