@@ -1,0 +1,12 @@
+disabled_rules:
+  - function_body_length
+  - opening_brace # Conflicts with SwiftFormat
+  - trailing_comma
+included:
+  - packages/app
+excluded:
+  - packages/app/example/*/DerivedData/
+  - packages/app/example/*/Pods/
+  - packages/app/example/*/build/
+  - packages/app/example/node_modules/
+  - packages/app/node_modules/
