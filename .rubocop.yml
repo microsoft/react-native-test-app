@@ -62,8 +62,8 @@ Style/HashTransformValues:
 
 Style/OneClassPerFile:
   Exclude:
-    - ios/test_app.rb
-    - test/test_test_app.rb
+    - packages/app/ios/test_app.rb
+    - packages/app/test/test_test_app.rb
 
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
