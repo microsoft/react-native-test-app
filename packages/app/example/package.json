@@ -37,7 +37,7 @@
     "@rnx-kit/react-native-template-web": "workspace:*",
     "@rnx-kit/tsconfig": "catalog:",
     "@types/node": "catalog:",
-    "@types/react": "~19.2.0",
+    "@types/react": "~19.3.0",
     "@wdio/types": "^9.30.1",
     "appium": "^3.6.0",
     "appium-uiautomator2-driver": "^8.1.0",
