@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 10
   cacheKey: 10c0
 
 "@appium/base-driver@npm:10.7.2, @appium/base-driver@npm:^10.0.0-rc.1, @appium/base-driver@npm:^10.0.0-rc.2, @appium/base-driver@npm:^10.3.0":
