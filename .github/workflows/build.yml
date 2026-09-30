@@ -131,9 +131,7 @@ jobs:
       - name: SwiftFormat
         if: ${{ github.event_name == 'pull_request' && runner.os == 'macOS' }}
         run: |
-          echo "::add-matcher::.github/swiftformat.json"
-          node --run format:swift -- --lint
-          echo "::remove-matcher owner=swiftformat::"
+          node --run format:swift -- --lint --reporter github-actions-log
         working-directory: packages/app
       - name: SwiftLint
         if: ${{ runner.os == 'macOS' }}
