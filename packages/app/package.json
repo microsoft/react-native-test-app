@@ -83,7 +83,7 @@
     "test": "node scripts/internal/test.mts",
     "test:js": "node --no-warnings --test $(git ls-files '*.test.mts')",
     "test:matrix": "node scripts/testing/test-matrix.mts",
-    "test:rb": "bundle exec ruby -Ilib:test -e \"Dir.glob('./test/test_*.rb').each { |file| require(file) }\""
+    "test:rb": "bundle exec ruby -Ilib:test -rgithub_annotations -e \"Dir.glob('./test/test_*.rb').each { |file| require(file) }\""
   },
   "dependencies": {
     "@rnx-kit/react-native-host": "^0.5.21",
