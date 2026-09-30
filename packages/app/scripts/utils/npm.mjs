@@ -66,10 +66,11 @@ async function fetchPackageTarballURL(pkg, version) {
     return specific.dist.tarball;
   }
 
+  const isPrerelease = version.includes("-");
   const versions = Object.keys(info.versions);
   for (let i = versions.length - 1; i >= 0; --i) {
     const v = versions[i];
-    if (v.startsWith(version)) {
+    if (v.startsWith(version) && v.includes("-") === isPrerelease) {
       return info.versions[v].dist.tarball;
     }
   }

@@ -414,7 +414,7 @@ jobs:
       - name: Initialize test app
         uses: ./.github/actions/init-test-app
         with:
-          arguments: -p macos
+          arguments: --version 0.81 -p macos
       - name: Bundle JavaScript
         run: |
           yarn build:macos
