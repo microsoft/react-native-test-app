@@ -6,10 +6,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Disable minimum age gate
-      run: |
-        yarn config unset npmMinimalAgeGate
-      shell: bash
     - name: Install
       run: |
         scripts/install-test-template.sh --version highest ${{ inputs.arguments }}
