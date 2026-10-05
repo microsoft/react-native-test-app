@@ -4553,15 +4553,15 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/align-deps@npm:^4.0.1, @rnx-kit/align-deps@npm:^4.0.6":
-  version: 4.0.6
-  resolution: "@rnx-kit/align-deps@npm:4.0.6"
+  version: 4.2.0
+  resolution: "@rnx-kit/align-deps@npm:4.2.0"
   dependencies:
     "@rnx-kit/types-kit-config": "npm:^1.0.1"
     "@rnx-kit/types-node": "npm:^1.0.0"
     oxc-resolver: "npm:^11.0.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/91af4ac1d292a681ab716b80bdd12bb7ce0678f2f8e7049bc9a11ee0c704e4e0abcd9883f0b9aea0e227cdef4c0a233e143d1f7753900056c566a454c329dd1a
+  checksum: 10c0/8d8b4ce40af32c5770987f48451f81879c89ed945e826852dcb035fcfda41690d20b938bfff7dbd5a51d9dc084886ec7729657722ff631b096d7e7bde403f5d6
   languageName: node
   linkType: hard
 
