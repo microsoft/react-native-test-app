@@ -181,7 +181,9 @@ async function resolveCommonDependencies(
       ];
     })();
 
-  const rncli = devDependencies["@react-native-community/cli"] ?? "latest";
+  const rncli =
+    devDependencies["@react-native-community/cli"] ??
+    (v === "nightly" ? "next" : "latest");
   const rncliAndroid =
     devDependencies["@react-native-community/cli-platform-android"] ?? rncli;
   const rncliIOS =
