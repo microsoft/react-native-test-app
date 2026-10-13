@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { Feature } from "./Feature";
 import { useStyles } from "./styles";
 
 function useLocalStorageStatus() {
-  const [localValue, setLocalValue] = useState("Checking");
-  useEffect(() => {
-    const key = "sample/local-storage";
-    window?.localStorage?.setItem(key, "Available");
-    setLocalValue(window?.localStorage?.getItem(key) ?? "Error");
-    return () => window?.localStorage?.removeItem(key);
-  }, []);
-  return localValue;
+  const key = "sample/local-storage";
+  window?.localStorage?.setItem(key, "Available");
+  const value = window?.localStorage?.getItem(key) ?? "Error";
+  window?.localStorage?.removeItem(key);
+  return value;
 }
 
 export function LocalStorageStatus(): React.ReactElement {

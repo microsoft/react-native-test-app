@@ -28,19 +28,19 @@ export function RemoteDebugging(): React.ReactElement | null {
 
   // Remote debugging was removed in 0.79:
   // https://github.com/react/react-native/commit/9aae84a688b5af87faf4b68676b6357de26f797f
+  let isAsyncDebugging = false;
   try {
-    const {
-      isAsyncDebugging,
-    } = require("react-native/Libraries/Utilities/DebugEnvironment");
-
-    return (
-      <View style={styles.group}>
-        <Feature value={isAsyncDebugging} onValueChange={setRemoteDebugging}>
-          Remote Debugging
-        </Feature>
-      </View>
-    );
+    const debugEnv = require("react-native/Libraries/Utilities/DebugEnvironment");
+    isAsyncDebugging = debugEnv.isAsyncDebugging;
   } catch (_) {
     return null;
   }
+
+  return (
+    <View style={styles.group}>
+      <Feature value={isAsyncDebugging} onValueChange={setRemoteDebugging}>
+        Remote Debugging
+      </Feature>
+    </View>
+  );
 }
