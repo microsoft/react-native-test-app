@@ -2519,7 +2519,7 @@ __metadata:
   resolution: "@microsoft/root@workspace:."
   dependencies:
     "@nx/js": "npm:^22.0.0"
-    "@rnx-kit/align-deps": "npm:^4.0.1"
+    "@rnx-kit/align-deps": "npm:^5.0.0"
     "@rnx-kit/lint-lockfile": "npm:^0.2.2"
     "@rnx-kit/oxlint-config": "npm:^1.0.3"
     "@rnx-kit/tools-git": "npm:^0.1.1"
@@ -4552,25 +4552,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/align-deps@npm:^4.0.1, @rnx-kit/align-deps@npm:^4.0.6":
-  version: 4.2.0
-  resolution: "@rnx-kit/align-deps@npm:4.2.0"
+"@rnx-kit/align-deps@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@rnx-kit/align-deps@npm:5.0.0"
   dependencies:
-    "@rnx-kit/types-kit-config": "npm:^1.0.1"
-    "@rnx-kit/types-node": "npm:^1.0.0"
+    "@rnx-kit/types-kit-config": "npm:^2.0.0"
+    "@rnx-kit/types-node": "npm:^1.0.1"
     oxc-resolver: "npm:^11.0.0"
   bin:
     rnx-align-deps: lib/index.js
-  checksum: 10c0/8d8b4ce40af32c5770987f48451f81879c89ed945e826852dcb035fcfda41690d20b938bfff7dbd5a51d9dc084886ec7729657722ff631b096d7e7bde403f5d6
+  checksum: 10c0/9a24f6a9dad77de3c921f45a8dcc6a34d4fed793f011236c46c2c85c6b51f07f95cdd0b51d397cf52950e20645964112203e05655441ec4756ecc058caf64857
   languageName: node
   linkType: hard
 
 "@rnx-kit/cli@npm:^2.0.1":
-  version: 2.0.4
-  resolution: "@rnx-kit/cli@npm:2.0.4"
+  version: 2.0.5
+  resolution: "@rnx-kit/cli@npm:2.0.5"
   dependencies:
-    "@rnx-kit/align-deps": "npm:^4.0.6"
-    "@rnx-kit/config": "npm:^0.9.1"
+    "@rnx-kit/align-deps": "npm:^5.0.0"
+    "@rnx-kit/config": "npm:^1.0.0"
     "@rnx-kit/console": "npm:^3.0.0"
     "@rnx-kit/metro-plugin-cyclic-dependencies-detector": "npm:^3.0.1"
     "@rnx-kit/metro-plugin-duplicates-checker": "npm:^4.0.1"
@@ -4586,8 +4586,8 @@ __metadata:
     "@rnx-kit/tools-node": "npm:^3.0.6"
     "@rnx-kit/tools-react-native": "npm:^2.3.9"
     "@rnx-kit/types-bundle-config": "npm:^1.0.1"
-    "@rnx-kit/types-kit-config": "npm:^1.0.1"
-    "@rnx-kit/types-node": "npm:^1.0.0"
+    "@rnx-kit/types-kit-config": "npm:^2.0.0"
+    "@rnx-kit/types-node": "npm:^1.0.1"
     commander: "npm:^11.1.0"
     ora: "npm:^5.4.1"
     qrcode: "npm:^1.5.0"
@@ -4601,23 +4601,21 @@ __metadata:
       optional: true
   bin:
     rnx-cli: bin/rnx-cli.cjs
-  checksum: 10c0/dbb93e75507f03494b6fe9bfce6d7fa6171606fed3dd46a33b9d2bf1c5a1cae8f9805e3a6c6ce561912cdd2bb967f68bc7b66313e453385058df2cff16c66d3f
+  checksum: 10c0/ad077b7dede433d868768ee76823ae23717925aa51728c03b123e62701b465923a15ddceb0f20270ef911623fc817f43bb4ddf8048b393e24db11500cfe72b0c
   languageName: node
   linkType: hard
 
-"@rnx-kit/config@npm:^0.9.0, @rnx-kit/config@npm:^0.9.1":
-  version: 0.9.1
-  resolution: "@rnx-kit/config@npm:0.9.1"
+"@rnx-kit/config@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@rnx-kit/config@npm:1.0.0"
   dependencies:
-    "@rnx-kit/console": "npm:^3.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.6"
     "@rnx-kit/tools-packages": "npm:^0.1.3"
     "@rnx-kit/types-bundle-config": "npm:^1.0.0"
-    "@rnx-kit/types-kit-config": "npm:^1.0.0"
-    "@rnx-kit/types-node": "npm:^1.0.0"
+    "@rnx-kit/types-kit-config": "npm:^2.0.0"
+    "@rnx-kit/types-node": "npm:^1.0.1"
     lodash.merge: "npm:^4.6.2"
-    semver: "npm:^7.0.0"
-  checksum: 10c0/8ecda158afc9debc2f49fbf265f8e14d70da4506a06f36fc9fd64edb7be61ba2bb4720177a2f9a4ceb05958e710f55aa5690c88edf089eb7826810575d96fd21
+  checksum: 10c0/2da4af7a1a23662671a02415ad4180308c990ba1510960e519581c028e50924aa6ff6442e92867afb93ca02763359234d35bf32d2386b0f25981852b0a7e037e
   languageName: node
   linkType: hard
 
@@ -4644,26 +4642,26 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/lint-lockfile@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "@rnx-kit/lint-lockfile@npm:0.2.2"
+  version: 0.2.3
+  resolution: "@rnx-kit/lint-lockfile@npm:0.2.3"
   dependencies:
-    "@rnx-kit/config": "npm:^0.9.0"
-    "@rnx-kit/tools-workspaces": "npm:^0.2.3"
-    "@rnx-kit/types-kit-config": "npm:^1.0.0"
+    "@rnx-kit/config": "npm:^1.0.0"
+    "@rnx-kit/tools-workspaces": "npm:^0.2.6"
+    "@rnx-kit/types-kit-config": "npm:^2.0.0"
     js-yaml: "npm:^5.2.3"
   bin:
     lint-lockfile: lib/cli.js
-  checksum: 10c0/756c5d6533f628285e8347e990345d1ceb774715b4cecd0d03fdf32584a64f673df5c7edb0a3ad3fcf302125c2b06f5e9e85a9815fdf0794b599226da6dca2d5
+  checksum: 10c0/b7337b73f3fafc23f1243c40f7a4ca61910054fe824eab543888a8d0cb80e4c454fda13d50eafd4fb9e3dfe4f37f331fb6faf06efc50971256e2764d06bb022c
   languageName: node
   linkType: hard
 
 "@rnx-kit/metro-config@npm:^2.2.5":
-  version: 2.2.5
-  resolution: "@rnx-kit/metro-config@npm:2.2.5"
+  version: 2.2.6
+  resolution: "@rnx-kit/metro-config@npm:2.2.6"
   dependencies:
     "@rnx-kit/tools-node": "npm:^3.0.0"
     "@rnx-kit/tools-react-native": "npm:^2.3.1"
-    "@rnx-kit/tools-workspaces": "npm:^0.2.0"
+    "@rnx-kit/tools-workspaces": "npm:^0.2.6"
   peerDependencies:
     "@react-native/metro-config": "*"
     react: "*"
@@ -4671,7 +4669,7 @@ __metadata:
   peerDependenciesMeta:
     "@react-native/metro-config":
       optional: true
-  checksum: 10c0/e824d7ae18fcc1ccc4b4a32d8ef2c14742369001a845e703dd6f102ab6fb30549896b65851a4d48386980a6d912bfc97459bcacd40a06bc0b01cccb55c58193a
+  checksum: 10c0/b372f1b90b97b31b542e87ecd25d291c5218eecd27d086a0fb951b13c9acfe2d9a1e85bbaaeaa9a8d64d38453788e1a103eb1bc6f078c1ce42e37d4f36153fd3
   languageName: node
   linkType: hard
 
@@ -4738,8 +4736,8 @@ __metadata:
   linkType: hard
 
 "@rnx-kit/metro-service@npm:^5.0.0":
-  version: 5.0.2
-  resolution: "@rnx-kit/metro-service@npm:5.0.2"
+  version: 5.0.3
+  resolution: "@rnx-kit/metro-service@npm:5.0.3"
   dependencies:
     "@rnx-kit/console": "npm:^3.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.3"
@@ -4755,7 +4753,7 @@ __metadata:
       optional: true
     metro-react-native-babel-transformer:
       optional: true
-  checksum: 10c0/cbf3bdf0082d61f2c2e72755ac4d7e1b83e31cd17317e89c8e8913499e321922265a1236d31922c39a8cb0cffdc39a2d4f8255e8a47547dae250ad3b39c1bcdd
+  checksum: 10c0/96a83e6c718c7b037cfd8abbad8c5436c080a609914699b6280b8349faecd30856a532d4c00aba5014d5914bd503847a0c2cbf2d3a12f5afc3a0e5de65c26db9
   languageName: node
   linkType: hard
 
@@ -4911,16 +4909,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-workspaces@npm:^0.2.0, @rnx-kit/tools-workspaces@npm:^0.2.1, @rnx-kit/tools-workspaces@npm:^0.2.3":
-  version: 0.2.4
-  resolution: "@rnx-kit/tools-workspaces@npm:0.2.4"
+"@rnx-kit/tools-workspaces@npm:^0.2.1, @rnx-kit/tools-workspaces@npm:^0.2.6":
+  version: 0.2.6
+  resolution: "@rnx-kit/tools-workspaces@npm:0.2.6"
   dependencies:
     fast-glob: "npm:^3.2.7"
     find-up: "npm:^5.0.0"
-    js-yaml: "npm:^5.2.2"
+    js-yaml: "npm:^5.2.3"
     micromatch: "npm:^4.0.0"
     strip-json-comments: "npm:^3.1.1"
-  checksum: 10c0/af7c308ce12792522286c3f4a06e7156feda839e868d5a0dfd307589a8c7556b1bbce11653db5952e63dd72fbe4c03ef9fd05b2177e3a3f68a752c8e231579b7
+  checksum: 10c0/7ee3e4c178c22ddbcb0f8e9c90d7dd0422ce51687741e6da034befd31de6e65bca444b16f52b8654ff59ad6951f83de8c0ee146e75de6971b2868ec450252d11
   languageName: node
   linkType: hard
 
@@ -4948,12 +4946,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/types-kit-config@npm:^1.0.0, @rnx-kit/types-kit-config@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@rnx-kit/types-kit-config@npm:1.0.1"
+"@rnx-kit/types-kit-config@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@rnx-kit/types-kit-config@npm:2.0.0"
   dependencies:
     "@rnx-kit/types-bundle-config": "npm:^1.0.1"
-  checksum: 10c0/ab59610707db767ec36e3579fdd09f82d40fa9a01a420a7f643637e68c6cb02af4ae693525263a21194a1869e4627be75bc04ca1afd861b6441b9bfdb030fcf6
+  checksum: 10c0/4b120545fb3a392e2e7103341059bf41f75bf79469d1bfaebdbe3aa7abac1495393e5683d527d610a8611196f92bf102e2ba8e7bbbbaab688c4e2611fc8ce05a
   languageName: node
   linkType: hard
 
@@ -4964,12 +4962,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/types-node@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@rnx-kit/types-node@npm:1.0.0"
+"@rnx-kit/types-node@npm:^1.0.0, @rnx-kit/types-node@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@rnx-kit/types-node@npm:1.0.1"
   dependencies:
-    "@rnx-kit/types-kit-config": "npm:^1.0.0"
-  checksum: 10c0/601608822853b7a875adc4945f150a00ee25db9c701922c0e0c09197a6c0ff15c328995fa22b6c39f9081ce4e965898af04e7c3bfb3a68fdb9e7a6e4c780e162
+    "@rnx-kit/types-kit-config": "npm:^2.0.0"
+  checksum: 10c0/a5eb4d0aa63c57d747d711bbcf23bb330fa6d2a7e17417a3a53ab88a604b6cd789da9c157d2a9d1d695591c3538491c0dd369d3b45641ce49af64adbba0fa92d
   languageName: node
   linkType: hard
 
@@ -10535,7 +10533,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^5.2.2, js-yaml@npm:^5.2.3, js-yaml@npm:^5.3.0":
+"js-yaml@npm:^5.2.3, js-yaml@npm:^5.3.0":
   version: 5.4.2
   resolution: "js-yaml@npm:5.4.2"
   dependencies:
