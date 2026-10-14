@@ -30,8 +30,11 @@ const findLatestAndroidEmulatorVersion = (() => {
   let result;
   return () => {
     if (!result) {
+      // https://developer.android.com/tools/releases/platforms
       /** @type {Record<string, string>} */
       const targetVersionMap = {
+        36: "16.0",
+        35: "15.0",
         34: "14.0",
         33: "13.0",
         32: "12L",
@@ -98,7 +101,7 @@ const findLatestIPhoneSimulator = (() => {
       const sims = devices[latestRuntime];
       const simulator = sims.find(({ name }) => name.includes("Pro"));
       result = [
-        simulator?.name ?? "iPhone 16 Pro",
+        simulator?.name ?? "iPhone 18 Pro",
         latestRuntime
           .substring("com.apple.CoreSimulator.SimRuntime.iOS-".length)
           .replaceAll("-", "."),
@@ -149,6 +152,7 @@ export const config = {
   })(),
   logLevel: /** @type {const} */ ("info"),
   waitforTimeout: 60000,
+  strictSelectors: true,
   specFileRetries: 3,
 };
 
