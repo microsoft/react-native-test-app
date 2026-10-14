@@ -57,15 +57,18 @@
     "@react-native-windows/cli/@xmldom/xmldom": "^0.9.0",
     "@react-native-windows/telemetry/@xmldom/xmldom": "^0.9.0",
     "babel-jest": "ignore:",
+    "edgedriver": "ignore:",
+    "geckodriver": "ignore:",
     "node-gyp": "ignore:",
     "node-gyp-build": "ignore:",
     "oxc-parser": "^0.140.0",
     "oxc-resolver": "^11.23.0",
+    "safaridriver": "ignore:",
     "safe-buffer": "~5.2.1",
     "xcode/uuid": "~14.0.0"
   },
   "engines": {
-    "node": ">=22.18"
+    "node": ">=22.19"
   },
   "packageManager": "yarn@4.18.1",
   "rnx-kit": {

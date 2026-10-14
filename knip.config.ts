@@ -55,7 +55,6 @@ export default {
         "@babel/preset-env",
         "@react-native-webapis/web-storage",
         "@rnx-kit/react-native-template-web",
-        "@wdio/types",
         "appium",
         "appium-uiautomator2-driver",
         "appium-xcuitest-driver",
