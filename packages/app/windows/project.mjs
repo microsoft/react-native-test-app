@@ -70,6 +70,7 @@ function generateCertificateItems(
   projectPath
 ) {
   const items = [];
+
   if (typeof certificateKeyFile === "string") {
     items.push(
       "<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>",
@@ -79,16 +80,20 @@ function generateCertificateItems(
       )}</PackageCertificateKeyFile>`
     );
   }
-  if (typeof certificateThumbprint === "string") {
+
+  const thumbprint = certificateThumbprint?.match(/[0-9A-Fa-f]*/);
+  if (thumbprint) {
     items.push(
-      `<PackageCertificateThumbprint>${certificateThumbprint}</PackageCertificateThumbprint>`
+      `<PackageCertificateThumbprint>${thumbprint[0]}</PackageCertificateThumbprint>`
     );
   }
+
   if (typeof certificatePassword === "string") {
     items.push(
-      `<PackageCertificatePassword>${certificatePassword}</PackageCertificatePassword>`
+      `<PackageCertificatePassword>${encodeURIComponent(certificatePassword)}</PackageCertificatePassword>`
     );
   }
+
   return items.join("\n    ");
 }
 
