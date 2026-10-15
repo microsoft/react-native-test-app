@@ -64,7 +64,7 @@
     "test_app.rb",
     "visionos",
     "windows",
-    "!.clang-format"
+    "!**/.clang-format"
   ],
   "main": "scripts/configure-projects.js",
   "scripts": {

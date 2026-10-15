@@ -21,9 +21,11 @@ describe("npm pack", () => {
 
     equal(status, 0);
 
-    const content = JSON.parse(stdout)[0]
-      .files.map((entry: { path: string }) => entry.path)
-      .sort();
+    // npm 12 keys each tarball by package name; earlier versions by index.
+    const [tarball] = Object.values<{ files: { path: string }[] }>(
+      JSON.parse(stdout)
+    );
+    const content = tarball.files.map((entry) => entry.path).sort();
 
     deepEqual(content, [
       "LICENSE",
