@@ -19,6 +19,13 @@ def getDependencyVersionNumberFromCatalog = { String versionCatalog, String depe
     return version != null ? Integer.parseInt(version) : fallback
 }
 
+// AGP also takes strings such as `android-36.1` or a preview codename, so only
+// a number is converted; libraries read these with `as Int`.
+def getSdkVersionProperty = { String name ->
+    def value = rootProject.findProperty(name)
+    return value instanceof String && value.trim().isInteger() ? value.trim().toInteger() : value
+}
+
 def getKotlinVersion = { String versionCatalog ->
     def version = getDependencyVersionFromCatalog(versionCatalog, "kotlin", "1.7.21")
     logger.info("Using Kotlin version ${version}")
@@ -40,11 +47,11 @@ ext {
 
     def versionCatalog = getVersionCatalog(rootDir)
 
-    compileSdkVersion = rootProject.findProperty("react.compileSdkVersion")
+    compileSdkVersion = getSdkVersionProperty("react.compileSdkVersion")
         ?: getDependencyVersionNumberFromCatalog(versionCatalog, "compileSdk", 34)
-    minSdkVersion = rootProject.findProperty("react.minSdkVersion")
+    minSdkVersion = getSdkVersionProperty("react.minSdkVersion")
         ?: getDependencyVersionNumberFromCatalog(versionCatalog, "minSdk", 24)
-    targetSdkVersion = rootProject.findProperty("react.targetSdkVersion")
+    targetSdkVersion = getSdkVersionProperty("react.targetSdkVersion")
         ?: getDependencyVersionNumberFromCatalog(versionCatalog, "targetSdk", 33)
 
     enableNewArchitecture = isNewArchitectureEnabled(project)
