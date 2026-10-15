@@ -1,4 +1,6 @@
 // @ts-check
+import android from "@react-native-community/cli-platform-android";
+import ios from "@react-native-community/cli-platform-ios";
 import { deepEqual, equal, match, notEqual, ok } from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -22,7 +24,19 @@ async function getLoadConfig(cwd) {
     const rncCli = import.meta.resolve("@react-native-community/cli", cwd);
     const { default: cli } = await import(rncCli);
     return cli.loadConfig.length === 1
-      ? () => cli.loadConfig({}) // >=14.0
+      ? () =>
+          cli.loadConfig({
+            platforms: {
+              android: {
+                projectConfig: android.projectConfig,
+                dependencyConfig: android.dependencyConfig,
+              },
+              ios: {
+                projectConfig: ios.projectConfig,
+                dependencyConfig: ios.dependencyConfig,
+              },
+            },
+          }) // >=14.0
       : cli.loadConfig; // <14.0
   }
 }
