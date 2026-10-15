@@ -77,11 +77,12 @@ describe("getBundleResources()", () => {
     });
 
     it(`returns package certificate (${arch} arch)`, () => {
+      const certificateThumbprint = "7AE1F5D491F7E0F38FE1A6993E136B84DF085B42";
       setMockFiles({
         "app.json": JSON.stringify({
           windows: {
             certificateKeyFile: "windows/ReactTestApp_TemporaryKey.pfx",
-            certificateThumbprint: "thumbprint",
+            certificateThumbprint,
             certificatePassword: "password",
           },
         }),
@@ -92,8 +93,31 @@ describe("getBundleResources()", () => {
         packageCertificate,
         `<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
     <PackageCertificateKeyFile>$(ProjectRootDir)\\windows\\ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>thumbprint</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>${certificateThumbprint}</PackageCertificateThumbprint>
     <PackageCertificatePassword>password</PackageCertificatePassword>`
+      );
+    });
+
+    it(`handles invalid package certificate config`, () => {
+      const certificatePassword = "</PackageCertificatePassword><test></test>";
+      const certificateThumbprint = "not-sha1";
+      setMockFiles({
+        "app.json": JSON.stringify({
+          windows: {
+            certificateKeyFile: "windows/ReactTestApp_TemporaryKey.pfx",
+            certificateThumbprint,
+            certificatePassword,
+          },
+        }),
+      });
+
+      const { packageCertificate } = getBundleResources("app.json", opts);
+      equal(
+        packageCertificate,
+        `<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
+    <PackageCertificateKeyFile>$(ProjectRootDir)\\windows\\ReactTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint></PackageCertificateThumbprint>
+    <PackageCertificatePassword>${encodeURIComponent(certificatePassword)}</PackageCertificatePassword>`
       );
     });
   }
