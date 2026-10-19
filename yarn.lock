@@ -4568,26 +4568,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/cli@npm:^2.0.1":
-  version: 2.0.6
-  resolution: "@rnx-kit/cli@npm:2.0.6"
+"@rnx-kit/cli@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@rnx-kit/cli@npm:2.0.7"
   dependencies:
     "@rnx-kit/align-deps": "npm:^5.0.0"
     "@rnx-kit/config": "npm:^1.0.0"
     "@rnx-kit/console": "npm:^3.0.0"
     "@rnx-kit/metro-plugin-cyclic-dependencies-detector": "npm:^3.0.1"
     "@rnx-kit/metro-plugin-duplicates-checker": "npm:^4.0.1"
-    "@rnx-kit/metro-plugin-typescript": "npm:^0.6.0"
-    "@rnx-kit/metro-serializer": "npm:^2.0.0"
+    "@rnx-kit/metro-plugin-typescript": "npm:^0.6.1"
+    "@rnx-kit/metro-serializer": "npm:^2.0.3"
     "@rnx-kit/metro-serializer-esbuild": "npm:^0.4.2"
-    "@rnx-kit/metro-service": "npm:^5.0.0"
-    "@rnx-kit/third-party-notices": "npm:^3.0.2"
+    "@rnx-kit/metro-service": "npm:^5.0.3"
+    "@rnx-kit/third-party-notices": "npm:^3.0.4"
     "@rnx-kit/tools-android": "npm:^0.2.2"
-    "@rnx-kit/tools-apple": "npm:^0.2.2"
+    "@rnx-kit/tools-apple": "npm:^0.2.3"
     "@rnx-kit/tools-filesystem": "npm:^0.2.0"
     "@rnx-kit/tools-language": "npm:^3.0.1"
     "@rnx-kit/tools-node": "npm:^3.0.6"
-    "@rnx-kit/tools-react-native": "npm:^2.3.9"
+    "@rnx-kit/tools-react-native": "npm:^2.3.10"
     "@rnx-kit/types-bundle-config": "npm:^1.0.1"
     "@rnx-kit/types-kit-config": "npm:^2.0.0"
     "@rnx-kit/types-node": "npm:^1.0.1"
@@ -4604,7 +4604,7 @@ __metadata:
       optional: true
   bin:
     rnx-cli: bin/rnx-cli.cjs
-  checksum: 10c0/4a8997eba8e77cc4f0f2bd109b6c01a65ae6603ac2420046824ca3842e926f2b2d0bafadf3c458754b24f18fb0fda2938262b6c241d5e19151c659f582055199
+  checksum: 10c0/4dc734df0eb11748e7945ebcacf25fc3fbabdf286d15ee79199bd89797a908a4ba96cd3a094d62f64adb85534191cb083af4a5d498c5ed50fdd31e13acff88e8
   languageName: node
   linkType: hard
 
@@ -4700,7 +4700,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/metro-plugin-typescript@npm:^0.6.0":
+"@rnx-kit/metro-plugin-typescript@npm:^0.6.1":
   version: 0.6.1
   resolution: "@rnx-kit/metro-plugin-typescript@npm:0.6.1"
   dependencies:
@@ -4729,7 +4729,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/metro-serializer@npm:^2.0.0":
+"@rnx-kit/metro-serializer@npm:^2.0.3":
   version: 2.0.3
   resolution: "@rnx-kit/metro-serializer@npm:2.0.3"
   dependencies:
@@ -4738,7 +4738,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/metro-service@npm:^5.0.0":
+"@rnx-kit/metro-service@npm:^5.0.3":
   version: 5.0.3
   resolution: "@rnx-kit/metro-service@npm:5.0.3"
   dependencies:
@@ -4810,9 +4810,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@rnx-kit/third-party-notices@npm:^3.0.2":
-  version: 3.0.3
-  resolution: "@rnx-kit/third-party-notices@npm:3.0.3"
+"@rnx-kit/third-party-notices@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@rnx-kit/third-party-notices@npm:3.0.4"
   dependencies:
     "@rnx-kit/console": "npm:^3.0.0"
     "@rnx-kit/tools-node": "npm:^3.0.6"
@@ -4820,7 +4820,7 @@ __metadata:
     yargs: "npm:^17.0.0"
   bin:
     build-tpn: ./lib/build-tpn.js
-  checksum: 10c0/f4af464ffe163586621dfdaeacc3e11364b22359abc432b31030f5897bc757e4bf70a40cfc412b8bad3eb47c797b80378c9bdf9f390f0324be6c4181ae18cd18
+  checksum: 10c0/ace4fb254ae7d62ba8c790f6fd9c833c6eada669bc3332108b16d5538623f259c7c825c376d53c833e85bc1f446369ad5141db32368a59cbb57d6ee59079cf2c
   languageName: node
   linkType: hard
 
@@ -4833,7 +4833,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-apple@npm:^0.2.2":
+"@rnx-kit/tools-apple@npm:^0.2.3":
   version: 0.2.3
   resolution: "@rnx-kit/tools-apple@npm:0.2.3"
   dependencies:
@@ -4869,7 +4869,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-node@npm:^3.0.0, @rnx-kit/tools-node@npm:^3.0.3, @rnx-kit/tools-node@npm:^3.0.4, @rnx-kit/tools-node@npm:^3.0.5, @rnx-kit/tools-node@npm:^3.0.6":
+"@rnx-kit/tools-node@npm:^3.0.0, @rnx-kit/tools-node@npm:^3.0.3, @rnx-kit/tools-node@npm:^3.0.4, @rnx-kit/tools-node@npm:^3.0.6":
   version: 3.0.6
   resolution: "@rnx-kit/tools-node@npm:3.0.6"
   dependencies:
@@ -4889,19 +4889,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.3, @rnx-kit/tools-react-native@npm:^2.3.5, @rnx-kit/tools-react-native@npm:^2.3.9":
-  version: 2.3.9
-  resolution: "@rnx-kit/tools-react-native@npm:2.3.9"
+"@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.10, @rnx-kit/tools-react-native@npm:^2.3.3, @rnx-kit/tools-react-native@npm:^2.3.5":
+  version: 2.3.10
+  resolution: "@rnx-kit/tools-react-native@npm:2.3.10"
   dependencies:
     "@rnx-kit/tools-filesystem": "npm:^0.2.0"
-    "@rnx-kit/tools-node": "npm:^3.0.5"
+    "@rnx-kit/tools-node": "npm:^3.0.6"
     "@rnx-kit/types-bundle-config": "npm:^1.0.1"
   peerDependencies:
     "@react-native-community/cli-types": "*"
   peerDependenciesMeta:
     "@react-native-community/cli-types":
       optional: true
-  checksum: 10c0/a5eaddc2fa562c7ee388fbb12f7d187641032aa861ebc5b7b1b6f3da768cfc2383939bb0a422109d0e617fa756f12e4db1b11d2bbfa1b384e190a232813a72be
+  checksum: 10c0/75dfbcbccfce146bcee17f3548d651ad94100ba6e5ac481e1189f1439f71a055a7c75d8e7873386588e03acb328b319c39a92db5b648856a48c3aca287c9172c
   languageName: node
   linkType: hard
 
