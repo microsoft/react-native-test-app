@@ -156,10 +156,8 @@ extension UIScene.OpenURLOptions {
 
         options[.openInPlace] = openInPlace
 
-        if #available(iOS 14.5, *) {
-            if let eventAttribution {
-                options[.eventAttribution] = eventAttribution
-            }
+        if #available(iOS 14.5, *), let eventAttribution {
+            options[.eventAttribution] = eventAttribution
         }
 
         return options
