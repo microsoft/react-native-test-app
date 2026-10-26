@@ -166,21 +166,21 @@ extension UIDevice {
     var videoOrientation: AVCaptureVideoOrientation {
         switch orientation {
         case .unknown:
-            return .portrait
+            .portrait
         case .portrait:
-            return .portrait
+            .portrait
         case .portraitUpsideDown:
-            return .portraitUpsideDown
+            .portraitUpsideDown
         case .landscapeLeft:
             // Flipped otherwise the picture is upside down
-            return .landscapeRight
+            .landscapeRight
         case .landscapeRight:
             // Flipped otherwise the picture is upside down
-            return .landscapeLeft
+            .landscapeLeft
         case .faceUp, .faceDown:
-            return .portrait
+            .portrait
         @unknown default:
-            return .portrait
+            .portrait
         }
     }
 }

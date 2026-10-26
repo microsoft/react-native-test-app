@@ -76,6 +76,5 @@ namespace winrt::ReactTestApp::implementation
 
 namespace winrt::ReactTestApp::factory_implementation
 {
-    struct MainPage : MainPageT<MainPage, implementation::MainPage> {
-    };
+    struct MainPage : MainPageT<MainPage, implementation::MainPage> {};
 }  // namespace winrt::ReactTestApp::factory_implementation
