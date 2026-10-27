@@ -486,7 +486,15 @@ export async function projectInfo(
   const version = getPackageVersion("react-native-windows", rnWindowsPath, fs);
   const versionNumber = toVersionNumber(version);
   const manifestFilePath = findNearest("app.json", destPath, fs);
-  const useFabric = options.useFabric ?? versionNumber >= v(0, 80, 0);
+  const newArchOnly = versionNumber >= v(0, 82, 0);
+  const useFabric =
+    newArchOnly || (options.useFabric ?? versionNumber >= v(0, 80, 0));
+
+  if (newArchOnly && typeof options.useFabric === "boolean") {
+    warn(
+      `'--use-fabric' is ignored; react-native-windows ${version} only supports New Architecture`
+    );
+  }
 
   return {
     version,
