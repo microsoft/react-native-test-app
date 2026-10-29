@@ -6,7 +6,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as util from "node:util";
 import manifest from "../../package.json" with { type: "json" };
-import { isMain, readJSONFile } from "../helpers.js";
+import { isMain, readJSONFile, toVersionNumber, v } from "../helpers.js";
 import type { Manifest } from "../types.ts";
 import { writeJSONFile } from "../utils/filesystem.mjs";
 import { fetchPackageMetadata, npmRegistryBaseURL } from "../utils/npm.mjs";
@@ -153,6 +153,26 @@ function fetchReactNativeWindowsCanaryInfoViaNuGet(): Promise<Manifest> {
 }
 
 /**
+ * Throws if the React version required by React Native is not covered by our
+ * `react` peer range.
+ */
+function assertReactPeerRange(reactVersion: string): void {
+  const range = manifest.peerDependencies["react"];
+  const m = range.match(/ - (\d+)\.(\d+)$/);
+  if (!m) {
+    throw new Error(`Unexpected 'react' peer range: ${range}`);
+  }
+
+  const [, maxMajor, maxMinor] = m.map(Number);
+  if (toVersionNumber(reactVersion) >= v(maxMajor, maxMinor + 1, 0)) {
+    throw new Error(
+      `react@${reactVersion} is not covered by the 'react' peer range ` +
+        `(${range}); please update 'peerDependencies' in 'package.json'`
+    );
+  }
+}
+
+/**
  * Returns an object with common dependencies.
  */
 async function resolveCommonDependencies(
@@ -189,14 +209,17 @@ async function resolveCommonDependencies(
   const rncliIOS =
     devDependencies["@react-native-community/cli-platform-ios"] ?? rncli;
 
+  // Replace range to avoid React version mismatch
+  const react = peerDependencies["react"].replace(/^\^/, "");
+  assertReactPeerRange(react);
+
   return {
     "@react-native-community/cli": rncli,
     "@react-native-community/cli-platform-android": rncliAndroid,
     "@react-native-community/cli-platform-ios": rncliIOS,
     "@react-native/babel-preset": rnBabelPresetVersion,
     "@react-native/metro-config": rnMetroConfigVersion,
-    // Replace range to avoid React version mismatch
-    react: peerDependencies["react"].replace(/^\^/, ""),
+    react,
   };
 }
 
