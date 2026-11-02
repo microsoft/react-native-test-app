@@ -13,6 +13,7 @@ env:
   NODE_OPTIONS: "--disable-proto=delete"
   VisualStudioVersion: "17.0"
   WindowsTargetPlatformVersion: "10.0.26100.0"
+  YARN_NPM_PREAPPROVED_PACKAGES: "@react-native-community/*,@react-native/*,flow-estree,flow-parser,hermes-compiler,metro,metro-*,ob1,react-native,react-native-macos,react-native-windows"
 concurrency:
   # Ensure single build of a pull request. `trunk` should not be affected.
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || github.run_id }}
