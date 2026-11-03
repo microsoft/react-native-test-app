@@ -117,37 +117,35 @@ ext.applyTestAppModule = { Project project ->
     def generatedSrcDir = file("${generatedMainDir}/java")
     generatedSrcDir.mkdirs()
 
-    // https://github.com/react/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L25
-    def generatedFontsDir = file("${generatedAssetsDir}/fonts")
-    generatedFontsDir.mkdirs()
-
-    def generatedRawDir = file("${generatedResDir}/raw")
-    generatedRawDir.mkdirs()
-
-    preBuild.dependsOn(tasks.register("copyAssets", Copy) {
+    // `Sync` removes files that are no longer in the sources. Each task must
+    // own its destination exclusively, otherwise they delete each other's files.
+    // When paths collide, the source declared last wins, the same as when
+    // fonts and raw resources were copied by separate tasks.
+    preBuild.dependsOn(tasks.register("copyAssets", Sync) {
         androidResourceFiles.each {
             if (!isFontFile(it) && !isMediaFile(it)) {
                 from(it)
             }
         }
 
-        into(generatedAssetsDir)
-    })
-
-    preBuild.dependsOn(tasks.register("copyFonts", Copy) {
         androidResourceFiles.each {
             if (isFontFile(it)) {
-                from(it)
+                // https://github.com/react/react-native/blob/3dfedbc1aec18a4255e126fde96d5dc7b1271ea7/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L25
+                from(it) {
+                    into("fonts")
+                    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+                }
             }
         }
 
-        into(generatedFontsDir)
+        into(generatedAssetsDir)
     })
 
-    preBuild.dependsOn(tasks.register("copyRawResources", Copy) {
+    preBuild.dependsOn(tasks.register("copyResources", Sync) {
         androidResourceFiles.each {
             if (isMediaFile(it)) {
                 from(it) {
+                    into("raw")
                     // File-based resource names must contain only lowercase
                     // a-z, 0-9, or underscore
                     rename {
@@ -157,14 +155,13 @@ ext.applyTestAppModule = { Project project ->
             }
         }
 
-        into(generatedRawDir)
-    })
-
-    preBuild.dependsOn(tasks.register("copyResources", Copy) {
         if (androidResDir != null) {
-            from(androidResDir)
-            into(generatedResDir)
+            from(androidResDir) {
+                duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            }
         }
+
+        into(generatedResDir)
     })
 
     preBuild.dependsOn(tasks.register("embedAppManifest", Exec) {

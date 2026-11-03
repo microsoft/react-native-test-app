@@ -23,7 +23,7 @@ function joinStrings(strings: string | string[], separator = "") {
 /**
  * Returns project path given name.
  */
-function projectPath(name: string): string {
+export function projectPath(name: string): string {
   return `.android-test-${name}`;
 }
 
