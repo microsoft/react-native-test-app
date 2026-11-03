@@ -190,30 +190,36 @@ export function configure(
  * @param {ConfigureParams} params
  * @returns {Configuration}
  */
-export function getTemplate({ name, testAppPath, targetVersion }) {
+export function getTemplate({
+  name,
+  templatePath,
+  testAppPath,
+  targetVersion,
+}) {
   const targetVersionNum = toVersionNumber(targetVersion);
+  // Use the Gradle wrapper from the template matching the target React Native
+  // version, falling back to the one bundled with the example app.
+  const wrapperDir = templatePath
+    ? path.join(templatePath, "android")
+    : path.join(testAppPath, "example", "android");
   return {
     files: {
       "build.gradle": buildGradle(),
       "gradle/wrapper/gradle-wrapper.jar": copyFrom(
-        testAppPath,
-        "example",
-        "android",
+        wrapperDir,
         "gradle",
         "wrapper",
         "gradle-wrapper.jar"
       ),
       "gradle/wrapper/gradle-wrapper.properties": copyFrom(
-        testAppPath,
-        "example",
-        "android",
+        wrapperDir,
         "gradle",
         "wrapper",
         "gradle-wrapper.properties"
       ),
       "gradle.properties": gradleProperties(targetVersionNum),
-      gradlew: copyFrom(testAppPath, "example", "android", "gradlew"),
-      "gradlew.bat": copyFrom(testAppPath, "example", "android", "gradlew.bat"),
+      gradlew: copyFrom(wrapperDir, "gradlew"),
+      "gradlew.bat": copyFrom(wrapperDir, "gradlew.bat"),
       "settings.gradle": settingsGradle(name),
     },
     oldFiles: [],

@@ -1,6 +1,7 @@
 import { deepEqual, ok } from "node:assert/strict";
 import * as path from "node:path";
 import { describe, it } from "node:test";
+import { getTemplate as getAndroidTemplate } from "../../android/template.config.mjs";
 import {
   getConfig as getConfigActual,
   getPlatformPackage,
@@ -10,6 +11,12 @@ import { templatePath } from "../template.mts";
 import { mockParams } from "./mockParams.mts";
 
 describe("getConfig()", () => {
+  const gradleWrapperFiles = [
+    "gradle/wrapper/gradle-wrapper.jar",
+    "gradle/wrapper/gradle-wrapper.properties",
+    "gradlew",
+    "gradlew.bat",
+  ];
   const getConfig: typeof getConfigActual = (params, platform) =>
     getConfigActual({ ...params, templatePath }, platform, true);
 
@@ -79,6 +86,21 @@ describe("getConfig()", () => {
       "settings.gradle",
     ]);
     deepEqual(config.oldFiles, []);
+
+    for (const file of gradleWrapperFiles) {
+      deepEqual(config.files[file], {
+        source: path.join(templatePath, "android", file),
+      });
+    }
+  });
+
+  it("falls back to the example app's Gradle wrapper without a template", () => {
+    const { files } = getAndroidTemplate(mockParams());
+    for (const file of gradleWrapperFiles) {
+      deepEqual(files[file], {
+        source: path.join(".", "example", "android", file),
+      });
+    }
   });
 
   it("returns iOS specific scripts and additional files", () => {
