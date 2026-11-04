@@ -86,8 +86,8 @@
     "test:rb": "bundle exec ruby -Ilib:test -rgithub_annotations -e \"Dir.glob('./test/test_*.rb').each { |file| require(file) }\""
   },
   "dependencies": {
-    "@rnx-kit/react-native-host": "^0.5.21",
-    "@rnx-kit/tools-react-native": "^2.1.0",
+    "@rnx-kit/react-native-host": "^0.5.23",
+    "@rnx-kit/tools-react-native": "^2.3.11",
     "ajv": "^8.0.0",
     "fast-xml-builder": "^1.2.0",
     "fast-xml-parser": "^5.8.0",
