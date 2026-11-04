@@ -4795,12 +4795,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.5.21":
-  version: 0.5.21
-  resolution: "@rnx-kit/react-native-host@npm:0.5.21"
+"@rnx-kit/react-native-host@npm:^0.5.23":
+  version: 0.5.23
+  resolution: "@rnx-kit/react-native-host@npm:0.5.23"
   peerDependencies:
     react-native: ">=0.66"
-  checksum: 10c0/f48bfe6fa991becee8783909a1668309b994aa8cd1dcdb8294aaf0685810cc8cec708b3e5ba87cb44ac4b9c2d41495dc027d6ebb8720a1d4476d6de477d15a0c
+  checksum: 10c0/1ae09d69d8532db295d0e3dc7c42973dd748ea7e6812ac4ea781f852032122e06e48a147054d2a367b73d502fafaa8256f8af27056f0d1f1308f5b02ae4937ef
   languageName: node
   linkType: hard
 
@@ -4889,9 +4889,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/tools-react-native@npm:^2.1.0, @rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.10, @rnx-kit/tools-react-native@npm:^2.3.3, @rnx-kit/tools-react-native@npm:^2.3.5":
-  version: 2.3.10
-  resolution: "@rnx-kit/tools-react-native@npm:2.3.10"
+"@rnx-kit/tools-react-native@npm:^2.3.0, @rnx-kit/tools-react-native@npm:^2.3.1, @rnx-kit/tools-react-native@npm:^2.3.10, @rnx-kit/tools-react-native@npm:^2.3.11, @rnx-kit/tools-react-native@npm:^2.3.3, @rnx-kit/tools-react-native@npm:^2.3.5":
+  version: 2.3.11
+  resolution: "@rnx-kit/tools-react-native@npm:2.3.11"
   dependencies:
     "@rnx-kit/tools-filesystem": "npm:^0.2.0"
     "@rnx-kit/tools-node": "npm:^3.0.6"
@@ -4901,7 +4901,7 @@ __metadata:
   peerDependenciesMeta:
     "@react-native-community/cli-types":
       optional: true
-  checksum: 10c0/75dfbcbccfce146bcee17f3548d651ad94100ba6e5ac481e1189f1439f71a055a7c75d8e7873386588e03acb328b319c39a92db5b648856a48c3aca287c9172c
+  checksum: 10c0/562d1326d731ab65a5aebfa867b3b1fcdfdc5031f642ab3792d1389e28747466491a74b4670129d8f2fe1d9df7f6a92951994763cad721ab6d243605a68a1c14
   languageName: node
   linkType: hard
 
@@ -12969,8 +12969,8 @@ __metadata:
     "@react-native-community/cli": "npm:^20.1.0"
     "@react-native-community/cli-types": "npm:^20.1.0"
     "@react-native-community/template": "npm:^0.85.0"
-    "@rnx-kit/react-native-host": "npm:^0.5.21"
-    "@rnx-kit/tools-react-native": "npm:^2.1.0"
+    "@rnx-kit/react-native-host": "npm:^0.5.23"
+    "@rnx-kit/tools-react-native": "npm:^2.3.11"
     "@rnx-kit/tsconfig": "npm:^3.0.1"
     "@types/mustache": "npm:^4.0.0"
     "@types/node": "npm:^24.0.0"
