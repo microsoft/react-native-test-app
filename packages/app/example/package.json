@@ -38,11 +38,11 @@
     "@rnx-kit/tsconfig": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "~19.3.0",
-    "appium": "^3.6.0",
-    "appium-uiautomator2-driver": "^8.1.0",
-    "appium-xcuitest-driver": "^11.0.0",
+    "appium": "^3.9.0",
+    "appium-uiautomator2-driver": "^8.7.3",
+    "appium-xcuitest-driver": "^12.22.8",
     "react-native-test-app": "workspace:*",
-    "webdriverio": "^10.0.2"
+    "webdriverio": "^10.2.0"
   },
   "rnx-kit": {
     "kitType": "app",
