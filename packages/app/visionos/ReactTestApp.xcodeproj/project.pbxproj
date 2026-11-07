@@ -17,6 +17,9 @@
 		19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D5232ED425003D8557 /* AppDelegate.swift */; };
 		19ECD0D8232ED425003D8557 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D7232ED425003D8557 /* SceneDelegate.swift */; };
 		19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0D9232ED425003D8557 /* ContentView.swift */; };
+		1A0DEF000000000000000F01 /* ComponentPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0DEF000000000000000E01 /* ComponentPickerModel.swift */; };
+		1A0DEF000000000000000F02 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0DEF000000000000000E02 /* AppModel.swift */; };
+		1A0DEF000000000000000F03 /* ComponentPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0DEF000000000000000E03 /* ComponentPresenting.swift */; };
 		19ECD0DC232ED427003D8557 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19ECD0DB232ED427003D8557 /* Assets.xcassets */; };
 		19ECD0ED232ED428003D8557 /* ReactTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0EC232ED428003D8557 /* ReactTestAppTests.swift */; };
 		19ECD0F8232ED428003D8557 /* ReactTestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19ECD0F7232ED428003D8557 /* ReactTestAppUITests.swift */; };
@@ -58,6 +61,9 @@
 		19ECD0D5232ED425003D8557 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../Shared/AppDelegate.swift; sourceTree = "<group>"; };
 		19ECD0D7232ED425003D8557 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ../Shared/SceneDelegate.swift; sourceTree = "<group>"; };
 		19ECD0D9232ED425003D8557 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ../Shared/ContentView.swift; sourceTree = "<group>"; };
+		1A0DEF000000000000000E01 /* ComponentPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ComponentPickerModel.swift; path = ../Shared/ComponentPickerModel.swift; sourceTree = "<group>"; };
+		1A0DEF000000000000000E02 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppModel.swift; path = ../Shared/AppModel.swift; sourceTree = "<group>"; };
+		1A0DEF000000000000000E03 /* ComponentPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ComponentPresenting.swift; path = ../Shared/ComponentPresenting.swift; sourceTree = "<group>"; };
 		19ECD0DB232ED427003D8557 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ReactTestApp/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		19ECD0E3232ED427003D8557 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactTestApp/Info.plist; sourceTree = SOURCE_ROOT; };
 		19ECD0E8232ED427003D8557 /* ReactTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +125,9 @@
 				19ECD0D5232ED425003D8557 /* AppDelegate.swift */,
 				19ECD0D7232ED425003D8557 /* SceneDelegate.swift */,
 				19ECD0D9232ED425003D8557 /* ContentView.swift */,
+				1A0DEF000000000000000E01 /* ComponentPickerModel.swift */,
+				1A0DEF000000000000000E02 /* AppModel.swift */,
+				1A0DEF000000000000000E03 /* ComponentPresenting.swift */,
 				192DD200240FCAF5004E9CEB /* Manifest.swift */,
 				197827F927710D3400AEC655 /* Manifest+Embedded.g.swift */,
 				196C7214232F1788006556ED /* ReactInstance.swift */,
@@ -315,6 +324,9 @@
 			files = (
 				19ECD0D6232ED425003D8557 /* AppDelegate.swift in Sources */,
 				19ECD0DA232ED425003D8557 /* ContentView.swift in Sources */,
+				1A0DEF000000000000000F01 /* ComponentPickerModel.swift in Sources */,
+				1A0DEF000000000000000F02 /* AppModel.swift in Sources */,
+				1A0DEF000000000000000F03 /* ComponentPresenting.swift in Sources */,
 				192DD201240FCAF5004E9CEB /* Manifest.swift in Sources */,
 				197827FA27710D3400AEC655 /* Manifest+Embedded.g.swift in Sources */,
 				196C22622490CB7600449D3C /* React+Compatibility.m in Sources */,
