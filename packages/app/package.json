@@ -90,7 +90,7 @@
     "@rnx-kit/tools-react-native": "^2.3.11",
     "ajv": "^8.0.0",
     "fast-xml-builder": "^1.2.0",
-    "fast-xml-parser": "^5.8.0",
+    "fast-xml-parser": "^5.12.0",
     "prompts": "^2.4.0",
     "semver": "^7.5.2"
   },
