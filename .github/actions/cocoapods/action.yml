@@ -1,6 +1,9 @@
 name: CocoaPods
 description: Runs `pod install` and caches installed dependencies
 inputs:
+  cache-key-prefix:
+    description: Prefix for the Pods cache key; jobs building different configurations must not share Pods
+    default: pods
   project-directory:
     description: The path to the root of the project directory
     required: true
@@ -23,7 +26,7 @@ runs:
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ${{ inputs.working-directory }}/${{ inputs.project-directory }}/Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles(steps.find-lockfile.outputs.path) }}
+        key: ${{ runner.os }}-${{ inputs.cache-key-prefix }}-${{ hashFiles(steps.find-lockfile.outputs.path) }}
     - name: Install Pods
       run: |
         pod install --project-directory=${{ inputs.project-directory }}

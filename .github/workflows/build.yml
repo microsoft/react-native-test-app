@@ -22,7 +22,7 @@ jobs:
   lint-commit:
     name: "lint commit message"
     permissions: {}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
@@ -252,7 +252,7 @@ jobs:
     permissions: {}
     strategy:
       matrix:
-        runner: [ubuntu-24.04, windows-2025]
+        runner: [ubuntu-26.04, windows-2025]
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
@@ -300,7 +300,7 @@ jobs:
     permissions: {}
     strategy:
       matrix:
-        runner: [ubuntu-24.04, windows-2025]
+        runner: [ubuntu-26.04, windows-2025]
     runs-on: ${{ matrix.runner }}
     if: ${{ github.event_name != 'schedule' }}
     steps:
@@ -646,7 +646,7 @@ jobs:
       matrix:
         include:
           - platform: android
-            runner: ubuntu-24.04
+            runner: ubuntu-26.04
           - platform: ios
             runner: macos-26
     runs-on: ${{ matrix.runner }}
@@ -668,6 +668,8 @@ jobs:
         if: ${{ matrix.platform == 'ios' }}
         uses: ./.github/actions/cocoapods
         with:
+          # Release builds swap in a Release React-Core-prebuilt; don't share Pods with Debug jobs
+          cache-key-prefix: release-pods
           project-directory: ios
           working-directory: packages/app/example
       - name: Build single-app release artifact
@@ -690,7 +692,7 @@ jobs:
       - windows
       - windows-template
       - validate-artifacts
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ github.event_name != 'schedule' }}
     steps:
       - name: Checkout
@@ -727,7 +729,7 @@ jobs:
       contents: read
       pull-requests: write
     if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Label
         uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
