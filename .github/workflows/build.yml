@@ -668,6 +668,8 @@ jobs:
         if: ${{ matrix.platform == 'ios' }}
         uses: ./.github/actions/cocoapods
         with:
+          # Release builds swap in a Release React-Core-prebuilt; don't share Pods with Debug jobs
+          cache-key-prefix: release-pods
           project-directory: ios
           working-directory: packages/app/example
       - name: Build single-app release artifact
