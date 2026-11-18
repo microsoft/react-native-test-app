@@ -54,13 +54,13 @@ runs:
       shell: bash
     - name: Set up JDK
       if: ${{ inputs.platform == 'android' || inputs.platform == 'node' }}
-      uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
       with:
         distribution: temurin
         java-version: ${{ inputs.java-version }}
     - name: Set up Gradle
       if: ${{ inputs.platform == 'android' || inputs.platform == 'node' }}
-      uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+      uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
       with:
         gradle-version: wrapper
         gradle-home-cache-excludes: |
@@ -71,9 +71,9 @@ runs:
       uses: microsoft/setup-msbuild@30375c66a4eea26614e0d39710365f22f8b0af57 # v3.0.0
     - name: Set up Ruby
       if: ${{ runner.os != 'Windows' }}
-      uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+      uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1.338.0
       with:
-        ruby-version: "3.3.11"
+        ruby-version: "3.4.12"
         bundler: Gemfile.lock
         bundler-cache: true
     - name: Set up Node.js

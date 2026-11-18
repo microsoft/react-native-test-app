@@ -22,8 +22,6 @@ export default {
     "sips",
     "swiftformat",
     "swiftlint",
-    "tail",
-    "xcrun",
   ],
   metro: false,
   workspaces: {
