@@ -5,9 +5,9 @@ __metadata:
   version: 10
   cacheKey: 10c0
 
-"@appium/base-driver@npm:10.8.2, @appium/base-driver@npm:^10.8.0":
-  version: 10.8.2
-  resolution: "@appium/base-driver@npm:10.8.2"
+"@appium/base-driver@npm:10.8.3, @appium/base-driver@npm:^10.8.0":
+  version: 10.8.3
+  resolution: "@appium/base-driver@npm:10.8.3"
   dependencies:
     "@appium/support": "npm:7.2.9"
     "@appium/types": "npm:1.7.2"
@@ -28,18 +28,18 @@ __metadata:
   dependenciesMeta:
     spdy:
       optional: true
-  checksum: 10c0/134a50ef992585072617f0a617e678419151bcef068298d13abb5cae5d1a7f649e5836f8d9bf957670cd49d463ed9a76cf54a18242eb6b9711611ef47836399b
+  checksum: 10c0/7d177e22f3ba31938322dcfe45f1138cc833bab2920b8b9ca26aa1f77a726ead136bd0e089feb8290987694ada5ab93544fb27e227d05c17d5d49cd647ffa3a5
   languageName: node
   linkType: hard
 
-"@appium/base-plugin@npm:3.3.6":
-  version: 3.3.6
-  resolution: "@appium/base-plugin@npm:3.3.6"
+"@appium/base-plugin@npm:3.3.7":
+  version: 3.3.7
+  resolution: "@appium/base-plugin@npm:3.3.7"
   dependencies:
-    "@appium/base-driver": "npm:10.8.2"
+    "@appium/base-driver": "npm:10.8.3"
     "@appium/support": "npm:7.2.9"
     "@appium/types": "npm:1.7.2"
-  checksum: 10c0/ba2b2bf2bedd9d8cb3f42de4f08aba2a087148f055b1d117c63469c9f5fce15a1216f5966e7d7576e017e41a06352588cefae236b2f8fd86d80b35cbc1a47d41
+  checksum: 10c0/b7531f818c201342cc569c4a1ad3cf53adeff0e90658e531091357c87b1eaa624f6c5417208c07dfe19f7cba8a55640def7b4d2788c3ead44fa533932ce95cec
   languageName: node
   linkType: hard
 
@@ -6220,12 +6220,12 @@ __metadata:
   linkType: hard
 
 "appium@npm:^3.9.0":
-  version: 3.9.0
-  resolution: "appium@npm:3.9.0"
+  version: 3.9.1
+  resolution: "appium@npm:3.9.1"
   dependencies:
-    "@appium/base-driver": "npm:10.8.2"
-    "@appium/base-plugin": "npm:3.3.6"
-    "@appium/docutils": "npm:3.0.2"
+    "@appium/base-driver": "npm:10.8.3"
+    "@appium/base-plugin": "npm:3.3.7"
+    "@appium/docutils": "npm:3.0.3"
     "@appium/logger": "npm:2.0.12"
     "@appium/schema": "npm:1.3.0"
     "@appium/support": "npm:7.2.9"
@@ -6247,7 +6247,7 @@ __metadata:
     yaml: "npm:2.9.1"
   bin:
     appium: index.js
-  checksum: 10c0/009c367717ac477c905331705f153cc28c9c90b9904fab15db2c8dc55a031c37ea138a7356febe62cc63dd0004558ba8c79e24a989f7e5614ffdbdd5c0c3c9d8
+  checksum: 10c0/58e253e5ce2197f59b12f5de630ca2d9826a9d63729c27c35750ff65526cc65d3db795a35e7a8ac598ff9990cba1dcc321cd0d05a5a1486d8a4d652de1abe62d
   languageName: node
   linkType: hard
 
