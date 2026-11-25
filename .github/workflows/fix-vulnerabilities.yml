@@ -29,7 +29,7 @@ jobs:
           filter: blob:none
           persist-credentials: false
       - name: Fix vulnerabilities
-        uses: microsoft/rnx-kit/.github/actions/fix-vulnerabilities@f7e952835ceb0d5d3c6f2d9f53c26c923bec97e3
+        uses: microsoft/rnx-kit/.github/actions/fix-vulnerabilities@bcaaf3489ee8b0767da8c8c2f140a9ac6e154996
         with:
           projects: "."
           # Scheduled runs have no inputs
